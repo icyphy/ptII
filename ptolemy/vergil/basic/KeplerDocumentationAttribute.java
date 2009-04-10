@@ -97,7 +97,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @exception NameDuplicationException If thrown while creating the port.
      *  @exception Exception If thrown while configuring the port
      */
-    public void addPort(String name, String value) 
+    public void addPort(String name, String value)
         throws NameDuplicationException, Exception {
 
         _portHash.put(name, value);
@@ -113,7 +113,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @exception Exception If thrown while configuring the attribute
      *  @see #getProperty(String)
      */
-    public void addProperty(String name, String value) 
+    public void addProperty(String name, String value)
         throws NameDuplicationException, Exception {
         _propertyHash.put(name, value);
         ConfigurableAttribute attribute = new ConfigurableAttribute(this, "prop:"
@@ -170,7 +170,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 }
             }
         } catch (Exception ex) {
-            throw new InternalErrorException(this, ex, 
+            throw new InternalErrorException(this, ex,
                     "Could not add KeplerDocumentation internal attributes.");
         }
     }
@@ -359,7 +359,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
             return documentationAttribute;
         } catch (Exception ex) {
-            throw new InternalErrorException(this, ex, 
+            throw new InternalErrorException(this, ex,
                     "Error creating docAttribute.");
         }
 

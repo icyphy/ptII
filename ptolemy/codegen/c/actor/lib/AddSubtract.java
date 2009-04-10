@@ -83,7 +83,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
             initArgs.add(plusType);
             initArgs.add(outputType);
         }
-        
+
         if (minusOnly) {
             code.append(_generateBlockCode("minusOnlyInitSum", initArgs));
         } else if (plusType.equals(outputType)) {
@@ -108,7 +108,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
         }
         if (actor.output.isOutsideConnected() && actor.output.numberOfSinks() > 0) {
             // If the AddSubtract is in a Composite and the output is connected
-            // to a port that is not connected, then don't generate code 
+            // to a port that is not connected, then don't generate code
             // for the output.  See test/auto/CompositeWithUnconnectedPort.xml
             _codeStream.appendCodeBlock("outputBlock");
         }

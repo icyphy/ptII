@@ -72,14 +72,14 @@ public class Display extends CCodeGeneratorHelper {
         }
 
         ArrayList args = new ArrayList();
-        
+
         String title = actor.title.getExpression();
         if (title.trim().length() > 0) {
-            args.add(title);            
+            args.add(title);
         } else {
-            args.add(actor.getName());            
+            args.add(actor.getName());
         }
-        
+
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(1, Integer.toString(i));

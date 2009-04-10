@@ -62,30 +62,30 @@ public class ModelAnalyzer extends Transformer {
 
         setClassName("ptolemy.data.properties.ModelAnalyzer");
 
-        
+
         errorMessage = new TypedIOPort(this, "errorMessage", false, true);
         errorMessage.setTypeEquals(BaseType.STRING);
-        
+
         input.setTypeEquals(ActorToken.TYPE);
-        
-        output.setTypeEquals(ActorToken.TYPE);    
-        
+
+        output.setTypeEquals(ActorToken.TYPE);
+
         _analyzerWrapper = new AnalyzerAttribute(this, "_analyzerWrapper");
     }
 
     public TypedIOPort errorMessage;
 
-    /** React to a change in an attribute. 
+    /** React to a change in an attribute.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this class).
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        
+
         super.attributeChanged(attribute);
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -101,10 +101,10 @@ public class ModelAnalyzer extends Transformer {
     }
 
     public void fire() throws IllegalActionException {
-        
+
         ActorToken token = (ActorToken) input.get(0);
         CompositeEntity entity = (CompositeEntity) token.getEntity();
-        
+
         String errorString = _analyzerWrapper.analyze(entity);
         errorMessage.send(0, new StringToken(errorString));
 

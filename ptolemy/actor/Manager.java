@@ -578,7 +578,7 @@ public class Manager extends NamedObj implements Runnable {
     public State getState() {
         return _state;
     }
-    
+
     /** Determine whether widths are currently being inferred or not.
      *  @return True When widths are currently being inferred.
      */
@@ -1479,7 +1479,7 @@ public class Manager extends NamedObj implements Runnable {
      *  Infer the width of the relations for which no width has been
      *  specified yet.
      *  This method will set the state to INFERING_WIDTHS and change
-     *  it back afterwards. 
+     *  it back afterwards.
      *  @exception IllegalActionException If the widths of the relations at
      *          port are not consistent or if the width cannot be inferred
      *          for a relation.
@@ -1495,7 +1495,7 @@ public class Manager extends NamedObj implements Runnable {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // A list of actors with pending initialization.

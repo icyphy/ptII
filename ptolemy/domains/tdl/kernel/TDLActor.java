@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * TDL Actor used in the TDL domain.
- * 
+ *
  * @author Patricia Derler
  */
 public class TDLActor extends FSMActor {
@@ -58,7 +58,7 @@ public class TDLActor extends FSMActor {
      * its name. You can then change the name with setName(). If the workspace
      * argument is null, then use the default workspace. Add the actor to the
      * workspace directory. Increment the version number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace that will list the actor.
      */
@@ -71,7 +71,7 @@ public class TDLActor extends FSMActor {
      * The name must be unique within the container or an exception is thrown.
      * The container argument must not be null, or a NullPointerException will
      * be thrown.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -110,7 +110,7 @@ public class TDLActor extends FSMActor {
 
     /**
      * Read input values on the given port.
-     * 
+     *
      * @param node
      *            Node containing the TDLAction for reading the input.
      * @param p
@@ -123,7 +123,7 @@ public class TDLActor extends FSMActor {
      */
     public boolean readInput(Node node, IOPort p, long modePeriod)
             throws IllegalActionException {
-        // TODO for all channels  
+        // TODO for all channels
         List<IOPort> ports = p.deepInsidePortList();
         for (IOPort port : ports) {
             if (port instanceof RefinementPort) {
@@ -166,7 +166,7 @@ public class TDLActor extends FSMActor {
      * minimum delay on the port is smaller than or equal to real time.
      * Otherwise, events with smaller timestamps could appear on this port which
      * has to be avoided.
-     * 
+     *
      * @param port
      *            Port for which the next event should be tested for being safe
      *            to process.

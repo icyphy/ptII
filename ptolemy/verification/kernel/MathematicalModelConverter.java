@@ -82,7 +82,7 @@ public class MathematicalModelConverter extends Attribute {
 
         target = new FileParameter(this, "target", true);
         target.setDisplayName("Target File");
-        
+
         template = new FileParameter(this, "template", true);
         template.setDisplayName("Template File");
 
@@ -429,7 +429,7 @@ public class MathematicalModelConverter extends Attribute {
     }
 
     public FileParameter target;
-    
+
     public FileParameter template;
 
     public ChoiceParameter modelType;

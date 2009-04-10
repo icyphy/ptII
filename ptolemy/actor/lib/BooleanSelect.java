@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  This actor is designed to be used with the DDF or PN director,
  but it can also be used with SR, DE, and possibly other domains.
- It should not be used with 
+ It should not be used with
  SDF because the number of tokens it consumes is not fixed.
  <p>
  This actor is similar to the BooleanMultiplexor actor, except that
@@ -116,7 +116,7 @@ public class BooleanSelect extends TypedAtomicActor {
         StringAttribute controlCardinal = new StringAttribute(control,
                 "_cardinal");
         controlCardinal.setExpression("SOUTH");
-        
+
         // For the benefit of the DDF director, this actor sets
         // consumption rate values.
         trueInput_tokenConsumptionRate = new Parameter(trueInput,
@@ -204,10 +204,10 @@ public class BooleanSelect extends TypedAtomicActor {
         newObject._control = null;
         newObject._controlUsed = false;
         newObject.output.setTypeAtLeast(newObject.trueInput);
-        newObject.output.setTypeAtLeast(newObject.falseInput);        
+        newObject.output.setTypeAtLeast(newObject.falseInput);
         newObject.output.setWidthEquals(newObject.trueInput, true);
         newObject.output.setWidthEquals(newObject.falseInput, true);
-        
+
         return newObject;
     }
 
@@ -253,7 +253,7 @@ public class BooleanSelect extends TypedAtomicActor {
         falseInput_tokenConsumptionRate.setToken(_zero);
         control_tokenConsumptionRate.setToken(_one);
     }
-    
+
     /** Return true, unless stop() has been called, in which case,
      *  return false.
      *  @return True if execution can continue into the next iteration.
@@ -317,7 +317,7 @@ public class BooleanSelect extends TypedAtomicActor {
 
     /** The most recently read control token. */
     private BooleanToken _control = null;
-    
+
     /** Indicator that the control token was used in the fire method. */
     private boolean _controlUsed = false;
 

@@ -60,7 +60,7 @@ references an input port, then there is a direct dependency of
 that output on that input. Otherwise, there is no dependency.
 Note that this is a conservative analysis in that it may indicate
 a dependency when there is none. For example, if all outgoing
-transitions from a state produce the same output value, and 
+transitions from a state produce the same output value, and
 a transition is always taken, then irrespective of the guards,
 the output has no dependency on the inputs.  A precise analysis,
 however, is much more difficult (probably undecidable).
@@ -82,7 +82,7 @@ current refinement.
 @Pt.AcceptedRating Red (eal)
 */
 public class FSMCausalityInterface extends CausalityInterfaceForComposites {
-   
+
    /** Construct a causality interface for the specified actor.
     *  @param actor The actor for which this is a causality interface.
     *   This is required to be an instance of CompositeEntity.
@@ -92,7 +92,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
     *  an instance of CompositeEntity.
     */
    public FSMCausalityInterface(
-           Actor actor, Dependency defaultDependency) 
+           Actor actor, Dependency defaultDependency)
            throws IllegalArgumentException {
        super(actor, defaultDependency);
        if (!(actor instanceof FSMActor)) {
@@ -127,7 +127,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
            throws IllegalActionException {
        // Cast is safe because this is checked in the constructor
        FSMActor actor = (FSMActor)_actor;
-       
+
        // If the dependency is not up-to-date, then update it.
        long workspaceVersion = actor.workspace().getVersion();
        if (_dependencyVersion != workspaceVersion) {
@@ -140,7 +140,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                actor.workspace().getReadAccess();
                _reverseDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
                _forwardDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
-               
+
                // Initialize the equivalence classes to contain each input port.
                _equivalenceClasses = new HashMap<IOPort,Collection<IOPort>>();
                List<IOPort> actorInputs = _actor.inputPortList();
@@ -149,11 +149,11 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                    equivalences.add(actorInput);
                    _equivalenceClasses.put(actorInput, equivalences);
                }
-               
+
                // Keep track of all the ports that must go into the
                // equivalence class of input ports that affect the state.
                Collection<IOPort> stateEquivalentPorts = new HashSet<IOPort>();
-               
+
                // Iterate over all the transitions or just the transitions
                // of the current state.
                Collection<Transition> transitions;
@@ -166,7 +166,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                for (Transition transition : transitions) {
                    // Collect all the output ports that are written to on this transition.
                    Set<IOPort> outputs = new HashSet<IOPort>();
-                   
+
                    // Look only at the "choice" actions because "commit" actions
                    // do not execute until postfire(), and hence do not imply
                    // an input/output dependency.
@@ -226,7 +226,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                        }
                        for (IOPort readInput : inputs) {
                            outputMap.put(readInput, _defaultDependency.oTimesIdentity());
-                           
+
                            // Now handle the forward dependencies.
                            Map<IOPort,Dependency> inputMap = _forwardDependencies.get(readInput);
                            if (inputMap == null) {
@@ -237,7 +237,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                        }
                    }
                } // End of iteration over transitions.
-               
+
                // Iterate over the refinements to find any additional ports that may
                // have to be added to the state equivalent ports. These are input
                // ports where the corresponding input port on the refinement has

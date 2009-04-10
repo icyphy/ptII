@@ -561,8 +561,8 @@ ParseTreeCodeGenerator {
             }
             _evaluateChild(node, i + 1);
 
-            result += _specializeArgument(functionName, i, 
-                    ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(), 
+            result += _specializeArgument(functionName, i,
+                    ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(),
                     _childCode);
         }
         _childCode = _specializeReturnValue(functionName, node.getType(), result + ")");
@@ -570,21 +570,21 @@ ParseTreeCodeGenerator {
 
     private String _specializeReturnValue(String function, Type returnType,
             String returnCode) {
-        if (function.equals("$arraySum") 
+        if (function.equals("$arraySum")
                 && _isPrimitive(returnType)) {
-            
-            returnCode += ".payload." + 
+
+            returnCode += ".payload." +
             _codeGenType(returnType);
         }
         return returnCode;
     }
 
-    private String _specializeArgument(String function, 
+    private String _specializeArgument(String function,
             int argumentIndex, Type argumentType, String argumentCode) {
 
         if (function.equals("$arrayRepeat") && argumentIndex == 1) {
             if (_isPrimitive(argumentType)) {
-                return "$new(" + 
+                return "$new(" +
                 _codeGenType(argumentType)
                 + "(" + argumentCode + "))";
             }
@@ -1172,8 +1172,8 @@ ParseTreeCodeGenerator {
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 if (type != null) {
-                    result = "$multiply_" + _codeGenType(resultType) 
-                    + "_" + _codeGenType(type) + "(" + result 
+                    result = "$multiply_" + _codeGenType(resultType)
+                    + "_" + _codeGenType(type) + "(" + result
                     + ", " + _childCode + ")";
 
                     resultType = resultType.multiply(type);
@@ -1184,12 +1184,12 @@ ParseTreeCodeGenerator {
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
                     result = "$divide_" + _codeGenType(resultType)
-                    + "_" + _codeGenType(type) + "(" + result 
+                    + "_" + _codeGenType(type) + "(" + result
                     + ", " + _childCode + ")";
 
                     resultType = resultType.divide(type);
 
-                } else {                  
+                } else {
                     result += "/" + _childCode;
                 }
             } else if (operator.kind == PtParserConstants.MODULO) {
@@ -1853,7 +1853,7 @@ ParseTreeCodeGenerator {
     /** The depth, used for debugging and indenting. */
     private int _depth = 0;
 
-    private static Map cFunctionMap = new HashMap(); 
+    private static Map cFunctionMap = new HashMap();
     static {
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");

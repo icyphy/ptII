@@ -76,7 +76,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
     public MonitorReceiverContents(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-60\" y=\"-10\" "
@@ -86,11 +86,11 @@ public class MonitorReceiverContents extends SingletonAttribute {
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
                 + "MonitorReceiverContents\n" + "</text>\n"
                 + "</svg>\n");
-        
+
         // Hide the name.
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
         hideName.setToken(BooleanToken.TRUE);
-        hideName.setVisibility(Settable.EXPERT);        
+        hideName.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
             if (_executable == null) {
                 // The inner class will be piggybacked as an executable for the container to
                 // execute change request at the appropriate times. These change request will
-                // lead to repaints of the GUI.    
+                // lead to repaints of the GUI.
                 _executable = new Executable() {
 
                     public void initialize() throws IllegalActionException {
@@ -161,7 +161,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
                             workspace().doneTemporaryWriting();
                         }
                     }
-                    
+
                     // Request repaint on postfire() and wrapup().
                     public boolean postfire() {
                         ChangeRequest request = new ChangeRequest(this,
@@ -213,13 +213,13 @@ public class MonitorReceiverContents extends SingletonAttribute {
             _piggybackContainer.addPiggyback(_executable);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
     /** The executable that creates the monitor attributes in initialize(). */
     private Executable _executable;
-    
+
     /** The last container on which we piggybacked. */
     private CompositeActor _piggybackContainer;
 }

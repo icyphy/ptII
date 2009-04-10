@@ -48,21 +48,21 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      * @exception IllegalActionException If there is problems getting the port
      *  buffer size or the offset in the channel and offset map.
      */
-    public String generateOffset(String offset, int channel, boolean isWrite, 
+    public String generateOffset(String offset, int channel, boolean isWrite,
             Director directorHelper) throws IllegalActionException;
 
     /** Generate the get code.
      *  @param channel The channel for which the get code is generated.
      *  @return The code that gets data from the channel.
-     */ 
+     */
     public String generateCodeForGet(String channel) throws IllegalActionException;
 
     /** Generate the send code.
      *  @param channel The channel for which the send code is generated.
      *  @param dataToken The token to be sent
      *  @return The code that sends the dataToken on the channel.
-     */ 
-    public String generateCodeForSend(String channel, String dataToken)     
+     */
+    public String generateCodeForSend(String channel, String dataToken)
         throws IllegalActionException;
 
     /** Get the buffer size of channel of the port.
@@ -107,7 +107,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @param channelNumber The number of the channel that is being set.
      *  @param writeOffset The offset.
      */
-    public void setWriteOffset(int channelNumber, Object writeOffset); 
+    public void setWriteOffset(int channelNumber, Object writeOffset);
 
     /** Update the read offset.
      *  @param rate  The rate of the channels.
@@ -121,7 +121,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
     public String updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException;
 
 
-    /** Initialize the offsets. 
+    /** Initialize the offsets.
      *  @return The code to initialize the offsets.
      */
     public String initializeOffsets() throws IllegalActionException;

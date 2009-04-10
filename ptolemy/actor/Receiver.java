@@ -76,7 +76,7 @@ public interface Receiver {
      *   the domain.
      */
     public void clear() throws IllegalActionException;
-    
+
     /** Return a list with tokens that are currently in the receiver
      *  available for get() or getArray(). The oldest token (the one
      *  that was put first) should be listed first in any implementation

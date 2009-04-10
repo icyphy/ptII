@@ -169,7 +169,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     }
 
     /** Append to the path of the subprocess.  If directoryName is already
-     *  in the path, then it is not appended.  
+     *  in the path, then it is not appended.
      *  @param directoryName The name of the directory to append to the path.
      */
     public void appendToPath(String directoryName) {
@@ -230,7 +230,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
     /** Get the value of the environment of the subprocess.
      *  @param key  The environment variable.
-     *  @return The value of the key.  If the key is not set, then 
+     *  @return The value of the key.  If the key is not set, then
      *  null is returned.  If appendToPath() has been called, and
      *  the then the environment for the subprocess is checked, which
      *  might be different than the environment for the current process
@@ -246,10 +246,10 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             // is Path.  Updating PATH is wrong, the subprocess will
             // not see the change.  So, we search the env for a direct
             // match
-            Map<String,String> environmentMap = System.getenv(); 
+            Map<String,String> environmentMap = System.getenv();
 
             if (_debug) {
-                stdout("JTextArea.getenv(" + key + "), _envp null, returning: " 
+                stdout("JTextArea.getenv(" + key + "), _envp null, returning: "
                         + environmentMap.get(key));
             }
 

@@ -38,7 +38,7 @@ import java.util.ResourceBundle;
 /**
  * Manage the resources for a locale using a set of static strings from a property file.
  * See <code>java.util.ResourceBundle</code> for more information.
- * 
+ *
  * <p>
  * Unlike other types of resource bundle, <code>OrderedResourceBundle</code> is not
  * usually subclassed. Instead, the properties files containing the resource data
@@ -47,7 +47,7 @@ import java.util.ResourceBundle;
  * <code>OrderedResourceBundle</code> that refers to it. See
  * <code>java.util.ResourceBundle.getBundle()</code> for a complete description
  * of the search and instantiation strategy.
- * 
+ *
  * @version $Id$
  * @author Matthew Brooke
  * @since Ptolemy II 7.1
@@ -56,7 +56,7 @@ public class OrderedResourceBundle {
 
         /**
          * Construct an OrderedResourceBundle.
-         * 
+         *
          * @param stream
          *            InputStream for reading the java properties file from which
          *            this object will take its values.  The stream is closed
@@ -93,7 +93,7 @@ public class OrderedResourceBundle {
          * Iterator that allows retrieval of the keys in the original order. See
          * javadoc for <code>java.util.ResourceBundle</code> for a complete
          * description of the search and instantiation strategy.
-         * 
+         *
          * @param baseName
          *            String denoting the name of the properties file that will be
          *            read to populate this ResourceBundle.<br>
@@ -124,14 +124,14 @@ public class OrderedResourceBundle {
 
                 InputStream stream = OrderedResourceBundle.class
                                 .getResourceAsStream(filename);
-                
+
                 // The OrderedResourceBundle closes stream.
                 return new OrderedResourceBundle(stream);
         }
 
         /**
          * Get a string for the given key from this resource bundle.
-         * 
+         *
          * @param key
          *            the key for the desired string
          * @return the string for the given key, or null if: a null value is
@@ -144,7 +144,7 @@ public class OrderedResourceBundle {
         /**
          * Get an Iterator over the Set of keys, allowing retrieval of the keys in
          * the original order as listed in the properties file.
-         * 
+         *
          * @return Iterator
          */
         public Iterator getKeys() {
@@ -284,7 +284,7 @@ public class OrderedResourceBundle {
                 // FindBugs: The code uses x % 2 == 1 to check to see if a value is odd,
                 // but this won't work for negative numbers (e.g., (-5) % 2 == -1).
                 // If this code is intending to check for oddness, consider
-                // using x & 1 == 1, or x % 2 != 0. 
+                // using x & 1 == 1, or x % 2 != 0.
 
                 return (slashCount % 2 != 0);
         }

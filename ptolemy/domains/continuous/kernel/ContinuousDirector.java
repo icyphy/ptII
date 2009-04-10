@@ -335,7 +335,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.
@@ -490,7 +490,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
      *  @return The time at which the actor passed as an argument
-     *   will be fired.  
+     *   will be fired.
      *  @exception IllegalActionException If the time is earlier than
      *  the current time.
      */
@@ -504,7 +504,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // Breakpoints always have an index larger than 1 except the
             // stop time breakpoint.
             int index = 1;
-    
+
             int comparisonResult = time.compareTo(currentTime);
             if (comparisonResult < 0) {
                 // Adjust time to match the current time.

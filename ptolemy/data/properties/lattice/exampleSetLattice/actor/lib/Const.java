@@ -54,18 +54,18 @@ public class Const extends PropertyConstraintHelper {
      * Construct a helper for the given AtomicActor. This is the
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
-     * are set for this helper. 
+     * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Const(PropertyConstraintSolver solver, 
+    public Const(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
-        
-        super(solver, actor);        
+
+        super(solver, actor);
     }
-    
+
     /** Return the constraints of this component.  The constraints is
      *  a list of inequalities. This base class returns a empty list.
      *  @return A list of Inequality.
@@ -76,21 +76,21 @@ public class Const extends PropertyConstraintHelper {
         ptolemy.actor.lib.Const actor = (ptolemy.actor.lib.Const) getComponent();
 
         if (actor.value.getExpression().equalsIgnoreCase("\"a\"")) {
-            setAtLeast(actor.value, new PropertySet(lattice, 
+            setAtLeast(actor.value, new PropertySet(lattice,
                     new Property[] {lattice.A}));
         } else if (actor.value.getExpression().equalsIgnoreCase("\"b\"")) {
-            setAtLeast(actor.value, new PropertySet(lattice, 
+            setAtLeast(actor.value, new PropertySet(lattice,
                     new Property[] {lattice.B}));
         } else if (actor.value.getExpression().equalsIgnoreCase("\"c\"")) {
-            setAtLeast(actor.value, new PropertySet(lattice, 
+            setAtLeast(actor.value, new PropertySet(lattice,
                     new Property[] {lattice.C}));
         } else {
-            setAtLeast(actor.value, new PropertySet(lattice, 
+            setAtLeast(actor.value, new PropertySet(lattice,
                     new Property[] {lattice.UNKNOWN}));
         }
-        
+
         setAtLeast(actor.output, actor.value);
         return super.constraintList();
     }
-    
+
 }

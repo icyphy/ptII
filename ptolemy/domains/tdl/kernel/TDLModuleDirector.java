@@ -84,7 +84,7 @@ import ptolemy.kernel.util.NamedObj;
  * are executed, then the fireAt(time) of the enclosing director is called with
  * the time stamp of the next event. Events are processed in the order specified
  * in the graph.
- * 
+ *
  * @author Patricia Derler
  */
 public class TDLModuleDirector extends ModalDirector {
@@ -94,7 +94,7 @@ public class TDLModuleDirector extends ModalDirector {
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            Container of this director.
      * @param name
@@ -110,7 +110,7 @@ public class TDLModuleDirector extends ModalDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -170,7 +170,7 @@ public class TDLModuleDirector extends ModalDirector {
                         else {
                             targetState = ((Transition) obj).destinationState(); // choose transition in the graph
                             iterate = true;
-                        } 
+                        }
                         _nextEventsTimeStamps.clear();
                         _nodesDependentoOnPreviousActions.clear();
                         Node startNode = _graph.getNode(new TDLAction(new Time(
@@ -192,7 +192,7 @@ public class TDLModuleDirector extends ModalDirector {
                         _fireAt(node, getModelTime());
                         scheduleEventsAfterAction(node);
                         iterate = true;
-                    } 
+                    }
                     _nextEventsTimeStamps.remove(node);
 
                     if (_nodesDependentoOnPreviousActions != null
@@ -243,7 +243,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Get mode period from state parameter "period".
-     * 
+     *
      * @param obj
      *            The object
      * @return The value of the "period" parameter. If there is no period
@@ -279,7 +279,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Return the worst case execution time of the actor or 0 if no worst case
      * execution time was specified.
-     * 
+     *
      * @param actor
      *            The actor for which the worst case execution time is
      *            requested.
@@ -307,7 +307,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Return the worst case execution time of the actor or 0 if no worst case
      * execution time was specified.
-     * 
+     *
      * @return The worst case execution time.
      * @throws IllegalActionException
      */
@@ -331,12 +331,12 @@ public class TDLModuleDirector extends ModalDirector {
         _graph.buildGraph(getController().currentState());
         _initializeOutputPorts();
         fireAt((TDLModule) getContainer(), getModelTime());
-        _nodesDependentoOnPreviousActions = new HashMap(); 
+        _nodesDependentoOnPreviousActions = new HashMap();
         _nextEventsTimeStamps = new HashMap();
         //nextEvents.add(new TDLAction(0, TDLAction.AFTERMODESWITCH, getController().currentState()));
 
         Node startNode = _graph.getNode(new TDLAction(new Time(this, 0.0),
-                TDLAction.AFTERMODESWITCH, getController().getInitialState())); 
+                TDLAction.AFTERMODESWITCH, getController().getInitialState()));
         _nextEventsTimeStamps.put(startNode, new Time(this, 0.0));
         _fireAt(startNode, new Time(this, 0));
         scheduleEventsAfterAction(startNode);
@@ -345,7 +345,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Find out if task (=actor) or actuator (=output port) is fast task.
-     * 
+     *
      * @param obj
      *            The object that could be a fast task or actuator.
      * @return True if it is a fast task.
@@ -369,7 +369,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Get frequency of the task.
-     * 
+     *
      * @param obj
      *            The object that could be a fast task or actuator.
      * @return True if it is a fast task.
@@ -393,7 +393,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Get frequency of the task.
-     * 
+     *
      * @param obj
      *            The object that could be a fast task or actuator.
      * @return True if it is a fast task.
@@ -417,7 +417,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Return a new TDLReceiver.
-     * 
+     *
      * @return A new TDL receiver.
      */
     public Receiver newReceiver() {
@@ -428,7 +428,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Check if at the current time there is something to do.
-     * 
+     *
      * @return True if there is something to do now.
      * @throws IllegalActionException
      *             Thrown if execution was missed, input ports could not be
@@ -436,8 +436,8 @@ public class TDLModuleDirector extends ModalDirector {
      */
     public boolean prefire() throws IllegalActionException {
         // read inputs although they are not used to avoid piling up tokens
-        //        
-        
+        //
+
             for (Iterator it = ((TDLModule) getContainer()).inputPortList()
                     .iterator(); it.hasNext();) {
                 IOPort port = (IOPort) it.next();
@@ -449,7 +449,7 @@ public class TDLModuleDirector extends ModalDirector {
                     throw new IllegalActionException(this, port,
                             "Attempted to transferInputs on a port is not an opaque"
                                     + "input port.");
-                } 
+                }
                 for (int i = 0; i < port.getWidth(); i++) {
                     try {
                         if (i < port.getWidthInside()) {
@@ -460,7 +460,7 @@ public class TDLModuleDirector extends ModalDirector {
                                             "transferring input from "
                                                     + port.getName());
                                 }
-                                port.sendInside(i, t); 
+                                port.sendInside(i, t);
                             }
                         } else {
                             // No inside connection to transfer tokens to.
@@ -480,7 +480,7 @@ public class TDLModuleDirector extends ModalDirector {
                 }
 
             }
-            
+
             if (((Actor) getContainer().getContainer()).getDirector() instanceof DEDirector) {
                 return super.prefire();
             }
@@ -504,7 +504,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Schedules actions which depend on the action specified in the given node.
-     * 
+     *
      * @param node
      *            Given node.
      * @throws IllegalActionException
@@ -519,8 +519,8 @@ public class TDLModuleDirector extends ModalDirector {
         for (Node n : table.keySet()) {
             if (!_nodesDependentoOnPreviousActions.keySet().contains(n))
                 _nodesDependentoOnPreviousActions.put(n, table.get(n));
-        } 
-        for (Node n : events) { 
+        }
+        for (Node n : events) {
             _fireAt(n, getModelTime());
         }
     }
@@ -528,7 +528,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Outputs are only transferred when scheduled, therefore do nothing if
      * transfer outputs is called by another actor.
-     * 
+     *
      * @param port
      *            output port.
      * @return True.
@@ -539,7 +539,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Don't read inputs as this is specifically scheduled by a TDLModule.
-     * 
+     *
      * @param port
      *            Input port.
      * @return True if ports transferred inputs.
@@ -555,17 +555,17 @@ public class TDLModuleDirector extends ModalDirector {
      * Clear private variables and lists.
      */
     public void wrapup() throws IllegalActionException {
-        super.wrapup(); 
+        super.wrapup();
         if (_nextEventsTimeStamps != null)
             _nextEventsTimeStamps.clear();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /**
      * Check if transition (=mode switch) should be executed.
-     * 
+     *
      * @param transition
      *            The mode switch.
      * @return True if the mode switch should be done.
@@ -591,7 +591,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Schedule a refiring of this actor for a TDL action.
-     * 
+     *
      * @param node
      *            Node containing a TDL action that is scheduled to execute at
      *            the given time.
@@ -623,7 +623,7 @@ public class TDLModuleDirector extends ModalDirector {
             time = additionalTime;
         if (node != null) {
 
-            _nextEventsTimeStamps.put(node, time); 
+            _nextEventsTimeStamps.put(node, time);
 
         }
         System.out.println("fireAt " + time + " " + node);
@@ -632,7 +632,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Get all tasks for a module.
-     * 
+     *
      * @return A list of all tasks.
      */
     private Collection _getAllTasks() {
@@ -654,7 +654,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Return events that can be fired at current model time.
-     * 
+     *
      * @param scheduleTime
      *            Time in the schedule (= between 0 and modePeriod) which is
      * @param modePeriod
@@ -663,7 +663,7 @@ public class TDLModuleDirector extends ModalDirector {
      */
     private List<Node> _getEventsToFire(Time scheduleTime, Time modePeriod) {
         List<Node> eventsToFire = new ArrayList();
-        for (Node node : _nextEventsTimeStamps.keySet()) {  
+        for (Node node : _nextEventsTimeStamps.keySet()) {
             if (_nextEventsTimeStamps.get(node).equals(getModelTime()))
                 eventsToFire.add(node);
         }
@@ -672,7 +672,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Returns the smallest time stamp of the events that will be fired next.
-     * 
+     *
      * @return The smallest time stamp of the next events.
      */
     private Time _getSmallestTimeStampInEventsToFire() {
@@ -687,7 +687,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Test a guard expression on an actor.
-     * 
+     *
      * @param obj
      *            The object containing a guard expression.
      * @return True if the guard expression evaluates to true.
@@ -719,7 +719,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Test if an object has a guard expression.
-     * 
+     *
      * @param obj
      *            Object that might have a guard expression.
      * @return True if the object has a guard parameter.
@@ -731,7 +731,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Initialize a port with an initial token.
-     * 
+     *
      * @param port
      *            Port to be initialized.
      * @throws IllegalActionException
@@ -758,7 +758,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Initialize output ports by reading initial value and initializing the
      * receivers.
-     * 
+     *
      * @throws IllegalActionException
      *             Thrown if the ports could not be initialized.
      */
@@ -815,7 +815,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Update actuator by transferring the outputs.
-     * 
+     *
      * @param port
      *            Actuator that should be updated.
      * @throws IllegalActionException
@@ -825,14 +825,14 @@ public class TDLModuleDirector extends ModalDirector {
         RefinementPort rport = (RefinementPort) port;
         List l = rport.deepConnectedOutPortList();
         for (int i = 0; i < l.size(); i++) {
-            if (l.get(i) instanceof TypedIOPort) 
+            if (l.get(i) instanceof TypedIOPort)
                 super.transferOutputs((TypedIOPort) l.get(i));
         }
     }
 
     /**
      * Update input port, for TDL that means a sensor value is read.
-     * 
+     *
      * @param port
      *            Port to be updated.
      */
@@ -850,7 +850,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Read input values and update inputMap the updated inputMap is required
      * when guards are evaluated.
-     * 
+     *
      * @throws IllegalActionException
      *             Thrown if the controller could not be retrieved or inputs
      *             could not be read.
@@ -873,7 +873,7 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Update output port, for TDL this means an actuator is updated.
-     * 
+     *
      * @param port
      *            The output port.
      * @throws IllegalActionException
@@ -895,11 +895,11 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Update the TDL receivers. An update of a TDL receiver means that a value
      * previously sent to this port will now be accessible too.
-     * 
+     *
      * @param portList
      *            Ports containing TDL receivers that should be updated.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      */
     private void _updateReceivers(Collection portList) throws InvalidStateException, IllegalActionException {
         Iterator it = portList.iterator();
@@ -920,7 +920,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * After a mode switch, tasks that exist in the source and the target state
      * must have the same port values. This method transfers input ports.
-     * 
+     *
      * @param transition
      *            Mode switch that has been made.
      * @throws IllegalActionException
@@ -962,7 +962,7 @@ public class TDLModuleDirector extends ModalDirector {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 

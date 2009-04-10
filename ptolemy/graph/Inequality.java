@@ -74,7 +74,7 @@ public class Inequality {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return true if object named by the argument is equal to
      *  this Inequality object.
      *  <p>Override to return true if the greater and lesser terms of
@@ -106,7 +106,7 @@ public class Inequality {
     public InequalityTerm getLesserTerm() {
         return _lesserTerm;
     }
-    
+
     /** Return the hashCode of this object.
      *  <p>Override to return the exclusive OR of the hashcodes
      *  of the greater and lesser terms. This ensures that two

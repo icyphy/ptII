@@ -50,7 +50,7 @@ public class AnalyzerAttribute extends Attribute {
 
         overwriteDependentProperties = new Parameter(container, "overwriteDependentProperties");
         overwriteDependentProperties.setTypeEquals(BaseType.BOOLEAN);
-        overwriteDependentProperties.setExpression("false");        
+        overwriteDependentProperties.setExpression("false");
 
     }
 
@@ -65,7 +65,7 @@ public class AnalyzerAttribute extends Attribute {
         _moveParameter(overwriteDependentProperties);
 
     }
-    
+
     public String analyze(CompositeEntity entity)
     throws IllegalActionException {
         String errorString = "";
@@ -77,7 +77,7 @@ public class AnalyzerAttribute extends Attribute {
                 remover.removeProperties(entity);
             } catch (NameDuplicationException e) {
                 assert false;
-            }            
+            }
         } else {
 
             String actionValue = action.getExpression();
@@ -85,7 +85,7 @@ public class AnalyzerAttribute extends Attribute {
             PropertySolver chosenSolver = null;
             try {
 
-                URIAttribute attribute = (URIAttribute) 
+                URIAttribute attribute = (URIAttribute)
                 entity.getAttribute("_uri", URIAttribute.class);
                 if (attribute == null) {
                     attribute = new URIAttribute(entity, "_uri");
@@ -138,7 +138,7 @@ public class AnalyzerAttribute extends Attribute {
             } catch (Exception ex) {
                 errorString = KernelException.generateMessage(
                         entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
-            } 
+            }
             /*catch (KernelException ex) {
         errorMessage.send(0, new StringToken(KernelException.generateMessage(
                 entity, null, ex, "Failed: Checking/annotating failed while in progress.") + "\n\n"));
@@ -183,7 +183,7 @@ public class AnalyzerAttribute extends Attribute {
 
     private void _addChoices() throws IllegalActionException {
 
-        List<Class> solvers = 
+        List<Class> solvers =
             getListOfSolverClass("ptolemy.data.properties.configuredSolvers");
 
         if (solvers.size() > 0) {

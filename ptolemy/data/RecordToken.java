@@ -74,7 +74,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throw new InternalErrorException(e);
         }
     }
-    
+
     /** Construct a RecordToken with the specified labels and values.
      *  The labels and values arrays must have the same length, and have one
      *  to one correspondence with each other.  That is, the i'th entry in
@@ -425,7 +425,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Empty Record. */
     public static final RecordToken EMPTY_RECORD = new RecordToken();
 

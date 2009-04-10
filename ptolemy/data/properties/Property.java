@@ -44,14 +44,14 @@ package ptolemy.data.properties;
  */
 // FIXME: may want to make this into an interface
 public class Property {
-    
-    public Property() {        
+
+    public Property() {
     }
 
     public Property(String name) {
         _name = name;
     }
-    
+
     /**
      * Return true if this is an acceptable solution.
      * @return true if this is an acceptable solution; otherwise, false;
@@ -70,7 +70,7 @@ public class Property {
     }
 
     protected String _name = "";
-    
+
     public String toString() {
         if (_name.length() > 0) {
             return _name;

@@ -49,19 +49,19 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
-    public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver, 
+    public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtFunctionApplicationNode node) throws IllegalActionException {
         super(solver, node);
     }
-    
+
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.data.expr.ASTPtFunctionApplicationNode node = 
+        ptolemy.data.expr.ASTPtFunctionApplicationNode node =
             (ptolemy.data.expr.ASTPtFunctionApplicationNode) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
 
         if (_real32Functions.contains(node.getFunctionName())) {
-            
+
             _useDefaultConstraints = false;
             setEquals(node, lattice.DOUBLE);
         }
@@ -69,7 +69,7 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
         return super.constraintList();
     }
 
-    private static List _real32Functions = Arrays.asList( 
+    private static List _real32Functions = Arrays.asList(
             new String[]{ ""
     });
 
@@ -78,6 +78,6 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
     }
 
     public void setEffective(boolean isEffective) {
-        
+
     }
 }

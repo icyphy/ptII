@@ -96,13 +96,13 @@ public class AttributeController extends IconController {
             _appearanceMenuActionFactory = new MenuActionFactory(
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
-            
+
             _listenToAction = new ListenToAction(
                     (BasicGraphController) getController(), _getComponentType());
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     _listenToAction));
             _listenToAction.setConfiguration(_configuration);
-            
+
         }
     }
 
@@ -112,14 +112,14 @@ public class AttributeController extends IconController {
 
     /** Add hot keys to the actions in the given JGraph.
     *   It would be better that this method was added higher in the hierarchy. Now
-    *   most controllers 
+    *   most controllers
     *  @param jgraph The JGraph to which hot keys are to be added.
     */
    public void addHotKeys(JGraph jgraph) {
        super.addHotKeys(jgraph);
-       GUIUtilities.addHotKey(jgraph, _renameAction);       
+       GUIUtilities.addHotKey(jgraph, _renameAction);
    }
-   
+
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is
      *  is important because it keeps track of which files are already
@@ -137,13 +137,13 @@ public class AttributeController extends IconController {
     ////                         protected methods                 ////
 
     /**
-     * Get the class label of the component. 
-     * @return the class label of the component. 
+     * Get the class label of the component.
+     * @return the class label of the component.
      */
     protected String _getComponentType() {
         return "Attribute";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public members                        ////
 
@@ -158,13 +158,13 @@ public class AttributeController extends IconController {
 
     /** The appearance menu factory. */
     protected MenuActionFactory _appearanceMenuActionFactory;
-    
+
     /** Action to launch rename dialog. */
     protected RenameDialogAction _renameAction;
 
     /** Action to listen to debug messages. */
     protected ListenToAction _listenToAction;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private members                       ////
 
@@ -178,5 +178,5 @@ public class AttributeController extends IconController {
     /** A static enumerator for constructor arguments. */
     protected static class Access {
     }
-    
+
 }

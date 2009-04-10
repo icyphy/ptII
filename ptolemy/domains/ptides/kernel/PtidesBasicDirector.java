@@ -1,6 +1,6 @@
 /* Basic Ptides director that uses DE and delivers correct
  * but not necessarily optimal execution.
- * 
+ *
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
 
@@ -10,7 +10,7 @@ software and its documentation for any purpose, provided that the
 above copyright notice and the following two paragraphs appear in all
 copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY 
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
@@ -56,7 +56,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
 /** FIXME
- * 
+ *
  *  This director has a local notion time, decoupled from that of the
  *  enclosing director. The enclosing director's time
  *  represents physical time, whereas this time represents model
@@ -81,17 +81,17 @@ public class PtidesBasicDirector extends DEDirector {
     public PtidesBasicDirector(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         animateExecution = new Parameter(this, "animateExecution");
         animateExecution.setExpression("false");
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
-        
+
         _zero = new Time(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
+
     /** If true, then modify the icon for this director to indicate
      *  the state of execution. This is a boolean that defaults to false.
      */
@@ -104,15 +104,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  of the enclosing director, which keeps track of physical time. Then
      *  the event associated with the sensor is put into _realTimeEventQueue.
      *  If the actor is not a sensor, then we call fireAt of the super class.
-     *  
-     *  FIXME: the enclosing director has to keep track of physical time  
-     * 
+     *
+     *  FIXME: the enclosing director has to keep track of physical time
+     *
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         if (PtidesActorProperties.isSensor(actor) || PtidesActorProperties.isActuator((actor))) {
-            
+
             Actor container = (Actor) getContainer();
-            
+
             if (_debugging) {
                     _debug("PtidesBasicDirector: Requests refiring of: "
                             + container.getName() + " at time " + time);
@@ -123,15 +123,15 @@ public class PtidesBasicDirector extends DEDirector {
             // so we shouldn't have to deal with microsteps here at all.
             DEEvent newEvent = new DEEvent(actor, time, 0, depth);
             _realTimeEventQueue.put(newEvent);
-            
+
             Director executiveDirector = container.getExecutiveDirector();
             return executiveDirector.fireAt(container, time);
-            
+
         } else {
             return super.fireAt(actor, time);
         }
     }
-    
+
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
@@ -146,24 +146,24 @@ public class PtidesBasicDirector extends DEDirector {
 //        _realTimeEventQueue = new DECQEventQueue(((IntToken) minBinCount.getToken())
 //                .intValue(), ((IntToken) binCountFactor.getToken()).intValue(),
 //                ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
-        
+
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "No container, or container is not an Actor.");
         }
         Director executiveDirector = ((Actor)container).getExecutiveDirector();
         if (executiveDirector == null) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "The PtidesBasicDirector can only be used within an enclosing director.");
         }
         executiveDirector.fireAtCurrentTime((Actor)container);
-        
+
         _setIcon(_getIdleIcon(), true);
     }
 
     /** Return false if there are no more actors to be fired or the stop()
-     *  method has been called. 
+     *  method has been called.
      *  FIXME: This assumes no sensors and actuators
      *  @return True If this director will be fired again.
      *  @exception IllegalActionException If stopWhenQueueIsEmpty parameter
@@ -185,7 +185,7 @@ public class PtidesBasicDirector extends DEDirector {
                 result = false;
             }
         }
-        if (eventQueue.isEmpty() && stop && 
+        if (eventQueue.isEmpty() && stop &&
                 _currentlyExecutingStack.isEmpty() && _realTimeEventQueue.isEmpty()) {
             result = false;
         }
@@ -205,7 +205,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         return true;
     }
-    
+
     /** Set a new value to the current time of the model, where
      *  the new time must be no earlier than the current time.
      *  Derived classes will likely override this method to ensure that
@@ -232,7 +232,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         _currentTime = newTime;
     }
-    
+
     /** Override the base class to reset the icon idle if animation
      *  is turned on.
      *  @exception IllegalActionException If the wrapup() method of
@@ -263,7 +263,7 @@ public class PtidesBasicDirector extends DEDirector {
             ((TypedCompositeActor)container).requestChange(request);
         }
     }
-    
+
     /** Return a MoML string describing the icon appearance for a Ptides
      *  director that is currently executing the specified actor.
      *  The returned MoML can include a sequence of instances of VisibleAttribute
@@ -282,7 +282,7 @@ public class PtidesBasicDirector extends DEDirector {
                 "    <property name=\"fillColor\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>" +
                 "  </property>";
     }
-    
+
     /** Return a MoML string describing the icon appearance for an idle
      *  director. This can include a sequence of instances of VisibleAttribute
      *  or its subclasses. In this base class, this returns a rectangle like
@@ -298,7 +298,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Return the actor to fire in this iteration, or null if no actor
-     *  should be fired. 
+     *  should be fired.
      *  In this base class, this method first checks whether the top event from
      *  the event queue is destined for an actuator. If it is, then we check
      *  if physical time has reached the timestamp of the actuation event. If it
@@ -323,7 +323,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  <b>Case 2</b>: If there is an actor currently executing, then this
      *  method checks whether it has a remaining execution time of zero.
      *  If it does, then it returns the currently executing actor.
-     *  If it does not, then it checks whether  
+     *  If it does not, then it checks whether
      *  the earliest event on the event queue should
      *  preempt it (by invoking _preemptExecutingActor()),
      *  and if so, checks the destination actor of that event
@@ -354,9 +354,9 @@ public class PtidesBasicDirector extends DEDirector {
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
         DEEventQueue eventQueue = getEventQueue();
-        
+
         // deals with actuators on eventQueue
-        
+
         // since actuators only need to assert the actuation signal when physical time is equal
         // to the timestamp of the event, we do not need to do safe to process.
         // FIXME: assume execution time of an actuator is always 0.
@@ -378,7 +378,7 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
         }
-        
+
         // deals with sensors and actuators on _realTimeEventQueue
         if (!_realTimeEventQueue.isEmpty()) {
             DEEvent event = _realTimeEventQueue.get();
@@ -389,7 +389,7 @@ public class PtidesBasicDirector extends DEDirector {
                 return event.actor();
             }
         }
-        
+
         if (!_currentlyExecutingStack.isEmpty()) {
             // Case 2: We are currently executing an actor.
             DoubleTimedEvent currentEvent = (DoubleTimedEvent)_currentlyExecutingStack.peek();
@@ -410,14 +410,14 @@ public class PtidesBasicDirector extends DEDirector {
                 // If there is now something on _currentlyExecutingStack,
                 // then we are resuming its execution now.
                 _physicalTimeExecutionStarted = physicalTime;
-                
+
                 if (_debugging) {
-                    _debug("Actor " 
+                    _debug("Actor "
                             + ((NamedObj)currentEvent.contents).getName(getContainer())
                             + " finishes executing at physical time "
                             + physicalTime);
                 }
-                
+
                 // Animate, if appropriate.
                 _setIcon(_getIdleIcon(), false);
                 _clearHighlight((Actor)currentEvent.contents);
@@ -451,21 +451,21 @@ public class PtidesBasicDirector extends DEDirector {
         // got preempted.
         if (eventQueue.isEmpty()) {
             // Nothing to fire.
-            
+
             // Animate if appropriate.
             _setIcon(_getIdleIcon(), false);
-            
+
             return null;
         }
-        
+
         DEEvent eventFromQueue = getEventQueue().get();
         Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
-  
+
         if (!_safeToProcess(eventFromQueue)) {
             // not safe to process, wait until some physical time.
             return null;
         }
-        
+
         Actor actorToFire = super._getNextActorToFire();
 
         Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
@@ -474,7 +474,7 @@ public class PtidesBasicDirector extends DEDirector {
             // If execution time is zero, return the actor.
             // It will be fired now.
             setModelTime(timeStampOfEventFromQueue);
-            
+
             // Request a refiring so we can process the next event
             // on the event queue at the current physical time.
             executiveDirector.fireAtCurrentTime((Actor)container);
@@ -503,7 +503,7 @@ public class PtidesBasicDirector extends DEDirector {
                 DoubleTimedEvent currentlyExecutingEvent = _currentlyExecutingStack.peek();
                 // FIXME: Perhaps execution time should be a Time rather than a double?
                 Time elapsedTime = physicalTime.subtract(_physicalTimeExecutionStarted);
-                currentlyExecutingEvent.remainingExecutionTime 
+                currentlyExecutingEvent.remainingExecutionTime
                         = currentlyExecutingEvent.remainingExecutionTime.subtract(elapsedTime);
                 if (currentlyExecutingEvent.remainingExecutionTime.compareTo(_zero) < 0) {
                     // This should not occur.
@@ -525,7 +525,7 @@ public class PtidesBasicDirector extends DEDirector {
             // Animate if appropriate.
             _setIcon(_getExecutingIcon(actorToFire), false);
             _lastExecutingActor = actorToFire;
-            
+
             return null;
         }
     }
@@ -539,7 +539,7 @@ public class PtidesBasicDirector extends DEDirector {
         Director director = container.getExecutiveDirector();
         return director.getModelTime();
     }
-    
+
     /** Highlight the specified actor with the specified color.
      *  @param actor The actor to highlight.
      *  @param color The color, given as a string description in
@@ -559,7 +559,7 @@ public class PtidesBasicDirector extends DEDirector {
             ((TypedCompositeActor)container).requestChange(request);
         }
     }
-    
+
     /** Return false to get the superclass DE director to behave exactly
      *  as if it is executing at the top level.
      *  @return False.
@@ -577,17 +577,17 @@ public class PtidesBasicDirector extends DEDirector {
     protected boolean _preemptExecutingActor() {
         return false;
     }
-    
+
     /** If the destination port is the only input port of the actor, or if there doesn't exist
      *  a destination port (in case of pure event) then the event is
      *  always safe to process. Otherwise:
-     *  If the current physical time has passed the timestamp of the event minus minDelay of 
+     *  If the current physical time has passed the timestamp of the event minus minDelay of
      *  the port, then the event is safe to process. Otherwise the event is not safe to
      *  process, and we calculate the physical time when the event is safe to process and
-     *  setup a timed interrupt. 
-     * 
+     *  setup a timed interrupt.
+     *
      *  FIXME: assumes each input port is not multiport.
-     * 
+     *
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
      *  @throws IllegalActionException
@@ -614,7 +614,7 @@ public class PtidesBasicDirector extends DEDirector {
             } catch (ClassCastException ex) {
                 return true;
             } catch (IllegalActionException e) {
-                // no minDelay, should only happen if the destination port is the only input port of 
+                // no minDelay, should only happen if the destination port is the only input port of
                 // the destination actor.
                 return true;
             }
@@ -648,7 +648,7 @@ public class PtidesBasicDirector extends DEDirector {
             ((TypedCompositeActor)container).requestChange(request);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
 
@@ -678,19 +678,19 @@ public class PtidesBasicDirector extends DEDirector {
      *  last resumed execution.
      */
     private Time _physicalTimeExecutionStarted;
-    
+
     /** Zero time.
      */
     private Time _zero;
-    
+
     /** Last executing actor
      *  Keeps track of the last actor with non-zero executing time that was executing
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
-    
+
     /** Event queue for real-time events.
-     *  Keeps track of real-time events from sensors or actuators. 
+     *  Keeps track of real-time events from sensors or actuators.
      */
     private DEEventQueue _realTimeEventQueue = new DECQEventQueue(((IntToken) minBinCount.getToken())
             .intValue(), ((IntToken) binCountFactor.getToken()).intValue(),
@@ -717,7 +717,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         public Time remainingExecutionTime;
-        
+
         public String toString() {
             return super.toString() + ", remainingExecutionTime = " + remainingExecutionTime;
         }

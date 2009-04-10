@@ -68,17 +68,17 @@ public class ArrayOfRecordsExporter extends LineWriter {
     public ArrayOfRecordsExporter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         records = new Parameter(this, "records");
         // Declare that it must be an array of records.
         records.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
         records.setToken(new ArrayToken(RecordType.EMPTY_RECORD));
-        
+
         Variable ALL = new Variable(this, "ALL");
         ALL.setVisibility(Settable.NONE);
         Token emptyStringArray = new ArrayToken(BaseType.STRING);
         ALL.setToken(emptyStringArray);
-        
+
         columns = new Parameter(this, "columns");
         columns.setTypeEquals(new ArrayType(BaseType.STRING));
         columns.setExpression("ALL");
@@ -86,7 +86,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The columns to write.
      *  This is an array of strings specifying the column
      *  names to write, and the order in which they are

@@ -30,7 +30,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * Receiver used inside platforms of a ptides domain. This Receiver will not
  * work with non-opaque actors inside a platform.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -48,7 +48,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
 
     /**
      * Construct an empty DEReceiver with the specified container.
-     * 
+     *
      * @param container
      *            The container.
      * @exception IllegalActionException
@@ -60,7 +60,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
 
     /**
      * Return true if there is at least one token available to the get() method.
-     * 
+     *
      * @return True if there are more tokens.
      */
     public boolean hasToken() {
@@ -71,7 +71,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
 
     /**
      * Put a token into this receiver.
-     * 
+     *
      * @param token
      *            The token to be put.
      */
@@ -94,7 +94,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
      * correct timestamp and microstep and invoke the corresponding actor whose
      * input port contains this receiver. This receiver may contain more than
      * one events.
-     * 
+     *
      * @param token
      *            The token to be put.
      * @param time
@@ -106,7 +106,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
 
     /**
      * Puts a token into all receivers.
-     * 
+     *
      * @param token
      *            The token to be put.
      * @param receivers
@@ -138,7 +138,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
     /**
      * Remove events from the queue which have a timestamp equal to the given
      * time.
-     * 
+     *
      * @param modelTime
      *            Given model time.
      */

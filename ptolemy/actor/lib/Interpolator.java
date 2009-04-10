@@ -226,7 +226,7 @@ public class Interpolator extends SequenceSource {
         } else {
             newObject._values = new double[_values.length];
             System.arraycopy(_values, 0, newObject._values, 0, _values.length);
-        } 
+        }
         return newObject;
     }
 

@@ -39,16 +39,16 @@ import ptolemy.kernel.util.Workspace;
 /**
  * A TDL task output port has some TDL specific parameters. - initialValue: a
  * TDL output port has an initial value.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLTaskPort extends TypedIOPort {
 
         /**
          * Construct a TypedIOPort with no container and no name that is neither an
          * input nor an output.
-         * 
+         *
          * @throws NameDuplicationException
          * @throws IllegalActionException
          */
@@ -63,7 +63,7 @@ public class TDLTaskPort extends TypedIOPort {
          * name. You can then change the name with setName(). If the workspace
          * argument is null, then use the default workspace. The object is added to
          * the workspace directory. Increment the version number of the workspace.
-         * 
+         *
          * @param workspace
          *            The workspace that will list the port.
          * @throws NameDuplicationException Thrown if the initial value parameter cannot be created.
@@ -79,7 +79,7 @@ public class TDLTaskPort extends TypedIOPort {
          * Construct a TypedIOPort with a containing actor and a name that is
          * neither an input nor an output. The specified container must implement
          * the TypedActor interface, or an exception will be thrown.
-         * 
+         *
          * @param container
          *            The container actor.
          * @param name
@@ -103,7 +103,7 @@ public class TDLTaskPort extends TypedIOPort {
          * input, an output, or both, depending on the third and fourth arguments.
          * The specified container must implement the TypedActor interface or an
          * exception will be thrown.
-         * 
+         *
          * @param container
          *            The container actor.
          * @param name
@@ -130,7 +130,7 @@ public class TDLTaskPort extends TypedIOPort {
         ///////////////////////////////////////////////////////////////////
     ////                         public parameter                  ////
 
-        
+
         /**
          * The initial value of the task.
          */
@@ -139,10 +139,10 @@ public class TDLTaskPort extends TypedIOPort {
         ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-        
+
         /**
          * Sets the port of a task to an input port.
-         * 
+         *
          * @param isInput true if port is an input port.
          * @throws IllegalActionException Thrown by parent class.
          */
@@ -155,7 +155,7 @@ public class TDLTaskPort extends TypedIOPort {
 
         /**
          * Sets the port of a task to an output port.
-         * 
+         *
          * @param isOutput true if port is an output port.
          * @throws IllegalActionException Thrown by parent class.
          */
@@ -163,7 +163,7 @@ public class TDLTaskPort extends TypedIOPort {
                 super.setOutput(isOutput);
                 initialValue.setVisibility(Settable.FULL);
         }
-        
+
         ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

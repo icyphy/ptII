@@ -141,7 +141,7 @@ public class Expression extends JavaCodeGeneratorHelper {
                 ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                                                                    .getExpression());
 
-                System.out.println("Expression trace:\n" 
+                System.out.println("Expression trace:\n"
                                    + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(parseTree,
                                                                                           new VariableScope(actor)));
             }

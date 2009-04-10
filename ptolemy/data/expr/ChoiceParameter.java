@@ -83,7 +83,7 @@ public class ChoiceParameter extends StringParameter {
     /** Get the choice as a member of the enum class. The string value of that
      *  member (returned with its toString() method) is equal to the string
      *  value contained by this parameter.
-     * 
+     *
      *  @return The chosen member of the enum class.
      */
     public Object getChosenValue() {

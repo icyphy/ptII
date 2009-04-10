@@ -48,14 +48,14 @@ import ptolemy.kernel.util.Workspace;
 /**
  * A TDL transition has some specific TDL parameters. - frequency: together with
  * the mode period, this value defines when this transition is tested.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLTransition extends Transition {
 
     /** Construct a transition contained by the specified
-     *  entity. 
+     *  entity.
      *  @param workspace The workspace for synchronization and version
      *  tracking.
      *  @exception IllegalActionException If the container is incompatible
@@ -75,7 +75,7 @@ public class TDLTransition extends Transition {
      * NullPointerException will be thrown. This transition will use the
      * workspace of the container for synchronization and version counts. If the
      * name argument is null, then the name is set to the empty string.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -91,7 +91,7 @@ public class TDLTransition extends Transition {
         super(container, name);
         _init();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public parameter                  ////
 
@@ -104,7 +104,7 @@ public class TDLTransition extends Transition {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
     /**
      * List of all ports that are used in this guard expression.
      */
@@ -123,16 +123,16 @@ public class TDLTransition extends Transition {
         }
         super.attributeChanged(attribute);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
 
-    
+
     /**
-     * Compute the list of ports that are used in this guard expression. 
+     * Compute the list of ports that are used in this guard expression.
      * @throws IllegalActionException Thrown if guard expression cannot be parsed.
      */
-    private void _getDependentModuleInputPorts() throws IllegalActionException { 
+    private void _getDependentModuleInputPorts() throws IllegalActionException {
         String expr = getGuardExpression();
         PtParser parser = new PtParser();
         ASTPtRootNode guardParseTree;
@@ -142,10 +142,10 @@ public class TDLTransition extends Transition {
             throw new IllegalActionException(this, ex,
                     "Failed to parse guard expression \"" + expr + "\"");
         }
-        
+
         ParseTreeFreeVariableCollector coll = new ParseTreeFreeVariableCollector();
         Set freeVars = coll.collectFreeVariables(guardParseTree);
-        
+
         for (Iterator it = freeVars.iterator(); it.hasNext(); ) {
             String name = (String) it.next();
             for (Iterator sensorIt = ((TDLModule)this.getContainer().getContainer()).portList().iterator(); sensorIt.hasNext();) {
@@ -158,7 +158,7 @@ public class TDLTransition extends Transition {
             }
         }
     }
-    
+
     /**
      * Initialize the parameters of a transition.
      * @throws IllegalActionException Thrown if frequency parameter cannot be created.
@@ -175,7 +175,7 @@ public class TDLTransition extends Transition {
         refinementName.setVisibility(Settable.NONE);
         frequency = new Parameter(this, "frequency");
         frequency.setExpression("1");
-        
+
         requiredPorts = new ArrayList();
         requiredSensors = new ArrayList();
     }

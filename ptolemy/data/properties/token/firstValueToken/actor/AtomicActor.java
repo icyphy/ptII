@@ -58,12 +58,12 @@ public class AtomicActor extends PropertyTokenHelper {
      * Construct a helper for the given AtomicActor. This is the
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
-     * are set for this helper. 
+     * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public AtomicActor(PropertyTokenSolver solver, 
+    public AtomicActor(PropertyTokenSolver solver,
             ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
         super(solver, actor);
@@ -71,7 +71,7 @@ public class AtomicActor extends PropertyTokenHelper {
 
     public void determineProperty() throws IllegalActionException, KernelException {
         super.determineProperty();
-        
+
         Iterator ports = getPropertyables(IOPort.class).iterator();
         while (ports.hasNext()) {
 
@@ -86,10 +86,10 @@ public class AtomicActor extends PropertyTokenHelper {
             }
         }
     }
-    
+
     protected List<PropertyHelper> _getASTNodeHelpers() {
         List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
         return astHelpers;
     }
-    
+
 }

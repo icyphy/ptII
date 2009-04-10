@@ -50,42 +50,42 @@ public class BooleanSelect extends CCodeGeneratorHelper {
     public BooleanSelect(ptolemy.actor.lib.BooleanSelect actor) {
         super(actor);
     }
-    
-    
+
+
     public String sendTrueInputs() throws IllegalActionException {
-        ptolemy.actor.lib.BooleanSelect actor = 
+        ptolemy.actor.lib.BooleanSelect actor =
             (ptolemy.actor.lib.BooleanSelect) getComponent();
-        
+
         int width = Math.min(
                 actor.output.getWidth(), actor.trueInput.getWidth());
-        
+
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();
         args.add(0);
-        
+
         for (int i = 0; i < width; i++) {
             args.set(0, i);
             code.append(_generateBlockCode("trueBlock", args));
         }
         return processCode(code.toString());
     }
-    
+
     public String sendFalseInputs() throws IllegalActionException {
-        ptolemy.actor.lib.BooleanSelect actor = 
+        ptolemy.actor.lib.BooleanSelect actor =
             (ptolemy.actor.lib.BooleanSelect) getComponent();
-        
+
         int width = Math.min(
                 actor.output.getWidth(), actor.trueInput.getWidth());
-        
+
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();
         args.add(0);
-        
+
         for (int i = 0; i < width; i++) {
             args.set(0, i);
             code.append(_generateBlockCode("falseBlock", args));
         }
-        return processCode(code.toString());        
+        return processCode(code.toString());
     }
-    
+
 }

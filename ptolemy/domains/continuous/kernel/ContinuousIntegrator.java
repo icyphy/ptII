@@ -89,7 +89,7 @@ import ptolemy.kernel.util.StringAttribute;
  loops like that above without creating a causality loop.  The
  <i>impulse</i> and <i>initialState</i> inputs ports must be known,
  however, before an output can be produced.  The effect of data at
- these inputs on the output is instantaneous.  
+ these inputs on the output is instantaneous.
 
  <P> For different ODE solving methods, the functionality of an
  integrator may be different. The delegation and strategy design
@@ -101,7 +101,7 @@ import ptolemy.kernel.util.StringAttribute;
  the the ODE solvers to use. The ODE solver class provides the number
  of variables needed for that particular solver.  The auxiliary
  variables can be set and get by setAuxVariables() and
- getAuxVariables() methods.  
+ getAuxVariables() methods.
 
  <p> This class is based on the CTBaseIntegrator by Jie Liu and
  Haiyang Zheng, but it has more ports and provides more functionality.
@@ -144,7 +144,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         initialState.setTypeEquals(BaseType.DOUBLE);
         cardinality = new StringAttribute(initialState.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
-        
+
         _causalityInterface = new IntegratorCausalityInterface(
                 this, BooleanDependency.OTIMES_IDENTITY);
     }
@@ -333,7 +333,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     public CausalityInterface getCausalityInterface() {
         return _causalityInterface;
     }
-    
+
     /** Get the current value of the derivative input port.
      *  @return The current value at the derivative input port.
      *  @exception NoTokenException If reading the input throws it.
@@ -519,7 +519,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  record intermediate values in a multi-step solver algorithm.
      */
     private double[] _auxVariables;
-    
+
     /** The custom causality interface. */
     private CausalityInterface _causalityInterface;
 
@@ -539,7 +539,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The tentative state. */
     private double _tentativeState;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -573,7 +573,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             }
             return _otherEquivalents;
         }
-        
+
         private LinkedList<IOPort> _derivativeEquivalents = new LinkedList<IOPort>();
         private LinkedList<IOPort> _otherEquivalents = new LinkedList<IOPort>();
     }

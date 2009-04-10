@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Conflict extends LatticeProperty {
-        
+
     /**
      * Construct a Conflict property object
      * @param lattice The given lattice.

@@ -96,8 +96,8 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
         synchronized (_monitor) {
             // Set the flag to false, to make sure only this actor wakes up.
             _isWaiting = false;
-            
-            _monitor.notifyAll();        
+
+            _monitor.notifyAll();
 
             // then wait until this actor go to wait.
             while (!_isWaiting) {
@@ -128,11 +128,11 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      */
     public void waitForNewInputs() {
         _emptyPorts();
-        
+
         synchronized (_monitor) {
             // Set the flag to true, so the director can wake up.
             _isWaiting = true;
-        
+
             _monitor.notifyAll();
 
             while (_isWaiting) {

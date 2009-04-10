@@ -184,7 +184,7 @@ public class WindowPropertiesAttribute extends Parameter implements
             int y = ((IntToken) boundsToken.getElement(1)).intValue();
             int width = ((IntToken) boundsToken.getElement(2)).intValue();
             int height = ((IntToken) boundsToken.getElement(3)).intValue();
-            
+
             //System.out.println("x: " + x + "  y: " + y);
             //System.out.println("width: " + width + "  height: " + height);
 
@@ -195,9 +195,9 @@ public class WindowPropertiesAttribute extends Parameter implements
             // as dirty so it gets saved?
             // FIXME: will these changes cause problems with multiscreen
             // monitors?
-            
+
             //CWB: changed behavior on 2008.03.06
-            //Now if any part of the window is off the screen, either the 
+            //Now if any part of the window is off the screen, either the
             //x or y position is set to 0.  This fixes several problems
             //with workflows being positioned off of the screen when saved
             //on a multi-head machine, then reopened on a single-head machine

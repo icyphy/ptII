@@ -121,7 +121,7 @@ public class ComponentDialog extends JDialog {
             String[] buttons, String message) {
         this(owner, title, component, buttons, message, false);
     }
-    
+
     /** Construct a dialog with the specified owner, title, component,
      *  buttons, and message.  The message is placed above the component.
      *  The first button is the "default" in that

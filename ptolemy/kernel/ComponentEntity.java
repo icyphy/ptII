@@ -497,7 +497,7 @@ public class ComponentEntity extends Entity {
         if (previousContainer == container) {
             return;
         }
-        
+
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);

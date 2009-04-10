@@ -173,15 +173,15 @@ public class ExternalIOPortController extends AttributeController {
                 double[] location = getLocation(node);
                 if (node instanceof Location) {
                      NamedObj port = ((Location) node).getContainer();
-                     
+
                      // In case the location is (0,0) we try to come up with a
                      // better one.
-                    if (port instanceof IOPort && location[0] == 0.0 && location[1] == 0.0) { 
+                    if (port instanceof IOPort && location[0] == 0.0 && location[1] == 0.0) {
                         BasicGraphController controller = (BasicGraphController) getController();
                         BasicGraphFrame frame = controller.getFrame();
-                        
+
                         // We have a bootstrapping problem. In case the window
-                        // is just being opened, the rendering happens before the 
+                        // is just being opened, the rendering happens before the
                         // creation of the the JGraph, and we don't know the actual
                         // size of the window (hence the magic numbers below in case
                         // frame.getJGraph() == null.
@@ -198,17 +198,17 @@ public class ExternalIOPortController extends AttributeController {
                                     // Put at the bottom
                                     location[0] = 300.0 + _inoutputPortLocations.size() * 40;
                                     location[1] = 380.0 ;
-                                    _inoutputPortLocations.put(ioPort, location);                                    
+                                    _inoutputPortLocations.put(ioPort, location);
                                 }
                             } else if (ioPort.isInput()) {
                                 double[] newLocation = _inputPortLocations.get(ioPort);
                                 if (newLocation != null) {
                                     location = newLocation;
                                 } else {
-                                    // Put at the left side                                    
+                                    // Put at the left side
                                     location[0] = 20.0;
                                     location[1] = 200.0 + _inputPortLocations.size() * 40;
-                                    _inputPortLocations.put(ioPort, location);                                    
+                                    _inputPortLocations.put(ioPort, location);
                                 }
                             } else if (ioPort.isOutput()) {
                                 double[] newLocation = _outputPortLocations.get(ioPort);
@@ -218,8 +218,8 @@ public class ExternalIOPortController extends AttributeController {
                                     // Put at the right side
                                     location[0] = 580.0;
                                     location[1] = 200.0 + _outputPortLocations.size() * 40;
-                                    _outputPortLocations.put(ioPort, location);                                    
-                                }                                
+                                    _outputPortLocations.put(ioPort, location);
+                                }
                             } else {
                                 double[] newLocation = _otherPortLocations.get(ioPort);
                                 if (newLocation != null) {
@@ -228,10 +228,10 @@ public class ExternalIOPortController extends AttributeController {
                                     // Put in the middle
                                     location[0] = 300.0;
                                     location[1] = 200.0 + _otherPortLocations.size() * 40;
-                                    _otherPortLocations.put(ioPort, location);                                    
-                                }                                
+                                    _otherPortLocations.put(ioPort, location);
+                                }
                             }
-                            
+
                         }
                         location = SnapConstraint.constrainPoint(location[0], location[1]);
                     }
@@ -250,7 +250,7 @@ public class ExternalIOPortController extends AttributeController {
             // how to fix it... SN 5/5/2003
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -640,11 +640,11 @@ public class ExternalIOPortController extends AttributeController {
             return figure;
         }
     }
-    
+
     // The following maps are to keep track of the ports that already needed
     // to be located (since they had location 0,0).
     private HashMap<Object, double[]> _inputPortLocations = new HashMap<Object, double[]>();
     private HashMap<Object, double[]> _outputPortLocations = new HashMap<Object, double[]>();
     private HashMap<Object, double[]> _inoutputPortLocations = new HashMap<Object, double[]>();
-    private HashMap<Object, double[]> _otherPortLocations = new HashMap<Object, double[]>();    
+    private HashMap<Object, double[]> _otherPortLocations = new HashMap<Object, double[]>();
 }

@@ -394,7 +394,7 @@ public class IOPort extends ComponentPort {
             }
         }
     }
-    
+
     /**
      * Check whether the widths constraints are met.
      * @exception IllegalActionException If the width constraints or not met.
@@ -403,10 +403,10 @@ public class IOPort extends ComponentPort {
         int width = _getOutsideWidth(null);
         for (Parameter parameter : _widthEqualToParameter) {
             IntToken t = (IntToken) parameter.getToken();
-    
+
             if (t != null) {
                 if (width != t.intValue()) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "The outside width (" + width + ") of port " + getFullName()
                             + " is different from the width constrain specified by parameter "
                             + parameter + " with container " + parameter.getContainer() + ". A"
@@ -415,20 +415,20 @@ public class IOPort extends ComponentPort {
                 }
             }
         }
-        
+
         for (IOPort port : _widthEqualToPort) {
-            int otherWidth = port._getOutsideWidth(null); 
+            int otherWidth = port._getOutsideWidth(null);
             if (width != otherWidth) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "The outside width (" + width + ") of port " + getFullName()
                         + " is different from the outside width (" + otherWidth
                         + ") of port " + port.getFullName()
                         + ". A possible fix is to right clicking on the"
                         + " outside relation(s) and set the width -1.");
-            }    
+            }
         }
     }
-    
+
 
     /** Clone this port into the specified workspace. The new port is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -460,10 +460,10 @@ public class IOPort extends ComponentPort {
 
         newObject._hasPortEventListeners = false;
         newObject._portEventListeners = null;
-        
+
         newObject._widthEqualToParameter = new HashSet<Parameter>();
         newObject._widthEqualToPort = new HashSet<IOPort>();
-        
+
 
         return newObject;
     }
@@ -698,7 +698,7 @@ public class IOPort extends ComponentPort {
         } finally {
             _workspace.doneReading();
         }
-    }    
+    }
 
     /** Deeply enumerate the ports connected to this port on the
      *  outside that are output ports. This method is deprecated and calls
@@ -712,7 +712,7 @@ public class IOPort extends ComponentPort {
     @SuppressWarnings("unchecked")
     public Enumeration deepConnectedOutPorts() {
         return Collections.enumeration(deepConnectedOutPortList());
-    }    
+    }
 
     /** If the port is an input, return the receivers deeply linked on
      *  the inside.  This method is used to obtain the receivers that
@@ -730,8 +730,8 @@ public class IOPort extends ComponentPort {
      *  on the workspace, so the caller should be.
      *  @return The inside receivers, or an empty receiver array if there
      *   are none.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      */
     public Receiver[][] deepGetReceivers() throws InvalidStateException, IllegalActionException {
         if (!isInput()) {
@@ -836,9 +836,9 @@ public class IOPort extends ComponentPort {
                 token = localToken;
                 if (_hasPortEventListeners) {
                     _notifyPortEventListeners(
-                        new IOPortEvent(this, IOPortEvent.GET_END, 
+                        new IOPortEvent(this, IOPortEvent.GET_END,
                                       channelIndex, true, token));
-                }            
+                }
             }
         }
 
@@ -920,7 +920,7 @@ public class IOPort extends ComponentPort {
             _notifyPortEventListeners(
                 new IOPortEvent(this, IOPortEvent.GET_END,
                               channelIndex, true, retArray, vectorLength));
-        }            
+        }
 
         int index = 1;
 
@@ -940,11 +940,11 @@ public class IOPort extends ComponentPort {
 
     /** Return the corresponding channel in this port for the given receiver.
      *  The given receiver may be contained by this port or a port that is
-     *  connected to this port. 
-     *  @param receiver A receiver that is contained in this port or 
+     *  connected to this port.
+     *  @param receiver A receiver that is contained in this port or
      *   connected to another receiver contained in this port.
      *  @return The corresponding channel for the receiver.
-     *  @exception IllegalActionException If the given receiver does not 
+     *  @exception IllegalActionException If the given receiver does not
      *   take part in any connections pertaining to this port.
      */
     public int getChannelForReceiver(Receiver receiver)
@@ -1169,7 +1169,7 @@ public class IOPort extends ComponentPort {
             _workspace.doneReading();
         }
     }
-    
+
     /**
      * Retrieve the index of the relation at the port.
      * In case the relation is not connected with this port -1
@@ -1193,7 +1193,7 @@ public class IOPort extends ComponentPort {
             ++i;
         }
         return -1;
-    }    
+    }
 
     /** Return the current time associated with a certain channel.
      *  In most domains, this is just the current time of the director.
@@ -1441,7 +1441,7 @@ public class IOPort extends ComponentPort {
      *  This method is read-synchronized on the workspace.
      *  @return The receivers for output data, or an empty array if there
      *   are none.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public Receiver[][] getRemoteReceivers() throws IllegalActionException {
         try {
@@ -1567,7 +1567,7 @@ public class IOPort extends ComponentPort {
 
                     break;
                 }
-                // Calling getWidth on a relation for which the width has to be 
+                // Calling getWidth on a relation for which the width has to be
                 // inferred will trigger the width inference algorithm here.
                 index += insideRelation.getWidth();
             }
@@ -1589,7 +1589,7 @@ public class IOPort extends ComponentPort {
      *  @see #numberOfSinks()
      *  @see #numberOfSources()
      *  @return The width of the port.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public int getWidth() throws IllegalActionException {
         try {
@@ -1597,7 +1597,7 @@ public class IOPort extends ComponentPort {
 
             long version = _workspace.getVersion();
 
-            if (_widthVersion != version) {                
+            if (_widthVersion != version) {
 
                 // If this is not a multiport, the width is always zero or one.
                 int sum = 0;
@@ -1609,8 +1609,8 @@ public class IOPort extends ComponentPort {
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
                     if (relation != null) {
-                        
-                        // Calling getWidth on a relation for which the width has to be 
+
+                        // Calling getWidth on a relation for which the width has to be
                         // inferred will trigger the width inference algorithm here.
                         sum += relation.getWidth();
                     }
@@ -1645,7 +1645,7 @@ public class IOPort extends ComponentPort {
         for (Parameter parameter : _widthEqualToParameter) {
             try {
                 IntToken t = (IntToken) parameter.getToken();
-        
+
                 if (t != null) {
                     return t.intValue();
                 }
@@ -1654,9 +1654,9 @@ public class IOPort extends ComponentPort {
                 // It it throws, it means we can't evaluate the
                 // parameter yet.
                 continue;
-            }                
+            }
         }
-        
+
         for (IOPort port : _widthEqualToPort) {
             try {
                 Set<IORelation> outsideUnspecifiedWidths = RelationWidthInference._relationsWithUnspecifiedWidths(port.linkedRelationList());
@@ -1673,7 +1673,7 @@ public class IOPort extends ComponentPort {
                 continue;
             }
         }
-        
+
         // No information available yet
         return -1;
     }
@@ -1682,10 +1682,10 @@ public class IOPort extends ComponentPort {
      *  sum of the widths of the relations that the port is linked to
      *  on the inside.  This method is read-synchronized on the
      *  workspace.
-     *  This method will trigger the width inference algorithm if necessary.    
+     *  This method will trigger the width inference algorithm if necessary.
      *
      *  @return The width of the inside of the port.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public int getWidthInside() throws IllegalActionException {
         try {
@@ -1693,7 +1693,7 @@ public class IOPort extends ComponentPort {
 
             long version = _workspace.getVersion();
 
-            if (_insideWidthVersion != version) {                
+            if (_insideWidthVersion != version) {
 
                 int sum = 0;
                 Iterator<?> relations = insideRelationList().iterator();
@@ -1704,7 +1704,7 @@ public class IOPort extends ComponentPort {
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
                     if (relation != null) {
-                        // Calling getWidth on a relation for which the width has to be 
+                        // Calling getWidth on a relation for which the width has to be
                         // inferred will trigger the width inference algorithm here.
                         sum += relation.getWidth();
                     }
@@ -1948,7 +1948,7 @@ public class IOPort extends ComponentPort {
 
         return result;
     }
-    
+
     /** Return whether there are constraints on the width of
      *  this port. There are constraints in case the method
      *  setWidthEquals has been called.
@@ -1958,7 +1958,7 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasWidthConstraints() {
         return !_widthEqualToParameter.isEmpty() || !_widthEqualToPort.isEmpty();
-    }    
+    }
 
     /** Override the base class to invalidate the schedule and resolved
      *  types of the director of the container, if there is one, in addition
@@ -2137,7 +2137,7 @@ public class IOPort extends ComponentPort {
 
         return _isInput;
     }
-    
+
 
     /** Return whether the port has relations connected on the inside.
      * @return True when a relation != null is connected on the inside.
@@ -2146,9 +2146,9 @@ public class IOPort extends ComponentPort {
         for (Object relationObject : insideRelationList()) {
             if (relationObject != null) {
                 return true;
-            }            
+            }
         }
-        return false;        
+        return false;
     }
 
     /** Return true if all channels of this port have known state; that is,
@@ -2381,11 +2381,11 @@ public class IOPort extends ComponentPort {
         for (Object relationObject : linkedRelationList()) {
             if (relationObject != null) {
                 return true;
-            }            
+            }
         }
-        return false;        
+        return false;
     }
-        
+
     /** Override the base class to invalidate the schedule and resolved
      *  types of the director of the container, if there is one, in addition
      *  to what the base class does.
@@ -2444,10 +2444,10 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.getContainer().depthInHierarchy();
 
-                    if (port.isInput() 
-                            && (depth >= depthOfDirector)) { 
+                    if (port.isInput()
+                            && (depth >= depthOfDirector)) {
                         result.addLast(port);
-                    } else if (port.isOutput() 
+                    } else if (port.isOutput()
                             && (depth < depthOfDirector)
                             && (port.numberOfSinks() > 0)) {
                         result.addLast(port);
@@ -2502,11 +2502,11 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.depthInHierarchy();
 
-                    if (port.isInput() 
-                            && (depth <= depthOfDirector) 
+                    if (port.isInput()
+                            && (depth <= depthOfDirector)
                             && (port.numberOfSources() > 0)) {
                         result.addLast(port);
-                    } else if (port.isOutput() 
+                    } else if (port.isOutput()
                             && (depth > depthOfDirector)) {
                         result.addLast(port);
                     }
@@ -2948,7 +2948,7 @@ public class IOPort extends ComponentPort {
     public void setWidthEquals(Parameter parameter) {
         _widthEqualToParameter.add(parameter);
     }
-    
+
     /** Constrain the width of this port to be equal to the width of
      *  the IOPort port. If bidirectional equals true, the width of port
      *  can also be inferred from the width of this.
@@ -2957,8 +2957,8 @@ public class IOPort extends ComponentPort {
      *  the constructor.
      *  @param port A port.
      *  @param bidirectional A flag that specifies whether the constraint
-     *  work in two directions. 
-     */    
+     *  work in two directions.
+     */
     public void setWidthEquals(IOPort port, boolean bidirectional) {
         if (!_widthEqualToPort.contains(port)) {
             _widthEqualToPort.add(port);
@@ -2966,7 +2966,7 @@ public class IOPort extends ComponentPort {
                 port.setWidthEquals(this, false);
             }
         }
-    }    
+    }
 
     /** Return a list of the ports that may accept data from this port when
      *  it sends on the outside.  This includes
@@ -3406,7 +3406,7 @@ public class IOPort extends ComponentPort {
      *  remotely connected to this port (if any).
      */
     public static final int REMOTERECEIVERS = 2048;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -3511,7 +3511,7 @@ public class IOPort extends ComponentPort {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
@@ -3698,23 +3698,23 @@ public class IOPort extends ComponentPort {
      *  @param except The relation to exclude.
      *  @return The sums of the width of the relations linked on the inside,
      *  except for the specified port.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected int _getInsideWidth(IORelation except) throws IllegalActionException {
         if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
             int result = 0;
             Iterator<?> relations = insideRelationList().iterator();
-    
+
             while (relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
-    
+
                 if (relation != except) {
                     if (!relation.needsWidthInference()) {
                         result += relation.getWidth();
-                    }               
+                    }
                 }
             }
-    
+
             return result;
         } else {
             int result = 0;
@@ -3734,7 +3734,7 @@ public class IOPort extends ComponentPort {
                 }
             }
 
-            return result;            
+            return result;
         }
     }
 
@@ -3754,23 +3754,23 @@ public class IOPort extends ComponentPort {
      *  @param except The relation to exclude.
      *  @return The sums of the width of the relations linked on the outside,
      *  except for the specified port.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected int _getOutsideWidth(IORelation except) throws IllegalActionException {
         if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
             int result = 0;
             Iterator<?> relations = linkedRelationList().iterator();
-    
+
             while (relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
-    
+
                 if (relation != except) {
                     if (!relation.needsWidthInference()) {
                         result += relation.getWidth();
-                    }                
+                    }
                 }
             }
-    
+
             return result;
         } else {
             int result = 0;
@@ -3790,7 +3790,7 @@ public class IOPort extends ComponentPort {
                 }
             }
 
-            return result;            
+            return result;
         }
     }
 
@@ -4006,7 +4006,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Send a PortEvent to all port event listeners that 
+    /** Send a PortEvent to all port event listeners that
      *  have registered with this IOPort.
      *  @param event The event.
      */
@@ -4049,7 +4049,7 @@ public class IOPort extends ComponentPort {
                             "Attempt to link more than one relation "
                                     + "to a single port.");
                 }
-    
+
                 if (relation.isWidthFixed() && relation.getWidth() > 1) {
                     // Relation is a bus.
                     if (!isMultiport()) {
@@ -4136,7 +4136,7 @@ public class IOPort extends ComponentPort {
                         }
                     }
                 }
-            }            
+            }
         }
     }
 
@@ -4302,7 +4302,7 @@ public class IOPort extends ComponentPort {
     ////                         private variables                 ////
 
     /** To avoid creating this repeatedly, we use a single version. */
-    private static final Receiver[][] _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];    
+    private static final Receiver[][] _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
 
     /** Indicate whether the port is an input, an output, or both.
      * The value may be overridden in transparent ports, in that if
@@ -4338,10 +4338,10 @@ public class IOPort extends ComponentPort {
     // linked relations.  It is set or updated when getWidth() is called.
     // 'transient' means that the variable will not be serialized.
     private transient int _width = 0;
-    
+
     // Constrains on the width of this port (it has to be equal to the parameters).
     private Set<Parameter> _widthEqualToParameter = new HashSet<Parameter>();
-    
+
     // Constrains on the width of this port (it has to be equal to the width of the port).
     private Set<IOPort> _widthEqualToPort = new HashSet<IOPort>();
 
@@ -4393,7 +4393,7 @@ public class IOPort extends ComponentPort {
     // A cache of the number of sources, since it's expensive to compute.
     private transient int _numberOfSources;
     private transient long _numberOfSourcesVersion = -1;
-    
+
     // A cache of the sink port list.
     private transient LinkedList<IOPort> _sinkPortList;
     private transient long _sinkPortListVersion;

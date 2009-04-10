@@ -162,9 +162,9 @@ public class ProcessDirector extends Director {
         //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not a problem since the object is
         // being created and hence nobody else has access to it.
-        
+
         newObject._blockedThreads = new HashSet();
-        newObject._pausedThreads = new HashSet();        
+        newObject._pausedThreads = new HashSet();
         newObject._activeThreads = new HashSet();
         newObject._notDone = true;
         return newObject;
@@ -202,11 +202,11 @@ public class ProcessDirector extends Director {
                     if (_stopRequested) {
                         return;
                     }
-    
+
                     if (_debugging) {
                         _debug("Waiting for actors to stop.");
                     }
-    
+
                     try {
                         if (outsideDirector != null) {
                             ((ProcessDirector) outsideDirector).threadBlocked(
@@ -230,11 +230,11 @@ public class ProcessDirector extends Director {
                         }
                     }
                 }
-    
+
                 if (_debugging) {
                     _debug("Actors have stopped.");
                 }
-    
+
                 // Don't resolve deadlock if we are just pausing
                 // or if a stop has been requested.
                 // NOTE: Added !_stopRequested.  EAL 3/12/03.
@@ -242,7 +242,7 @@ public class ProcessDirector extends Director {
                     if (_debugging) {
                         _debug("Deadlock detected.");
                     }
-    
+
                     try {
                         _notDone = _resolveDeadlock();
                     } catch (IllegalActionException e) {
@@ -307,7 +307,7 @@ public class ProcessDirector extends Director {
         ProcessThread processThread = _newProcessThread(actor, this);
          _activeThreads.add(processThread);
         assert _activeThreads.contains(processThread);
-        
+
         _newActorThreadList.addFirst(processThread);
     }
 
@@ -382,7 +382,7 @@ public class ProcessDirector extends Director {
         synchronized (this) {
             // Clear the stopFire flag and trigger all of the actor threads.
             _stopFireRequested = false;
-        
+
             notifyAll();
         }
 
@@ -429,11 +429,11 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("Thread " + thread.getName() + " is exiting.");
         }
-        
+
         //assert _activeThreads.contains(thread);
-        
+
         _activeThreads.remove(thread);
-        
+
         assert !_activeThreads.contains(thread);
         _pausedThreads.remove(thread);
         _blockedThreads.remove(thread);
@@ -509,13 +509,13 @@ public class ProcessDirector extends Director {
 
             while (threads.hasNext()) {
                 Thread thread = (Thread) threads.next();
-    
+
                 if (thread instanceof ProcessThread) {
                     actors.add(((ProcessThread) thread).getActor());
                 }
             }
         }
-        
+
         Iterator actorsIterator = actors.iterator();
         while (actorsIterator.hasNext()) {
             ((Actor) actorsIterator.next()).stopFire();

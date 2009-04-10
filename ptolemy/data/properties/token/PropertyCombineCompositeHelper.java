@@ -17,19 +17,19 @@ public class PropertyCombineCompositeHelper extends PropertyCombineHelper {
 
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         List<PropertyHelper> helpers = new ArrayList<PropertyHelper>();
-        
-        CompositeEntity component = 
+
+        CompositeEntity component =
             (CompositeEntity) getComponent();
         Iterator iterator = component.entityList().iterator();
-        
+
         while (iterator.hasNext()) {
-            NamedObj actor = 
+            NamedObj actor =
                 (NamedObj) iterator.next();
-            
+
             helpers.add(_solver.getHelper(actor));
         }
-        
+
         return helpers;
-    }   
+    }
 
 }

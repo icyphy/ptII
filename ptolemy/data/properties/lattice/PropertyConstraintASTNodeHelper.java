@@ -55,38 +55,38 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintASTNodeHelper 
+public class PropertyConstraintASTNodeHelper
     extends PropertyConstraintHelper {
 
 
-    /** 
+    /**
      * Construct the property constraint helper associated
      * with the given AST node.
      * @param node The given AST node.
-     * @throws IllegalActionException Thrown if 
+     * @throws IllegalActionException Thrown if
      *  PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
-     *  throws it. 
+     *  throws it.
      */
     public PropertyConstraintASTNodeHelper(
-            PropertyConstraintSolver solver, ASTPtRootNode node) 
+            PropertyConstraintSolver solver, ASTPtRootNode node)
             throws IllegalActionException {
         this(solver, node, true);
     }
-    
+
     /**
      * Construct the property constraint helper for the given
      * property solver and AST node.
      * @param solver The given component.
      * @param node The given AST node.
      * @param useDefaultConstraints Indicate whether this helper
-     *  uses the default actor constraints. 
+     *  uses the default actor constraints.
      * @throws IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
     public PropertyConstraintASTNodeHelper(
-            PropertyConstraintSolver solver, ASTPtRootNode node, 
+            PropertyConstraintSolver solver, ASTPtRootNode node,
             boolean useDefaultConstraints) throws IllegalActionException {
-        
+
         super(solver, node, useDefaultConstraints);
     }
 
@@ -95,51 +95,51 @@ public class PropertyConstraintASTNodeHelper
      *  @return A list of Inequality.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public List<Inequality> constraintList() throws IllegalActionException {   
-        boolean constraintParent = 
+    public List<Inequality> constraintList() throws IllegalActionException {
+        boolean constraintParent =
             (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||
             (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER);
-        
+
         if (getComponent() instanceof ASTPtLeafNode) {
             ASTPtLeafNode node = (ASTPtLeafNode) getComponent();
 
             if (node.isConstant() && node.isEvaluated()) {
                 //FIXME: Should be handled by use-case specific helpers.
                 // We should make a (abstract) method that forces use-case
-                // to implement this. 
+                // to implement this.
             } else {
-                
+
                 NamedObj namedObj = getNamedObject(
                         getContainerEntity(node), node.getName());
-            
+
                 if (namedObj != null) {
                     // Set up one-direction constraint.
                     if (constraintParent) {
                         setAtLeastByDefault(node, namedObj);
                     } else {
-                        setAtLeastByDefault(namedObj, node);                        
+                        setAtLeastByDefault(namedObj, node);
                     }
-                    
+
                 } else {
                     // Cannot resolve the property of a label.
                     assert false;
                 }
             }
         }
-        
+
         if (_useDefaultConstraints) {
             ASTPtRootNode node = (ASTPtRootNode) getComponent();
             List<Object> children = new ArrayList<Object>();
-    
-            boolean isNone = 
+
+            boolean isNone =
                 interconnectConstraintType == ConstraintType.NONE;
-            
+
             for (int i = 0; i < node.jjtGetNumChildren(); i++) {
 
                 if (!constraintParent && !isNone){
                     // Set child >= parent.
                     setAtLeastByDefault(node.jjtGetChild(i), node);
-                    
+
                 } else {
                     children.add(node.jjtGetChild(i));
                 }
@@ -147,29 +147,29 @@ public class PropertyConstraintASTNodeHelper
 
             if (constraintParent) {
                 _constraintObject(interconnectConstraintType, node, children);
-            } 
+            }
         }
-        
+
         return _union(_ownConstraints, _subHelperConstraints);
     }
-    
+
 //    /**
 //     * @param node The given AST node.
-//     * @return The term 
-//     * @throws IllegalActionException 
+//     * @return The term
+//     * @throws IllegalActionException
 //     */
 //    public InequalityTerm[] getChildrenTerm(ptolemy.data.expr.ASTPtRootNode node) throws IllegalActionException {
-//        InequalityTerm children[] = 
+//        InequalityTerm children[] =
 //            new InequalityTerm[node.jjtGetNumChildren()];
-//        
+//
 //        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
 //            Object child = node.jjtGetChild(i);
-//            
+//
 //            PropertyConstraintASTNodeHelper helper;
-//            
+//
 //            helper = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
 //            children[i] = helper.getPropertyTerm(child);
-//                
+//
 //        }
 //        return children;
 //    }
@@ -199,7 +199,7 @@ public class PropertyConstraintASTNodeHelper
     protected List<PropertyHelper> _getSubHelpers() {
         return new ArrayList<PropertyHelper>();
     }
-    
+
     public static NamedObj getNamedObject(Entity container, String name) {
         // Check the port names.
         TypedIOPort port = (TypedIOPort) container.getPort(name);
@@ -208,7 +208,7 @@ public class PropertyConstraintASTNodeHelper
             return port;
         }
 
-        Variable result = 
+        Variable result =
             ModelScope.getScopedVariable(null, container, name);
 
         if (result != null) {
@@ -216,19 +216,19 @@ public class PropertyConstraintASTNodeHelper
         }
         return null;
     }
-    
+
     public void setAtLeastByDefault(Object term1, Object term2) {
         setAtLeast(term1, term2);
-        
+
         if (term1 != null && term2 != null) {
             _solver.incrementStats("# of default constraints", 1);
             _solver.incrementStats("# of AST default constraints", 1);
         }
     }
-    
+
     public void setSameAsByDefault(Object term1, Object term2) {
         setSameAs(term1, term2);
-        
+
         if (term1 != null && term2 != null) {
             _solver.incrementStats("# of default constraints", 2);
             _solver.incrementStats("# of AST default constraints", 2);

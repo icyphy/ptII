@@ -54,8 +54,8 @@ import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
  * checker NuSMV. Also, the state insertion of FmvAutomaton supports the
  * inserting of FmvState, where these specialized states are able to
  * have property indicating whether it is a risk state.
- * 
- * 
+ *
+ *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -82,7 +82,7 @@ public class FmvAutomaton extends FSMActor {
      * workspace argument is null, then use the default workspace. Add the actor
      * to the workspace directory. Increment the version number of the
      * workspace.
-     * 
+     *
      * @param workspace The workspace that will list the actor.
      */
     public FmvAutomaton(Workspace workspace) {
@@ -94,7 +94,7 @@ public class FmvAutomaton extends FSMActor {
      * name. The name must be unique within the container or an exception is
      * thrown. The container argument must not be null, or a
      * NullPointerException will be thrown.
-     * 
+     *
      * @param container The container.
      * @param name The name of this automaton within the container.
      * @exception IllegalActionException
@@ -112,7 +112,7 @@ public class FmvAutomaton extends FSMActor {
     /**
      * Return an StringBuffer that contains the .smv format of the
      * FmvAutomaton.
-     * 
+     *
      * @param formula The temporal formula used to be attached in the
      * .smv file.
 
@@ -121,7 +121,7 @@ public class FmvAutomaton extends FSMActor {
      * @param span A constant used to expand the size of the rough domain.
      * @return The .smv format of the FmvAutomaton.
      * @exception IllegalActionException If there is a problem with
-     * the conversion.  
+     * the conversion.
      */
     public StringBuffer convertToSMVFormat(String formula, FormulaType choice,
             int span) throws IllegalActionException {
@@ -283,11 +283,11 @@ public class FmvAutomaton extends FSMActor {
         return returnSmvFormat;
     }
 
-    /** 
+    /**
      * This private function first decides variables that would be used in the
      * Kripke structure. Once when it is decided, it performs step 1 and 2 of
      * the variable domain generation process.
-     * 
+     *
      * @param numSpan The size of the span used to expand the domain of a variable.
      * @return a set indicating the variable used in this automaton
      * @throws IllegalActionException
@@ -534,7 +534,7 @@ public class FmvAutomaton extends FSMActor {
     /**
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
-     * 
+     *
      * @return A HashSet of states of a particular FmvAutomaton
      * @throws IllegalActionException
      */
@@ -665,7 +665,7 @@ public class FmvAutomaton extends FSMActor {
                 // constrain the way that an end user can do for writing
                 // codes. We do "not" expect him to write in the way like
                 // -1<a.
-                // 
+                //
                 // Also here we assume that every sub-guard expression is
                 // connected using && but not || operator. But it is easy to
                 // modify the code such that it supports ||.
@@ -1338,7 +1338,7 @@ public class FmvAutomaton extends FSMActor {
      * function to generate all possible combinations. The function would try to
      * attach correct premise and update correct new value for the variable set
      * by the transition based on the original value.
-     * 
+     *
      * @param currentPremise
      *                Current precondition for the transition. It is not
      *                completed unless parameter index == maxIndex.
@@ -1365,7 +1365,7 @@ public class FmvAutomaton extends FSMActor {
      *                rValue</i>. When operatingSign is S or N, it represents
      *                the rValue of the system.
      * @param operatingSign
-     * 
+     *
      */
     private void _recursiveStepGeneratePremiseAndResultEachTransition(
             String currentPremise, int index, int maxIndex,
@@ -1992,14 +1992,14 @@ public class FmvAutomaton extends FSMActor {
                                                     // Integer.parseInt(((VariableInfo)
                                                     // _variableInfo.get(lValue))._maxValue)
                                                     // < 0
-                                                    //  
+                                                    //
                                                     // Starting from the upper bound +
                                                     // 1,
                                                     // +2, +3, +4 ... calculate all
                                                     // possible
                                                     // values until the new set-value is
                                                     // greater than GT.
-                                                    // 
+                                                    //
                                                     // For example, if upper bound is
                                                     // -5,
                                                     // and if the offset is 2, then for
@@ -2267,7 +2267,7 @@ public class FmvAutomaton extends FSMActor {
                                                     // +1, +2, +3, +4 ...
                                                     // calculate all possible values
                                                     // until the value is less than LS.
-                                                    // 
+                                                    //
                                                     // For example, if upper bound = 1,
                                                     // lower bound = -7, and offset =
                                                     // -2,
@@ -2414,7 +2414,7 @@ public class FmvAutomaton extends FSMActor {
                                                     // calculate all possible values
                                                     // until
                                                     // the value is less than GT.
-                                                    // 
+                                                    //
                                                     // For example, if upper bound = 7,
                                                     // lower bound = -1, and offset =
                                                     // -2,
@@ -2758,10 +2758,10 @@ public class FmvAutomaton extends FSMActor {
      * initial variable set. This is achieved using a scan on all transitions in
      * edges (equalities/ inequalities) and retrieve all integer values in the
      * system. Currently the span is not taken into consideration.
-     * 
+     *
      * @param variableSet
      *                Set of variables that expect to find initial values.
-     * 
+     *
      */
     private HashMap<String, String> _retrieveVariableInitialValue(
             HashSet<String> variableSet) {

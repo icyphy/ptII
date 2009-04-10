@@ -52,7 +52,7 @@ public class ListenToAction extends FigureAction {
      *  @param controller The corresponding controller.
      *  @param componentType A String that names the listened to component.
      */
-    public ListenToAction(BasicGraphController controller, 
+    public ListenToAction(BasicGraphController controller,
             String componentType) {
         super("Listen to " + componentType);
         _controller = controller;

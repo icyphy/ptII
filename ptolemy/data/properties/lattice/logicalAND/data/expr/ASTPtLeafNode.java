@@ -55,23 +55,23 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      * @throws IllegalActionException Thrown if the parent construct
      *  throws it.
      */
-    public ASTPtLeafNode(PropertyConstraintSolver solver, 
-        ptolemy.data.expr.ASTPtLeafNode node) 
+    public ASTPtLeafNode(PropertyConstraintSolver solver,
+        ptolemy.data.expr.ASTPtLeafNode node)
             throws IllegalActionException {
 
         super(solver, node, true);
         _lattice = (Lattice) getSolver().getLattice();
-        _node = node;        
+        _node = node;
     }
-    
+
     public List<Inequality> constraintList() throws IllegalActionException {
         if (_node.isConstant()) {
             setEquals(_node, _lattice.TRUE);
         }
-        
+
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.data.expr.ASTPtLeafNode _node;

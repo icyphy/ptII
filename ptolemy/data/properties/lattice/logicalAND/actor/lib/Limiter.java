@@ -55,22 +55,22 @@ public class Limiter extends AtomicActor {
     /**
      * Construct an Limiter helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Limiter(PropertyConstraintSolver solver, 
+    public Limiter(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Limiter actor) throws IllegalActionException {
 
-        super(solver, actor, false);        
+        super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
-        _actor = actor;        
+        _actor = actor;
    }
-       
+
     public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, new FunctionTerm());
 
         return super.constraintList();
     }
-        
+
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         result.add(_actor.top);
@@ -88,33 +88,33 @@ public class Limiter extends AtomicActor {
     // This class implements a monotonic function of the input port
     // type. The result of the function is the same as the input type
     // if is not Complex; otherwise, the result is Double.
-    private class FunctionTerm 
+    private class FunctionTerm
     extends MonotonicFunction {
-    
+
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-    
+
         /** Return the function result.
          *  @return A Type.
-         * @throws IllegalActionException 
+         * @throws IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            Property inputProperty = (Property) getSolver().getProperty(_actor.input);            
-            if ((inputProperty == null) || (inputProperty == _lattice.UNKNOWN)) {                    
+            Property inputProperty = (Property) getSolver().getProperty(_actor.input);
+            if ((inputProperty == null) || (inputProperty == _lattice.UNKNOWN)) {
                 return inputProperty;
-            }                
-          
+            }
+
             if ((getSolver().getProperty(_actor.bottom) == _lattice.TRUE) &&
                 (getSolver().getProperty(_actor.top) == _lattice.TRUE) &&
                 (!((ScalarToken)_actor.bottom.getToken()).isLessThan(
                   ((ScalarToken)_actor.top.getToken())).booleanValue())) {
-                    
+
                 return(_lattice.TRUE);
             }
 
             return(getSolver().getProperty(_actor.input));
         }
-    
+
         public boolean isEffective() {
             return true;
         }
@@ -123,8 +123,8 @@ public class Limiter extends AtomicActor {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {            
-                getPropertyTerm(_actor.input)                
+            return new InequalityTerm[] {
+                getPropertyTerm(_actor.input)
             };
         }
 

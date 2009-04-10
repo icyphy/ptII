@@ -1,4 +1,4 @@
-/* 8x8 Discrete Cosine Transform. 
+/* 8x8 Discrete Cosine Transform.
 
 Copyright (c) 1999-2008 The Regents of the University of California.
 All rights reserved.
@@ -39,14 +39,14 @@ import ptolemy.kernel.util.Workspace;
 //// DCT8x8
 
 /**
-   Calculate the DCT of a 8x8 block which can be one of Y, U or V pixel data.   
-   
+   Calculate the DCT of a 8x8 block which can be one of Y, U or V pixel data.
+
 
    @author Hwayong Oh
-   @version $Id: DCT8x8.java 
+   @version $Id: DCT8x8.java
    @since Ptolemy II 7.0
-   @Pt.ProposedRating Red 
-   @Pt.AcceptedRating Red 
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 */
 public class DCT8x8 extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -61,13 +61,13 @@ public class DCT8x8 extends TypedAtomicActor {
     public DCT8x8(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this,"input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         output = new TypedIOPort(this,"output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
-      
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,14 +75,14 @@ public class DCT8x8 extends TypedAtomicActor {
 
     /** Input for tokens to be a part of image blocks. This is a single port, and its
      * type is integer matrix.
-     */ 
+     */
     public TypedIOPort input;
-    
-    /** Output for tokens. 
+
+    /** Output for tokens.
      * The type is inferred form the connections.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -99,7 +99,7 @@ public class DCT8x8 extends TypedAtomicActor {
 
         return newObject;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _output = new IntMatrixToken[1];
@@ -128,13 +128,13 @@ public class DCT8x8 extends TypedAtomicActor {
         float [][] _ftemp = new float[8][8];
         int [][] sum = new int[8][8];
         IntMatrixToken _input;
-       
+
         if (input.hasToken(0)) {
             _input = (IntMatrixToken)input.get(0);
         } else {
             return;
         }
-        
+
         for( i = 0; i < 8; i++ )
         {
             for (j = 0; j < 8; j++)
@@ -148,35 +148,35 @@ public class DCT8x8 extends TypedAtomicActor {
                 _temp[j] = _block[j] + _block[k];
                 _temp[k] = _block[j] - _block[k];
             }
-            
+
             _block[0] = _temp[0] + _temp[3];
             _block[1] = _temp[1] + _temp[2];
             _block[2] = _temp[1] - _temp[2];
             _block[3] = _temp[0] - _temp[3];
-            
+
             _block[4] = _temp[4];
-            
+
             _block[5] = (_temp[6] - _temp[5]) * cos_values[0];
             _block[6] = (_temp[6] + _temp[5]) * cos_values[0];
-            
+
             _block[7] = _temp[7];
-            
+
             _ftemp[i][0] = (_block[0] + _block[1]) * cos_values[4];
             _ftemp[i][4] = (_block[0] - _block[1]) * cos_values[4];
             _ftemp[i][2] = _block[2] * cos_values[6] + _block[3] * cos_values[2];
             _ftemp[i][6] = _block[3] * cos_values[6] - _block[2] * cos_values[2];
-            
+
             _temp[4] = _block[4] + _block[5];
             _temp[7] = _block[7] + _block[6];
             _temp[5] = _block[4] - _block[5];
             _temp[6] = _block[7] - _block[6];
-            
+
             _ftemp[i][1] = _temp[4] * cos_values[7] + _temp[7] * cos_values[1];
             _ftemp[i][5] = _temp[5] * cos_values[3] + _temp[6] * cos_values[5];
             _ftemp[i][7] = _temp[7] * cos_values[7] - _temp[4] * cos_values[1];
             _ftemp[i][3] = _temp[6] * cos_values[3] - _temp[5] * cos_values[5];
         }
-        
+
         for(i = 0; i < 8; i++ )
         {
             for(j = 0; j < 4; j++)
@@ -189,45 +189,45 @@ public class DCT8x8 extends TypedAtomicActor {
             _block[1] = _temp[1] + _temp[2];
             _block[2] = _temp[1] - _temp[2];
             _block[3] = _temp[0] - _temp[3];
-            
+
             _block[4] = _temp[4];
-            
+
             _block[5] = (_temp[6] - _temp[5]) * cos_values[0];
             _block[6] = (_temp[6] + _temp[5]) * cos_values[0];
-            
+
             _block[7] = _temp[7];
-            
+
             _ftemp[0][i] = (_block[0] + _block[1]) * cos_values[4];
             _ftemp[4][i] = (_block[0] - _block[1]) * cos_values[4];
             _ftemp[2][i] = _block[2] * cos_values[6] + _block[3] * cos_values[2];
             _ftemp[6][i] = _block[3] * cos_values[6] - _block[2] * cos_values[2];
-            
+
             _temp[4] = _block[4] + _block[5];
             _temp[7] = _block[7] + _block[6];
             _temp[5] = _block[4] - _block[5];
             _temp[6] = _block[7] - _block[6];
-            
+
             _ftemp[1][i] =  _temp[4] * cos_values[7] +  _temp[7] * cos_values[1];
             _ftemp[5][i] =  _temp[5] * cos_values[3] +  _temp[6] * cos_values[5];
             _ftemp[7][i] =  _temp[7] * cos_values[7] -  _temp[4] * cos_values[1];
             _ftemp[3][i] =  _temp[6] * cos_values[3] -  _temp[5] * cos_values[5];
-            
+
         }
-        
+
         for (i = 0; i < 8; i++)
         {
           for (j = 0; j < 8; j++)
           {
             sum[i][j] = (int)(_ftemp[i][j]);
           }
-        } 
+        }
         _output[0] = new IntMatrixToken(sum);
         output.send(0, _output, _output.length );
-        
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IntMatrixToken[] _output;
     private float[] cos_values;
-     
+
 }

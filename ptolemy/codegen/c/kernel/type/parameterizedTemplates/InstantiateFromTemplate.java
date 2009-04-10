@@ -17,10 +17,10 @@ public class InstantiateFromTemplate {
      * $type: int, char, etc.
      * $print_size: 12(int), 22(long), 22(double), 6(boolean)
      */
-    
+
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(new File(args[0])));
-        
+
         StringBuffer templateCode = new StringBuffer();
         String line = reader.readLine();
         while (line != null) {
@@ -28,9 +28,9 @@ public class InstantiateFromTemplate {
             line = reader.readLine();
         }
         reader.close();
-        
+
         String filename = args[1] + "\\DoubleArray.c";
-        
+
         replaceMap.put("\\$Type", "Double");
         replaceMap.put("\\$type_q", "%g");
         replaceMap.put("\\$type", "double");
@@ -65,11 +65,11 @@ public class InstantiateFromTemplate {
         String codeString = templateCode.toString();
 
         for (String key : replaceMap.keySet()) {
-            codeString = codeString.replaceAll(key, replaceMap.get(key));            
+            codeString = codeString.replaceAll(key, replaceMap.get(key));
         }
-        
+
         FileWriter writer = new FileWriter(new File(filename));
         writer.write(codeString);
         writer.close();
-    }    
+    }
 }

@@ -53,7 +53,7 @@ import ptolemy.moml.LibraryAttribute;
  @Pt.AcceptedRating Red (johnr)
  */
 public class FSMGraphTableau extends Tableau {
-    
+
     /** Create a new FSM editor tableau with the specified container
      *  and name, with no default library.
      *  @param container The container.
@@ -175,7 +175,7 @@ public class FSMGraphTableau extends Tableau {
             if (tableau != null) {
                 return tableau;
             }
-            
+
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
             if (model instanceof FSMActor) {

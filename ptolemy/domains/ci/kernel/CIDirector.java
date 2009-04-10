@@ -378,7 +378,7 @@ public class CIDirector extends Director {
         // since super.stop() will change the state.
         // I however don't want to put super.stopFire() within
         // the synchronized(this) to avoid deadlocks.
-        
+
         synchronized (this) {
             notifyAll();
         }
@@ -521,7 +521,7 @@ public class CIDirector extends Director {
      *  output.
      *  @param actor The actor to be tested whether it is active.
      *  @return True if the actor is active.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected static boolean _isActive(Actor actor) throws IllegalActionException {
         //TODO: check all inputs and outputs have the same setting.

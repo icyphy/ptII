@@ -278,7 +278,7 @@ public class EventSource extends TypedAtomicActor {
         _readyToFire = rightIndex && rightTime;
         return super.prefire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The following are all transient because they need not be cloned.

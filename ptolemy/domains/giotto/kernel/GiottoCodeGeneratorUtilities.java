@@ -181,7 +181,7 @@ public class GiottoCodeGeneratorUtilities {
      *  input port, which requires it to have an input driver.
      *  @param actor The actor to test.
      *  @return True if the given actor has at least on connected input port.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public static boolean needsInputDriver(Actor actor) throws IllegalActionException {
         boolean retVal = false;

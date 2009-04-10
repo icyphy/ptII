@@ -45,16 +45,16 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class CompositeEntity extends PropertyConstraintCompositeHelper {
 
-    /** 
+    /**
      * Construct a property constraint helper for the given
-     * CompositeActor. This is the helper class for any 
+     * CompositeActor. This is the helper class for any
      * CompositeActor that does not have a specific defined
      * helper class.
      * @param solver The given solver.
      * @param entity The given CompositeEntity.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public CompositeEntity(PropertyConstraintSolver solver, 
+    public CompositeEntity(PropertyConstraintSolver solver,
             ptolemy.kernel.CompositeEntity entity)
         throws IllegalActionException {
 

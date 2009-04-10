@@ -22,8 +22,8 @@ public class AnnotationAttribute extends StringAttribute {
 
     /**
      * Set the name of the attribute and error-check for name format.
-     * A proper name should contain an use-case identifier and an 
-     * attribute label, separated by "::". 
+     * A proper name should contain an use-case identifier and an
+     * attribute label, separated by "::".
      */
     public void setName(String name) throws IllegalActionException,
     NameDuplicationException {
@@ -35,20 +35,20 @@ public class AnnotationAttribute extends StringAttribute {
 //      * Check the name of the annotation attribute. The given name contains
 //      * an use case identifier and the annotation label. The two parts are
 //      * separated by the symbol "::" (two consecutive semicolons). The use
-//      * case identifier needs to be associated with a PropertySolver in 
-//      * the model. Bad  
+//      * case identifier needs to be associated with a PropertySolver in
+//      * the model. Bad
 //      * @param name The given name of the annotation attribute.
 //      * @throws IllegalActionException Thrown if no PropertySolver can
 //      *  be found using the given name.
 //      * @throws NameDuplicationException Not thrown in this method.
 //      */
-//    private void _checkAttributeName(String name) 
+//    private void _checkAttributeName(String name)
 //    throws IllegalActionException, NameDuplicationException {
 //        /*String usecaseName =*/ getUseCaseIdentifier();
 //
 //        // FIXME: Cannot check if there is an assoicated solver
 //        // because it may not be instantiated yet.
-//        
+//
 //        List solvers = toplevel().attributeList(PropertySolver.class);
 //        if (solvers.isEmpty()) {
 //            throw new IllegalActionException(
@@ -66,16 +66,16 @@ public class AnnotationAttribute extends StringAttribute {
 
     public String getUseCaseIdentifier() throws IllegalActionException {
         String[] tokens = getName().split("::");
-        
+
         if (tokens.length == 2) {
             return tokens[0];
-            
+
         } else if (tokens.length == 3) {
             // If it is an extended use-case identifier,
             // which would contain an extra "::" symbol.
             return tokens[0] + "::" + tokens[1];
         }
-        
+
         throw new IllegalActionException(
                 "Bad annotation attribute name: " + getName()
                 + ". (should have form USECASE::LABEL)");

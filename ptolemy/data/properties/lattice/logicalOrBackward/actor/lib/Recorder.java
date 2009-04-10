@@ -50,9 +50,9 @@ public class Recorder extends Sink {
     /**
      * Construct an Recorder helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Recorder(PropertyConstraintSolver solver, 
+    public Recorder(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Recorder actor) throws IllegalActionException {
         super(solver, actor, false);
     }
@@ -60,15 +60,15 @@ public class Recorder extends Sink {
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Recorder actor =
             (ptolemy.actor.lib.Recorder) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();        
+
+        Lattice lattice = (Lattice) getSolver().getLattice();
 
         if (((IntToken)actor.capacity.getToken()).intValue() > 0) {
-            setEquals(actor.input, lattice.TRUE);            
+            setEquals(actor.input, lattice.TRUE);
         } else {
             setEquals(actor.input, lattice.FALSE);
         }
 
         return super.constraintList();
-    } 
+    }
 }

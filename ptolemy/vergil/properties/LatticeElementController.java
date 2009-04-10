@@ -60,12 +60,12 @@ public class LatticeElementController extends StateController {
                 new MenuActionFactory(_toggleAcceptabilityAction));
     }
 
-    public LatticeElementController(GraphController controller, 
+    public LatticeElementController(GraphController controller,
             Access access) {
         super(controller, access);
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(_toggleAcceptabilityAction));
-        
+
         // FIXME: Having this action is only temporary.
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(_checkIsLatticeAction));
@@ -73,21 +73,21 @@ public class LatticeElementController extends StateController {
 
     /** Add hot keys to the actions in the given JGraph.
      *   It would be better that this method was added higher in the hierarchy. Now
-     *   most controllers 
+     *   most controllers
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
-        GUIUtilities.addHotKey(jgraph, _toggleAcceptabilityAction);       
+        GUIUtilities.addHotKey(jgraph, _toggleAcceptabilityAction);
     }
-    
+
     /** The edit custom icon action. */
-    protected ToggleAcceptabilityAction _toggleAcceptabilityAction = 
+    protected ToggleAcceptabilityAction _toggleAcceptabilityAction =
         new ToggleAcceptabilityAction();
 
-    protected CheckIsLatticeAction _checkIsLatticeAction = 
+    protected CheckIsLatticeAction _checkIsLatticeAction =
         new CheckIsLatticeAction();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -113,18 +113,18 @@ public class LatticeElementController extends StateController {
             // If the target is not an instance of LatticeElement, do nothing.
             if (target instanceof LatticeElement) {
                 Parameter parameter = ((LatticeElement) target).isAcceptableSolution;
-                
+
                 try {
                     BooleanToken value = (BooleanToken) parameter.getToken();
                     parameter.setToken(value.not());
                     target.attributeChanged(parameter);
-                    
+
                     // FIXME: how do we force a repaint immediately?
 
                 } catch (IllegalActionException ex) {
                     MessageHandler.error("Toggle acceptability failed: ", ex);
                 }
-                
+
             }
         }
     }
@@ -138,10 +138,10 @@ public class LatticeElementController extends StateController {
             super.actionPerformed(e);
 
             NamedObj target = getTarget();
-            
-            boolean isLattice = ((PropertyLatticeComposite) 
+
+            boolean isLattice = ((PropertyLatticeComposite)
                     target.getContainer()).isLattice();
-            
+
             if (isLattice) {
                 MessageHandler.message("This is good.");
             }

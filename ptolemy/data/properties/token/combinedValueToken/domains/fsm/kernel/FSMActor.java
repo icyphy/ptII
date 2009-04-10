@@ -49,15 +49,15 @@ public class FSMActor extends PropertyCombineFSMHelper {
      * Construct a helper for the given AtomicActor. This is the
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
-     * are set for this helper. 
+     * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public FSMActor(PropertyCombineSolver solver, 
+    public FSMActor(PropertyCombineSolver solver,
             ptolemy.domains.fsm.kernel.FSMActor actor)
             throws IllegalActionException {
-        
+
         super(solver, actor);
     }
 }

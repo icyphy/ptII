@@ -49,17 +49,17 @@ public class AtomicActor extends PropertyConstraintHelper {
      * Construct a helper for the given AtomicActor. This is the
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
-     * are set for this helper. 
+     * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public AtomicActor(PropertyConstraintSolver solver, 
+    public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
-        
+
         super(solver, actor);
-        
-        
+
+
     }
 }

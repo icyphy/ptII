@@ -55,7 +55,7 @@ import ptolemy.util.MessageHandler;
  @since Ptolemy II 2.3
  @Pt.ProposedRating Red (vincent.arnould)
  @Pt.AcceptedRating Red (vincent.arnould)
- @deprecated This code is old, hard to use and unmaintained.  See 
+ @deprecated This code is old, hard to use and unmaintained.  See
   {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class ArgumentConfigurer extends Query implements QueryListener {

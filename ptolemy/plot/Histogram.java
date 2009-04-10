@@ -670,7 +670,7 @@ public class Histogram extends PlotBox {
         return false;
     }
 
-    
+
     /** Reset a scheduled redraw tasks.
      */
     protected void _resetScheduledTasks() {
@@ -683,7 +683,7 @@ public class Histogram extends PlotBox {
             deferIfNecessary(redraw);
         }
     }
-    
+
     /** Perform a scheduled redraw.
      */
     protected void _scheduledRedraw() {
@@ -697,7 +697,7 @@ public class Histogram extends PlotBox {
                         element.clear();
                     }
                     _needBinRedraw = false;
-                    if (_needPlotRefill) {                          
+                    if (_needPlotRefill) {
                         fillPlot();
                         _needPlotRefill = false;
                     } else {
@@ -706,7 +706,7 @@ public class Histogram extends PlotBox {
                             {
                                 int nbrOfDataSets = scheduledBinsToAdd.size();
                                 for (int i = 0; i < nbrOfDataSets; ++i) {
-                                    Hashtable bins = (Hashtable) _histogram.elementAt(i);                                
+                                    Hashtable bins = (Hashtable) _histogram.elementAt(i);
                                     for (Integer bin : scheduledBinsToAdd.get(i)) {
                                         _drawPlotPoint(graphics, i, bin, (Integer) bins.get(bin));
                                     }
@@ -719,8 +719,8 @@ public class Histogram extends PlotBox {
             synchronized(this) {
                 deferIfNecessary(redraw);
             }
-        }        
-    }    
+        }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -781,32 +781,32 @@ public class Histogram extends PlotBox {
             if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
                 _needPlotRefill = true;
                 _xBottom = x - (_xTop - _xBottom);
-            } else {            
+            } else {
                 _xBottom = x;
             }
         }
-        
+
         double xtop = x + (_binWidth / 2.0);
 
-        if (xtop > _xTop) {            
+        if (xtop > _xTop) {
             if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
                 _needPlotRefill = true;
                 _xTop = xtop + _xTop - _xBottom;
             } else {
                 _xTop = xtop;
             }
-        }        
+        }
 
         _yBottom = 0.0;
-        
-        if (count > _yTop) {            
+
+        if (count > _yTop) {
             if (_automaticRescale() && _yTop != -Double.MAX_VALUE && _yBottom != Double.MAX_VALUE) {
                 _needPlotRefill = true;
                 _yTop = count + _yTop - _yBottom;
             } else {
                 _yTop = count;
             }
-        }       
+        }
 
         Vector pts = (Vector) _points.elementAt(dataset);
         pts.addElement(Double.valueOf(value));
@@ -936,7 +936,7 @@ public class Histogram extends PlotBox {
         }
         _scheduledBinsToAdd.get(dataset).add(bin);
         _needBinRedraw = true;
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -957,14 +957,14 @@ public class Histogram extends PlotBox {
     // by the next scheduled repaint.
     private boolean _needBinRedraw = false;
 
-    // True when a the plot need to be refilled 
+    // True when a the plot need to be refilled
     // by the next scheduled repaint.
     private boolean _needPlotRefill = false;
-    
+
     // _scheduledBinsToAdd a a list a bins that should be added by the scheduled
     // repaint.
     private ArrayList<HashSet<Integer>> _scheduledBinsToAdd = new ArrayList<HashSet<Integer>>();
-    
+
     /** @serial  Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
 }

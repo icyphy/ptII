@@ -49,9 +49,9 @@ public class Discard extends Sink {
     /**
      * Construct an Discard helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Discard(PropertyConstraintSolver solver, 
+    public Discard(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Discard actor) throws IllegalActionException {
         super(solver, actor, false);
     }
@@ -59,10 +59,10 @@ public class Discard extends Sink {
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Discard actor =
             (ptolemy.actor.lib.Discard) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();        
+
+        Lattice lattice = (Lattice) getSolver().getLattice();
         setEquals(actor.input, lattice.FALSE);
 
         return super.constraintList();
-    } 
+    }
 }

@@ -47,7 +47,7 @@ import ptolemy.data.properties.lattice.TypeProperty;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Boolean extends LatticeProperty implements TypeProperty {
-        
+
     public Boolean(PropertyLattice lattice) {
         super(lattice);
     }

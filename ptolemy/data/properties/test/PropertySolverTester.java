@@ -45,7 +45,7 @@ import ptolemy.util.StringUtilities;
 
 /**
  * A extended base abstract class for a property solver.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 7.2
@@ -57,16 +57,16 @@ public class PropertySolverTester {
     public static void main(String args[]) throws Exception {
         testProperties(args);
     }
-    
+
     /*
      * Parse a command-line argument. This method recognized -help and -version
      * command-line arguments, and prints usage or version information. No other
      * command-line arguments are recognized.
-     * 
+     *
      * @param arg The command-line argument to be parsed.
-     * 
+     *
      * @return True if the argument is understood, false otherwise.
-     * 
+     *
      * @exception Exception If something goes wrong.
      */
     public static boolean parseArg(String arg) throws Exception {
@@ -100,13 +100,13 @@ public class PropertySolverTester {
 
     /*
      * Resolve properties for a model.
-     * 
+     *
      * @param args An array of Strings, each element names a MoML file
      * containing a model.
-     * 
+     *
      * @return The return value of the last subprocess that was run to compile
      * or run the model. Return -1 if called with no arguments.
-     * 
+     *
      * @exception Exception If any error occurs.
      */
     public static int testProperties(String[] args) throws Exception {
@@ -220,11 +220,11 @@ public class PropertySolverTester {
 
     /*
      * @param path
-     * 
+     *
      * @param parser
-     * 
+     *
      * @return
-     * 
+     *
      * @throws IllegalActionException
      */
     protected static CompositeEntity _getModel(String path, MoMLParser parser)

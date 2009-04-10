@@ -40,21 +40,21 @@ public class PropertyTokenASTNodeHelper extends PropertyTokenHelper {
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         return new ArrayList<PropertyHelper>();
     }
-       
+
     public void determineProperty(List <Attribute>attributeList) throws IllegalActionException, NameDuplicationException {
         Iterator attributeIterator = attributeList.iterator();
         while (attributeIterator.hasNext()) {
             Attribute attribute = (Attribute)attributeIterator.next();
 //FIXME: take care of all StringParameters and filter them
-//       should not be necessary once proprtyable attributes are filtered (related to kernel exceptions)            
+//       should not be necessary once proprtyable attributes are filtered (related to kernel exceptions)
             if (((attribute instanceof StringAttribute) &&
                  (attribute.getName().equalsIgnoreCase("guardExpression"))) ||
                  (attribute instanceof Parameter) ||
                  (attribute instanceof PortParameter)) {
-                
+
                 setEquals(attribute, getSolver().getProperty(getParseTree(attribute)));
             }
-        }                        
+        }
     }
-       
+
 }

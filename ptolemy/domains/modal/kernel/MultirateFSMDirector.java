@@ -246,7 +246,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
         chooseNextNonTransientState(currentState);
     }
-    
+
     /** Override the base class to ignore the fireAt() call if the specified
      *  actor is the controller. The controller calls fireAtCurrentTime()
      *  if the destination state is enabled, but this director already handles
@@ -883,7 +883,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
         return outputRateChanged;
     }
-    
+
     /////////////////////////////////////////////////////////////////////////
     ////                       protected variables                       ////
 

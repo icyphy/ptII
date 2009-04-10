@@ -1,4 +1,4 @@
-/* A Sum of Absolute Difference between two image blocks. 
+/* A Sum of Absolute Difference between two image blocks.
 
 Copyright (c) 1999-2008 The Regents of the University of California.
 All rights reserved.
@@ -66,20 +66,20 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
     public SumofAbsoluteDifferences(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         previousImageBlock = new TypedIOPort(this,"previousImageBlock", true, false);
         previousImageBlock.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         currentImageBlock = new TypedIOPort(this,"currentImageBlock", true, false);
         currentImageBlock.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         sumAbsoluteDifference = new TypedIOPort(this,"sumAbsoluteDifference", false, true);
         sumAbsoluteDifference.setTypeEquals(BaseType.INT);
-        
+
         blockSize = new Parameter(this,"blockSize");
         blockSize.setExpression("16");
         blockSize.setTypeEquals(BaseType.INT);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,25 +87,25 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
 
     /** Input for tokens to be a part of previous frame. This is a single port, and its
      * type is 2D array.
-     */ 
+     */
     public TypedIOPort previousImageBlock;
-    
+
     /** Input for tokens to be a part of current frame. This is a single port, and its
      * type is 2D array.
      */
     public TypedIOPort currentImageBlock;
-    
-    /** Output port. This is a result for calculating sum of absolute differences between 
+
+    /** Output port. This is a result for calculating sum of absolute differences between
      * ImgBlockA and ImgBlockB.
      * The type is inferred form the connections.
      */
     public TypedIOPort sumAbsoluteDifference;
-    
-    /** BlockSize parameter. This is given by a number of elements in a block. 
-     *  Macro Block in 
+
+    /** BlockSize parameter. This is given by a number of elements in a block.
+     *  Macro Block in
      */
     public Parameter blockSize;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -123,7 +123,7 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
         newObject.sumAbsoluteDifference.setTypeAtLeast(newObject.sumAbsoluteDifference);
         return newObject;
     }
-    
+
     /** If there is at least one token on the input ports, add
      *  tokens from the <i>plus</i> port, subtract tokens from the
      *  <i>minus</i> port, and send the result to the
@@ -155,7 +155,7 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
         } else {
             return;
         }
-        
+
         for (i=0; i<_blockSize; i++)
         {
             for (j=0; j<_blockSize; j++)
@@ -163,24 +163,24 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
                 sum += Math.abs(previousImage.getElementAt(i, j)
                         - currentImage.getElementAt(i, j));
             }
-            
+
         }
         sumAbsoluteDifference.send(0, new IntToken(sum));
-        
+
     }
 
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _blockSize = ((IntToken)blockSize.getToken()).intValue();
-       
+
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** Description of the variable. */
-    
+
     protected int _blockSize;
-       
-    
+
+
 }

@@ -368,7 +368,7 @@ public class PlotApplication extends PlotFrame {
         String[][] commandOptions = { { "-height", "<pixels>" },
                 { "-width", "<pixels>" }, };
 
-        String[] commandFlags = { "-help", "-printPDF", 
+        String[] commandFlags = { "-help", "-printPDF",
                                   "-test", "-version", "-", };
         StringBuffer result = new StringBuffer(
                 "Usage: ptplot [ options ] [file ...]\n\n"

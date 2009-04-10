@@ -32,23 +32,23 @@ import java.util.Map;
 //// MultiMap
 
 /**
-A map that associates a key with multiple values. 
+A map that associates a key with multiple values.
 
 Similar to MultiSet, MultiMap is a generalization of a abstract
 data structure (Map). Like Map, MultiMap does not allow duplicate
 keys. It associates a collection of objects to each key. Putting
-a new object under a key adds to the associated collection. 
+a new object under a key adds to the associated collection.
 Likewise, removing a object removes from the collection.
 
 Several things are open to the implementation classes. First is the
 ordering of the collection of all contained values. Second, ordering
-within the collection is also open to the implementation class. 
+within the collection is also open to the implementation class.
 Each collection may or may not contain duplicates. For example, a
 implementation class may use HashSets to represent the collections. This
-effectively eliminate all duplicates but gives no ordering guarantee. 
+effectively eliminate all duplicates but gives no ordering guarantee.
 Although it is rare, but one can also imagine having a hybrid
-implementation where each collection provide different guarantees 
-depending on the key that they map under.  
+implementation where each collection provide different guarantees
+depending on the key that they map under.
 
  @author Man-Kit Leung
  @version $Id$
@@ -61,7 +61,7 @@ public interface MultiMap extends Map {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Remove a specified value from the map.
      * @param key The specified key.
@@ -70,5 +70,5 @@ public interface MultiMap extends Map {
      *  does not exist.
      */
     public Object remove(Object key, Object object);
-    
+
 }

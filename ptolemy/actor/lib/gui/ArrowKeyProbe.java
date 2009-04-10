@@ -68,7 +68,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class ArrowKeyProbe extends ArrowKeySensor {
 
     /**
-     * Create an actor that detects user presses on the arrow key. 
+     * Create an actor that detects user presses on the arrow key.
      *
      * @param container The container for this actor.
      * @param name The name of this actor
@@ -95,25 +95,25 @@ public class ArrowKeyProbe extends ArrowKeySensor {
             //_upKeyPressed = false;
             upArrow.broadcast(new IntToken(1));
         } else {
-            upArrow.broadcast(new IntToken(0));            
+            upArrow.broadcast(new IntToken(0));
         }
 
         if (_leftKeyPressed) {
             leftArrow.broadcast(new IntToken(1));
         } else {
-            leftArrow.broadcast(new IntToken(0));            
+            leftArrow.broadcast(new IntToken(0));
         }
 
         if (_rightKeyPressed) {
             rightArrow.broadcast(new IntToken(1));
         } else {
-            rightArrow.broadcast(new IntToken(0));            
+            rightArrow.broadcast(new IntToken(0));
         }
 
         if (_downKeyPressed) {
             downArrow.broadcast(new IntToken(1));
         } else {
-            downArrow.broadcast(new IntToken(0));            
-        }        
+            downArrow.broadcast(new IntToken(0));
+        }
     }
 }

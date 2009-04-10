@@ -485,7 +485,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.fsm.modal.ModalModel");
-        
+
         stateDependentCausality = new Parameter(this, "stateDependentCausality");
         stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
         stateDependentCausality.setExpression("false");

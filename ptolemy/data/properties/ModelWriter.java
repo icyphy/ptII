@@ -60,7 +60,7 @@ public class ModelWriter extends Transformer {
 
         modelFile = new FileParameter(this, "modelFile");
         modelFile.setTypeEquals(BaseType.STRING);
-        
+
         input.setTypeEquals(ActorToken.TYPE);
         output.setTypeEquals(ActorToken.TYPE);
     }
@@ -73,10 +73,10 @@ public class ModelWriter extends Transformer {
             token.getEntity().exportMoML(writer);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot write to \"" + 
+                    "Cannot write to \"" +
                     modelFile.stringValue() + "\".");
         }
-        
+
         modelFile.close();
         output.send(0, token);
     }

@@ -13,7 +13,7 @@ public class PropertyToken extends Property {
     public PropertyToken (Token token) {
         _token = token;
     }
-    
+
     /** Return a hash code value for this token. This method returns the
      *  hash code of the contained token.
      *  @return A hash code value for this token.
@@ -41,25 +41,25 @@ public class PropertyToken extends Property {
     public Token getToken() {
         return _token;
     }
-    
+
     public String toString() {
         return _token.toString();
     }
-    
+
     public boolean equals(Object object) {
         if (object instanceof PropertyToken) {
             PropertyToken property = (PropertyToken) object;
             if ((property.getToken() instanceof DoubleToken) ||
                 (property.getToken() instanceof FloatToken)) {
-                
-                // need to do string compare because of truncated floating point 
+
+                // need to do string compare because of truncated floating point
                 // numbers in MoML file
                 return _token.toString().equals(property.getToken().toString());
             } else {
                 // compare tokens, not values!
                 return _token.equals(property._token);
             }
-        } 
+        }
         return false;
     }
 }

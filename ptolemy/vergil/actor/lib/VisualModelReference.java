@@ -239,7 +239,7 @@ public class VisualModelReference extends ModelReference {
         newActor._effigy = null;
         return newActor;
     }
-    
+
     /** Run a complete execution of the referenced model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
      *  invocations of super.prefire(), super.fire(), and super.postfire(),
@@ -457,7 +457,7 @@ public class VisualModelReference extends ModelReference {
 
     /** Effigy that has been created (if any). */
     private PtolemyEffigy _effigy;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

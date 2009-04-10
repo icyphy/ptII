@@ -198,7 +198,7 @@ import ptolemy.kernel.util.Workspace;
  exception.  Do we want a parameter to relax that?
  <p>
  On subtlety of this actor is that it cannot expose instances of ParameterPort
- without introducing nondeterminacy in the execution. A ParameterPort 
+ without introducing nondeterminacy in the execution. A ParameterPort
  is an input port that sets the value of a parameter with the same name. Upon receiving
  a token at such a port, if this actor were to set a parameter visible by the
  inside thread, there is no assurance that the inside thread is not still
@@ -245,7 +245,7 @@ public class ThreadedComposite extends MirrorComposite {
         delay = new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("0.0");
-        
+
         synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
         synchronizeToRealTime.setExpression("false");
@@ -278,7 +278,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  execution of the model.
      */
     public Parameter synchronizeToRealTime;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -300,7 +300,7 @@ public class ThreadedComposite extends MirrorComposite {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -323,7 +323,7 @@ public class ThreadedComposite extends MirrorComposite {
      * @exception IllegalActionException Thrown if the director is not a timed director or
      * the type of dependency that is required cannot be resolved.
      */
-    public CausalityInterface getCausalityInterface() { 
+    public CausalityInterface getCausalityInterface() {
         if (_causalityInterface == null) {
             _causalityInterface = new BreakCausalityInterface(
                     this, getExecutiveDirector().defaultDependency());
@@ -364,7 +364,7 @@ public class ThreadedComposite extends MirrorComposite {
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -434,7 +434,7 @@ public class ThreadedComposite extends MirrorComposite {
 
         private static class FrameType {
             private FrameType() {};
-        }        
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -497,7 +497,7 @@ public class ThreadedComposite extends MirrorComposite {
             super(container, name);
             setPersistent(false);
         }
-        
+
         /** Clone the director into the specified workspace.
          *  @param workspace The workspace for the new object.
          *  @return A new director.
@@ -527,7 +527,7 @@ public class ThreadedComposite extends MirrorComposite {
             // fireAtFirstTimeAfter(), that the firing does not
             // occur before _outputFrames and _outputTimes have
             // been updated.
-            
+
             if (_exception != null) {
                 throw new IllegalActionException(ThreadedComposite.this, _exception,
                         "Error in inside thread of actor.");
@@ -535,11 +535,11 @@ public class ThreadedComposite extends MirrorComposite {
 
             Time environmentTime = ThreadedComposite.this
                     .getExecutiveDirector().getModelTime();
-            
+
             if (ThreadedComposite.this._debugging) {
                 ThreadedComposite.this._debug("Firing at time " + environmentTime);
             }
-            
+
             // If there is an output to be produced at this
             // time, produce it.
             Time nextOutputTime = _outputTimes.peek();
@@ -569,7 +569,7 @@ public class ThreadedComposite extends MirrorComposite {
                         return;
                     }
                     TokenFrame frame = _outputFrames.poll();
-                
+
                     // There is now an output frame to be produced.
                     if (ThreadedComposite.this._debugging) {
                         ThreadedComposite.this._debug("Done waiting.");
@@ -604,15 +604,15 @@ public class ThreadedComposite extends MirrorComposite {
         }
 
         /** Delegate by calling fireAt() on the director of the container's
-         *  container (the executive director), and make a local record that 
+         *  container (the executive director), and make a local record that
          *  a refiring request has been made for the specified time. Note that the
          *  executive director may modify the requested time. If it does, the
          *  modified value is returned. It is up to the calling actor to
-         *  throw an exception if the modified time is not acceptable. 
+         *  throw an exception if the modified time is not acceptable.
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
          *  @return The time at which the actor passed as an argument
-         *   will be fired.  
+         *   will be fired.
          *  @exception IllegalActionException If the executive director throws it.
          */
         public Time fireAt(Actor actor, Time time)
@@ -668,12 +668,12 @@ public class ThreadedComposite extends MirrorComposite {
             _outputFrames.clear();
             _outputTimes.clear();
             _inputFrames.clear();
-            
+
             _exception = null;
 
             // The superclass will initialize all the actors.
             super.initialize();
-                        
+
             // Set a flag indicating that the first firing should
             // initialize the _realStartTime variable. This is done
             // in the first firing to be as late as possible, so
@@ -684,9 +684,9 @@ public class ThreadedComposite extends MirrorComposite {
 
             _inputFrames.clear();
             _outputFrames.clear();
-            
+
             _synchronizeToRealTime = ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
-            
+
             // Create and start the inside thread.
             _thread = new CompositeThread();
             _thread.setPriority(Thread.MAX_PRIORITY);
@@ -716,9 +716,9 @@ public class ThreadedComposite extends MirrorComposite {
             // Have to create a new list because the previous list may
             // not have been consumed yet.
             _inputTokens = new LinkedList<QueuedToken>();
-            
+
             boolean result = _thread.isAlive();
-            
+
             if (ThreadedComposite.this._debugging) {
                 ThreadedComposite.this._debug("Prefire returns " + result);
             }
@@ -732,10 +732,10 @@ public class ThreadedComposite extends MirrorComposite {
          *  @return True if the inside thread is still alive.
          */
         public boolean postfire() throws IllegalActionException {
-            
+
             Time environmentTime = ThreadedComposite.this
                     .getExecutiveDirector().getModelTime();
-            
+
             if (ThreadedComposite.this._debugging) {
                 ThreadedComposite.this._debug("Postfiring at time " + environmentTime);
             }
@@ -806,13 +806,13 @@ public class ThreadedComposite extends MirrorComposite {
                         + environmentTime);
             }
             _inputFrames.add(new TokenFrame(environmentTime, null, TokenFrame.STOP));
-            
+
             // FindBugs: [M M NN] Naked notify [NN_NAKED_NOTIFY]
             // Actually FindBugs is wrong, since _inputFrames was modified
             // and hence the state did change. It is not necessary to
             // do this change within the synchronized(this) block since
             // _inputFrames is a thread-safe container.
-            
+
             synchronized(this) {
                 notifyAll();
             }
@@ -885,7 +885,7 @@ public class ThreadedComposite extends MirrorComposite {
             }
             // A "stop frame" has a null token list.
             _inputFrames.add(new TokenFrame(environmentTime, null, TokenFrame.STOP));
-            
+
             if (_exception != null) {
                 throw new IllegalActionException(ThreadedComposite.this, _exception,
                         "Error in inside thread of actor.");
@@ -914,7 +914,7 @@ public class ThreadedComposite extends MirrorComposite {
 
         //////////////////////////////////////////////////////////////
         ////                   private variables                  ////
-        
+
         /** If an exception occurs in the inside thread, the exception
          *  will be assigned to this member, which will cause the
          *  the next invocation of the fire() or wrapup() method
@@ -936,7 +936,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  thread, so it has to be thread safe (LinkedBlockingQueue is a
          *  thread-safe container).
          */
-        private LinkedBlockingQueue<TokenFrame> _inputFrames 
+        private LinkedBlockingQueue<TokenFrame> _inputFrames
                 = new LinkedBlockingQueue<TokenFrame>();
 
         /** List of input events in the current iteration.
@@ -949,7 +949,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  This queue is accessed from multiple threads, so it must be
          *  thread safe.
          */
-        private LinkedList<TokenFrame> _outputFrames 
+        private LinkedList<TokenFrame> _outputFrames
                 = new LinkedList<TokenFrame>();
 
         /** Record of the time stamps at which
@@ -961,12 +961,12 @@ public class ThreadedComposite extends MirrorComposite {
          *  synchronized on this director.
          */
         private Queue<Time> _outputTimes = new LinkedList<Time>();
-        
+
         /** The value of the synchronizeToRealTime parameter when
          *  initialize() was invoked.
          */
         private boolean _synchronizeToRealTime;
-        
+
         /** The thread that executes the contained actors. */
         private Thread _thread;
 
@@ -993,7 +993,7 @@ public class ThreadedComposite extends MirrorComposite {
                         // The following method blocks this thread if the queue is empty.
                         // Should we have a timeout on this in case something goes wrong?
                         TokenFrame frame = _inputFrames.take();
-                        
+
                         // Check for a "stop frame" and exit the thread.
                         if (frame.type == TokenFrame.STOP) {
                             if (ThreadedComposite.this._debugging) {
@@ -1046,7 +1046,7 @@ public class ThreadedComposite extends MirrorComposite {
                         if (!iterateContainedActors()) {
                             break;
                         }
-                        
+
                         // If outputs are produced by the iteration, then
                         // we need to record those in an output frame.
                         List<QueuedToken> outputTokens = new LinkedList<QueuedToken>();
@@ -1070,7 +1070,7 @@ public class ThreadedComposite extends MirrorComposite {
                             }
                         }
                         Time responseTime = _currentTime.add(_delayValue);
-                        
+
                         synchronized(ThreadedDirector.this) {
                             // If delay is UNDEFINED, then we have to now request a
                             // refiring at the first opportunity. This is because

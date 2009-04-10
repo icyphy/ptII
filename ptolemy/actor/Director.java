@@ -243,7 +243,7 @@ public class Director extends Attribute implements Executable {
 
         super.attributeChanged(attribute);
     }
-       
+
     /** Return a default dependency to use between input input
      *  ports and output ports.
      *  Director subclasses may override this if
@@ -586,13 +586,13 @@ public class Director extends Attribute implements Executable {
      *  the strict actor semantics, as described in this paper:
      *  <p>
      *  A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble,
-     *  "Heterogeneous Composition of Models of Computation," 
+     *  "Heterogeneous Composition of Models of Computation,"
      *  EECS Department, University of California, Berkeley,
-     *  Tech. Rep. UCB/EECS-2007-139, Nov. 2007. 
+     *  Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
      *  http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html
      *  <p>
      *  In particular, a director that implements this interface guarantees
-     *  that it will not invoke the postfire() method of an actor until all 
+     *  that it will not invoke the postfire() method of an actor until all
      *  its inputs are known at the current tag.  Moreover, it it will only
      *  do so in its own postfire() method, and in its prefire() and fire()
      *  methods, it does not change its own state.  Thus, such a director
@@ -607,7 +607,7 @@ public class Director extends Attribute implements Executable {
 
     /**
      *  Infer the width of the relations for which no width has been
-     *  specified yet. 
+     *  specified yet.
      *  The specified actor must be the top level container of the model.
      *  @exception IllegalActionException If the widths of the relations at port are not consistent
      *                  or if the width cannot be inferred for a relation.
@@ -622,12 +622,12 @@ public class Director extends Attribute implements Executable {
                 foundManager = true;
             }
         }
-        if (!foundManager) { 
+        if (!foundManager) {
             throw new IllegalActionException(this, "Can't infer the widths " +
             "of the relations since no manager present.");
-        }        
-    }    
-    
+        }
+    }
+
     /** Initialize the model controlled by this director.  Set the
      *  current time to the start time or the current time of the
      *  executive director, and then invoke the initialize() method
@@ -834,7 +834,7 @@ public class Director extends Attribute implements Executable {
      *  are no longer valid anymore and the widths need to be inferred again.
      *  @return True when width inference needs to be executed again.
      *  @exception IllegalActionException If no manager present.
-     */    
+     */
     public boolean needsWidthInference() throws IllegalActionException {
         boolean needsWidthInference = false;
         Nameable container = getContainer();
@@ -848,7 +848,7 @@ public class Director extends Attribute implements Executable {
             }
         }
         return needsWidthInference;
-    }    
+    }
 
     /** Return a new receiver of a type compatible with this director.
      *  In this base class, this returns an instance of Mailbox.
@@ -857,7 +857,7 @@ public class Director extends Attribute implements Executable {
     public Receiver newReceiver() {
         return new Mailbox();
     }
-    
+
     /** Notify the manager that the connectivity in the model changed
      *  (width of relation changed, relations added, linked to different ports, ...).
      *  This will invalidate the current width inference.
@@ -869,8 +869,8 @@ public class Director extends Attribute implements Executable {
             if (manager != null) {
                 manager.notifyConnectivityChange();
             }
-        }        
-    }    
+        }
+    }
 
     /** Return true if the director wishes to be scheduled for another
      *  iteration.  This method is called by the container of
@@ -1362,7 +1362,7 @@ public class Director extends Attribute implements Executable {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
@@ -1595,17 +1595,17 @@ public class Director extends Attribute implements Executable {
     /** Create receivers for all contained actors.
      *  @exception IllegalActionException If any port of a contained
      *  actor throws it when its receivers are created.
-     *  @see Actor#createReceivers  
+     *  @see Actor#createReceivers
      */
     private void _createReceivers() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             for (Object actor : ((CompositeActor) container).deepEntityList()) {
-                ((Actor) actor).createReceivers();                
+                ((Actor) actor).createReceivers();
             }
         }
     }
-    
+
     // Initialize parameters.
     private void _initializeParameters() {
         // This must happen first before any time objects get created.

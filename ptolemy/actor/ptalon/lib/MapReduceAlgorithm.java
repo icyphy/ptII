@@ -68,7 +68,7 @@ public abstract class MapReduceAlgorithm extends Thread {
 
     /**
      * Subclasses should implement their reduce method here,
-     * calling the take method of the BlockingQueue to get 
+     * calling the take method of the BlockingQueue to get
      * the next value, and checking the parameter noMoreInputs
      * to test if no more values can be put on the queue.  The
      * last value put on the queue may be the empty string.  If

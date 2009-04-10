@@ -143,7 +143,7 @@ public class HybridModalDirector extends FSMDirector implements
         boolean result = true;
         _lastDistanceToBoundary = 0.0;
         _distanceToBoundary = 0.0;
-                
+
         // Double iterator over two lists.
         Iterator actors = new ActorsFiredIterator();
         while (actors.hasNext()) {

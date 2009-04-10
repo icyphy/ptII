@@ -484,13 +484,13 @@ public class CompositeEntity extends ComponentEntity {
      *  argument. This method is write-synchronized on the workspace
      *  and increments its version number.
      *  <p>Note that if this method is being called many times, then
-     *  it may be more efficient to use 
+     *  it may be more efficient to use
      *  {@link #connect(ComponentPort, ComponentPort, String)}
      *  instead of this method because this method calls
      *  {@link #uniqueName(String)} each time, which
      *  searches the object for attributes, ports, entities and relations
      *  that may match a candidate unique name.
-     *  
+     *
      *  @param port1 The first port to connect.
      *  @param port2 The second port to connect.
      *  @return The ComponentRelation that is created to connect port1 and
@@ -640,7 +640,7 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneReading();
         }
     }
-    
+
     /** Return a set with the relations that are directly or indirectly
      *  contained by this entity.  The set will be empty if there
      *  are no such contained relations.
@@ -652,7 +652,7 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.getReadAccess();
 
             Set<ComponentRelation> result = new HashSet<ComponentRelation>();
-            
+
             _addAll(result, relationList());
 
             // This might be called from within a superclass constructor,
@@ -675,7 +675,7 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    
+
     /** Enumerate the opaque entities that are directly or indirectly
      *  contained by this entity.  The enumeration will be empty if there
      *  are no such contained entities. The enumeration does not include
@@ -1211,7 +1211,7 @@ public class CompositeEntity extends ComponentEntity {
     public boolean isOpaque() {
         return false;
     }
-    
+
     /** Lazy version of {@link #allAtomicEntityList()}.
      *  In this base class, this is identical to allAtomicEntityList(),
      *  except that if any inside entities are lazy, their contents
@@ -1297,7 +1297,7 @@ public class CompositeEntity extends ComponentEntity {
     public List lazyClassDefinitionList() {
         return classDefinitionList();
     }
-    
+
     /** Lazy version of {@link #deepEntityList()}.
      *  In this base class, this is identical to deepEntityList(),
      *  except that if any contained composite is lazy, its contents
@@ -1347,7 +1347,7 @@ public class CompositeEntity extends ComponentEntity {
     public List lazyEntityList() {
         return entityList();
     }
-    
+
     /** Lazy version of {@link #relationList()}.
      *  In this base class, this is identical to relationList(),
      *  but derived classes may omit from the returned list any
@@ -1357,7 +1357,7 @@ public class CompositeEntity extends ComponentEntity {
     public List lazyRelationList() {
         return relationList();
     }
-    
+
     /** Create a new relation with the specified name, add it to the
      *  relation list, and return it. Derived classes can override
      *  this to create domain-specific subclasses of ComponentRelation.
@@ -1674,7 +1674,7 @@ public class CompositeEntity extends ComponentEntity {
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
 
-                    // Find the depth and add it to the list 
+                    // Find the depth and add it to the list
                     Integer depth = Integer.valueOf(entity.depthInHierarchy());
                     if (!compositeEntityDepthMap.containsKey(depth)) {
                         compositeEntityDepthMap.put(depth, one);
@@ -1741,7 +1741,7 @@ public class CompositeEntity extends ComponentEntity {
      *  where <i>n</i> is the depth of this deferral. That is, if the object
      *  deferred to also defers, then <i>n</i> is incremented.
      *  <p>Note that this method should be called judiciously from when
-     *  the CompositeEntity is large.  The reason is that this method 
+     *  the CompositeEntity is large.  The reason is that this method
      *  searches for matching attributes, ports, classes, entities
      *  and relations, which can result in slow performance.
      *
@@ -1777,7 +1777,7 @@ public class CompositeEntity extends ComponentEntity {
 
         // FIXME: because we start with 2 each time, then if
         // we are calling this method many times we will need
-        // to search the CompositeEntity for matching 
+        // to search the CompositeEntity for matching
         // attributes,  ports, entities and releations.
         // This will have poor behaviour for large CompositeEntities.
         // However, if we cached the uniqueNameIndex, then
@@ -1887,7 +1887,7 @@ public class CompositeEntity extends ComponentEntity {
             }
         }
     }
-    
+
     /** List the opaque entities that are directly or indirectly
      *  contained by this entity.  The list will be empty if there
      *  are no such contained entities. This list does not include
@@ -1933,7 +1933,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
@@ -2175,22 +2175,22 @@ public class CompositeEntity extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
 
     /**
      * Add all elements from the sourceList into the targetList.
      */
     @SuppressWarnings("unchecked")
-    private static <T> void _addAll(Set<T> result, Collection<?> sourceList) {        
-        for (Object object : sourceList) {            
-            result.add((T)object);            
+    private static <T> void _addAll(Set<T> result, Collection<?> sourceList) {
+        for (Object object : sourceList) {
+            result.add((T)object);
         }
     }
-    
+
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
     }
-      
+
     /** Remove all level-crossing links from relations contained by
      *  the specified entity to ports or relations outside this
      *  composite entity, and from ports contained by entities

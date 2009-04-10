@@ -207,13 +207,13 @@ public class Configuration extends CompositeEntity implements
                                     .next();
                             results.append(constraint.toString() + "\n");
                         }
-                        
-                        
+
+
                     }
 
                     // Make sure the constraints are the same.
                     // First, iterate through the constraints of the master
-                    // and create a HashSet of string descriptions.  
+                    // and create a HashSet of string descriptions.
                     // This is likely to work since the problem is usually
                     // the the clone is missing constraints.
                     HashSet<String> constraintsDescription = new HashSet<String>();
@@ -692,12 +692,12 @@ public class Configuration extends CompositeEntity implements
                 try {
                     if (!file.canWrite()) {
                         // FIXME: we need a better way to check if
-                        // a URL is writable.  
+                        // a URL is writable.
 
                         // Sigh.  If the filename has spaces in it,
                         // then the URL will have %20s.  However,
                         // the file does not have %20s.
-                        // See 
+                        // See
                         // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=153
                         filename = StringUtilities.substitute(
                             filename, "%20", " ");
@@ -857,14 +857,14 @@ public class Configuration extends CompositeEntity implements
      *  a field.
      *  @exception ClassNotFoundException If a class cannot be found.
      */
-    private String _checkCloneFields(NamedObj namedObj) 
+    private String _checkCloneFields(NamedObj namedObj)
             throws CloneNotSupportedException, IllegalAccessException, ClassNotFoundException {
         NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
 
         StringBuffer results = new StringBuffer();
 
         Class namedObjClass = namedObj.getClass();
-        // We check only the fields declared in this class.  
+        // We check only the fields declared in this class.
         // FIXME: should we check all fields?
         Field [] namedObjFields = namedObjClass.getDeclaredFields();
         for(int i = 0; i < namedObjFields.length; i++) {
@@ -889,28 +889,28 @@ public class Configuration extends CompositeEntity implements
                     && !fieldType.equals(java.util.regex.Pattern.class)
                     && !fieldType.equals(String.class)
                     && !fieldType.equals(Token.class)
-                    && !fieldType.equals(Settable.Visibility.class)) { 
+                    && !fieldType.equals(Settable.Visibility.class)) {
 
                 // If an object is equal and the default hashCode() from
                 // Object is the same, then we have a problem.
                 if ( (field.get(namedObj)).equals(field.get(namedObjClone))
-                        && (System.identityHashCode(field.get(namedObj)) 
+                        && (System.identityHashCode(field.get(namedObj))
                                 == System.identityHashCode(field.get(namedObjClone)))) {
 
                     // Determine what code should go in clone(W)
                     String assignment = field.getName();
                     // FIXME: extend this to more types
-                    if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(fieldType)) { 
+                    if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(fieldType)) {
                         assignment = ".getPort(\"" + assignment + "\")";
                         //                       } else if (fieldType.isInstance( new Attribute())) {
-                    } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) { 
-                        Attribute fieldAttribute = (Attribute)field.get(namedObjClone); 
+                    } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) {
+                        Attribute fieldAttribute = (Attribute)field.get(namedObjClone);
 
                         if (fieldAttribute.getContainer() != namedObjClone) {
                             // If the attribute is actually contained by a Port
                             // and not by the AtomicActor, then get its value.
                             // SDF actors that have ports that have
-                            // tokenConsumptionRate and tokenProductionRate 
+                            // tokenConsumptionRate and tokenProductionRate
                             // such as ConvolutionalCoder need this.
                             assignment = "."
                                 + fieldAttribute.getContainer().getName()
@@ -924,11 +924,11 @@ public class Configuration extends CompositeEntity implements
                             + "or null?  */ "
                             + assignment;
                     }
-                    
+
                     String shortClassName = field.getType().getName()
                         .substring(
                                 field.getType().getName().lastIndexOf(".")
-                                + 1); 
+                                + 1);
 
                     results.append( "The " + field.getName()
                             + " " + field.getType().getName()
@@ -950,7 +950,7 @@ public class Configuration extends CompositeEntity implements
             }
         }
         return results.toString();
-    }    
+    }
 
     /** Return an identifier for the specified effigy based on its
      *  container (if any) and its name.

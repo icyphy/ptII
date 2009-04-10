@@ -48,12 +48,12 @@ import ptolemy.data.properties.lattice.TypeProperty;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LongDouble extends LatticeProperty implements TypeProperty {
-        
+
     public LongDouble(PropertyLattice lattice) {
         super(lattice);
     }
-    
-// FIXME: Is there a java representation for the C long double type?    
+
+// FIXME: Is there a java representation for the C long double type?
     public Token getMaxValue() {
         return new DoubleToken(1.7976931348623157E308);
     }

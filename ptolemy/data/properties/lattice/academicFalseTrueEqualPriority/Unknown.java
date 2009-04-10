@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Unknown extends LatticeProperty {
-        
+
     /**
      * Construct a Unknown property object
      * @param lattice The given lattice.

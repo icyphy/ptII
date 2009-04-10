@@ -32,7 +32,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Common code for the Luminary.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 7.0
@@ -48,7 +48,7 @@ public class LuminaryTarget extends CCodeGeneratorHelper {
     public LuminaryTarget(ptolemy.actor.TypedCompositeActor actor) {
         super(actor);
     }
-    
+
     public String generatePreinitializeCode() throws IllegalActionException {
         return "from Luminary target";
     }

@@ -139,7 +139,7 @@ public class FSMReceiver extends AbstractReceiver {
         _tokenCache[0] = _token;
         return _tokenCache;
     }
-    
+
     /** Return true.
      *  @return True.
      */
@@ -222,7 +222,7 @@ public class FSMReceiver extends AbstractReceiver {
         _token = token;
         _isKnown = true;
     }
-    
+
     /** If the argument has one token, then put that token in
      *  the receiver. Otherwise, throw an exception.
      */
@@ -245,10 +245,10 @@ public class FSMReceiver extends AbstractReceiver {
 
     /** Flag indicating whether the state of the receiver is known. */
     private boolean _isKnown = false;
-    
+
     /** The token held. */
     private Token _token = null;
-    
+
     /** The cache used by the getArray() method to avoid reallocating. */
     private Token[] _tokenCache;
 }

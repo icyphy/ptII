@@ -144,7 +144,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         // Note that the Plot print menu does not directly call
-        // this method, instead it calls _print().  This method is 
+        // this method, instead it calls _print().  This method is
         // included so that this class implement printable and the
         // print menu choice is enabled.
         return plot.print(graphics, format, index);

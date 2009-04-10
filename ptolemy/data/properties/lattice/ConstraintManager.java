@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ptolemy.data.properties.lattice;
 
@@ -19,13 +19,13 @@ import ptolemy.graph.InequalityTerm;
  */
 
 public class ConstraintManager {
-    
+
     public ConstraintManager(PropertyConstraintSolver solver) {
         _solver = solver;
     }
-    
+
     /**
-     * 
+     *
      * @param constraints
      */
     public void setConstraints(List<Inequality> constraints) {
@@ -33,28 +33,28 @@ public class ConstraintManager {
             if (constraint.isBase()) {
                 InequalityTerm greaterTerm = constraint.getGreaterTerm();
                 InequalityTerm lesserTerm = constraint.getLesserTerm();
-                
+
                 _greaterTermMap.put(greaterTerm, lesserTerm);
                 _lesserTermMap.put(lesserTerm, greaterTerm);
             }
         }
     }
-    
+
     /**
      * Return the list of constrainting terms for the given object.
      * @param object The given object.
      * @return The list of constrainting terms for the given object.
      */
-    public List<PropertyTerm> getConstraintingTerms(Object object) {        
+    public List<PropertyTerm> getConstraintingTerms(Object object) {
         boolean least = _solver.solvingFixedPoint.getExpression().equals("least");
-        
+
         if (least) {
             return (List<PropertyTerm>) _greaterTermMap.get(_solver.getPropertyTerm(object));
         } else {
-            return (List<PropertyTerm>) _lesserTermMap.get(_solver.getPropertyTerm(object));            
+            return (List<PropertyTerm>) _lesserTermMap.get(_solver.getPropertyTerm(object));
         }
     }
-    
+
 
     /** The property constraint solver that uses this manager. */
     private PropertyConstraintSolver _solver;

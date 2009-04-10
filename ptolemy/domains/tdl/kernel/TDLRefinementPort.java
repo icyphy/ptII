@@ -41,14 +41,14 @@ import ptolemy.kernel.util.Workspace;
  * parameters: - frequceny: update frequency - initialValue: at time 0, this
  * initial value is used - fast: if the actuator is connected to a fast task,
  * this parameter is true - slots: string that supports TDL slot selection.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLRefinementPort extends RefinementPort {
         /**
          * Construct a port in the given workspace.
-         * 
+         *
          * @param workspace
          *            The workspace.
          * @exception IllegalActionException
@@ -67,7 +67,7 @@ public class TDLRefinementPort extends RefinementPort {
          * Construct a port with a containing actor and a name that is neither an
          * input nor an output. The specified container must implement the
          * TypedActor interface, or an exception will be thrown.
-         * 
+         *
          * @param container
          *            The container actor.
          * @param name
@@ -85,7 +85,7 @@ public class TDLRefinementPort extends RefinementPort {
                 super(container, name);
                 _init();
         }
-        
+
         ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -108,14 +108,14 @@ public class TDLRefinementPort extends RefinementPort {
          * Slot selection string.
          */
         public Parameter slots;
-        
-        
+
+
         ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-        
+
         /**
          * Make port to an output port, for TDL this means that it is an actuator.
-         * 
+         *
          * @param isOutput True if port is an output port.
          * @throws IllegalActionException Thrown by parent class.
          */
@@ -130,7 +130,7 @@ public class TDLRefinementPort extends RefinementPort {
 
         /**
          * Make port to an input port, for TDL this means that it is a sensor.
-         * 
+         *
          * @param isInput True if port is an input port.
          * @throws IllegalActionException Thrown by parent class.
          */
@@ -144,7 +144,7 @@ public class TDLRefinementPort extends RefinementPort {
                         slots.setVisibility(Settable.NONE);
                 }
         }
-        
+
         ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

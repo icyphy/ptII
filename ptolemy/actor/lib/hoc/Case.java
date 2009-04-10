@@ -78,7 +78,7 @@ public class Case extends MultiCompositeActor {
         super(container, name);
         _init();
     }
-    
+
     /** Construct a Case in the specified workspace with no container and
      *  an empty string as a name. You can then change the name with
      *  setName(). If the workspace argument is null, then use the default
@@ -234,7 +234,7 @@ public class Case extends MultiCompositeActor {
 
     /** The director. */
     protected CaseDirector _director;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

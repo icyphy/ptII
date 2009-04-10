@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class SingleTokenCommutator extends Transformer implements SequenceActor {
     // SingleTokenCommutator used to be in sr.lib, but
-    // ddf.lib.DDFSingleTokenCommutator depends on it, so we moved it 
+    // ddf.lib.DDFSingleTokenCommutator depends on it, so we moved it
     // to actor.lib
 
     /** Construct an actor in the specified container with the specified

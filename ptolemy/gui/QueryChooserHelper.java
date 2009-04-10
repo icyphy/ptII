@@ -34,7 +34,7 @@ import java.awt.Frame;
 
 /**
  * A little helper class for QueryChooser classes.
- * 
+ *
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision$
  * @since Ptolemy II 7.1
@@ -44,7 +44,7 @@ import java.awt.Frame;
 public class QueryChooserHelper {
 
   /**  Determine the parent of this frame.
-   * 
+   *
    * @param container        the container
    * @return                the parent frame if one exists or null if not
    */
@@ -70,7 +70,7 @@ public class QueryChooserHelper {
 
   /**
    * Determine the dialog of this frame.
-   * 
+   *
    * @param container        the container
    * @return                the parent dialog if one exists or null if not
    */

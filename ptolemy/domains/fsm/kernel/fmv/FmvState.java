@@ -39,9 +39,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// FmvAutomaton
 
 /**
- * A Formal Method Verification (FMV) State. It supports graphical specification 
+ * A Formal Method Verification (FMV) State. It supports graphical specification
  * generation for safety or reachability analysis.
- * 
+ *
  * @author Chihhong Patrick Cheng
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -55,7 +55,7 @@ public class FmvState extends State {
      * name. The name must be unique within the container or an exception is
      * thrown. The container argument must not be null, or a
      * NullPointerException will be thrown.
-     * 
+     *
      * @param container The container.
      * @param name The name of this automaton within the container.
      * @exception IllegalActionException If the entity cannot be
@@ -82,7 +82,7 @@ public class FmvState extends State {
      */
     public Parameter isRiskAnalysisState;
 
-    /** A boolean parameter indicating whether this state is a 
+    /** A boolean parameter indicating whether this state is a
      *  reachability analysis state.   The default value is false.
      */
     public Parameter isReachabilityAnalysisState;

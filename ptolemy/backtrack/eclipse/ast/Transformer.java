@@ -172,7 +172,7 @@ public class Transformer {
                         System.err.println("Cannot load class from file: \""
                                 + fileName + "\": "
                                 + message);
-                        
+
                         String header = "Prohibited package name:";
                         if (message.startsWith(header)) {
                             String packageName =
@@ -189,7 +189,7 @@ public class Transformer {
                                 c = loader.loadClass(className);
                             } catch (Exception e2) {
                             }
-                            
+
                             if (c == null) {
                                 System.err.println(
                                         "Cannot obtain preloaded class: "

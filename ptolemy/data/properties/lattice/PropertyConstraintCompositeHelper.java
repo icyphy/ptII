@@ -49,18 +49,18 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintCompositeHelper 
+public class PropertyConstraintCompositeHelper
 extends PropertyConstraintHelper {
 
     /** Construct the property constraint helper associated
      *  with the given TypedCompositeActor.
      * @param solver TODO
      * @param component The associated component.
-     *  @throws IllegalActionException 
-     * @throws IllegalActionException 
+     *  @throws IllegalActionException
+     * @throws IllegalActionException
      */
     public PropertyConstraintCompositeHelper(
-            PropertyConstraintSolver solver, CompositeEntity component) 
+            PropertyConstraintSolver solver, CompositeEntity component)
     throws IllegalActionException {
 
         super(solver, component, false);
@@ -70,7 +70,7 @@ extends PropertyConstraintHelper {
     ////                         public methods                    ////
 
     /**
-     * 
+     *
      */
     protected void _addDefaultConstraints(
             ConstraintType actorConstraintType) throws IllegalActionException {
@@ -80,7 +80,7 @@ extends PropertyConstraintHelper {
             ((PropertyConstraintHelper)helper)
             ._addDefaultConstraints(actorConstraintType);
         }
-    }    
+    }
 
     /**
      * Return the list of sub-helpers. In this base class, it
@@ -93,7 +93,7 @@ extends PropertyConstraintHelper {
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         List<PropertyHelper> helpers = super._getSubHelpers();
 
-        CompositeEntity component = 
+        CompositeEntity component =
             (CompositeEntity) getComponent();
 
         for (Object actor : component.entityList()) {
@@ -103,51 +103,51 @@ extends PropertyConstraintHelper {
     }
 
     /** Return all constraints of this component.  The constraints is
-     *  a list of inequalities. 
+     *  a list of inequalities.
      *  @return A list of Inequality.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         CompositeEntity actor = (CompositeEntity) getComponent();
-        
+
         // Set up inter-actor constraints.
         for (Entity entity : (List<Entity>) actor.entityList()) {
-            PropertyConstraintHelper helper = 
+            PropertyConstraintHelper helper =
                 (PropertyConstraintHelper) _solver.getHelper(entity);
 
             boolean constraintSource = helper.isConstraintSource();
 
-            for (TypedIOPort port : (List<TypedIOPort>) 
+            for (TypedIOPort port : (List<TypedIOPort>)
                     helper._getConstraintedPorts(constraintSource)) {
-                
-                _constraintObject(helper.interconnectConstraintType, port, 
+
+                _constraintObject(helper.interconnectConstraintType, port,
                         _getConstraintingPorts(constraintSource, port));
             }
         }
 
         // Set up inner composite connection constraints.
-        for (TypedIOPort port : (List<TypedIOPort>) 
+        for (TypedIOPort port : (List<TypedIOPort>)
                 _getConstraintedInsidePorts(isConstraintSource())) {
-            
-            _constraintObject(interconnectConstraintType, port, 
+
+            _constraintObject(interconnectConstraintType, port,
                     port.insidePortList());
         }
 
         return super.constraintList();
     }
-    
+
     public void setAtLeastByDefault(Object term1, Object term2) {
         setAtLeast(term1, term2);
-        
+
         if (term1 != null && term2 != null) {
             _solver.incrementStats("# of default constraints", 1);
             _solver.incrementStats("# of composite default constraints", 1);
         }
     }
-    
+
     public void setSameAsByDefault(Object term1, Object term2) {
         setAtLeast(term1, term2);
-        
+
         if (term1 != null && term2 != null) {
             _solver.incrementStats("# of default constraints", 2);
             _solver.incrementStats("# of composite default constraints", 2);
@@ -159,7 +159,7 @@ extends PropertyConstraintHelper {
      * whether source or sink ports should be constrainted.
      * If source ports are constrained, it returns the list
      * of input ports of the assoicated actor; otherwise, it
-     * returns the list of output ports. 
+     * returns the list of output ports.
      * @param constraintSource The flag that indicates whether
      *  source or sink ports are constrainted.
      * @return The list of constrainted ports.

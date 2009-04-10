@@ -30,12 +30,12 @@ import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class RTMExpTranslator extends AbstractParseTreeVisitor {
-    
+
     public RTMExpTranslator(boolean time) {
         super();
         this.isTime = time;
     }
-    
+
     public String translateExpression(String exp) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode pt = parser.generateParseTree(exp);
@@ -48,7 +48,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         root.visit(this);
         return writer.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
@@ -62,48 +62,48 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
                 {
                     _writer.print("#f(" + num + ")");
                 }
-            } 
+            }
             catch (NumberFormatException e) {
                 if (res.equals("true") || res.equals("false"))
                     _writer.print("#b(" + res + ")");
-                else 
+                else
                     _writer.print(res);
             }
         } else {
             _writer.print(_transformLeaf(node.getName()));        // when variable identifier
         }
     }
-    
+
     public void visitArrayConstructNode(ASTPtArrayConstructNode node) throws IllegalActionException {
         _writer.print("(| ");                     // (| instead {
         _printChildrenSeparated(node, ", ");
         _writer.print(" |)");                     // |) instead }
     }
-     
+
     public void visitLogicalNode(ASTPtLogicalNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
-    
+
     public void visitBitwiseNode(ASTPtBitwiseNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
-    
+
     public void visitPowerNode(ASTPtPowerNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, "^");
         _writer.print(")");
     }
-    
+
     public void visitProductNode(ASTPtProductNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getLexicalTokenList());
         _writer.print(")");
     }
-    
+
     public void visitRelationalNode(ASTPtRelationalNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
@@ -144,7 +144,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _printChild(node, 2);
         _writer.print(")");
     }
-    
+
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -180,7 +180,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         int n = 0;
         int rowCount = node.getRowCount();
         int columnCount = node.getColumnCount();
-        
+
         _writer.print("[");
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
@@ -212,23 +212,23 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print("{");
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) _writer.print(", ");
-            _writer.print("(" + RTMTerm.transId(names.next().toString()));          // 
+            _writer.print("(" + RTMTerm.transId(names.next().toString()));          //
             _writer.print(" <- ");      // <- instead =
             _printChild(node, i);
             _writer.print(")");
         }
         _writer.print("}");
     }
-    
+
     protected PrintWriter _writer = new PrintWriter(System.out);
-    
+
     private boolean isTime = false;
-    
+
     private void _printChild(ASTPtRootNode node, int index)
             throws IllegalActionException {
         ((ASTPtRootNode) node.jjtGetChild(index)).visit(this);
     }
-    
+
     private void _printChildrenSeparated(ASTPtRootNode node, List separatorList)
             throws IllegalActionException {
         Iterator separators = separatorList.iterator();
@@ -237,7 +237,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
             _printChild(node, i);
         }
     }
-    
+
     private void _printChildrenSeparated(ASTPtRootNode node, String string)
             throws IllegalActionException {
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
@@ -245,44 +245,44 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
             _printChild(node, i);
         }
     }
-    
+
     private static String _transformOp(String op) {
         if (op.equals("<")) return "lessThan";
         else if (op.equals(">")) return "greaterThan";
         else if (op.equals("==")) return "equals";
         else return op;
         // && ||
-        // & | # 
+        // & | #
         //<< >> >>>
     }
-    
-    private static String _transformLeaf(String id) {        
+
+    private static String _transformLeaf(String id) {
         Matcher m = Pattern.compile("(.*)_isPresent").matcher(id);
         if (m.matches())
             return "isPresent(" + RTMTerm.transId(m.group(1)) + ")";
         else
             return RTMTerm.transId(id);
-        
+
         // Infinity ...
     }
-    
+
     private static String _toRational(double f) {
         double base = 1.0;
         while(Math.ceil(f * base) != f * base)
             base = base * 10.0;
-        
+
         int gcd = _GCD((int)f, (int)base);
         int nn = ((int)(f * base)) / gcd, nd = ((int)base) / gcd;
-        
+
         if (nd > 1)
             return nn + "/" + nd;
         else
             return nn + "";
     }
-    
+
     private static int _GCD(int a, int b)
     {
-       if (b == 0) 
+       if (b == 0)
            return a;
        else
            return _GCD(b, a % b);

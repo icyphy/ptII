@@ -164,7 +164,7 @@ public class EnabledComposite extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Causality interface that overrides the behavior of the base
      *  class to ensure that every output depends on the <i>enable</i>
      *  input port.

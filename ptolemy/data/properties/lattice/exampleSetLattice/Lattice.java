@@ -62,7 +62,7 @@ public class Lattice extends PropertySetLattice {
     public /*static*/ Property A = new A(this);
 
     public /*static*/ Property B = new B(this);
-    
+
     public /*static*/ Property C = new C(this);
 
     public /*static*/ Property UNKNOWN = new Unknown(this);
@@ -70,19 +70,19 @@ public class Lattice extends PropertySetLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    
+
     // The infinite property lattice
     public Lattice() {
         super();
         _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice = 
+        DirectedAcyclicGraph basicLattice =
             (DirectedAcyclicGraph) _lattice.basicLattice();
-        
+
         // Add the empty set as the bottom.
-        basicLattice.addNodeWeight(new PropertySet(this, 
+        basicLattice.addNodeWeight(new PropertySet(this,
                 new Property[0]));
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -488,7 +488,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                             + rgb.substring(2, rgb.length())
                             + ";}");
                     _HTMLEditorKit.setStyleSheet(styleSheet);
-                } 
+                }
             } catch (Exception ex) {
                 System.out.println("Problem restoring background color.");
                 ex.printStackTrace();

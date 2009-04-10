@@ -11,34 +11,34 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.toolbox.TextEditorTableauFactory;
 
-public class OntologyAttribute extends ModelAttribute {    
-    
+public class OntologyAttribute extends ModelAttribute {
+
     public OntologyAttribute(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:yellow\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
                 + "User-defined\nOntology</text></svg>");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     public void parseSpecificationRules() {
-        
+
     }
-    
+
     public Object executeRules() {
         return null;
     }
-       
+
     protected String _getContainedModelClassName() {
         return getClass().getName() + "$OntologyComposite";
-    }    
-    
+    }
+
     public static class OntologyComposite extends CompositeActor {
 
         public static final String RULES = "_rules";
@@ -62,16 +62,16 @@ public class OntologyAttribute extends ModelAttribute {
                 StringAttribute userRules = new StringAttribute(entity, RULES);
                 userRules.setVisibility(Settable.EXPERT);
             }
-            
+
             if (entity.getAttribute("_tableauFactory") == null) {
-                TextEditorTableauFactory factory = 
+                TextEditorTableauFactory factory =
                     new TextEditorTableauFactory(entity, "_tableauFactory");
                 factory.attributeName.setExpression(RULES);
-                
+
             }
             super._addEntity(entity);
-        }    
+        }
 
-        
+
     }
 }

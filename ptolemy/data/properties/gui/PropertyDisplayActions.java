@@ -99,10 +99,10 @@ public class PropertyDisplayActions extends NodeControllerFactory {
      *  @param parent The parent window, or null if there is none.
      */
     public void createEditor(NamedObj object, Frame parent) {
-        
+
     }
 
-    /** The action for the clear display command to be added 
+    /** The action for the clear display command to be added
      *  to the context menu.
      */
     private class ClearDisplay extends FigureAction {
@@ -112,7 +112,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
 
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            
+
             NamedObj container = getContainer();
             if (container instanceof PropertySolver) {
                 ((PropertySolver) container).getMoMLHandler().clearDisplay();
@@ -121,7 +121,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
     }
 
 
-    /** The action for the clear property command to be added 
+    /** The action for the clear property command to be added
      *  to the context menu.
      */
     private class ClearProperty extends FigureAction {
@@ -131,7 +131,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
 
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            
+
             NamedObj container = getContainer();
             if (container instanceof PropertySolver) {
                 ((PropertySolver) container).getMoMLHandler().clearProperties();
@@ -140,7 +140,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
     }
 
 
-    /** The action for the highlight configure command to be added 
+    /** The action for the highlight configure command to be added
      *  to the context menu.
      */
     private class ConfigureHighlightAction extends FigureAction {
@@ -151,7 +151,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
 
         /**
          * Open the dialog for configuring the highlight color
-         * for property values. 
+         * for property values.
          */
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the look inside action.
@@ -183,7 +183,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
 
 
     /** The edit highlight dialog.
-     */  
+     */
     private static class EditHighlightDialog extends EditParametersDialog  {
 
         /** Construct a dialog with the specified owner and target.
@@ -195,7 +195,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
          *  @param label The label for the dialog box.
          */
         public EditHighlightDialog(Frame owner, NamedObj target, String label) {
-            super(owner, target, label);            
+            super(owner, target, label);
         }
 
         /** Open a dialog to add a new parameter.
@@ -251,7 +251,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
     }
 
 
-    /** The action for the highlight property command to be added 
+    /** The action for the highlight property command to be added
      *  to the context menu.
      */
     private class HighlightProperty extends FigureAction {
@@ -298,7 +298,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
     }
 
 
-    /** The action for the show property command to be added 
+    /** The action for the show property command to be added
      *  to the context menu.
      */
     private class ShowProperty extends FigureAction {

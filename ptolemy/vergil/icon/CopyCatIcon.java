@@ -74,22 +74,22 @@ public class CopyCatIcon extends XMLIcon {
     public CopyCatIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         echos = new Parameter(this, "echos");
         echos.setTypeEquals(BaseType.INT);
         echos.setExpression("2");
-        
+
         echoBoxColor = new ColorAttribute(this, "echoBoxColor");
         echoBoxColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
-        
+
         includeName = new Parameter(this, "includeName");
         includeName.setTypeEquals(BaseType.BOOLEAN);
         includeName.setExpression("false");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** Color of the echo boxes. This defaults to white. */
     public ColorAttribute echoBoxColor;
 
@@ -97,7 +97,7 @@ public class CopyCatIcon extends XMLIcon {
      *  int that defaults to 2.
      */
     public Parameter echos;
-    
+
     /** If true, include the name of the copied actor in the icon
      *  if the name is included normally in its icon. NOTE: This
      *  will not include the name if the inside actor does not
@@ -231,7 +231,7 @@ public class CopyCatIcon extends XMLIcon {
                     bounds.getWidth() + 2 * _MARGIN,
                     bounds.getHeight() + 2 * _MARGIN,
                     echoBoxColor.asColor());
-            composite.add(rectangle);            
+            composite.add(rectangle);
         }
         BasicRectangle rectangle3 = new BasicRectangle(bounds.getX() - _MARGIN,
                 bounds.getY() - _MARGIN,
@@ -248,8 +248,8 @@ public class CopyCatIcon extends XMLIcon {
 
     /** Original description of the icon. */
     private String _originalDescription = null;
-    
+
     /** Margin around the inside icon. */
     private static int _MARGIN = 2;
-    
+
 }

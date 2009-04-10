@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class RGBImage extends LatticeProperty {
-        
+
     public RGBImage(PropertyLattice lattice) {
         super(lattice);
     }

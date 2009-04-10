@@ -120,14 +120,14 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         _paintedList = null;
         _description = null;
     }
-    
+
     /**
-     * Instantiate an XMLIcon in a NamedObj.  
+     * Instantiate an XMLIcon in a NamedObj.
      *
      * <p>This method looks for the _alternateXMLIcon attribute in the
      * configuration. If it is found, it returns an XMLIcon of the
      * class found there, if not, it returns an instance of this class.
-     * 
+     *
      *  @param container The container for this attribute.
      *  @param name The name of this attribute.
      *  @return an instance of the XMLIcon class.
@@ -136,14 +136,14 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @exception IllegalActionException If the specified name contains
      *   a period.
      */
-    public static XMLIcon getXMLIcon(NamedObj container, String name) 
+    public static XMLIcon getXMLIcon(NamedObj container, String name)
         throws NameDuplicationException, IllegalActionException {
         try {
           Class XMLIconClass = _getAlternateXMLIcon();
           if (XMLIconClass == null) {
              return new XMLIcon(container, name);
           }
-          
+
           Class[] argsClass = new Class[] {NamedObj.class, String.class};
           Constructor alternateXMLIconConstructor = XMLIconClass.getConstructor(argsClass);
           XMLIcon xmlIcon = (XMLIcon)alternateXMLIconConstructor.newInstance(new Object[] {container, name});
@@ -153,16 +153,16 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
               "Using default XMLIcon.  : " + ex.getMessage());
             ex.printStackTrace();
             return new XMLIcon(container, name);
-        } 
+        }
     }
-    
+
     /**
      * Instantiate an XMLIcon in a Workspace.
      *
      * <p>This method looks for the _alternateXMLIcon attribute in the
      * configuration. If it is found, it returns an XMLIcon of the
      * class found there, if not, it returns an instance of this class.
-     * 
+     *
      *  @param workspace The workspace that will list the attribute.
      *  @param name The name of this attribute.
      *  @return an instance of the XMLIcon class.
@@ -171,7 +171,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @exception IllegalActionException If the specified name contains
      *   a period.
      */
-    public static XMLIcon getXMLIcon(Workspace workspace, String name) 
+    public static XMLIcon getXMLIcon(Workspace workspace, String name)
       throws NameDuplicationException, IllegalActionException {
         try {
             Class XMLIconClass = _getAlternateXMLIcon();
@@ -190,7 +190,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
             return new XMLIcon(workspace, name);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -371,7 +371,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         String result = "";
@@ -403,11 +403,11 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * Check to see if there is an _alternatXMLIcon attribute in the
      * configuration.  This attribute should name a class that
-     * is an alternative to XMLIcon.  
+     * is an alternative to XMLIcon.
      * If the attribute is present, return the class, if not, return null.
      */
     private static Class _getAlternateXMLIcon() throws Exception {
@@ -420,10 +420,10 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
           StringAttribute _alternateXMLIconAttribute = (StringAttribute)
             _config.getAttribute("_alternateXMLIcon");
           if (_alternateXMLIconAttribute != null) {
-              _alternateXMLIconClassName = 
+              _alternateXMLIconClassName =
                 _alternateXMLIconAttribute.getExpression();
           }
-          
+
           if (_alternateXMLIconClassName == null) {  //attribute was not found
               return null;
           } else {

@@ -139,7 +139,7 @@ public class DelayChannel extends ErasureChannel {
         newObject._receptions = null;
         return newObject;
     }
-    
+
     /** If the current time matches one of the times that we have previously
      *  recorded as the reception time for a transmission, then deliver
      *  the token to the receiver.

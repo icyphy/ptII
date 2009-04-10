@@ -60,20 +60,20 @@ import ptolemy.plot.Plot;
  * This Plotter shows the exeuction of actors in a model. This Plotter is used
  * in the Ptides domain to show the activity of a platform and of actors inside
  * a platform. The following events can be displayed:
- * 
+ *
  * o---------------o start execution end execution
- * 
+ *
  * o / transfer input port o
- * 
+ *
  * o \ transfer output port o .
- * 
+ *
  * @author Patricia Derler
  */
 public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     /**
      * Construct a factory with the specified container and name.
-     * 
+     *
      * @param container
      *                The container.
      * @param name
@@ -131,7 +131,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     /**
      * The event is displayed.
-     * 
+     *
      * @param node
      *                The node where the event happened.
      * @param actor
@@ -158,11 +158,11 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             plot.addPoint(actorDataset, x, actorY,
                     scheduleEvent == ScheduleEventType.STOP);
             plot.addPoint(nodeDataSet, x, nodeY,
-                    scheduleEvent == ScheduleEventType.STOP); 
-        } else if (scheduleEvent == ScheduleEventType.TRANSFERINPUT) { 
+                    scheduleEvent == ScheduleEventType.STOP);
+        } else if (scheduleEvent == ScheduleEventType.TRANSFERINPUT) {
             plot.addPoint(nodeDataSet, x - 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
-        } else if (scheduleEvent == ScheduleEventType.TRANSFEROUTPUT) { 
+        } else if (scheduleEvent == ScheduleEventType.TRANSFEROUTPUT) {
             plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
         } else if (scheduleEvent == ScheduleEventType.MISSEDEXECUTION) {
@@ -199,7 +199,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     /**
      * Return the Y position for a node.
-     * 
+     *
      * @param node
      *                The node.
      * @return The Y position.
@@ -210,7 +210,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     /**
      * Return the Y position for an actor in a node.
-     * 
+     *
      * @param node
      *                The node.
      * @param actor
@@ -226,7 +226,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     /**
      * Initialize the plot and the legend. The legend will be created for all
      * nodes and actors.
-     * 
+     *
      * @param nodesActors
      *                A list of nodes and contained actors.
      */
@@ -268,7 +268,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         // This class needs to be public for shallow code generation.
         /**
          * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
-         * 
+         *
          * @param container
          *                The container.
          * @param name
@@ -288,7 +288,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         /**
          * Create an editor for configuring the specified object with the
          * specified parent window.
-         * 
+         *
          * @param object
          *                The object to configure.
          * @param parent

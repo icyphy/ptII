@@ -108,7 +108,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         if ((transform[0] == 0.0) && (transform[1] == 0.0)) {
             return;
         }
-        
+
         BasicGraphController graphController = (BasicGraphController) _controller
                 .getController();
         BasicGraphFrame frame = graphController.getFrame();

@@ -114,12 +114,12 @@ public class AbstractTextAttribute extends VisibleAttribute {
         italic = new Parameter(this, "italic");
         italic.setExpression("false");
         italic.setTypeEquals(BaseType.BOOLEAN);
-        
+
         center = new Parameter(this, "center");
         center.setToken(BooleanToken.FALSE);
         center.setTypeEquals(BaseType.BOOLEAN);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 

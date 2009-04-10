@@ -37,7 +37,7 @@ import ptolemy.actor.Actor;
 
 /**
  * A schedule listener reacts to given events.
- * 
+ *
  * @author Patricia Derler
  */
 public interface ScheduleListener {
@@ -46,7 +46,7 @@ public interface ScheduleListener {
 
     /**
      * React to the given event.
-     * 
+     *
      * @param node
      *                The node where the event happened.
      * @param actor
@@ -57,12 +57,12 @@ public interface ScheduleListener {
      * @param scheduleEvent
      *                The type of the event.
      */
-    public void event(Actor node, Actor actor, double time, 
+    public void event(Actor node, Actor actor, double time,
             ScheduleEventType scheduleEvent);
 
     /**
      * Initialize the legend of the plotter.
-     * 
+     *
      * @param nodesActors
      *                contains platforms and actors running on that platform
      */
@@ -73,13 +73,13 @@ public interface ScheduleListener {
          */
     public static enum ScheduleEventType {
         /** Started the execution of an actor. */
-        START, 
+        START,
         /** Stopped the execution of an actor. */
-        STOP, 
+        STOP,
         /** An Event is sent from a platform. */
-        TRANSFEROUTPUT, 
+        TRANSFEROUTPUT,
         /** An Event is sent to a platform. */
-        TRANSFERINPUT, 
+        TRANSFERINPUT,
         /** An actors should have been executed at a previous. */
         MISSEDEXECUTION
     }

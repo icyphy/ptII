@@ -101,7 +101,7 @@ public class BackwardCompatibility {
         _filterList.add(new RemoveProperties());
         //System.out.println("Filtering and converting to LazyTypedCompositeActors");
         //_filterList.add(new LazyTypedCompositeActorChanges());
-        _filterList.add(new RelationWidthChanges());        
+        _filterList.add(new RelationWidthChanges());
     }
 }
 

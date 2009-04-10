@@ -127,7 +127,7 @@ public class StateIcon extends NameIcon {
         } catch (Throwable t) {
             // Ignore and return the default.
         }
-        
+
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {

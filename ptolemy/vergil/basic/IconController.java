@@ -132,7 +132,7 @@ public class IconController extends ParameterizedNodeController {
                     // executed before this gets around to setting the
                     // container.  Otherwise, that second change request
                     // will result in the creation of a second figure.
-                    
+
                     final EditorIcon icon = XMLIcon.getXMLIcon(object.workspace(), "_icon");
                     icon.setContainerToBe(object);
                     icon.setPersistent(false);

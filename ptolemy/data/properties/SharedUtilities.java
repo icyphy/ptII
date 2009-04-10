@@ -18,7 +18,7 @@ public class SharedUtilities {
      */
     public SharedUtilities() {
         // Since this is a shared (singleton) object per model,
-        // it is important that all model-specific references 
+        // it is important that all model-specific references
         // need to be reset when cloned. Otherwise, it will lead
         // to bugs that are hard to detect, and inconsistency
         // will occur.
@@ -42,7 +42,7 @@ public class SharedUtilities {
     }
 
     /**
-     * Return the map that maps root ast node (keys) to the 
+     * Return the map that maps root ast node (keys) to the
      * corresponding attribute (values).
      * @return The mappings for root ast nodes to attributes.
      */
@@ -60,7 +60,7 @@ public class SharedUtilities {
     }
 
     /**
-     * Return the map that maps attributes (keys) to their root ast 
+     * Return the map that maps attributes (keys) to their root ast
      * nodes (values).
      * @return The mappings for attributes to their root ast nodes.
      */
@@ -131,16 +131,16 @@ public class SharedUtilities {
      */
     private HashSet<PropertySolver> _ranSolvers = new HashSet<PropertySolver>();
 
-    private Map<Attribute, ASTPtRootNode> _parseTrees = 
+    private Map<Attribute, ASTPtRootNode> _parseTrees =
         new HashMap<Attribute, ASTPtRootNode>();
 
-    private Map<ASTPtRootNode, Attribute> _attributes = 
+    private Map<ASTPtRootNode, Attribute> _attributes =
         new HashMap<ASTPtRootNode, Attribute>();
 
     private ArrayList<String> _errors = new ArrayList<String>();
 
     protected PropertySolver _previousInvokedSolver = null;
-    
+
     public int id;
     public static int count = 0;
 }

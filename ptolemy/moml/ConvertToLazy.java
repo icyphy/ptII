@@ -54,7 +54,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
  *  </pre>
  *  If the <i>numberOfEntities</i> argument is not supplied, then it
  *  defaults to 100.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
@@ -141,7 +141,7 @@ public class ConvertToLazy implements ChangeListener {
         System.err.println("UseLazyCompositeApplication.changeFailed(): "
                 + description + " failed:\n" + exception);
     }
-    
+
     /** Convert the model.
      *  @param actor The model to convert.
      *  @param threshold The threshold to use.
@@ -171,7 +171,7 @@ public class ConvertToLazy implements ChangeListener {
         }
 
     }
-    
+
     /** Count the number of contained entities that have not already been made
      *  lazy.
      *  @param actor The actor to count.

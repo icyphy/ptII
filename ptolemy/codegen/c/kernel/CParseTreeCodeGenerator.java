@@ -109,7 +109,7 @@ import ptolemy.util.StringUtilities;
  */
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 ParseTreeCodeGenerator {
-    
+
     CodeGenerator _generator;
 
     public CParseTreeCodeGenerator (CodeGenerator generator) {
@@ -268,7 +268,7 @@ ParseTreeCodeGenerator {
 
         int numChildren = node.jjtGetNumChildren();
         String[] childCode = new String[numChildren];
-        
+
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
@@ -293,7 +293,7 @@ ParseTreeCodeGenerator {
             tokens[i] = _evaluateChild(node, i);
 
             childCode[i] = _childCode;
-            
+
             Type valueType = ((ASTPtRootNode) node.jjtGetChild(i)).getType();
             if (!elementType.equals(valueType)) { // find max type
                 elementType = TypeLattice.leastUpperBound(elementType,
@@ -308,7 +308,7 @@ ParseTreeCodeGenerator {
             if (valueType.equals(elementType)) {
                 result += ", " + childCode[i];
             } else {
-                result += ", $convert_" + _generator.codeGenType(valueType) + "_" 
+                result += ", $convert_" + _generator.codeGenType(valueType) + "_"
                 + _generator.codeGenType(elementType) + "(" + childCode[i] + ")";
             }
         }
@@ -318,9 +318,9 @@ ParseTreeCodeGenerator {
             _childCode = "$new(" + "Array(" + result + "))";
         } else {
             _childCode = "$new(" + _generator.codeGenType(elementType) + "Array(" + result + "))";
-            
+
         }
-        
+
         // Tests CParseTreeCodeGenerator-16.2 and
         // CParseTreeCodeGenerator-17.2 require that
         // _evaluatedChildToken be set here, otherwise
@@ -563,8 +563,8 @@ ParseTreeCodeGenerator {
             }
             _evaluateChild(node, i + 1);
 
-            result += _specializeArgument(functionName, i, 
-                    ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(), 
+            result += _specializeArgument(functionName, i,
+                    ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(),
                     _childCode);
         }
     }
@@ -1139,8 +1139,8 @@ ParseTreeCodeGenerator {
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 if (type != null) {
-                    result = "$multiply_" + _generator.codeGenType(resultType) 
-                    + "_" + _generator.codeGenType(type) + "(" + result 
+                    result = "$multiply_" + _generator.codeGenType(resultType)
+                    + "_" + _generator.codeGenType(type) + "(" + result
                     + ", " + _childCode + ")";
 
                     resultType = resultType.multiply(type);
@@ -1151,12 +1151,12 @@ ParseTreeCodeGenerator {
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
                     result = "$divide_" + _generator.codeGenType(resultType)
-                    + "_" + _generator.codeGenType(type) + "(" + result 
+                    + "_" + _generator.codeGenType(type) + "(" + result
                     + ", " + _childCode + ")";
 
                     resultType = resultType.divide(type);
 
-                } else {                  
+                } else {
                     result += "/" + _childCode;
                 }
             } else if (operator.kind == PtParserConstants.MODULO) {
@@ -1589,7 +1589,7 @@ ParseTreeCodeGenerator {
         // get the array index
         _evaluateChild(node, 1);
         result += _childCode;
-        
+
         //_fireCode.append(")");
         _childCode = result + ")";
     }
@@ -1725,12 +1725,12 @@ ParseTreeCodeGenerator {
     /** The wrapup() method code. */
     protected StringBuffer _wrapupCode = new StringBuffer();
 
-    private String _specializeArgument(String function, 
+    private String _specializeArgument(String function,
             int argumentIndex, Type argumentType, String argumentCode) {
 
         if (function.equals("$arrayRepeat") && argumentIndex == 1) {
             if (_generator.isPrimitive(argumentType)) {
-                return "$new(" + 
+                return "$new(" +
                 _generator.codeGenType(argumentType)
                 + "(" + argumentCode + "))";
             }
@@ -1758,7 +1758,7 @@ ParseTreeCodeGenerator {
     /** The depth, used for debugging and indenting. */
     private int _depth = 0;
 
-    private static Map cFunctionMap = new HashMap(); 
+    private static Map cFunctionMap = new HashMap();
     static {
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");

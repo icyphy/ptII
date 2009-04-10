@@ -43,9 +43,9 @@ import ptolemy.kernel.util.IllegalActionException;
  * A TDL receiver stores a token until it gets a new token. A call to hasToken
  * of a TDL receiver will always succeed. The TDL receiver is based on the
  * Giotto receiver.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
@@ -58,7 +58,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
         /**
          * Construct an empty TDLReceiver with the specified container.
-         * 
+         *
          * @param container
          *            The container.
          * @exception IllegalActionException
@@ -94,7 +94,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
         /**
          * Get the contained and available token, i.e., get the last token that has
          * been put into the receiver before the last update.
-         * 
+         *
          * @return A token.
          * @exception NoTokenException
          *                If no token is available.
@@ -110,7 +110,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
         /**
          * Return true, since writing to this receiver is always allowed.
-         * 
+         *
          * @return True.
          */
         public boolean hasRoom() {
@@ -119,7 +119,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
         /**
          * Return true, since writing to this receiver is always allowed.
-         * 
+         *
          * @param numberOfTokens
          *            The size of tokens to be written to the receiver.
          * @return True.
@@ -132,7 +132,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
          * Return true if there is a token available. A token is available whenever
          * put() has been called at least once followed by a call to the update()
          * method.
-         * 
+         *
          * @return True if there is a token available.
          */
         public boolean hasToken() {
@@ -142,7 +142,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
         /**
          * Return true if the receiver has at least one token available. Any number
          * of calls to get() is allowed and will return the same available token.
-         * 
+         *
          * @param numberOfTokens
          *            The number of tokens available in this receiver.
          * @return True if there is a token available.
@@ -159,7 +159,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
          * Note that putting a null into this receiver will leave the receiver empty
          * after update. The receiver does not check against this but expects that
          * IOPort will always put non-null tokens into receivers.
-         * 
+         *
          * @param token
          *            The token to be put into this receiver.
          * @exception NoRoomException
@@ -175,7 +175,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
          * Get the contained and available token, i.e., get the last token that has
          * been put into the receiver before the last update and reset the _token
          * only.
-         * 
+         *
          * @return A token.
          * @exception NoTokenException
          *                If no token is available.
@@ -204,7 +204,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
          * put() available to get().
          */
         public void update() {
-                if (_nextToken == null) 
+                if (_nextToken == null)
                         return;
                 _token = _nextToken;
         }
@@ -219,7 +219,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
         /**
          * access method for the token, for testing purposes.
-         * 
+         *
          * TODO remove.
          * @return The token.
          */
@@ -239,7 +239,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
         }
 
         ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////        
+    ////                         private variables                 ////
         /** The next token. */
         private Token _nextToken = null;
 

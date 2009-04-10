@@ -18,46 +18,46 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class PropertyCombineHelper extends PropertyHelper {
 
     public PropertyCombineHelper(PropertyCombineSolver solver, Object component) {
-        
+
         setComponent(component);
-        _solver = solver; 
+        _solver = solver;
     }
 
     public PropertyCombineSolver getSolver() {
         return (PropertyCombineSolver)_solver;
     }
 
-    public void determineProperty() 
+    public void determineProperty()
     throws IllegalActionException, NameDuplicationException {
 
         Iterator portIterator = getPropertyables().iterator();
-        
+
         while (portIterator.hasNext()) {
             IOPort port = (IOPort) portIterator.next();
-        
+
             // Get the shared parser.
             PtParser parser = PropertySolver.getParser();
-            
+
             // create parse tree
             ASTPtRootNode parseTree = parser.generateParseTree(getSolver().getPropertyExpression());
-        
+
             // do evaluation for port
-            PropertyCombineParseTreeEvaluator evaluator = new PropertyCombineParseTreeEvaluator(port, _solver);                
-            Token token = evaluator.evaluateParseTree(parseTree);        
+            PropertyCombineParseTreeEvaluator evaluator = new PropertyCombineParseTreeEvaluator(port, _solver);
+            Token token = evaluator.evaluateParseTree(parseTree);
             PropertyToken property = (PropertyToken) new PropertyToken(token);
-            if (!((getSolver().getUnconnectedPorts()) && port.connectedPortList().isEmpty())) {                
+            if (!((getSolver().getUnconnectedPorts()) && port.connectedPortList().isEmpty())) {
                 setEquals(port, property);
-            }            
+            }
         }
-        
-        Iterator helpers = _getSubHelpers().iterator();        
+
+        Iterator helpers = _getSubHelpers().iterator();
         while (helpers.hasNext()) {
-            PropertyCombineHelper helper = 
+            PropertyCombineHelper helper =
                 (PropertyCombineHelper) helpers.next();
             helper.determineProperty();
-        }        
+        }
     }
-    
+
     /**
      * Return a list of property-able NamedObj contained by
      * the component. All ports and parameters are considered
@@ -66,13 +66,13 @@ public class PropertyCombineHelper extends PropertyHelper {
      */
     public List<Object> getPropertyables() {
         List<Object> list = new ArrayList<Object>();
-        
+
         // Add all ports.
         list.addAll(((Entity) getComponent()).portList());
-        
+
         return list;
     }
-    
+
     public void setEquals(Object object, PropertyToken property) {
         super.setEquals(object, property);
         if (property != null) {
@@ -83,10 +83,10 @@ public class PropertyCombineHelper extends PropertyHelper {
     @Override
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
         return new ParseTreeAnnotationEvaluator();
-    }   
-    
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {        
+    }
+
+    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         return new ArrayList<PropertyHelper>();
-    }   
+    }
 
 }

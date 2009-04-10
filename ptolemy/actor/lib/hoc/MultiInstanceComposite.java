@@ -175,13 +175,13 @@ public class MultiInstanceComposite extends TypedCompositeActor {
      * @exception IllegalActionException If cloning the additional
      * copies fails, or if any ports are not connected to multiports.
      */
-    public void preinitialize() throws IllegalActionException {        
+    public void preinitialize() throws IllegalActionException {
         if (!_isMasterCopy) {
             //All initialization happens in the master.
             return;
         }
         super.preinitialize();
-        
+
         // Master only from here on
         if ((getDirector() == null) || (getDirector().getContainer() != this)) {
             throw new IllegalActionException(this, getFullName()
@@ -197,7 +197,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             instance.setToken(new IntToken(0));
 
             TypedCompositeActor container = (TypedCompositeActor) getContainer();
-            
+
             // We first remove the superfluous clones
             while (_clones.size() > N - 1) {
                 MultiInstanceComposite clone = _clones.get(N - 1);
@@ -249,13 +249,13 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 }
                 _clones.remove(N-1);
             }
-            
+
             // Initialize the clones
             for (MultiInstanceComposite clone : _clones) {
                 clone._preinitClone();
             }
 
-            // Now instantiate the clones and connect them to the model            
+            // Now instantiate the clones and connect them to the model
             for (int i = _clones.size() + 1; i < N; i++) {
                 MultiInstanceComposite clone = null;
 
@@ -465,7 +465,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
                 + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n");
     }
-    
+
     private void _preinitClone() throws IllegalActionException {
         super.preinitialize();
     }
@@ -473,7 +473,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private List<MultiInstanceComposite> _clones = new LinkedList<MultiInstanceComposite>();
-    
+
     private boolean _isMasterCopy = false;
 
     //private String _scopeExtendingAttributeName = "_micScopeExtender";

@@ -36,7 +36,7 @@ import ptolemy.kernel.util.Settable;
 /**
  * An interface for Parameter classes that supply their own
  * customized GUI element for modifying the query content.
- * 
+ *
  * <p>See <a href="http://www.scms.waikato.ac.nz/~fracpete/downloads/ptolemy/custom_query_boxes/" target="_top">http://www.scms.waikato.ac.nz/~fracpete/downloads/ptolemy/custom_query_boxes/</a>
  *
  * @author  fracpete (fracpete at waikato dot ac dot nz)
@@ -49,10 +49,10 @@ public interface CustomQueryBoxParameter {
 
     /**
      * Create a customized query box for the given query.
-     * 
+     *
      * @param query                        the query to add the custom box to
      * @param attribute                        the attribute the query box is associated with
-     * @return a query box. 
+     * @return a query box.
      * @throws IllegalActionException         if something goes wrong
      */
     public Box createQueryBox(PtolemyQuery query, Settable attribute)

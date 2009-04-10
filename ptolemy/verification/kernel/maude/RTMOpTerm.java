@@ -5,12 +5,12 @@ public class RTMOpTerm extends RTMTerm {
     // args1 frag1 arg2 frag2 ...
     private String[] op;
     private RTMTerm[] terms;
-    
+
     protected RTMOpTerm(String[] op, RTMTerm[] args) {
         this.op = op;
         this.terms = args;
     }
-    
+
     @Override
     public String print(int indent, boolean newline) {
         StringBuffer r = new StringBuffer(op[0]);

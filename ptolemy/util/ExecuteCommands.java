@@ -63,11 +63,11 @@ public interface ExecuteCommands {
     public void clear();
 
     /** Get the value of the environment of the subprocess.
-     *  @param key The key to be looked up.  
-     *  @return The value of the key.  If the key is not set, then 
+     *  @param key The key to be looked up.
+     *  @return The value of the key.  If the key is not set, then
      *  null is returned.  If appendToPath() has been called, and
      *  the key parameter is "PATH", then the current value of the PATH
-     *  of the subprocess will be returned.  Note that this may be different 
+     *  of the subprocess will be returned.  Note that this may be different
      *  from the PATH of the current process.
      */
     public String getenv(String key);

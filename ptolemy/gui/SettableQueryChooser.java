@@ -30,7 +30,7 @@ package ptolemy.gui;
 
 /**
  * Interface for custom query chooser boxes.
- * 
+ *
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision$
  * @since Ptolemy II 7.1
@@ -45,7 +45,7 @@ public interface SettableQueryChooser {
    * @see #getQueryValue()
    */
   public void setQueryValue(String value);
-  
+
   /**
    * Return a string representation of the query.
    * @return the string value

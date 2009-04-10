@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Unknown extends LatticeProperty {
-        
+
     /**
      * Construct a Dynamic property object
      * @param lattice
@@ -53,7 +53,7 @@ public class Unknown extends LatticeProperty {
     public Unknown(PropertyLattice lattice) {
         super(lattice);
     }
-    
+
     public boolean isAcceptableSolution() {
         return false;
     }

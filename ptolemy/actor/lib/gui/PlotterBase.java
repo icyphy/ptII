@@ -107,7 +107,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         automaticRescale = new Parameter(this, "automaticRescale", new BooleanToken(
                 false));
         automaticRescale.setTypeEquals(BaseType.BOOLEAN);
-        
+
         legend = new StringAttribute(this, "legend");
 
         _windowProperties = new WindowPropertiesAttribute(this,
@@ -122,7 +122,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
         _plotSize = new SizeAttribute(this, "_plotSize");
         _plotSize.setPersistent(true);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-12\" y=\"-12\" "
@@ -143,7 +143,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  This parameter has type BooleanToken, and default value false.
      */
     public Parameter automaticRescale;
-    
+
     /** The plot object. */
     public transient PlotBox plot;
 
@@ -356,7 +356,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         } else {
             if (plot == null) {
                 plot = _newPlot();
-                plot.setTitle(getName());                  
+                plot.setTitle(getName());
             }
 
             plot.setButtons(true);
@@ -389,7 +389,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 plot.setAutomaticRescale(true);
             }
         }
-        
+
     }
 
     /** Override the base class to remove the plot from its graphical
@@ -423,8 +423,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // If we are generating code, then plot might be null;
             plot.setAutomaticRescale(false);
         }
-        
-        super.wrapup();        
+
+        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////

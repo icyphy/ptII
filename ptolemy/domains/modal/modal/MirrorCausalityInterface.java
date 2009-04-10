@@ -66,7 +66,7 @@ equivalent.
 @Pt.AcceptedRating Red (eal)
 */
 public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
-   
+
    /** Construct a causality interface that mirrors the specified causality
     *  interface.
     *  @param actor The actor for which this is an interface.
@@ -224,7 +224,7 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
            if (localPort == null) {
                throw new IllegalActionException(port.getContainer(), port,
                        "Expected matching port in "
-                       + _actor.getFullName());               
+                       + _actor.getFullName());
            }
            result.add(localPort);
        }

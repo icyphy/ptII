@@ -135,7 +135,7 @@ public class Director extends CodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
-        
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -194,7 +194,7 @@ public class Director extends CodeGeneratorHelper {
 
             for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                 if (port.isOutsideConnected()) {
-                    CodeGeneratorHelper portHelper = 
+                    CodeGeneratorHelper portHelper =
                         (CodeGeneratorHelper) _getHelper(port);
                     code.append(portHelper.generateInitializeCode());
                 }
@@ -215,7 +215,7 @@ public class Director extends CodeGeneratorHelper {
      * @exception IllegalActionException If there is problems getting
      * the port buffer size or the offset in the channel and offset map.
      */
-    public String generateOffset(String offsetString, IOPort port, 
+    public String generateOffset(String offsetString, IOPort port,
             int channel, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
         assert false;
@@ -466,7 +466,7 @@ public class Director extends CodeGeneratorHelper {
         if ((port.isOutput() && !forComposite)
                 || (port.isInput() && forComposite)) {
 
-            List sinkChannels = 
+            List sinkChannels =
                 CodeGeneratorHelper.getSinkChannels(port, channelNumber);
 
             return sinkChannels;

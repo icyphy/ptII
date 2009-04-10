@@ -241,8 +241,8 @@ public class IOPortController extends AttributeController {
     }
 
     /**
-     * Get the class label of the component. 
-     * @return the class label of the component. 
+     * Get the class label of the component.
+     * @return the class label of the component.
      */
     protected String _getComponentType() {
         return "Port";

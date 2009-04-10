@@ -412,7 +412,7 @@ public class CTScheduler extends Scheduler {
                         _signalTypeMap.setType(inPort, DISCRETE);
                     }
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    throw new IllegalActionException(this, ex, 
+                    throw new IllegalActionException(this, ex,
                             "The container \"" + container.getFullName()
                             + "\" is a \"" + container.getClass().getName()
                             + "\", which is not a CT Composite actor, yet "

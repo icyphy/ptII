@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  on-screen display of values in a diagram. The value is
  updated only in postfire.
 
- <p>Note that the icon for this actor is defined in 
+ <p>Note that the icon for this actor is defined in
  <code>ptolemy/actor/lib/genericsinks.xml</code>, which looks something
  like
  <pre>
@@ -77,7 +77,7 @@ public class MonitorValue extends Sink {
         super(container, name);
 
         initial = new Parameter(this, "initial");
-        
+
         value = new Parameter(this, "value");
     }
 
@@ -88,7 +88,7 @@ public class MonitorValue extends Sink {
      *  type as the input.
      */
     public Parameter value;
-    
+
     /** The initial value to be displayed.
      */
     public Parameter initial;

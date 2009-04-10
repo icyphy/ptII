@@ -56,7 +56,7 @@ public interface RefinementActor extends Actor {
      *  refined state or event.
      */
     public State getRefinedState() throws IllegalActionException;
-    
+
     /** Create a refinement for the given state.
      *
      *  @param state The state that will contain the new refinement.

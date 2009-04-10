@@ -57,7 +57,7 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
     public ParseTreeTokenAnnotationEvaluator() {
         evaluator = new ParseTreeEvaluator();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -73,33 +73,33 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
         Object object = _evaluatedObject;
 
         ASTPtRootNode expression = node.getExpressionTree();
-        
+
         Token expressionValue = null;
         try {
-            expressionValue = 
+            expressionValue =
                 evaluator.evaluateParseTree(expression, new VariableScope());
-            
+
         } catch (IllegalActionException ex) {
             // FIXME: need to keep the exception chain.
             throw _unsupportedVisitException(
                     "Cannot resolve assignment expression: " + expression);
         }
-        
+
         if (expressionValue == null) {
             throw _unsupportedVisitException(
                     "Cannot resolve assignment: " + node.getAssignment());
         }
-        
+
         _helper.setEquals(object, new PropertyToken(expressionValue));
     }
-    
+
 
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
             super.visitLeafNode(node);
 
         } catch (IllegalActionException ex) {
-            
+
             // The label may be a token property.
             if (node.isConstant()) {
                 _evaluatedObject = node.getToken();
@@ -110,8 +110,8 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
     }
 
     private ParseTreeEvaluator evaluator;// = new ParseTreeEvaluator();
-    
-    
+
+
 
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
@@ -191,5 +191,5 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
         }
     }
 
-    
+
 }

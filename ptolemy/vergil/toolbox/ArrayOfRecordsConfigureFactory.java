@@ -89,7 +89,7 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
      *  order.
      */
     public Parameter columns;
-    
+
     /** The name of the attribute that is to be displayed.
      *  That attribute is required to contain an array of record tokens.
      */

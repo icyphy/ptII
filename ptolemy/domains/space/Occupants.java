@@ -85,7 +85,7 @@ import ptolemy.util.MessageHandler;
  <li> Move an occupant to a new space, and either replace or
       share with any current occupant of the destination space.
  </ul>
- 
+
  FIXME: When adding or editing a person, method _editPersonQuery,
  we should use Java code to tolerate more formats for the date, or
  better yet to bring up a calendar!
@@ -109,25 +109,25 @@ public class Occupants extends ArrayOfRecordsRecorder {
     public Occupants(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // NOTE: The following depends on vergil, so with this
         // here, the actor can't run headless.
         new OccupantsConfigureFactory(this, "factory");
-        
+
         iconColumns.setExpression("{\"deskno\", \"lname\"}");
         colorKey.setExpression("sponsorlname");
         columns.setExpression("{\"deskno\", \"lname\", \"fnames\"," +
                         " \"email\", \"classcd\", \"sponsorlname\", " +
                         "\"occupancy\", \"departure\", \"spacenotes\"}");
-        
+
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");
 
         table = new StringParameter(this, "table");
         table.setExpression("v_spaces");
-        
+
         // Construct database schema information.
-        
+
         // FIXME: There must be a better way to do the following using SQL.
         // How to parameterize this?
 
@@ -141,7 +141,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
         _spaceFields.add("hasdesk");
         _spaceFields.add("roomtype");
         _spaceFields.add("spaceid");
-        
+
         // Construct a set of names of fields that remain with the
         // occupant rather than with the space.
         _occupantFields = new LinkedHashSet<String>();
@@ -151,7 +151,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
         _occupantFields.add("lname");
         _occupantFields.add("personid");
         _occupantFields.add("classcd");
-        
+
         // Construct a set of names of fields that belong to the
         // pairing of the person and the space.
         _occupantInSpaceFields = new LinkedHashSet<String>();
@@ -165,12 +165,12 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
-    /** Name of the DatabaseManager to use. 
+
+    /** Name of the DatabaseManager to use.
      *  This defaults to "DatabaseManager".
      */
     public StringParameter databaseManager;
-    
+
     /** Table to use within the database.
      *  This is a string that defaults to "v_spaces".
      */
@@ -178,10 +178,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The set of values of the classcd field found in the database. */
     private String[] _classes;
-    
+
     /** The fields that can be edited for a person in a space. */
     private Set<String> _occupantInSpaceFields;
 
@@ -190,19 +190,19 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
     /** The selected row. */
     private int _selectedRow = -1;
-    
+
     /** A set of names of fields that remain with the space rather the occupant. */
     private Set<String> _spaceFields;
-    
+
     /** The table. */
     private JTable _table;
-    
+
     /** Indicator that a move to a new location should add a new space. */
     private static int _ADD_NEW = 0;
-    
+
     /** Indicator that a move to a new location should add a new space. */
     private static int _REPLACE = 1;
-    
+
     /** Indicator that a move to a new location should add a new space. */
     private static int _SWAP = 2;
 
@@ -254,7 +254,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             }
             fieldValues.append(_quotedString(fieldValue));
         }
-        
+
         // Now construct the query
         StringBuffer sql = new StringBuffer();
         sql.append("insert into ");
@@ -281,7 +281,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             database.executeUpdate(clear.toString(), 1);
         }
     }
-    
+
     /** Return an array of the names of classes in the database.
      *  @param database The database manager.
      *  @return An array of class names found in the database.
@@ -319,7 +319,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
         }
         return _classes;
     }
-    
+
     /** Construct a query for assigning an existing person to a space.
      *  @param person A record with person information.
      *  @param room The room to assign the person to.
@@ -358,7 +358,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 + "\nYou may also specify or change the sponsor.";
         ComponentDialog subdialog = new ComponentDialog(
                 parent, "Edit occupant", query, null, message);
-        
+
         if (!"OK".equals(subdialog.buttonPressed())) {
             // User canceled.
             throw new CancelException();
@@ -394,7 +394,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 }
             }
         }
-        
+
         Map<String,Token> map = _recordAsMap(person);
         map.put("spacenotes", new StringToken(query.getStringValue("spacenotes")));
         map.put("occupancy", new StringToken(query.getStringValue("occupancy")));
@@ -435,12 +435,12 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *   or if re-executing the model throws it.
      */
     private boolean _move(
-            DatabaseManager database, 
-            String sourceSpaceID, 
+            DatabaseManager database,
+            String sourceSpaceID,
             String destinationSpaceID,
-            int mode) 
+            int mode)
             throws KernelException {
-        
+
         // If the source and destination IDs are the same, don't do anything.
         if (sourceSpaceID.equals(destinationSpaceID)) {
             try {
@@ -475,7 +475,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             return true;
         }
         RecordToken sourceRecord = (RecordToken)sourceArray.getElement(0);
-        
+
         // Next use a query to get a complete record of the destination.
         StringBuffer sql2 = new StringBuffer();
         sql2.append("select * from ");
@@ -530,7 +530,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     clearedFieldValues.append("=NULL");
                 }
             }
-            
+
             // Now construct the query
             StringBuffer sql = new StringBuffer();
             sql.append("update ");
@@ -540,7 +540,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             sql.append(" where trim(spaceid)='");
             sql.append(destinationSpaceID);
             sql.append("';");
-            
+
             database.executeUpdate(sql.toString(), 1);
 
             // Append to the query to clear the source location.
@@ -552,7 +552,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             clear.append(" where trim(spaceid)='");
             clear.append(sourceSpaceID);
             clear.append("';");
-            
+
             database.executeUpdate(clear.toString(), 1);
         } else if (mode == _SWAP) {
             // Create a new entry that swaps all the fields
@@ -584,7 +584,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     sourceFieldValues.append(_quotedString(destinationFieldValue));
                 }
             }
-            
+
             // Now construct the query
             StringBuffer sql = new StringBuffer();
             sql.append("update ");
@@ -594,7 +594,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             sql.append(" where trim(spaceid)='");
             sql.append(sourceSpaceID);
             sql.append("';");
-            
+
             database.executeUpdate(sql.toString(), 1);
 
             // Append to the query to clear the source location.
@@ -606,7 +606,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             clear.append(" where trim(spaceid)='");
             clear.append(destinationSpaceID);
             clear.append("';");
-            
+
             database.executeUpdate(clear.toString(), 1);
         }
         return true;
@@ -625,7 +625,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             if (priorLname != null) {
                 lname = ((StringToken)priorLname).stringValue().trim();
                 if (lname.length() > 0) {
-                    foundOccupant = true; 
+                    foundOccupant = true;
                 }
             }
             Token priorFnames = occupant.get("fnames");
@@ -633,7 +633,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             if (priorFnames != null) {
                 fnames = ((StringToken)priorFnames).stringValue().trim();
                 if (fnames.length() > 0) {
-                    foundOccupant = true; 
+                    foundOccupant = true;
                 }
             }
             if (foundOccupant) {
@@ -677,8 +677,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
         ArrayToken priorOccupants = database.executeQuery(sql1.toString());
         return priorOccupants;
-    }        
-    
+    }
+
     /** Return the specified string surrounded by single quotes
      *  with any internal single quotes escaped. If the string is
      *  empty, return instead the string "NULL".
@@ -691,7 +691,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
         }
         return "'" + string.replace("'", "\\'") + "'";
     }
-    
+
     /** Return a map representing the specified record token.
      *  @param record The record token.
      *  @return A map with the contents of the record.
@@ -708,7 +708,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
         }
         return result;
     }
-    
+
     /** Open a dialog to search for a person.
      *  @param lname Initial entry for the last name.
      *  @param fnames Initial entry for the first names.
@@ -753,10 +753,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
             sponsorlname = _getField(sponsor, "lname");
             query.addDisplay("sponsorlname", "sponsor last name", sponsorlname);
         }
-        
+
         ComponentDialog subdialog = new ComponentDialog(
                 parent, "Find a person", query, null, message);
-        
+
         if (!"OK".equals(subdialog.buttonPressed())) {
             // User canceled.
             throw new CancelException();
@@ -845,7 +845,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     // a center), so we construct a dummy record for that.
                     RecordToken sponsorsSponsor = new RecordToken();
                     sponsor = _searchForPerson(
-                            sponsorlname, "", "", "", "", parent, object, 
+                            sponsorlname, "", "", "", "", parent, object,
                             database, sponsorsSponsor, "Please specify a sponsor:");
                     sponsorlname = _getField(sponsor, "lname");
                     return _searchForPerson(
@@ -905,13 +905,13 @@ public class Occupants extends ArrayOfRecordsRecorder {
             return (RecordToken)matches.getElement(selectedOne);
         } else {
             // There is only one match. Use that.
-            return (RecordToken)matches.getElement(0);                            
+            return (RecordToken)matches.getElement(0);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** An interactive editor that configures the occupants. */
     public class OccupantsConfigureFactory extends EditorFactory {
 
@@ -950,7 +950,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 }
                 pane.display(value, columnsValue);
                 _table = pane.table;
-                
+
                 String[] buttons = {"Close",
                         "Edit occupant",
                         "Move occupant",
@@ -968,12 +968,12 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 if (_selectedRow >= 0 && _selectedRow < _table.getRowCount()) {
                     _table.getSelectionModel().setSelectionInterval(_selectedRow, _selectedRow);
                 }
-                
+
                 ComponentDialog dialog = new ComponentDialog(
                         parent, object.getFullName(), pane, buttons, null, true);
-                
+
                 String response = dialog.buttonPressed();
-                
+
                 // First ensure that there is a selected row if one is needed.
                 if ("Edit occupant".equals(response)
                         || "Move occupant".equals(response)
@@ -997,7 +997,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     abort = true;
                     throw new CancelException();
                 } else if ("Edit occupant".equals(response)) {
-                    
+
                     ///////////////////////////////////////////// Edit occupant
 
                     ArrayToken array = (ArrayToken)records.getToken();
@@ -1038,7 +1038,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     alteredDatabase = true;
 
                 } else if ("Move occupant".equals(response)) {
-                    
+
                     ///////////////////////////////////////////// Move occupant
                     try {
                         // Guess about the space information and construct a query.
@@ -1050,7 +1050,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         String spacenotes = _getField(record, "spacenotes");
                         String fnames = _getField(record, "fnames");
                         String lname = _getField(record, "lname");
-                        
+
                         // If there is no person, warn and abort.
                         if (fnames.trim().equals("") && lname.trim().equals("")) {
                             MessageHandler.warning("No person occupying the selected space.");
@@ -1063,12 +1063,12 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         query.addLine("room", "room", room);
                         query.addLine("deskno", "desk", deskno);
                         query.addLine("spacenotes", "notes", spacenotes);
-                        
+
                         String message = "Move " + fnames + " " + lname + " to location:";
                         // The null below says to use default buttons.
                         ComponentDialog subdialog = new ComponentDialog(
                                 parent, "Move an occupant", query, null, message);
-                        
+
                         if ("OK".equals(subdialog.buttonPressed())) {
                             building = query.getStringValue("bldg");
                             room = query.getStringValue("room");
@@ -1092,7 +1092,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                 // prior occupants. They should all have the same space-specific
                                 // information.
                                 RecordToken destination = (RecordToken)priorOccupants.getElement(0);
-                                String priorOccupantsSpaceID 
+                                String priorOccupantsSpaceID
                                         = ((StringToken)destination.get("spaceid")).stringValue();
                                 String sourceSpaceID
                                         = ((StringToken)record.get("spaceid")).stringValue();
@@ -1105,7 +1105,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                     question.append("Space is occupied by ");
                                     question.append(name);
                                     question.append(". Move anyway?");
-                                    
+
                                     String[] confirmButtons = {"Share with occupant",
                                             "Replace occupant",
                                             "Swap with occupant",
@@ -1114,7 +1114,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                     ComponentDialog confirm = new ComponentDialog(
                                             parent, message, label, confirmButtons);
                                     String confirmResponse = confirm.buttonPressed();
-                                    
+
                                     if ("Cancel".equals(confirmResponse)) {
                                         return;
                                     } else if ("Share with occupant".equals(confirmResponse)) {
@@ -1150,11 +1150,11 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         MessageHandler.error(
                                 "Update failed. Perhaps you need to resynchronize with the database?", e);
                         return;
-                    }                    
+                    }
                 } else if ("Add occupant".equals(response)) {
 
                     ///////////////////////////////////////////// Add a person
-                    
+
                     ArrayToken array = (ArrayToken)records.getToken();
                     RecordToken record = (RecordToken)array.getElement(_selectedRow);
                     String building = _getField(record, "bldg");
@@ -1176,7 +1176,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         question.append("Space is occupied by ");
                         question.append(occupant);
                         question.append(". Replace or share?");
-                        
+
                         String[] confirmButtons = {"Share with occupant",
                                 "Replace occupant",
                                 "Cancel"};
@@ -1185,7 +1185,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         ComponentDialog confirm = new ComponentDialog(
                                 parent, message, label, confirmButtons);
                         String confirmResponse = confirm.buttonPressed();
-                        
+
                         if ("Cancel".equals(confirmResponse)) {
                             throw new CancelException();
                         } else if ("Share with occupant".equals(confirmResponse)) {
@@ -1202,7 +1202,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     // Construct a query pre-populated with the specified information.
                     RecordToken newPerson = _editPersonQuery(
                             personInfo, room, database, object, parent);
-                    
+
                     if (share) {
                         _addNewShared(database, null,
                                 (RecordToken)priorOccupants.getElement(0), newPerson);
@@ -1234,7 +1234,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 } else if ("Remove occupant".equals(response)) {
 
                     ///////////////////////////////////////////// Remove a person
-                    
+
                     ArrayToken array = (ArrayToken)records.getToken();
                     RecordToken record = (RecordToken)array.getElement(_selectedRow);
                     String fnames = _getField(record, "fnames");
@@ -1343,10 +1343,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         query.addLine("hasdesk", "has desk", hasdesk);
                         query.addLine("roomtype", "room type", roomtype);
                         query.addLine("spacenotes", "notes", spacenotes);
-                        
+
                         ComponentDialog subdialog = new ComponentDialog(
                                 parent, "Add a Space", query);
-                        
+
                         if ("OK".equals(subdialog.buttonPressed())) {
                             building = query.getStringValue("bldg");
                             room = query.getStringValue("room");

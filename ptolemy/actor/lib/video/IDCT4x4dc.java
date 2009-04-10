@@ -1,4 +1,4 @@
-/* A Sum of Absolute Difference between two image blocks. 
+/* A Sum of Absolute Difference between two image blocks.
 
 Copyright (c) 1999-2008 The Regents of the University of California.
 All rights reserved.
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
    The output port will have the result of SAD.
 
    @author Hwayong Oh
-   @version $Id: DCT4x4dc.java,v 0.2 
+   @version $Id: DCT4x4dc.java,v 0.2
    @since Ptolemy II 7.0
    @Pt.ProposedRating Red (oh)
    @Pt.AcceptedRating Red (oh)
@@ -64,13 +64,13 @@ public class IDCT4x4dc extends TypedAtomicActor {
     public IDCT4x4dc(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this,"input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         output = new TypedIOPort(this,"output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
-      
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,15 +78,15 @@ public class IDCT4x4dc extends TypedAtomicActor {
 
     /** Input for tokens to be a part of previous frame. This is a single port, and its
      * type is 2D array.
-     */ 
+     */
     public TypedIOPort input;
-    
-    /** Output port. This is a result for calculating sum of absolute differences between 
+
+    /** Output port. This is a result for calculating sum of absolute differences between
      * ImgBlockA and ImgBlockB.
      * The type is inferred form the connections.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -103,7 +103,7 @@ public class IDCT4x4dc extends TypedAtomicActor {
 
         return newObject;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _output = new IntMatrixToken[1];
@@ -123,7 +123,7 @@ public class IDCT4x4dc extends TypedAtomicActor {
         int d01, d23;
         int [][] sum = new int[4][4];
         IntMatrixToken _input;
-       
+
         if (input.hasToken(0)) {
             _input = (IntMatrixToken)input.get(0);
         } else {
@@ -142,7 +142,7 @@ public class IDCT4x4dc extends TypedAtomicActor {
             temp[2][i] = d01 - d23;
             temp[3][i] = d01 + d23;
         }
-        
+
         for( i = 0; i < 4; i++ )
         {
             s01 = temp[i][0] + temp[i][1];
@@ -155,13 +155,13 @@ public class IDCT4x4dc extends TypedAtomicActor {
             sum[i][2] = d01 - d23;
             sum[i][3] = d01 + d23;
         }
-                  
+
         _output[0] = new IntMatrixToken(sum);
         output.send(0, _output, _output.length );
-        
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private IntMatrixToken[] _output;    
-     
+    private IntMatrixToken[] _output;
+
 }

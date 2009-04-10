@@ -40,9 +40,9 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * Controller for the TDL module.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLController extends TDLActor {
         /**
@@ -50,7 +50,7 @@ public class TDLController extends TDLActor {
          * and an empty string as a name. You can then change the name with
          * setName(). If the workspace argument is null, then use the default
          * workspace.
-         * 
+         *
          * @param workspace
          *            The workspace that will list the actor.
          */
@@ -61,7 +61,7 @@ public class TDLController extends TDLActor {
         /**
          * Construct a modal controller with a name and a container. The container
          * argument must not be null, or a NullPointerException will be thrown.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -84,7 +84,7 @@ public class TDLController extends TDLActor {
          * Create a new port with the specified name in the container of this
          * controller, which in turn creates a port in this controller and all the
          * refinements. This method is write-synchronized on the workspace.
-         * 
+         *
          * @param name
          *            The name to assign to the newly created port.
          * @return The new port.
@@ -143,7 +143,7 @@ public class TDLController extends TDLActor {
         /**
          * Control whether adding a port should be mirrored in the modal model and
          * refinements. This is added to allow control by the UI.
-         * 
+         *
          * @param disable
          *            True if mirroring should not occur.
          */
@@ -157,7 +157,7 @@ public class TDLController extends TDLActor {
         /**
          * Override the base class to ensure that the proposed container is a
          * ModalModel or null.
-         * 
+         *
          * @param container
          *            The proposed container.
          * @exception IllegalActionException

@@ -73,7 +73,7 @@ import ptolemy.util.MessageHandler;
  after they are changed by SetVariable. To circumvent this,
  RepaintController has been created, which can be found under
  Utilities in the library, and allows to specify when
- repaints should happen. 
+ repaints should happen.
  </p><p>
  If <i>delayed</i> is false, then the change to the value of
  the variable is performed immediately.  This allows more frequent
@@ -266,9 +266,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 // set to 1 and hence the value would change this two instead of one.
                 // $PTII/ptolemy/actor/parameters/test/auto/Priority4.xml
                 // tests this behavior.
-                
+
                 // The ChangeRequest has false as third argument to avoid complete
-                // repaints of the model.                
+                // repaints of the model.
                 ChangeRequest request = new ChangeRequest(this,
                         "SetVariable change request", false) {
                     protected void _execute() throws IllegalActionException {
@@ -326,14 +326,14 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-//    /**Test based on the value of the new token whether 
+//    /**Test based on the value of the new token whether
 //     * an update is necessary.
 //     * This method is conversative in that sense that it might say
 //     * that an update is necessary, while strictly it isn't. This for
 //     * example when it is difficult to determine whether something will
 //     * actually change (for example with expressions, where the expression
 //     * might remain the same, but the actual values might have changed).
-//     * @param newToken The new token. 
+//     * @param newToken The new token.
 //     * @return True when an update needs to be done.
 //     */
 //    private boolean _updateNecessary(Token newToken) throws IllegalActionException {
@@ -341,13 +341,13 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 //
 //        if (variable instanceof Variable) {
 //            Token oldToken = ((Variable) variable).getToken();
-//            
+//
 //            return oldToken == null || !oldToken.equals(newToken);
 //        }
 //        return true;
 //    }
-    
-    
+
+
     /** Set the value of the associated container's variable.
      *  @param value The new value.
      */
@@ -356,7 +356,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
         if (variable instanceof Variable) {
             Token oldToken = ((Variable) variable).getToken();
-            
+
             if (oldToken == null || !oldToken.equals(value)) {
                 ((Variable) variable).setToken(value);
 

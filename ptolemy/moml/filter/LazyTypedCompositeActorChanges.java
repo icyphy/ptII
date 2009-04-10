@@ -82,7 +82,7 @@ public class LazyTypedCompositeActorChanges implements MoMLFilter {
         // which will open up a large xml file and then close after 2 seconds.
         if (attributeName.equals("class")) {
             if (attributeValue.equals("ptolemy.actor.TypedCompositeActor")
-                && (container !=null /* && container.toplevel() != container */)) { 
+                && (container !=null /* && container.toplevel() != container */)) {
                 if (container instanceof InstantiableNamedObj
                     && !(((InstantiableNamedObj)container).isWithinClassDefinition())) {
                     // We found a class outside of a class change.

@@ -58,7 +58,7 @@ import ptolemy.actor.parameters.ParameterPort;
  to remove all the dependencies.
 
  @see Dependency
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 7.2

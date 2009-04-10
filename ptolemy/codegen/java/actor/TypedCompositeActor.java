@@ -180,7 +180,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         }
         return processCode(code.toString());
     }
-    
+
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the

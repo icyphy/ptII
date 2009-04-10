@@ -73,25 +73,25 @@ public class Maximum extends TypedAtomicActor {
         input.setMultiport(true);
 
         maximumValue = new TypedIOPort(this, "maximumValue", false, true);
-        
+
         /* Note that the output ports need not be multiports since all output
          * channels carry the same data. Using multiports this way is not
          * recommended, so please do not emulate this design in your own actors.
          * Changing this actor to the recommended design would break existing
          * models, so we leave it as is.
-         */        
+         */
         maximumValue.setMultiport(true);
         maximumValue.setTypeAtMost(BaseType.SCALAR);
         maximumValue.setTypeAtLeast(input);
 
         channelNumber = new TypedIOPort(this, "channelNumber", false, true);
-        
+
         /* Note that the output ports need not be multiports since all output
          * channels carry the same data. Using multiports this way is not
          * recommended, so please do not emulate this design in your own actors.
          * Changing this actor to the recommended design would break existing
          * models, so we leave it as is.
-         */        
+         */
         channelNumber.setMultiport(true);
         channelNumber.setTypeEquals(BaseType.INT);
     }

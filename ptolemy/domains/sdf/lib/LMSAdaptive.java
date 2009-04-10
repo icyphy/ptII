@@ -258,6 +258,6 @@ public class LMSAdaptive extends FIR {
         super.initialize();
         // Explicit call of _initializeTabs necessary, since this actor changes
         // _taps while running.
-        _initializeTaps();        
+        _initializeTaps();
     }
 }

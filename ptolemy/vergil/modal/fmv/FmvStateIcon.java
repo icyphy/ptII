@@ -40,13 +40,13 @@ import ptolemy.vergil.modal.StateIcon;
 An icon specialized for states of a state machine with reachability and risk analysis.
 
 @author Chihhong Patrick Cheng
-@version $Id$ 
+@version $Id$
 @since Ptolemy II 7.1
 @Pt.ProposedRating Red (patrickj)
 @Pt.AcceptedRating Red (patrickj)
 */
 public class FmvStateIcon extends StateIcon {
-    
+
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
      *  will be thrown.
@@ -61,8 +61,8 @@ public class FmvStateIcon extends StateIcon {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-    
-    
+
+
     /** Return the paint to use to fill the icon.
      *  This class returns Color.white, unless the refinement name
      *  is not empty, in which case it returns a light green.
@@ -96,5 +96,5 @@ public class FmvStateIcon extends StateIcon {
         }
         return Color.white;
     }
-    
+
 }

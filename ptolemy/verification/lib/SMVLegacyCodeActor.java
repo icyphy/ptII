@@ -40,21 +40,21 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 ////SMVLegacyCodeActor
 /**
- * An actor of this class contains pure SMV codes. Note that the 
+ * An actor of this class contains pure SMV codes. Note that the
  * SMVLegacyCodeActor is currently not executable.
- * 
- * <p>When performing the conversion, the code would be automatically appended to 
- * the generated file. However, since for other actors, they require signal 
- * information for their conversion, it is the duty of the designer to specify ports. 
- * 
+ *
+ * <p>When performing the conversion, the code would be automatically appended to
+ * the generated file. However, since for other actors, they require signal
+ * information for their conversion, it is the duty of the designer to specify ports.
+ *
  * <p>To use this actor within Vergil, double click on the actor and
  * insert SMV code into the code templates.
- * 
+ *
  * The code writing should be similar to the embeddedCActor
- *  
+ *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher
  *         Brooks
- * @version 
+ * @version
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red (patrickj)
@@ -75,7 +75,7 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
     public SMVLegacyCodeActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         embeddedSMVCode = new StringAttribute(this, "embeddedSMVCode");
 
         // Set the visibility to expert, as casual users should
@@ -100,7 +100,7 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
                 + "EmbeddedSMV</text>\n" + "</svg>\n");
 
         new SRDirector(this, "SRDirector");
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,8 +123,8 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
     public void preinitialize() throws IllegalActionException {
         throw new IllegalActionException(this, getName() + " can not run in "
                 + "simulation mode.");
-    }    
-      
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

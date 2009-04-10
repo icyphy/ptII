@@ -56,9 +56,9 @@ import ptolemy.kernel.util.NamedObj;
  * Code generator helper associated with the PNDirector class. This director
  * initializes all the actors, then starts a thread for each actor that invokes
  * the fire code for the actor in an infinite loop.
- * 
+ *
  * FIXME: How to make it possible for executions to be finite?
- * 
+ *
  * @author Edward A. Lee (based on SDFDirector helper class)
  * @version $Id$
  * @since Ptolemy II 7.0
@@ -69,7 +69,7 @@ public class PNDirector extends Director {
 
         /**
          * Construct the code generator helper associated with the given PNDirector.
-         * 
+         *
          * @param pnDirector
          *            The associated ptolemy.domains.pn.kernel.PNDirector
          */
@@ -83,7 +83,7 @@ public class PNDirector extends Director {
 
         /**
          * Generate the body code that lies between variable declaration and wrapup.
-         * 
+         *
          * @return The generated body code.
          * @exception IllegalActionException
          *                If the {@link #_generateFireCode()} method throws the
@@ -125,7 +125,7 @@ public class PNDirector extends Director {
         /**
          * Get the files needed by the code generated from this helper class. This
          * base class returns an empty set.
-         * 
+         *
          * @return A set of strings that are header files needed by the code
          *         generated from this helper class.
          * @exception IllegalActionException
@@ -141,7 +141,7 @@ public class PNDirector extends Director {
         /**
          * Return the libraries specified in the "libraries" blocks in the templates
          * of the actors included in this CompositeActor.
-         * 
+         *
          * @return A Set of libraries.
          * @exception IllegalActionException
          *                If thrown when gathering libraries.
@@ -166,7 +166,7 @@ public class PNDirector extends Director {
 
         /**
          * Generate the initialize code for the associated PN director.
-         * 
+         *
          * @return The generated initialize code.
          * @exception IllegalActionException
          *                If the helper associated with an actor throws it while
@@ -199,7 +199,7 @@ public class PNDirector extends Director {
         }
 
         /**
-     * 
+     *
      */
         public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -212,7 +212,7 @@ public class PNDirector extends Director {
 
         /**
          * Generate the preinitialize code for the associated PN director.
-         * 
+         *
          * @return The generated preinitialize code.
          * @exception IllegalActionException
          *                If the helper associated with an actor throws it while
@@ -268,7 +268,7 @@ public class PNDirector extends Director {
         /**
          * Generate code for transferring enough tokens to complete an internal
          * iteration.
-         * 
+         *
          * @param inputPort
          *            The port to transfer tokens.
          * @param code
@@ -314,7 +314,7 @@ public class PNDirector extends Director {
 
         /**
          * Generate variable initialization for the referenced parameters.
-         * 
+         *
          * @return code The generated code.
          * @exception IllegalActionException
          *                If the helper class for the model director cannot be
@@ -327,7 +327,7 @@ public class PNDirector extends Director {
 
         /**
          * Generate the wrapup code for the associated PN director.
-         * 
+         *
          * @return The generated preinitialize code.
          * @exception IllegalActionException
          *                If the helper associated with an actor throws it while
@@ -372,7 +372,7 @@ public class PNDirector extends Director {
         /**
          * Create offset variables for the channels of the given port. The offset
          * variables are generated unconditionally.
-         * 
+         *
          * @param port
          *            The port whose offset variables are generated.
          * @return Code that declares the read and write offset variables.
@@ -428,7 +428,7 @@ public class PNDirector extends Director {
          * Generate the notTerminate flag variable for the associated PN director.
          * Generating notTerminate instead of terminate saves the negation in
          * checking the flag (e.g. "while (!terminate) ...").
-         * 
+         *
          * @return The varaible label of the notTerminate flag.
          */
         protected String _generateNotTerminateFlag() {
@@ -464,7 +464,7 @@ public class PNDirector extends Director {
             args.add(_generateActorNameFileForDebugging());
             args.add(actor.getDisplayName());
             code.append(_codeStream.getCodeBlock("printThreadName", args));
-                        
+
                         // mainLoop
 
                         // Check if the actor is an opague CompositeActor.
@@ -487,19 +487,19 @@ public class PNDirector extends Director {
                                 String pnPostfireCode = "";
 
                                 String loopCode = "while (true) {" + _eol;
-                                
+
                                 // Generate a for loop if there is a firing count limit.
                                 if (actor instanceof LimitedFiringSource) {
                                         int firingCount = ((IntToken) ((LimitedFiringSource) actor)
                                                 .firingCountLimit.getToken()).intValue();
-                                        
+
                                         if (firingCount != 0) {
                                             loopCode = "int i = 0;" + _eol +
                                             "for (; i < " + firingCount + "; i++) {" + _eol;
                                         }
                                         pnPostfireCode = _eol;
-                                }                                 
-                                
+                                }
+
                                 functionCode.append(loopCode);
 
                                 functionCode.append(helper.generateFireCode());
@@ -572,7 +572,7 @@ public class PNDirector extends Director {
 
         /**
          * Generate the thread function name for a given actor.
-         * 
+         *
          * @param actor
          *            The given actor.
          * @return A unique label for the actor thread function.

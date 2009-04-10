@@ -48,14 +48,14 @@ import ptolemy.kernel.util.Settable;
 
 /**
  * Generates the TDL code for a given TDL module.
- * 
- * 
+ *
+ *
  * @author Patricia Derler
  */
 public class TDLCodeGenerator extends Attribute {
         /**
          * Construct a factory with the default workspace and "" as name.
-         * 
+         *
          * @exception IllegalActionException
          *                If the factory is not of an acceptable attribute for the
          *                container.
@@ -71,7 +71,7 @@ public class TDLCodeGenerator extends Attribute {
 
         /**
          * Construct a factory with the specified container and name.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -94,7 +94,7 @@ public class TDLCodeGenerator extends Attribute {
 
         /**
          * Generate TDL code for the given TDL model.
-         * 
+         *
          * @param model
          *            The given TDL model.
          * @return The TDL code.
@@ -113,7 +113,7 @@ public class TDLCodeGenerator extends Attribute {
          * Method to instantiate the Editor Factory class called from the
          * constructor. The reason for having this is that it can be overridden by
          * subclasses
-         * 
+         *
          * @exception IllegalActionException
          *                If the editor factory can not be created.
          * @exception NameDuplicationException
@@ -151,7 +151,7 @@ public class TDLCodeGenerator extends Attribute {
         protected class TDLEditorFactory extends EditorFactory {
                 /**
                  * Constructs a TDL EditorFactory object for a TDL model.
-                 * 
+                 *
                  * @param container
                  *            The container, which is a TDL model.
                  * @param name
@@ -171,7 +171,7 @@ public class TDLCodeGenerator extends Attribute {
                 /**
                  * Create an editor for configuring the specified object with the
                  * specified parent window.
-                 * 
+                 *
                  * @param object
                  *            The object to configure.
                  * @param parent

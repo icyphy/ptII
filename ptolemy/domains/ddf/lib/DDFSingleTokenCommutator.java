@@ -61,11 +61,11 @@ import ptolemy.kernel.util.Settable;
  */
 public class DDFSingleTokenCommutator extends SingleTokenCommutator {
 
-    // FIXME: This actor extends sr.lib.SingleTokenCommutator which is 
+    // FIXME: This actor extends sr.lib.SingleTokenCommutator which is
     // really wrong because it means that if we ship DDF, then we _must_
     // ship SR.  One solution would be to move this actor elsewhere,
     // say actor/lib.  It would be interesting to see what happens when
-    // this actor is used with SDF, perhaps we should throw an error 
+    // this actor is used with SDF, perhaps we should throw an error
     // automatically.
 
     /** Construct an actor in the specified container with the specified name.
@@ -110,13 +110,13 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         if (port == input) {
             try {
                 _rateArray = new ArrayToken[input.getWidth()];
-    
+
                 IntToken[] rate = new IntToken[input.getWidth()];
-    
+
                 for (int i = 0; i < input.getWidth(); i++) {
                     rate[i] = _zero;
                 }
-                
+
                     for (int i = 0; i < input.getWidth(); i++) {
                         rate[i] = _one;
                         _rateArray[i] = new ArrayToken(BaseType.INT, rate);

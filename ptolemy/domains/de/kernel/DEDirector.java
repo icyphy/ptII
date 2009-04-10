@@ -317,7 +317,7 @@ public class DEDirector extends Director implements TimedDirector {
 
         super.addDebugListener(listener);
     }
-    
+
     /** Update the director parameters when attributes are changed.
      *  Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>, and
      *  <i>binCountFactor</i> parameters will only be effective on
@@ -367,7 +367,7 @@ public class DEDirector extends Director implements TimedDirector {
         newObject._stopFireRequested = false;
         return newObject;
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.
@@ -376,7 +376,7 @@ public class DEDirector extends Director implements TimedDirector {
     public Dependency delayDependency(double delay) {
         return BooleanDependency.OTIMES_IDENTITY;
     }
-    
+
     /** Return a string that describes the depths of actors and their ports.
      *  These depths are used to prioritize firings, where lower depths
      *  result in higher priorities.
@@ -385,7 +385,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public String describePriorities() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality 
+        CausalityInterfaceForComposites causality
                 = (CausalityInterfaceForComposites)container.getCausalityInterface();
         return causality.describeDepths();
     }
@@ -761,7 +761,7 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
             _enqueueEvent(actor, result);
-            
+
             // Findbugs: Multithreaded correctness,
             // [M M MWN] Mismatched notify() [MWN_MISMATCHED_NOTIFY]
             //    This method calls Object.notify() or Object.notifyAll()
@@ -775,7 +775,7 @@ public class DEDirector extends Director implements TimedDirector {
         }
         return result;
     }
-    
+
     // NOTE: We do not need to override fireAtCurrentTime(Actor) because in
     // the base class it does the right thing. In particular, it attempts
     // to fire at the time returned by getModelTime(), but if by the time
@@ -965,7 +965,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void invalidateSchedule() {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality 
+        CausalityInterfaceForComposites causality
                 = (CausalityInterfaceForComposites)container.getCausalityInterface();
         causality.invalidate();
     }
@@ -1202,10 +1202,10 @@ public class DEDirector extends Director implements TimedDirector {
         // clearly indicate that the cost is in static analysis
         // done in preinitialize.
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality 
+        CausalityInterfaceForComposites causality
                 = (CausalityInterfaceForComposites)container.getCausalityInterface();
         causality.checkForCycles();
-        
+
         if (_debugging && _verbose) {
             _debug("## Depths assigned to actors and ports:");
             _debug(describePriorities());
@@ -1457,7 +1457,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     protected int _getDepthOfActor(Actor actor) throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality 
+        CausalityInterfaceForComposites causality
                 = (CausalityInterfaceForComposites)container.getCausalityInterface();
         return causality.getDepthOfActor(actor);
     }
@@ -1471,11 +1471,11 @@ public class DEDirector extends Director implements TimedDirector {
      */
     protected int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality 
+        CausalityInterfaceForComposites causality
                 = (CausalityInterfaceForComposites)container.getCausalityInterface();
         return causality.getDepthOfPort(ioPort);
     }
-    
+
     /** Dequeue the events that have the smallest tag from the event queue.
      *  Return their destination actor. Advance the model tag to their tag.
      *  If the timestamp of the smallest tag is greater than the stop time
@@ -1677,10 +1677,10 @@ public class DEDirector extends Director implements TimedDirector {
                             while (!_stopRequested && !_stopFireRequested) {
                                 lastFoundEvent = _eventQueue.get();
                                 currentTime = lastFoundEvent.timeStamp();
-    
+
                                 long elapsedTime = System.currentTimeMillis()
                                         - _realStartTime;
-    
+
                                 // NOTE: We assume that the elapsed time can be
                                 // safely cast to a double.  This means that
                                 // the DE domain has an upper limit on running
@@ -1691,7 +1691,7 @@ public class DEDirector extends Director implements TimedDirector {
                                 if (currentTime.compareTo(elapsed) <= 0) {
                                     break;
                                 }
-                                
+
                                 // NOTE: We used to do the following, but it had a limitation.
                                 // In particular, if any user code also calculated the elapsed
                                 // time and then constructed a Time object to post an event
@@ -1705,16 +1705,16 @@ public class DEDirector extends Director implements TimedDirector {
                                 if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
                                     break;
                                 }*/
-    
+
                                 long timeToWait = (long) (currentTime.subtract(
                                         elapsed).getDoubleValue() * 1000.0);
-    
+
                                 if (timeToWait > 0) {
                                     if (_debugging) {
                                         _debug("Waiting for real time to pass: "
                                                 + timeToWait);
                                     }
-    
+
                                     try {
                                         // NOTE: The built-in Java wait() method
                                         // does not release the
@@ -1742,7 +1742,7 @@ public class DEDirector extends Director implements TimedDirector {
                             // which is in the future. This violates the principle
                             // of synchronize to real time.  Hence, we must return
                             // without processing the event or incrementing time.
-                            
+
                             // NOTE: CompositeActor used to call stopFire() before
                             // queuing the change request, which created the risk
                             // that the above wait() would be terminated by
@@ -1821,7 +1821,7 @@ public class DEDirector extends Director implements TimedDirector {
                 // In a previous iteration of this while loop,
                 // we have already found an event and the actor to react to it.
                 // Check whether the newly found event has the same tag
-                // and destination actor. If so, they are 
+                // and destination actor. If so, they are
                 // handled at the same time. For example, a pure
                 // event and a trigger event that go to the same actor.
                 if (nextEvent.hasTheSameTagAs(lastFoundEvent)
@@ -1958,7 +1958,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;
-    
+
     /** Start time. */
     private transient Time _startTime;
 

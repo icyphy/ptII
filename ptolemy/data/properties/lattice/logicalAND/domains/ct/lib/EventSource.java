@@ -55,25 +55,25 @@ public class EventSource extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public EventSource(PropertyConstraintSolver solver, 
+    public EventSource(PropertyConstraintSolver solver,
             ptolemy.domains.ct.lib.EventSource actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();                
+        _lattice = (Lattice) getSolver().getLattice();
      }
 
-    public List<Inequality> constraintList() 
+    public List<Inequality> constraintList()
             throws IllegalActionException {
-        
-        ptolemy.domains.ct.lib.EventSource actor = 
+
+        ptolemy.domains.ct.lib.EventSource actor =
             (ptolemy.domains.ct.lib.EventSource) getComponent();
-        
+
         ArrayToken valuesToken = (ArrayToken) actor.values.getToken();
-        
+
         boolean isStatic = true;
         for (int i = 1; i < valuesToken.length(); i++) {
             if (!valuesToken.getElement(i - 1).equals(
@@ -82,7 +82,7 @@ public class EventSource extends AtomicActor {
                 break;
             }
         }
-        
+
         if (isStatic) {
             setAtLeast(actor.output, _lattice.TRUE);
         } else {

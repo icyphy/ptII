@@ -252,13 +252,13 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  the strict actor semantics, as described in this paper:
      *  <p>
      *  A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble,
-     *  "Heterogeneous Composition of Models of Computation," 
+     *  "Heterogeneous Composition of Models of Computation,"
      *  EECS Department, University of California, Berkeley,
-     *  Tech. Rep. UCB/EECS-2007-139, Nov. 2007. 
+     *  Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
      *  http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html
      *  <p>
      *  In particular, a director that implements this interface guarantees
-     *  that it will not invoke the postfire() method of an actor until all 
+     *  that it will not invoke the postfire() method of an actor until all
      *  its inputs are known at the current tag.  Moreover, it it will only
      *  do so in its own postfire() method, and in its prefire() and fire()
      *  methods, it does not change its own state.  Thus, such a director
@@ -292,7 +292,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         super.initialize();
 
         _realStartTime = System.currentTimeMillis();
-        
+
         // NOTE: The following used to be done in prefire(), which is wrong,
         // because prefire() can be invoked multiple times in an iteration
         // (particularly if this is inside another FixedPointDirector).
@@ -327,7 +327,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         if (!containsActors) {
             result = false;
-        } 
+        }
         _cachedFunctionalProperty = result;
         _functionalPropertyVersion = workspace().getVersion();
 
@@ -414,7 +414,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             _debug(this.getFullName() + "Iteration " + _currentIteration
                     + " is complete.");
         }
-        
+
         // NOTE: The following used to be done in prefire(), which is wrong,
         // because prefire() can be invoked multiple times in an iteration
         // (particularly if this is inside another FixedPointDirector).
@@ -512,7 +512,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     }
 
     /** Reset all receivers to unknown status and clear out variables used
-     *  to track which actors fired in the last iteration. 
+     *  to track which actors fired in the last iteration.
      */
     protected void _resetAllReceivers() {
         _actorsAllowedToFire.clear();
@@ -547,24 +547,24 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     while (true) {
                         long elapsedTime = System.currentTimeMillis()
                                 - _realStartTime;
-    
+
                         // NOTE: We assume that the elapsed time can be
                         // safely cast to a double.  This means that
                         // the SR domain has an upper limit on running
                         // time of Double.MAX_VALUE milliseconds.
                         double elapsedTimeInSeconds = elapsedTime / 1000.0;
                         double currentTime = getModelTime().getDoubleValue();
-    
+
                         if (currentTime <= elapsedTimeInSeconds) {
                             break;
                         }
-    
+
                         long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
-    
+
                         if (_debugging) {
                             _debug("Waiting for real time to pass: " + timeToWait);
                         }
-    
+
                         try {
                             // NOTE: The built-in Java wait() method
                             // does not release the

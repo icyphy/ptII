@@ -105,9 +105,9 @@ public class Publisher extends TypedAtomicActor {
 
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
-        // to not break any existing models.        
+        // to not break any existing models.
         output.setWidthEquals(input, false);
-        
+
         Parameter hide = new SingletonParameter(output, "_hide");
         hide.setToken(BooleanToken.TRUE);
         // hide = new SingletonParameter(this, "_hideName");
@@ -186,12 +186,12 @@ public class Publisher extends TypedAtomicActor {
             exception.initCause(throwable);
             throw exception;
         }
-        
+
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
-        // to not break any existing models. 
+        // to not break any existing models.
         newObject.output.setWidthEquals(newObject.input, false);
-        
+
         return newObject;
     }
 

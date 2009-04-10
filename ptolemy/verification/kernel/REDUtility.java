@@ -1,4 +1,4 @@
-/* An utility function for traversing the system and generate files for 
+/* An utility function for traversing the system and generate files for
  * model checking using Regional Decision Diagram (RED).
 
  Copyright (c) 1998-2008 The Regents of the University of California.
@@ -64,37 +64,37 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * This is an utility for Ptolemy model conversion. It performs a systematic
  * traversal of the system and convert the Ptolemy model into communicating
  * timed automata (CTA) with the format acceptable by model checker RED
- * (Regional Encoding Diagram Verification Engine). The conversion mechanism 
+ * (Regional Encoding Diagram Verification Engine). The conversion mechanism
  * is based on the technical report UCB/EECS-2008-41. Basically, here the DE
- * domain can be viewed as a generalization of the SR domain, where each 
- * "super dense" time tag in DE is now a tick in SR. Contrary to previous 
+ * domain can be viewed as a generalization of the SR domain, where each
+ * "super dense" time tag in DE is now a tick in SR. Contrary to previous
  * implementation, now the token would not accumulate in the port of the
  * FSMActor - therefore buffer overflow property would no longer exist in
  * this implementation. Buffer overflow would only happens in the TimedDelay
  * or NondeterministicTimedDelay actor.
- * 
- * However, in CTA the time is only "dense", and we are currently not able 
- * to have an efficient methodology to understand how to represent super 
+ *
+ * However, in CTA the time is only "dense", and we are currently not able
+ * to have an efficient methodology to understand how to represent super
  * dense time using dense time.
- * 
- * Therefore for a successful conversion, we simply disallow a system to 
- * have super dense time tag with the format (\tau, i), where i>0. In fact, the 
+ *
+ * Therefore for a successful conversion, we simply disallow a system to
+ * have super dense time tag with the format (\tau, i), where i>0. In fact, the
  * case in our context only happens when there is a timed delay actor with its
- * parameter equals to zero. For systems with super dense time tag with the 
- * format (\tau, i), where i>0, the system can still be converted. However, 
+ * parameter equals to zero. For systems with super dense time tag with the
+ * format (\tau, i), where i>0, the system can still be converted. However,
  * please note that the semantics is not preserved for complicated cases.
  * Our conversion concept is to use synchronizers "tick" for i=0, "tick+" for
- * i=1, and so on. 
- * 
- * Limitations: Simply following the statement in the technical report, we 
- * restate limitations of the conversion. The designer must understand the 
+ * i=1, and so on.
+ *
+ * Limitations: Simply following the statement in the technical report, we
+ * restate limitations of the conversion. The designer must understand the
  * boundary of variable domain for the model under conversion.
- * 
- * For the tool RED, all time constants should be an integer. This is not a 
- * problem because the unit is actually not specified by the timed automata. 
+ *
+ * For the tool RED, all time constants should be an integer. This is not a
+ * problem because the unit is actually not specified by the timed automata.
  * Therefore, we expect users to use integer values to specify their delay
  * or period.
- * 
+ *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -108,7 +108,7 @@ public class REDUtility {
      * view. It would perform a rewriting of each ModalModel with hierarchy to a
      * FSMActor. Note that in our current implementation this kind of rewriting
      * only supports to state refinements.
-     * 
+     *
      * @param originalCompositeActor
      * @return a flattened equivalent system.
      */
@@ -150,18 +150,18 @@ public class REDUtility {
     /**
      * This is the main function which tries to generate the system description
      * with the type StringBuffer where its content is acceptable by the tool
-     * RED (Regional Encoding Diagram). 
-     * 
+     * RED (Regional Encoding Diagram).
+     *
      * For hierarchical conversion, here we are able to deal with cases where
-     * state refinement exists. For a modalmodel with state refinement, we can 
+     * state refinement exists. For a modalmodel with state refinement, we can
      * rewrite it into an equivalent FSMActor.
-     * 
-     * FIXME: (This can not be treated as a bug formally) The conversion of a 
-     *         modalmodel with state refinement using the function 
+     *
+     * FIXME: (This can not be treated as a bug formally) The conversion of a
+     *         modalmodel with state refinement using the function
      *         generateEquivalentSystemWithoutHierachy() will generate a model
      *         where there is exclusive existence between two refinement state
-     *         machines. 
-     * 
+     *         machines.
+     *
      * @param PreModel The original model in Ptolemy II
      * @param pattern The temporal formula in TCTL
      * @param choice Specify the type of formula: buffer overflow detection or
@@ -185,7 +185,7 @@ public class REDUtility {
         CompositeActor model = generateEquivalentSystemWithoutHierachy(PreModel);
 
         // The format of RED is roughly organized as follows:
-        // 
+        //
         // (1) Constant Value Definition (#define CLOCK 1)
         // (2) Process Count Definition (Process count = 8;)
         // (3) Variable Declaration (global discrete a:0..8)
@@ -199,7 +199,7 @@ public class REDUtility {
         // one during iteration, thus we need to use different variables
         // to store different contents in each phase, then combine
         // all these information to form a complete format.
-        // 
+        //
 
         StringBuffer constantDefinition = new StringBuffer(""); // (1)
         StringBuffer variableDefinition = new StringBuffer(""); // (3)
@@ -210,7 +210,7 @@ public class REDUtility {
 
         // We need to record the order of Modules and Ports; these will
         // be processed later because the order decides the initial state
-        // of each process. 
+        // of each process.
         ArrayList<REDModuleNameInitialBean> processModuleNameList = new ArrayList<REDModuleNameInitialBean>();
         ArrayList<REDModuleNameInitialBean> processModulePortList = new ArrayList<REDModuleNameInitialBean>();
 
@@ -234,12 +234,12 @@ public class REDUtility {
         // (2) BoundedBufferNondeterministicDelay
         // (3) BoundedBufferTimedDelay
         // (4) Clock
-        // 
+        //
         // Note that the order is important. This is because
         // BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay.
         // If we place these two in the wrong order, it would always treat
         // BoundedBufferNondeterministicDelay as BoundedBufferTimedDelay.
-        // 
+        //
         int numOfFSMActors = 0;
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
@@ -493,7 +493,7 @@ public class REDUtility {
             }
         }
         returnREDFormat.append("local clock t;\n ");
-        
+
         // Synchronizer definition
         if (globalSynchronizerSet.size() != 0) {
             returnREDFormat.append("\nglobal synchronizer ");
@@ -572,7 +572,7 @@ public class REDUtility {
      * This function decides if the director of the current actor is DE. If not,
      * return false. This is because our current conversion to CTA is only valid
      * when the director is DE.
-     * 
+     *
      * @param model
      *                Model used for testing.
      * @return a boolean value indicating if the director is DE.
@@ -591,7 +591,7 @@ public class REDUtility {
      * used in the entity. When we later return the set, the system would use
      * another set container to store the synchronizer to make sure that no
      * duplication exists.
-     * 
+     *
      * @param entity
      * @return
      * @throws IllegalActionException
@@ -601,7 +601,7 @@ public class REDUtility {
         HashSet<String> returnVariableSet = new HashSet<String>();
 
         // Note that BoundedBufferNondeterministicDelay extends
-        // BoundedBufferTimedDelay. 
+        // BoundedBufferTimedDelay.
         // Thus we only need to use one.
         if (entity instanceof FSMActor) {
 
@@ -774,7 +774,7 @@ public class REDUtility {
      * to generate the set of signals used in the guard expression. Each of the
      * signal used by the guard expression would need to have a process
      * representing the port receiving the signal.
-     * 
+     *
      * @param actor
      *                The actor under analysis.
      * @return Set of signals used in guard expressions in the FSMActor.
@@ -878,7 +878,7 @@ public class REDUtility {
      * This private function decides inner variables used in the actor. It later
      * perform a systematic scan to generate the initial rough domain, and use a
      * constant span to expand it.
-     * 
+     *
      * @param actor Actor under analysis.
      * @param numSpan The size of the span to expand the variable domain.
      * @return The set of variables (variable names) used in the FSMActor.
@@ -1174,7 +1174,7 @@ public class REDUtility {
      * Perform an enumeration of the state in this actor and return the name of
      * the states. It seems to have a better way to do this (a mechanism to
      * enumerate using existing member functions).
-     * 
+     *
      * @param actor
      *                The actor under analysis
      * @return The set of states of the FSMActor.
@@ -1229,7 +1229,7 @@ public class REDUtility {
      * string with length i with character 0 and 1. For example, for i = 2 it
      * would generate {00, 01, 10, 11}. This is designed to invoke recursively
      * to achieve this goal.
-     * 
+     *
      * @param index
      *                The size of the index.
      * @param paraEnumerateString
@@ -1255,7 +1255,7 @@ public class REDUtility {
      * This private function is used to generate the transition description for
      * a certain state in a certain actor. The output format is CTA acceptable
      * by model checker RED.
-     * 
+     *
      * @param actor
      *                Actor under analysis
      * @param state
@@ -1306,7 +1306,7 @@ public class REDUtility {
                         // Retrieve the variable used in the Kripke structure.
                         // Also analyze the guard expression to understand the
                         // possible value domain for the value to execute.
-                        // 
+                        //
                         // A guard expression would need to be separated into
                         // separate sub-statements in order to estimate the
                         // boundary
@@ -1317,13 +1317,13 @@ public class REDUtility {
                         // codes. We do "not" expect him to write in the way
                         // like
                         // -1<a.
-                        // 
+                        //
                         // Also here we assume that every sub-guard expression
                         // is
                         // connected using && but not || operator. But it is
                         // easy to
                         // modify the code such that it supports ||.
-                        // 
+                        //
 
                         String guard = transition.getGuardExpression();
                         String outputAction = transition.outputActions
@@ -1381,7 +1381,7 @@ public class REDUtility {
                                                 bean._signal.append(" ?ND_"
                                                         + signalName[0]);
                                             } else {
-                                                // FIXME: 
+                                                // FIXME:
                                                 bean._signal.append("  ?ND_"
                                                         + signalName[0]);
                                             }
@@ -1745,7 +1745,7 @@ public class REDUtility {
      * A private function used as to generate variable initial values for the
      * initial variable set. The current approach is to retrieve from the
      * parameter specified in the actor.
-     * 
+     *
      * @param actor
      * @param variableSet
      * @return
@@ -1796,18 +1796,18 @@ public class REDUtility {
      * understand the underlying structure of the ModalModel and Refinement, so
      * that in the future we may have better implementation. Also it would be
      * suitable for the exhibition of BEAR 2008.
-     * 
+     *
      * In our current implementation we only allow one additional layer for the
      * refinement; an arbitrary layer of refinement would lead to state
      * explosion of the system. Also the additional layer must be a finite state
      * refinement so that the conversion is possible. But it is easy to expand
      * this functionality into multiple layer.
-     * 
+     *
      * Note that in the current context of ModalModel, when state machine
      * refinement is used, it is not possible to generate further refinement,
      * meaning that the current implementation is powerful enough to deal with
      * state refinement.
-     * 
+     *
      * @param model
      *                Whole System under analysis.
      * @return Equivalent FSMActor for later analysis.
@@ -1817,11 +1817,11 @@ public class REDUtility {
             NameDuplicationException, CloneNotSupportedException {
 
         // The algorithm is roughly constructed as follows:
-        //  
+        //
         // Step 1: For each state, check if there is refinement.
         // If there is refinement, then jump into the refinement.
         // Copy the content of the refinement into the new FSMActor.
-        //          
+        //
         // Step 2: Scan all transition from the original actor; if there is a
         // transition from state A to state B with condition C, then
         // for every refinement state in A, there is a transition
@@ -2013,7 +2013,7 @@ public class REDUtility {
                         }
                     } else {
                         /* This should not happen
-                         * 
+                         *
                          */
                     }
 
@@ -2024,13 +2024,13 @@ public class REDUtility {
         // Now we have returnFSMActor having a flatten set of states.
         // However, the transition is not complete. This is because we
         // haven't establish the connection of between inner actors.
-        // 
+        //
         // For each state S in the inner actor, if its upper state A has
         // a transition from A to another state B, then S must establish
         // a transition which connects itself with B; if B has refinements,
         // then S must establish a connection which connects to B's
         // refinement initial state.
-        //  
+        //
 
         Iterator Transitions = model.relationList().iterator();
         while (Transitions.hasNext()) {
@@ -2309,7 +2309,7 @@ public class REDUtility {
      * This is an utility function which performs the translation of a single
      * clock actor into the format of communicating timed automata (CTA)
      * acceptable by model checker RED.
-     * 
+     *
      * @param clockActor
      *                The actor which requires to be converted.
      * @param outputSignalName
@@ -2331,12 +2331,12 @@ public class REDUtility {
         // If it is not unbounded, we need to set up a counter
         // to set the number of emit signals
         // (3) stopTime: Infinity means the clock would not stop
-        // 
+        //
         // Also, we need to retrieve the information for the name of
         // the signal which the receiver receives.
         // This (outputSignalName) should be analyzed by callers and
         // pass to this function.
-        // 
+        //
         // Retrieve parameters from clockActors
         double period = ((DoubleToken) clockActor.period.getToken())
                 .doubleValue();
@@ -2589,19 +2589,19 @@ public class REDUtility {
             //
             // FIXME: This is the new version (DE as a generalization of SR)
             // mode CarLightNormal_Port_Sec_Sa (true) {
-            // when ?N_CarLightNormal_Plus (true) may; 
-            // when ?N_CarLightNormal (true) may; 
-            // when ?Sec ?N_CarLightNormal_Plus (true) may; 
-            // when ?Sec !ND_Sec (true) may; 
+            // when ?N_CarLightNormal_Plus (true) may;
+            // when ?N_CarLightNormal (true) may;
+            // when ?Sec ?N_CarLightNormal_Plus (true) may;
+            // when ?Sec !ND_Sec (true) may;
             // when ?Sec ?N_CarLightNormal (true) may t = 0; goto CarLightNormal_Port_Sec_Sp;
             // }
             // mode CarLightNormal_Port_Sec_Sp (t==0) {
             // when (t>0) may ; goto CarLightNormal_Port_Sec_Sa;
             // when ?N_CarLightNormal_Plus (true) may; goto CarLightNormal_Port_Sec_Sa;
             // when !ND_Sec (true) may; goto CarLightNormal_Port_Sec_Sa;
-            // when ?Sec ?N_CarLightNormal_Plus (true) may; 
-            // when ?N_CarLightNormal (true) may; 
-            // }      
+            // when ?Sec ?N_CarLightNormal_Plus (true) may;
+            // when ?N_CarLightNormal (true) may;
+            // }
             //
             //
 
@@ -2617,17 +2617,17 @@ public class REDUtility {
             // mode CarLightNormal_Port_Sec_Sa (true) {
             bean._moduleDescription.append("mode " + actor.getName().trim()
                     + "_Port_" + signalName.trim() + "_Sa" + " ( true ) { \n");
-            //when ?N_CarLightNormal_Plus (true) may; 
+            //when ?N_CarLightNormal_Plus (true) may;
             bean._moduleDescription.append("    when !N_"
                     + actor.getName().trim() + "_Plus" + " (true) may ; \n");
-            //when ?N_CarLightNormal (true) may; 
+            //when ?N_CarLightNormal (true) may;
             bean._moduleDescription.append("    when !N_"
                     + actor.getName().trim() + " (true) may ; \n");
             //when ?Sec ?N_CarLightNormal_Plus (true) may;
             bean._moduleDescription.append("    when ?" + signalName.trim()
                     + " !N_" + actor.getName().trim() + "_Plus"
                     + " (true) may ; \n");
-            // when ?Sec !ND_Sec (true) may; 
+            // when ?Sec !ND_Sec (true) may;
             bean._moduleDescription.append("    when ?" + signalName.trim()
                     + " !ND_" + signalName.trim() + " (true) may ; \n");
             // when ?Sec ?N_CarLightNormal (true) may t = 0; goto CarLightNormal_Port_Sec_Sp;
@@ -2654,11 +2654,11 @@ public class REDUtility {
             bean._moduleDescription.append("    when !ND_" + signalName.trim()
                     + " (true) may ; goto " + actor.getName().trim() + "_Port_"
                     + signalName.trim() + "_Sa" + ";\n");
-            // when ?Sec ?N_CarLightNormal_Plus (true) may; 
+            // when ?Sec ?N_CarLightNormal_Plus (true) may;
             bean._moduleDescription.append("    when ?" + signalName.trim()
                     + " !N_" + actor.getName().trim() + "_Plus"
                     + " (true) may ; \n");
-            // when ?N_CarLightNormal (true) may; 
+            // when ?N_CarLightNormal (true) may;
             bean._moduleDescription.append("    when !N_"
                     + actor.getName().trim() + " (true) may ; \n");
             // }
@@ -2676,7 +2676,7 @@ public class REDUtility {
 
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains inner variables.
-        // 
+        //
         HashSet<String> variableSet = null; // = new HashSet<String>();
         HashMap<String, String> initialValueSet = null;
 
@@ -2871,7 +2871,7 @@ public class REDUtility {
                                                     .toString() + " ; goto "
                                             + transition._newState.toString()
                                             + " ;\n");
-                            // original 
+                            // original
                             System.out.println("    when "
                                     + transition._signal.toString()
                                     + " (true) may "
@@ -3035,7 +3035,7 @@ public class REDUtility {
                                 + transition._postCondition.toString()
                                 + " ; goto " + transition._newState.toString()
                                 + " ;\n");
-                        // original 
+                        // original
                         System.out.println("    when "
                                 + transition._signal.toString()
                                 + " (true) may "
@@ -3085,11 +3085,11 @@ public class REDUtility {
         // BoundedBufferTimedDelay actor:
         // (1) delay time:
         // (2) size of buffer:
-        // 
+        //
         // Also, we need to retrieve the information for the name of
         // input and output signals. These (inputSignalName, outputSignalName)
         // should be analyzed by callers and pass to this function.
-        // 
+        //
 
         // Retrieve parameters from clockActors
         double delay = ((DoubleToken) delayedActor.delay.getToken())
@@ -3141,7 +3141,7 @@ public class REDUtility {
         // For a delayedActor with buffer size 1, the we need two states:
         // delayedActor_0 to represent no token.
         // delayedActor_1 to represent one token.
-        // 
+        //
         // Also, clocks used by the system is related to the size of the buffer.
         // We need to capture this behavior.
         //
@@ -3276,7 +3276,7 @@ public class REDUtility {
      * This is an utility function which performs the translation of a single
      * TimedDelay actor into the format of communicating timed automata (CTA)
      * acceptable by model checker RED.
-     * 
+     *
      * @param delayedActor
      *                actor which needs to be converted
      * @param inputSignalName
@@ -3300,11 +3300,11 @@ public class REDUtility {
         // BoundedBufferTimedDelay actor:
         // (1) delay time:
         // (2) size of buffer:
-        // 
+        //
         // Also, we need to retrieve the information for the name of
         // input and output signals. These (inputSignalName, outputSignalName)
         // should be analyzed by callers and pass to this function.
-        // 
+        //
 
         // Retrieve parameters from clockActors
         double delay = ((DoubleToken) delayedActor.delay.getToken())
@@ -3344,7 +3344,7 @@ public class REDUtility {
         // For a delayedActor with buffer size 1, the we need two states:
         // delayedActor_0 to represent no token.
         // delayedActor_1 to represent one token.
-        // 
+        //
         // Also, clocks used by the system is related to the size of the buffer.
         // We need to capture this behavior.
         //

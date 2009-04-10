@@ -170,8 +170,8 @@ public class BooleanDependency implements Dependency {
      *  because there are only ever two possible values.
      *  @param value  The specified value.
      *  @return an instance of BooleanDependency, if value
-     *  is true, then {@link #OTIMES_IDENTITY} is returned, if 
-     *  value is false, then {@link #OPLUS_IDENTITY}. 
+     *  is true, then {@link #OTIMES_IDENTITY} is returned, if
+     *  value is false, then {@link #OPLUS_IDENTITY}.
      */
     public static BooleanDependency valueOf(boolean value) {
         if (value) {

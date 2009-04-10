@@ -500,7 +500,7 @@ public class ComponentRelation extends Relation {
         // Also, have to first copy the ports references, then remove
         // them, to avoid a corrupted enumeration exception.
         // Unlink the outside links of linked ports.
-        super.unlinkAll();        
+        super.unlinkAll();
         try {
 
             // Next, remove the links that are inside links of ports.

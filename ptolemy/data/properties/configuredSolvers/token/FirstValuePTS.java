@@ -12,10 +12,10 @@ public class FirstValuePTS extends PropertyTokenSolver {
         super(container, name);
         useCase.setExpression("firstValueToken");
         useCase.setVisibility(Settable.NOT_EDITABLE);
-        listeningMethod.setExpression("Input & Output Ports");        
+        listeningMethod.setExpression("Input & Output Ports");
         listeningMethod.setVisibility(Settable.NOT_EDITABLE);
         numberIterations.setExpression("1");
         numberIterations.setVisibility(Settable.NOT_EDITABLE);
-    }        
+    }
 
 }

@@ -198,7 +198,7 @@ public final class Workspace implements Nameable, Serializable {
      *  directory.  This is accomplished
      *  by calling the description method with an argument for full detail.
      *  @return A description of the workspace.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public synchronized String description() throws IllegalActionException {
         // NOTE: It is not strictly needed for this method to be
@@ -215,7 +215,7 @@ public final class Workspace implements Nameable, Serializable {
      *  are requested, then the items in the directory are also described.
      *  @param detail The level of detail.
      *  @return A description of the workspace.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public synchronized String description(int detail) throws IllegalActionException {
         // NOTE: It is not strictly needed for this method to be
@@ -383,7 +383,7 @@ public final class Workspace implements Nameable, Serializable {
      *  is granted. Therefore, upon any call to any method that gets write
      *  access within a block holding read access, the model structure can
      *  change. You should not assume that the model is the same prior to
-     *  the call as after. 
+     *  the call as after.
      *  @exception InternalErrorException If the calling thread is interrupted
      *   while waiting to get read access.
      *  @see #doneReading()
@@ -586,7 +586,7 @@ public final class Workspace implements Nameable, Serializable {
     public final synchronized void incrVersion() {
         _version++;
     }
-    
+
     /** Reacquire read permission on the workspace for
      *  the current thread. Call this after a call to
      *  releaseReadPermissions().
@@ -692,7 +692,7 @@ public final class Workspace implements Nameable, Serializable {
      *  <i>obj</i>.wait() is called, then you should manually release
      *  read permissions and release the <i>obj</i> before reacquiring them,
      *  as follows:
-     *  
+     *
      *  <pre>
      *    int depth = 0;
      *    try {
@@ -707,7 +707,7 @@ public final class Workspace implements Nameable, Serializable {
      *       }
      *    }
      *  </pre>
-     *  
+     *
      *  @param obj The object that the thread wants to wait on.
      *  @exception InterruptedException If the calling thread is interrupted
      *   while waiting on the specified object and all the read accesses held
@@ -790,7 +790,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the workspace.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected synchronized String _description(int detail, int indent,
             int bracket) throws IllegalActionException {

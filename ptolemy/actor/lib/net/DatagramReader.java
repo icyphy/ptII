@@ -678,7 +678,7 @@ public class DatagramReader extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DatagramReader newObject = (DatagramReader) super.clone(workspace);
 
-        // Needed for actor oriented classes 
+        // Needed for actor oriented classes
         newObject._syncFireAndThread = new Object();
         newObject._syncDefaultOutputs = new Object();
         newObject._syncBufferLength = new Object();

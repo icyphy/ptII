@@ -285,7 +285,7 @@ public class FilePortParameter extends PortParameter implements
                     try {
                         URL possibleJarURL = ClassUtilities
                             .jarURLEntryResource(name);
-                        
+
                         if (possibleJarURL != null) {
                             file = new File(possibleJarURL.getFile());
                         }
@@ -293,7 +293,7 @@ public class FilePortParameter extends PortParameter implements
                         //Ignored, our attempt failed
                     }
                 }
-            }   
+            }
             return file;
         } catch (IllegalArgumentException ex) {
             // Java 1.4.2 some times reports:

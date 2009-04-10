@@ -49,13 +49,13 @@ public class PerimeterTarget extends AbstractConnectorTarget {
         // remove the old link, create a new vertex, link the
         // head and tail of the existing link with the
         // vertex and link the new link with the vertex.
-        
+
         // FIXME: Need to generate unique ID per figure
         // FIXME: Need to actually return a useful site!
         if (!(f instanceof Connector)) {
             return new PerimeterSite(f, 0);
         } else {
-            // In case we are snapping a connector with a 
+            // In case we are snapping a connector with a
             // connector we want to snap at the mouse location,
             // not the "start" of the figure.
             // It would be even better to snap to the actual figure, but this

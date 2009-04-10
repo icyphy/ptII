@@ -207,7 +207,7 @@ public class EditParametersDialog extends ComponentDialog implements
                     //  [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
                     // However it is checked that _owner instanceof TableauFrame,
                     // so FindBugs is wrong.
-                    
+
                     Configuration configuration = ((TableauFrame) _owner)
                             .getConfiguration();
 

@@ -40,15 +40,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  * A TDL refinement is used to define the implementation of a TDL mode. The only
  * reason for not using the Refinement class is because the Ports used in a
  * refinement should be used are TDLRefinementPort.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLRefinement extends Refinement {
-        
+
         /**
          * Construct a TDL refinement.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -76,7 +76,7 @@ public class TDLRefinement extends Refinement {
          * refinement, which in turn creates a port in this refinement all other
          * refinements, and the controller. This method is write-synchronized on the
          * workspace.
-         * 
+         *
          * @param name
          *            The name to assign to the newly created port.
          * @return The new port.

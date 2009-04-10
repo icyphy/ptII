@@ -1,4 +1,4 @@
-/* 
+/*
  * @Copyright (c) 2008 The Regents of the University of California. All rights
  * reserved. Permission is hereby granted, without written agreement and without
  * license or royalty fees, to use, copy, modify, and distribute this software
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * This is an implementation of a non-preemptive platform execution strategy.
- * 
+ *
  * @author Patricia Derler
  */
 public class NonPreemptivePlatformExecutionStrategy extends
@@ -43,7 +43,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
 
     /**
      * Create new non-preemptive platform execution strategy.
-     * 
+     *
      * @param director
      *            required to display the schedule
      */
@@ -54,7 +54,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
     /**
      * used to sort the set of events that are safe to fire so that the first
      * event in the list should be fired next.
-     * 
+     *
      * @author Patricia Derler
      */
     private static class WCETComparator implements Comparator {
@@ -67,7 +67,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
 
         /**
          * This compare method is used to sort all events.
-         * 
+         *
          * @param arg0
          *            First event.
          * @param arg1
@@ -197,7 +197,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
      * eventsToFire is empty - the next event that should be fired has to be
      * fired at real time = model time and real time is not there yet - the next
      * event that could be fired has a wcet > next real time event.
-     * 
+     *
      * @param actorsFiring
      *            Actors currently in execution.
      * @param eventsToFire

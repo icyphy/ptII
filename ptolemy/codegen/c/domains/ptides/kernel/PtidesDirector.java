@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  Code generator helper associated with the PTIDESDirector class. This class
  is also associated with a code generator.
- Top-level director for PTIDES models. 
+ Top-level director for PTIDES models.
  Unlike in the ptolemy implementation, this level generates code for
  communication between different platforms. Such that events are transmitted to the
  correct platform, and the platforms can distinguish from which actor should fire
@@ -46,9 +46,9 @@ import ptolemy.kernel.util.IllegalActionException;
  @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating red (jiazou)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
-public class PtidesDirector extends Director 
+public class PtidesDirector extends Director
 /* CompositeProcessDirector implements TimedDirector*/ {
 
     /** Construct the code generator helper associated with the given
@@ -74,7 +74,7 @@ public class PtidesDirector extends Director
 
         return code.toString();
     }
-    
+
     public String generateFireFunctionCode() throws IllegalActionException {
         return "";
     }

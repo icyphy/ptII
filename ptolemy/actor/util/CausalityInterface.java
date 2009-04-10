@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  analysis on actor models.  Implementers of this interface must ensure
  consistency between the methods {@link #dependentPorts(IOPort)},
  {@link #equivalentPorts(IOPort)}, and {@link #getDependency(IOPort, IOPort)}.
- 
+
  @see Dependency
 
  @author Edward A. Lee

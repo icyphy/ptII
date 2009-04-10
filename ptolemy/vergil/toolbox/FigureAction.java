@@ -296,7 +296,7 @@ public class FigureAction extends AbstractAction {
     public int getY() {
         return _y;
     }
-    
+
 
     /** Determine a new location for a figure if another figure is
      *  already at that location.
@@ -312,7 +312,7 @@ public class FigureAction extends AbstractAction {
      *  the original location or an offset location that does not obscure
      *  an object of class <i>figure</i>.
      */
-    static public double [] offsetFigure(double x, double y, 
+    static public double [] offsetFigure(double x, double y,
             double xOffset, double yOffset, Class<?> figureClass,
             FigureLayer foregroundLayer,
             Rectangle2D visibleRectangle) {
@@ -323,7 +323,7 @@ public class FigureAction extends AbstractAction {
         // ports and relations.
 
         double [] point = new double[2];
-        point[0] = x; 
+        point[0] = x;
         point[1] = y;
 
         double originalX = x;
@@ -334,7 +334,7 @@ public class FigureAction extends AbstractAction {
         double halo = foregroundLayer.getPickHalo();
         double width = halo * 2;
 
-        // Used to handle cases where we get to the edge. 
+        // Used to handle cases where we get to the edge.
         int xMax = 0;
         int yMax = 0;
 
@@ -363,7 +363,7 @@ public class FigureAction extends AbstractAction {
                     // Work our way up the CanvasComponent parent tree
                     // See EditorDropTarget for similar code.
                     Object userObject = null;
-                        
+
                     while (possibleFigure instanceof UserObjectContainer
                             && userObject == null && !checkFigure) {
                         userObject = ((UserObjectContainer) possibleFigure).getUserObject();
@@ -375,15 +375,15 @@ public class FigureAction extends AbstractAction {
                             checkFigure = true;
                             point[0] += xOffset;
                             point[1] += yOffset;
-                            
+
                             // Check to make sure we are not outside the view
                             if (point[0] > visibleRectangle.getWidth()) {
                                 point[0] = originalX;
                                 point[1] = originalY
-                                    - PASTE_OFFSET * 2 * ++xMax; 
+                                    - PASTE_OFFSET * 2 * ++xMax;
                                 if (point[1] < 0) {
                                     point[1] = originalY
-                                        + PASTE_OFFSET * 2 * ++xMax; 
+                                        + PASTE_OFFSET * 2 * ++xMax;
                                 }
                             }
 
@@ -392,7 +392,7 @@ public class FigureAction extends AbstractAction {
                                     - PASTE_OFFSET * 2 * ++yMax;
                                 if (point[0] < 0) {
                                     point[0] = originalX
-                                        + PASTE_OFFSET * 2 * ++xMax; 
+                                        + PASTE_OFFSET * 2 * ++xMax;
                                 }
                                 point[1] = originalY;
 
@@ -404,7 +404,7 @@ public class FigureAction extends AbstractAction {
                                     || point[1] > visibleRectangle.getHeight()) {
                                 // Can't do anything here, so return.
                                 point[0] = originalX + 0.5 * xOffset;
-                                point[1] = originalY + 0.5 * yOffset; 
+                                point[1] = originalY + 0.5 * yOffset;
                                 return point;
                             }
                         }

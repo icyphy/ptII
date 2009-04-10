@@ -76,7 +76,7 @@ import ptolemy.util.StringUtilities;
  method, which is called by the MoML parser and passed MoML code.
  The MoML is evaluated lazily; i.e. it is not actually evaluated
  until there is a request for its contents, via a call to
- getEntity(), numEntities(), entityList(), relationList(), 
+ getEntity(), numEntities(), entityList(), relationList(),
  or any related method. You can also force evaluation
  of the MoML by calling populate(). Accessing the attributes
  or ports of this composite does not trigger a populate() call,
@@ -135,7 +135,7 @@ import ptolemy.util.StringUtilities;
  you could do that anyway.  An attempt to make such references
  will simply result in the expression failing to evaluate.
 
- 
+
  @author Christopher Brooks and Edward A. Lee
  @version $Id$
  @since Ptolemy II 7.1
@@ -205,7 +205,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return a list that consists of all the composite entities in a model.
      *  This method differs from allAtomicEntityList() in that this method
      *  returns CompositeEntities and allAtomicEntityList() returns atomic entities.
@@ -243,7 +243,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
         try {
             LazyTypedCompositeActor result = (LazyTypedCompositeActor) super.clone(workspace);
-            
+
             // There may or may not be configure text, but it won't be the
             // same as what we are cloning (instantiating) from.
             result._base = null;
@@ -333,7 +333,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         return super.deepEntityList();
     }
-    
+
     /** Return a set with the relations that are directly or indirectly
      *  contained by this entity.  The set will be empty if there
      *  are no such contained relations. This overrides the base class
@@ -361,7 +361,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         return super.deepOpaqueEntityList();
     }
-    
+
     /** List the contained entities in the order they were added
      *  (using their setContainer() method).
      *  The returned list is static in the sense
@@ -394,7 +394,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
     /** Write a MoML description of this object with the specified
      *  indentation depth and with the specified name substituting
-     *  for the name of this object. 
+     *  for the name of this object.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
@@ -403,7 +403,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         populate();
-        super.exportMoML(output, depth, name); 
+        super.exportMoML(output, depth, name);
     }
 
     /** Get a contained entity by name. The name may be compound,
@@ -431,7 +431,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
     public String getConfigureSource() {
         return _configureSource;
     }
-    
+
     /** Return the text string that represents the current configuration of
      *  this object. This will include whatever classes, entities, and
      *  relations have been previously instantiated. FIXME: Shouldn't this
@@ -458,7 +458,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 ComponentEntity entity = (ComponentEntity) entities.next();
                 entity.exportMoML(stringWriter, 1);
             }
-            
+
             // FIXME: Include relations and links!
 
             stringWriter.write("</group>");
@@ -467,7 +467,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
             return "";
         }
     }
-    
+
     /** Get a contained relation by name. The name may be compound,
      *  with fields separated by periods, in which case the relation
      *  returned is contained by a (deeply) contained entity.
@@ -483,7 +483,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         return super.getRelation(name);
     }
-    
+
     /** Return a list that consists of all the atomic entities in a model
      *  that have been already instantiated.
      *  This method differs from {@link #deepEntityList()} in that
@@ -508,7 +508,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
     }
 
     /** Lazy version of {#link #allCompositeEntityList()}.
-     *  In this base class, this is identical to allCompositeEntityList() 
+     *  In this base class, this is identical to allCompositeEntityList()
      *  but derived classes may omit from the returned list any class
      *  definitions whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
@@ -525,13 +525,13 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                     result.add(entity);
                     result.addAll(((CompositeEntity) entity)
                                   .lazyAllCompositeEntityList());
-                }                
+                }
             }
             return result;
         } finally {
             _workspace.doneReading();
         }
-    }        
+    }
 
     /** Lazy version of {@link #classDefinitionList()}.
      *  In this base class, this is identical to classDefinitionList(),
@@ -575,14 +575,14 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                         result.addAll(((CompositeEntity) entity)
                                 .lazyDeepEntityList());
                     }
-                }                
+                }
             }
             return result;
         } finally {
             _workspace.doneReading();
         }
     }
-    
+
     /** Lazy version of {@link #entityList()}.
      *  In this base class, this is identical to entityList(),
      *  but derived classes may omit from the returned list any
@@ -592,7 +592,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
     public List lazyEntityList() {
         return super.entityList();
     }
-    
+
     /** Lazy version of {@link #relationList()}.
      *  In this base class, this is identical to relationList(),
      *  but derived classes may omit from the returned list any
@@ -634,7 +634,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         return super.numberOfEntities();
     }
-    
+
     /** Return the number of contained relations.
      *  This overrides the base class
      *  to first populate the actor, if necessary, by calling populate().
@@ -668,7 +668,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
             if (_cloning) {
                 return;
             }
-            
+
             // Do not populate if this is a derived object.
             // Instead, populate the object is this is derived
             // from, which will have the side effect of populating
@@ -707,7 +707,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 // If we have a subclass that has LazyTypedCompositeActor
                 // in it, then things get tricky.  See
                 // actor/lib/test/auto/LazySubClassModel.xml
-                
+
                 // If this is an instance or subclass of something, that
                 // something must also be a LazyTypedCompositeActor and
                 // it should be populated first.
@@ -813,7 +813,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      *  where <i>n</i> is the depth of this deferral. That is, if the object
      *  deferred to also defers, then <i>n</i> is incremented.
      *  <p>Note that this method should be called judiciously from when
-     *  the CompositeEntity is large.  The reason is that this method 
+     *  the CompositeEntity is large.  The reason is that this method
      *  searches for matching attributes, ports, classes, entities
      *  and relations, which can result in slow performance.
      *  This overrides the base class
@@ -827,7 +827,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         return super.uniqueName(prefix);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -855,7 +855,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         super._addEntity(entity);
     }
-     
+
     /** Add a relation to this container. This method should not be used
      *  directly.  Call the setContainer() method of the relation instead.
      *  This method does not set
@@ -875,7 +875,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         super._addRelation(relation);
     }
-    
+
     /** Write a MoML description of the contents of this object, wrapped
      *  in a configure element.  This is done by first populating the model,
      *  and then exporting its contents into a configure element. This method
@@ -896,7 +896,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         //FIXME: start of duplicated code from NamedObj
         // If the display name has been set, then include a display element.
         // Note that copying parameters that have _displayName set need
-        // to export _displayName.  
+        // to export _displayName.
         // See: http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3361
         if (!_displayName.equals(getName())) {
             output.write("<display name=\"");
@@ -904,7 +904,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
             output.write("\"/>");
         }
 
-        // Callers of this method should hold read access 
+        // Callers of this method should hold read access
         // so as to avoid ConcurrentModificationException.
         if (_attributes != null) {
             //Iterator attributes = _attributes.elementList().iterator();
@@ -999,7 +999,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         super._removeRelation(relation);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1020,7 +1020,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
     /** Text specified to the configure() method. */
     private String _configureText;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

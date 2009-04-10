@@ -33,9 +33,9 @@ import ptolemy.gui.Top;
 //// TopPack
 
 /**
- An interface that allows alternate pack() methods to be called from 
- TableauFrame which allows for functionality such as alternate menu systems 
- in Vergil.  
+ An interface that allows alternate pack() methods to be called from
+ TableauFrame which allows for functionality such as alternate menu systems
+ in Vergil.
 
  @author Chad Berkley
  @version $Id$
@@ -53,8 +53,8 @@ public interface TopPack {
    */
   public void pack(Top top, boolean alreadyCalled);
 
-  /** 
-   * Get an object. 
+  /**
+   * Get an object.
    * This method allows the overrider to pass an object back to the calling object.
    * @param identifier The object to get.
    * @return The object found.

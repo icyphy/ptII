@@ -64,7 +64,7 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorHelper.generateFireCode());
-        
+
         return processCode(code.toString());
     }
 
@@ -75,7 +75,7 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorHelper.generatePreinitializeCode());
-        
+
         return processCode(code.toString());
     }
 
@@ -86,10 +86,10 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorHelper.generateInitializeCode());
-        
+
         return processCode(code.toString());
     }
-    
+
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -97,10 +97,10 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorHelper.generateWrapupCode());
-        
+
         return processCode(code.toString());
     }
-    
+
     public Set getSharedCode() throws IllegalActionException {
 
         // Use LinkedHashSet to give order to the shared code.

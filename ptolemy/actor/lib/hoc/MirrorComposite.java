@@ -68,7 +68,7 @@ import ptolemy.moml.HandlesInternalLinks;
  */
 public class MirrorComposite extends TypedCompositeActor implements
         HandlesInternalLinks {
-    
+
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -87,7 +87,7 @@ public class MirrorComposite extends TypedCompositeActor implements
         super(container, name);
         _init(true);
     }
-    
+
     /** Construct a MirrorComposite in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -102,7 +102,7 @@ public class MirrorComposite extends TypedCompositeActor implements
         _init(true);
     }
 
-    
+
     /** Create an actor with a name and a container that optionally
      *  mirrors the ports that are instances of ParameterPort.
      *  The container argument must not be null, or a
@@ -333,7 +333,7 @@ public class MirrorComposite extends TypedCompositeActor implements
         }
 
         super._addPort(port);
-        
+
         // Findbugs: The if clause above requires that we have a
         // MirrorPort if we are here, so there is no way that we can
         // have a ParameterPort.
@@ -548,7 +548,7 @@ public class MirrorComposite extends TypedCompositeActor implements
 
     /** Flag indicating that we are executing _removeEntity(). */
     private boolean _inRemoveEntity = false;
-    
+
     /** Flag indicating whether to mirror instances of ParameterPort. */
     private boolean _mirrorParameterPorts = true;
 

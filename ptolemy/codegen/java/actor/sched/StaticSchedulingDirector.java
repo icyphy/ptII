@@ -126,7 +126,7 @@ public class StaticSchedulingDirector extends Director {
 
                 code.append(CodeGeneratorHelper.generateName((NamedObj)
                  actor) + "();" + _eol);
-                
+
                 _generateUpdatePortOffsetCode(code, actor);
 
                 if (count > 1) {
@@ -141,9 +141,9 @@ public class StaticSchedulingDirector extends Director {
      * Generate the code that updates the input/output port offset.
      * @param code The given code buffer.
      * @param actor The given actor.
-     * @exception IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if
      *  _updatePortOffset(IOPort, StringBuffer, int) or getRate(IOPort)
-     *  throw it.  
+     *  throw it.
      */
     private void _generateUpdatePortOffsetCode(StringBuffer code, Actor actor)
             throws IllegalActionException {
@@ -214,11 +214,11 @@ public class StaticSchedulingDirector extends Director {
                     + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
          */
-        _generateUpdatePortOffsetCode(code, 
+        _generateUpdatePortOffsetCode(code,
                 (Actor) _director.getContainer());
 
         code.append(generatePostfireCode());
-        
+
         Attribute period = _director.getAttribute("period");
         if (period != null) {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())

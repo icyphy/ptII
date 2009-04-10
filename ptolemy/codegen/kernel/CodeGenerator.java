@@ -207,7 +207,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
+
     /** If true, then channels in multiports can be dynamically
      *  referenced using the $ref macro.
      *  TODO: This parameter is SDF specific.
@@ -253,7 +253,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public StringParameter generatorPackage;
 
     /** If true, then generate code for that uses the reflection for Java
-     *  and JNI for C and is embedded within the model 
+     *  and JNI for C and is embedded within the model
      *  The default value is false and this parameter is not usually
      *  editable by the user.  This parameter is set to true when
      *  CompiledCompositeActor is run in an interpreted Ptolemy model.
@@ -289,7 +289,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  value is a parameter with the value true.
      */
     public Parameter run;
-    
+
     /** If true, then the generated source is bound to the line
      *  number and file of the (helper) templates. Otherwise, the
      *  source is bound only to the output file. This is a boolean
@@ -310,7 +310,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  which means that the default target for the language is used.
      */
     public StringParameter target;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
@@ -414,7 +414,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String typeResolutionCode = generateTypeConvertCode();
         //String globalCode = generateGlobalCode();
 
-        // Include files depends the generated code, so it 
+        // Include files depends the generated code, so it
         // has to be generated after everything.
         String includeFiles = _generateIncludeFiles();
 
@@ -432,7 +432,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(includeFiles);
         code.append(typeResolutionCode);
         code.append(sharedCode);
-        // Don't use **** in comments, it causes the nightly build to 
+        // Don't use **** in comments, it causes the nightly build to
         // report errors.
         code.append(comment("end shared code"));
         code.append(variableDeclareCode);
@@ -561,7 +561,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** If the compile command does not yet containe a library,
      *         add a library command line argument the compile command.
-     *  
+     *
      *  @param libraryCommand  The library command, for example
      *  "-L/usr/local/lib".
      *  @see #addLibrary(String)
@@ -591,7 +591,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
@@ -608,12 +608,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (ptType == BaseType.GENERAL) {
             return "Token";
         }
-        
+
         // FIXME: this may be the case for unconnected ports.
         if (ptType == BaseType.UNKNOWN) {
             return "Token";
         }
-        
+
         if (ptType == BaseType.SCALAR) {
             // FIXME: do we need a codegen type for scalar?
             return "";
@@ -621,13 +621,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
-        String result = 
-            ptType == BaseType.INT ? "Int" : 
-            ptType == BaseType.LONG ? "Long" : 
-            ptType == BaseType.STRING ? "String" : 
-            ptType == BaseType.DOUBLE ? "Double" : 
-            ptType == BaseType.BOOLEAN ? "Boolean" : 
-            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" : 
+        String result =
+            ptType == BaseType.INT ? "Int" :
+            ptType == BaseType.LONG ? "Long" :
+            ptType == BaseType.STRING ? "String" :
+            ptType == BaseType.DOUBLE ? "Double" :
+            ptType == BaseType.BOOLEAN ? "Boolean" :
+            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
             ptType == PointerToken.POINTER ? "Pointer" : null;
 
         if (result == null) {
@@ -681,7 +681,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         try {
             if (generateComment.getToken() == BooleanToken.TRUE) {
                 return formatComment(comment);
-            } 
+            }
         } catch (IllegalActionException e) {
             // do nothing.
         }
@@ -1114,7 +1114,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         return _sanitizedModelName + extension;
     }
-    
+
     /**
      * Determine if the given type is primitive.
      * @param cgType The given codegen type.
@@ -1156,11 +1156,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                                         .equals("Double") ? BaseType.DOUBLE : cgType
                                                 .equals("Complex") ? BaseType.COMPLEX : cgType
                                                         .equals("Pointer") ? PointerToken.POINTER : null;
-    
+
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
             result = new ArrayType(ptolemyType(elementType));
-    
+
         } else if (cgType.endsWith("Matrix")) {
             String elementType = cgType.replace("Matrix", "");
             result = elementType.equals("Int") ? BaseType.INT_MATRIX
@@ -1171,12 +1171,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                                                     : elementType
                                                     .equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
-    
+
         }
         return result;
-    }    
+    }
     /** Reset the code generator.
-     */        
+     */
     public void reset() {
         // Reset the indent to zero.
         _indent = 0;
@@ -1257,7 +1257,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return results;
     }
 
-    
+
     /**
      * Get the corresponding type in C from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
@@ -1274,7 +1274,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
     }
-    
+
     /** Add include directories specified by the actors in this model.
      *  @exception IllegalActionException Never in this base class.
      */
@@ -1489,7 +1489,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return (ActorCodeGenerator) _getHelper((Object) component);
     }
 
-    /** 
+    /**
      * Get the code generator helper associated with the given object.
      * @param object The given object.
      * @return The code generator helper.
@@ -1504,7 +1504,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String packageName = generatorPackage.stringValue();
 
-        Class helperClass = null;            
+        Class helperClass = null;
         Class componentClass = object.getClass();
         String className = componentClass.getName();
 
@@ -1517,7 +1517,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String targetValue = target.getExpression();
         if (!targetValue.equals(_DEFAULT_TARGET)) {
             // Look in the target-specific directory.
-            String targetSubDirectory = 
+            String targetSubDirectory =
                 ".targets." + targetValue;
 
             try {
@@ -1525,9 +1525,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         packageName + targetSubDirectory);
                 helperObject = _instantiateHelper(object, helperClassName);
                 _helperStore.put(object, helperObject);
-                return helperObject;                
+                return helperObject;
 
-            } catch (Exception ex) { 
+            } catch (Exception ex) {
                 // There may not be a target-specific implementation.
 
                 // FIXME: should we warn the users about this?
@@ -1538,14 +1538,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (packageName.trim().length() == 0) {
             packageName = "ptolemy.codegen";
         }
-        
+
 
         StringBuffer classesTried = new StringBuffer();
         // Traverse the inheritance hierarchy of the componentClass
         // and look for a helper.
         do {
             className = componentClass.getName();
-            
+
             // FIXME: Is this the right error message?
             if (!className.contains("ptolemy")) {
                 throw new IllegalActionException("The classname \""
@@ -1559,7 +1559,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // It could be that the className does not begin with
             // ptolemy, so try a simple substitution.
             try {
-                helperClassName = packageName + "." + 
+                helperClassName = packageName + "." +
                     className.replaceFirst("ptolemy.", "");
                 // Save the classes tried for the error message
                 if (classesTried.length() > 0) {
@@ -1570,17 +1570,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 helperObject = _instantiateHelper(
                         object, componentClass, helperClassName);
 
-            } catch (IllegalActionException ex) { 
+            } catch (IllegalActionException ex) {
                 // If helper class cannot be found, search the helper class
                 // for parent class instead.
                 componentClass = componentClass.getSuperclass();
             }
-            
+
         } while (helperObject == null);
 
         _helperStore.put(object, helperObject);
         return helperObject;
-        //} 
+        //}
 
         //        try {
         //            helperClassName = className.replaceFirst("ptolemy", packageName);
@@ -1588,7 +1588,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //        } catch (Exception ex) {
         //            // try the implementation in the middle layer.
         //            helperClassName = className.replaceFirst("ptolemy", "ptolemy.codegen");
-        //            helperObject = _instantiateHelper(object, helperClassName);                
+        //            helperObject = _instantiateHelper(object, helperClassName);
         //        }
         //_helperStore.put(object, helperObject);
         //return helperObject;
@@ -1725,7 +1725,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     private ActorCodeGenerator _instantiateHelper(Object component,
             String helperClassName) throws IllegalActionException {
-        return _instantiateHelper(component, 
+        return _instantiateHelper(component,
                 component.getClass(), helperClassName);
     }
 
@@ -1736,9 +1736,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException If the helper class cannot be found.
      */
     private ActorCodeGenerator _instantiateHelper(Object component,
-            Class componentClass, String helperClassName) 
+            Class componentClass, String helperClassName)
     throws IllegalActionException {
-        
+
         Class helperClass = null;
 
         try {
@@ -1753,7 +1753,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         try {
             constructor = helperClass.getConstructor(
                     new Class[] { componentClass });
-            
+
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + helperClassName
@@ -1912,7 +1912,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // File(URI).
 
             URL generatorPackageURL = FileUtilities.nameToURL("$CLASSPATH/"
-                    + generatorPackageDirectoryName, null, 
+                    + generatorPackageDirectoryName, null,
                     getClass().getClassLoader());
             URI generatorPackageURI = new URI(generatorPackageURL
                     .toExternalForm().replaceAll(" ", "%20"));
@@ -2045,7 +2045,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     // If the user called this with -generatorPackage ptolemy.codegen.java,
                     // the process that argument.  This is a bit hacky, but works.
                     String generatorPackageValue = "ptolemy.codegen.c";
-                    int parameterIndex = -1; 
+                    int parameterIndex = -1;
                     if ( (parameterIndex = _parameterNames.indexOf("generatorPackage")) != -1) {
                         generatorPackageValue = _parameterValues.get(parameterIndex);
                     }
@@ -2068,7 +2068,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // Add a codeGenerator
                         Constructor codeGeneratorConstructor =
                             generatorClass.getConstructor(new Class[] {
-                                    NamedObj.class, 
+                                    NamedObj.class,
                                     String.class});
                         codeGenerator = (CodeGenerator) codeGeneratorConstructor.newInstance(new Object [] {
                                 toplevel,
@@ -2297,7 +2297,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
     "Pointer" });
 
-    
+
     /** The postfire code. */
     protected String _postfireCode = null;
 
@@ -2346,7 +2346,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     //// Code
-    protected static class Code implements Comparable {        
+    protected static class Code implements Comparable {
         public Code (String string, int order) {
             this.string = string;
 
@@ -2359,7 +2359,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             if (object instanceof Code) {
                 Code code2 = (Code) object;
 
-                return (order > code2.order) ? 1 : 
+                return (order > code2.order) ? 1 :
                     (order < code2.order) ? -1 : 0;
             }
             return 0;

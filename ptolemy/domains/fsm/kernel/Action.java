@@ -120,11 +120,11 @@ public abstract class Action extends StringAttribute {
             NameDuplicationException {
         // An Action is used in a Transition in the FSM domain, or an Event in
         // the Ptera domain.
-        
+
         // FSM should not depend on Ptera, so this check is removed.
         // In fact, this check is not necessary, because all instantiable
         // classes in FSM declares container to have type Transition.
-        
+
         /*if (!(container instanceof Transition) && !(container instanceof Event)
                 && (container != null)) {
             throw new IllegalActionException(container, this, "Action can only "

@@ -812,7 +812,7 @@ public class MoMLApplication implements ExecutionListener {
     protected Configuration _createEmptyConfiguration() throws Exception {
         return _createDefaultConfiguration();
     }
-    
+
     /** Open the specified Ptolemy II model. If a model already has
      *  open tableaux, then put those in the foreground and
      *  return the first one.  Otherwise, create a new tableau and if
@@ -1221,7 +1221,7 @@ public class MoMLApplication implements ExecutionListener {
                 if (frame instanceof TableauFrame) {
                     // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
                     if (!tableau.getFullName().equals(".configuration.directory.configuration.graphTableau")
-                        && 
+                        &&
                         !tableau.getFullName().equals(".configuration.directory.UserLibrary.graphTableau")) {
                         try {
                             // Set the background to white

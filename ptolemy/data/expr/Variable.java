@@ -956,7 +956,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 // FIXME:
                 // FindBugs: [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
                 // _valueListeners might change during the call of setName.
-                // Is there a risk for deadlocks if we would make this a 
+                // Is there a risk for deadlocks if we would make this a
                 // synchronized method?
                 if (_valueListeners != null) {
                     Iterator listeners = _valueListeners.iterator();
@@ -1143,7 +1143,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 .getTypeTerm());
         _constraints.add(ineq);
     }
-    
+
     /** Set a type constraint that the type of this object be less than
      *  or equal to the specified class in the type lattice.
      *  This replaces any constraint specified
@@ -1545,7 +1545,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return a description of this variable.  This returns the same
      *  information returned by toString(), but with optional indenting
      *  and brackets.
@@ -2261,7 +2261,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _invalidateShadowedSettables(container);
         }
     }
-    
+
     /** Return true if this object is within
      *  a class definition, which means that
      *  any container above it in the hierarchy is

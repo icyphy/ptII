@@ -54,24 +54,24 @@ public class SampleDelay extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public SampleDelay(PropertyConstraintSolver solver, 
+    public SampleDelay(PropertyConstraintSolver solver,
             ptolemy.domains.sdf.lib.SampleDelay actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();                
+        _lattice = (Lattice) getSolver().getLattice();
      }
 
-    public List<Inequality> constraintList() 
+    public List<Inequality> constraintList()
             throws IllegalActionException {
         /* always set output of feedback loop to False if we want to
          * interpret the use-case as const/nonconst. By adding partial
          * evaluation a less conservative behavior could be implemented.
-         */       
-        setAtLeast(_actor.output, _lattice.FALSE);        
+         */
+        setAtLeast(_actor.output, _lattice.FALSE);
 
         return super.constraintList();
     }

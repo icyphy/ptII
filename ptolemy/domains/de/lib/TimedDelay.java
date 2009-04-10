@@ -220,13 +220,13 @@ public class TimedDelay extends DETransformer {
      * @exception IllegalActionException Thrown if the director is not a timed director or
      * the type of dependency that is required cannot be resolved.
      */
-    public CausalityInterface getCausalityInterface() throws IllegalActionException { 
-        if (_causalityInterface == null) { 
+    public CausalityInterface getCausalityInterface() throws IllegalActionException {
+        if (_causalityInterface == null) {
             // TODO if director changed another interface might be required
             if (getDirector() instanceof TimedDirector) {
                 Dependency dependency = ((TimedDirector)getDirector()).delayDependency(_delay);
                 if (dependency instanceof BooleanDependency) {
-                    _causalityInterface = 
+                    _causalityInterface =
                         new BreakCausalityInterface(
                                 this, dependency);
                 } else if (dependency instanceof RealDependency) {
@@ -234,7 +234,7 @@ public class TimedDelay extends DETransformer {
                           this, dependency);
                 } else {
                    throw new IllegalActionException(this, "Type of dependency not recognized");
-                } 
+                }
             } else {
                 throw new IllegalActionException(this, "Director must be a TimedDirector");
             }

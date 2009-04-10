@@ -32,22 +32,22 @@ import ptolemy.kernel.util.Nameable;
 
 public class PropertyResolutionException extends IllegalActionException {
 
-    public PropertyResolutionException(PropertySolverBase solver, 
+    public PropertyResolutionException(PropertySolverBase solver,
                     Nameable nameable, String detail) {
         this(solver, nameable, null, detail);
     }
 
-    public PropertyResolutionException(PropertySolverBase solver, 
+    public PropertyResolutionException(PropertySolverBase solver,
                     Nameable nameable, Throwable cause) {
         this(solver, nameable, cause, "");
     }
 
-    public PropertyResolutionException(PropertySolverBase solver, 
+    public PropertyResolutionException(PropertySolverBase solver,
                     Nameable nameable, Throwable cause, String detail) {
         super(solver, nameable, cause, detail);
 
         assert ( solver != null );
-        
+
         _solver = solver;
     }
 
@@ -59,14 +59,14 @@ public class PropertyResolutionException extends IllegalActionException {
         this(solver, null, cause, "");
     }
 
-    public PropertyResolutionException(PropertySolverBase solver, 
+    public PropertyResolutionException(PropertySolverBase solver,
                     Throwable cause, String detail) {
         this(solver, null, cause, detail);
     }
-    
+
     public PropertySolverBase getSolver() {
             return _solver;
     }
-    
+
     private PropertySolverBase _solver;
 }

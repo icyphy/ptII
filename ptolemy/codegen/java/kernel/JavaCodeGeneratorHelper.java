@@ -111,7 +111,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public String getNewInvocation(String constructorString)
     throws IllegalActionException {
-        addFunctionUsed("new");        
+        addFunctionUsed("new");
         return super.getNewInvocation(constructorString);
     }
     /** Return a new parse tree code generator to use with expressions.
@@ -189,7 +189,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     public String getFunctionInvocation(String functionString, boolean isStatic)
     throws IllegalActionException {
         // Record the referenced type function in the infoTable.
-        super.getFunctionInvocation(functionString, isStatic); 
+        super.getFunctionInvocation(functionString, isStatic);
 
         // FIXME: lots of duplicated code from superclass here.
         functionString = processCode(functionString);
@@ -257,7 +257,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         Set files = super.getHeaderFiles();
         files.addAll(_includeFiles);
         return files;
-    }    
+    }
 
     /** Get the header files needed to compile with the jvm library.
      *  @return A set of strings that are names of the header files
@@ -295,7 +295,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
         String jreBinClientPath = javaHome + File.separator + "bin"
         + File.separator + "client";
-        executeCommands.stdout(_eol + _eol 
+        executeCommands.stdout(_eol + _eol
                 + "JavaCodeGeneratorHelper: appended to path "
                 + jreBinClientPath);
 
@@ -331,7 +331,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                     potentialJavaHomeParentFile = new File("C:\\Program Files\\Java");
                 }
             }
-        } 
+        }
 
         getCodeGenerator().addInclude("-I\"" + javaHome + "/include\"");
 
@@ -350,7 +350,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
             getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
                     + platform + "\"");
 
-            // The directive we use to find jvm.dll, which is usually in 
+            // The directive we use to find jvm.dll, which is usually in
             // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
             jvmLoaderDirective = "-ljvm";
 
@@ -358,7 +358,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
             String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
             libjvmAbsoluteDirectory = ptIIDir + "/"
             + libjvmRelativeDirectory;
-            String libjvmFileName = "libjvm.dll.a"; 
+            String libjvmFileName = "libjvm.dll.a";
             String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
 
             if ( !(new File(libjvmPath).canRead()) ) {
@@ -375,14 +375,14 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
                         if (!libjvmFileCopy.canRead()) {
                             // Create libjvm.dll.a in the codegen directory
-                            FileUtilities.binaryCopyURLToFile(libjvmURL, 
+                            FileUtilities.binaryCopyURLToFile(libjvmURL,
                                     libjvmFileCopy);
                         }
 
                         libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
                         if (libjvmFileCopy.canRead()) {
                             libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
-                            '/'); 
+                            '/');
                             libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
                                     libjvmAbsolutePath.lastIndexOf("/"));
 
@@ -556,11 +556,11 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                     .getType()).getElementType();
 
             //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "(" 
+            result.insert(0, "("
                     + codeGenType(elementType).replace("Array", "Token").replace("Matrix", "Token")
                     + ")(/*JCGH44*/Array_get(");
             if (isPrimitive(elementType)) {
-                result.insert(0, "("); 
+                result.insert(0, "(");
             }
 
             result.append(" ," + channelAndOffset[1] + ")");
@@ -636,7 +636,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
 
-    private void _portVariableDeclaration(StringBuffer code, TypedIOPort port) 
+    private void _portVariableDeclaration(StringBuffer code, TypedIOPort port)
     throws IllegalActionException {
 
         code.append("static " + targetType(port.getType()) + " "
@@ -662,7 +662,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         if (port.isMultiport()) {
             code.append("[" + port.getWidth() + "]");
         }
-        
+
         if (bufferSize > 1) {
             code.append("[" + bufferSize + "]");
         } else {

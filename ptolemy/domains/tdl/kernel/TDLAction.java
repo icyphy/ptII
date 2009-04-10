@@ -50,71 +50,71 @@ public class TDLAction {
         this.actionType = actionType;
         this.object = actor;
     }
-    
+
     /**
      * Write output of a task.
      */
     public static final int WRITEOUTPUT = 0;
-    
+
     /**
      * Write actuator which is the output of a TDLModule.
      */
     public static final int WRITEACTUATOR = 1;
-    
+
     /**
      * Test a mode switch guard and execute the mode switch if the guard
      * evaluates to true.
      */
     public static final int MODESWITCH = 2;
-    
+
     /**
      * If a mode switch is not taken, this is the next action. It does not do anything but is
      * required for the TDL ActionsGraph.
      */
     public static final int AFTERMODESWITCH = 3;
-    
+
     /**
      * Read a sensor value which is the input of a TDLModule.
      */
     public static final int READSENSOR = 4;
-    
+
     /**
      * Read the input of a task.
      */
     public static final int READINPUT = 5;
-    
+
     /**
      * Execute a task.
      */
     public static final int EXECUTETASK = 6;
-    
+
     public static final int AFTERTASKOUTPUTS = 7;
-    
+
     /**
      * Time stamp for the TDL action.
      */
     public Time time;
-    
+
     /**
      * Type of TDL action. This is one of the constants defined above.
      */
     public int actionType;
-    
+
     /**
      * Actor the TDL action has to be performed on.
      */
     public Object object;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     @Override
     public String toString() {
         return actionType + "@" + time + "@" + object;
     }
-    
+
     @Override
-    public boolean equals(Object obj) { 
+    public boolean equals(Object obj) {
         if (obj instanceof TDLAction) {
             TDLAction action = (TDLAction) obj;
             if ((this.time.equals(action.time)) && (this.object == action.object) && (this.actionType == action.actionType))
@@ -122,7 +122,7 @@ public class TDLAction {
         }
         return false;
     }
-    
+
     /** Return a hash code value for this action.
      *  @return A hash code value for this token.
      */
@@ -139,7 +139,7 @@ public class TDLAction {
             return true;
         return false;
     }
-    
+
     /**
      * This class compares two TDL actions.
      * @author Patricia Derler
@@ -161,15 +161,15 @@ public class TDLAction {
             long compareTime = tdlEvent1.time.compareTo(tdlEvent2.time);
             if (compareTime != 0)
                 return (int)compareTime;
-            else if (tdlEvent1.actionType != tdlEvent2.actionType) 
+            else if (tdlEvent1.actionType != tdlEvent2.actionType)
                 return tdlEvent1.actionType - tdlEvent2.actionType;
             else
                 return tdlEvent1.object.toString().compareTo(tdlEvent2.object.toString());
         }
-        
-        
+
+
     }
 
-    
-    
+
+
 }

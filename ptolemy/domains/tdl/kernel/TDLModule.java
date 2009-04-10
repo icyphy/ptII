@@ -26,7 +26,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A TDL module forms a unit that consists of sensors, actuators, and modes.
- * 
+ *
  * @author Patricia Derler
  */
 public class TDLModule extends ModalModel {
@@ -35,7 +35,7 @@ public class TDLModule extends ModalModel {
          * Construct a tdl module in the specified workspace with no container and
          * an empty string as a name. You can then change the name with setName().
          * If the workspace argument is null, then use the default workspace.
-         * 
+         *
          * @param workspace
          *            The workspace that will list the actor.
          * @exception IllegalActionException
@@ -54,7 +54,7 @@ public class TDLModule extends ModalModel {
         /**
          * Construct a tdl module with a name and a container. The container
          * argument must not be null, or a NullPointerException will be thrown.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -76,14 +76,14 @@ public class TDLModule extends ModalModel {
 
         /**
          * React to a change of the director or other property.
-         * 
+         *
          * needs to be overridden because of the director class that should always
          * be TDLModuleDirector.
-         * 
+         *
          * @param attribute Attribute to be changed.
-         * @throws IllegalActionException Thrown if director of the module, the TDLModuleDirector, 
+         * @throws IllegalActionException Thrown if director of the module, the TDLModuleDirector,
          * cannot be set.
-         * 
+         *
          */
         public void attributeChanged(Attribute attribute) throws IllegalActionException
                          {
@@ -155,7 +155,7 @@ public class TDLModule extends ModalModel {
         /**
          * Override the base class to ensure that the _controller private variable
          * is reset to the controller of the cloned object.
-         * 
+         *
          * @param workspace
          *            The workspace for the cloned object.
          * @exception CloneNotSupportedException
@@ -181,14 +181,14 @@ public class TDLModule extends ModalModel {
 
                 return newModel;
         }
-        
+
         @Override
         public CausalityInterface getCausalityInterface() {
             if (getDirector().defaultDependency() instanceof BooleanDependency) {
                 return new BreakCausalityInterface(this, getDirector().defaultDependency());
             } else {
                 return super.getCausalityInterface();
-            }  
+            }
         }
 
         /**
@@ -198,7 +198,7 @@ public class TDLModule extends ModalModel {
          * other ports. The new port will be an instance of ModalPort, which extends
          * TypedIOPort. This method is write-synchronized on the workspace, and
          * increments its version number.
-         * 
+         *
          * @param name
          *            The name to assign to the newly created port.
          * @return The new port.
@@ -267,8 +267,8 @@ public class TDLModule extends ModalModel {
 
         ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-        
-        /** 
+
+        /**
          * Initialize the model.
          */
         private void _init() throws IllegalActionException,
@@ -279,13 +279,13 @@ public class TDLModule extends ModalModel {
                                 .setExpression("ptolemy.domains.tdl.kernel.TDLModuleDirector");
                 _controller.removeAllEntities();
                 _controller.removeAllPorts();
-                _controller.removeAllRelations(); 
+                _controller.removeAllRelations();
                 _controller.setContainer(null);
 
                 TDLModuleDirector defaultTDLDirector = new TDLModuleDirector(this,
                                 "_TDLDirector");
                 defaultTDLDirector.controllerName.setExpression("_Controller");
-                
+
 
                 ComponentEntity controller = getEntity("_Controller");
         if (controller != null) {

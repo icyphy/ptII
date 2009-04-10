@@ -105,10 +105,10 @@ public class FmvAutomatonGraphController extends FSMGraphController {
         diva.gui.GUIUtilities.addMenuItem(menu, _newFmvStateAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newFmvStateAction);
     }
-    
+
     /** Prototype state for rendering. */
     private static Location _prototypeFmvState;
-    
+
     static {
         CompositeEntity container = new CompositeEntity();
 
@@ -120,10 +120,10 @@ public class FmvAutomatonGraphController extends FSMGraphController {
             throw new InternalErrorException(null, ex, null);
         }
     }
-    
+
     /** The action for creating states. */
     private NewFmvStateAction _newFmvStateAction = new NewFmvStateAction();
-    
+
     ///////////////////////////////////////////////////////////////////
     //// NewStateAction
 
@@ -204,7 +204,7 @@ public class FmvAutomatonGraphController extends FSMGraphController {
                 }
             } catch (Exception ex) {
                 // Ignore and use the default.
-                
+
             }
 
             if (moml == null) {

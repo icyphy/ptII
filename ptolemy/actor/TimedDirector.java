@@ -55,12 +55,12 @@ public interface TimedDirector {
      *  @return The time resolution of the model.
      */
     public double getTimeResolution();
-    
+
     /** Return a dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.
      *  @return A dependency representing a delay.
      */
     public Dependency delayDependency(double delay);
-   
+
 }

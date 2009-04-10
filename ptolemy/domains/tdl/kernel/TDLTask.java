@@ -45,9 +45,9 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A TDL task is an SDF actor with TDL specific parameters.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLTask extends TypedCompositeActor {
 
@@ -57,7 +57,7 @@ public class TDLTask extends TypedCompositeActor {
          * workspace. You should set a director before attempting to execute it. You
          * should set the container before sending data to it. Increment the version
          * number of the workspace.
-         * 
+         *
          * @throws NameDuplicationException Thrown if parameters cannot be set.
          * @throws IllegalActionException Thrown if parameters cannot be set.
          */
@@ -73,7 +73,7 @@ public class TDLTask extends TypedCompositeActor {
          * workspace. You should set a director before attempting to execute it. You
          * should set the container before sending data to it. Increment the version
          * number of the workspace.
-         * 
+         *
          * @param workspace
          *            The workspace that will list the actor.
          * @throws NameDuplicationException
@@ -94,7 +94,7 @@ public class TDLTask extends TypedCompositeActor {
          * local director initially, and its executive director will be simply the
          * director of the container. You should set a director before attempting to
          * execute it.
-         * 
+         *
          * @param container
          *            The container actor.
          * @param name
@@ -110,7 +110,7 @@ public class TDLTask extends TypedCompositeActor {
                 super(container, name);
                 _init();
         }
-        
+
         ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -128,13 +128,13 @@ public class TDLTask extends TypedCompositeActor {
          * Slot selection string for the task.
          */
         public Parameter slots;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-        
+
         /**
          * Return the list of ports of the modal model that this task reads from.
-         * @param rrefinementInputPorts Inputports of the refinement which is 
+         * @param rrefinementInputPorts Inputports of the refinement which is
          * the container of this task.
          * @param moduleInputPorts Inputports of the module that contains this task.
          * @return List of modal ports.
@@ -143,11 +143,11 @@ public class TDLTask extends TypedCompositeActor {
             if (_readsFromSensors == null) {
                 _readsFromSensors = new ArrayList();
                 List<IOPort> taskRefinementInputs = null;
-                
-                List<IOPort> taskInputPorts = inputPortList(); 
+
+                List<IOPort> taskInputPorts = inputPortList();
                 taskRefinementInputs = new ArrayList();
-            for (IOPort inputPort : taskInputPorts) {  
-                taskRefinementInputs.addAll(inputPort.connectedPortList()); 
+            for (IOPort inputPort : taskInputPorts) {
+                taskRefinementInputs.addAll(inputPort.connectedPortList());
             }
             taskRefinementInputs.retainAll(refinementInputPorts);
             for (IOPort taskRefinementInput : taskRefinementInputs) {
@@ -164,7 +164,7 @@ public class TDLTask extends TypedCompositeActor {
 
         /**
          * Create a new TDL port.
-         * 
+         *
          * @param name Name of the TDL port.
          * @return a new TDL Task output port.
          * @throws NameDuplicationException If the name for the port already exists.
@@ -183,14 +183,14 @@ public class TDLTask extends TypedCompositeActor {
                         workspace().doneWriting();
                 }
         }
-        
+
         ///////////////////////////////////////////////////////////////////
     ////                         preivate methods                  ////
 
 
         /**
          * Initialize the TDL task.
-         * 
+         *
          * @throws NameDuplicationException Thrown if parameters cannot be set.
          * @throws IllegalActionException Thrown if parameters cannot be set.
          */
@@ -205,7 +205,7 @@ public class TDLTask extends TypedCompositeActor {
                 slots = new Parameter(this, "slots");
                 slots.setExpression("'1*'");
         }
-        
+
         /**
          * List of modal ports this task reads from.
          */

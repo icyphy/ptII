@@ -79,17 +79,17 @@ public class StringToKeyValue extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** The input port.
-     * 
+     *
      */
     public TypedIOPort input;
 
     /** The key output port.
-     * 
+     *
      */
     public TypedIOPort key;
 
     /** The value output port.
-     * 
+     *
      */
     public TypedIOPort value;
 

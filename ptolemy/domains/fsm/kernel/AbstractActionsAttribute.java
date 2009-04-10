@@ -150,7 +150,7 @@ public abstract class AbstractActionsAttribute extends Action implements
         newObject._numbers = null;
         newObject._parseTreeEvaluator = null;
         newObject._parseTrees = null;
-        
+
         newObject._scope = null;
 
         // The _destinationNames is a list of ports or parameter names that are
@@ -162,7 +162,7 @@ public abstract class AbstractActionsAttribute extends Action implements
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException(e.getMessage());
         }
-        
+
         return newObject;
     }
 
@@ -187,7 +187,7 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  for this attribute.  If no destinations are specified, then return
      *  an empty list.
      *  @return the list of channel numbers.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     public List getChannelNumberList() throws IllegalActionException {
         List list = new LinkedList();
@@ -529,7 +529,7 @@ public abstract class AbstractActionsAttribute extends Action implements
                         return arrayType;
                     }
                 }
-                
+
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(AbstractActionsAttribute.this,
@@ -581,7 +581,7 @@ public abstract class AbstractActionsAttribute extends Action implements
 
         ///////////////////////////////////////////////////////////////
         ////                      private inner variables          ////
-        
+
         private String _name;
 
         private ParseTreeTypeInference _typeInference =

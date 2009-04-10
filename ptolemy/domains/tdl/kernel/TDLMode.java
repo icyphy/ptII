@@ -35,15 +35,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * A TDL mode is a collection of TDL tasks.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class TDLMode extends State {
 
         /**
          * Construct a new TDL mode.
-         * 
+         *
          * @param container
          *            The container for the TDL mode.
          * @param name

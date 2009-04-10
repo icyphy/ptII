@@ -293,7 +293,7 @@ public class LinkController extends BasicEdgeController {
                     || (object instanceof Link && c != f)
                     || (object instanceof Locatable && ((Locatable) object)
                             .getContainer() instanceof Port)) {
-                
+
                 // It is possible to link with an existing link.
                 // If this existing link has a vertex as head or tail,
                 // we will connect with the vertex, otherwise we will
@@ -324,7 +324,7 @@ public class LinkController extends BasicEdgeController {
                     || (object instanceof Link && c != f)
                     || (object instanceof Locatable && ((Locatable) object)
                             .getContainer() instanceof Port)) {
-                
+
                 // It is possible to link with an existing link.
                 // If this existing link has a vertex as head or tail,
                 // we will connect with the vertex, otherwise we will
@@ -333,7 +333,7 @@ public class LinkController extends BasicEdgeController {
                 // vertex and link the new link with the vertex.
                 // We don't allow connecting with with yourself, hence the
                 // test c != f.
-                
+
                 return super.acceptTail(c, f);
             } else {
                 return false;

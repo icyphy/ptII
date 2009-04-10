@@ -72,8 +72,8 @@ public class UnitUtilities {
      *  array.  The size of the returned array will be the maximum of
      *  the size of the two input arrays, or null if both input arrays
      *  are unitless.
-     *  @param units1 The first array of units. 
-     *  @param units2 The second array of units. 
+     *  @param units1 The first array of units.
+     *  @param units2 The second array of units.
      *  @return The unit sum of the two arrays.
      */
     public static int[] addUnitsArray(int[] units1, int[] units2) {
@@ -312,8 +312,8 @@ public class UnitUtilities {
     }
 
     /** Subtract the given unit arrays and return the result in a new array.
-     *  @param units1 The first array of units. 
-     *  @param units2 The second array of units. 
+     *  @param units1 The first array of units.
+     *  @param units2 The second array of units.
      *  @return The unit difference of the two arrays.
      */
     public static int[] subtractUnitsArray(int[] units1, int[] units2) {

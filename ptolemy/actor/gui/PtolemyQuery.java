@@ -287,7 +287,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                             ((FileParameter) attribute).isOutput()) {
                         isOutput = true;
                     }
-                    
+
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
                     component = addFileChooser(name, displayName,

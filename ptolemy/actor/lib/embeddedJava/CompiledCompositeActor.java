@@ -152,7 +152,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     /** If true, then invoke the generated code in the action methods
      *  (fire(), etc.).
-     *  If the value is false, this actor will be executed 
+     *  If the value is false, this actor will be executed
      *  executing like an ordinary composite actor.  Classes like EmbeddedJavaActor
      *  set embedded to true when there is only Java code specifying
      *  the functionality of an actor.
@@ -465,7 +465,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         _invokeHelperMethod("copyFilesToCodeDirectory");
 
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
-        
+
         Effigy effigy = Configuration.findEffigy(this.toplevel());
         if (effigy != null && effigy.isModified()) {
             System.out

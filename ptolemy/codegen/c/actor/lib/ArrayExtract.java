@@ -75,7 +75,7 @@ public class ArrayExtract extends CCodeGeneratorHelper {
         if (inputType instanceof ArrayType) {
             args.set(0, codeGenType(((ArrayType) inputType).getElementType()));
             code.append(_generateBlockCode("fireBlock", args));
-            
+
         } else {
             // This shouldn't happen because the type
             // constraints enforce this.
@@ -100,12 +100,12 @@ public class ArrayExtract extends CCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
         args.add("");
-        
+
         Type inputType = actor.input.getType();
         if (inputType instanceof ArrayType) {
             args.set(0, targetType(((ArrayType) inputType).getElementType()));
             code.append(_generateBlockCode("preinitBlock", args));
-            
+
         } else {
             // This shouldn't happen because the type
             // constraints enforce this.

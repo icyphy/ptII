@@ -46,7 +46,7 @@ import ptolemy.kernel.util.InvalidStateException;
 
 /**
  * Receiver used on the top level in the ptides domain.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -65,7 +65,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
 
     /**
      * Construct an empty receiver with the specified container.
-     * 
+     *
      * @param container
      *            The IOPort that contains this receiver.
      * @exception IllegalActionException
@@ -105,7 +105,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
 
     /**
      * Returns the director.
-     * 
+     *
      * @return The director.
      */
     public PtidesDirector getDirector() {
@@ -127,10 +127,10 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
@@ -142,11 +142,11 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is connected to the inside of a boundary
      *         port; return false otherwise.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
@@ -158,10 +158,10 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the outside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is connected to the outside of a boundary
      *         port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
@@ -171,9 +171,9 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
     /**
      * Return true if this receiver is a consumer receiver. A receiver is a
      * consumer receiver if it is connected to a boundary port.
-     * 
+     *
      * @return True if this is a consumer receiver; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
@@ -187,7 +187,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the inside of a boundary port
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -201,7 +201,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the outside of a boundary port
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the outside of a boundary
      *         port; return false otherwise.
      * @see BoundaryDetector
@@ -214,7 +214,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * Return true if this receiver is a producer receiver. A receiver is a
      * producer receiver if it is contained on the inside or outside of a
      * boundary port.
-     * 
+     *
      * @return True if this is a producer receiver; return false otherwise.
      */
     public boolean isProducerReceiver() {
@@ -227,7 +227,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
     /**
      * Return a true or false to indicate whether there is a read block on this
      * receiver or not, respectively.
-     * 
+     *
      * @return a boolean indicating whether a read is blocked on this receiver
      *         or not.
      */
@@ -238,7 +238,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
     /**
      * Return a true or false to indicate whether there is a write block on this
      * receiver or not.
-     * 
+     *
      * @return A boolean indicating whether a write is blocked on this receiver
      *         or not.
      */
@@ -257,7 +257,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * any point during this method this receiver is scheduled for termination,
      * then throw a TerminateProcessException which will cease activity for the
      * actor that contains this receiver.
-     * 
+     *
      * @param token
      *            The token to put in the queue.
      * @exception TerminateProcessException
@@ -286,7 +286,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * any point during this method this receiver is scheduled for termination,
      * then throw a TerminateProcessException which will cease activity for the
      * actor that contains this receiver.
-     * 
+     *
      * @param token
      *            The token to put in the queue.
      * @param time
@@ -329,7 +329,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
 
     /**
      * Set the container. This overrides the base class to record the director.
-     * 
+     *
      * @param port
      *            The container.
      * @exception IllegalActionException

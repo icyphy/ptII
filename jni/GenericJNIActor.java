@@ -87,7 +87,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (vincent.arnould)
  @Pt.AcceptedRating Red (vincent.arnould)
  @see JNIUtilities
- @deprecated This code is old, hard to use and unmaintained.  See 
+ @deprecated This code is old, hard to use and unmaintained.  See
   {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class GenericJNIActor extends TypedAtomicActor {
@@ -688,7 +688,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         } catch (IllegalActionException ex2) {
                             throw new IllegalActionException(this, ex2,
                                                              "Failed to send a Long array token " + toks + " to " + port);
-                                                             
+
                         }
                     } else if (typ.equals("class [D")) {
                         try {

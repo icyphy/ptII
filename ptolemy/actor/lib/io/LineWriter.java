@@ -137,7 +137,7 @@ public class LineWriter extends Sink {
      *  exists, ask for confirmation before overwriting.
      */
     public Parameter confirmOverwrite;
-    
+
     /** End of line character to use. This is a string
      *  that defaults to null, which results in the current
      *  platform's standard end-of-line character being used.
@@ -193,7 +193,7 @@ public class LineWriter extends Sink {
         newObject._writer = null;
         return newObject;
     }
-   
+
     /** Read an input string token and write it to the file.
      *  If there is no input, do nothing.
      *  If the file is not open for writing then open it. If the file
@@ -213,7 +213,7 @@ public class LineWriter extends Sink {
                         .booleanValue();
 
                 String fileNameValue = fileName.stringValue();
-                
+
                 // If previousFileName is null, we have never opened a file.
                 if (_previousFileName == null) {
                     _previousFileName = fileNameValue;
@@ -251,7 +251,7 @@ public class LineWriter extends Sink {
         return super.postfire();
     }
 
-    /** Read the value of alwaysFlush parameter. 
+    /** Read the value of alwaysFlush parameter.
      *  @exception IllegalActionException If there is an error reading the
      *  alwaysFlush parameter.
      */
@@ -280,7 +280,7 @@ public class LineWriter extends Sink {
         input.setTypeEquals(BaseType.STRING);
         input.setMultiport(false);
     }
-    
+
     /** Write the specified token to the current writer.
      *  This is protected so that derived classes can modify the
      *  format in which the token is written.

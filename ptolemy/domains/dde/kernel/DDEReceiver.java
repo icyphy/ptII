@@ -339,7 +339,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  return false.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
@@ -353,8 +353,8 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
@@ -368,7 +368,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  return false.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
@@ -381,7 +381,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *
      *  @return True if this is a consumer receiver; return
      *   false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {

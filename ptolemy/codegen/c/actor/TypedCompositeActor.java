@@ -180,7 +180,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
 //    private void generateTransferOutputsCode(IOPort outputPort, StringBuffer code) {
 //        // TODO Auto-generated method stub
-//        
+//
 //    }
 
 //    private void generateTransferInputsCode(IOPort inputPort, StringBuffer code) throws IllegalActionException {
@@ -293,7 +293,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 //        } else {
 //            Director outsideDirector = (Director) _getHelper(actor.getExecutiveDirector());
 //            Director insideDirector = (Director) _getHelper(actor.getDirector());
-//            
+//
 //            for (int i = 0; i < inputPort.getWidth(); i++) {
 //                if (i < inputPort.getWidthInside()) {
 //                    String name = inputPort.getName();
@@ -317,7 +317,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 //        // Generate the type conversion code before fire code.
 //        code.append(generateTypeConvertFireCode(true));
 //    }
-    
+
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the
@@ -331,7 +331,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
-        
+
         code.append(directorHelper.generateFireFunctionCode());
         if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateEmbeddedCode
                 .getToken()).booleanValue())) {

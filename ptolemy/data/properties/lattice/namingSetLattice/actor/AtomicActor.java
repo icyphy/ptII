@@ -58,34 +58,34 @@ public class AtomicActor extends PropertyConstraintHelper {
      * Construct a helper for the given AtomicActor. This is the
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
-     * are set for this helper. 
+     * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public AtomicActor(PropertyConstraintSolver solver, 
+    public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
-        
+
         super(solver, actor);
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.AtomicActor actor = 
+        ptolemy.actor.AtomicActor actor =
             (ptolemy.actor.AtomicActor) getComponent();
-        
+
         Property name = new PropertyToken(
                 new StringToken(actor.getName()));
-        
+
         PropertySet nameSet = new PropertySet(
                 getSolver().getLattice(), new Property[] {name});
-        
+
         for (IOPort port : (List<IOPort>) actor.portList()) {
             setAtLeast(port, nameSet);
         }
         return super.constraintList();
     }
-    
+
     protected List<Attribute> _getPropertyableAttributes() {
         return new LinkedList();
     }

@@ -5,14 +5,14 @@ import ptolemy.actor.Actor;
 /**
  * A TTTask (time triggered task) is an actor with an invocationPeriod and a
  * logical execution time.
- * 
+ *
  * @author Patricia Derler
  */
 public class LetTask {
 
     /**
      * Create a new LET task.
-     * 
+     *
      * @param actor
      *            The LET task.
      * @param let
@@ -28,13 +28,13 @@ public class LetTask {
         _actor = actor;
         _offset = start;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
      * Return the invocation period of the task.
-     * 
+     *
      * @return the incovationPeriod.
      */
     public long getInvocationPeriod() {
@@ -43,7 +43,7 @@ public class LetTask {
 
     /**
      * Return the LET of the task.
-     * 
+     *
      * @return the LET.
      */
     public long getLet() {
@@ -52,7 +52,7 @@ public class LetTask {
 
     /**
      * Return the actor representing the task.
-     * 
+     *
      * @return the task actor.
      */
     public Actor getActor() {
@@ -61,7 +61,7 @@ public class LetTask {
 
     /**
      * Return the offset of the task.
-     * 
+     *
      * @return the offset.
      */
     public long getOffset() {

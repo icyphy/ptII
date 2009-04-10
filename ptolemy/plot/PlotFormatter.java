@@ -73,8 +73,8 @@ public class PlotFormatter extends JPanel {
         _originalTitle = plot.getTitle();
         _wideQuery.addLine("title", "Title", _originalTitle);
 
-        _originalCaptions = plot.getCaptions(); 
-        StringBuffer captionsString = new StringBuffer(); 
+        _originalCaptions = plot.getCaptions();
+        StringBuffer captionsString = new StringBuffer();
         for (Enumeration captions = _originalCaptions.elements();
              captions.hasMoreElements();) {
             if (captionsString.length() > 0) {

@@ -53,7 +53,7 @@ public class AddEditorFactory implements MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
-     *  @param xmlFile The file currently being parsed. 
+     *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,

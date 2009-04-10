@@ -74,28 +74,28 @@ public class DatabaseSelect extends Source {
     public DatabaseSelect(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         columns = new PortParameter(this, "columns");
         // Require that the columns be a record token.
         columns.setTypeAtMost(BaseType.RECORD);
         // Set the default value.
         columns.setExpression("{lname=string, deskno=string}");
-        
+
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setTypeEquals(BaseType.STRING);
         // Set the default value.
         pattern.setExpression("trim(room)='545Q' and trim(bldg)='Cory'");
-        
+
         distinct = new Parameter(this, "distinct");
         distinct.setExpression("false");
         distinct.setTypeEquals(BaseType.BOOLEAN);
-        
+
         orderBy = new StringParameter(this, "orderBy");
 
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");
-        
+
         output.setTypeAtLeast(ArrayType.arrayOf(columns));
 
         table = new StringParameter(this, "table");
@@ -104,7 +104,7 @@ public class DatabaseSelect extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** A record indicating what to query for.
      *  The names of the fields are the names of the columns to
      *  retrieve from the database, and the value of the field is
@@ -114,17 +114,17 @@ public class DatabaseSelect extends Source {
      *  be retrieved from the database.
      */
     public PortParameter columns;
-    
-    /** Name of the DatabaseManager to use. 
+
+    /** Name of the DatabaseManager to use.
      *  This defaults to "DatabaseManager".
      */
     public StringParameter databaseManager;
-    
+
     /** Indicator of whether to return only distinct records.
      *  This is a boolean that defaults to false.
      */
     public Parameter distinct;
-    
+
     /** Optional ordering of the results.
      *  For example, to order first by DESKNO (ascending)
      *  and then by LNAME (descending), you would change
@@ -134,7 +134,7 @@ public class DatabaseSelect extends Source {
      *  meaning that the ordering of the results is arbitrary.
      */
     public StringParameter orderBy;
-    
+
     /** A pattern specifying which rows to select from the database.
      *  Any pattern understood in the 'where' clause of an SQL
      *  statement is acceptable. This is a string that defaults to
@@ -151,7 +151,7 @@ public class DatabaseSelect extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -161,7 +161,7 @@ public class DatabaseSelect extends Source {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DatabaseSelect newObject = (DatabaseSelect) super.clone(workspace);
 
-        try { 
+        try {
             newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.columns));
         } catch (IllegalActionException ex) {
             // CloneNotSupportedException does not have a constructor
@@ -199,13 +199,13 @@ public class DatabaseSelect extends Source {
                 sqlQuery.append(", ");
             }
             String label = columnEntries.next();
-            sqlQuery.append(label);            
+            sqlQuery.append(label);
         }
         sqlQuery.append(" from ");
         sqlQuery.append(table.stringValue());
         sqlQuery.append(" where ");
         sqlQuery.append(((StringToken)pattern.getToken()).stringValue());
-        
+
         String orderByValue = orderBy.stringValue();
         if (!orderByValue.trim().equals("")) {
             sqlQuery.append(" order by ");

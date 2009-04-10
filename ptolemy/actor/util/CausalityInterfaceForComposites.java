@@ -494,7 +494,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     ////                       protected methods                   ////
 
     /**
-     * Buffer for minimum delays that were already computed.  
+     * Buffer for minimum delays that were already computed.
      */
     private Map<IOPort, Dependency> _minimumDelays = new HashMap<IOPort, Dependency>();
 
@@ -846,7 +846,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             }
             // else if port is input port of any actor in this actor
             else {
-                
+
                     Collection<IOPort> equivalentPorts = (((Actor) port
                             .getContainer()).getCausalityInterface())
                             .equivalentPorts(port);
@@ -861,11 +861,11 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                                     minimumDelay = dependency;
                                 }
                             }
-                            if (sourcePorts.size() == 0) 
+                            if (sourcePorts.size() == 0)
                                 minimumDelay = getDefaultDependency().oTimesIdentity();
                         }
                     }
-                    // set minimum delay for all ports in this equivalence class 
+                    // set minimum delay for all ports in this equivalence class
                     for (IOPort equivalentPort : equivalentPorts) {
                         _minimumDelays.put(equivalentPort, minimumDelay);
                         Collection<IOPort> sourcePorts = equivalentPort
@@ -874,7 +874,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                             _minimumDelays.put(sourcePort, minimumDelay);
                         }
                     }
-                
+
             }
         } else if (port.isOutput()) {
             // if port is output port of this actor

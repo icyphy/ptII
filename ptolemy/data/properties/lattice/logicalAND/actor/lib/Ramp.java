@@ -47,13 +47,13 @@ public class Ramp extends Source {
 
     /**
      */
-    public Ramp(PropertyConstraintSolver solver, 
+    public Ramp(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Ramp actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();        
+        _lattice = (Lattice) getSolver().getLattice();
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -62,7 +62,7 @@ public class Ramp extends Source {
             if (_actor.step.getToken().isEqualTo(new IntToken(0)).booleanValue()) {
                 setAtLeast(_actor.output, _lattice.TRUE);
             } else {
-                setAtLeast(_actor.output, _lattice.FALSE);                
+                setAtLeast(_actor.output, _lattice.FALSE);
             }
         } else {
             // since we do not have partial evaluation we have to set
@@ -83,7 +83,7 @@ public class Ramp extends Source {
         if (_actor.step.getPort().connectedPortList().isEmpty()) {
             result.add(_actor.step);
         }
-        
+
         return result;
     }
 }

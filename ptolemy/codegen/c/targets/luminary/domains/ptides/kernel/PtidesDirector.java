@@ -42,7 +42,7 @@ package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
  the code generator uses the default value 80 for stack size, and 0 for
  priority.
 
- Each task executes a given function which consists of the actor initialization, 
+ Each task executes a given function which consists of the actor initialization,
  fire and wrapup code.
 
  @author Jia Zou
@@ -53,7 +53,7 @@ package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
  */
 public class PtidesDirector extends ptolemy.codegen.c.domains.ptides.kernel.PtidesDirector {
 
-    /** 
+    /**
      * Construct the code generator helper associated with the given
      * PtidesDirector.
      * @param ptidesDirector The associated

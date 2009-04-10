@@ -111,7 +111,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
     public Token get() {
         Workspace workspace = getContainer().workspace();
         Token result = null;
-        
+
         int depth = 0;
         try {
             // NOTE: This used to synchronize on this, but since it calls
@@ -122,7 +122,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                     // Try to read.
                     if (super.hasToken()) {
                         result = super.get();
-    
+
                         // Need to mark any thread that is write blocked
                         // on this receiver unblocked now, before any
                         // notification, or we will detect deadlock and
@@ -134,10 +134,10 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                             _director.threadUnblocked(_writePending, this);
                             _writePending = null;
                         }
-    
+
                         break;
                     }
-    
+
                     // Wait to try again.
                     try {
                         _readPending = Thread.currentThread();
@@ -153,7 +153,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                         _terminate = true;
                     }
                 }
-    
+
                 if (_terminate) {
                     throw new TerminateProcessException("");
                 }
@@ -182,7 +182,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return True if this receiver is connected to boundary port;
      *   return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
@@ -195,8 +195,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return True if this receiver is connected to the inside of a
      *   boundary port; return false otherwise.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
@@ -210,7 +210,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return True if this receiver is connected to the outside of a
      *   boundary port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
@@ -221,7 +221,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  a boundary port.
      *
      *  @return True if this is a consumer receiver; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
@@ -321,7 +321,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                     // Try to write.
                     if (super.hasRoom()) {
                         super.put(token);
-    
+
                         // If any thread is blocked on a get(), then it will become
                         // unblocked. Notify the director now so that there isn't a
                         // spurious deadlock detection.
@@ -329,7 +329,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                             _director.threadUnblocked(_readPending, this);
                             _readPending = null;
                         }
-    
+
                         // Normally, the _writePending reference will have
                         // been cleared by the read that unblocked this
                         // write.  However, it might be that the director
@@ -340,10 +340,10 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                             _director.threadUnblocked(_writePending, this);
                             _writePending = null;
                         }
-    
+
                         break;
                     }
-    
+
                     // Wait to try again.
                     try {
                         _writePending = Thread.currentThread();
@@ -360,7 +360,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                         _terminate = true;
                     }
                 }
-    
+
                 if (_terminate) {
                     throw new TerminateProcessException("Process terminated.");
                 }

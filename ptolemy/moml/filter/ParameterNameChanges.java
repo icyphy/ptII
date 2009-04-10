@@ -266,7 +266,7 @@ public class ParameterNameChanges implements MoMLFilter {
         serverChanges.put("newServiceTime", "serviceTime");
         _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.Server",
                 serverChanges);
-        
+
         // CodeGenerator: After 7.2, 'generateJNI'
         // property is now 'generateEmbeddedCode'
         {
@@ -280,13 +280,13 @@ public class ParameterNameChanges implements MoMLFilter {
             codegen.put("generateJNI", "generateEmbeddedCode");
             _classesWithParameterNameChanges.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
                     codegen);
-        }        
+        }
         {
             HashMap codegen = new HashMap();
             codegen.put("generateJNI", "generateEmbeddedCode");
             _classesWithParameterNameChanges.put("ptolemy.codegen.c.kernel.CCodeGenerator",
                     codegen);
-        }        
-        
+        }
+
     }
 }

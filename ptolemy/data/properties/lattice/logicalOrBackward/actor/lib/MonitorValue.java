@@ -49,9 +49,9 @@ public class MonitorValue extends Sink {
     /**
      * Construct an MonitorValue helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public MonitorValue(PropertyConstraintSolver solver, 
+    public MonitorValue(PropertyConstraintSolver solver,
             ptolemy.actor.lib.MonitorValue actor) throws IllegalActionException {
         super(solver, actor, false);
     }
@@ -59,10 +59,10 @@ public class MonitorValue extends Sink {
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.MonitorValue actor =
             (ptolemy.actor.lib.MonitorValue) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();        
+
+        Lattice lattice = (Lattice) getSolver().getLattice();
         setEquals(actor.input, lattice.FALSE);
 
         return super.constraintList();
-    } 
+    }
 }

@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class False extends LatticeProperty {
-        
+
     /**
      * Construct a False property object
      * @param lattice The given lattice.

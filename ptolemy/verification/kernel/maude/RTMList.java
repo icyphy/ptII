@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class RTMList extends RTMTerm {
-    
+
     private String saperator;
     private String empty;
     private LinkedList<RTMTerm> items;
-    
+
     public RTMList(String saperator, String emptyrepr) {
         super();
         if (saperator.trim().equals(""))
@@ -20,19 +20,19 @@ public class RTMList extends RTMTerm {
         this.empty = emptyrepr;
         this.items = new LinkedList<RTMTerm>();
     }
-    
+
     public void add(RTMTerm t) {
         items.add(t);
     }
-    
+
     public void addStr(String s) {
         add(new RTMFragment(s));
     }
-    
+
     public void addExp(String e, boolean isTime)  throws IllegalActionException {
         add(new RTMPtExp(e, isTime));
     }
-    
+
     public boolean isEmpty() {
             return items.isEmpty();
     }

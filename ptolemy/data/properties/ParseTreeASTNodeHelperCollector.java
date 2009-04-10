@@ -63,7 +63,7 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
 
         _helpers = new LinkedList<PropertyHelper>();
         _solver = solver;
-        
+
         _visitAllChildren(node);
         _solver = null;
         return _helpers;
@@ -99,5 +99,5 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
     protected List<PropertyHelper> _helpers;
 
     protected PropertySolver _solver;
-    
+
 }

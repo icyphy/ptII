@@ -34,7 +34,7 @@ public class LatticeElementIcon extends StateIcon {
             } catch (IllegalActionException e) {
                 // Ignore and return the default.
             }
-        }        
+        }
         return Color.white;
     }
 
@@ -54,7 +54,7 @@ public class LatticeElementIcon extends StateIcon {
             } catch (IllegalActionException e) {
                 // Ignore and return the default.
             }
-        }        
+        }
         return 1.0f;
     }
 }

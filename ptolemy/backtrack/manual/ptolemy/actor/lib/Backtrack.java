@@ -115,7 +115,7 @@ public class Backtrack extends TypedAtomicActor {
 
         newObject._handleMap = new HashMap();
 
-        try { 
+        try {
 
             ptolemy.kernel.Port oldPort = newObject.getPort("checkpoint");
             if (oldPort != null) {

@@ -25,24 +25,24 @@ public class LatticeElement extends State {
         isInitialState.setToken(BooleanToken.FALSE);
         isFinalState.setVisibility(Settable.NONE);
         isFinalState.setPersistent(false);
-        
+
         isAcceptableSolution = new Parameter(this, "isAcceptableSolution", BooleanToken.TRUE);
         isAcceptableSolution.setTypeEquals(BaseType.BOOLEAN);
 
         solutionColor = new ColorAttribute(this, "solutionColor");
         solutionColor.setToken("{1.0, 1.0, 1.0, 1.0}");
-        
+
         _icon = new LatticeElementIcon(this, "LatticeElementIcon");
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-      
+
     private LatticeElementIcon _icon;
 
     public ColorAttribute solutionColor;
-    
+
     public Parameter isAcceptableSolution;
 
 }

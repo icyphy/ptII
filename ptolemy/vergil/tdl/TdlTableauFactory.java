@@ -20,10 +20,10 @@ public class TdlTableauFactory extends TableauFactory {
 
     public Tableau createTableau(Effigy effigy) throws Exception {
         Configuration configuration = (Configuration) effigy.toplevel();
-        
+
         TDLModule model = (TDLModule) ((PtolemyEffigy) effigy).getModel();
         FSMActor controller = ((TDLModuleDirector) model.getDirector()).getController();
         return configuration.openModel(controller);
     }
-    
+
 }

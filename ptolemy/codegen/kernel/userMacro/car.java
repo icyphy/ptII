@@ -12,17 +12,17 @@ public class car {
         list = list.substring(list.indexOf('(') + 1, list.lastIndexOf(')'));
         return CodeGeneratorHelper._parseList(list).get(0);
     }
-    
+
     public static boolean checkArguments(List<String> arguments) {
         if (arguments.size() != 1) {
             return false;
         }
-        
+
         String list = arguments.get(0).trim();
         if (!list.startsWith("(") || !list.endsWith(")")) {
             return false;
         }
-        
+
         return true;
     }
 }

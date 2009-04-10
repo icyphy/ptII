@@ -47,7 +47,7 @@ import ptolemy.data.properties.lattice.TypeProperty;
  @Pt.AcceptedRating Red (cxh)
  */
 public class UInt extends LatticeProperty implements TypeProperty {
-        
+
     public UInt(PropertyLattice lattice) {
         super(lattice);
     }

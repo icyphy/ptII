@@ -47,28 +47,28 @@ public class AtomicActor extends PropertyConstraintHelper {
     /**
      * Construct an AddSubtract helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public AtomicActor(PropertyConstraintSolver solver, 
+    public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
         super(solver, actor);
     }
 
-    
-    public AtomicActor(PropertyConstraintSolver solver, 
-            ptolemy.actor.AtomicActor actor, 
+
+    public AtomicActor(PropertyConstraintSolver solver,
+            ptolemy.actor.AtomicActor actor,
             boolean useDefaultConstraints)
     throws IllegalActionException {
 
         super(solver, actor, useDefaultConstraints);
-    }    
+    }
 
     public boolean isEffective() {
         return true;
     }
 
     public void setEffective(boolean isEffective) {
-        
+
     }
 }

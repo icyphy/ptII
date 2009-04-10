@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (mankit)
  */
 public class C extends LatticeProperty {
-        
+
     /**
      * Construct a Dynamic property object
      * @param lattice

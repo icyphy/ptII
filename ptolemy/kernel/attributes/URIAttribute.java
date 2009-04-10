@@ -107,7 +107,7 @@ public class URIAttribute extends SingletonAttribute {
         // we set the new value to null.
         // In theory, we could do something like:
         // newObject._value = URI.create(newObject.getURI().toString());
-        // but this means that the _value field of the master and the 
+        // but this means that the _value field of the master and the
         // clone are equal(), which means that our test in Configuration
         // indicates a problem.
         newObject._value = null;

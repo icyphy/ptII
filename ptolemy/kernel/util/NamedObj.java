@@ -591,7 +591,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  by calling the description method with an argument for full detail.
      *  This method read-synchronizes on the workspace.
      *  @return A description of the object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see #exportMoML(Writer, int, String)
      */
     public String description() throws IllegalActionException {
@@ -605,7 +605,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  It read-synchronizes on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see #exportMoML(Writer, int, String)
      */
     public String description(int detail) throws IllegalActionException {
@@ -2295,7 +2295,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
@@ -2363,7 +2363,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  depth and terminated with a newline character.
      *  Callers of this method should hold read access before
      *  calling this method.  Note that exportMoML() does this for us.
-     *  
+     *
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
@@ -2373,7 +2373,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             throws IOException {
         // If the display name has been set, then include a display element.
         // Note that copying parameters that have _displayName set need
-        // to export _displayName.  
+        // to export _displayName.
         // See: http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3361
         if (_displayName != null) {
             output.write(_getIndentPrefix(depth) + "<display name=\"");
@@ -2381,7 +2381,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             output.write("\"/>\n");
         }
 
-        // Callers of this method should hold read access 
+        // Callers of this method should hold read access
         // so as to avoid ConcurrentModificationException.
         if (_attributes != null) {
             Iterator<?> attributes = _attributes.elementList().iterator();

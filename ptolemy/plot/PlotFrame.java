@@ -418,7 +418,7 @@ public class PlotFrame extends JFrame {
      */
     protected void _print() {
         // If you are using $PTII/bin/vergil, under bash, set this property:
-        // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform 
+        // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
         // and then run $PTII/bin/vergil
         if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
             _printCrossPlatform();
@@ -508,7 +508,7 @@ public class PlotFrame extends JFrame {
     protected void _printNative() {
         // FIXME: Code duplication with PlotBox and Top.
 
-        // Native printing used not honor the user's 
+        // Native printing used not honor the user's
         // choice of portrait vs. landscape.
 
         PrinterJob job = PrinterJob.getPrinterJob();

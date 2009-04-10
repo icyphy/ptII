@@ -61,7 +61,7 @@ public interface Nameable {
      *  extensible, but the following are in use: links, ports, entities,
      *  relations, attributes, and inside links, at least.
      *  @return A description of this object.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public String description() throws IllegalActionException;
 

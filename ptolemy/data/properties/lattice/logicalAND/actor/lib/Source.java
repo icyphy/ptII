@@ -57,34 +57,34 @@ public class Source extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Source(PropertyConstraintSolver solver, 
+    public Source(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Source actor)
     throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();        
+        _lattice = (Lattice) getSolver().getLattice();
     }
 
-    public Source(PropertyConstraintSolver solver, 
+    public Source(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Source actor,
             boolean useDefaultConstraints)
     throws IllegalActionException {
 
         super(solver, actor, useDefaultConstraints);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();        
+        _lattice = (Lattice) getSolver().getLattice();
     }
 
-    public List<Inequality> constraintList() 
+    public List<Inequality> constraintList()
     throws IllegalActionException {
-        // add default constraints if no constraints specified in actor helper 
+        // add default constraints if no constraints specified in actor helper
 
         if (_ownConstraints.isEmpty()) {
             // force outputs to FALSE by default; overwrite in actor specific helper class
-            setAtLeast(_actor.output, _lattice.FALSE);        
+            setAtLeast(_actor.output, _lattice.FALSE);
         }
 
         return super.constraintList();
@@ -96,11 +96,11 @@ public class Source extends AtomicActor {
     private Lattice _lattice;
 
     protected void _setEffectiveTerms() {
-        Iterator ports = _actor.portList().iterator();        
-        while (ports.hasNext()) {                    
+        Iterator ports = _actor.portList().iterator();
+        while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if ((port.numLinks() <= 0) &&
-                    (port.isInput()) && 
+                    (port.isInput()) &&
                     (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
 
                 if (!isAnnotated(port)) {

@@ -106,7 +106,7 @@ public class ArrayOfRecordsPane extends JPanel {
         table.setTableHeader(new JTableHeader(table.getColumnModel()));
         _initColumnSizes(table);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -150,7 +150,7 @@ public class ArrayOfRecordsPane extends JPanel {
             }
             column.setPreferredWidth(width);
             tableWidth += width;
-            
+
             if (columnHeight > tableHeight) {
                 tableHeight = columnHeight;
             }
@@ -164,7 +164,7 @@ public class ArrayOfRecordsPane extends JPanel {
 
     /** Empty table model. */
     private static EmptyTableModel _emptyTableModel = new EmptyTableModel();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
@@ -174,7 +174,7 @@ public class ArrayOfRecordsPane extends JPanel {
     public static class ArrayAsTable extends AbstractTableModel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
-        
+
         /** Construct a table for the specified array to display
          *  all fields in the records contained by the array.
          *  @param array An array of record tokens to display.
@@ -192,7 +192,7 @@ public class ArrayOfRecordsPane extends JPanel {
          */
         ArrayAsTable(ArrayToken array, ArrayToken columns) {
             _array = array;
-            
+
             if (columns == null) {
                 // Figure out what the column names are.
                 for(int i = 0; i < _array.length(); i++) {
@@ -265,7 +265,7 @@ public class ArrayOfRecordsPane extends JPanel {
             }
             return element.toString();
         }
-        
+
         /** Remove the specified row from the table.
          *  If the row is out of range, do nothing.
          *  @param row The row to remove, starting with index 0.
@@ -295,7 +295,7 @@ public class ArrayOfRecordsPane extends JPanel {
 
         /** The array for which a Table Model is created. */
         private ArrayToken _array = null;
-        
+
         /** The column names found in the array. */
         private List<String> _columns = new LinkedList<String>();
     }
@@ -331,7 +331,7 @@ public class ArrayOfRecordsPane extends JPanel {
             return ("");
         }
     }
-    
+
     /** Table panel. */
     private static class SimpleTable extends JTable {
         public SimpleTable() {

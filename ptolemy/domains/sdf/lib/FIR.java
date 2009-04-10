@@ -302,12 +302,12 @@ public class FIR extends SDFTransformer {
 
         // Must be sure to throw away the old data buffer.
         _data = null;
-        
+
         // If this object was created by cloning, then the _taps
         // variable may be null.
         _initializeTaps();
     }
-    
+
     /** Return false if the input does not have enough tokens to fire.
      *  Otherwise, return what the superclass returns.
      *  @return False if the number of input tokens available is not at least
@@ -337,7 +337,7 @@ public class FIR extends SDFTransformer {
     /** Initialize the taps.
      *  @exception IllegalActionException If we can't get the token from
      *  the parameter taps.
-     *  
+     *
      */
     protected void _initializeTaps() throws IllegalActionException {
         ArrayToken tapsToken = (ArrayToken) (taps.getToken());
@@ -347,7 +347,7 @@ public class FIR extends SDFTransformer {
         _zero = _taps[0].zero();
 
         _reinitializeNeeded = true;
-    }    
+    }
 
     /** Initialize the type constraints for this actor. */
     protected void _initTypeConstraints() {
@@ -480,20 +480,20 @@ public class FIR extends SDFTransformer {
             // variable _taps is not initialized which results in a crash when
             // getValue is called.
             // To avoid this we explicitly initialize the taps here.
-            // There is however an issue. When _initializeTaps is executed, the 
+            // There is however an issue. When _initializeTaps is executed, the
             // public parameter taps will be executed, which results in a call of
             // attributeChanged, which will call _initializeTaps and hence the taps
             // are now initialized twice.
             if (_taps == null) {
-                try {                
+                try {
                     _initializeTaps();
                 } catch (IllegalActionException e) {
                     throw new IllegalStateException(e);
                 }
             }
-            
+
             int phaseLength = _taps.length / _interpolationValue;
-            
+
             if ((_taps.length % _interpolationValue) != 0) {
                 phaseLength++;
             }

@@ -99,18 +99,18 @@ import ptolemy.kernel.util.Workspace;
  <p>There are at least three ways for a PN model to terminate itself:
  <ol>
  <li>Have the model starve itself.  Typically, a boolean switch is used.
- See the PN OrderedMerge demo at 
+ See the PN OrderedMerge demo at
   <a href="ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml"><code>ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml</code></a>
- 
+
  <li>Have the model call the Stop actor.  See the PN RemoveNilTokens demo at
   <a href="ptolemy/domains/pn/demo/RemoveNilTokens/RemoveNilTokens.xml"><code>ptolemy/domains/pn/demo/RemoveNilTokens/RemoveNilTokens.xmll</code></a>
 
- <li>Set the <i>firingCountLimit</i> 
+ <li>Set the <i>firingCountLimit</i>
  ({@link ptolemy.actor.lib.LimitedFiringSource#_firingCountLimit}) actor
  parameter to the number of iterations desired.  Actors such as Ramp
  extend LimitedFiringSource and have the <i>firingCountLimit</i> parameter.
  </ol>
-   
+
 
  @author Mudit Goel, Edward A. Lee, Xiaowen Xin
  @version $Id$

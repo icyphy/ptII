@@ -54,19 +54,19 @@ public class TrigFunction extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public TrigFunction(PropertyConstraintSolver solver, 
+    public TrigFunction(PropertyConstraintSolver solver,
             ptolemy.actor.lib.TrigFunction actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
         _actor = actor;
-    } 
+    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        setEquals(_actor.output, _lattice.DOUBLE);               
+        setEquals(_actor.output, _lattice.DOUBLE);
 
         return super.constraintList();
     }

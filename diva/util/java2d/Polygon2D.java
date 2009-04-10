@@ -312,7 +312,7 @@ public abstract class Polygon2D implements Shape {
     public String toString() {
         StringBuffer out = new StringBuffer(getClass().getName() + "[\n");
 
-        
+
         for (int i = 0; i < getVertexCount(); i++) {
             out.append("\t" + getX(i) + ", " + getY(i) + "\n");
         }

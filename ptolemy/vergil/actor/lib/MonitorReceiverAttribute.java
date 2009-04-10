@@ -76,7 +76,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements Sett
     public MonitorReceiverAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, "_showInfo");
-        
+
         // The icon.
         EditorIcon _icon = new EditorIcon(this, "_icon");
         RectangleAttribute rectangle = new RectangleAttribute(_icon,

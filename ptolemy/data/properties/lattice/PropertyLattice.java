@@ -122,7 +122,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
         synchronized (PropertyLattice.class) {
             if (t1 == null || t2 == null) {
                 return null;
-            } 
+            }
 
             if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
                 throw new IllegalArgumentException(
@@ -240,7 +240,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
         synchronized (PropertyLattice.class) {
             if (t1 == null) {
                 return t2;
-            } 
+            }
             if (t2 == null) {
                 return t1;
             }
@@ -283,7 +283,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      */
     public Object top() {
         synchronized (PropertyLattice.class) {
-            return /*_basicLattice*/super.top(); 
+            return /*_basicLattice*/super.top();
         }
     }
 
@@ -318,7 +318,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
 
     /**
      * Return the property lattice described by the given lattice
-     * description file. If the lattice was not created already, 
+     * description file. If the lattice was not created already,
      * a new property lattice is instantiated.
      * @param latticeName The given lattice name.
      * @return The property lattice described by the given file.
@@ -326,30 +326,30 @@ public class PropertyLattice extends DirectedAcyclicGraph {
     public static PropertyLattice getPropertyLattice(String latticeName) {
 
         if (latticeName.startsWith(PropertyConstraintSolver._USER_DEFINED_LATTICE)) {
-            // In this case, we don't want to look 
+            // In this case, we don't want to look
             // in the predefined lattices.
             latticeName = latticeName.replace(
                     PropertyConstraintSolver._USER_DEFINED_LATTICE, "");
             return _lattices.get(latticeName);
         }
-        
+
         if (!_lattices.containsKey(latticeName)) {
 
             try {
-                
+
                 Class latticeClass = Class.forName(
-                        "ptolemy.data.properties.lattice." + 
+                        "ptolemy.data.properties.lattice." +
                         latticeName + ".Lattice");
-                
+
                 // Create a new instance of PropertyLattice.
                 PropertyLattice newLattice = (PropertyLattice)
-                latticeClass.getConstructor(new Class[0]).newInstance(new Object[0]);                
+                latticeClass.getConstructor(new Class[0]).newInstance(new Object[0]);
 
                 _lattices.put(latticeName, newLattice);
 
             } catch (Exception e) {
                 e.printStackTrace();
-            }            
+            }
         }
 
         PropertyLattice lattice = _lattices.get(latticeName);
@@ -361,20 +361,20 @@ public class PropertyLattice extends DirectedAcyclicGraph {
         _propertyMap.put(weight.toString().toUpperCase(), (Property) weight);
         return super.addNodeWeight(weight);
     }
-    
-    
+
+
     public Property getElement(String fieldName)
     throws IllegalActionException {
 //        try {
             //return (Property) getClass().getField(fieldName).get(this);
-            
+
         Property property = _propertyMap.get(fieldName.toUpperCase());
         if (property == null) {
             throw new IllegalActionException(
-                    "No lattice element named \"" + fieldName + "\".");                
+                    "No lattice element named \"" + fieldName + "\".");
         }
         return property;
-        
+
 //        } catch (Exception ex) {
 //            return null;
 //        }
@@ -420,7 +420,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * A HashMap that contains all property lattices with unique
      * lattice files as keys.
      */
-    private static HashMap <String, PropertyLattice> _lattices = 
+    private static HashMap <String, PropertyLattice> _lattices =
         new HashMap<String, PropertyLattice>();
 
     public String toString() {

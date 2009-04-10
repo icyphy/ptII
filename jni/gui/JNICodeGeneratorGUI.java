@@ -67,7 +67,7 @@ import ptolemy.util.MessageHandler;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (eal)
- @deprecated This code is old, hard to use and unmaintained.  See 
+ @deprecated This code is old, hard to use and unmaintained.  See
   {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class JNICodeGeneratorGUI extends PtolemyFrame {

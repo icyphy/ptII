@@ -7,7 +7,7 @@ public class PropertyableObject implements Propertyable {
     }
     public void clearHighlight() {
         // Do nothing.
-        
+
     }
 
     public void clearProperty(String useCase) {
@@ -41,5 +41,5 @@ public class PropertyableObject implements Propertyable {
     protected Object _object;
 
     private Property _property;
-    
+
 }

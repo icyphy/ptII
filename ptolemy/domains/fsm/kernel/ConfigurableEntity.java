@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Configurable;
 public interface ConfigurableEntity extends Configurable {
 
     /** Get the {@link Configurer} object for this entity.
-     *  @return the Configurer object for this entity.        
+     *  @return the Configurer object for this entity.
      */
     public Configurer getConfigurer();
 

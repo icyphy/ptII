@@ -55,22 +55,22 @@ public class Sequence extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Sequence(PropertyConstraintSolver solver, 
+    public Sequence(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Sequence actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
-        _actor = actor;        
-    } 
+        _actor = actor;
+    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ArrayToken valuesArray = (ArrayToken) _actor.values.getToken();
-        
+
         for (int i=0; i < valuesArray.length(); i++) {
-            setEquals(_actor.output, _lattice.convertJavaToCtype(valuesArray.getElement(i).getType(),valuesArray.getElement(i)));               
+            setEquals(_actor.output, _lattice.convertJavaToCtype(valuesArray.getElement(i).getType(),valuesArray.getElement(i)));
         }
 
         return super.constraintList();

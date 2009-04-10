@@ -75,11 +75,11 @@ public class ExecutionTime extends Transformer {
         executionTime = new Parameter(this, "executionTime");
         executionTime.setTypeEquals(BaseType.LONG);
         executionTime.setExpression("1000L");
-        
+
         realTime = new Parameter(this, "realTime");
         realTime.setTypeEquals(BaseType.BOOLEAN);
         realTime.setExpression("false");
-        
+
         granularity = new Parameter(this, "granularity");
         granularity.setTypeEquals(BaseType.LONG);
         granularity.setExpression("400000L");
@@ -89,7 +89,7 @@ public class ExecutionTime extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The amount of time to consume. This is either in milliseconds,
      *  if the realTime parameter is set to true, or in the number of
      *  iterations of a fixed computation, if the realTime parameter
@@ -97,7 +97,7 @@ public class ExecutionTime extends Transformer {
      *  that defaults to 1000L.
      */
     public Parameter executionTime;
-    
+
     /** The granularity of the computation. This parameter specifies
      *  the number of additions performed in each invocation of the
      *  (unintersting) computation. This is a long, which defaults
@@ -105,7 +105,7 @@ public class ExecutionTime extends Transformer {
      *  of approximately 1msec on a MacBook Pro.
      */
     public Parameter granularity;
-    
+
     /** If true, then the executionTime parameter is
      *  interpreted as milliseconds. If it is false (the default), then the
      *  executionTime parameter is interpreted to specify the number

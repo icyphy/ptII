@@ -54,10 +54,10 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.graph.CPO
  */
 public class PropertySetLattice extends PropertyLattice {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
     /** Compare two properties in the property lattice.
      *  This method returns one of ptolemy.graph.CPO.LOWER,
      *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
@@ -80,7 +80,7 @@ public class PropertySetLattice extends PropertyLattice {
 
         boolean isSuperset = property1.containsAll(property2);
         boolean isSubset = property2.containsAll(property1);
-        
+
         if (isSuperset && isSubset) {
             return CPO.SAME;
         } else if (isSuperset) {
@@ -91,7 +91,7 @@ public class PropertySetLattice extends PropertyLattice {
             return CPO.INCOMPARABLE;
         }
     }
-    
+
     /**
      * Return the property element for the specified name.
      * @param elementName the specified element name.
@@ -101,14 +101,14 @@ public class PropertySetLattice extends PropertyLattice {
     throws IllegalActionException {
         try {
             return (Property) getClass().getField(elementName).get(this);
-            
+
 //        Property property = _propertyMap.get(fieldName.toUpperCase());
 //        if (property == null) {
 //            throw new IllegalActionException(
-//                    "No lattice element named \"" + fieldName + "\".");                
+//                    "No lattice element named \"" + fieldName + "\".");
 //        }
 //        return property;
-        
+
         } catch (Exception ex) {
             return null;
         }

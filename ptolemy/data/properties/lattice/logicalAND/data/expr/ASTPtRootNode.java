@@ -47,20 +47,20 @@ public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
     /**
      * Construct an ASTPtRootNode helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public ASTPtRootNode(PropertyConstraintSolver solver, 
-            ptolemy.data.expr.ASTPtRootNode actor) 
+    public ASTPtRootNode(PropertyConstraintSolver solver,
+            ptolemy.data.expr.ASTPtRootNode actor)
     throws IllegalActionException {
-        
+
         super(solver, actor);
     }
 
-    public ASTPtRootNode(PropertyConstraintSolver solver, 
-            ptolemy.data.expr.ASTPtRootNode actor, 
-            boolean useDefaultConstraints) 
+    public ASTPtRootNode(PropertyConstraintSolver solver,
+            ptolemy.data.expr.ASTPtRootNode actor,
+            boolean useDefaultConstraints)
     throws IllegalActionException {
-        
+
         super(solver, actor, useDefaultConstraints);
     }
 }

@@ -845,7 +845,7 @@ public class HSModalDirector extends FSMDirector implements CTTransparentDirecto
                         .getRelationList();
                 relationList.resetRelationList();
             }
-            
+
             // If we are not at the top level of the hierarchy, request a refiring.
             _fireContainerAt(getModelTime());
 

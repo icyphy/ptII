@@ -59,9 +59,9 @@ import ptolemy.kernel.util.NamedObj;
  @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating red (jiazou)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
-public class PtidesEmbeddedDirector extends Director { 
+public class PtidesEmbeddedDirector extends Director {
 
     /** Construct the code generator helper associated with the given
      *  PtidesEmbeddedDirector.
@@ -73,7 +73,7 @@ public class PtidesEmbeddedDirector extends Director {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         static variables                       ////  
+    ////                         static variables                       ////
     /** Each output port has a fixed buffer size, which is set using this variable.
      *  FIXME: this variable can possibly be inferred from the PTIDES model and
      *  an event model.
@@ -81,7 +81,7 @@ public class PtidesEmbeddedDirector extends Director {
      *  size could be used as a "first guess".
      */
     static final int _outputPortBufferSize = 10;
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
     /** Generate the code for the firing of actors.
@@ -105,7 +105,7 @@ public class PtidesEmbeddedDirector extends Director {
         while (actors.hasNext()) {
 
             Actor actor = (Actor) actors.next();
-            code.append(_eol + "void* " + 
+            code.append(_eol + "void* " +
                     CodeGeneratorHelper.generateName((NamedObj) actor) + "(void* arg) {" + _eol);
             CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helper.generateFireCode());
@@ -179,29 +179,29 @@ public class PtidesEmbeddedDirector extends Director {
      *   Take care of platform independent code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = 
+        StringBuffer code =
             new StringBuffer(super.generatePreinitializeCode());
 
         _updatePortBufferSize();
-        
+
         code.append(_generateActorFireCode());
 
         List args = new LinkedList();
         args.add(_generateDirectorHeader());
 
-        args.add(((CompositeActor) 
+        args.add(((CompositeActor)
                 _director.getContainer()).deepEntityList().size());
 
         // FIXME: this fetching of preinitBlock only fetches the platform dependent part.
         code.append("void initPIBlock() {" + _eol);
-        code.append(_codeStream.getCodeBlock("initPIBlock")); 
+        code.append(_codeStream.getCodeBlock("initPIBlock"));
         code.append("}" + _eol);
-        
-        code.append(_codeStream.getCodeBlock("preinitPIBlock", args));        
+
+        code.append(_codeStream.getCodeBlock("preinitPIBlock", args));
 
         return code.toString();
     }
-    
+
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -217,7 +217,7 @@ public class PtidesEmbeddedDirector extends Director {
             Actor actor = (Actor) actors.next();
             //CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             //code.append(helperObject.generateVariableDeclaration());
-            
+
             String name = CodeGeneratorHelper.generateName(getComponent());
 
             // Generate variable declarations for input ports.
@@ -250,7 +250,7 @@ public class PtidesEmbeddedDirector extends Director {
 
         return processCode(code.toString());
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -339,16 +339,16 @@ public class PtidesEmbeddedDirector extends Director {
 
         String sourceCodeGenType = codeGenType(sourceType);
         String sinkCodeGenType = codeGenType(sinkType);
-        
+
         if (!sinkCodeGenType.equals(sourceCodeGenType)) {
-            result = "$convert_" + sourceCodeGenType + "_" 
+            result = "$convert_" + sourceCodeGenType + "_"
             + sinkCodeGenType + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";" + _eol;
     }
-    
+
     /** Update buffer sizes for each output port to the value specified by _outputPortBufferSize
-     *  Do not update the buffer sizes of the input ports, assuming they are 1.  
+     *  Do not update the buffer sizes of the input ports, assuming they are 1.
      *  @exception IllegalActionException If thrown while setting
      *   buffer size.
      *  @see #_outputPortBufferSize
@@ -370,7 +370,7 @@ public class PtidesEmbeddedDirector extends Director {
 
     /** fire methods for each actor.
      * @return fire methods for each actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      * @exception IllegalActionException If thrown when getting the port's helper.
      */
     private String _generateActorFireCode() throws IllegalActionException {
@@ -388,7 +388,7 @@ public class PtidesEmbeddedDirector extends Director {
         }
         return code.toString();
     }
-    
+
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
      *  @exception IllegalActionException If thrown while
@@ -464,7 +464,7 @@ public class PtidesEmbeddedDirector extends Director {
 
         return code.toString();
     }
-    
+
     /**
      * Return the buffer size of a given port, which is the maximum of
      * the bufferSizes of all channels of the given port.
@@ -504,5 +504,5 @@ public class PtidesEmbeddedDirector extends Director {
         return ((PortCodeGenerator) _getHelper(port))
         .getBufferSize(channelNumber);
     }
-    
+
 }

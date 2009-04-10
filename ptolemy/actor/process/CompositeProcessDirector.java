@@ -178,12 +178,12 @@ public class CompositeProcessDirector extends ProcessDirector {
         newObj._onFirstIteration = true;
         newObj._inputBranchController = null;
         newObj._outputBranchController = null;
-        
+
         // Findbugs:
         //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not a problem since the object is
         // being created and hence nobody else has access to it.
-        
+
         newObj._blockedReceivers = new HashSet();
         newObj._branchControllerLock = new Object();
         return newObj;
@@ -480,8 +480,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *
      *  @return true If one or more contained actors are externally
      *   blocked; return false otherwise.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      */
     protected boolean _areActorsExternallyBlocked() throws InvalidStateException, IllegalActionException {
         Iterator blockedReceivers = _blockedReceivers.iterator();
@@ -649,10 +649,10 @@ public class CompositeProcessDirector extends ProcessDirector {
                                             "Interrupted.");
                                 }
                             }
-        
+
                             stopInputBranchController();
                             stopOutputBranchController();
-        
+
                             if (execDir == null) {
                                 // This is the top level director - problem!!!
                                 throw new IllegalActionException(
@@ -672,7 +672,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                         } else if (_outputBranchController.isBlocked()) {
                             stopInputBranchController();
                             stopOutputBranchController();
-        
+
                             if (execDir == null) {
                                 // This is the top level director - problem!!!
                                 throw new IllegalActionException(
@@ -709,7 +709,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                                             "Interrupted.");
                                 }
                             }
-        
+
                             stopInputBranchController();
                             stopOutputBranchController();
                             return _resolveInternalDeadlock();
@@ -733,7 +733,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                                             "Interrupted.");
                                 }
                             }
-        
+
                             stopInputBranchController();
                             stopOutputBranchController();
                             return _resolveInternalDeadlock();

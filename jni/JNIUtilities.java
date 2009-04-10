@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
 /**
  A collection of utilities for generating Java Native Interface (JNI) classes.
 
-<p>This code is old, hard to use and unmaintained.  See 
+<p>This code is old, hard to use and unmaintained.  See
 {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
 
  <p>For information about JNI, see
@@ -80,7 +80,7 @@ If you don't have <code>gmake</code> in your path, you might see a message like:
 <pre>
 IOException: java.io.IOException: CreateProcess: gmake -C jni/testTrois -f JnijnitestTroisIfnTest.mk error=2
 </pre>
-This message occurs under Windows because the Windows, Java calls the 
+This message occurs under Windows because the Windows, Java calls the
 Windows CreateProcess function, which returns 2, which
 means that the executable, in this case, <code>gmake</code> cannot be found.
 
@@ -203,7 +203,7 @@ means that the executable, in this case, <code>gmake</code> cannot be found.
  @since Ptolemy II 2.3
  @Pt.ProposedRating Red (vincent.arnould)
  @Pt.AcceptedRating Red (vincent.arnould)
- @deprecated This code is old, hard to use and unmaintained.  See 
+ @deprecated This code is old, hard to use and unmaintained.  See
   {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class JNIUtilities {

@@ -224,7 +224,7 @@ public class Distributor extends Transformer implements SequenceActor {
 
     // The new channel number for the next output as determined by fire().
     private int _tentativeOutputPosition;
-    
+
     /**
      * This class will set _port.getWidth() + " * blockSize" as expression
      * of the parameter, but will only do it when the token is requested to
@@ -244,7 +244,7 @@ public class Distributor extends Transformer implements SequenceActor {
         void setPort(IOPort port) {
             _port = port;
         }
-        
+
         private IOPort _port;
-    };     
+    };
 }

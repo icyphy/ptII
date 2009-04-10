@@ -74,7 +74,7 @@ public class Ramp extends CCodeGeneratorHelper {
             args.set(0, new Integer(i));
             code.append(_generateBlockCode("getTriggerTokens", args));
         }
-        
+
         // Append the default "fireBlock".
         code.append(super._generateFireCode());
         return processCode(code.toString());

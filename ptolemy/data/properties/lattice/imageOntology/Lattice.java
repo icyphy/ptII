@@ -64,19 +64,19 @@ public class Lattice extends PropertyLattice {
     public /*static*/ Property GRAYSCALEIMAGE = new GrayScaleImage(this);
     public /*static*/ Property UNKNOWN = new Unknown(this);
     public /*static*/ Property TOP = new Top(this);
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    
+
     // The infinite property lattice
     public Lattice() {
         super();
         _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice = 
+        DirectedAcyclicGraph basicLattice =
             (DirectedAcyclicGraph) _lattice.basicLattice();
-        
+
         basicLattice.addNodeWeight(IMAGE);
         basicLattice.addNodeWeight(RGBIMAGE);
         basicLattice.addNodeWeight(GRAYSCALEIMAGE);

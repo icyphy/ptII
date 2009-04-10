@@ -55,7 +55,7 @@ public class GTDebugEvent implements ptolemy.kernel.util.DebugEvent {
     public String toString() {
         return _source.getName() + ": " + _message;
     }
-    
+
     public String toString(NamedObj sourceParent) {
         return _source.getName(sourceParent) + ": " + _message;
     }

@@ -255,7 +255,7 @@ public class PropertyClassChanges implements MoMLFilter {
 
     /** Add a class to be filtered and the old and new property class
      *  types. Note that if you add a class with this method, then you
-     *  must remove it with {@link #remove(String)}, calling 
+     *  must remove it with {@link #remove(String)}, calling
      *  "new PropertyClassChanges()" will not remove a class that was
      *  added with this method.
      *  @param className The name of the class to be filtered
@@ -277,7 +277,7 @@ public class PropertyClassChanges implements MoMLFilter {
     public void remove(String className) {
         _actorsWithPropertyClassChanges.remove(className);
     }
-    
+
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
@@ -350,7 +350,7 @@ public class PropertyClassChanges implements MoMLFilter {
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.gui.Display",
                 displayClassChanges);
-        
+
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sr.lib.gui.NonStrictDisplay",
                 displayClassChanges);
 
@@ -513,7 +513,7 @@ public class PropertyClassChanges implements MoMLFilter {
         // in RemoveGraphical classes.
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.fsm.modal.ModalModel", modalModelClassChanges);
- 
+
 
 
         // ModalModel changes for the new model model

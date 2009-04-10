@@ -320,13 +320,13 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             _setType(node, baseType);
             return;
         }
-        
+
         if (type instanceof ObjectType) {
             // If it is ObjectType, set it here.
             _setType(node, type);
             return;
         }
-        
+
         // If we reach this point it means the function was not found on the
         // search path.
         StringBuffer buffer = new StringBuffer();
@@ -461,7 +461,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             _setType(node, Constants.get(name).getType());
             return;
         }
-        
+
         if (type != null) {
             _setType(node, type);
             return;
@@ -736,7 +736,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // A named constant that is recognized by the parser.
             return Constants.get(name).getType();
         }
-        
+
         if (type != null) {
             return type;
         }

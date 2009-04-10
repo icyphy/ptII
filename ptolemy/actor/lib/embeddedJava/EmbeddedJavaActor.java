@@ -165,7 +165,7 @@ public class EmbeddedJavaActor extends CompiledCompositeActor {
     public void wrapup() throws IllegalActionException {
         try {
             for (TypedIOPort port : (List<TypedIOPort>) portList()) {
-                for (TypedIORelation relation : 
+                for (TypedIORelation relation :
                     (List<TypedIORelation>) port.insideRelationList()) {
                     relation.setContainer(null);
                 }
@@ -187,8 +187,8 @@ public class EmbeddedJavaActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** 
-     * Create a new instance instance of EmbeddedActor.  
+    /**
+     * Create a new instance instance of EmbeddedActor.
      * Derived classes should override this method and create their
      * own instances as necessary.
      *  @exception NameDuplicationException If the container already
@@ -207,7 +207,7 @@ public class EmbeddedJavaActor extends CompiledCompositeActor {
 
         _embeddedActor = new EmbeddedActor(this, "EmbeddedActor");
     }
-    
+
     /** Get the fileDependencies part of the generated code.
      *  @return The string containing the codegen fileDependencies function.
      */

@@ -149,13 +149,13 @@ public class TransitionController extends BasicEdgeController {
 
     /** Add hot keys to the actions in the given JGraph.
     *   It would be better that this method was added higher in the hierarchy. Now
-    *   most controllers 
+    *   most controllers
     *  @param jgraph The JGraph to which hot keys are to be added.
     */
    public void addHotKeys(JGraph jgraph) {
        GUIUtilities.addHotKey(jgraph, _lookInsideAction);
    }
-   
+
     /** Set the configuration.  This is may be used by derived controllers
      *  to open files or URLs.
      *  @param configuration The configuration.

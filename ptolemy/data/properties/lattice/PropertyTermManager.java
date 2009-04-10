@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class PropertyTermManager implements PropertyTermFactory {
 
     /**
-     * Construct a new PropertyTerm factory.  
+     * Construct a new PropertyTerm factory.
      */
     public PropertyTermManager(PropertyConstraintSolver solver) {
         _solver = solver;
@@ -63,14 +63,14 @@ public class PropertyTermManager implements PropertyTermFactory {
         result.addAll(_propertyTerms.values());
         return result;
     }
-    
+
     /**
      * Return the property term for the given object.
      * If the given object is null or a property term itself,
      * it returns the given object. Otherwise, it checks
      * its cache if a term object was created previously. Returns
      * the property term if it is found; otherwise, it creates
-     * and cache a new property term before returning it. 
+     * and cache a new property term before returning it.
      * @param object The given object.
      * @return The property term.
      */
@@ -78,9 +78,9 @@ public class PropertyTermManager implements PropertyTermFactory {
         if (object == null || object instanceof PropertyTerm) {
             return (PropertyTerm) object;
         }
-        
+
 //        if (object instanceof NamedObj) {
-//    
+//
 //            // Use the property term for the ParameterPort, if it is connected.
 //            if (object instanceof PortParameter) {
 //                PortParameter parameter = (PortParameter) object;
@@ -88,7 +88,7 @@ public class PropertyTermManager implements PropertyTermFactory {
 //                    return getPropertyTerm(parameter.getPort());
 //                }
 //            }
-//            
+//
 //            // The property term for an Attribute is its root ASTNode.
 //            //if (object instanceof Attribute) {
 //            //    ASTPtRootNode node = _solver.getParseTree((Attribute) object);
@@ -97,21 +97,21 @@ public class PropertyTermManager implements PropertyTermFactory {
 //        }
 
         if (!_propertyTerms.containsKey(object)) {
-            _propertyTerms.put(object, new InequalityTerm(object));                        
+            _propertyTerms.put(object, new InequalityTerm(object));
         }
-        return (PropertyTerm) _propertyTerms.get(object);         
+        return (PropertyTerm) _propertyTerms.get(object);
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The mapping between property-able objects and their PropertyTerm. */
-    private HashMap<Object, PropertyTerm> _propertyTerms = 
+    private HashMap<Object, PropertyTerm> _propertyTerms =
         new HashMap<Object, PropertyTerm>();
 
     protected PropertyConstraintSolver _solver;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
@@ -120,7 +120,7 @@ public class PropertyTermManager implements PropertyTermFactory {
         ////                       public inner methods            ////
         protected Object _object;
         private boolean _isEffective;
-        
+
         protected InequalityTerm (Object object) {
             _object = object;
             _isEffective = true;
@@ -133,9 +133,9 @@ public class PropertyTermManager implements PropertyTermFactory {
             return _object;
         }
 
-        /** Return null if this term is not effective. Otherwise, return 
+        /** Return null if this term is not effective. Otherwise, return
          *  the resolved property of this PropertyTerm.
-         * @throws IllegalActionException 
+         * @throws IllegalActionException
          */
         public Object getValue() {
             if (_isEffective) {
@@ -188,7 +188,7 @@ public class PropertyTermManager implements PropertyTermFactory {
 
             // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.
             if (_object instanceof LatticeProperty) {
-                _solver.setResolvedProperty(_object, (LatticeProperty)_object);                
+                _solver.setResolvedProperty(_object, (LatticeProperty)_object);
             } else {
                 _solver.setResolvedProperty(_object, (Property) property);
             }
@@ -197,7 +197,7 @@ public class PropertyTermManager implements PropertyTermFactory {
         public boolean isEffective() {
             return _isEffective;
         }
-        
+
         /** Test if the property of the port associated with this Term
          *  can be changed. The property can be changed if setEquals()
          *  is not called.
@@ -222,14 +222,14 @@ public class PropertyTermManager implements PropertyTermFactory {
                 // if (property.isAcceptableSolution)
                 return true;
             }
-            
+
             return false;
         }
 
         public void setEffective (boolean isEffective) {
-            _isEffective = isEffective; 
+            _isEffective = isEffective;
         }
-        
+
         /** Set the property value of this term.
          *  @param property The given property.
          *  @exception IllegalActionException If the new type violates
@@ -241,7 +241,7 @@ public class PropertyTermManager implements PropertyTermFactory {
                         "The property is not settable.");
             }
 
-//            Property declaredProperty = _solver.getDeclaredProperty(_object); 
+//            Property declaredProperty = _solver.getDeclaredProperty(_object);
 //            if (declaredProperty != null &&
 //                    !declaredProperty.isSubstitutionInstance((Property) property)) {
 //                throw new IllegalActionException("Property conflict on object "
@@ -251,7 +251,7 @@ public class PropertyTermManager implements PropertyTermFactory {
 //                        + "The connection or property constraints, however, "
 //                        + "require property " + property.toString());
 //            }
-            
+
             _solver.setResolvedProperty(_object, (Property) property);
         }
 
@@ -261,9 +261,9 @@ public class PropertyTermManager implements PropertyTermFactory {
          */
         public String toString() {
 
-            //return "( " + _object.hashCode() + "--" + hashCode() + 
+            //return "( " + _object.hashCode() + "--" + hashCode() +
             //" " + _object.toString() + ", " + getValue() + ")";
-            return "(" + _object.toString() + ", " + getValue() + ")";            
+            return "(" + _object.toString() + ", " + getValue() + ")";
         }
 
     }

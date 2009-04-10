@@ -63,7 +63,7 @@ import ptolemy.kernel.util.NamedObj;
  the code generator uses the default value 80 for stack size, and 0 for
  priority.
 
- Each task executes a given function which consists of the actor initialization, 
+ Each task executes a given function which consists of the actor initialization,
  fire and wrapup code.
 
  @author Jia Zou
@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.kernel.PtidesEmbeddedDirector {
 
-    /** 
+    /**
      * Construct the code generator helper associated with the given
      * PtidesDirector.
      * @param ptidesDirector The associated
@@ -90,19 +90,19 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
     /**
      * Generate code for getting data from the specified channel.
      * The generated code should also get data upon asking for it.
-     * Upon return the data can be access through using the 
+     * Upon return the data can be access through using the
      * $ref(port#channalNumber) macro.
-     * 
+     *
      * @param port The specified port.
      * @param channelNumber The specified channel.
      * @return The code for getting data from specified channel.
-     * @throws IllegalActionException If the specified port channel has 
-     *  more than one referable queues. 
+     * @throws IllegalActionException If the specified port channel has
+     *  more than one referable queues.
      * @exception IllegalActionException If the
      * {@link #getReferenceChannels(IOPort, int), #processCode(String)}
      *  method throws the exceptions.
      */
-    public String generateCodeForGet(IOPort port, int channelNumber) 
+    public String generateCodeForGet(IOPort port, int channelNumber)
     throws IllegalActionException {
         /* FIXME: top level send and get should involve networking components, ignore for now.
         List<Channel> channels = getReferenceChannels(port, channelNumber);
@@ -115,14 +115,14 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
             "This is ambiguous.");
         }
 
-        Channel referenceChannel = channels.get(0); 
+        Channel referenceChannel = channels.get(0);
         IOPort referencePort = referenceChannel.port;
 
         if (referencePort.getWidth() <= 0) {
             return "";
         }
 
-        CodeGeneratorHelper actorHelper = 
+        CodeGeneratorHelper actorHelper =
             (CodeGeneratorHelper) _getHelper(port.getContainer());
 
         String dataVariable = "$ref(" + referencePort.getName()
@@ -137,7 +137,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
     }
 
     /**
-     * Generate code for sending data to the specified channel. 
+     * Generate code for sending data to the specified channel.
      * The generated code should also send the code successfully,
      * assume an infinite amount of buffer space is available.
      * @param port The specified port.
@@ -148,7 +148,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      * {@link #getReferenceChannels(IOPort, int), #processCode(String)}
      *  method throws the exceptions.
      */
-    public String generateCodeForSend(IOPort port, int channelNumber, 
+    public String generateCodeForSend(IOPort port, int channelNumber,
             String dataToken) throws IllegalActionException {
         /* FIXME: top level send and get should involve networking components, ignore for now.
         StringBuffer result = new StringBuffer();
@@ -157,7 +157,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         for (Channel referenceChannel : channels) {
             IOPort referencePort = referenceChannel.port;
 
-            CodeGeneratorHelper actorHelper = 
+            CodeGeneratorHelper actorHelper =
                 (CodeGeneratorHelper) _getHelper(referencePort.getContainer());
 
             //            String dataVariable = "$ref(" + referencePort.getName()
@@ -166,7 +166,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
             String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
             String waitTime = _getMaxDelay(referenceChannel);
 
-            result.append(actorHelper.processCode("while( pdTRUE != xQueueSend(" + 
+            result.append(actorHelper.processCode("while( pdTRUE != xQueueSend(" +
                     queue + ", &" + dataToken + ", " + waitTime + ") );" + _eol));
         }
         return result.toString();
@@ -174,8 +174,8 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         return "";
     }
 
-    /** 
-     * Generate the director fire code. 
+    /**
+     * Generate the director fire code.
      * The code creates a new task for each actor according to
      * their specified parameters (e.g. stack depth, priority,
      * and etc.). The code also initiates the task scheduler.
@@ -184,8 +184,8 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        CompositeActor compositeActor = 
-            (CompositeActor) _director.getContainer();       
+        CompositeActor compositeActor =
+            (CompositeActor) _director.getContainer();
 
         code.append(_codeGenerator.comment("Create a task for each actor."));
 
@@ -196,7 +196,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
          * the task parameters, a value for task priority, and the task
          * handle which would be assigned upon the return of the function.
          * The vTaskStartScheduler() is generated after the xTaskCreate()
-         * calls. It starts the task scheduler once every task is created.  
+         * calls. It starts the task scheduler once every task is created.
          */
         /*
         for (Actor actor : actorList) {
@@ -216,17 +216,17 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         return code.toString();
     }
 
-    /** 
-     * Generate the fire function code. 
+    /**
+     * Generate the fire function code.
      * The code contains the function code for each actor. It is a collection
      * of global functions, one for each actor that is visible to this
-     * director helper. Creating each new task requires one of these 
+     * director helper. Creating each new task requires one of these
      * function as parameter. It is the code that the task executes.
      * When the inline parameter is checked, the task function code is
-     * generated in {@link #generatePreinitializeCode()} which is 
-     * outside the main function. 
+     * generated in {@link #generatePreinitializeCode()} which is
+     * outside the main function.
      * @return The fire function code.
-     * @exception IllegalActionException If there is an exception in 
+     * @exception IllegalActionException If there is an exception in
      *  generating the task function code.
      */
     public String generateFireFunctionCode() throws IllegalActionException {
@@ -256,7 +256,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         List args = new LinkedList();
         args.add("");
         args.add("");
-        args.add("");        
+        args.add("");
 
         return code.toString();
     }
@@ -265,9 +265,9 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      * Generate the main loop code.
      * If the inline parameter of the code generator is checked, it
      * generates the fire code; otherwise, it generates the a call to
-     * the fire function generated by {@link #generateFireFunction()). 
+     * the fire function generated by {@link #generateFireFunction()).
      * @return The main loop code.
-     * @exception IllegalActionException If looking up the inline 
+     * @exception IllegalActionException If looking up the inline
      *  parameter or generating the fire code throws it.
      */
     public String generateMainLoop() throws IllegalActionException {
@@ -292,28 +292,28 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         // the task handle declarations separate from the queue handle
         // declarations.
         StringBuffer bufferCode = new StringBuffer();
-        
+
         List args = new LinkedList();
         args.add(_generateDirectorHeader());
 
-        args.add(((CompositeActor) 
+        args.add(((CompositeActor)
                 _director.getContainer()).deepEntityList().size());
 
         code.append(super.generatePreinitializeCode());
         code.append("void initPDBlock() {" + _eol);
-        code.append(_codeStream.getCodeBlock("initPDCodeBlock")); 
+        code.append(_codeStream.getCodeBlock("initPDCodeBlock"));
         code.append("}" + _eol);
-        
-        code.append(_codeStream.getCodeBlock("preinitPDBlock", args));     
+
+        code.append(_codeStream.getCodeBlock("preinitPDBlock", args));
 
         code.append(bufferCode);
-        
+
         return code.toString();
     }
 
-    /** 
+    /**
      * Generate code for transferring tokens into a composite.
-     * 
+     *
 
      * @param inputPort The port to transfer tokens.
      * @param code The string buffer that the generated code is appended to.
@@ -331,7 +331,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
 
     /**
      * Generate code for transferring tokens outside of a composite.
-     * 
+     *
      * @param port The specified port.
      * @param code The given code buffer.
      *  @exception IllegalActionException Not thrown in this class.
@@ -346,10 +346,10 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         return;
     }
 
-    /** 
+    /**
      * Generate variable initialization for the referenced parameters.
      * This overrides the super class method and returns an empty
-     * string. It avoids generating any offset variables. 
+     * string. It avoids generating any offset variables.
      * @return code The empty string.
      * @exception IllegalActionException Not thrown in this class.
      */
@@ -359,21 +359,21 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
     }
 
     /**
-     * Return the buffer size to generate the variable for the 
+     * Return the buffer size to generate the variable for the
      * specified port channel.
      * This number dictates the size of the array generated for a variable
      * associated with the port channel. This returns 1, since queuing
      * is done using a separate structure.
      * @param port The specified port
      * @param channelNumber The specified channel number.
-     * @return The buffer size to generate the variable for the 
+     * @return The buffer size to generate the variable for the
      *  specified port channel. In this case, it's 1.
      * @exception IllegalActionException Not thrown in this class.
      */
     public int getBufferSize(IOPort port, int channelNumber)
     throws IllegalActionException {
         // FIXME: Reference with offset larger than 1 will not work
-        // (e.g. $ref(port, 3)).        
+        // (e.g. $ref(port, 3)).
         return 1;
     }
 
@@ -405,7 +405,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      *  Since built-in queue structure is used, it eliminates the
      *  need for offset variables. Instead, this method generates
      *  the declaration of the queues if the specified port has any
-     *  referable port channels. There is one referable port channel 
+     *  referable port channels. There is one referable port channel
      *  for each connection. All input port channels are considered
      *  referable.
      *  @param port The specified port.
@@ -431,7 +431,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         if (width != 0) {
 
             List args = new LinkedList();
-            args.add("");  
+            args.add("");
 
             for (int i = 0; i < width; i++) {
                 args.set(0, _generateQueueReference(port, i));

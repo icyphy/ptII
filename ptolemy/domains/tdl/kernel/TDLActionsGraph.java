@@ -43,14 +43,14 @@ import ptolemy.kernel.util.NamedObj;
  * describe the causal dependencies between those actions. The weight of nodes
  * are the TDLAction objects, the weight of edges are the time that passes
  * between two actions.
- * 
+ *
  * @author Patricia Derler
  */
 public class TDLActionsGraph {
 
     /**
      * Create a new TDLActionsGraph for a TDL module.
-     * 
+     *
      * @param module
      *            The TDL module.
      * @param controller
@@ -67,7 +67,7 @@ public class TDLActionsGraph {
     /**
      * Build the graph by iterating through all the modes of the TDL module.
      * Create nodes for transitions, TDL tasks and actuators and connect them.
-     * 
+     *
      * @param startmode
      *            This is the initial mode of the TDL module.
      * @throws IllegalActionException
@@ -106,7 +106,7 @@ public class TDLActionsGraph {
      * the given node. Those forward reachable nodes do not depend on other
      * nodes and the actions defined in the nodes are scheduled to happen at the
      * same time as the action in the given node.
-     * 
+     *
      * @param node
      *            Given node.
      * @return List of nodes that are forward reachable from the given node.
@@ -120,7 +120,7 @@ public class TDLActionsGraph {
      * depend on more than one node or are scheduled to happen at a future time.
      * Examples for the latter are nodes describing the writing of an output
      * port
-     * 
+     *
      * @param justExecuted
      *            Node that was just executed.
      * @param node
@@ -169,7 +169,7 @@ public class TDLActionsGraph {
     /**
      * Return the node that is used for the execution of an actor at a certain
      * time.
-     * 
+     *
      * @param invocationTime
      *            Time the actor is being invoked.
      * @param actor
@@ -190,7 +190,7 @@ public class TDLActionsGraph {
 
     /**
      * Get node for a given TDLAction.
-     * 
+     *
      * @param action
      *            Given TDLAction.
      * @return Node for the given TDLAction.
@@ -208,7 +208,7 @@ public class TDLActionsGraph {
     /**
      * Get a node which executes a given actor. This output port is written in a
      * certain time frame defined by the two parameters lower and upper.
-     * 
+     *
      * @param actor
      *            Actor that is executed.
      * @param lower
@@ -278,7 +278,7 @@ public class TDLActionsGraph {
 
     /**
      * Analyze the slot selection string.
-     * 
+     *
      * @param actor
      * @param modePeriod
      * @return
@@ -344,7 +344,7 @@ public class TDLActionsGraph {
     /**
      * Connect partial graphs for modes. The connection points are the mode
      * switch and after mode switch actions.
-     * 
+     *
      * @throws IllegalActionException
      *             If new Time cannot be created.
      */
@@ -376,7 +376,7 @@ public class TDLActionsGraph {
 
     /**
      * Connect a node for a TDL action to the next mode switch in time.
-     * 
+     *
      * @param prev
      *            Previous node to connect to.
      * @param actorInvocationTime
@@ -418,7 +418,7 @@ public class TDLActionsGraph {
     /**
      * Connect an input port to the output port of another task that this input
      * port reads from.
-     * 
+     *
      * @param taskInputPort
      */
     private void _connectToOtherTasksOutputPorts(IOPort taskInputPort) {
@@ -445,7 +445,7 @@ public class TDLActionsGraph {
 
     /**
      * Create a TDL action and a new node with an edge to the previous node
-     * 
+     *
      * @param invocationTime
      *            Invocation time of the node.
      * @param actionType
@@ -471,7 +471,7 @@ public class TDLActionsGraph {
 
     /**
      * Create TDL action and a new node.
-     * 
+     *
      * @param invocationTime
      *            Invocation time of the node.
      * @param actionType
@@ -488,7 +488,7 @@ public class TDLActionsGraph {
 
     /**
      * Add actuator updates to the graph.
-     * 
+     *
      * @param refinement
      *            Refinement containing the actuator ports.
      * @param modePeriod
@@ -548,7 +548,7 @@ public class TDLActionsGraph {
      * Recursively compute the list of forward reachable nodes that only depend
      * on one previous node and are scheduled for the same time as the current
      * node.
-     * 
+     *
      * @param node
      *            Node from which the reachable nodes are computed from.
      * @param visited
@@ -581,7 +581,7 @@ public class TDLActionsGraph {
 
     /**
      * Analyze the slot selection string.
-     * 
+     *
      * @param slots
      * @param frequency
      * @return
@@ -681,7 +681,7 @@ public class TDLActionsGraph {
 
     /**
      * Return invocation of node for a port closest to a given time.
-     * 
+     *
      * @param port
      * @param upper
      * @return
@@ -704,7 +704,7 @@ public class TDLActionsGraph {
     /**
      * Create subgraphs for all tasks, interconnect them with mode switches and
      * other tasks.
-     * 
+     *
      * @param refinement
      * @param modePeriod
      * @throws TDLModeSchedulerException
@@ -723,7 +723,7 @@ public class TDLActionsGraph {
 
             Node modeSwitchEnd = null, modeSwitchStart = null;
             if (_tmpModeSwitchStarts == null
-                    || _tmpModeSwitchStarts.size() == 0) { 
+                    || _tmpModeSwitchStarts.size() == 0) {
                 modeSwitchStart = modeSwitchEnd = _createNode(timeZero,
                         TDLAction.AFTERMODESWITCH, mode);
                 _tmpModeSwitchStarts.put(timeZero, modeSwitchStart);
@@ -745,13 +745,13 @@ public class TDLActionsGraph {
             for (long i = task.getOffset(); i < modePeriod.getLongValue(); i += task
                     .getInvocationPeriod()) {
                 Time invocationTime = new Time(_module.getDirector(), i);
-                
+
                 List<IOPort> notConnectedToSensors = new ArrayList();
                 notConnectedToSensors.addAll(taskActor.inputPortList());
                 List<Node> inputPortNodes = new ArrayList();
                 for (ModalPort sensor : sensors) {
                     Node sensorNode = null, inputPortNode = null;
-                    // if not already been read at this time instant 
+                    // if not already been read at this time instant
                     if ((_tmpReadSensors.size() == 0)
                             || _tmpReadSensors.get(invocationTime) == null
                             || !((List) _tmpReadSensors.get(invocationTime))
@@ -791,7 +791,7 @@ public class TDLActionsGraph {
                                     (IOPort) inputPort);
                             _connectToOtherTasksOutputPorts(inputPort);
                         } else {
-                            
+
                         }
                     }
                 }
@@ -832,7 +832,7 @@ public class TDLActionsGraph {
                             .getDirector(), task.getInvocationPeriod()));
 //                    List<IOPort> ports = outputPort.connectedPortList();
 //                    for (IOPort port : ports) {
-//                        if (port.isInput() && port.getContainer().equals(taskActor)) { 
+//                        if (port.isInput() && port.getContainer().equals(taskActor)) {
 //                            // output port is connected to input port of the same task
 //                            Edge edge = new Edge(outputPortNode, getNode(nextInvocationTime, port));
 //                            _graph.addEdge(edge);
@@ -868,7 +868,7 @@ public class TDLActionsGraph {
 
     /**
      * First read transitions and build subgraphs for the transitions.
-     * 
+     *
      * @param state
      * @param refinement
      * @param modePeriod
@@ -885,7 +885,7 @@ public class TDLActionsGraph {
         for (TDLTransition transition : transitions) {
             int frequency = TDLModuleDirector
                     .getFrequency((NamedObj) transition);
-            long invocationPeriod = modePeriod.getLongValue() / frequency; 
+            long invocationPeriod = modePeriod.getLongValue() / frequency;
             Director director = _module.getDirector();
             for (int i = 0; i < frequency; i++) {
                 List l = (List) sensorsAndTransitions.get(new Time(director, i));
@@ -952,12 +952,12 @@ public class TDLActionsGraph {
         // transitions for the same time are connected
         // graphStarts and graphEnds contain starts end ends of those subgraphs
 
-    } 
+    }
 
     /**
      * Return true if the character at position i in the string slotSeleciton is
      * a number.
-     * 
+     *
      * @param slotSelection
      * @param i
      * @return
@@ -970,7 +970,7 @@ public class TDLActionsGraph {
 
     /**
      * Store mode switches.
-     * 
+     *
      * @param state
      * @param transition
      * @param transitionNotTaken
@@ -988,7 +988,7 @@ public class TDLActionsGraph {
     /**
      * Save that a sensor value was read at a certain point in time.
      * invocationTime: sensor1, sensor2, ...
-     * 
+     *
      * @param invocationTime
      *            Time the sensor is read.
      * @param sensor
@@ -1005,7 +1005,7 @@ public class TDLActionsGraph {
 
     /**
      * Save the times a task input port was written.
-     * 
+     *
      * @param invocationTime
      *            Time the port is read.
      * @param port
@@ -1030,7 +1030,7 @@ public class TDLActionsGraph {
         _tmpModeSwitchStarts.clear();
         _tmpModeSwitchEnds.clear();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 

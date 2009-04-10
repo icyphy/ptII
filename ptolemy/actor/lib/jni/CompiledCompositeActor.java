@@ -464,10 +464,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         commands.add("javah -classpath . " + _sanitizedActorName);
 
         if (_debugging) {
-            _debugAndSystemOut("Execute command: " + commands.get(0));            
-            _debugAndSystemOut("Execute command: " + commands.get(1));            
+            _debugAndSystemOut("Execute command: " + commands.get(0));
+            _debugAndSystemOut("Execute command: " + commands.get(1));
         }
-        
+
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
         _executeCommands.setCommands(commands);
         _executeCommands.start();
@@ -595,10 +595,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         _invokeHelperMethod("copyFilesToCodeDirectory");
 
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
-        
+
         Effigy effigy = Configuration.findEffigy(this.toplevel());
         if (effigy != null && effigy.isModified()) {
-            
+
             if (_debugging) {
                 _debugAndSystemOut(message
                         + "The effigy "
@@ -693,7 +693,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         super._debug(message);
         System.out.println(message);
     }
-    
+
     private String _getArguments() {
 
         StringBuffer arguments = new StringBuffer();

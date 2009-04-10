@@ -67,7 +67,7 @@ or
  by giving a MoML file or a -class argument, then parameters of that
  model can be set on the command line.  The syntax is:
  <pre>
- $PTII/bin/ptinvoke ptolemy.moml.MoMLCommandLineApplication -<i>parameterName</i> <i>value</i> <i>modelFile.xml</i> 
+ $PTII/bin/ptinvoke ptolemy.moml.MoMLCommandLineApplication -<i>parameterName</i> <i>value</i> <i>modelFile.xml</i>
  </pre>
  where <i>parameterName</i> is the name of a parameter relative to
  the top level of a model or the director of a model.  For instance,
@@ -136,7 +136,7 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
         toplevel.addChangeListener(this);
         _manager.addExecutionListener(this);
 
-        // This code is very similar to code in 
+        // This code is very similar to code in
         // ptolemy.actor.gui.MoMLApplication
         String parameterName = null;
         String parameterValue = null;
@@ -163,7 +163,7 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                                                                       toplevel, moml);
                         toplevel.requestChange(request);
-                }                        
+                }
 
                 // Now try for parameters in the director
                 if (toplevel instanceof CompositeActor) {

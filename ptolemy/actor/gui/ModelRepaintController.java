@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Settable;
  * the execution of the model. This component piggy-backs with the execution
  * of its container, and allows you to define that repaints need to happen when
  * certain functions of its container are executed. Currently only repaints at
- * wrapup or post-fire can be scheduled. 
+ * wrapup or post-fire can be scheduled.
  *
  * @author Bert Rodiers
  * @version $Id$
@@ -67,13 +67,13 @@ public class ModelRepaintController extends Attribute {
      */
     public ModelRepaintController(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        
+
         super(container, name);
 
         _repaintOnWrapUp = new Parameter(this, "repaintOnWrapUp");
         _repaintOnWrapUp.setTypeEquals(BaseType.BOOLEAN);
         _repaintOnWrapUp.setExpression("true");
-        
+
         _repaintOnPostFire = new Parameter(this, "repaintOnPostFire");
         _repaintOnPostFire.setTypeEquals(BaseType.BOOLEAN);
         _repaintOnPostFire.setExpression("false");
@@ -87,13 +87,13 @@ public class ModelRepaintController extends Attribute {
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
                 + "RepaintController\n" + "</text>\n"
                 + "</svg>\n");
-        
+
         // Hide the name.
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
         hideName.setToken(BooleanToken.TRUE);
-        hideName.setVisibility(Settable.EXPERT);        
+        hideName.setVisibility(Settable.EXPERT);
     }
-    
+
 
     /** Specify the container NamedObj, adding this attribute to the
      *  list of attributes in the container.  If the container already
@@ -112,7 +112,7 @@ public class ModelRepaintController extends Attribute {
      *  an attribute is an attribute of itself, or indirectly of any attribute
      *  it contains.  This method is write-synchronized on the
      *  workspace and increments its version number.
-     *  
+     *
      *  @param container The container to attach this attribute to..
      *  @exception IllegalActionException If this attribute is not of the
      *   expected class for the container, or it has no name,
@@ -127,53 +127,53 @@ public class ModelRepaintController extends Attribute {
         if (_executable == null) {
             // The inner class will be piggybacked as an executable for the container to
             // execute change request at the appropriate times. These change request will
-            // lead to repaints of the GUI.    
+            // lead to repaints of the GUI.
             _executable = new Executable() {
                 public void fire() throws IllegalActionException {
                 }
-    
+
                 public boolean isFireFunctional() {
                     return true;
                 }
-    
+
                 public boolean isStrict() throws IllegalActionException {
                     return true;
                 }
-                
+
                 public int iterate(int count) throws IllegalActionException {
                     return Executable.COMPLETED;
                 }
-                
+
                 public boolean postfire() throws IllegalActionException {
                     _scheduleRepaint(_repaintOnPostFire);
                     return true;
                 }
-    
+
                 public boolean prefire() throws IllegalActionException {
                     return true;
                 }
-    
+
                 public void stop() {
                 }
-    
+
                 public void stopFire() {
                 }
-    
+
                 public void terminate() {
                 }
-    
+
                 public void addInitializable(Initializable initializable) {
                 }
-    
+
                 public void initialize() throws IllegalActionException {
                 }
-    
+
                 public void preinitialize() throws IllegalActionException {
                 }
-    
+
                 public void removeInitializable(Initializable initializable) {
                 }
-    
+
                 public void wrapup() throws IllegalActionException {
                     _scheduleRepaint(_repaintOnWrapUp);
                 }
@@ -190,19 +190,19 @@ public class ModelRepaintController extends Attribute {
         if (container != null && container instanceof CompositeActor) {
             ((CompositeActor) container).addPiggyback(_executable);
         }
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
-    
+
     /** Schedule a repaint in case the value parameter equals True.
-     *  This is done by requesting a ChangeRequest. 
+     *  This is done by requesting a ChangeRequest.
      *  @param parameter The parameter.
-     */    
+     */
     private void _scheduleRepaint(Parameter parameter) {
         if (parameter.getExpression().equals("true")) {
             // The ChangeRequest has false as third argument to avoid complete
-            // repaints of the model.                
+            // repaints of the model.
             ChangeRequest request = new ChangeRequest(this,
                     "SetVariable change request", true) {
                 protected void _execute() throws IllegalActionException {
@@ -215,19 +215,19 @@ public class ModelRepaintController extends Attribute {
             requestChange(request);
         }
     }
-                
+
     ///////////////////////////////////////////////////////////////////
     ////                       private parameters                   ////
 
     // An inner class that will be notified on certain events.
     // The inner class will be piggybacked as an executable for the container to
     // execute change request at the appropriate times. These change request will
-    // lead to repaints of the GUI.    
+    // lead to repaints of the GUI.
     private Executable _executable;
-    
+
     // A flag that specifies whether a repaint should happen on wrapup.
     private Parameter _repaintOnWrapUp;
-    
+
     // A flag that specifies whether a repaint should happen on post-fire.
     private Parameter _repaintOnPostFire;
 }

@@ -53,9 +53,9 @@ public class Const extends Source {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Const actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Const(PropertyConstraintSolver solver, 
+    public Const(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
 
@@ -63,12 +63,12 @@ public class Const extends Source {
         _actor = actor;
      }
 
-    public List<Inequality> constraintList() 
+    public List<Inequality> constraintList()
             throws IllegalActionException {
-        setAtLeast(_actor.output, _actor.value);        
+        setAtLeast(_actor.output, _actor.value);
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.actor.lib.Const _actor;
@@ -78,5 +78,5 @@ public class Const extends Source {
         result.add(_actor.value);
         return result;
     }
-    
+
 }

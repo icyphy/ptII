@@ -106,7 +106,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         showParameters.addChoice("All");
         showParameters.setExpression("None");
         showParameters.setDisplayName("Show parameters");
-        
+
         Parameter checkWidthConsistencyAtMultiports = new Parameter(this, "_checkWidthConsistencyAtMultiports");
         checkWidthConsistencyAtMultiports.setTypeEquals(BaseType.BOOLEAN);
         checkWidthConsistencyAtMultiports.setExpression("true");
@@ -121,7 +121,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         defaultInferredWidthTo1.setTypeEquals(BaseType.BOOLEAN);
         defaultInferredWidthTo1.setExpression("false");
         defaultInferredWidthTo1.setDisplayName("Default inferred width to 1");
-        
+
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-60\" y=\"-10\" "

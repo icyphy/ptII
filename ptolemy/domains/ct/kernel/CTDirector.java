@@ -353,7 +353,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         newObject._breakpoints = new TotallyOrderedSet(new GeneralComparator());
         return newObject;
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.

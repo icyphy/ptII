@@ -58,7 +58,7 @@ public class AlphabetizeOperation {
                 StringBuffer code = new StringBuffer();
                 for (Signature signature : sortedSet) {
                     String templateCode = stream.getCodeBlockTemplate(signature);
-                    
+
                     String functionHeader = templateCode.split("\n")[1];
                     String[] fragments = functionHeader.split(signature.functionName);
 
@@ -71,7 +71,7 @@ public class AlphabetizeOperation {
                                         " contains the definition for " + signature.functionName);
                     }
                     code.append(templateCode);
-                    
+
                 }
 
                 if (code.toString().trim().length() > 0) {

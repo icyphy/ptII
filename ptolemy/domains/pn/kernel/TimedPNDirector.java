@@ -181,18 +181,18 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedPNDirector newObject = (TimedPNDirector) super.clone(workspace);
-        
+
         // Findbugs:
         //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not a problem since the object is
         // being created and hence nobody else has access to it.
-        
+
         newObject._eventQueue = new CalendarQueue(
                 new TimedEvent.TimeComparator());
         newObject._delayBlockCount = 0;
         return newObject;
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.
@@ -252,7 +252,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     ////                         protected methods                 ////
 
     /**
-     * Reset private variables. 
+     * Reset private variables.
      * added 7/15/08 Patricia Derler
      */
     public void wrapup() throws IllegalActionException {
@@ -315,7 +315,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
                 // There could be multiple events for the same
                 // actor for the same time (e.g. by sending events
                 // to this actor with same time stamps on different
-                // input ports. Thus, only _informOfDelayUnblock() 
+                // input ports. Thus, only _informOfDelayUnblock()
                 // for events with the same time stamp but different
                 // actors. 7/15/08 Patricia Derler
                 List unblockedActors = new ArrayList();
@@ -355,7 +355,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
                         if (newTime.equals(getModelTime())) {
                             if (unblockedActors.contains(actor))
                                 continue;
-                            else 
+                            else
                                 unblockedActors.add(actor);
                             _informOfDelayUnblock();
                         } else {
@@ -374,10 +374,10 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
 
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The priority queue that stores the list of processes waiting for time
      *  to advance. These processes are sorted by the time they want to resume
      *  at.
@@ -385,7 +385,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     protected CalendarQueue _eventQueue = new CalendarQueue(
             new TimedEvent.TimeComparator());
 
-    /** The number of time-blocked processes. 
+    /** The number of time-blocked processes.
      * changed from private to protected on 7/13/08 by Patricia Derler */
     protected int _delayBlockCount = 0;
 }

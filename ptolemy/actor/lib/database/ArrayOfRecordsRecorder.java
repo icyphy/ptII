@@ -76,17 +76,17 @@ public class ArrayOfRecordsRecorder extends Sink {
 
         // Force the type to contain at least a record.
         input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
-        
+
         records = new Parameter(this, "records");
         // Declare that it must be an array of records.
         records.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
         records.setToken(new ArrayToken(RecordType.EMPTY_RECORD));
-        
+
         Variable ALL = new Variable(this, "ALL");
         ALL.setVisibility(Settable.NONE);
         Token emptyStringArray = new ArrayToken(BaseType.STRING);
         ALL.setToken(emptyStringArray);
-        
+
         columns = new Parameter(this, "columns");
         columns.setTypeEquals(new ArrayType(BaseType.STRING));
         columns.setExpression("ALL");
@@ -103,7 +103,7 @@ public class ArrayOfRecordsRecorder extends Sink {
         icon.variableName.setExpression("records");
         icon.fields.setExpression("iconColumns");
         icon.colorKey.setExpression("$colorKey");
-        
+
         // Customize the interaction by inserting this property.
         // This is done in the library,
         // not in the Java code, since it depends on vergil.
@@ -115,7 +115,7 @@ public class ArrayOfRecordsRecorder extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** A column name to use as a color key. If this string is
      *  non-empty, then it specifies a column name that is used
      *  to determine a color for each row. The value in that
@@ -126,7 +126,7 @@ public class ArrayOfRecordsRecorder extends Sink {
      *  be displayed in black.
      */
     public StringParameter colorKey;
-    
+
     /** The columns to display when double clicking on the icon.
      *  This is an array of strings specifying the column
      *  names to display, and the order in which they are
@@ -152,7 +152,7 @@ public class ArrayOfRecordsRecorder extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.

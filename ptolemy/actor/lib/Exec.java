@@ -116,7 +116,7 @@ public class Exec extends LimitedFiringSource {
     public Exec(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
         command = new PortParameter(this, "command", new StringToken(
@@ -160,11 +160,11 @@ public class Exec extends LimitedFiringSource {
         new Parameter(exitCode, "_showName", BooleanToken.TRUE);
 
 
-        prependPlatformDependentShellCommand = new Parameter(this, 
+        prependPlatformDependentShellCommand = new Parameter(this,
                 "prependPlatformDependentShellCommand", BooleanToken.FALSE);
         prependPlatformDependentShellCommand.setTypeEquals(BaseType.BOOLEAN);
 
-        throwExceptionOnNonZeroReturn = new Parameter(this, 
+        throwExceptionOnNonZeroReturn = new Parameter(this,
                 "throwExceptionOnNonZeroReturn", BooleanToken.TRUE);
         throwExceptionOnNonZeroReturn.setTypeEquals(BaseType.BOOLEAN);
 
@@ -272,25 +272,25 @@ public class Exec extends LimitedFiringSource {
      *  <p>Under Windows NT or XP, the arguments "cmd.exe" and "/C"
      *  are prepended.  Under Windows 95, the arguments "command.com"
      *  and "/C" are prepended.  Under all other platforms, the
-     *  arguments "/bin/sh" and "-c" are prepended.  
+     *  arguments "/bin/sh" and "-c" are prepended.
      *  <p>By prepending sh or cmd, then this actor can use the
      *  file redirection operations.
      *  <p>The default value of this parameter is a boolean of value
      *  false, which allows the user to arbitrarily invoke /bin/sh
      *  scripts on all platforms.
-     */   
+     */
     public Parameter prependPlatformDependentShellCommand;
 
     /** If true, then throw an exception if the subprocess returns
      *  non-zero.
      *  The default is a boolean of value true.
      *  This parameter is ignored if <i>waitForProcess</i> is false.
-     */   
+     */
     public Parameter throwExceptionOnNonZeroReturn;
 
     /** If true, then actor will wait until subprocess completes. The
-     *  default is a boolean of value true. 
-     */  
+     *  default is a boolean of value true.
+     */
     public Parameter waitForProcess;
 
     ///////////////////////////////////////////////////////////////////
@@ -339,12 +339,12 @@ public class Exec extends LimitedFiringSource {
         }
 
         try {
-            
+
             // Close the stdin of the subprocess.
             _process.getOutputStream().close();
 
-            boolean waitForProcessValue = 
-                ((BooleanToken) waitForProcess.getToken()).booleanValue(); 
+            boolean waitForProcessValue =
+                ((BooleanToken) waitForProcess.getToken()).booleanValue();
 
             if (waitForProcessValue) {
                 // The next line waits for the subprocess to finish.
@@ -368,7 +368,7 @@ public class Exec extends LimitedFiringSource {
                         outputString = ex.toString();
                     }
 
-                    boolean throwExceptionOnNonZeroReturnValue = 
+                    boolean throwExceptionOnNonZeroReturnValue =
                         ((BooleanToken) throwExceptionOnNonZeroReturn
                             .getToken()).booleanValue();
 
@@ -396,7 +396,7 @@ public class Exec extends LimitedFiringSource {
         } catch (IOException io) {
             throw new IllegalActionException(this, io,
                 "Closing stdin of the subprocess threw an IOException.");
-                    
+
         }
 
         String outputString = _outputGobbler.getAndReset();
@@ -420,7 +420,7 @@ public class Exec extends LimitedFiringSource {
         // was the fire() method, but this caused deadlocks.  EAL
         super.stop();
         _terminateProcess();
-        
+
     }
 
     /** Override the base class to stop waiting for input data.
@@ -465,7 +465,7 @@ public class Exec extends LimitedFiringSource {
 
             command.update();
 
-            
+
             List<String> commandList = new LinkedList<String>();
 
             boolean prependPlatformDependentShellCommandValue =
@@ -494,12 +494,12 @@ public class Exec extends LimitedFiringSource {
             if (_debugging) {
                 StringBuffer commands = new StringBuffer();
                 for (String aCommand : commandList) {
-                    commands.append(aCommand + " "); 
+                    commands.append(aCommand + " ");
                 }
-                _debug("About to exec \"" + commands + "\"\n in \"" 
+                _debug("About to exec \"" + commands + "\"\n in \""
                         + directoryAsFile + "\"\n with environment:");
             }
-            
+
             // Process the environment parameter.
             ArrayToken environmentTokens = (ArrayToken) environment.getToken();
 

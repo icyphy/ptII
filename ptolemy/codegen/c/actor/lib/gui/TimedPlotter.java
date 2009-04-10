@@ -70,14 +70,14 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
         code.append(generatePlotFireCode(actor.input.getWidth(),1));
         }
     else if(actor.getAttribute("_bottom")!= null){
-            code.append(generatePlotFireCode(actor.input.getWidth(),2));  
+            code.append(generatePlotFireCode(actor.input.getWidth(),2));
         }
         else{
-            code.append(generatePlotFireCode(actor.input.getWidth(),0));  
+            code.append(generatePlotFireCode(actor.input.getWidth(),0));
         }
         return code.toString();
     }
-    
+
     /** Generate plot specific fire code.
      *  @param width The width.
      *  @param id The identifier of the plotBlock to be used, see TimedPlotter.c
@@ -95,7 +95,7 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
                 code.append(_generateBlockCode("plotBlock1", args));
             }
             else if(id == 2){
-                code.append(_generateBlockCode("plotBlock2", args));  
+                code.append(_generateBlockCode("plotBlock2", args));
             }
             else{
                 code.append(_generateBlockCode("plotBlock", args));
@@ -104,5 +104,5 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
 
         return code.toString();
     }
-    
+
 }

@@ -127,7 +127,7 @@ public class RealDependency implements Dependency {
     }
 
     /** Return a dependency that results from serial composition of
-     *  this one and the specified one. 
+     *  this one and the specified one.
      *  @param d The dependency to multiply.
      *  @return A dependency whose value is the sum of the value of
      *   this one and the specified one.
@@ -160,7 +160,7 @@ public class RealDependency implements Dependency {
      *  @param value The value used to determine the RealDependency
      *  to be returned.
      *  @return an instance of RealDependency, if value
-     *  is 0.0, then {@link #OTIMES_IDENTITY} is returned, if 
+     *  is 0.0, then {@link #OTIMES_IDENTITY} is returned, if
      *  value is Double.POSITIVE_INFINITY, then {@link #OPLUS_IDENTITY}
      *  is returned.  Otherwise the RealDependency constructor
      *  is called.

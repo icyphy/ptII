@@ -15,19 +15,19 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     public RTMaudeAdaptor(NamedObj component) {
         super(component);
     }
-    
+
     // FIXME: the period value is required to be an integer. We have
     // generate an integer even if the model has a double value.
-    
+
     protected String _generateFireCode() throws IllegalActionException {
-        
-        
+
+
         StringBuffer code = new StringBuffer();
         StringBuffer parameterCode = new StringBuffer();
         StringBuffer portCode = new StringBuffer();
-        
+
         List<Variable> parameters = (List<Variable>) _getParameters();
-        
+
         ArrayList args = new ArrayList();
         args.add("");
 
@@ -38,7 +38,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         }
 
         List<IOPort> ports = (List<IOPort>) _getPorts();
-        
+
         ArrayList args2 = new ArrayList();
         args2.add("");
         args2.add("");
@@ -47,19 +47,19 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         // FIXME: deal with the last comma later.
         for (IOPort port : ports) {
             args2.set(0, port.getName());
-            
+
             // Assume we are not dealing with in-out ports.
             args2.set(1, port.isInput()? "InPort" : "OutPort");
-            
+
             args2.set(2, "absent");
             portCode.append(_generateBlockCode("portBlock", args2) + ", ");
         }
 
         ArrayList args3 = new ArrayList();
         args3.add(parameterCode);
-        args3.add(portCode);        
+        args3.add(portCode);
         code.append(_generateBlockCode("fireBlock", args3));
-        
+
         return code.toString();
     }
 

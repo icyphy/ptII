@@ -101,13 +101,13 @@ public class JavaCodeGenerator extends CodeGenerator {
 
     public String codeGenType(Type type) {
         //String ptolemyType = super.codeGenType(type);
-        String result = 
-            type == BaseType.INT ? "Int" : 
-            type == BaseType.LONG ? "Long" : 
-            type == BaseType.STRING ? "String" : 
-            type == BaseType.DOUBLE ? "Double" : 
-            type == BaseType.BOOLEAN ? "Boolean" : 
-            type == BaseType.UNSIGNED_BYTE ? "UnsignedByte" : 
+        String result =
+            type == BaseType.INT ? "Int" :
+            type == BaseType.LONG ? "Long" :
+            type == BaseType.STRING ? "String" :
+            type == BaseType.DOUBLE ? "Double" :
+            type == BaseType.BOOLEAN ? "Boolean" :
+            type == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
             type == PointerToken.POINTER ? "Pointer" : null;
 
         if (result == null) {
@@ -247,7 +247,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                                  + "model.run();" + _eol
                                  + "}" + _eol
                                  + "public void run() throws Exception {" + _eol);
-                                 
+
             String targetValue = target.getExpression();
             if (!targetValue.equals(_DEFAULT_TARGET)) {
                 mainEntryCode.append("//FIXME: JavaCodeGenerator hack" + _eol
@@ -274,7 +274,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
 
         }
-        
+
         return mainEntryCode.toString();
     }
 
@@ -575,7 +575,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         functions.add("isCloseTo");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
-        
+
         return functions;
     }
 
@@ -690,7 +690,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         return _INDENT1 + "wrapup();" + _eol;
     }
-    
+
     /** Split a long function body into multiple functions.
      *  @param linesPerMethod The number of lines that should go into
      *  each method.
@@ -947,7 +947,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                     code.append("//" + line + _eol);
                 } else {
                     // Use // style comments in case there is a /* .. */ comment.
-                    code.append(line + _eol);                
+                    code.append(line + _eol);
                 }
             } else {
                 line = line.trim();
@@ -1232,8 +1232,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                             "-Wl,--add-stdcall-alias");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
                 } else {
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", 
-                                      "# Unknown java property os.name \"" + osName 
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                                      "# Unknown java property os.name \"" + osName
                                       + "\" please edit ptolemy/codegen/c/"
                                       + "kernel/JavaCodeGenerator.java and "
                                       + "ptolemy/actor/lib/jni/"
@@ -1385,7 +1385,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
                 _overloadedFunctions.append(code);
 
-            }            
+            }
             if (name.startsWith("Array_")) {
                 // Array_xxx might need to have xxx added.
                 // See c/actor/lib/test/auto/MultiplyDivide5.xml

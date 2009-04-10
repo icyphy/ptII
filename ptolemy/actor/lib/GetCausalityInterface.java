@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (eal)
  */
 public class GetCausalityInterface extends Source {
-    
+
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -70,29 +70,29 @@ public class GetCausalityInterface extends Source {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GetCausalityInterface(CompositeEntity container, String name) 
+    public GetCausalityInterface(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.STRING);
-        
+
         dependents = new TypedIOPort(this, "dependents", false, true);
         dependents.setTypeEquals(BaseType.STRING);
-        
+
         equivalences = new TypedIOPort(this, "equivalences", false, true);
         equivalences.setTypeEquals(BaseType.STRING);
-        
+
         actorName = new StringParameter(this, "actorName");
         actorName.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                  ports and parameters                     ////
-    
+
     /** Name of the actor to get the causality interface of. If this
      *  is the empty string (the default), then the container is used.
      */
     public StringParameter actorName;
-    
+
     /** Output port on which to put the description of the dependent ports. */
     public TypedIOPort dependents;
 
@@ -119,7 +119,7 @@ public class GetCausalityInterface extends Source {
         }
         CausalityInterface causalityInterface = target.getCausalityInterface();
         output.send(0, new StringToken(causalityInterface.toString()));
-        
+
         StringBuffer dependentsResult = new StringBuffer();
         List<IOPort> inputs = target.inputPortList();
         for (IOPort input : inputs) {

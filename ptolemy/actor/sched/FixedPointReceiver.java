@@ -109,7 +109,7 @@ public class FixedPointReceiver extends AbstractReceiver {
             }
         }
     }
-    
+
     /** Return a list with the token currently in the receiver, or
      *  an empty list if there is no such token.
      *  @return A list of instances of Token.

@@ -18,9 +18,9 @@ public class TdlTaskTableauFactory extends TableauFactory {
 
     public Tableau createTableau(Effigy effigy) throws Exception {
         Configuration configuration = (Configuration) effigy.toplevel();
-        
+
         TDLTask model = (TDLTask) ((PtolemyEffigy) effigy).getModel();
         return configuration.openModel(model);
     }
-    
+
 }

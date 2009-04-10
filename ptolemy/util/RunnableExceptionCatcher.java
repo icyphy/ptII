@@ -46,28 +46,28 @@ Ptolemy Message Handler.
 public class RunnableExceptionCatcher implements Runnable{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Construct an instance that will wrap a runnable,
      * catch its exceptions and report it to the Ptolemy
-     * Message Handler. 
-     * @param runnable The runnable. 
+     * Message Handler.
+     * @param runnable The runnable.
      */
     public RunnableExceptionCatcher(Runnable runnable) {
-        _runnable = runnable;           
+        _runnable = runnable;
     }
-    
+
     /** Execute the runnable.
      */
     public void run() {
         try {
             _runnable.run();
         } catch (Throwable e) {
-            ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler.shortDescription(e), e); 
+            ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler.shortDescription(e), e);
         }
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    // The runnable.    
-    private Runnable _runnable;       
+
+    // The runnable.
+    private Runnable _runnable;
 }

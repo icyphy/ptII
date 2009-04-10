@@ -250,7 +250,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                         if (executiveDirector != null) {
                             // Need both the executive director and the local director to
                             // support multirate firing in order for this to work.
-                            if (newDirector.supportMultirateFiring() 
+                            if (newDirector.supportMultirateFiring()
                                     && executiveDirector.supportMultirateFiring()) {
                                 getController().setSupportMultirate(true);
                             }
@@ -451,7 +451,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.modal.modal.ModalModel");
-        
+
         stateDependentCausality = new Parameter(this, "stateDependentCausality");
         stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
         stateDependentCausality.setExpression("false");

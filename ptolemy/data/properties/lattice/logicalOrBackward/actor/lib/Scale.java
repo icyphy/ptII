@@ -51,27 +51,27 @@ public class Scale extends AtomicActor {
     /**
      * Construct a Ramp helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Scale(PropertyConstraintSolver solver, 
+    public Scale(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Scale actor) throws IllegalActionException {
-        super(solver, actor, false); 
+        super(solver, actor, false);
    }
-       
+
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Scale actor =
             (ptolemy.actor.lib.Scale) getComponent();
 
-        Lattice lattice = (Lattice) getSolver().getLattice();        
-        
+        Lattice lattice = (Lattice) getSolver().getLattice();
+
         if (((ScalarToken)actor.factor.getToken()).doubleValue()==0) {
-            setAtLeast(actor.input, lattice.FALSE);            
+            setAtLeast(actor.input, lattice.FALSE);
         } else {
             setAtLeast(actor.input, actor.output);
         }
 
         return super.constraintList();
-    }    
+    }
 
 }
 

@@ -88,7 +88,7 @@ public class AttributeValueIcon extends XMLIcon {
         displayHeight = new Parameter(this, "displayHeight");
         displayHeight.setExpression("1");
         displayHeight.setTypeEquals(BaseType.INT);
-        
+
         entityName = new StringParameter(this, "entityName");
         entityName.setExpression("");
     }
@@ -108,7 +108,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  default value 6.
      */
     public Parameter displayWidth;
-    
+
     /** Name of the entity contained by the container whose attribute
      *  this icon will display. This is a string that defaults to the
      *  empty string, which means that the attribute is contained

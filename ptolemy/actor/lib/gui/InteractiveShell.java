@@ -164,7 +164,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         newObject.shell = null;
         newObject._container = null;
         newObject._frame = null;
-        
+
         // Findbugs:
         //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not a problem since the object is
@@ -423,7 +423,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      */
     public void stop() {
         synchronized (this) {
-            super.stop();        
+            super.stop();
             notifyAll();
         }
     }

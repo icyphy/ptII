@@ -90,7 +90,7 @@ public class DesignPatternIcon extends NameIcon {
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
-    
+
     /** The cached Swing icon. */
     protected Icon _iconCache = null;
 }

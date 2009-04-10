@@ -189,7 +189,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
      */
     public /*static*/ class DependencyController extends ActorInstanceController {
         // Findbugs suggests making this static, but if this class is static,
-        // we can't reference the non-static HighlightDependents class here. 
+        // we can't reference the non-static HighlightDependents class here.
 
         /** Create a DependencyController that is associated with a controller.
          *  @param controller The controller.

@@ -47,7 +47,7 @@ import ptolemy.data.properties.lattice.TypeProperty;
  @Pt.AcceptedRating Red (cxh)
  */
 public class UChar extends LatticeProperty implements TypeProperty {
-        
+
     public UChar(PropertyLattice lattice) {
         super(lattice);
     }

@@ -62,7 +62,7 @@ public class SQLStatement extends Source {
     public SQLStatement(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         query = new PortParameter(this, "query");
         query.setStringMode(true);
         query.setTypeEquals(BaseType.STRING);
@@ -77,12 +77,12 @@ public class SQLStatement extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-   
-    /** Name of the DatabaseManager to use. 
+
+    /** Name of the DatabaseManager to use.
      *  This defaults to "DatabaseManager".
      */
     public StringParameter databaseManager;
-    
+
     /** An SQL query. This is a string that defaults to
      *  "describe *".
      */
@@ -90,7 +90,7 @@ public class SQLStatement extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Perform the query on the database and produce the result
      *  on the output port.
      *  @throws IllegalActionException If the database query fails.
@@ -107,7 +107,7 @@ public class SQLStatement extends Source {
             if(_debugging) {
                 _debug("Result of query:\n" + result);
             }
-            output.send(0, new StringToken(result));            
+            output.send(0, new StringToken(result));
         }
     }
 }

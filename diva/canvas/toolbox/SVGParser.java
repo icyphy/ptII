@@ -229,7 +229,7 @@ public class SVGParser {
             y = _getDouble(attributes, "y", 0);
 
             PaintedString string = new PaintedString(content);
-            try { 
+            try {
                 processPaintedStringAttributes(string, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception

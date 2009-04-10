@@ -31,7 +31,7 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
 
     /** Throw an IllegalActionException to indicate that this actor
      *  is used for code generation only.
@@ -40,8 +40,8 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
     public void preinitialize() throws IllegalActionException {
         throw new IllegalActionException(this, getName() + " can not run in "
                 + "simulation mode.");
-    }       
-    
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////

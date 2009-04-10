@@ -56,11 +56,11 @@ import diva.gui.GUIUtilities;
  @Pt.AcceptedRating Red (johnr)
  */
 public class RenameDialogAction extends FigureAction {
-  
+
     /**
      * Construct a rename dialog action with the specified parent, which will
      * appear in the menu that uses this action.
-     * 
+     *
      * @param parent
      *            The parent TableauFrame
      */
@@ -73,12 +73,12 @@ public class RenameDialogAction extends FigureAction {
         throw iae;
       }
       //this.parent = parent;
-  
+
       this.putValue(Action.NAME, DISPLAY_NAME);
       this.putValue(GUIUtilities.LARGE_ICON, LARGE_ICON);
       this.putValue("tooltip", TOOLTIP);
       this.putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
-      
+
       DISPLAY_NAME = StaticResources.getDisplayString(
         "actions.actor.displayName", "Configure");
       TOOLTIP = StaticResources.getDisplayString(
@@ -122,7 +122,7 @@ public class RenameDialogAction extends FigureAction {
                     "Failed to open a dialog to rename the target.", throwable);
         }
     }
-    
+
     //private TableauFrame parent;
     private static String DISPLAY_NAME = null;
     private static String TOOLTIP = null;

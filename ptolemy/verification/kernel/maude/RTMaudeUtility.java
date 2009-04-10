@@ -133,7 +133,7 @@ public class RTMaudeUtility {
                             // A ----- line
                             returnRTMFormat.append(line);
                             returnRTMFormat.append("\n");
-                            
+
                             do {
                                 line = template.readLine();
                                 if (line == null || line.replace("-", "").trim()

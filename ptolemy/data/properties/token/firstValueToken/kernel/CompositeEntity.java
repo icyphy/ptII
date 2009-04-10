@@ -54,16 +54,16 @@ import ptolemy.kernel.util.KernelException;
  */
 public class CompositeEntity extends PropertyTokenCompositeHelper {
 
-    /** 
+    /**
      * Construct a property constraint helper for the given
-     * CompositeActor. This is the helper class for any 
+     * CompositeActor. This is the helper class for any
      * CompositeActor that does not have a specific defined
      * helper class.
      * @param solver The given solver.
      * @param entity The given CompositeEntity.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public CompositeEntity(PropertyTokenSolver solver, 
+    public CompositeEntity(PropertyTokenSolver solver,
             ptolemy.kernel.CompositeEntity entity)
         throws IllegalActionException {
 
@@ -72,19 +72,19 @@ public class CompositeEntity extends PropertyTokenCompositeHelper {
 
     public void determineProperty() throws IllegalActionException, KernelException {
         super.determineProperty();
-        
+
         Iterator ports = getPropertyables(IOPort.class).iterator();
         while (ports.hasNext()) {
 
             IOPort port = (IOPort) ports.next();
-                        
+
             // get port value from firstValueToken
             PropertyToken pt = null;
             pt = (PropertyToken) getSolver().getProperty(port);
 
             if (pt == null) {
                 setEquals(port, new PropertyToken(Token.NIL));
-            } 
+            }
         }
     }
 

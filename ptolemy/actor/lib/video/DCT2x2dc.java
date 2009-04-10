@@ -1,4 +1,4 @@
-/* Calculates the discrete cosine transform of a 2x2 integer block. 
+/* Calculates the discrete cosine transform of a 2x2 integer block.
 
 Copyright (c) 1999-2008 The Regents of the University of California.
 All rights reserved.
@@ -42,15 +42,15 @@ import ptolemy.kernel.util.Workspace;
 
 /**
    Calculate the discrete cosine transform(DCT) of dc coefficients of U and V components.
-   It uses 2x2 integer transform using in H.264 standard. 
+   It uses 2x2 integer transform using in H.264 standard.
    Input block should have two dimensions by 2x2 integer block.
    The output port will have a 2x2 integer block of the result.
 
    @author Hwayong Oh
-   @version $Id: DCT2x2dc.java 
+   @version $Id: DCT2x2dc.java
    @since Ptolemy II 7.0
-   @Pt.ProposedRating Red 
-   @Pt.AcceptedRating Red 
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 */
 public class DCT2x2dc extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -65,13 +65,13 @@ public class DCT2x2dc extends TypedAtomicActor {
     public DCT2x2dc(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this,"input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         output = new TypedIOPort(this,"output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
-      
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,14 +79,14 @@ public class DCT2x2dc extends TypedAtomicActor {
 
     /** Input for tokens. This is a 2x2 integer block, and its
      * type is integer matrix.
-     */ 
+     */
     public TypedIOPort input;
-    
-    /** Output port. This is a result for calculating the DCT 
+
+    /** Output port. This is a result for calculating the DCT
      * of the 2x2 integer block.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -103,7 +103,7 @@ public class DCT2x2dc extends TypedAtomicActor {
 
         return newObject;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _output = new IntMatrixToken[1];
@@ -120,13 +120,13 @@ public class DCT2x2dc extends TypedAtomicActor {
         int [][] temp = new int[2][2];
         int [][] sum = new int[2][2];
         IntMatrixToken _input;
-       
+
         if (input.hasToken(0)) {
             _input = (IntMatrixToken)input.get(0);
         } else {
             return;
         }
-        
+
         temp[0][0] = _input.getElementAt(0,0) + _input.getElementAt(0,1);
         temp[1][0] = _input.getElementAt(0,0) - _input.getElementAt(0,1);
         temp[0][1] = _input.getElementAt(1,0) + _input.getElementAt(1,1);
@@ -136,13 +136,13 @@ public class DCT2x2dc extends TypedAtomicActor {
         sum[1][0] = temp[1][0] + temp[1][1];
         sum[0][1] = temp[0][0] - temp[0][1];
         sum[1][1] = temp[1][0] - temp[1][1];
-                
+
         _output[0] = new IntMatrixToken(sum);
         output.send(0, _output, _output.length );
-        
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private IntMatrixToken[] _output;    
-     
+    private IntMatrixToken[] _output;
+
 }

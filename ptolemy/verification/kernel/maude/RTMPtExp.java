@@ -4,7 +4,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class RTMPtExp extends RTMFragment {
-        
+
     public RTMPtExp(String exp) throws IllegalActionException {
         this(exp, false);
     }

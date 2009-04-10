@@ -162,7 +162,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     // Try to read.
                     if (super.hasToken()) {
                         result = super.get();
-    
+
                         // Need to mark any thread that is write blocked on
                         // this receiver unblocked now, before any notification,
                         // or we will detect deadlock and increase the buffer sizes.
@@ -173,7 +173,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                                     PNDirector.WRITE_BLOCKED);
                             _writePending = null;
                         }
-    
+
                         break;
                     }
                     _readPending = Thread.currentThread();
@@ -249,7 +249,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
@@ -263,8 +263,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
@@ -278,7 +278,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
@@ -292,7 +292,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  outside to an input port higher in the hierarchy.
      *  @see #isConnectedToBoundary()
      *  @return True if this is connected to the boundary.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
@@ -401,7 +401,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     // Try to write.
                     if (super.hasRoom()) {
                         super.put(token);
-    
+
                         // If any thread is blocked on a get(), then it will become
                         // unblocked. Notify the director now so that there isn't a
                         // spurious deadlock detection.
@@ -410,7 +410,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                                     PNDirector.READ_BLOCKED);
                             _readPending = null;
                         }
-    
+
                         // Normally, the _writePending reference will have
                         // been cleared by the read that unblocked this write.
                         // However, it might be that the director increased the
@@ -421,10 +421,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                                     PNDirector.WRITE_BLOCKED);
                             _writePending = null;
                         }
-    
+
                         break;
                     }
-    
+
                     // Wait to try again.
                     _writePending = Thread.currentThread();
                     _director.threadBlocked(_writePending, this,

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * Produce a pulse with a shape specified by the parameters.
  * The <i>values</i> parameter contains an ArrayToken, which specifies
  * the sequence of values to produce at the output.  The <i>indexes</i>
@@ -104,19 +104,19 @@ public class Pulse extends SequenceSource implements Rollbackable {
     // Call this so that we don't have to copy its code here...
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The indexes at which the specified values will be produced.
      * This parameter is an array of integers, with default value {0, 1}.
      */
     public Parameter indexes;
 
-    /**     
+    /**
      * The flag that indicates whether the pulse sequence needs to be
      * repeated. This is a boolean, and defaults to false.
      */
     public Parameter repeat;
 
-    /**     
+    /**
      * The values that will be produced at the specified indexes.
      * This parameter is an array, with default value {1, 0}.
      */
@@ -150,7 +150,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
 
     private boolean _repeatFlag;
 
-    /**     
+    /**
      * Construct an actor with the specified container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -174,7 +174,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
         attributeChanged(values);
     }
 
-    /**     
+    /**
      * If the attribute being changed is <i>indexes</i>, then check
      * that it is increasing and nonnegative.
      * @param attribute The attribute that changed.
@@ -210,7 +210,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This overrides the
      * base class to handle type constraints.
      * @param workspace The workspace for the new object.
@@ -237,7 +237,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Output a value if the count of iterations matches one of the entries
      * in the indexes array.
      * Otherwise output a zero token with the same type as the values in
@@ -275,7 +275,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
         $ASSIGN$_match(false);
     }
 
-    /**     
+    /**
      * Set the iteration count to zero.
      * @exception IllegalActionException If the parent class throws it.
      */
@@ -285,7 +285,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
         $ASSIGN$_indexColCount(0);
     }
 
-    /**     
+    /**
      * Update the iteration counters until they exceed the values
      * in the indexes array.
      * @exception IllegalActionException If the expression of indexes
@@ -301,7 +301,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
         return super.postfire();
     }
 
-    /**     
+    /**
      * Start an iteration.
      * @exception IllegalActionException If the base class throws it.
      */

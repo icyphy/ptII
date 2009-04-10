@@ -74,7 +74,7 @@ public class ModelAttributeController extends AttributeController {
         _lookInsideAction = new LookInsideAction();
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _lookInsideAction));
-        
+
     }
 
     public void addHotKeys(JGraph jgraph) {
@@ -92,7 +92,7 @@ public class ModelAttributeController extends AttributeController {
         public NamedObjController create(GraphController controller) {
             return new ModelAttributeController(controller);
         }
-        
+
     }
 
     private static class LookInsideAction extends FigureAction {

@@ -122,9 +122,9 @@ public class MovableViewScreen3D extends ViewScreen3D {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MovableViewScreen3D newObject = (MovableViewScreen3D) super.clone(workspace);
-        newObject.viewerPosition = (PortParameter)newObject.getAttribute("viewerPosition"); 
+        newObject.viewerPosition = (PortParameter)newObject.getAttribute("viewerPosition");
         newObject.viewerRotationAngle = (PortParameter)newObject.getAttribute("viwerRoationAngle");
-        newObject.viewerRotationAxis = (PortParameter)newObject.getAttribute("viewerRotationAxis"); 
+        newObject.viewerRotationAxis = (PortParameter)newObject.getAttribute("viewerRotationAxis");
         return newObject;
     }
 

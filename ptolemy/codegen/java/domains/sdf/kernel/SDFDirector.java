@@ -207,7 +207,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     } else {
                         // FIXME: need to deal with other types
                     }
-                    
+
                     String portNameWithChannelNumber = portName;
                     if (inputPort.isMultiport()) {
                         portNameWithChannelNumber = portName + '#' + i;
@@ -301,14 +301,14 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (type == BaseType.INT) {
                 code.append("int[][] " + tokensToThisPort + " ="
                         + " new int[ "+ String.valueOf(numberOfChannels) + "][" + rate + "];" + _eol);
-                
+
             } else if (type == BaseType.DOUBLE) {
                 code.append("double[][] " + tokensToThisPort + " ="
                         + " new double[ "+ String.valueOf(numberOfChannels) + "][" + rate + "];" + _eol);
             } else if (type == BaseType.BOOLEAN) {
                 code.append("boolean[][] " + tokensToThisPort + " ="
                         + " new boolean[ "+ String.valueOf(numberOfChannels) + "][" + rate + "];" + _eol);
-                
+
             } else {
                 // FIXME: need to deal with other types
             }
@@ -317,7 +317,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 if (outputPort.isMultiport()) {
                     portNameWithChannelNumber = portName + '#' + i;
                 }
-                
+
                 for (int k = 0; k < rate; k++) {
                     String portReference = compositeActorHelper
                             .getReference("@" + portNameWithChannelNumber + ","
@@ -333,8 +333,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                 }
             }
             code.append("tokensToAllOutputPorts [" + String.valueOf(_portNumber) + "] = "
-                    + tokensToThisPort + ";" + _eol);                
-            
+                    + tokensToThisPort + ";" + _eol);
+
             _portNumber++;
 
         } else {

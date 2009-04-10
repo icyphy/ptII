@@ -161,14 +161,14 @@ public abstract class RunnableGraphController extends WithIconGraphController
         Manager.State newState = manager.getState();
 
         if (newState != _previousState) {
-            // In case there were errors, we  
+            // In case there were errors, we
             // clear any error reporting highlights that may be present.
             // Do this only if there are actually error highlights because
             // it triggers a repaint.
             // We also request the extra repaint when the new state becomes
             // idle (and the previous one was something else), since we want
             // to update visual effects that might have changed by running the
-            // model.            
+            // model.
             if (newState == Manager.IDLE || _errorHighlights.size() > 0) {
                 ChangeRequest request = new ChangeRequest(this,
                         "Error Highlight Clearer", true) {
@@ -178,7 +178,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
                         }
                     }
                 };
-    
+
                 // Mark the Error Highlight Clearer request as
                 // non-persistant so that we don't mark the model as being
                 // modified.  ptolemy/actor/lib/jni/test/Scale/Scale.xml

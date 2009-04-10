@@ -155,7 +155,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public void fire() throws IllegalActionException {
         super.fire();
         _tentativeInputPosition = _currentInputPosition;
-        
+
         int width = input.getWidth();
         int blockSizeValue = ((IntToken) blockSize.getToken()).intValue();
 
@@ -232,7 +232,7 @@ public class Commutator extends Transformer implements SequenceActor {
         void setPort(IOPort port) {
             _port = port;
         }
-        
+
         private IOPort _port;
-    }; 
+    };
 }

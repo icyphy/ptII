@@ -36,7 +36,7 @@ public class TypeSystemCCS extends PropertyConstraintSolver {
         highlightConflictProperty.setExpression("Conflict");
         ColorAttribute highlightConflictColor = new ColorAttribute(_highlighter, "conflictHighlightColor");
         highlightConflictColor.setExpression("{1.0,0.0,0.0,1.0}");
-        
+
         StringAttribute highlightIntProperty = new StringAttribute(_highlighter, "int");
         highlightIntProperty.setExpression("Int");
         ColorAttribute highlightIntColor = new ColorAttribute(_highlighter, "intHighlightColor");
@@ -49,7 +49,7 @@ public class TypeSystemCCS extends PropertyConstraintSolver {
         highlightSInt32Property.setExpression("SInt32");
         ColorAttribute highlightSInt32Color = new ColorAttribute(_highlighter, "sint32HighlightColor");
         highlightSInt32Color.setExpression("{0.0,0.2,0.8,1.0}");
-        
+
         StringAttribute highlightUInt8Property = new StringAttribute(_highlighter, "uint8");
         highlightUInt8Property.setExpression("UInt8");
         ColorAttribute highlightUInt8Color = new ColorAttribute(_highlighter, "uint8HighlightColor");
@@ -76,6 +76,6 @@ public class TypeSystemCCS extends PropertyConstraintSolver {
         highlightReal64Property.setExpression("Real64");
         ColorAttribute highlightReal64Color = new ColorAttribute(_highlighter, "real64HighlightColor");
         highlightReal64Color.setExpression("{0.6,0.0,0.6,1.0}");
-    }        
+    }
 
 }

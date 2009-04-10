@@ -64,13 +64,13 @@ A extended base abstract class for a property solver.
 public abstract class PropertySolver extends PropertySolverBase {
 
     /*
-     * 
+     *
      * @param container
-     * 
+     *
      * @param name
-     * 
+     *
      * @throws IllegalActionException
-     * 
+     *
      * @throws NameDuplicationException
      */
     public PropertySolver(NamedObj container, String name)
@@ -90,10 +90,10 @@ public abstract class PropertySolver extends PropertySolverBase {
 
         all = new SharedParameter(this, "all", PropertySolver.class, "false");
         all.setTypeEquals(BaseType.BOOLEAN);
-        
+
         // FIXME: We do not want this GUI dependency here...
         // This attribute should be put in the MoML in the library instead
-        // of here in the Java code. 
+        // of here in the Java code.
         //new PropertyDisplayActions(this, "PropertyDisplayActions");
     }
 
@@ -106,7 +106,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * properties. If so, throw a new PropertyFailedRegressionTestException with
      * an error message that includes all the properties that does not match the
      * regression test values.
-     * 
+     *
      * @throws PropertyFailedRegressionTestException Thrown if there is any
      * errors in the regression test.
      */
@@ -138,7 +138,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Clear the manual annotation constraints assoicated with this solver
      * use-case.
-     * 
+     *
      * @exception IllegalActionException Not Thrown.
      */
     public void clearAnnotations() throws IllegalActionException {
@@ -172,17 +172,17 @@ public abstract class PropertySolver extends PropertySolverBase {
      * If the value of the showText parameter is true,
      * show the given property value for the given
      * property-able object. If the property is not null,
-     * this looks for the _showInfo parameter in the 
+     * this looks for the _showInfo parameter in the
      * property-able object. Create a new _showInfo
      * StringParameter, if there does not already exists one.
      * Set its value to the given property value. If the
      * given property is null, this removes the _showInfo
-     * parameter from the property-able object. 
+     * parameter from the property-able object.
      * @exception IllegalActionException Thrown if an error
-     * occurs when creating or setting the value for the 
+     * occurs when creating or setting the value for the
      * _showInfo parameter in the property-able object.
-     * Thrown if an error occurs when creating or setting 
-     * the value for the highlightColor attribute in the 
+     * Thrown if an error occurs when creating or setting
+     * the value for the highlightColor attribute in the
      * property-able object.
      */
      public void displayProperties() throws IllegalActionException {
@@ -190,24 +190,24 @@ public abstract class PropertySolver extends PropertySolverBase {
         if (!(isResolve() || isView())) {
             return;
         }
-        
+
         if (_highlighter.highlight.getToken() == BooleanToken.TRUE) {
             _highlighter.highlightProperties();
         }
         if (_highlighter.showText.getToken() == BooleanToken.TRUE) {
-            _highlighter.showProperties();        
+            _highlighter.showProperties();
         }
     }
 
     public PropertyMoMLHandler getMoMLHandler() {
         return _highlighter;
     }
-    
+
     /*
      * Return the previous resolved property for the given object.
-     * 
+     *
      * @param object The given object.
-     * 
+     *
      * @return The previous resolved property for the given object.
      */
     public Property getPreviousProperty(Object object) {
@@ -217,7 +217,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Return the trained exception message string. If there is no trained
      * exception, an empty string is return.
-     * 
+     *
      * @return The trained exception message string.
      */
     public String getTrainedException() {
@@ -232,7 +232,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Return the name of the trained exception attribute.
-     * 
+     *
      * @return The name of the trained exception attribute.
      */
     public Attribute getTrainedExceptionAttribute() {
@@ -247,9 +247,9 @@ public abstract class PropertySolver extends PropertySolverBase {
      * Increment the given field the solver statistics by a given number. This
      * is used for incrementing integer type statistics. If the given field does
      * not exist, it starts the count of the field at zero.
-     * 
+     *
      * @param field The given field of the solver statistics.
-     * 
+     *
      * @param increment The given number to increment by.
      */
     public void incrementStats(Object field, long increment) {
@@ -300,9 +300,9 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Return true if the solver can be identified by the given use-case string;
      * otherwise, false.
-     * 
+     *
      * @param usecase The given use-case label.
-     * 
+     *
      * @return True if the solver can be identified by the given use-case
      * string; otherwise, false.
      */
@@ -340,9 +340,9 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Record the previous property of the given object.
-     * 
+     *
      * @param object The given object.
-     * 
+     *
      * @param property The given property.
      */
     public void recordPreviousProperty(Object object, Property property) {
@@ -351,7 +351,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * @param exceptionMessage
-     * 
+     *
      * @throws IllegalActionException
      */
     public void recordTrainedException(String exceptionMessage)
@@ -383,7 +383,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Resolve the properties.
-     * 
+     *
      * @throws KernelException
      */
     public boolean resolveProperties(boolean isInvoked) throws KernelException {
@@ -392,7 +392,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Resolve the properties (invoked from a ModelAnalyzer).
-     * 
+     *
      * @throws KernelException
      */
     public boolean resolveProperties(NamedObj analyzer)
@@ -403,15 +403,15 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Resolve the property values for the top-level entity that contains the
      * solver.
-     * 
+     *
      * @param analyzer The model analyzer that invokes the solver. However, this
      * is null if the solver is invoked directly from its GUI.
-     * 
+     *
      * @param isInvoked Whether the solver is directly invoked or activated
      * through solver dependencies.
-     * 
+     *
      * @return True if resolution succeeds as expected; Otherwise, false.
-     * 
+     *
      * @throws IllegalActionException TODO
      */
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
@@ -463,7 +463,7 @@ public abstract class PropertySolver extends PropertySolverBase {
                 if (previousSolver == null || previousSolver.getContainer() == null) {
                     previousSolver = this;
                 }
-                
+
                 previousSolver._highlighter.clearDisplay();
 
                 _sharedUtilities._previousInvokedSolver = this;
@@ -567,9 +567,9 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Update the property. This method is called from both invoked and
      * auxiliary solvers.
-     * 
+     *
      * @throws IllegalActionException
-     * 
+     *
      * @throws IllegalActionException
      */
     public void updateProperties() throws IllegalActionException {
@@ -653,7 +653,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Record tracing statistics.
-     * 
+     *
      * @throws IllegalActionException
      */
     protected void _addStatistics() throws IllegalActionException {
@@ -668,11 +668,11 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Get the propertyable attribute contained by the given propertyable.
-     * 
+     *
      * @param propertyable The given propertyable object.
-     * 
+     *
      * @return The property attribute contained by the given propertyable.
-     * 
+     *
      * @throws IllegalActionException
      */
     protected PropertyAttribute _getPropertyAttribute(NamedObj propertyable)
@@ -716,9 +716,9 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Return the string representation of the recorded statistics.
-     * 
+     *
      * @param separator The delimiter to separate the statistics fields.
-     * 
+     *
      * @return The string representation of the recorded statistics.
      */
     protected String _getStatsAsString(String separator) {
@@ -740,11 +740,11 @@ public abstract class PropertySolver extends PropertySolverBase {
      * Check the given property against the trained property recorded on the
      * given NamedObj. It also restore the trained property that is temporarily
      * cleared for regression testing.
-     * 
+     *
      * @param namedObj The given NamedObj.
-     * 
+     *
      * @param property The given resolved property.
-     * 
+     *
      * @throws PropertyResolutionException Thrown if there are errors restoring
      * the trained property.
      */
@@ -781,9 +781,9 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Resolve the property values for the specified top-level entity. Print out
      * the name of the this solver. Sub-classes should overrides this method.
-     * 
+     *
      * @param analyzer The specified model analyzer.
-     * 
+     *
      * @throws IllegalActionException Not thrown in this base class.
      */
     protected void _resolveProperties(NamedObj analyzer)
@@ -814,9 +814,9 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * @param attribute
-     * 
+     *
      * @param property
-     * 
+     *
      * @throws IllegalActionException
      */
     private void _updatePropertyAttribute(PropertyAttribute attribute,
@@ -838,11 +838,11 @@ public abstract class PropertySolver extends PropertySolverBase {
      * generate the error message for failed regression test that detects a
      * mismatch between the expected (trained) exception and the generate
      * exception.
-     * 
+     *
      * @param exception The first input error message.
-     * 
+     *
      * @param trainedException The second input error message.
-     * 
+     *
      * @return The exception message string.
      */
     public static String getTrainedExceptionMismatchMessage(String exception,
@@ -860,7 +860,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
 
     /*
-     * 
+     *
      * @param actionParameter
      */
     protected static void _addActions(Parameter actionParameter) {

@@ -73,26 +73,26 @@ public class Minimum extends TypedAtomicActor {
         input.setMultiport(true);
 
         minimumValue = new TypedIOPort(this, "minimumValue", false, true);
-        
+
         /* Note that the output ports need not be multiports since all output
          * channels carry the same data. Using multiports this way is not
          * recommended, so please do not emulate this design in your own actors.
          * Changing this actor to the recommended design would break existing
          * models, so we leave it as is.
-         */        
+         */
         minimumValue.setMultiport(true);
-        
+
         minimumValue.setTypeAtMost(BaseType.SCALAR);
         minimumValue.setTypeAtLeast(input);
 
         channelNumber = new TypedIOPort(this, "channelNumber", false, true);
-        
+
         /* Note that the output ports need not be multiports since all output
          * channels carry the same data. Using multiports this way is not
          * recommended, so please do not emulate this design in your own actors.
          * Changing this actor to the recommended design would break existing
-         * models, so we leave it as is.  
-         */        
+         * models, so we leave it as is.
+         */
         channelNumber.setMultiport(true);
         channelNumber.setTypeEquals(BaseType.INT);
     }

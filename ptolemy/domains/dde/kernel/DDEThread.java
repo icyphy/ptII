@@ -111,7 +111,7 @@ public class DDEThread extends ProcessThread {
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(ex);
                     // At this time IllegalActionExceptions are not allowed to happen.
-                    // Width inference should already have been done.                           
+                    // Width inference should already have been done.
                 }
 
 

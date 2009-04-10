@@ -398,7 +398,7 @@ public class InequalitySolver {
         if (initializeOnly) {
             return true;
         }
-        
+
         //*****************************************************
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
             InequalityTerm variable = (InequalityTerm) e.nextElement();
@@ -412,7 +412,7 @@ public class InequalitySolver {
         }
         //*****************************************************
 
-        
+
         // initialize _NS(not satisfied) list; set _inCvar and _inserted flags.
         // Not Satisfied list.  Each entry is an Integer storing index to
         // _Ilist.
@@ -467,7 +467,7 @@ public class InequalitySolver {
                 }
 
                 if (value == null) {
-                    // FIXME: we relax this restriction to allow null property values. 
+                    // FIXME: we relax this restriction to allow null property values.
                     //throw new InvalidStateException("The CPO over which "
                     //        + "the inequalities are defined is not a lattice.");
 
@@ -486,9 +486,9 @@ public class InequalitySolver {
                 ArrayList affected = _Clist.get(updateTerm);
 
                 //*****************************************************
-                Iterator terms = 
+                Iterator terms =
                     _solver.getAffectedTerms((PropertyTerm) updateTerm).iterator();
-                
+
                 while (terms.hasNext()) {
                     affected.addAll(_Clist.get(terms.next()));
                 }

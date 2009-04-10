@@ -69,15 +69,15 @@ public class RefinementExtender extends Attribute {
     public RefinementExtender(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         className = new StringParameter(this, "className");
         description = new StringParameter(this, "description");
     }
-    
+
     /** The full name of the refinement class.
      */
     public StringParameter className;
-    
+
     /** A string description of the refinement class, which is shown in the
     dialog for the user to choose a refinement to add. */
     public StringParameter description;

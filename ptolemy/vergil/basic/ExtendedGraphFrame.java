@@ -196,7 +196,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     protected void _initExtendedGraphFrame() {
         GUIUtilities.addToolBarButton(_toolbar, _fullScreenAction);
     }
-    
+
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {

@@ -42,14 +42,14 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * This abstract class provides all methods that need to be implemented for a
  * specific platform execution strategy.
- * 
+ *
  * For every execution strategy, a name has to be defined which can be used in
  * the execution strategy property field of the PtidesEmbeddedDirector.
- * 
+ *
  * @author Patricia Derler
- * 
+ *
  */
-public abstract class PlatformExecutionStrategy { 
+public abstract class PlatformExecutionStrategy {
 
     /**
      * The basic non-preemptive execution strategy is implemented by
@@ -71,7 +71,7 @@ public abstract class PlatformExecutionStrategy {
     /**
      * Selects one event out of a set of events that are safe to fire. This one
      * event can be fired or start firing.
-     * 
+     *
      * @param actorsFiring
      *                List of actors that are currently being fired. If this
      *                list contains more than one element, than all actors
@@ -82,7 +82,7 @@ public abstract class PlatformExecutionStrategy {
      * @param eventsToFire
      *                List of events that are safe to fire. This list is
      *                computed by the PtidesEmbeddedDirector.
-     * @param nextRealTimeEvent Smallest time stamp of events that have to be 
+     * @param nextRealTimeEvent Smallest time stamp of events that have to be
      * fired at model time = real time.
      * @param physicalTime Current physical time of the model.
      * @return event that can be fired. if no event can be fired then it returns
@@ -91,12 +91,12 @@ public abstract class PlatformExecutionStrategy {
      * missed.
      */
     public abstract TimedEvent getNextEventToFire(Queue<TimedEvent> actorsFiring,
-            List<TimedEvent> eventsToFire, Time nextRealTimeEvent, 
+            List<TimedEvent> eventsToFire, Time nextRealTimeEvent,
             Time physicalTime) throws IllegalActionException;
 
     /**
      * Forward a schedule event to the enclosing director.
-     * 
+     *
      * @param actor
      *                The actor that has an event to be displayed.
      * @param time

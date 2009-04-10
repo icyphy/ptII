@@ -9,7 +9,7 @@ public class Ramp extends RTMaudeAdaptor {
     public Ramp(ptolemy.actor.lib.Ramp component) {
         super(component);
     }
-    
+
     protected String _generateFireCode() throws IllegalActionException {
         NamedObj actor = (NamedObj) getComponent();
         String name = actor.getFullName();

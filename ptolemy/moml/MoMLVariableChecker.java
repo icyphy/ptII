@@ -327,7 +327,7 @@ public class MoMLVariableChecker {
                         return false;
                     }
                     _previousNode = node;
-                    
+
                     try {
                         String moml = node.exportMoML().replaceFirst(
                                 "<property",

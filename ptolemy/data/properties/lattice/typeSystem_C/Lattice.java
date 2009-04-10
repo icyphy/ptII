@@ -65,7 +65,7 @@ public class Lattice extends PropertyLattice {
     ////                         public methods                    ////
 
     public Property CONFLICT = new Conflict(this);
-    
+
     public Property DOUBLEDOUBLE = new Double(this);
     public Property DOUBLE = new Double(this);
     public Property FLOAT = new Float(this);
@@ -91,16 +91,16 @@ public class Lattice extends PropertyLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    
+
     // The infinite property lattice
     public Lattice() {
         super();
         _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice = 
+        DirectedAcyclicGraph basicLattice =
             (DirectedAcyclicGraph) _lattice.basicLattice();
-        
-// FIXME: how to convert from Ptolemy type system to EDC type system?         
+
+// FIXME: how to convert from Ptolemy type system to EDC type system?
         basicLattice.addNodeWeight(CONFLICT);
 
         basicLattice.addNodeWeight(DOUBLEDOUBLE);
@@ -126,12 +126,12 @@ public class Lattice extends PropertyLattice {
         basicLattice.addNodeWeight(UNKNOWN);
 
 
-        basicLattice.addEdge(UNKNOWN, VOID);        
-        basicLattice.addEdge(UNKNOWN, BOOLEAN);        
+        basicLattice.addEdge(UNKNOWN, VOID);
+        basicLattice.addEdge(UNKNOWN, BOOLEAN);
         basicLattice.addEdge(UNKNOWN, UCHAR);
         basicLattice.addEdge(UNKNOWN, CHAR);
         basicLattice.addEdge(UNKNOWN, FLOAT);
-       
+
         basicLattice.addEdge(CHAR, SHORT);
         basicLattice.addEdge(SHORT, INT);
         basicLattice.addEdge(INT, LONG);
@@ -141,14 +141,14 @@ public class Lattice extends PropertyLattice {
         basicLattice.addEdge(USHORT, UINT);
         basicLattice.addEdge(UINT, ULONG);
         basicLattice.addEdge(ULONG, ULONGLONG);
-        
+
         basicLattice.addEdge(UCHAR, SHORT);
         basicLattice.addEdge(USHORT, INT);
         // UINT and ULONG have same range
         basicLattice.addEdge(UINT, LONGLONG);
         basicLattice.addEdge(ULONG, LONGLONG);
 
-        // FIXME: Is it possible to convert boolean to anything but boolean? 
+        // FIXME: Is it possible to convert boolean to anything but boolean?
         // basicLattice.addEdge(BOOLEAN, SINT8);
 
         basicLattice.addEdge(FLOAT, DOUBLE);
@@ -156,7 +156,7 @@ public class Lattice extends PropertyLattice {
 
         // FIXME: convert boolean to REAL32?
 //        basicLattice.addEdge(BOOLEAN, REAL32);
-  
+
         // FIXME: automatic conversion from integer to real types valid?
         // do we need explicit modeling of int -> real and real -> int?
         // does not work since UINT32 and SINT32 need to have single LUB (INVALID)
@@ -178,9 +178,9 @@ public class Lattice extends PropertyLattice {
 
     public Property convertJavaToCtype(Type type, Token token) throws IllegalActionException {
         TypeProperty cType = (TypeProperty)UNKNOWN;
-        
+
         // FIXME: consider ShortToken, UnsignedByteToken, ...
-        // FIXME: what is the criteria for bit-values? 
+        // FIXME: what is the criteria for bit-values?
         if (type.equals(BaseType.BOOLEAN)) {
             cType = (TypeProperty)BOOLEAN;
         } else if ((type.equals(BaseType.UNSIGNED_BYTE)) || (type.equals(BaseType.SHORT)) || (type.equals(BaseType.INT)) || (type.equals(BaseType.LONG))) {
@@ -197,25 +197,25 @@ public class Lattice extends PropertyLattice {
 /*            } else {
                 if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)UINT).getMaxValue()))).booleanValue()) {
     // FIXME: throw exception
-    //               throw ;               
+    //               throw ;
                 } else if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)USHORT).getMaxValue()))).booleanValue()) {
-                    cType = (TypeProperty)UINT;                
+                    cType = (TypeProperty)UINT;
                 } else if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)UCHAR).getMaxValue()))).booleanValue()) {
                     cType = (TypeProperty)USHORT;
                 } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)INT).getMinValue()))).booleanValue()) {
     //              FIXME: throw exception
-    //              throw ;               
+    //              throw ;
                 } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)SHORT).getMinValue()))).booleanValue()) {
                     cType = (TypeProperty)INT;
                 } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)CHAR).getMinValue()))).booleanValue()) {
                     cType = (TypeProperty)SHORT;
                 } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)UCHAR).getMinValue()))).booleanValue()) {
                     cType = (TypeProperty)CHAR;
-                } else { 
+                } else {
                     cType = (TypeProperty)UCHAR;
                 }
             }
-*/                
+*/
         } else if (type.equals(BaseType.DOUBLE)) {
 // FIXME: Consider range and precision for type assignment!
 //            if (token == null) {
@@ -223,20 +223,20 @@ public class Lattice extends PropertyLattice {
 /*            } else {
                 if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)FLOAT).getMaxValue()))).booleanValue()) {
                     cType = (TypeProperty)DOUBLE;
-                } else { 
-                    cType = (TypeProperty)FLOAT;   
+                } else {
+                    cType = (TypeProperty)FLOAT;
                 }
             }
 */
         } else if (type.equals(BaseType.FLOAT)) {
-            cType = (TypeProperty)FLOAT;   
+            cType = (TypeProperty)FLOAT;
         } else if (type.equals(BaseType.NIL)) {
-            cType = (TypeProperty)VOID;   
+            cType = (TypeProperty)VOID;
         }
-        
+
         return (Property)cType;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

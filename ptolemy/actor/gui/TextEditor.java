@@ -112,7 +112,7 @@ public class TextEditor extends TableauFrame implements DocumentListener, Printa
 
         getContentPane().add(_scrollPane, BorderLayout.CENTER);
         _initialSaveAsFileName = "data.txt";
-        
+
         // Set the undo listener, with default key mappings.
         text.getDocument().addUndoableEditListener(new UndoListener(text));
 
@@ -178,7 +178,7 @@ public class TextEditor extends TableauFrame implements DocumentListener, Printa
 
         double lineHeight = graphics2D.getFontMetrics().getHeight()
             - (graphics2D.getFontMetrics().getLeading()/2);
-        
+
         int linesPerPage = (int)Math.floor(
                 (format.getHeight() - format.getImageableY() - bottomMargin)
                 / lineHeight);
@@ -197,7 +197,7 @@ public class TextEditor extends TableauFrame implements DocumentListener, Printa
             try {
                 String linetext = text.getText(
                         text.getLineStartOffset(line),
-                        text.getLineEndOffset(line) - 
+                        text.getLineEndOffset(line) -
                         text.getLineStartOffset(line));
                 graphics2D.drawString(linetext, (int)format.getImageableX(), linePosition);
             } catch (BadLocationException e) {

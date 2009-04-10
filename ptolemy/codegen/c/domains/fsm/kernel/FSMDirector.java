@@ -229,7 +229,7 @@ public class FSMDirector extends Director {
         }
         return code.toString();
     }
-    
+
    public String _generateActorCode() throws IllegalActionException{
          StringBuffer code = new StringBuffer();
        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
@@ -241,7 +241,7 @@ public class FSMDirector extends Director {
                .booleanValue();
 
        int depth = 1;
-       
+
        Iterator states = controller.entityList().iterator();
        int stateCount = 0;
        depth++;
@@ -261,15 +261,15 @@ public class FSMDirector extends Director {
                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
 
                        code.append("void "+_getActorName(actors[i])+"(){");
-                       
+
                        code.append(actorHelper.generateFireCode());
                        code.append(actorHelper.generateTypeConvertFireCode());
                    code.append(_eol+"}"+_eol);
                }}
        }
        return code.toString();
-       }  
-               
+       }
+
 
    private String _getActorName(Actor actor) {
        String actorFullName = actor.getFullName();
@@ -278,19 +278,19 @@ public class FSMDirector extends Director {
        actorFullName = actorFullName.replace(' ', '_');
        return actorFullName;
        }
-   
-   
-   
+
+
+
    public String generatePreinitializeCode()throws IllegalActionException{
        StringBuffer code = new StringBuffer();
        code.append(super.generatePreinitializeCode());
-      
+
        code.append(_generateActorCode());
-      
+
        return code.toString();
    }
-   
-  
+
+
    }
-            
+
 

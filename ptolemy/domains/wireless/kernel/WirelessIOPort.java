@@ -317,7 +317,7 @@ public class WirelessIOPort extends TypedIOPort {
             super.broadcastClear();
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -538,7 +538,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  the width is always 1. Otherwise, it depends on the number of
      *  links to the port.
      *  @return The width of the port.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public int getWidth() throws IllegalActionException {
         if (_outsideIsWireless()) {
@@ -552,7 +552,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  then the width is always 1. Otherwise, the width is determined by
      *  the number of links to the port.
      *  @return The inside width of this port.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public int getWidthInside() throws IllegalActionException {
         if (_insideIsWireless()) {

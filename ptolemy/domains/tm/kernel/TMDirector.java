@@ -276,7 +276,7 @@ public class TMDirector extends Director implements TimedDirector {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.

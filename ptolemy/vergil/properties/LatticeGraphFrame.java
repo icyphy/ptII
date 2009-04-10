@@ -104,11 +104,11 @@ public class LatticeGraphFrame extends FSMGraphFrame
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
 
-                    PropertyLatticeComposite lattice = 
+                    PropertyLatticeComposite lattice =
                         (PropertyLatticeComposite) getModel();
-                    
+
                     tableau.setDebuggable(lattice);
-                    
+
                     lattice.isLattice();
                 }
             } catch (KernelException ex) {

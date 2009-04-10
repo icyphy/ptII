@@ -205,7 +205,7 @@ public class FSMDirector extends Director implements
         newObject._localReceiverMapsVersion = -1;
         return newObject;
     }
-    
+
     /** Return a default dependency to use between input input
      *  ports and output ports.
      *  This overrides the base class so that if there
@@ -630,7 +630,7 @@ public class FSMDirector extends Director implements
      *  directly on all inputs of the container.
      *  @return False if there is any output that does not
      *   depend directly on an input.
-     *  @exception IllegalActionException Thrown if causality interface 
+     *  @exception IllegalActionException Thrown if causality interface
      *  cannot be computed.
      */
     public boolean isStrict() throws IllegalActionException {
@@ -1163,7 +1163,7 @@ public class FSMDirector extends Director implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Cached reference to mode controller. */
     private FSMActor _controller = null;
 

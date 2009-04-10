@@ -72,7 +72,7 @@ public class Subscriber extends JavaCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
 
-        // FIXME: we are getting the minimum of the input and output 
+        // FIXME: we are getting the minimum of the input and output
         // width for now. But we still have to prove that this is
         // sufficient.
         int width = Math.min(actor.output.getWidth(), actor.input.getWidth());

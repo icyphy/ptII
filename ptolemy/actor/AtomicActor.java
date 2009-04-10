@@ -186,8 +186,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
         if (port instanceof IOPort) {
             IOPort castPort = (IOPort) port;
             Manager manager = getManager();
-            if (castPort.isInput() 
-                    && (getDirector() != null) 
+            if (castPort.isInput()
+                    && (getDirector() != null)
                     && (manager != null)
                     && (manager.getState() != Manager.IDLE)
                     && (manager.getState() != Manager.INFERING_WIDTHS)
@@ -216,7 +216,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
             // in connectionChanged(). This to make sure that
             // the receivers are reset when the model changes while
             // running the model.
-        
+
             Iterator<?> inputPorts = inputPortList().iterator();
             try {
                 workspace().getWriteAccess();
@@ -232,7 +232,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
             }
         }
     }
-    
+
     /** Do nothing.  Derived classes override this method to define their
      *  primary run-time action.
      *
@@ -243,7 +243,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
             _debug("Called fire()");
         }
     }
-    
+
     /** Return a causality interface for this actor. In this base class,
      *  if there is a director, we delegate to the director to return
      *  a default causality interface. Otherwise, we return an instance
@@ -255,7 +255,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  which case a new object is returned.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
-     * @exception IllegalActionException Thrown in subclasses if causality 
+     * @exception IllegalActionException Thrown in subclasses if causality
      * interface cannot be computed.
      */
     public CausalityInterface getCausalityInterface() throws IllegalActionException {
@@ -475,7 +475,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
             } else {
                 throw ex;
             }
-            
+
         }
 
     }
@@ -612,7 +612,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
         }
 
         _stopRequested = false;
-        
+
         // For backward compatibility, in case there are actors
         // that override pruneDependencies() to alter their
         // causality interface, call it here.
@@ -635,7 +635,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  can call removeDependency(input, output) rather than implementing
      *  a specialized {@link CausalityInterface}, at least for the simple
      *  cases where output ports do not depend at all on input ports.
-     *  @exception IllegalActionException Thrown by subclasses if causality interface 
+     *  @exception IllegalActionException Thrown by subclasses if causality interface
      *  cannot be computed.
      *  @see ptolemy.domains.de.lib.TimedDelay
      *  @see #removeDependency(IOPort, IOPort)
@@ -690,7 +690,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  @param input The input port.
      *  @param output The output port that does not depend on the
      *   input port.
-     *  @exception IllegalActionException Thrown if causality interface 
+     *  @exception IllegalActionException Thrown if causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
@@ -894,10 +894,10 @@ public class AtomicActor extends ComponentEntity implements Actor,
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
-    
+
     /** The causality interface, if it has been created. */
     private CausalityInterface _causalityInterface;
-    
+
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;
 

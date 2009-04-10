@@ -56,7 +56,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 /**
  * Utilities for generating TDL code.
- * 
+ *
  * @author Patricia Derler
  */
 public class TDLCodeGeneratorUtilities {
@@ -72,7 +72,7 @@ public class TDLCodeGeneratorUtilities {
         /**
          * Throw an exception if the given string is a valid TDL reserved word,
          * which prevents it from being used as an identifier.
-         * 
+         *
          * @param string
          *            A string to be used in TDL program.
          * @exception IllegalActionException
@@ -89,7 +89,7 @@ public class TDLCodeGeneratorUtilities {
 
         /**
          * Generate TDL code for the given TDL model.
-         * 
+         *
          * @param model
          *            The given TDL model.
          * @return The TDL code.
@@ -135,7 +135,7 @@ public class TDLCodeGeneratorUtilities {
         /**
          * Create an instance of a model and generate TDL code for it The TDL
          * code is printed on standard out.
-         * 
+         *
          * @param args
          *            The command-line arguments naming the .xml or .moml file to
          *            run
@@ -185,11 +185,11 @@ public class TDLCodeGeneratorUtilities {
         /**
          * Return true if the given actor has at least one connected input port,
          * which requires it to have an input driver.
-         * 
+         *
          * @param actor
          *            The actor to test.
          * @return True if the given actor has at least on connected input port.
-         * @throws IllegalActionException 
+         * @throws IllegalActionException
          */
         public static boolean needsInputDriver(Actor actor) throws IllegalActionException {
                 boolean retVal = false;
@@ -211,7 +211,7 @@ public class TDLCodeGeneratorUtilities {
 
         /**
          * Generate code for the actuator. Usually, there is only one actuator.
-         * 
+         *
          * @param sb Buffer used store the parts of the generated code.
          * @param module The module.
          * @exception IllegalActionException If there is a problem
@@ -241,7 +241,7 @@ public class TDLCodeGeneratorUtilities {
 
         /**
          * Get the datatype of a port. Default type is double.
-         * 
+         *
          * @param port
          *            An IO port.
          * @return A string containing the type of the port.
@@ -265,7 +265,7 @@ public class TDLCodeGeneratorUtilities {
         /**
          * Generate header code for the file. Usually, there is only
          * one header.
-         * 
+         *
          * @param sb Buffer used store the parts of the generated code.
          * @param model The model
          * @exception IllegalActionException If there is a problem
@@ -278,7 +278,7 @@ public class TDLCodeGeneratorUtilities {
         /**
          * Initialize the code generation process by checking whether the given
          * model is a TDL model. Return false if it is not.
-         * 
+         *
          * @param model
          *            A model to generate TDL code from.
          * @return True if in the given model is a tdl model.
@@ -290,7 +290,7 @@ public class TDLCodeGeneratorUtilities {
 
         /**
          * Generate code for the modes.
-         * 
+         *
          * @param sb Buffer used store the parts of the generated code.
          * @param state The state
          * @param module The module
@@ -385,7 +385,7 @@ public class TDLCodeGeneratorUtilities {
 
         /**
          * Generate code for the sensors.
-         * 
+         *
          * @param sb Buffer used store the parts of the generated code.
          * @param module The model from which we generate code.
          * @exception IllegalActionException If there is a problem
@@ -434,7 +434,7 @@ public class TDLCodeGeneratorUtilities {
 
         /**
          * Generate code for the tasks.
-         * 
+         *
          * @param sb Buffer used store the parts of the generated code.
          * @param module The model from which we generate code.
          * @exception IllegalActionException
@@ -476,7 +476,7 @@ public class TDLCodeGeneratorUtilities {
          * stored there but at the refinement port one level inside
          * modalport.insideReceivers[0][0].getParameter("getter") returns the
          * correct value.
-         * 
+         *
          * @param port refinement port.
          * @return the code generated for the refinementPort.
          */

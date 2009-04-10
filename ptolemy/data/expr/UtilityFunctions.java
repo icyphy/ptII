@@ -862,7 +862,7 @@ public class UtilityFunctions {
                         if (osName.startsWith("Mac OS X")
                                 || osName.startsWith("Linux")) {
                             library = library.substring(index + 1);
-                            shortLibraryName = library;    
+                            shortLibraryName = library;
                         } else {
                             shortLibraryName = "/lib"
                                     + library.substring(index + 1);

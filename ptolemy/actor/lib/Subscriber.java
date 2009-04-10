@@ -94,7 +94,7 @@ public class Subscriber extends TypedAtomicActor {
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        
+
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
         // to not break any existing models.
@@ -205,9 +205,9 @@ public class Subscriber extends TypedAtomicActor {
 
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
-        // to not break any existing models.        
+        // to not break any existing models.
         newObject.output.setWidthEquals(newObject.input, false);
-        
+
         return newObject;
     }
 

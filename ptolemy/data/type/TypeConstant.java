@@ -72,7 +72,7 @@ public class TypeConstant implements InequalityTerm {
         }
         return false;
     }
-    
+
     /** Return null.
      *  @return null.
      */
@@ -94,7 +94,7 @@ public class TypeConstant implements InequalityTerm {
     public InequalityTerm[] getVariables() {
         return (new InequalityTerm[0]);
     }
-    
+
     /** Return the hashCode of the type. This ensures that if equals()
      *  returns true then the two objects return the same hashCode.
      *  @return The hashCode of this object.

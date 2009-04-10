@@ -187,7 +187,7 @@ public class PullConsumer extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        try {            
+        try {
             synchronized (_lock) {
                 _requestData = true;
                 _lock.notifyAll();

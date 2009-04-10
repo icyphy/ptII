@@ -122,7 +122,7 @@ public class MapWorker extends TypedAtomicActor {
      *  <code>public static List&lt;String[]&gt; map(String key, String value)</code>
      *  <p>
      *  Each element of each returned list should be a length two array of
-     *  Strings. 
+     *  Strings.
      */
     public StringParameter classNameForMap;
 
@@ -228,7 +228,7 @@ public class MapWorker extends TypedAtomicActor {
     ////                        private methods                    ////
 
     /**
-     * Set the map method using the class specified in <i>classNameForMap<i>. 
+     * Set the map method using the class specified in <i>classNameForMap<i>.
      * @exception IllegalActionException If the map method does not
      * exist, has the wrong type signature, or has the wrong
      * access modifiers.

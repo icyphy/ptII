@@ -74,13 +74,13 @@ public class SampleDelay extends CCodeGeneratorHelper {
 
         _codeStream.append(_eol + _codeGenerator.comment("initialize "
                         + getComponent().getName()));
-        
+
         ArrayList args = new ArrayList();
         args.add("");
         for (int i = 0; i < length; i++) {
             /* Token element =*/ ((ArrayToken) actor.initialOutputs.getToken())
                     .getElement(i);
-            
+
             args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock("initTokens", args);
         }

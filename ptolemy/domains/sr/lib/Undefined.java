@@ -43,7 +43,7 @@ import ptolemy.kernel.util.StringAttribute;
  An actor that produces no outputs or tokens.
 
  <p>In domains such as SR, the output of this actor will never
- converge to a defined value. This actor is different from the 
+ converge to a defined value. This actor is different from the
  {@link ptolemy.domains.sr.lib.Absent} actor, which produces an <i>absent</i>
  value.
 

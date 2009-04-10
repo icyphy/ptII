@@ -61,15 +61,15 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
      * @throws IllegalActionException Thrown if the parent construct
      *  throws it.
      */
-    public ASTPtArrayConstructNode(PropertyConstraintSolver solver, 
-            ptolemy.data.expr.ASTPtArrayConstructNode node) 
+    public ASTPtArrayConstructNode(PropertyConstraintSolver solver,
+            ptolemy.data.expr.ASTPtArrayConstructNode node)
             throws IllegalActionException {
 
         super(solver, node, true);
         _lattice = (Lattice) getSolver().getLattice();
         _node = node;
     }
-    
+
     public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_node, new FunctionTerm());
         return super.constraintList();
@@ -79,30 +79,30 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
     ////                         private variables                 ////
     private ptolemy.data.expr.ASTPtArrayConstructNode _node;
     private Lattice _lattice;
-    
+
     /**
-     * 
+     *
      * @author Thomas Mandl
      *
      */
-    private class FunctionTerm 
+    private class FunctionTerm
     extends MonotonicFunction {
-        
+
         /**
-         * @throws IllegalActionException 
-         * 
-         */        
+         * @throws IllegalActionException
+         *
+         */
         public Object getValue() throws IllegalActionException {
             boolean isAllSameTokenValue = true;
             Token token = null;
-            
+
             for (int i = 0; i < _node.jjtGetNumChildren(); i++) {
-                ptolemy.data.expr.ASTPtRootNode childNode = 
+                ptolemy.data.expr.ASTPtRootNode childNode =
                     (ptolemy.data.expr.ASTPtRootNode) _node.jjtGetChild(i);
-                
-                Property childProperty = 
+
+                Property childProperty =
                     getSolver().getProperty(childNode);
-                
+
                 if ((childProperty == null) || (childProperty == _lattice.UNKNOWN) || (childProperty == _lattice.FALSE)) {
                     return childProperty;
                 } else if (!(childNode.isConstant() && childNode.isEvaluated())) {
@@ -117,7 +117,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
                     }
                 }
             }
-            
+
             return (isAllSameTokenValue) ? _lattice.TRUE : _lattice.FALSE;
         }
 
@@ -135,12 +135,12 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
             try {
                 for (int i = 0; i < _node.jjtGetNumChildren(); i++) {
                     Object child = _node.jjtGetChild(i);
-                    
+
                     PropertyConstraintASTNodeHelper helper;
-                    
+
                     helper = (PropertyConstraintASTNodeHelper) getSolver().getHelper(child);
                     InequalityTerm term = helper.getPropertyTerm(child);
-                    
+
                     terms.add(term);
                 }
             } catch (IllegalActionException e) {
@@ -150,6 +150,6 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
 
             return terms.toArray(new InequalityTerm[0]);
         }
-    }    
-    
+    }
+
 }

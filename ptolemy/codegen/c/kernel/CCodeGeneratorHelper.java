@@ -173,8 +173,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         Set files = super.getHeaderFiles();
         files.addAll(_includeFiles);
         return files;
-    }    
-    
+    }
+
     /** Get the header files needed to compile with the jvm library.
       *  @return A set of strings that are names of the header files
       *   needed by the code generated for jvm library
@@ -211,7 +211,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         String jreBinClientPath = javaHome + File.separator + "bin"
             + File.separator + "client";
-        executeCommands.stdout(_eol + _eol 
+        executeCommands.stdout(_eol + _eol
                 + "CCodeGeneratorHelper: appended to path "
                 + jreBinClientPath);
 
@@ -221,7 +221,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         if (javaHome.endsWith("/jre")) {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
         }
-            
+
         if (!(new File(javaHome + "/include").isDirectory())) {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
@@ -247,7 +247,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                     potentialJavaHomeParentFile = new File("C:\\Program Files\\Java");
                 }
             }
-        } 
+        }
 
         getCodeGenerator().addInclude("-I\"" + javaHome + "/include\"");
 
@@ -266,7 +266,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
                                           + platform + "\"");
 
-            // The directive we use to find jvm.dll, which is usually in 
+            // The directive we use to find jvm.dll, which is usually in
             // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
             jvmLoaderDirective = "-ljvm";
 
@@ -274,9 +274,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
             libjvmAbsoluteDirectory = ptIIDir + "/"
                 + libjvmRelativeDirectory;
-            String libjvmFileName = "libjvm.dll.a"; 
+            String libjvmFileName = "libjvm.dll.a";
             String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
-                
+
             if ( !(new File(libjvmPath).canRead()) ) {
                 // If we are under WebStart or running from jar files, we
                 // will need to copy libjvm.dll.a from the jar file
@@ -291,14 +291,14 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
                         if (!libjvmFileCopy.canRead()) {
                             // Create libjvm.dll.a in the codegen directory
-                            FileUtilities.binaryCopyURLToFile(libjvmURL, 
+                            FileUtilities.binaryCopyURLToFile(libjvmURL,
                                                               libjvmFileCopy);
                         }
 
                         libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
                         if (libjvmFileCopy.canRead()) {
                             libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
-                                                                            '/'); 
+                                                                            '/');
                             libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
                                                                                        libjvmAbsolutePath.lastIndexOf("/"));
 
@@ -308,7 +308,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                                 + libjvmAbsolutePath.substring(
                                                                libjvmAbsolutePath.lastIndexOf("/lib") + 4,
                                                                libjvmAbsolutePath.length() - 6);
-                            
+
                         }
                     } catch (Exception ex) {
                         throw new IllegalActionException(getComponent(),
@@ -509,9 +509,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         String sourceCodeGenType = codeGenType(sourceType);
         String sinkCodeGenType = codeGenType(sinkType);
-        
+
         if (!sinkCodeGenType.equals(sourceCodeGenType)) {
-            result = "$convert_" + sourceCodeGenType + "_" 
+            result = "$convert_" + sourceCodeGenType + "_"
             + sinkCodeGenType + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";" + _eol;
@@ -554,7 +554,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /** Return the prototype for fire functions.
      * @return The string"(void)" so as to avoid the avr-gcc 3.4.6
      * warning: "function declaration isn't a prototype"
-     */ 
+     */
     protected String _getFireFunctionArguments() {
         return "(void)";
     }
@@ -583,7 +583,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                 return "";
             }
         }
-        
+
         // We will assume that it is a call to a polymorphic
         // functions.
         //String[] call = macro.split("_");

@@ -416,7 +416,7 @@ public abstract class GTIngredient {
                 } else if (c == '\'' && !inDblQuote && !escaped) {
                     inSngQuote = !inSngQuote;
                 }
-                
+
                 if (!escaped && !inDblQuote && !inSngQuote &&
                         c == FIELD_SEPARATOR) {
                     position = i;
@@ -427,7 +427,7 @@ public abstract class GTIngredient {
                     escaped = false;
                 }
             }
-            
+
             String next;
             if (position < 0) {
                 next = _values;

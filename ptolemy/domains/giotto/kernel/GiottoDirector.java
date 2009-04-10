@@ -153,7 +153,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.
@@ -309,7 +309,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             _iterationCount++;
         }
     }
-    
+
     /** Request a firing of the given actor at the given absolute
      *  time.  This method calculates the period of invocation of
      *  the specified actor (which is the period of this director
@@ -711,7 +711,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
         return wasTransferred;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 

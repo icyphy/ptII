@@ -348,7 +348,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             throw new InternalErrorException(exception);
         }
     }
-    
+
     /** Request a firing of the given actor at the given model
      *  time.  This method delegates to the enclosing director
      *  if there is one. Otherwise, it checks to see whether the
@@ -492,24 +492,24 @@ public class SDFDirector extends StaticSchedulingDirector {
                     while (true) {
                         long elapsedTime = System.currentTimeMillis()
                                 - _realStartTime;
-    
+
                         // NOTE: We assume that the elapsed time can be
                         // safely cast to a double.  This means that
                         // the SDF domain has an upper limit on running
                         // time of Double.MAX_VALUE milliseconds.
                         double elapsedTimeInSeconds = elapsedTime / 1000.0;
                         double currentTime = getModelTime().getDoubleValue();
-    
+
                         if (currentTime <= elapsedTimeInSeconds) {
                             break;
                         }
-    
+
                         long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
-    
+
                         if (_debugging) {
                             _debug("Waiting for real time to pass: " + timeToWait);
                         }
-    
+
                         try {
                             // NOTE: The built-in Java wait() method
                             // does not release the

@@ -91,20 +91,20 @@ public class FSMActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = 
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor =
             (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         // FIXME: not handling multirate inputs yet.
         // FIXME: how should we handle in-out ports?
         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-            for (int channel = 0; !input.isOutput() && 
+            for (int channel = 0; !input.isOutput() &&
             channel < input.getWidth(); channel++) {
-                
+
                 code.append("$get(" + input.getName()
-                        + ", " + channel + ")" + _eol);                
+                        + ", " + channel + ")" + _eol);
             }
         }
-        
+
         generateTransitionCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.outgoingPort.linkedRelationList().iterator();
@@ -131,16 +131,16 @@ public class FSMActor extends CCodeGeneratorHelper {
         State initialState = fsmActor.getInitialState();
 
         _updateCurrentState(codeBuffer, initialState);
-        
+
         return processCode(codeBuffer.toString());
     }
 
-    /** Generate the preinitialize code of the associated FSMActor. It 
+    /** Generate the preinitialize code of the associated FSMActor. It
      *  declares two variables for this actor: currentState and transitionFlag.
      *  currentState is an int representing this actor's current state.
      *  transitionFlag is an unsigned char to indicate if a preemptive
      *  transition is taken. It also defines a symbolic constant to each
-     *  state. 
+     *  state.
      *  @return The preinitialize code of the associated FSMActor.
      *  @exception IllegalActionException If thrown when creating buffer
      *   size and offset map or processing code.
@@ -149,29 +149,29 @@ public class FSMActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = 
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor =
             (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         ArrayList args = new ArrayList(2);
         int index = 0;
         args.add("");
-        args.add("");        
+        args.add("");
         for (State state : (List<State>) fsmActor.entityList()) {
             args.set(0, _generateStateConstantLabel(state));
-            args.set(1, index++);           
+            args.set(1, index++);
             code.append(_generateBlockCode("defineState", args));
         }
         code.append("//I should generate the methods for my internal actors here. My actors are:");
-             
-        for (Actor actor : (List<Actor>) 
+
+        for (Actor actor : (List<Actor>)
                 ((TypedCompositeActor)  this.getDirector().getContainer()).deepEntityList()) {
             code.append(_eol+"void "+_getActorName(actor)+"(){"+_eol);
            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
            //code.append( actorHelper.generateFireCode());
            code.append("}"+_eol);
-            
+
         }
-        
+
         return processCode(code.toString());
     }
 
@@ -239,12 +239,12 @@ public class FSMActor extends CCodeGeneratorHelper {
 
                 String guard = transition.getGuardExpression();
 
-                if (transition.isDefault() || 
+                if (transition.isDefault() ||
                         guard.toLowerCase().equals("true")) {
 
                     // We don't need to generate if-predicate for this,
                     // and we can skip the rest of the transitions.
-                    // FIXME: Need to handle nondeterministic transitions.                    
+                    // FIXME: Need to handle nondeterministic transitions.
                     hasDefaultCase = true;
 
                 } else {
@@ -257,10 +257,10 @@ public class FSMActor extends CCodeGeneratorHelper {
                     transitionCount++;
 
                     PtParser parser = new PtParser();
-                    ASTPtRootNode guardParseTree = 
+                    ASTPtRootNode guardParseTree =
                         parser.generateParseTree(guard);
 
-                    ParseTreeCodeGenerator parseTreeCodeGenerator = 
+                    ParseTreeCodeGenerator parseTreeCodeGenerator =
                         getParseTreeCodeGenerator();
                     parseTreeCodeGenerator.evaluateParseTree(
                             guardParseTree, _scope);
@@ -273,7 +273,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 codeBuffer.append("{" + _eol);
 
                 // generate code for choice action
-                for (AbstractActionsAttribute action : 
+                for (AbstractActionsAttribute action :
                     (List <AbstractActionsAttribute>) transition.choiceActionList()) {
 
                     Iterator channelNumberList = action.getChannelNumberList()
@@ -281,7 +281,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     Iterator parseTreeList = action.getParseTreeList()
                     .iterator();
 
-                    for (String destinationName : 
+                    for (String destinationName :
                         (List<String>) action.getDestinationNameList()) {
 
                         Integer channelNumber = (Integer) channelNumberList
@@ -396,7 +396,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 }
 
                 // generate code for commit action
-                for (AbstractActionsAttribute action : 
+                for (AbstractActionsAttribute action :
                     (List <AbstractActionsAttribute>) transition.commitActionList()) {
 
                     Iterator channelNumberList = action.getChannelNumberList()
@@ -404,14 +404,14 @@ public class FSMActor extends CCodeGeneratorHelper {
                     Iterator parseTreeList = action.getParseTreeList()
                     .iterator();
 
-                    for (String destinationName : 
-                        (List<String>) action.getDestinationNameList()) {                        
+                    for (String destinationName :
+                        (List<String>) action.getDestinationNameList()) {
 
                         Integer channelNumber = (Integer) channelNumberList
                         .next();
                         ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
                         .next();
-                        NamedObj destination = 
+                        NamedObj destination =
                             action.getDestination(destinationName);
 
                         int channel = -1;
@@ -549,7 +549,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      * @throws IllegalActionException Thrown if the corresponding code
      *  block cannot be fetched.
      */
-    protected void _updateCurrentState(StringBuffer codeBuffer, State state) 
+    protected void _updateCurrentState(StringBuffer codeBuffer, State state)
     throws IllegalActionException {
         ArrayList args = new ArrayList(1);
         args.add(_generateStateConstantLabel(state));
@@ -734,6 +734,6 @@ public class FSMActor extends CCodeGeneratorHelper {
          actorFullName = actorFullName.replace(' ', '_');
         return actorFullName;
     }
-    
+
 
 }

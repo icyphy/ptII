@@ -4,7 +4,7 @@ public interface Propertyable {
 
     public void clearHighlight();
     public void clearProperty(String useCase);
-    
+
     public void clearShowProperty();
     public Property getProperty();
 

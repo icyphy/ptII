@@ -65,9 +65,9 @@ public class Scale extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
 
         if (actor.scaleOnLeft.getToken() == BooleanToken.TRUE) {
-            code.append(_generateBlockCode("scaleOnLeft"));            
+            code.append(_generateBlockCode("scaleOnLeft"));
         } else {
-            code.append(_generateBlockCode("scaleOnRight"));                        
+            code.append(_generateBlockCode("scaleOnRight"));
         }
         return processCode(code.toString());
     }

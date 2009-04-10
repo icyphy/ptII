@@ -33,7 +33,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  * A collection of static methods used in the Ptides domain to determine static
  * actor properties.
- * <p>The properities are: 
+ * <p>The properities are:
  * <ul>
  * <li>Is the actor a sensor?</li>
  * <li>Is the actor an actuator?</li>
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
  * actor, the firing is caused by pure events scheduled by the TDL module.</li>
  * <li>Does this actor have to be fired at real time?</li>
  * </ul>.</p>
- * 
+ *
  * @author Patricia Derler
  */
 public class PtidesActorProperties {
@@ -54,7 +54,7 @@ public class PtidesActorProperties {
     /**
      * Returns true if the actor is an actuator. A parameter of an actuator
      * actor called "isActuator" is true if the actor is an actuator.
-     * 
+     *
      * @param actor
      *            The actor which might be an actuator.
      * @return True if the actor is an actuator.
@@ -85,7 +85,7 @@ public class PtidesActorProperties {
     /**
      * Returns true if given actor is a sensor. A parameter "isSensor" is set to
      * true if the actor is a sensor.
-     * 
+     *
      * @param actor
      *            Actor that might be a sensor.
      * @return True if the actor is a sensor.
@@ -112,7 +112,7 @@ public class PtidesActorProperties {
             return false;
         }
     }
-    
+
     /** Return the execution time of the actor or the worst case
      *  execution time if no execution time is specified, or
      *  0.0 if neither is specified.
@@ -149,7 +149,7 @@ public class PtidesActorProperties {
     /**
      * Return the worst case execution time of the actor or 0 if no worst case
      * execution time was specified.
-     * 
+     *
      * @param actor
      *            The actor for which the worst case execution time is
      *            requested.
@@ -181,7 +181,7 @@ public class PtidesActorProperties {
     /**
      * Returns the priority of the actor. The priority is an int value. The
      * default return value is 0.
-     * 
+     *
      * @param actor
      *            Given actor.
      * @return Priority of the given actor.
@@ -208,7 +208,7 @@ public class PtidesActorProperties {
     /**
      * Returns true if the port is a trigger port, i.e. an event on that port
      * causes a firing of the actor.
-     * 
+     *
      * @param port
      *            Given port.
      * @return True if given port is a trigger port.
@@ -221,7 +221,7 @@ public class PtidesActorProperties {
     /**
      * Returns true if the actor or port object must be fired at real time equal
      * to model time.
-     * 
+     *
      * @param object
      *            Given actor or port object.
      * @return True if the given actor or actor containing the port must be

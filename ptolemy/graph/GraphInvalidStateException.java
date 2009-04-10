@@ -55,7 +55,7 @@ public class GraphInvalidStateException extends InvalidStateException {
     // refer to NamedObj in a separate package and then have
     // kernel.util exceptions extend those exceptions.
 
-    /** 
+    /**
      *  Construct an exception with a detail message.  This exception
      *  is thrown when an object has a state that is not permitted.
      *  @param message Detailed description of the error.

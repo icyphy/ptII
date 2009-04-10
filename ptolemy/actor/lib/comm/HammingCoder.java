@@ -175,7 +175,7 @@ public class HammingCoder extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) 
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         HammingCoder newObject = (HammingCoder) super.clone(workspace);
 

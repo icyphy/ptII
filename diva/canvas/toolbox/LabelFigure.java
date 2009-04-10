@@ -388,18 +388,18 @@ public class LabelFigure extends AbstractFigure {
             if (!s.equals(_string)) {
                 // repaint the string where it currently is
                 repaint();
-    
+
                 // Remember the current anchor point
                 Point2D pt = getAnchorPoint();
-    
+
                 // Modify the string
                 _string = s;
                 _update();
-    
+
                 // Recalculate and translate
                 Point2D badpt = getAnchorPoint();
                 translate(pt.getX() - badpt.getX(), pt.getY() - badpt.getY());
-    
+
                 // Repaint in new location
                 repaint();
             }

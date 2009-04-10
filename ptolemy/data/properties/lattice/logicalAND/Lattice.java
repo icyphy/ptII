@@ -62,21 +62,21 @@ public class Lattice extends PropertyLattice {
     public /*static*/ Property TRUE = new True(this);
 
     public /*static*/ Property FALSE = new False(this);
-    
+
     public /*static*/ Property UNKNOWN = new Unknown(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    
+
     // The infinite property lattice
     public Lattice() {
         super();
         _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice = 
+        DirectedAcyclicGraph basicLattice =
             (DirectedAcyclicGraph) _lattice.basicLattice();
-        
+
 
         basicLattice.addNodeWeight(TRUE);
 

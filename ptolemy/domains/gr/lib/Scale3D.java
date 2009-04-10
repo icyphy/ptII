@@ -120,7 +120,7 @@ public class Scale3D extends GRTransform {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Check the input port for scaling input. 
+    /** Check the input port for scaling input.
      *
      *  @exception IllegalActionException If the value of some parameters
      *   can't be obtained
@@ -152,7 +152,7 @@ public class Scale3D extends GRTransform {
             scaleTransform.setScale(new Vector3d(xScale, yScale, zScale));
             _transformNode.setTransform(scaleTransform);
         }
-        
+
         // use the results as the new states and save them
         // (Should these state changes be moved to postfire?)
         _scaleXState = xScale;
@@ -167,7 +167,7 @@ public class Scale3D extends GRTransform {
         super.initialize();
         _transformNode = new TransformGroup();
         _transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    
+
         _scaleXState = _getInitialScaleX();
         _scaleYState = _getInitialScaleY();
         _scaleZState = _getInitialScaleZ();

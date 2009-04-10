@@ -71,7 +71,7 @@ public class PropertyLatticeAttribute extends ModelAttribute {
     public PropertyLatticeAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         _attachText("_iconDescription", _ICON);
     }
 
@@ -80,13 +80,13 @@ public class PropertyLatticeAttribute extends ModelAttribute {
     }
 
     public PropertyLattice getPropertyLattice() {
-        PropertyLatticeComposite latticeModel = 
+        PropertyLatticeComposite latticeModel =
             (PropertyLatticeComposite) getContainedModel();
 
         List<LatticeElement> elements = (List<LatticeElement>) latticeModel.deepEntityList();
 
         //DirectedAcyclicGraph graph = latticeModel.toGraph(, true);
-        
+
         PropertyLattice lattice = new PropertyLatticeComposite.Lattice(elements) {
             public String toString() {
                 return PropertyLatticeAttribute.this.getName();
@@ -95,14 +95,14 @@ public class PropertyLatticeAttribute extends ModelAttribute {
 
         //lattice.setBasicLattice(graph);
 
-        return lattice;        
+        return lattice;
     }
 
     protected String _getContainedModelClassName() {
         return "ptolemy.domains.properties.PropertyLatticeComposite";
     }
 
-    private static final String _ICON = "<svg>"    
+    private static final String _ICON = "<svg>"
         + "<line x1=\"0\" y1=\"-30\" x2=\"18\" y2=\"0\""
         + "  style=\"stroke:#303030; stroke-width:3\"/>"
         + "<line x1=\"0\" y1=\"-30\" x2=\"-18\" y2=\"0\""

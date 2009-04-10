@@ -62,9 +62,9 @@ public class InputModel extends GTEvent {
         BooleanToken inputPortPresent = (BooleanToken) scope.get(
                 _INPUT_PORT_NAME + "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            _debug(new GTDebugEvent(this, "Input model received at " + 
+            _debug(new GTDebugEvent(this, "Input model received at " +
                     _INPUT_PORT_NAME + "."));
-    
+
             ActorToken modelToken = (ActorToken) scope.get(_INPUT_PORT_NAME);
             Entity entity = modelToken.getEntity();
             if (!(entity instanceof CompositeEntity)) {

@@ -186,7 +186,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             }
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).

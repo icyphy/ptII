@@ -87,7 +87,7 @@ import ptolemy.kernel.util.Workspace;
  * <p>
  * Executing actors in platforms is done according to their model time stamps.
  * The execution does not have to be in time stamp order, the only
- * requirement is that events on ports in the same equivalence class 
+ * requirement is that events on ports in the same equivalence class
  * (@see CausalityInterface.equivalentPorts()) are processed in
  * time stamped order. To satisfy this requirement, an analysis on events is
  * used to determine whether they are safe to process. For this analysis, the
@@ -113,26 +113,26 @@ import ptolemy.kernel.util.Workspace;
  * of the actor or it is only known after firing the actor. E.g. actors that
  * require simulation to determine the WCET such as TDLModules have to be fired
  * at the beginning of the execution.
- * 
- * TODO: currently, this director only supports fixed priorities; e.g. actor a 
+ *
+ * TODO: currently, this director only supports fixed priorities; e.g. actor a
  * preempts b and then b preempts a would not work.
  * <p>
  * Events are not maintained by a single event queue. There are two types of
  * events used in this domain: regular events and pure events. A regular event
  * is a combination of time stamp and value sent from the output port of one
- * actor to the input port of another actor. A pure event is a time stamp 
- * that schedules firing an actor, there is no connection to any value or 
+ * actor to the input port of another actor. A pure event is a time stamp
+ * that schedules firing an actor, there is no connection to any value or
  * input port. Regular events
  * are stored in the receivers as pairs of timestamp and value. For the pure events
  * for every actor, a list is created that saves time stamps of pure events for
  * that actor.
- * 
+ *
  * <p>
  * This director is used to simulate the execution of actors, thus actors might define
  * execution times. Some actors will define worst case execution times, for other actors
  * a real execution time might be determined by simulating the actor and thus deriving
  * the execution time.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -145,12 +145,12 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Construct a director in the default workspace with an empty string as its
      * name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
-     * 
-     * @exception IllegalActionException 
-         *                                   If the director is not compatible with the specified 
+     *
+     * @exception IllegalActionException
+         *                                   If the director is not compatible with the specified
      *                                  container.
-     * @exception NameDuplicationException 
-         *                                  If the container not a CompositeActor and the name 
+     * @exception NameDuplicationException
+         *                                  If the container not a CompositeActor and the name
      *                                  collides with an entity in the container.
      */
     public PtidesEmbeddedDirector() throws IllegalActionException,
@@ -163,7 +163,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Construct a director in the workspace with an empty name. The director is
      * added to the list of objects in the workspace. Increment the version
      * number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace of this object.
      * @exception IllegalActionException
@@ -184,7 +184,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -204,19 +204,19 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
         ///////////////////////////////////////////////////////////////////
     ////                    public parameter                       ////
-    
+
     /**
      * The executionStrategy defines the order of execution of events. This
      * parameter defaults to a basic non preemptive execution strategy.
      */
     public StringParameter executionStrategy;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    public methods                         ////
 
     /**
      * Update the director parameters when attributes are changed.
-     * 
+     *
      * @param attribute
      *            The changed parameter.
      * @exception IllegalActionException
@@ -234,11 +234,11 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /**
      * Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
-     *  by the user if he wants it to be there). 
+     *  by the user if he wants it to be there).
      *
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -279,19 +279,19 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Return the default dependency between input and output ports which for
      * the Ptides domain is a RealDependency.
-     * 
+     *
      * @return The default dependency which describes a delay of 0.0 between
      *         ports.
      */
     public Dependency defaultDependency() {
         return RealDependency.OTIMES_IDENTITY;
     }
-    
+
 
     /**
      * Return a real dependency representing a model-time delay of the
      * specified amount.
-     * 
+     *
      * @param delay
      *            A non-negative delay.
      * @return A boolean dependency representing a delay.
@@ -305,7 +305,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * enclosing director. The PtidesDirector collects all display events from
      * all platforms and sends them to schedule listeners. If the enclosing
      * director is not a PtidesDirector, do nothing.
-     * 
+     *
      * @param actor
      *            Actor for which the event occured.
      * @param time
@@ -345,7 +345,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Return the current model time. When an actor is in execution, this method
      * returns the model time of the event responsible for firing the actor
      * currently in execution. Otherwise, this method returns the time 0.0.
-     * 
+     *
      * @return The current model time.
      */
     public Time getModelTime() {
@@ -374,7 +374,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * director calls the fireAt() method of the enclosing director with the
      * current physical time increased by the WCET. After that time passed, the
      * actor is taken out of the list of actors in execution.
-     * 
+     *
      * @throws IllegalActionException
      *             Thrown if an execution was missed.
      */
@@ -390,7 +390,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             if (_stopRequested)
                 return;
             _transferAllInputs();
-            // take events out of the list of events in execution if the WCET 
+            // take events out of the list of events in execution if the WCET
             // of the actor has passed
             if (_eventsInExecution.size() > 0) {
                 TimedEvent eventInExecution = _eventsInExecution.getFirst();
@@ -406,7 +406,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     if (!_fireAtTheBeginningOfTheWcet(actorToFire))
                         _fireActorInZeroModelTime(actorToFire);
 
-                    // TODO do not transfer all outputs but only necessary ones 
+                    // TODO do not transfer all outputs but only necessary ones
                     _transferAllOutputs();
                     displaySchedule(actorToFire, _currentPhysicalTime
                             .getDoubleValue(), ScheduleEventType.STOP);
@@ -421,7 +421,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                         _currentModelTime = null;
                 }
             }
-                
+
             // get the next event
             eventsToFire = _getNextEventsToFire();
             Time nextRealTimeEventTime = _getNextRealTimeEventTime(
@@ -470,7 +470,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     _eventsInExecution.addFirst(event);
                 }
             } else {
-                // if new inputs are read, continue firing, otherwise call 
+                // if new inputs are read, continue firing, otherwise call
                 // the fireAt() of the enclosing director
                 if (_transferAllInputs()) {
                     continue;
@@ -493,13 +493,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Schedule an actor to be fired at the specified time by posting a pure
      * event to the director.
-     * 
+     *
      * @param actor
      *            The scheduled actor to fire.
      * @param time
      *            The scheduled time to fire.
      *  @return The time at which the actor passed as an argument
-     *   will be fired. 
+     *   will be fired.
      * @exception IllegalActionException
      *                If event queue is not ready.
      */
@@ -514,7 +514,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             _enqueueEvent(containingActor, time);
         }
         Director executiveDirector = ((Actor)actor.getContainer()).getExecutiveDirector();
-        
+
         if (!(executiveDirector instanceof PtidesDirector)) {
             return executiveDirector.fireAt((Actor)actor.getContainer(), time);
         }
@@ -533,7 +533,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * because there are events upstream which will certainly arrive at this
      * port and all other ports in the same port group with a greater time
      * stamp.
-     * 
+     *
      * @param time
      *            Time stamp of the event.
      * @param port
@@ -575,14 +575,14 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             _finishingTimesOfActorsInExecution.remove(actor);
         _finishingTimesOfActorsInExecution.put(actor, finishingTime);
     }
-    
+
     @Override
     public boolean prefire() throws IllegalActionException {
-        Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();  
+        Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
         while (executiveDirector != null && (executiveDirector.getContainer() != executiveDirector.toplevel()) )
-                executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector(); 
+                executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector();
         _currentPhysicalTime = executiveDirector.getModelTime();
-            
+
         executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
         _transferAllInputs();
         if (!(executiveDirector instanceof PtidesDirector)) {
@@ -598,9 +598,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             Time nextRealTimeEventTime = _getNextRealTimeEventTime(
                     eventsToFire, _eventsInExecution);
             TimedEvent event = _executionStrategy.getNextEventToFire(_eventsInExecution,
-                    eventsToFire, nextRealTimeEventTime, _currentPhysicalTime); 
+                    eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
             // start firing an actor defined by the previously selected event
-            if (event != null) 
+            if (event != null)
                 return true;
             if (!nextRealTimeEventTime.equals(Time.POSITIVE_INFINITY))
                 // The following will throw an exception if the executive director
@@ -621,14 +621,14 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             if (platform instanceof Actor) {
                 _eventQueues.put((Actor)platform, new TreeSet<Time>());
             }
-        } 
+        }
         _currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector()
                 .getModelTime();
     }
 
     /**
      * Transfer outputs and return true if any tokens were transfered.
-     * 
+     *
      * @exception IllegalActionException
      *                If the port is not an opaque output port.
      * @param port
@@ -651,7 +651,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Invoke the wrapup method of the super class. Reset the private state
      * variables.
-     * 
+     *
      * @exception IllegalActionException
      *                If the wrapup() method of one of the associated actors
      *                throws it.
@@ -690,7 +690,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Put a pure event into the event queue for the given actor to fire at the
      * specified timestamp.
-     * 
+     *
      * @param actor
      *            The actor to be fired.
      * @param time
@@ -706,7 +706,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * when this event will become safe to process. This list is used in the
      * fire method when no event is selected to process and this director
      * schedules a refiring at a future time.
-     * 
+     *
      * @param port
      *            Transfer input on this port.
      * @return True if inputs were transferred.
@@ -792,7 +792,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
     /**
      * Transfer output ports and return true if outputs were transferred.
-     * 
+     *
      * @throws IllegalActionException
      *             Attempted to transferOutputs on a port that is not an opaque
      *             input port.
@@ -842,7 +842,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Choose the ExecutionStrategy object according to the selected string
      * parameter.
-     * 
+     *
      * @param executionStrategy
      *            Given string parameter.
      */
@@ -862,7 +862,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * This method fires an actor. The actual firing of an actor takes zero
      * model time, the WCET is simulated by either firing an actor at the
      * beginning or the end of the WCET.
-     * 
+     *
      * @param actorToFire
      *            Actor that has to be fired.
      * @throws IllegalActionException
@@ -882,7 +882,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * required to determine the WCET. This is the case for actors that do not
      * have a static WCET but the WCET is defined for contained actors. An
      * example for such an actor is a TDLModule.
-     * 
+     *
      * @param actor
      *            Actor that has to be fired.
      * @return True if actor has to be fired at the beginning of the WCET.
@@ -896,7 +896,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Get the list of events that are safe to fire. Those events contain pure
      * events and triggered events.
-     * 
+     *
      * @return List of events that can be fired next.
      */
     private List<TimedEvent> _getNextEventsToFire()
@@ -918,7 +918,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     events.add(new TimedEvent(time, actor));
                 _currentModelTime = null;
             }
-            // take trigger events 
+            // take trigger events
             List<IOPort> inputPorts = actor.inputPortList();
             for (IOPort port : inputPorts) {
 
@@ -934,7 +934,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             }
                             if (time != null
                                     && (time.compareTo(((Actor)getContainer()).getDirector().getModelTime()) <= 0 ||
-                                            _allUpstreamEventsHaveHigherTimestamps(port, 
+                                            _allUpstreamEventsHaveHigherTimestamps(port,
                                             port, new ArrayList(), new Time(
                                                     this, 0.0), time))) {
                                 if (_debugging) {
@@ -965,7 +965,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Return time stamp of next event on that port or null if that port has no
      * events.
-     * 
+     *
      * @param port
      *            Port for which time stamp of next event is requested.
      * @return Time stamp of next event or null if there are no events.
@@ -992,7 +992,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * event for a sensor or an actuator, the end of the WCET of an actor in
      * execution or the time stamp when an input event to the composite actor
      * which uses this director that becomes safe to process.
-     * 
+     *
      * @param eventsToFire
      *            Set of events that are safe to process.
      * @param eventsInExecution
@@ -1049,7 +1049,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * This recursive method returns true if an event exists on the given port
      * that has a time stamp greater than the eventTimeStamp - delay. This
      * method is used to dynamically determine if an event is safe to process.
-     * 
+     *
      * @param currentPort
      *            Port that might have an event with time stamp + delay >
      *            eventTimeStamp.
@@ -1071,43 +1071,43 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         if (visitedPorts == null)
             visitedPorts = new ArrayList<IOPort>();
         visitedPorts.add(currentPort);
-        
+
         CompositeActor cplatform = (CompositeActor) this.getContainer();
         Actor currentActor = (Actor) currentPort.getContainer();
         Time time = _getNextEventTimeStamp(currentPort);
-        
+
         // min delay between sensor and port
         if (PtidesActorProperties.isSensor(currentActor)) {
             CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) cplatform.getCausalityInterface();
             RealDependency minimumDelay = (RealDependency) causalityInterface.getMinimumDelay(port);
             return minimumDelay.value() == Double.MAX_VALUE || time.subtract(minimumDelay.value()).compareTo(_currentPhysicalTime) <= 0;
         }
-        
+
         if (currentPort.isInput()) {
-            
+
             if (port != currentPort && time != null && !time.equals(Time.POSITIVE_INFINITY)) {
                 if (time.add(delay).compareTo(eventTimeStamp) > 0) { // current port has an event with a time stamp that will occur at port at a later time than eventtimestamp
                     return true;
-                } 
-            } 
+                }
+            }
             Collection<IOPort> equivalentPorts = (currentActor.getCausalityInterface()).equivalentPorts(currentPort);
             boolean allAreSafeToProcess = true;
             for (IOPort equivalentPort : equivalentPorts) {
                 Time eqtime = _getNextEventTimeStamp(equivalentPort);
-                if (eqtime == Time.POSITIVE_INFINITY ||  
+                if (eqtime == Time.POSITIVE_INFINITY ||
                         (equivalentPort == port && eqtime.add(delay).compareTo(eventTimeStamp) < 0) ||
                         (equivalentPort != port && eqtime.add(delay).compareTo(eventTimeStamp) <= 0)) { // search upstream
-                    Collection<IOPort> sourcePorts = equivalentPort.sourcePortList(); 
+                    Collection<IOPort> sourcePorts = equivalentPort.sourcePortList();
                     if (sourcePorts.size() == 0)
                         return false;
                     for (IOPort sourcePort : sourcePorts) {
                         allAreSafeToProcess = allAreSafeToProcess & _allUpstreamEventsHaveHigherTimestamps(port, sourcePort, visitedPorts,
                                 delay, eventTimeStamp);
-                    } 
+                    }
                 }
-            } 
-            return allAreSafeToProcess; 
-        } else if (currentPort.isOutput()) { 
+            }
+            return allAreSafeToProcess;
+        } else if (currentPort.isOutput()) {
             if (currentActor instanceof CompositeActor) {
                 CausalityInterface causalityInterface = currentActor.getCausalityInterface();
                 Collection<IOPort> deepInputPorts = currentPort.deepInsidePortList();
@@ -1119,7 +1119,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 CausalityInterface causalityInterface = currentActor.getCausalityInterface();
                 Collection<IOPort> inputPorts = causalityInterface.dependentPorts(currentPort);
                 for (IOPort inputPort : inputPorts) {
-                    delay = delay.add(((RealDependency) causalityInterface.getDependency(inputPort, currentPort)).value()); 
+                    delay = delay.add(((RealDependency) causalityInterface.getDependency(inputPort, currentPort)).value());
                     return _allUpstreamEventsHaveHigherTimestamps(port, inputPort, visitedPorts, delay, eventTimeStamp);
                 }
                 if (inputPorts.size() == 0) {
@@ -1132,7 +1132,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
     /**
      * Transfer all input tokens and return true if inputs were transfered.
-     * 
+     *
      * @return True if input ports were transferred.
      * @throws IllegalActionException
      *             If reading from the associated port throws it or inputs could
@@ -1153,7 +1153,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
     /**
      * Transfer all output tokens and return true if outputs were transfered.
-     * 
+     *
      * @return True if output tokens were transfered.
      * @throws IllegalActionException
      *             Attempted to transferOutputs on a port that is not an opaque

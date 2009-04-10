@@ -167,9 +167,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         _importLibraryAction = new ImportLibraryAction();
         _instantiateAttributeAction = new InstantiateAttributeAction();
         _instantiateEntityAction = new InstantiateEntityAction();
-            
+
     }
-    
+
     /**
      * Create the menus that are used by this frame. It is essential that
      * _createGraphPane() be called before this.

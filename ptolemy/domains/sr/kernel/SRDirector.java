@@ -203,7 +203,7 @@ public class SRDirector extends FixedPointDirector {
         }
         return currentTime.add(periodValue);
     }
-    
+
     /** Return the time value of the next iteration.
      *  If this director is at the top level, then the returned value
      *  is the current time plus the period. Otherwise, this method
@@ -228,7 +228,7 @@ public class SRDirector extends FixedPointDirector {
             throw new InternalErrorException(exception);
         }
     }
-    
+
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method. Reset all private variables.
      *  @exception IllegalActionException If the superclass throws it.
@@ -258,24 +258,24 @@ public class SRDirector extends FixedPointDirector {
                     while (true) {
                         long elapsedTime = System.currentTimeMillis()
                                 - _realStartTime;
-    
+
                         // NOTE: We assume that the elapsed time can be
                         // safely cast to a double.  This means that
                         // the SDF domain has an upper limit on running
                         // time of Double.MAX_VALUE milliseconds.
                         double elapsedTimeInSeconds = elapsedTime / 1000.0;
                         double currentTime = getModelTime().getDoubleValue();
-    
+
                         if (currentTime <= elapsedTimeInSeconds) {
                             break;
                         }
-    
+
                         long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
-    
+
                         if (_debugging) {
                             _debug("Waiting for real time to pass: " + timeToWait);
                         }
-    
+
                         try {
                             // NOTE: The built-in Java wait() method
                             // does not release the
@@ -310,7 +310,7 @@ public class SRDirector extends FixedPointDirector {
         }
         return result;
     }
-    
+
     /** Call postfire() on all contained actors that were fired on the last
      *  invocation of fire().  If <i>synchronizeToRealTime</i> is true, then
      *  wait for real time elapse to match or exceed model time. Return false if the model
@@ -350,7 +350,7 @@ public class SRDirector extends FixedPointDirector {
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -364,7 +364,7 @@ public class SRDirector extends FixedPointDirector {
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

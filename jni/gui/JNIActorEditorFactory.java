@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
- @deprecated This code is old, hard to use and unmaintained.  See 
+ @deprecated This code is old, hard to use and unmaintained.  See
   {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class JNIActorEditorFactory extends EditorFactory {

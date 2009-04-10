@@ -54,9 +54,9 @@ public class SetVariable extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public SetVariable(PropertyConstraintSolver solver, 
+    public SetVariable(PropertyConstraintSolver solver,
             ptolemy.actor.lib.SetVariable actor)
             throws IllegalActionException {
 
@@ -68,10 +68,10 @@ public class SetVariable extends AtomicActor {
         // Base constraints.
         setAtLeast(_actor.output, _actor.input);
         setAtLeast(_actor.getModifiedVariable(), _actor.input);
-        
+
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.actor.lib.SetVariable _actor;

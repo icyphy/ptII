@@ -3626,7 +3626,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // See test 32.1 in test/MoMLParser.tcl that reads in
                     // test/AltFileNameExceptionTest.xml
                     // It would be nice to have both messages displayed, but
-                    // it would be ugly.  
+                    // it would be ugly.
 
                     // FIXME: The tricky question is: if loading both the .xml
                     // and the .moml file fail, then what should be reported?
@@ -3634,7 +3634,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // any errors associated with the loading should be reported.
                     // If the .xml file is not present and the .moml file is
                     // present, then any errors associated with loading the
-                    // .moml file should be reported.  
+                    // .moml file should be reported.
                     // If neither file is present, then a FileNotFoundException
                     // should be thrown that lists both files.
                     throw ex2;

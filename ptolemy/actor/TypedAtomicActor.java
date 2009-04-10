@@ -248,7 +248,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
             _workspace.doneReading();
         }
     }
-    
+
     /** Return the type constraints of this variable.
      *  The constraints include the ones explicitly set to this variable,
      *  plus the constraint that the type of this variable must be no less
@@ -296,7 +296,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
         super._addPort(port);
     }
-    
+
     /** Request a firing of this actor at the specified time
      *  and throw an exception if the director does not agree to
      *  do it at the requested time. This is a convenience method

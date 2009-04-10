@@ -544,7 +544,7 @@ public class ClockSensor extends TimedSource {
     }
 
     /** If the current time is not the the _tentativeNextOutputTime, we still output
-     *  the data, only by changing the current model time. 
+     *  the data, only by changing the current model time.
      *  @return True.
      */
     protected boolean _isTimeForOutput() {

@@ -36,7 +36,7 @@ public class PropertyFailedRegressionTestException extends PropertyResolutionExc
     }
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -4802109619270551937L;
 }

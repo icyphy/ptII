@@ -18,14 +18,14 @@ public class FirstTokenSentListener implements TokenSentListener, IOPortEventLis
     public FirstTokenSentListener(PropertyTokenSolver solver) {
         _solver = solver;
     }
-    
+
     public void tokenSentEvent(TokenSentEvent event) {
-        
+
         IOPort port = event.getPort();
         Token token = event.getToken();
         if (token == null) {
             token = event.getTokenArray()[0];
-        } 
+        }
 
         try {
             ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
@@ -38,15 +38,15 @@ public class FirstTokenSentListener implements TokenSentListener, IOPortEventLis
         if (event.getEventType() != IOPortEvent.SEND) {
             return;
         }
-            
+
         IOPort port = event.getPort();
         Token token = event.getToken();
         if (token == null) {
             token = event.getTokenArray()[0];
-        } 
+        }
 
         try {
-            // prevent of logging an event multiple times (necessary for SampleDelay in combination 
+            // prevent of logging an event multiple times (necessary for SampleDelay in combination
             // with value inference for extendedFirstValueToken solver)
             if (_solver.getToken(port) == null) {
                 ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));

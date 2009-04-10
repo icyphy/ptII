@@ -196,7 +196,7 @@ public class RelationController extends ParameterizedNodeController {
                         // Restore width and height to the default to get a reasonable slash.
                         width = 12.0;
                         height = 12.0;
-    
+
                         Line2D.Double line = new Line2D.Double(-width / 2,
                                 height / 2, width / 2, -height / 2);
                         Figure lineFigure = new BasicFigure(line, Color.black);
@@ -204,7 +204,7 @@ public class RelationController extends ParameterizedNodeController {
                         String labelString = (isWidthFixed ? "" : "(")
                             + ((IORelation) relation).getWidth() + (isWidthFixed ? "" : ")");
 
-    
+
                         LabelFigure label = new LabelFigure(labelString,
                                 _relationLabelFont, 0, SwingConstants.SOUTH_WEST);
                         label.translateTo((width / 2) + 1.0, (-height / 2) - 1.0);
@@ -213,8 +213,8 @@ public class RelationController extends ParameterizedNodeController {
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(ex);
                     // At this time IllegalActionExceptions are not allowed to happen.
-                    // No width inference should happen at this time                           
-                }                
+                    // No width inference should happen at this time
+                }
             }
 
             return result;

@@ -177,17 +177,17 @@ public class CSPDirector extends CompositeProcessDirector implements
         CSPDirector newObject = (CSPDirector) super.clone(workspace);
 
         // newObject._actorsBlocked = 0;
-        
+
         // Findbugs:
         //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not a problem since the object is
         // being created and hence nobody else has access to it.
-                
-        newObject._actorsDelayed = 0;        
+
+        newObject._actorsDelayed = 0;
         newObject._delayedActorList = new LinkedList();
         return newObject;
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.
@@ -326,8 +326,8 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     /** Return a string describing the status of each receiver.
      *  @return A string describing the status of each receiver.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      */
     private String _receiverStatus() throws InvalidStateException, IllegalActionException {
         StringBuffer result = new StringBuffer();

@@ -64,7 +64,7 @@ public class PropertyAttribute extends AbstractSettableAttribute {
     public Property getProperty() {
         return _property;
     }
-    
+
     public Visibility getVisibility() {
         return _visibility;
     }
@@ -86,12 +86,12 @@ public class PropertyAttribute extends AbstractSettableAttribute {
     }
 
     public void setProperty(Property property) {
-        _property = property; 
+        _property = property;
     }
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
    }
-    
+
     public Collection validate() throws IllegalActionException {
         // not relevant
         return null;
@@ -100,5 +100,5 @@ public class PropertyAttribute extends AbstractSettableAttribute {
     private Visibility _visibility = Settable.FULL;
 //    private Visibility _visibility = Settable.NOT_EDITABLE;
     protected Property _property;
-   
+
 }

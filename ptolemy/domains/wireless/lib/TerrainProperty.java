@@ -230,7 +230,7 @@ public class TerrainProperty extends TypedAtomicActor implements
             newObject._xPoints[i] = ((IntToken) xypointArray.getElement(0)).intValue();
             newObject._yPoints[i] = ((IntToken) xypointArray.getElement(1)).intValue();
         }
-        
+
         newObject._icon = (EditorIcon)newObject.getAttribute("_icon");
         newObject._terrain = (FilledShapeAttribute)newObject.getAttribute("terrain");
         return newObject;

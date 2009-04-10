@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 Code generator helper for EmbeddedCFileActor.
 
 @author Christine Avanessians
-@version $Id: 
+@version $Id:
 @since Ptolemy II 6.1
 @see ptolemy.actor.lib.jni.EmbeddedCFileActor
 @Pt.ProposedRating red (cavaness)
@@ -49,7 +49,7 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
    public EmbeddedCFileActor(ptolemy.actor.lib.jni.EmbeddedCFileActor actor) {
        super(actor);
    }
-   
+
    ///////////////////////////////////////////////////////////////////
    ////                      inner classes                        ////
 
@@ -61,7 +61,7 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
        /** Create a EmbeddedFileActor.
         *  @param actor The associated actor.
         */
-       public EmbeddedFileActor(  
+       public EmbeddedFileActor(
                ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor){
            super(actor);
        }
@@ -72,12 +72,12 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
         *  recent revision of the file to be utilized.
         */
        public Set getSharedCode() throws IllegalActionException {
-          
+
            ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent().getContainer()).changeEmbeddedCCode();
-           
+
            return super.getSharedCode();
        }
    }
 
-   
+
 }

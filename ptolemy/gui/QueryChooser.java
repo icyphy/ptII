@@ -37,10 +37,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 
 /**
- * Abstract superclass for customized entry boxes. Used to make protected 
+ * Abstract superclass for customized entry boxes. Used to make protected
  * methods of the <code>ptolemy.gui.Query</code> class available to derived
  * classes outside the <code>ptolemy.gui</code> package.
- * 
+ *
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Id$
  */
@@ -49,7 +49,7 @@ public abstract class QueryChooser extends Box implements SettableQueryChooser,
 
     /**
      * Initializes the chooser.
-     * 
+     *
      * @param owner       the owning query
      * @param name        the name of the component
      * @param background  the background color
@@ -68,7 +68,7 @@ public abstract class QueryChooser extends Box implements SettableQueryChooser,
 
     /**
      * Returns the owning query object.
-     * 
+     *
      * @return            the query object
      */
     public Query getOwner() {
@@ -77,7 +77,7 @@ public abstract class QueryChooser extends Box implements SettableQueryChooser,
 
     /**
      * Returns the name of the component.
-     * 
+     *
      * @return            the name of the component
      */
     public String getName() {
@@ -86,7 +86,7 @@ public abstract class QueryChooser extends Box implements SettableQueryChooser,
 
     /**
      * Returns the color for the background.
-     * 
+     *
      * @return            the background color
      */
     public Color getBackgroundColor() {
@@ -95,16 +95,16 @@ public abstract class QueryChooser extends Box implements SettableQueryChooser,
 
     /**
      * Returns the color for the foreground.
-     * 
+     *
      * @return            the foreground color
      */
     public Color getForegroundColor() {
         return _foreground;
     }
 
-    /** 
+    /**
      * Add a label and a widget to the panel.
-     * 
+     *
      * @param name        The name of the entry.
      * @param label       The label.
      * @param widget      The interactive entry to the right of the label.
@@ -115,13 +115,13 @@ public abstract class QueryChooser extends Box implements SettableQueryChooser,
         getOwner()._addPair(name, label, widget, entry);
     }
 
-    /** 
+    /**
      * Notify all registered listeners that something changed for the
      * specified entry, if it indeed has changed.  The getStringValue()
      * method is used to check the current value against the previously
      * notified value, or the original value if there have been no
      * notifications.
-     * 
+     *
      * @param name The entry that may have changed.
      */
     protected void _notifyListeners(String name) {

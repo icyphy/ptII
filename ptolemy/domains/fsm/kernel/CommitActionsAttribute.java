@@ -176,7 +176,7 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
 
                 if (nextDestination instanceof IOPort) {
                     IOPort destination = (IOPort) nextDestination;
-                    
+
                     // FIXME: Domain-polymorphic actors should
                     // not be writing to output ports in commit actions.
                     // Should we through an exception?  Also:

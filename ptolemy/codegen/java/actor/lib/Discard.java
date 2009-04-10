@@ -64,7 +64,7 @@ public class Discard extends JavaCodeGeneratorHelper {
 
         LinkedList args = new LinkedList();
         args.add("");
-        
+
         ptolemy.actor.lib.Discard actor = (ptolemy.actor.lib.Discard) getComponent();
 
         for (int i = 0; i < actor.input.getWidth(); i++) {

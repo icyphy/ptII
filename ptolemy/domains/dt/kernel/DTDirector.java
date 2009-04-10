@@ -253,7 +253,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     public Dependency delayDependency(double delay) {
         return BooleanDependency.OTIMES_IDENTITY;
     }
-    
+
     /** Go through the schedule and iterate every actor with calls to
      *  prefire() , fire() , and postfire().  If this director is not
      *  in the top-level, get the outside director's current time; and
@@ -1087,7 +1087,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     /** Enable the hasToken() method in the output ports of the
      *  TypedCompositeActor directed by this director.  This is
      *  used in composing DT with DE and CT.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     private void _makeTokensAvailable() throws IllegalActionException {
         List list = ((TypedCompositeActor) getContainer()).outputPortList();
@@ -1108,7 +1108,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     /** Disable the hasToken() method in the output ports of the
      *  TypedCompositeActor directed by this director.  This is
      *  used in composing DT with DE and CT.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     private void _makeTokensUnavailable() throws IllegalActionException {
         List list = ((TypedCompositeActor) getContainer()).outputPortList();

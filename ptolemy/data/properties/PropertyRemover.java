@@ -16,7 +16,7 @@ public class PropertyRemover extends Attribute {
 
     public PropertyRemover(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"120\" height=\"40\" "
                 + "style=\"fill:white\"/>" + "<text x=\"-40\" y=\"-5\" "
@@ -24,7 +24,7 @@ public class PropertyRemover extends Attribute {
                 + "Double click to\nRemove Properties</text></svg>");
 
         new PropertyDisplayGUIFactory(
-                this, "_portValueSolverGUIFactory");        
+                this, "_portValueSolverGUIFactory");
 
         sharedUtilitiesWrapper = new SharedParameter(
                 this, "sharedUtilitiesWrapper", PropertySolver.class);
@@ -33,9 +33,9 @@ public class PropertyRemover extends Attribute {
         if (sharedUtilitiesWrapper.getExpression().length() == 0) {
             sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities()));
         }
-        _sharedUtilities = (SharedUtilities) ((ObjectToken) 
+        _sharedUtilities = (SharedUtilities) ((ObjectToken)
                 sharedUtilitiesWrapper.getToken()).getValue();
-    }        
+    }
 
     public void removeProperties(CompositeEntity component) throws IllegalActionException {
 
@@ -49,34 +49,34 @@ public class PropertyRemover extends Attribute {
             if (trainedException != null) {
                 try {
                     trainedException.setContainer(null);
-                    
+
                 } catch (NameDuplicationException ex) {
                     assert false;
                 }
             }
-            
-            PropertyHelper helper = solver.getHelper(component); 
+
+            PropertyHelper helper = solver.getHelper(component);
             removeProperties(helper);
         }
-        
+
         // Update the GUI.
         requestChange(new ChangeRequest(this, "Repaint the GUI.") {
                 protected void _execute() throws Exception {}
-        });        
+        });
     }
 
     public void removeProperties(PropertyHelper helper) throws IllegalActionException {
-        Iterator propertyables = 
+        Iterator propertyables =
             helper.getPropertyables(NamedObj.class).iterator();
-   
+
         while (propertyables.hasNext()) {
             NamedObj propertyable = (NamedObj) propertyables.next();
             _removePropertyAttributes(propertyable);
         }
-        
+
         // Recursive case.
         Iterator subHelpers = helper._getSubHelpers().iterator();
-        
+
         while (subHelpers.hasNext()) {
             PropertyHelper subHelper = (PropertyHelper) subHelpers.next();
             removeProperties(subHelper);
@@ -84,13 +84,13 @@ public class PropertyRemover extends Attribute {
     }
 
     private void _removePropertyAttributes(NamedObj namedObj) throws IllegalActionException {
-        Iterator attributeIterator = 
+        Iterator attributeIterator =
             namedObj.attributeList(PropertyAttribute.class).iterator();
 
         Attribute attribute;
         while (attributeIterator.hasNext()) {
             attribute = (Attribute) attributeIterator.next();
-            
+
             try {
                 attribute.setContainer(null);
             } catch (NameDuplicationException e) {
@@ -102,7 +102,7 @@ public class PropertyRemover extends Attribute {
 
         attribute = namedObj.getAttribute("_showInfo");
         if (attribute != null) {
-            
+
             try {
                 attribute.setContainer(null);
             } catch (NameDuplicationException e) {
@@ -111,10 +111,10 @@ public class PropertyRemover extends Attribute {
             //String moml = "<deleteProperty name=\"_showInfo\"/>";
             //namedObj.requestChange(new MoMLChangeRequest(this, namedObj, moml));
         }
-        
+
         attribute = namedObj.getAttribute("_highlightColor");
         if (attribute != null) {
-            
+
             try {
                 attribute.setContainer(null);
             } catch (NameDuplicationException e) {
@@ -124,7 +124,7 @@ public class PropertyRemover extends Attribute {
             //namedObj.requestChange(new MoMLChangeRequest(this, namedObj, moml));
         }
     }
-    
+
     public SharedParameter sharedUtilitiesWrapper;
 
     protected SharedUtilities _sharedUtilities;

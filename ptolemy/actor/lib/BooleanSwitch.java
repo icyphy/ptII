@@ -89,7 +89,7 @@ public class BooleanSwitch extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        
+
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.BOOLEAN);
         trueOutput = new TypedIOPort(this, "trueOutput", false, true);
@@ -150,7 +150,7 @@ public class BooleanSwitch extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         BooleanSwitch newObject = (BooleanSwitch) super.clone(workspace);
         newObject.trueOutput.setTypeAtLeast(newObject.input);
-        newObject.falseOutput.setTypeAtLeast(newObject.input);        
+        newObject.falseOutput.setTypeAtLeast(newObject.input);
         newObject.trueOutput.setWidthEquals(newObject.input, true);
         newObject.falseOutput.setWidthEquals(newObject.input, true);
 

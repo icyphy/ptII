@@ -64,7 +64,7 @@ import ptolemy.util.StringUtilities;
 ////PropertySolverBase
 
 /**
-The base abstract class for a property solver. 
+The base abstract class for a property solver.
 
 <p>The base class provides the core functionality for property
 resolution.  It provides a method to create a PropertyHelper for any
@@ -73,24 +73,24 @@ Ptolemy class (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A
 model component, in turn, may have one or multiple property-able
 objects.
 
-<p>A PropertySolver is associated with strictly one use-case. 
-PropertySolvers with the same use-case are considered equivalent. 
-Subclasses need to associate the solver with an unique use-case by 
-providing implementation for {@link PropertySolverBase#getUseCaseName()}, 
+<p>A PropertySolver is associated with strictly one use-case.
+PropertySolvers with the same use-case are considered equivalent.
+Subclasses need to associate the solver with an unique use-case by
+providing implementation for {@link PropertySolverBase#getUseCaseName()},
 {@link PropertySolverBase#getExtendedUseCaseName()}.
 An use-case may have dependency with other use-cases. The dependencies
 are declared when the solver is instantiated. The dependencies needs to
 be kept non-circular to avoid non-deterministic resolution result.
 
 <p>Every PropertySolver is linked together by the SharedParameter called
-"sharedUtilitiesWrapper", which contains the shared utility object. 
-This allows every PropertySolver to find other solvers in the model. 
+"sharedUtilitiesWrapper", which contains the shared utility object.
+This allows every PropertySolver to find other solvers in the model.
 
 <p>Subclasses needs to implement
 {@link PropertySolverBase#resolveProperties()}
 to specify exactly how to perform the property resolution. For example,
-one may gather all the constraints from the PropertyHelpers and feed them 
-into a constraint solver. 
+one may gather all the constraints from the PropertyHelpers and feed them
+into a constraint solver.
 
 
 @author Man-Kit Leung
@@ -106,7 +106,7 @@ public abstract class PropertySolverBase extends Attribute {
      * Construct a PropertySolverBase with the specified container and
      * name. If this is the first PropertySolver created in the model,
      * the shared utility object will also be created.
-     * 
+     *
      * @param container The specified container.
      * @param name The specified name.
      * @exception IllegalActionException If the PropertySolverBase is
@@ -159,7 +159,7 @@ public abstract class PropertySolverBase extends Attribute {
      * dependency list. A dependent solver is one whose analysis
      * result is required for this solver's resolution. The dependent
      * solvers are run in order before invoking this solver.
-     * 
+     *
      * @param userCaseName The specified user case name.
      */
     public void addDependentUseCase(String userCaseName) {
@@ -170,7 +170,7 @@ public abstract class PropertySolverBase extends Attribute {
      * Clear the resolved property for the specified object. The
      * object is assumed to be property-able; otherwise, nothing
      * happens.
-     * 
+     *
      * @param object The specified object.
      */
     public void clearResolvedProperty(Object object) {
@@ -182,7 +182,7 @@ public abstract class PropertySolverBase extends Attribute {
      * solver can be identified by the use-case name, class name, or
      * its name in the model.  There can be more than one solvers with
      * the label. This method returns whichever it finds first.
-     * 
+     *
      * @param identifier The specified label.
      * @return The property solver associated with the specified label.
      * @exception IllegalActionException Thrown if no matched solver
@@ -210,7 +210,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the list of all PropertyHelpers associated with this
      * solver.
-     * 
+     *
      * @return The list of PropertyHelpers.
      */
     public List<PropertyHelper> getAllHelpers() throws IllegalActionException {
@@ -233,7 +233,7 @@ public abstract class PropertySolverBase extends Attribute {
     /*
      * Return the list of all property-able objects obtained from
      * every PropertyHelper.
-     * 
+     *
      * @return The list of all property-able objects.
      * @exception IllegalActionException Thrown if
      * {@link#getAllPropertyables()} throws it.
@@ -250,7 +250,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the list of all solvers that are in the same model. They
      * are linked by the specified SharedParameter.
-     * 
+     *
      * @param sharedParameter The specified SharedParameter links
      * together the solvers.
      * @return A list of PropertySolvers.
@@ -274,7 +274,7 @@ public abstract class PropertySolverBase extends Attribute {
      * ASTPtRootNode. This assumes that the correspondence is recorded
      * previously through calling
      * {@link ptolemy.data.properties.PropertyHelper#putAttribute(ASTPtRootNode, Attribute)}.
-     * 
+     *
      * @param node The specified ASTPtRootNode.
      * @return The attribute associated with the specified ASTPtRootNode.
      * @exception AssertionError Thrown if the specified node does not
@@ -303,7 +303,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the list of dependent solvers. The list contains the
      * unique name of the solvers.
-     * 
+     *
      * @return The list of dependent solvers.
      */
     public List<String> getDependentSolvers() {
@@ -313,14 +313,14 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the extended use-case name. The extended use-case name is an
      * unique label for a use-case.
-     * 
+     *
      * @return the extended use-case name.
      */
     public abstract String getExtendedUseCaseName();
 
     /**
      * Return the property helper for the specified component.
-     * 
+     *
      * @param object The specified component.
      * @return The property helper for the component.
      * @exception IllegalActionException Thrown if the helper cannot
@@ -333,7 +333,7 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Return the expression parser.
-     * 
+     *
      * @return The expression parser.
      */
     public static PtParser getParser() {
@@ -346,7 +346,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the root ASTPtRootNode associated with the specified
      * attribute.
-     * 
+     *
      * @param attribute The specified attribute.
      * @return The root ASTPtRootNode associated with the specified
      * attribute.
@@ -386,9 +386,9 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Return the property value associated with the specified object.
-     * 
+     *
      * @param object The specified object.
-     * 
+     *
      * @return The property of the specified object.
      */
     public Property getProperty(Object object) {
@@ -398,9 +398,9 @@ public abstract class PropertySolverBase extends Attribute {
     /*
      * Return the resolved property for the specified object. This forces
      * resolution to happen if the object's property is not present.
-     * 
+     *
      * @param object The specified object
-     * 
+     *
      * @return The resolved property for the specified object.
      */
     public Property getResolvedProperty(Object object) {
@@ -447,7 +447,7 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Return the shared utility object.
-     * 
+     *
      * @return The shared utility object.
      */
     public SharedUtilities getSharedUtilities() {
@@ -457,7 +457,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the use-case name. The use-case name is not guaranteed to be
      * unique.
-     * 
+     *
      * @return The use-case name.
      */
     public abstract String getUseCaseName();
@@ -465,7 +465,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Mark the property of the specified object as non-settable. The
      * specified object has a fixed assigned property.
-     * 
+     *
      * @param object The specified object.
      */
     public void markAsNonSettable(Object object) {
@@ -494,7 +494,7 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Perform property resolution.
-     * 
+     *
      * @exception KernelException Thrown if sub-class throws it.
      */
     public abstract void resolveProperties() throws KernelException;
@@ -502,7 +502,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Set the resolved property of the specified object.
      * (See {@link #getResolvedProperty(Object)}).
-     * 
+     *
      * @param object The specified object.
      * @param property The specified property.
      */
@@ -518,7 +518,7 @@ public abstract class PropertySolverBase extends Attribute {
      * instantiates a new PropertyHelper if it does not already exist
      * for the specified component.
      * @param component The specified component.
-     * @return The PropertyHelper for the specified component. 
+     * @return The PropertyHelper for the specified component.
      * @exception IllegalActionException Thrown if the PropertyHelper
      * cannot be instantiated.
      */
@@ -529,7 +529,7 @@ public abstract class PropertySolverBase extends Attribute {
             return _helperStore.get(component);
         }
 
-        
+
         if ((component instanceof IOPort) || (component instanceof Attribute)) {
             if (((NamedObj) component).getContainer() == null) {
                 System.err.println("component container is null: " + component);
@@ -540,7 +540,7 @@ public abstract class PropertySolverBase extends Attribute {
         if (getContainer() instanceof OntologyComposite) {
             _compileHelperClasses();
         }
-        
+
         String packageName = _getPackageName();
 
         Class componentClass = component.getClass();
@@ -624,23 +624,23 @@ public abstract class PropertySolverBase extends Attribute {
     }
 
     private void _compileUserCode(Entity entity, String userCode) throws IllegalActionException {
-        
+
         String ptRoot = StringUtilities.getProperty("ptolemy.ptII.dir");
 
         String classname = _getPackageName() + entity.getClass()
         .getName().replaceFirst("ptolemy", "");
-        
+
         String packageName = _getPackageName() + entity.getClass()
         .getPackage().getName().replaceFirst("ptolemy", "");
-        
+
         String directoryPath = (ptRoot + "/" + packageName).replace(".", "/");
-        
+
         try {
             File file;
             File directory = FileUtilities.nameToFile(directoryPath, null);
             directory.mkdirs();
             file = new File(directory, entity.getClass().getSimpleName() + ".java");
-            
+
             // Set the file to delete on exit
 //            directory.deleteOnExit();
 //            file.deleteOnExit();
@@ -659,7 +659,7 @@ public abstract class PropertySolverBase extends Attribute {
                     //"-d", directoryPath,
                     filename
             };
-            
+
             int status = com.sun.tools.javac.Main.compile(args);
 
             switch (status) {
@@ -670,7 +670,7 @@ public abstract class PropertySolverBase extends Attribute {
                     // Try to access the class and run its main method
                     Class clazz = Class.forName(classname);
                 } catch (Exception ex) {
-                    throw new IllegalActionException(null, ex, 
+                    throw new IllegalActionException(null, ex,
                     "Cannot load the class file for: " + classname);
                 }
                 break;
@@ -686,7 +686,7 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Return the package name that contains the class of this solver.
-     * 
+     *
      * @return The package name.
      */
     protected String _getPackageName() {
@@ -699,7 +699,7 @@ public abstract class PropertySolverBase extends Attribute {
         // If the solver is in an OntologyAttribute, we
         // want to analyze the outside model.
         while (toplevel instanceof Configurer) {
-            NamedObj configuredObject = ((Configurer) 
+            NamedObj configuredObject = ((Configurer)
                     toplevel).getConfiguredObject();
 
             if (configuredObject == null) {

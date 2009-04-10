@@ -149,11 +149,11 @@ public class ClassDefinitionController extends ActorController {
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         // _convertToInstanceAction does not have a hot key.
-        // GUIUtilities.addHotKey(jgraph, _convertToInstanceAction); 
+        // GUIUtilities.addHotKey(jgraph, _convertToInstanceAction);
         GUIUtilities.addHotKey(jgraph, _createInstanceAction);
         GUIUtilities.addHotKey(jgraph, _createSubclassAction);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

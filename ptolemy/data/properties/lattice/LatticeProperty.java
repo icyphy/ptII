@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A base class representing a lattice property. A lattice property is a
  element in a property lattice. The user should create new sub-classes
- to represent different elements in a property lattice 
+ to represent different elements in a property lattice
  (See PropertyLattice.java).
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (mankit)
  */
 public class LatticeProperty extends Property implements PropertyTerm {
-        
+
     /**
      * Create a new lattice property associated with the given
      * lattice.
@@ -59,13 +59,13 @@ public class LatticeProperty extends Property implements PropertyTerm {
     public LatticeProperty(PropertyLattice lattice) {
         _lattice = lattice;
     }
-    
+
     public LatticeProperty(PropertyLattice lattice, String name) {
         super(name);
         _lattice = lattice;
     }
 
-    
+
     /** Test if the argument property is compatible with this property.
      *  @param property An instance of Property.
      *  @return True if the argument is compatible with this property.
@@ -105,17 +105,17 @@ public class LatticeProperty extends Property implements PropertyTerm {
         (this == _lattice.basicLattice().bottom()) ||
         (this == property);
     }
-    
+
     /** Get the property lattice associated with this property.
      *  @return The associated property lattice.
      */
     public PropertyLattice getPropertyLattice() {
         return _lattice;
     }
-    
+
     /**
      * Return the string that represents this lattice property. This
-     * base class returns the simple class name of the lattice property. 
+     * base class returns the simple class name of the lattice property.
      */
     public String toString() {
         if (_name.length() > 0) {
@@ -123,7 +123,7 @@ public class LatticeProperty extends Property implements PropertyTerm {
         }
         return getClass().getSimpleName();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -132,8 +132,8 @@ public class LatticeProperty extends Property implements PropertyTerm {
      */
     protected PropertyLattice _lattice;
 
-    
-    
+
+
     public Object getValue() {
         return this;
     }
@@ -177,5 +177,5 @@ public class LatticeProperty extends Property implements PropertyTerm {
     public void setValue(Object e) throws IllegalActionException {
         // do nothing
     }
-    
+
 }

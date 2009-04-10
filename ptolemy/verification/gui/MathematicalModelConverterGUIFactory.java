@@ -82,7 +82,7 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
-        
+
         MathematicalModelConverter modelConverter =
             (MathematicalModelConverter) getContainer();
 
@@ -121,8 +121,8 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        
-        
+
+
         //try {
         //    int a = codeGenerator.generateCode();
         //} catch (Exception ex) {

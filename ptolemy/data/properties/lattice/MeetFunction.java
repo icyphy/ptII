@@ -42,10 +42,10 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MeetFunction
 
 /**
- A class that represents the property term of a meet function. 
- A meet function is defined to return the least upper bound values 
+ A class that represents the property term of a meet function.
+ A meet function is defined to return the least upper bound values
  of all its inputs, assuming the inputs are elements from a common
- lattice.   
+ lattice.
 
  @author Man-Kit Leung
  @version $Id$
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (mankit)
  */
 
-public class MeetFunction 
+public class MeetFunction
     extends MonotonicFunction {
 
     public MeetFunction(PropertyConstraintSolver solver, List<Object> objects) {
@@ -64,11 +64,11 @@ public class MeetFunction
     public MeetFunction(PropertyConstraintSolver solver, Set<Object> objects) {
         this(solver, objects.toArray());
     }
-    
+
     public MeetFunction(PropertyConstraintSolver solver, Object ... objects) {
         _solver = solver;
         for (Object object : objects) {
-            _terms.add(_solver.getPropertyTerm(object));            
+            _terms.add(_solver.getPropertyTerm(object));
         }
     }
 
@@ -82,31 +82,31 @@ public class MeetFunction
     public void addVariables(List<PropertyTerm> variables) {
         _terms.addAll(variables);
     }
-    
-    
+
+
     /** Return the function result.
      *  @return A Property.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public Object getValue() throws IllegalActionException {
         Property meetValue = null;
         Property termValue = null;
-        
+
 
         Iterator iterator = _terms.iterator();
-        
+
         while (iterator.hasNext()) {
 
             PropertyTerm term = (PropertyTerm) iterator.next();
-            
+
             if (term.isEffective()) {
                 termValue = (Property) term.getValue();
-                
-                meetValue = (meetValue == null) ? termValue : 
+
+                meetValue = (meetValue == null) ? termValue :
                     _solver.getLattice().greatestLowerBound(meetValue, termValue);
             }
         }
-        return meetValue; 
+        return meetValue;
     }
 
     /** Return the variables in this term. If the property of the input port
@@ -117,23 +117,23 @@ public class MeetFunction
      */
     public InequalityTerm[] getVariables() {
         ArrayList<InequalityTerm> result = new ArrayList<InequalityTerm>();
-        
+
         Iterator iterator = _terms.iterator();
         while (iterator.hasNext()) {
 
             PropertyTerm term = (PropertyTerm) iterator.next();
-            
+
             if (term.isSettable()) {
                 result.addAll(Arrays.asList(term.getVariables()));
             }
         }
-        
+
         InequalityTerm[] array = new InequalityTerm[result.size()];
         System.arraycopy(result.toArray(), 0, array, 0, result.size() );
-        
+
         return  array;
     }
-    
+
     public InequalityTerm[] getConstants() {
         // Findbugs: Impossible cast from Object[] to
         // ptolemy.graph.InequalityTerm[] in
@@ -144,7 +144,7 @@ public class MeetFunction
 
     public String toString() {
         String result = "meet(";
-        
+
         Iterator<PropertyTerm> terms = _terms.iterator();
         while (terms.hasNext()) {
             PropertyTerm term = terms.next();
@@ -153,24 +153,24 @@ public class MeetFunction
                 break;
             }
         }
-        
+
         while (terms.hasNext()) {
             PropertyTerm term = terms.next();
             if (term.isEffective()) {
                 result += " /\\ " + term;
             }
         }
-        
+
         return result + ")";
     }
 
     public boolean isEffective() {
         Iterator iterator = _terms.iterator();
-        
+
         while (iterator.hasNext()) {
 
             PropertyTerm term = (PropertyTerm) iterator.next();
-            
+
             if (term.isEffective()) {
                 return true;
             }
@@ -185,7 +185,7 @@ public class MeetFunction
 
     ///////////////////////////////////////////////////////////////
     ////                       private inner variable          ////
-    
+
     private PropertyConstraintSolver _solver;
 
     private List<PropertyTerm> _terms = new LinkedList<PropertyTerm>();
@@ -198,4 +198,4 @@ public class MeetFunction
 
 }
 
- 
+

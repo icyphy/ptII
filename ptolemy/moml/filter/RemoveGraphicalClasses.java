@@ -349,7 +349,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.basic.DocAttribute",
                 "ptolemy.kernel.util.Attribute");
 
-        
+
         _graphicalClasses.put("ptolemy.domains.wireless.lib.GraphicalLocator",
                 "ptolemy.domains.wireless.lib.Locator");
 

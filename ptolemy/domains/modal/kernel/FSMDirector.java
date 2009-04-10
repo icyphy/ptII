@@ -100,7 +100,7 @@ import ptolemy.kernel.util.Workspace;
  <li> Postfire the transition refinements of the chosen transition.
  <li> Change the current state to the destination of the chosen transition.
  </ol>
- Since this director makes no persistent 
+ Since this director makes no persistent
  state changes in its fire() method, it conforms
  with the <i>actor abstract semantics</i>. Assuming the state and
  transition refinements also conform, this director can be used inside any
@@ -243,7 +243,7 @@ public class FSMDirector extends Director implements
         newObject._localReceiverMaps = new HashMap();
         newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
         newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
-        
+
         // Private variables.
         newObject._controller = null;
         newObject._controllerVersion = -1;
@@ -251,7 +251,7 @@ public class FSMDirector extends Director implements
 
         return newObject;
     }
-    
+
     /** Return a default dependency to use between input input
      *  ports and output ports.
      *  This overrides the base class so that if there
@@ -675,7 +675,7 @@ public class FSMDirector extends Director implements
         _resetOutputReceivers();
         _disabledActors.clear();
     }
-    
+
     /** Indicate that a schedule for the model may no longer be valid, if
      *  there is a schedule.  This method should be called when topology
      *  changes are made, or for that matter when any change that may
@@ -723,7 +723,7 @@ public class FSMDirector extends Director implements
         return true;
         */
     }
-    
+
     /** Return a receiver that is a one-place buffer. A token put into the
      *  receiver will override any token already in the receiver.
      *  @return A receiver that is a one-place buffer.
@@ -781,7 +781,7 @@ public class FSMDirector extends Director implements
 
         _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                 .currentState());
-        
+
         // Reset all the receivers on the inside of output ports.
         // FIXME: Check derived classes. This may only make sense for FSMReceiver.
         _resetOutputReceivers();
@@ -1139,7 +1139,7 @@ public class FSMDirector extends Director implements
             throw new IllegalActionException(this, "No controller!");
         }
     }
-    
+
     /** Transfer at most one data token from the given output port of
      *  the container to the ports it is connected to on the outside.
      *  If the receiver is known to be empty, then send a clear.
@@ -1201,7 +1201,7 @@ public class FSMDirector extends Director implements
      *  for the current state.
      */
     protected Map _currentLocalReceiverMap = null;
-    
+
     /** Actors that have returned false in postfire(). */
     protected Set _disabledActors = new HashSet();
 
@@ -1217,7 +1217,7 @@ public class FSMDirector extends Director implements
      *  controller is in that state.
      */
     protected Map _localReceiverMaps = new HashMap();
-    
+
     /** State refinements to postfire(), as determined by the fire() method. */
     protected List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
 
@@ -1278,7 +1278,7 @@ public class FSMDirector extends Director implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Cached reference to mode controller. */
     private FSMActor _controller = null;
 

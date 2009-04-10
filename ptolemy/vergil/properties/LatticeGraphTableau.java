@@ -16,7 +16,7 @@ import ptolemy.moml.LibraryAttribute;
 
 
 public class LatticeGraphTableau extends Tableau {
-    
+
     /** Create a new FSM editor tableau with the specified container
      *  and name, with no default library.
      *  @param container The container.
@@ -139,12 +139,12 @@ public class LatticeGraphTableau extends Tableau {
             if (tableau != null) {
                 return tableau;
             }
-            
+
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
             if (model.getClassName().equals(
                     "ptolemy.domains.properties.PropertyLatticeComposite")) {
-                
+
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute) getAttribute(

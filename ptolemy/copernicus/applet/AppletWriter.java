@@ -177,7 +177,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
           // Determine where $PTII is so that we can find the right directory.
         _ptIIJarsPath = PhaseOptions.getString(options, "ptIIJarsPath");
         try {
-            if (_ptIIJarsPath == null) { 
+            if (_ptIIJarsPath == null) {
                 // NOTE: getProperty() will probably fail in applets, which
                 // is why this is in a try block.
                 // NOTE: This property is set by the vergil startup script.
@@ -194,7 +194,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         _ptIIUserDirectory = PhaseOptions.getString(options, "ptIIUserDirectory");
         try {
-            if (_ptIIUserDirectory == null) { 
+            if (_ptIIUserDirectory == null) {
                 // NOTE: getProperty() will probably fail in applets, which
                 // is why this is in a try block.
                 // NOTE: This property is set by the vergil startup script.
@@ -219,7 +219,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (_targetPath.length() > 0 && !_targetPath.substring(_targetPath.length() - 1).equals("/")) {
             System.out.println("AppletWriter: appending / to targetPath");
             _targetPath += "/";
-        } 
+        }
 
 
         // Determine the value of _domainJar, which is the
@@ -289,7 +289,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     jarFilesResults.append(",");
                 }
                 jarFilesResults.append(jarFileName);
-                
+
                 // If the ptII/signed directory contains the jar file, then set
                 // signed to "signed/".  Otherwise, set signed to "".
                 String signed =  "";
@@ -346,7 +346,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 if (new File(signedJarFileName).exists()) {;
                     signed = "signed" + File.separator;
                     sawSignedOnce = true;
-                } 
+                }
                 if (signed == "" && sawSignedOnce) {
                     // We saw something in the signed directory, but this file
                     // is not there, so we sign it.
@@ -709,14 +709,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         return false;
     }
 
-    /** 
+    /**
      * Copy the jar files listed in the map.
      * @param classMap A map consisting of String keys that are dot separated
      * class name and a value that is a String naming a jar file.
      * @param jarFilesThatHaveBeenRequired A set of strings that is set
-     * to the names of the jar files that have been found. 
+     * to the names of the jar files that have been found.
      * @return true if there was a problem and the jar files need to be
-     * fixed because "make install" was not run. 
+     * fixed because "make install" was not run.
      */
     private boolean _copyJarFiles(Map classMap,
             HashSet jarFilesThatHaveBeenRequired) throws IOException {
@@ -913,7 +913,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String fileLength = "";
         try {
             File file = new File(fileName);
-            //System.out.println("AppletWriter: " + fileName + " " + file.length());  
+            //System.out.println("AppletWriter: " + fileName + " " + file.length());
             return "\n             size=\"" + file.length() + "\"";
         } catch (Exception ex) {
             System.out.println("Warning, could not find size of \"" + fileName
@@ -971,7 +971,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtZeta", "lib/ptcolt.jar");
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
-        
+
         // Ptalon requires multiple jar files
         String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
         auxiliaryJarMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
@@ -1031,7 +1031,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
 
         boolean fixJarFiles = _copyJarFiles(classMap,
-                jarFilesThatHaveBeenRequired); 
+                jarFilesThatHaveBeenRequired);
 
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
@@ -1071,7 +1071,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         boolean fixAuxiliaryJarFiles = _copyJarFiles(auxiliaryClassMap,
-                jarFilesThatHaveBeenRequired); 
+                jarFilesThatHaveBeenRequired);
 
         if (fixJarFiles || fixAuxiliaryJarFiles) {
             // If the code generator was run but codeBase != . and
@@ -1106,7 +1106,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         classMap.put("diva.graph.GraphController", "lib/diva.jar");
 
         HashSet jarFilesThatHaveBeenRequired = new HashSet();
-        _copyJarFiles(classMap, jarFilesThatHaveBeenRequired); 
+        _copyJarFiles(classMap, jarFilesThatHaveBeenRequired);
 
         return jarFilesThatHaveBeenRequired;
     }
@@ -1124,16 +1124,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     /** Sign a jar file.
-     */   
+     */
     private static void _signJarFile(String jarFileName, String signedJarFileName) throws Exception {
         // FIXME: Hardwired paths and passwords here.
         String keystoreFileName = StringUtilities.getProperty("ptolemy.ptII.dir")
             + File.separator + "ptKeystore";
         char[] storePassword = {'t', 'h', 'i', 's', '.', 'i', 's', '.', 't', 'h', 'e', '.', 's', 't', 'o', 'r', 'e', 'P', 'a', 's', 's', 'w', 'o', 'r', 'd', ',', 'c', 'h', 'a', 'n', 'g', 'e', '.', 'i', 't'};
         char[] keyPassword = {'t', 'h', 'i', 's', '.', 'i', 's', '.', 't', 'h', 'e', '.', 'k', 'e', 'y', 'P', 'a', 's', 's', 'w', 'o', 'r', 'd', ',', 'c', 'h', 'a', 'n', 'g', 'e', '.', 'i', 't'};
-        String alias = "claudius"; 
-                    
-        System.out.println("About to sign \"" + jarFileName + "\" and create \"" 
+        String alias = "claudius";
+
+        System.out.println("About to sign \"" + jarFileName + "\" and create \""
                 + signedJarFileName + "\"");
         JarSigner.sign (jarFileName, signedJarFileName,
                 keystoreFileName, alias, storePassword, keyPassword);
@@ -1142,9 +1142,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Create a jar file.
      *        Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
      */
-    private void _createJarFile(File jarFile, String [] jarFileNames, File[] filesToBeJared) 
+    private void _createJarFile(File jarFile, String [] jarFileNames, File[] filesToBeJared)
         throws Exception {
-        
+
         byte buffer[] = new byte[1024];
 
         // Open archive file
@@ -1254,7 +1254,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // The jar files that are necessary to run vergil if the codebase
     // is ".".
     // For example:
-    // "lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar" 
+    // "lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
     private String _vergilJarFiles;
 
     // The jar files that are necessary for the jnlp file.

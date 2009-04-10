@@ -70,7 +70,7 @@ public abstract class ChangeRequest {
      *  A listener to changes will probably want to check the source
      *  so that when it is notified of errors or successful completion
      *  of changes, it can tell whether the change is one it requested.
-     *  This constructor is here for backwards compatibility. The 
+     *  This constructor is here for backwards compatibility. The
      *  constructor <i>ChangeRequest(Object source, String description,
      *  boolean isStructuralChange) </i> has an extra parameter that allows
      *  you to specify whether this change is a structural change. If it isn't
@@ -299,7 +299,7 @@ public abstract class ChangeRequest {
      */
     public boolean isPersistent() {
         return _persistent;
-    }    
+    }
 
     /** Return whether this change request is a structural change request.
      *  This is used to determine whether a complete repaint of the model
@@ -308,7 +308,7 @@ public abstract class ChangeRequest {
      */
     public boolean isStructuralChange() {
         return _isStructuralChange;
-    }    
+    }
 
     /** Remove the given change listener from this request.
      *  The listener will no longer be
@@ -461,5 +461,5 @@ public abstract class ChangeRequest {
     private boolean _persistent = true;
 
     // The source of the change request.
-    private Object _source;      
+    private Object _source;
 }

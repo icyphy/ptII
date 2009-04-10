@@ -109,7 +109,7 @@ public class Attribute extends NamedObj {
             setContainer(container);
         } else {
             // Get writeAccess to the workspace because we are updating
-            // the _attributes field of the container.  
+            // the _attributes field of the container.
             // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3255
             try {
                 _workspace.getWriteAccess();
@@ -389,10 +389,10 @@ public class Attribute extends NamedObj {
         if (previousContainer == container) {
             return;
         }
-        
-        try {          
+
+        try {
             _workspace.getWriteAccess();
-            
+
             // Do this first, because it may throw an exception.
             if (container != null) {
                 container._addAttribute(this);
@@ -482,7 +482,7 @@ public class Attribute extends NamedObj {
     protected void _checkContainer(NamedObj container)
             throws IllegalActionException {
     }
-    
+
     /** Get an attribute with the specified name in the specified container.
      *  The type of object sought is an instance of the same class as
      *  this object.  The returned object is assured of being an

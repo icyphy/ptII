@@ -1,4 +1,4 @@
-/* A distributor that splits an input stream into a set of output streams. 
+/* A distributor that splits an input stream into a set of output streams.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.

@@ -116,12 +116,12 @@ public class ReceiveInput extends TableauControllerEvent
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ReceiveInput newObject = (ReceiveInput) super.clone(workspace);
-        
+
         // Findbugs:
         //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not a problem since the object is
         // being created and hence nobody else has access to it.
-        
+
         newObject._inputListeners = null;
         return newObject;
     }

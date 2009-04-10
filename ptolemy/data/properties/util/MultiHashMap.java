@@ -35,17 +35,17 @@ import java.util.HashMap;
 //// MultiHashMap
 
 /**
-MultiHashMap is an implementation of the MultiMap interface. It 
-associates a collection of objects to each key. Putting a new 
-object under a key adds to the associated collection. Likewise, 
+MultiHashMap is an implementation of the MultiMap interface. It
+associates a collection of objects to each key. Putting a new
+object under a key adds to the associated collection. Likewise,
 removing a object removes from the collection. It is possible
-that the given object to remove is not contained by the collection. 
-In which case, no changes is made and null is returned. The items 
+that the given object to remove is not contained by the collection.
+In which case, no changes is made and null is returned. The items
 in each collection are ordered by insertion, and duplicates are
-stored in the collections.   
+stored in the collections.
 
-For example, given a key K and object O1, and O2: 
-    
+For example, given a key K and object O1, and O2:
+
     MultiHashMap map = new MultiHashMap();
     map.put(K, O1);
     map.put(K, O1);
@@ -65,11 +65,11 @@ public class MultiHashMap extends HashMap implements MultiMap {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Add the value to the collection associated with the specified key.
      * @param key The specified key.
-     * @param value The specified value to add to the collection. 
+     * @param value The specified value to add to the collection.
      * @return The value added.
      */
     public Object put(Object key, Object value) {
@@ -81,7 +81,7 @@ public class MultiHashMap extends HashMap implements MultiMap {
         values.add(value);
         return value;
     }
-        
+
     /**
      * Remove a specified value from the map. The value is removed
      * from the collection mapped to the specified key. If this is
@@ -103,27 +103,27 @@ public class MultiHashMap extends HashMap implements MultiMap {
                 remove(key);
             }
             return object;
-        } 
+        }
     }
-    
+
     /**
      * Return the size of the collection mapped to the specified key.
      * @param key The specified key.
-     * @return The size of the collection, or zero if key is 
+     * @return The size of the collection, or zero if key is
      *  not in the map.
      */
     public int size(Object key) {
         Collection values = (Collection) get(key);
-        
+
         if (values == null) {
             return 0;
         } else {
             return values.size();
         }
     }
-    
+
     /**
-     * Return a view of the collection containing all values in the map. 
+     * Return a view of the collection containing all values in the map.
      * This is a collection containing the union of each collection
      * mapped to the keys.
      * @return A view of all values contained in this map.

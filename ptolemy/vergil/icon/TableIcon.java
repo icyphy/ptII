@@ -85,29 +85,29 @@ public class TableIcon extends DynamicEditorIcon {
     public TableIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         variableName = new StringParameter(this, "variableName");
 
         boxColor = new ColorAttribute(this, "boxColor");
         boxColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
-        
+
         Variable UNBOUNDED = new Variable(this, "UNBOUNDED");
         UNBOUNDED.setVisibility(Settable.NONE);
         UNBOUNDED.setExpression("0");
-        
+
         maxRows = new Parameter(this, "maxRows");
         maxRows.setTypeEquals(BaseType.INT);
         maxRows.setExpression("UNBOUNDED");
-        
+
         Variable ALL = new Variable(this, "ALL");
         ALL.setVisibility(Settable.NONE);
         Token emptyStringArray = new ArrayToken(BaseType.STRING);
         ALL.setToken(emptyStringArray);
-        
+
         fields = new Parameter(this, "fields");
         fields.setTypeEquals(new ArrayType(BaseType.STRING));
         fields.setExpression("ALL");
-        
+
         colorKey = new StringParameter(this, "colorKey");
     }
 
@@ -116,7 +116,7 @@ public class TableIcon extends DynamicEditorIcon {
 
     /** Color of the box. This defaults to white. */
     public ColorAttribute boxColor;
-    
+
     /** A column name to use as a color key. If this string is
      *  non-empty, then it specifies a column name that is used
      *  to determine a color for each row. The value in that
@@ -127,7 +127,7 @@ public class TableIcon extends DynamicEditorIcon {
      *  be displayed in black.
      */
     public StringParameter colorKey;
-    
+
     /** The fields to display in the table.
      *  This is an array of strings specifying the field
      *  names to display. It defaults to ALL, which indicates
@@ -139,7 +139,7 @@ public class TableIcon extends DynamicEditorIcon {
      *  default value UNBOUNDED.
      */
     public Parameter maxRows;
-    
+
     /** The name of the variable in the container
      *  whose value should be displayed in the icon. The variable
      *  value must be an array of records. This is a string that
@@ -182,7 +182,7 @@ public class TableIcon extends DynamicEditorIcon {
                                 }
                             }
                         }
-                        
+
                         // Find the width of each column and the height of each row.
                         // All rows are the same height, but column widths can vary.
                         double rowHeight = 0.0;
@@ -289,7 +289,7 @@ public class TableIcon extends DynamicEditorIcon {
 
     /** The font used. */
     protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
-    
+
     /** The amount of padding to use around the edges. */
     protected static final double _HORIZONTAL_PADDING = 5.0;
 
@@ -327,7 +327,7 @@ public class TableIcon extends DynamicEditorIcon {
                 label, _labelFont, 1.0, SwingConstants.NORTH_WEST, color);
         return tableElement;
     }
-    
+
     private Color _uniqueColor(Object object) {
         // Get a color from the hash code. We will use
         // the low order 24 bits only.
@@ -335,7 +335,7 @@ public class TableIcon extends DynamicEditorIcon {
         // Use the code as a seed for a random number generator.
         // FindBugs: [H B BC] Random object created and used only once [DMI_RANDOM_USED_ONLY_ONCE]
         // Actually this is the intend since you want a unique color for
-        // each specific object (hence it can't be completely random). 
+        // each specific object (hence it can't be completely random).
         int code = (new Random(hashCode).nextInt());
         float red = ((code >> 16) & 0xff)/256.0f;
         float green = ((code >> 8) & 0xff)/256.0f;
@@ -346,7 +346,7 @@ public class TableIcon extends DynamicEditorIcon {
         if (magnitude < 0.8f) {
             magnitude = 0.8f;
         }
-        
+
         Color result = new Color(red/magnitude, green/magnitude, blue/magnitude);
         return result;
     }

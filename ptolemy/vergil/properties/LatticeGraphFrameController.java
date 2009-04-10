@@ -32,10 +32,10 @@ public class LatticeGraphFrameController extends FSMGraphController {
      */
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
-        
-        _stateController.addHotKeys(jgraph);               
+
+        _stateController.addHotKeys(jgraph);
     }
-    
+
     protected void _createControllers() {
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
@@ -47,7 +47,7 @@ public class LatticeGraphFrameController extends FSMGraphController {
         //_transitionController.setEdgeRenderer(new BasicEdgeRenderer());
     }
 
-    protected CheckIsLatticeAction _checkIsLatticeAction = 
+    protected CheckIsLatticeAction _checkIsLatticeAction =
         new CheckIsLatticeAction();
 
     protected static class CheckIsLatticeAction extends FigureAction {
@@ -59,14 +59,14 @@ public class LatticeGraphFrameController extends FSMGraphController {
             super.actionPerformed(e);
 
             NamedObj target = getTarget();
-            
-            boolean isLattice = ((PropertyLatticeComposite) 
+
+            boolean isLattice = ((PropertyLatticeComposite)
                     target).isLattice();
-            
+
             if (isLattice) {
                 MessageHandler.message("This is good.");
             } else {
-                MessageHandler.error("This is not a Lattice.");                
+                MessageHandler.error("This is not a Lattice.");
             }
         }
     }

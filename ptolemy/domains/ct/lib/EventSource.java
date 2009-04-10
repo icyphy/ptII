@@ -265,7 +265,7 @@ public class EventSource extends TypedAtomicActor {
         _fireAt(_nextOutputTime);
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The following are all transient because they need not be cloned.

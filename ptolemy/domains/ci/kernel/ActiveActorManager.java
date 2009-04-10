@@ -65,7 +65,7 @@ public class ActiveActorManager extends PtolemyThread {
     /** Construct an actor manager to iterate the actor.
      *  @param actor The actor that is managed.
      *  @param director The director of the actor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public ActiveActorManager(Actor actor, CIDirector director) throws IllegalActionException {
         super();
@@ -91,7 +91,7 @@ public class ActiveActorManager extends PtolemyThread {
         try {
             while (iterate && !_director._isStopRequested()) {
                 synchronized (_director) {
-                    while (_director._pauseRequested) {                    
+                    while (_director._pauseRequested) {
                         _director.wait();
                     }
                 }

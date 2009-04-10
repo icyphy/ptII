@@ -131,7 +131,7 @@ public abstract class ModelScope implements ParserScope {
 
             // This change was necessary for Java Code Generation.
             // We don't want to call getAllScopedVariableNames() here because
-            // we will end up in an endless loop. 
+            // we will end up in an endless loop.
 
             // Test 3.1 in ptolemy/actor/parameters/test/ParameterSetModel.tcl
             // will go in an endless loop if the next two lines are on commente:
@@ -332,7 +332,7 @@ public abstract class ModelScope implements ParserScope {
 
         return null;
     }
-    
+
 
     /** Check to see whether a preference of the specified name is
      *  defined in the specified context, and if it is, return its value.
@@ -359,7 +359,7 @@ public abstract class ModelScope implements ParserScope {
         // If no scoped variable is found, try for a defined constant.
         return Constants.get(preferenceName);
     }
-    
+
 
     // Search in the container for an attribute with the given name.
     // Search recursively in any instance of ScopeExtender in the

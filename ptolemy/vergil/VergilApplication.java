@@ -97,7 +97,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public VergilApplication(String[] args) throws Exception {
-        // FindBugs: FIXME: Note that MoMLApplication(String, String[]) starts a 
+        // FindBugs: FIXME: Note that MoMLApplication(String, String[]) starts a
         // thread, which means that the error handler will not be registered before
         // the thread starts.
         super("ptolemy/configs", args);
@@ -136,7 +136,7 @@ public class VergilApplication extends MoMLApplication {
      * @param message  The message to be displayed
      * @param args The arguments  to be displayed
      * @param throwable The Throwable that caused the problem.
-     */ 
+     */
     public static void errorAndExit(String message, String[] args,
             Throwable throwable) {
         // This is public so that other application frameworks may
@@ -323,7 +323,7 @@ public class VergilApplication extends MoMLApplication {
         URL introURL = null;
 
         ModelDirectory directory = configuration.getDirectory();
-        
+
         Parameter applicationBlankPtolemyEffigyAtStartup = (Parameter) configuration
                 .getAttribute("_applicationBlankPtolemyEffigyAtStartup",
                         Parameter.class);

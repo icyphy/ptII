@@ -51,13 +51,13 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ASTPtUnaryNode extends ASTPtRootNode {
 
-    public ASTPtUnaryNode(PropertyConstraintSolver solver, 
+    public ASTPtUnaryNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtUnaryNode node) throws IllegalActionException {
         super(solver, node);
     }
-    
+
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.data.expr.ASTPtUnaryNode node = 
+        ptolemy.data.expr.ASTPtUnaryNode node =
             (ptolemy.data.expr.ASTPtUnaryNode) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
@@ -71,10 +71,10 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                 PropertySolver solver = getSolver().findSolver("extendedFirstValueToken");
                 PropertyToken propertyToken = (PropertyToken) solver.getProperty(node);
                 Token valueToken = propertyToken.getToken();
-                setEquals(node, lattice.convertJavaToCtype(valueToken.getType(), valueToken));                
+                setEquals(node, lattice.convertJavaToCtype(valueToken.getType(), valueToken));
             }
         }
-        
+
         return super.constraintList();
     }
 
@@ -83,6 +83,6 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
     }
 
     public void setEffective(boolean isEffective) {
-        
+
     }
 }

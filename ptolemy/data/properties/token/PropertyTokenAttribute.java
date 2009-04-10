@@ -15,7 +15,7 @@ public class PropertyTokenAttribute extends PropertyAttribute {
     public PropertyTokenAttribute(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }    
+    }
 
     /** Set the expression. This method takes the descriptive form and
      * determines the internal form (by parsing the descriptive form) and stores
@@ -31,13 +31,13 @@ public class PropertyTokenAttribute extends PropertyAttribute {
             // Get the shared parser.
             PtParser parser = PropertySolver.getParser();
             ASTPtRootNode root = parser.generateParseTree(expression);
-            
+
             ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
 
             // FIXME: we may need scoping for evaluating variables
             // in the expression.
             Token token = evaluator.evaluateParseTree(root);
-            
+
             _property = new PropertyToken(token);
         }
         super.setExpression(expression);

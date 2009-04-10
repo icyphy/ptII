@@ -69,12 +69,12 @@ public class Publisher extends JavaCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
-        
-        // FIXME: we are getting the minimum of the input and output 
+
+        // FIXME: we are getting the minimum of the input and output
         // width for now. But we still have to prove that this is
         // sufficient.
         int width = Math.min(actor.output.getWidth(), actor.input.getWidth());
-        
+
         if (actor.output.numberOfSinks() > 0) {
             for (int i = 0; i < width; i++) {
                 args.set(0, Integer.valueOf(i));

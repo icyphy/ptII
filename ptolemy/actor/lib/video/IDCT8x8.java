@@ -1,4 +1,4 @@
-/* 8x8 Inverse Discrete Cosine Transform. 
+/* 8x8 Inverse Discrete Cosine Transform.
 
 Copyright (c) 1999-2008 The Regents of the University of California.
 All rights reserved.
@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
    Each
 
    @author Hwayong Oh
-   @version $Id: IDCT8x8.java,v 0.2 
+   @version $Id: IDCT8x8.java,v 0.2
    @since Ptolemy II 7.0
    @Pt.ProposedRating Red (oh)
    @Pt.AcceptedRating Red (oh)
@@ -63,13 +63,13 @@ public class IDCT8x8 extends TypedAtomicActor {
     public IDCT8x8(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this,"input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         output = new TypedIOPort(this,"output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
-      
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,14 +77,14 @@ public class IDCT8x8 extends TypedAtomicActor {
 
     /** Input for tokens to be a part of image blocks. This is a single port, and its
      * type is integer matrix.
-     */ 
+     */
     public TypedIOPort input;
-    
-    /** Output port. 
+
+    /** Output port.
      * The type is inferred form the connections.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -101,7 +101,7 @@ public class IDCT8x8 extends TypedAtomicActor {
 
         return newObject;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _output = new IntMatrixToken[1];
@@ -131,41 +131,41 @@ public class IDCT8x8 extends TypedAtomicActor {
         double [][] _ftemp = new double[8][8];
         int [][] sum = new int[8][8];
         IntMatrixToken _input;
-       
+
         if (input.hasToken(0)) {
             _input = (IntMatrixToken)input.get(0);
         } else {
             return;
         }
-        
+
         for( i = 0; i < 8; i++ )
         {
             for (j = 0; j < 8; j++)
                 _block[j] = _input.getElementAt(i,j);
-            
+
             _tem1 = _block[1] * cos_values[7] - _block[7] * cos_values[1];
             _tem4 = _block[7] * cos_values[7] + _block[1] * cos_values[1];
             _tem2 = _block[5] * cos_values[3] - _block[3] * cos_values[5];
             _tem3 = _block[3] * cos_values[3] + _block[5] * cos_values[5];
-            
+
             _temp[0] = (_block[0] + _block[4]) * cos_values[4];
             _temp[1] = (_block[0] - _block[4]) * cos_values[4];
             _temp[2] = _block[2] * cos_values[6] - _block[6] * cos_values[2];
             _temp[3] = _block[6] * cos_values[6] + _block[2] * cos_values[2];
-          
+
             _block[4] = _tem1 + _tem2;
             _temp[5] = _tem1 - _tem2;
             _temp[6] = _tem4 - _tem3;
             _block[7] = _tem4 + _tem3;
-            
+
             _block[5] = (_temp[6] - _temp[5]) * cos_values[0];
             _block[6] = (_temp[6] + _temp[5]) * cos_values[0];
-            
+
             _block[0] = _temp[0] + _temp[3];
             _block[1] = _temp[1] + _temp[2];
             _block[2] = _temp[1] - _temp[2];
             _block[3] = _temp[0] - _temp[3];
-            
+
             for (j = 0; j < 4; j++)
             {
                 k = 7 - j;
@@ -173,36 +173,36 @@ public class IDCT8x8 extends TypedAtomicActor {
                 _ftemp[i][k] = _block[j] - _block[k];
             }
         }
-        
+
         for(i = 0; i < 8; i++ )
         {
             for(j = 0; j < 8; j++)
             {
                 _block[j] = _ftemp[j][i];
             }
-            
+
             _tem1 = _block[1] * cos_values[7] - _block[7] * cos_values[1];
             _tem4 = _block[7] * cos_values[7] + _block[1] * cos_values[1];
             _tem2 = _block[5] * cos_values[3] - _block[3] * cos_values[5];
             _tem3 = _block[3] * cos_values[3] + _block[5] * cos_values[5];
-            
+
             _temp[0] = (_block[0] + _block[4]) * cos_values[4];
             _temp[1] = (_block[0] - _block[4]) * cos_values[4];
             _temp[2] = _block[2] * cos_values[6] - _block[6] * cos_values[2];
             _temp[3] = _block[6] * cos_values[6] + _block[2] * cos_values[2];
-            
+
             _block[4] = _tem1 + _tem2;
             _temp[5] = _tem1 - _tem2;
             _temp[6] = _tem4 - _tem3;
             _block[7] = _tem4 + _tem3;
-            
+
             _block[5] = (_temp[6] - _temp[5]) * cos_values[0];
             _block[6] = (_temp[6] + _temp[5]) * cos_values[0];
             _block[0] = _temp[0] + _temp[3];
             _block[1] = _temp[1] + _temp[2];
             _block[2] = _temp[1] - _temp[2];
             _block[3] = _temp[0] - _temp[3];
-            
+
             for (j = 0; j < 4; j++)
             {
                 k = 7 - j;
@@ -217,14 +217,14 @@ public class IDCT8x8 extends TypedAtomicActor {
                 sum[i][j] =  (_ftemp[i][j] < 0 ? (int)(_ftemp[i][j] - 0.5) : (int)(_ftemp[i][j] + 0.5));
               }
             }
-                  
+
         _output[0] = new IntMatrixToken(sum);
         output.send(0, _output, _output.length );
-        
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IntMatrixToken[] _output;
     private double[] cos_values;
-     
+
 }

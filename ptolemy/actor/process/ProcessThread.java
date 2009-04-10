@@ -150,7 +150,7 @@ public class ProcessThread extends PtolemyThread {
                             // Tell the director we're stopped (necessary
                             // for deadlock detection).
                             _director.threadHasPaused(this);
-    
+
                             while (_director.isStopFireRequested()) {
                                 // If a stop has been requested, in addition
                                 // to a stopFire, then stop execution
@@ -160,10 +160,10 @@ public class ProcessThread extends PtolemyThread {
                                             + "so cancel iteration.");
                                     break;
                                 }
-    
+
                                 _debug("-- Thread waiting for "
                                         + "canceled pause request.");
-    
+
                                 // NOTE: We cannot use workspace.wait(Object) here without
                                 // introducing a race condition, because we have to release
                                 // the lock on the _director before calling workspace.wait(_director).
@@ -224,7 +224,7 @@ public class ProcessThread extends PtolemyThread {
                         }
 
                         iterate = _actor.postfire();
-                        
+
                         if (firingsRecordable != null) {
                             firingsRecordable
                                     .recordFiring(FiringEvent.AFTER_POSTFIRE);

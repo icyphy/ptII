@@ -71,13 +71,13 @@ public class DatabaseInsert extends Sink {
     public DatabaseInsert(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");
 
         table = new StringParameter(this, "table");
         table.setExpression("v_people");
-        
+
         clear = new Parameter(this, "clear");
         clear.setExpression("false");
         clear.setTypeEquals(BaseType.BOOLEAN);
@@ -92,25 +92,25 @@ public class DatabaseInsert extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-   
+
     /** If true, clear the table at initialization of the model.
      *  This is a boolean that defaults to false.
      */
     public Parameter clear;
-    
-    /** Name of the DatabaseManager to use. 
+
+    /** Name of the DatabaseManager to use.
      *  This defaults to "DatabaseManager".
      */
     public StringParameter databaseManager;
-    
-    /** Name of the table to set. 
+
+    /** Name of the table to set.
      *  This defaults to "v_people".
      */
     public StringParameter table;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Update the table to contain all the rows in input array of records.
      *  @throws IllegalActionException If the database update fails.
      */
@@ -152,7 +152,7 @@ public class DatabaseInsert extends Sink {
             }
         }
     }
-    
+
     /** Clear the specified table if the <i>clear</i> parameter is true.
      *  @throws IllegalActionException If the database query fails.
      */

@@ -136,11 +136,11 @@ public class Plotter extends PlotterBase {
             plot.setTitle(getName());
             plot.setButtons(true);
         }
-        
+
         if (((BooleanToken) automaticRescale.getToken()).booleanValue()) {
             plot.setAutomaticRescale(true);
         }
-        
+
 
         if ((_frame == null) && (_container == null)) {
             // Need an effigy and a tableau so that menu ops work properly.

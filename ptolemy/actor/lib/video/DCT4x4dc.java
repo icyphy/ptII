@@ -41,15 +41,15 @@ import ptolemy.kernel.util.Workspace;
 
 /**
    Calculate the discrete cosine transform(DCT) of dc coefficients of Y components.
-   It uses 2x2 integer transform using in H.264 standard. 
+   It uses 2x2 integer transform using in H.264 standard.
    Input block should have two dimensions by 4x4 integer block.
    The output port will have a 4x4 integer block of the result.
 
    @author Hwayong Oh
-   @version $Id: DCT4x4dc.java 
+   @version $Id: DCT4x4dc.java
    @since Ptolemy II 7.0
-   @Pt.ProposedRating Red 
-   @Pt.AcceptedRating Red 
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 */
 public class DCT4x4dc extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -64,13 +64,13 @@ public class DCT4x4dc extends TypedAtomicActor {
     public DCT4x4dc(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this,"input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         output = new TypedIOPort(this,"output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
-      
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,14 +78,14 @@ public class DCT4x4dc extends TypedAtomicActor {
 
     /** Input for tokens. This is a 2x2 integer block, and its
      * type is integer matrix.
-     */ 
+     */
     public TypedIOPort input;
-    
-    /** Output port. This is a result for calculating the DCT 
+
+    /** Output port. This is a result for calculating the DCT
      * of the 2x2 integer block.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -102,7 +102,7 @@ public class DCT4x4dc extends TypedAtomicActor {
 
         return newObject;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _output = new IntMatrixToken[1];
@@ -122,13 +122,13 @@ public class DCT4x4dc extends TypedAtomicActor {
         int d01, d23;
         int [][] sum = new int[4][4];
         IntMatrixToken _input;
-       
+
         if (input.hasToken(0)) {
             _input = (IntMatrixToken)input.get(0);
         } else {
             return;
         }
-        
+
         for( i = 0; i < 4; i++ )
         {
             s01 = _input.getElementAt(i,0) + _input.getElementAt(i,1);
@@ -141,7 +141,7 @@ public class DCT4x4dc extends TypedAtomicActor {
             temp[2][i] = d01 - d23;
             temp[3][i] = d01 + d23;
         }
-        
+
         for( i = 0; i < 4; i++ )
         {
             s01 = temp[i][0] + temp[i][1];
@@ -154,13 +154,13 @@ public class DCT4x4dc extends TypedAtomicActor {
             sum[i][2] = ( d01 - d23 + 1 ) >> 1;
             sum[i][3] = ( d01 + d23 + 1 ) >> 1;
         }
-                  
+
         _output[0] = new IntMatrixToken(sum);
         output.send(0, _output, _output.length );
-        
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private IntMatrixToken[] _output;    
-     
+    private IntMatrixToken[] _output;
+
 }

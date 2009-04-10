@@ -140,14 +140,14 @@ public class ClassChanges implements MoMLFilter {
      *  @param className The name of the class to be filtered
      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
      *  @see #put(String, String)
-     */ 
+     */
     public void remove(String className) {
         if(_classChanges.containsKey(className)) {
             _classChanges.remove(className);
         } else if(_classesToRemove.contains(className)) {
             _classesToRemove.remove(className);
         }
-    }   
+    }
 
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
@@ -296,7 +296,7 @@ public class ClassChanges implements MoMLFilter {
         // DependencyHighlighter is really a vergil class
         _classChanges.put("ptolemy.actor.gui.DependencyHighlighter",
                 "ptolemy.vergil.basic.DependencyHighlighter");
-        
+
         _classChanges.put("ptolemy.moml.SharedParameter",
                 "ptolemy.actor.parameters.SharedParameter");
 
@@ -312,7 +312,7 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.domains.sr.lib.NonStrictDisplay",
                           "ptolemy.domains.sr.lib.gui.NonStrictDisplay");
 
-        
+
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
         // Kepler models in Ptolemy.

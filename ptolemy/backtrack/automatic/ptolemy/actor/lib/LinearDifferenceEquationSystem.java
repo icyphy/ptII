@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * Linear Difference Equation System.
  * <p>The linear state-space model implements a system whose behavior
  * is defined by:
@@ -84,20 +84,20 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
     // icon
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * Output port that produces DoubleMatrixToken of dimension
      * <i>r</i> x 1 (see class comment).
      */
     public TypedIOPort state;
 
-    /**     
+    /**
      * The A matrix in the state-space representation. It must be a
      * square matrix.
      * The default value is [[1.0]].
      */
     public Parameter A;
 
-    /**     
+    /**
      * The B matrix in the state-space representation. The number of
      * rows must be equal to the number of rows of the A matrix. The
      * number of columns must be equal to the number of rows in the
@@ -105,7 +105,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      */
     public Parameter B;
 
-    /**     
+    /**
      * The C matrix in the state-space representation. The number of
      * columns must be equal to the number of columns of the A
      * matrix.  The number of rows must be equal to the number of
@@ -113,7 +113,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      */
     public Parameter C;
 
-    /**     
+    /**
      * The D matrix in the state-space representation. The number of
      * columns must be equal to the number of rows in the input token
      * (a DoubleMatrixToken of dimension <i>m</i> x 1.  The number of
@@ -123,7 +123,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      */
     public Parameter D;
 
-    /**     
+    /**
      * The initial condition for the state variables. This must be a
      * column vector (double matrix with only one column) whose
      * length is equal to the number of state variables.  The default
@@ -157,7 +157,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
 
     private boolean _singleState;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -196,7 +196,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-75\" y=\"-30\" "+"width=\"150\" height=\"60\" "+"style=\"fill:white\"/>\n"+"<text x=\"-70\" y=\"-10\" "+"style=\"font-size:14\">\n"+"x(k+1) = Ax(k) + Bu(k) "+"</text>\n"+"<text x=\"-70\" y=\"10\" "+"style=\"font-size:14\">\n"+"    y(k) = Cx(k) + Du(k)"+"</text>\n"+"</svg>\n");
     }
 
-    /**     
+    /**
      * If the argument is <i>A, B, C, D</i> or <i>initialStates</i>
      * parameters, check that they are indeed matrices and vectors,
      * and request initialization from the director if there is one.
@@ -238,7 +238,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
         }
     }
 
-    /**     
+    /**
      * Consume the input token, compute the system response, and
      * produce outputs. Notice that the state is updated in
      * postfire. That is, if fire() is called multiple times before
@@ -266,7 +266,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
         }
     }
 
-    /**     
+    /**
      * Update the internal state.
      * @exception IllegalActionException If thrown by the super class.
      */
@@ -279,7 +279,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
         }
     }
 
-    /**     
+    /**
      * If the parameter <i>initialStates</i> has changed, then update
      * the internal state of this actor to be the value of the
      * <i>initialStates</i> parameter.
@@ -299,7 +299,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
         }
     }
 
-    /**     
+    /**
      * Check the dimension of all parameters. If the system needs
      * multiple inputs, then set the type of the <i>input</i> port to
      * be DoubleMatrix; otherwise set the type to Double.  Similarly,

@@ -137,7 +137,7 @@ public class PropertyMoMLHandler extends Attribute {
             for (Object propertyable : propertyables) {
                 if (propertyable instanceof NamedObj) {
                     NamedObj namedObj = (NamedObj) propertyable;
-                    
+
                     String request = "";
                     if (namedObj.getAttribute("_showInfo") != null) {
                         request += "<deleteProperty name=\"_showInfo\"/>";
@@ -153,7 +153,7 @@ public class PropertyMoMLHandler extends Attribute {
         } catch (IllegalActionException e1) {
             assert false;
         }
-        
+
         completeMoML.append("</group>");
 
         _requestChange(completeMoML.toString());
@@ -161,7 +161,7 @@ public class PropertyMoMLHandler extends Attribute {
     }
 
     /**
-     * Clear the property annotations of associated with 
+     * Clear the property annotations of associated with
      * the container solver.
      */
     public void clearProperties() {
@@ -190,12 +190,12 @@ public class PropertyMoMLHandler extends Attribute {
         } catch (IllegalActionException e) {
             assert false;
         }
-        
+
 
         Attribute trainedException = solver.getTrainedExceptionAttribute();
 
         if (trainedException != null) {
-            String request = "<deleteProperty name=\"" + 
+            String request = "<deleteProperty name=\"" +
             solver.getTrainedExceptionAttributeName() + "\"/>";
             request = _completeHierarchyInMoML(solver, request);
             completeMoML.append(request);
@@ -203,7 +203,7 @@ public class PropertyMoMLHandler extends Attribute {
 
         completeMoML.append("</group>");
 
-        _requestChange(completeMoML.toString());        
+        _requestChange(completeMoML.toString());
     }
 
     /**
@@ -241,7 +241,7 @@ public class PropertyMoMLHandler extends Attribute {
 
     /**
      * If the value of the showText parameter is set to
-     * true, show all property values visually. 
+     * true, show all property values visually.
      * Otherwise, do nothing.
      */
     public void showProperties() {
@@ -276,7 +276,7 @@ public class PropertyMoMLHandler extends Attribute {
 
     private String _completeHierarchyInMoML(NamedObj namedObj, String request) {
         // construct moml request
-        NamedObj momlContainer = namedObj; 
+        NamedObj momlContainer = namedObj;
         if (momlContainer != null) {
 
             // We don't need to specify the toplevel because
@@ -284,7 +284,7 @@ public class PropertyMoMLHandler extends Attribute {
             // change request.
             while(momlContainer.getContainer() != null) {
                 String type = momlContainer.getElementName();
-                request = "<" + type + " name=\"" + momlContainer.getName() + 
+                request = "<" + type + " name=\"" + momlContainer.getName() +
                 "\" class=\"" + momlContainer.getClassName() + "\">" +
                 request + "</" + type + ">";
 
@@ -299,7 +299,7 @@ public class PropertyMoMLHandler extends Attribute {
      * @param property
      * @throws IllegalActionException
      */
-    private String _getMoMLHighlightString(NamedObj namedObj, 
+    private String _getMoMLHighlightString(NamedObj namedObj,
             Property property) throws IllegalActionException {
 
         String propertyString;
@@ -313,7 +313,7 @@ public class PropertyMoMLHandler extends Attribute {
         }
 
         //Highlight Propertyable namedObj's.
-        for (ColorAttribute colorAttribute : (List<ColorAttribute>) 
+        for (ColorAttribute colorAttribute : (List<ColorAttribute>)
                 attributeList(ColorAttribute.class)) {
 
             String colorAttrName = colorAttribute.getName();
@@ -336,7 +336,7 @@ public class PropertyMoMLHandler extends Attribute {
                                         colorAttribute.getExpression() + "\"/>";
 
                         request = _completeHierarchyInMoML(namedObj, request);
-                        return request;                        
+                        return request;
                     }
                 }
             }
@@ -352,7 +352,7 @@ public class PropertyMoMLHandler extends Attribute {
      * @param property The given property.
      * @exception IllegalActionException Thrown if
      *  there is an error in creating the visual
-     *  attribute and/or setting its value for the 
+     *  attribute and/or setting its value for the
      *  property-able object.
      */
     private String _getMoMLShowInfoString(NamedObj namedObj, Property property)
@@ -364,7 +364,7 @@ public class PropertyMoMLHandler extends Attribute {
             propertyString = property.toString();
 
         } else if (getContainer() instanceof PropertyTokenSolver) {
-            // FIXME: If we set propertyString to NIL, then 
+            // FIXME: If we set propertyString to NIL, then
             // we will have nils everywhere when we don't
             // have any resolved properties.
             propertyString = ""; //Token.NIL.toString();
@@ -372,7 +372,7 @@ public class PropertyMoMLHandler extends Attribute {
             propertyString = "";
         }
 
-        StringParameter showAttribute = 
+        StringParameter showAttribute =
             (StringParameter) namedObj.getAttribute("_showInfo");
 
         if (property == null && showAttribute != null) {

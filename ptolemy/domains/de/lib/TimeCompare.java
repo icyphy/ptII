@@ -150,7 +150,7 @@ public class TimeCompare extends DEActor {
                 double input2 = input2Iterator.next();
                 input2Iterator.remove();
             double difference = input2 - input1;
-                
+
                 if (nonnegative) {
                     while (difference < 0.0 && input2Iterator.hasNext()) {
                             input2 = input2Iterator.next();

@@ -81,16 +81,16 @@ public abstract class WithIconGraphController extends BasicGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
     /** Get a location for a port that hasn't got a location yet.
      * @param pane The GraphPane.
-     * @param frame The BasicGraphFrame.  
+     * @param frame The BasicGraphFrame.
      * @param _prototype The port.
      * @return The location.
-     */ 
-    static public double[] getNewPortLocation(GraphPane pane, BasicGraphFrame frame, IOPort _prototype) {       
+     */
+    static public double[] getNewPortLocation(GraphPane pane, BasicGraphFrame frame, IOPort _prototype) {
         Point2D center = frame.getCenter();
-        
+
         Rectangle2D visiblePart = frame.getVisibleRectangle();
 
         double[] p;
@@ -116,7 +116,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
         }
         return p;
     }
-    
+
     /** Set the configuration.  This is used by some of the controllers
      *  when opening files or URLs.
      *  @param configuration The configuration.
@@ -167,14 +167,14 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Offset a figure if another figure is already at that location.
      *  @param x The x value of the proposed location.
      *  @param y The y value of the proposed location.
      *  @param xOffset The x offset to be used if a figure is found.
      *  @param yOffset The x offset to be used if a figure is found.
      *  @param pane The GraphPane.
-     *  @param frame The BasicGraphFrame.  
+     *  @param frame The BasicGraphFrame.
      *  @return An array of two doubles (x and y) that represents either
      *  the original location or an offset location that does not obscure
      *  an object of class <i>figure</i>.
@@ -193,7 +193,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 diva.canvas.connector.TerminalFigure.class,
                 foregroundLayer, visibleRectangle);
         return point;
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -302,7 +302,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 BasicGraphFrame frame = WithIconGraphController.this.getFrame();
                 GraphPane pane = getGraphPane();
 
-                if (frame != null) {        
+                if (frame != null) {
                     if (_prototype != null) {
                         // Put in the middle of the visible part.
                         double[] p = getNewPortLocation(pane, frame, _prototype);
@@ -312,12 +312,12 @@ public abstract class WithIconGraphController extends BasicGraphController {
                     } else {
                         // Put in the middle of the visible part.
                         Point2D center = frame.getCenter();
-                        
+
                         x = center.getX();
                         y = center.getY();
                     }
                 } else {
-                    // Put in the middle of the pane.                    
+                    // Put in the middle of the pane.
                     Point2D center = pane.getSize();
                     x = center.getX() / 2;
                     y = center.getY() / 2;

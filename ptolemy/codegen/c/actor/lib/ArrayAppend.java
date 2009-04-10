@@ -79,9 +79,9 @@ public class ArrayAppend extends CCodeGeneratorHelper {
         args.add("");
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            
+
             Type inputType = actor.input.getType();
-            
+
             if (inputType instanceof ArrayType) {
                 args.set(1, codeGenType(((ArrayType) inputType).getElementType()));
                 code.append(_generateBlockCode("fillArray", args));

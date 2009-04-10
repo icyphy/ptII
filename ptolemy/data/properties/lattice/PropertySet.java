@@ -72,7 +72,7 @@ public class PropertySet extends LatticeProperty implements Set {
     }
 
     public void clear() {
-        _elements.clear();        
+        _elements.clear();
     }
 
     public boolean contains(Object o) {
@@ -89,7 +89,7 @@ public class PropertySet extends LatticeProperty implements Set {
         }
         return false;
     }
-    
+
     /** Return a hash code value for this Set. This method returns the
      *  hash code of the set.
      *  @return A hash code value for this Set.
@@ -105,7 +105,7 @@ public class PropertySet extends LatticeProperty implements Set {
     public boolean isAcceptableSolution() {
         return ((PropertySetLattice) _lattice).isAcceptableSolution(this);
     }
-    
+
     public boolean isEmpty() {
         return _elements.isEmpty();
     }
@@ -137,10 +137,10 @@ public class PropertySet extends LatticeProperty implements Set {
     public Object[] toArray(Object[] a) {
         return _elements.toArray(a);
     }
-    
+
     public String toString() {
         StringBuffer result = new StringBuffer("{");
-        
+
         Iterator iterator = _elements.iterator();
 
         if (!_elements.isEmpty()) {
@@ -150,7 +150,7 @@ public class PropertySet extends LatticeProperty implements Set {
             result.append(", " + iterator.next().toString());
         }
         result.append("}");
-        
+
         return result.toString();
     }
 

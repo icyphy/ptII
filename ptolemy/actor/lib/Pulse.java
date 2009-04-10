@@ -218,7 +218,7 @@ public class Pulse extends SequenceSource {
             newObject._zero = prototype.zero();
         } catch (Exception ex) {
             throw new InternalErrorException(ex);
-        } 
+        }
         return newObject;
     }
 

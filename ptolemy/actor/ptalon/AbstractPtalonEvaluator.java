@@ -536,7 +536,7 @@ public abstract class AbstractPtalonEvaluator {
             // this name because we already removed all of the
             // relations in attributeChanged().
             TypedIORelation relation = new TypedIORelation(_actor, uniqueName);
-            relation.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models 
+            relation.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
             _processAttributes(relation);
 
             _currentIfTree.setStatus(name, true);

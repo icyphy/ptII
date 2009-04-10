@@ -46,8 +46,8 @@ import ptolemy.graph.InequalityTerm;
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Red (neuendor)
  */
-public abstract class MonotonicFunction 
-    extends ptolemy.data.type.MonotonicFunction 
+public abstract class MonotonicFunction
+    extends ptolemy.data.type.MonotonicFunction
     implements PropertyTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -58,18 +58,18 @@ public abstract class MonotonicFunction
      *  @return An array of InequalityTerm.
      */
     public InequalityTerm[] getVariables() {
-        List<InequalityTerm> terms = new ArrayList<InequalityTerm>();            
-        
+        List<InequalityTerm> terms = new ArrayList<InequalityTerm>();
+
         for (InequalityTerm term : _getDependentTerms()) {
             if (term.isSettable()) {
-                terms.add(term);                
+                terms.add(term);
             }
         }
-        
+
         InequalityTerm[] array = new InequalityTerm[terms.size()];
         System.arraycopy(terms.toArray(), 0, array, 0, terms.size() );
-        
-        return  array;        
+
+        return  array;
     }
 
     /** Return an array of constants contained in this term.
@@ -80,20 +80,20 @@ public abstract class MonotonicFunction
      *  @return An array of InequalityTerms
      */
     public InequalityTerm[] getConstants() {
-        List<InequalityTerm> terms = new ArrayList<InequalityTerm>();            
-        
+        List<InequalityTerm> terms = new ArrayList<InequalityTerm>();
+
         for (InequalityTerm term : _getDependentTerms()) {
             if (!(term.isSettable())) {
-                terms.add(term);                
+                terms.add(term);
             }
         }
-        
+
         InequalityTerm[] array = new InequalityTerm[terms.size()];
         System.arraycopy(terms.toArray(), 0, array, 0, terms.size() );
-        
-        return  array;        
+
+        return  array;
     }
-    
+
     protected abstract InequalityTerm[] _getDependentTerms();
 
 }

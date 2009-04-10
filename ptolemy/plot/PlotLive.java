@@ -204,7 +204,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     public void stop() {
         _plotting = false;
         _paused = false;
-        
+
         // FindBugs: [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not an issue, since once the thread has been created this
         // member is not accessed until its destruction.

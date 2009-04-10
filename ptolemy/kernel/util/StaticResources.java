@@ -33,9 +33,9 @@ import java.util.ResourceBundle;
 //// StaticResources
 
 /**
- * 
+ *
  * Static resources for accessing ResourceBundles.
- * 
+ *
  * @author Matthew Brooke
  * @version $Id$
  * @since Ptolemy II 7.2
@@ -45,7 +45,7 @@ import java.util.ResourceBundle;
 public class StaticResources {
     // kepler.gui.StaticGUIResources contains GUI specific code,
     // this class should _not_ import GUI code.
-    
+
     // protected constructor - non-instantiable
     protected StaticResources() {
     }
@@ -59,7 +59,7 @@ public class StaticResources {
      * key parameter. Return the boolean value of the property String
      * corresponding to the specified key. If the property is not found, the
      * defaultVal parameter is returned.
-     * 
+     *
      * @param key
      *            the properties key identifying the value to be found
      * @param defaultVal
@@ -92,7 +92,7 @@ public class StaticResources {
      * key parameter. Return the String value of the property value specified.
      * If the property is not found, the default defaultString parameter is
      * returned.
-     * 
+     *
      * @param key
      *            the properties key for the String to be found
      * @param defaultString
@@ -120,8 +120,8 @@ public class StaticResources {
     }
 
     /**
-     * Search for the ResourceBundle containing the UI Display Text.  
-     * @return The resource bundle that corresponds with 
+     * Search for the ResourceBundle containing the UI Display Text.
+     * @return The resource bundle that corresponds with
      * {@link #UI_DISPLAY_TEXT_BUNDLE}
      */
     public static ResourceBundle getDisplayTextBundle() throws IOException {
@@ -132,14 +132,14 @@ public class StaticResources {
         }
         return _displayTextBundle;
     }
-    
+
 
     /**
      * Search the uiSettings resourcebundle for the property specified by the
      * key parameter. Return the String value of the property value specified.
      * If the property is not found, the default defaultString parameter is
      * returned.
-     * 
+     *
      * @param key
      *            the properties key for the String to be found
      * @param defaultString
@@ -164,12 +164,12 @@ public class StaticResources {
         }
         return result;
     }
-    
+
     /**
      * Search the uiSettings resourcebundle for the size property specified by
      * the sizeKey. Return the integer (int) value of the size specified. If the
      * property is not found, the defaultSize parameter is returned.
-     * 
+     *
      * @param sizeKey
      *            the properties key String for the size setting
      * @param defaultSize
@@ -194,10 +194,10 @@ public class StaticResources {
         }
         return size;
     }
-    
+
     /**
      * Search for the ResourceBundle containing the ui settings.
-     * @return The resource bundle that corresponds with 
+     * @return The resource bundle that corresponds with
      * {@link #UI_SETTINGS_BUNDLE}
      */
     public static ResourceBundle getUISettingsBundle() throws IOException {
@@ -219,11 +219,11 @@ public class StaticResources {
      * relative to classpath.
      */
     public static final String RESOURCEBUNDLE_DIR = "ptolemy/configs/kepler";
-    
+
     /**
      * Name of resource bundle containing mappings from fully-qualified
      * classnames => SVG icon paths. All paths are relative to classpath
-     * 
+     *
      * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     public static final String SVG_ICON_MAPPINGS_BYCLASS_BUNDLE = RESOURCEBUNDLE_DIR
@@ -232,7 +232,7 @@ public class StaticResources {
     /**
      * Path to resource bundle containing mappings from actor LSIDs => SVG icon
      * paths. All paths are relative to classpath
-     * 
+     *
      * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     public static final String SVG_ICON_MAPPINGS_BYLSID_BUNDLE = RESOURCEBUNDLE_DIR
@@ -240,7 +240,7 @@ public class StaticResources {
 
     /**
      * Path to resource bundle containing basic default settings for SVG icons.
-     * 
+     *
      * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     public static final String UI_SETTINGS_BUNDLE = RESOURCEBUNDLE_DIR
@@ -248,7 +248,7 @@ public class StaticResources {
 
     /**
      * Path to resource bundle containing UI Display Text.
-     * 
+     *
      * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     public static final String UI_DISPLAY_TEXT_BUNDLE = RESOURCEBUNDLE_DIR
@@ -273,15 +273,15 @@ public class StaticResources {
 
     /**
      * Get the String property denoted by the propertyKey.
-     * 
+     *
      * @param propertyKey
      *            the properties key String identifying the property
-     * 
+     *
      * @param bundle
      *            the ResourceBundle in which to search
-     * 
+     *
      * @return the String value identified by the propertyKey
-     * 
+     *
      * @throws java.lang.Exception
      *             if key is not found or cannot be read
      */
@@ -292,15 +292,15 @@ public class StaticResources {
 
     /**
      * Get the integer (int) property denoted by the propertyKey.
-     * 
+     *
      * @param propertyKey
      *            the properties key String identifying the property
-     * 
+     *
      * @param bundle
      *            the ResourceBundle in which to search
-     * 
+     *
      * @return the int value identified by the propertyKey
-     * 
+     *
      * @exception Exception
      *             if key is not found, cannot be read, or cannot be parsed as
      *             an integer
@@ -309,14 +309,14 @@ public class StaticResources {
             throws Exception {
         return Integer.parseInt(_getString(propertyKey, bundle));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
     ///////////////////////////////////////////////////////////////////
 
     /** Set to true and recompile for debugging such as error messages.*/
     protected final static boolean _isDebugging = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     ///////////////////////////////////////////////////////////////////

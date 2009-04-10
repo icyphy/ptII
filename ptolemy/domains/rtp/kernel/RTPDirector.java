@@ -133,7 +133,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
     public Dependency delayDependency(double delay) {
         return BooleanDependency.OTIMES_IDENTITY;
     }
-    
+
     /** Return the time count of the computer in the number of milliseconds,
      *  starting from 1/1/1970 (UTC).
      *  @return The current computer time.
@@ -255,7 +255,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
         // since stop() will change the state.
         // I however don't want to put stop() within
         // the synchronized(this) to avoid deadlocks.
-        
+
         synchronized (this) {
             notifyAll();
         }

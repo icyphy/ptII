@@ -78,7 +78,7 @@ implements MatchCallback {
     public boolean isMatchOnly() {
         return getChosenValue() == Mode.MATCH_ONLY;
     }
-    
+
     public boolean transform(TransformationRule workingCopy,
             CompositeEntity model) throws IllegalActionException {
         return transform(workingCopy, model, null, false);

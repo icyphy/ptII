@@ -70,7 +70,7 @@ import ptolemy.kernel.util.Workspace;
  * <i>physical time</i>. This physical time is used in all platforms, for
  * sending events between platforms, a global bounded clock synchronization
  * error and a global bounded network delay is considered.
- * 
+ *
  * <p>
  * Platforms contain sensors, actuators, computation actors with worst case
  * execution times and model time delay actors. The execution of actors inside a
@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
  * and actuators. Also, the execution of actors with a worst case execution time
  * > 0 is simulated which requires the simulation of physical time passing
  * between the start and the termination of an actor.
- * 
+ *
  * <p>
  * A platform executes events as long as there are events that are safe to
  * process and schedulable to process. Safe to process means that there is no
@@ -92,7 +92,7 @@ import ptolemy.kernel.util.Workspace;
  * characteristics. For example, if the execution of an event would take longer
  * than the time until the next execution of an actuator and the platform cannot
  * preempt actor executions, this event cannot be executed.
- * 
+ *
  * <p>
  * When a platform has no more events safe and possible to process at the
  * current physical time, it schedules a refiring at a future physical time.
@@ -104,26 +104,26 @@ import ptolemy.kernel.util.Workspace;
  * <li>Another platform sent an event to the platform. This event might be safe
  * to process, it is up to the platform to find that out.</li>
  * </ul>
- * 
+ *
  * <p>
  * A Ptides model never terminates thus a stop time must be specified.
- * 
+ *
  * <p>
  * The difference between the PtidesDirector and a DE director with threads is
  * that the PtidesDirector does not call the fire of the contained actors, the
  * contained actors fire in an infinite loop. If there is nothing to fire, the
  * actor waits until the physical time of the PtidesDirector is increased.
- * 
+ *
  * <p>
  * The difference between the PtidesDirector and a PN, TimedPN or DDE director
  * is that there are no blocking writes or reads between actors. The only way an
  * actor can be blocked is because it waits for physical time to pass.
- * 
+ *
  * <p>
  * Usage: Every actor in a model controlled by the PtidesDirector must be a
  * CompositeActor containing a director that executes actors according to event
  * time stamps.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -136,7 +136,7 @@ public class PtidesDirector extends TimedPNDirector {
      * Construct a director in the default workspace with an empty string as its
      * name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
-     * 
+     *
      * @exception IllegalActionException
      *                If the name contains a period, or if the director is not
      *                compatible with the specified container.
@@ -154,7 +154,7 @@ public class PtidesDirector extends TimedPNDirector {
      * Construct a director in the workspace with an empty name. The director is
      * added to the list of objects in the workspace. Increment the version
      * number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace of this object.
      * @exception IllegalActionException
@@ -176,7 +176,7 @@ public class PtidesDirector extends TimedPNDirector {
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -216,7 +216,7 @@ public class PtidesDirector extends TimedPNDirector {
      * The value defaults to Infinity.
      */
     public Parameter stopTime;
-    
+
     /** Specify whether the execution should synchronize to the
      *  real time. This parameter must contain a BooleanToken.
      *  If this parameter is true, then do not process events until the
@@ -231,7 +231,7 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * Add a new schedule listener that will receive all schedule events created
      * by the platforms.
-     * 
+     *
      * @param listener
      *            The schedule listener to be added.
      */
@@ -241,7 +241,7 @@ public class PtidesDirector extends TimedPNDirector {
 
     /**
      * Override the base class to update local variables.
-     * 
+     *
      * @param attribute
      *            Attribute that changed.
      * @exception IllegalActionException
@@ -269,7 +269,7 @@ public class PtidesDirector extends TimedPNDirector {
      * the user if he wants it to be there). The result is a new director with
      * no container and no topology listeners. All variables are set to their
      * initial values.
-     * 
+     *
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException
@@ -298,7 +298,7 @@ public class PtidesDirector extends TimedPNDirector {
      * of waiting processes which is sorted by the time specified by the method
      * argument. Increment the count of the actors blocked waiting on a future
      * physical time.
-     * 
+     *
      * @param actor
      *            Actor that schedules to be refired.
      * @param newFiringTime
@@ -319,9 +319,9 @@ public class PtidesDirector extends TimedPNDirector {
         _informOfDelayBlock();
 
         try {
-            while (!_stopRequested 
+            while (!_stopRequested
                     && getModelTime().compareTo(newFiringTime) < 0) {
-                if (_platformsToUnblock.remove(actor)) { 
+                if (_platformsToUnblock.remove(actor)) {
                     _informOfDelayUnblock();
                     break;
                 }
@@ -336,7 +336,7 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * Initialize parameters and the schedule listeners. Calculate minimum
      * delays for ports on platforms according to Ptides.
-     * 
+     *
      * @throws IllegalActionException
      *             Thrown if other actors than CompositeActors are used in this
      *             model or embedded directors of these CompositeActors are not
@@ -348,8 +348,8 @@ public class PtidesDirector extends TimedPNDirector {
         _realStartTime = System.currentTimeMillis();
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
                 .doubleValue());
-        
-        CausalityInterfaceForComposites causalityInterface = 
+
+        CausalityInterfaceForComposites causalityInterface =
             (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
             .getCausalityInterface();
 
@@ -376,19 +376,19 @@ public class PtidesDirector extends TimedPNDirector {
                             .getDirector();
                     director._clockSyncronizationError = _clockSyncronizationError;
                     director._networkDelay = _networkDelay;
-                    
-                    
+
+
                     List<IOPort> inputPorts = compositeActor.inputPortList();
                     for (IOPort port : inputPorts) {
                         if (_debugging) {
                             _debug("minDelay " + port + ": " + ((RealDependency)causalityInterface.getMinimumDelay(port)).value());
                         }
                     }
-                    
+
                 }
                 List<Actor> containedActors = compositeActor.entityList();
                 table.put(actor, containedActors);
-            } 
+            }
 //            else {
 //                throw new IllegalActionException(
 //                        "Only composite actors are allowed to "
@@ -407,7 +407,7 @@ public class PtidesDirector extends TimedPNDirector {
 
     /**
      * Create a new PtidesReceiver.
-     * 
+     *
      * @return A new PtidesReceiver.
      */
     public Receiver newReceiver() {
@@ -418,7 +418,7 @@ public class PtidesDirector extends TimedPNDirector {
      * Set a new value to the current time of the model, where the new time must
      * be no earlier than the current time. If the new time is bigger than the
      * stop time, stop the execution of the model.
-     * 
+     *
      * @param newTime
      *            The new time of the model.
      * @exception IllegalActionException
@@ -439,7 +439,7 @@ public class PtidesDirector extends TimedPNDirector {
      * method was previously called by another platform. A platform calls this
      * method because it sends a new event to the platform specified by the
      * actor in the method parameter.
-     * 
+     *
      * @param actor
      *            Platform that should be resumed.
      */
@@ -453,8 +453,8 @@ public class PtidesDirector extends TimedPNDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _platformsToUnblock.clear();
-        
-        CausalityInterfaceForComposites causalityInterface = 
+
+        CausalityInterfaceForComposites causalityInterface =
             (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
             .getCausalityInterface();
         causalityInterface.wrapup();
@@ -466,7 +466,7 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * Forward display events to the schedule listeners. This method is used as
      * the single point to monitor events from all actors in the model.
-     * 
+     *
      * @param node
      *            Platform that forwards the event.
      * @param actor
@@ -495,7 +495,7 @@ public class PtidesDirector extends TimedPNDirector {
      * notify all platforms. Otherwise, resolve the deadlock. This method is
      * reached if all platforms are stalled in the fireAt() method of this
      * director because they are waiting for a future physical time.
-     * 
+     *
      * @return true if a real deadlock (see super class) is detected, false otherwise.
      * @exception IllegalActionException
      *                Not thrown in this base class. This might be thrown by
@@ -520,7 +520,7 @@ public class PtidesDirector extends TimedPNDirector {
                     // There could be multiple events for the same
                     // actor for the same time (e.g. by sending events
                     // to this actor with same time stamps on different
-                    // input ports. Thus, only _informOfDelayUnblock() 
+                    // input ports. Thus, only _informOfDelayUnblock()
                     // for events with the same time stamp but different
                     // actors. 7/15/08 Patricia Derler
                     List unblockedActors = new ArrayList();
@@ -538,13 +538,13 @@ public class PtidesDirector extends TimedPNDirector {
                                     currentTime = getModelTime();
 
                                     long elapsedTime = System.currentTimeMillis()
-                                            - _realStartTime; 
+                                            - _realStartTime;
                                     double elapsedTimeInSeconds = elapsedTime / 1000.0;
                                     ptolemy.actor.util.Time elapsed
                                             = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
                                     if (currentTime.compareTo(elapsed) <= 0) {
                                         break;
-                                    } 
+                                    }
                                     long timeToWait = (long) (currentTime.subtract(
                                             elapsed).getDoubleValue() * 1000.0);
 
@@ -596,7 +596,7 @@ public class PtidesDirector extends TimedPNDirector {
                             if (newTime.equals(getModelTime())) {
                                 if (unblockedActors.contains(actor))
                                     continue;
-                                else 
+                                else
                                     unblockedActors.add(actor);
                                 _informOfDelayUnblock();
                             } else {
@@ -616,17 +616,17 @@ public class PtidesDirector extends TimedPNDirector {
             return true;
         }
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /**
      * Initialize parameters of the director.
-     * 
+     *
      * @throws NameDuplicationException
      *             Could occur if parameter with same name already exists.
      */
@@ -642,7 +642,7 @@ public class PtidesDirector extends TimedPNDirector {
             clockSyncError = new Parameter(this, "clockSyncError");
             clockSyncError.setExpression("0.1");
             clockSyncError.setTypeEquals(BaseType.DOUBLE);
-            
+
             synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
@@ -687,12 +687,12 @@ public class PtidesDirector extends TimedPNDirector {
      * The stop time of the model.
      */
     private transient Time _stopTime;
-    
+
     /** Specify whether the director should wait for elapsed real time to
      *  catch up with model time.
      */
     volatile private boolean _synchronizeToRealTime;
-    
+
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;
 

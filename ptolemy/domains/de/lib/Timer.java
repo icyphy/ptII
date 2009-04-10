@@ -155,7 +155,7 @@ public class Timer extends DETransformer {
             }
         }
     }
-    
+
     /** Override the base class to return a causality interface that
      *  indicates that the output does not depend (immediately) on
      *  the input.

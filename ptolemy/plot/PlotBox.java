@@ -391,7 +391,7 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
-    /** Clear all the captions. 
+    /** Clear all the captions.
      *  For the change to take effect, call repaint().
      *  @see #setCaptions(Vector)
      */
@@ -448,7 +448,7 @@ public class PlotBox extends JPanel implements Printable {
 
                 try {
                     _actionsDeferred = true;
-                    
+
                     // NOTE: Using invokeAndWait() here risks causing
                     // deadlock.  Don't do it!
                     SwingUtilities.invokeLater(doActions);
@@ -457,7 +457,7 @@ public class PlotBox extends JPanel implements Printable {
                     // Other exceptions should not occur.
                 }
 
-                
+
             }
         }
     }
@@ -592,8 +592,8 @@ public class PlotBox extends JPanel implements Printable {
     /** Get the captions.
      *  @return the captions
      *  @see #addCaptionLine(String)
-     *  @see #setCaptions(Vector) 
-     */  
+     *  @see #setCaptions(Vector)
+     */
     public Vector getCaptions() {
         return _captionStrings;
     }
@@ -1406,7 +1406,7 @@ public class PlotBox extends JPanel implements Printable {
      *  that is one line of the caption.
      *  @see #getCaptions()
      *  @see #clearCaptions()
-     */  
+     */
     public void setCaptions(Vector captionStrings) {
         // Changing caption means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1521,7 +1521,7 @@ public class PlotBox extends JPanel implements Printable {
         //_sizeHasBeenSet = true;
         super.setSize(width, height);
     }
-    
+
     /**
      * Set repainting with a certain fixed refresh rate. This timed
      * repainting is enabled when timedRepaint equals true and
@@ -1537,7 +1537,7 @@ public class PlotBox extends JPanel implements Printable {
             _timerTask.removeListener(this);
             _resetScheduledTasks();
         }
-    }    
+    }
 
     /** Set the title of the graph.
      *  @param title The title.
@@ -1890,9 +1890,9 @@ public class PlotBox extends JPanel implements Printable {
      * automatic.
      */
     protected boolean _automaticRescale() {
-        return _automaticRescale; 
+        return _automaticRescale;
     }
-    
+
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
      *  This method is called by paintComponent().  To cause it to be called
@@ -2789,21 +2789,21 @@ public class PlotBox extends JPanel implements Printable {
 
         return false;
     }
-    
+
     /** Reset a scheduled redraw tasks. This base class does nothing.
      *  Derived classes should define the correct behavior.
      */
     protected void _resetScheduledTasks() {
-        // This method should be implemented by the derived classes.        
+        // This method should be implemented by the derived classes.
     }
-    
+
     /** Perform a scheduled redraw. This base class does nothing.
      *  Derived classes should define the correct behavior.
      */
     protected void _scheduledRedraw() {
-        // Does nothing on this level        
+        // Does nothing on this level
     }
-    
+
     /** Set the visibility of the Fill button.
      *  This is deprecated.  Use setButtons().
      *  @deprecated
@@ -2837,7 +2837,7 @@ public class PlotBox extends JPanel implements Printable {
      * @return True when repainting happens by a timer thread.
      */
     protected boolean _timedRepaint() {
-        return _timedRepaint || _automaticRescale; 
+        return _timedRepaint || _automaticRescale;
     }
 
     /** Write plot information to the specified output stream in the
@@ -3060,7 +3060,7 @@ public class PlotBox extends JPanel implements Printable {
     /** The y value of the upper left corner of the plot rectangle in pixels.
      *  Given a mouse click at y0, to convert to data coordinates, use:
      *  (_yMax - (y0 - _uly) / _yscale).
-     */ 
+     */
     protected int _uly = 1;
 
     /** The x value of the lower right corner of
@@ -3764,7 +3764,7 @@ public class PlotBox extends JPanel implements Printable {
             _yExp = 0;
         }
     }
-   
+
     /*
      *  Zoom in or out based on the box that has been drawn.
      *  The argument gives the lower right corner of the box.
@@ -4039,9 +4039,9 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Indicator of whether actions are deferred. */
     private volatile boolean _actionsDeferred = false;
-    
+
     // True when repainting happens by a timer thread.
-    private boolean _automaticRescale = false;    
+    private boolean _automaticRescale = false;
 
     /** List of deferred actions. */
     private LinkedList<Runnable> _deferredActions = new LinkedList<Runnable>();
@@ -4189,11 +4189,11 @@ public class PlotBox extends JPanel implements Printable {
 
     // A button for filling the plot
     private transient JButton _resetButton = null;
-    
+
     // True when repainting should be performed by a timed thread.
     private boolean _timedRepaint = false;
 
-    // The timer task that does the repainting. 
+    // The timer task that does the repainting.
     static private TimedRepaint _timerTask = new TimedRepaint();
 
     // Variables keeping track of the interactive zoom box.
@@ -4213,7 +4213,7 @@ public class PlotBox extends JPanel implements Printable {
 
     private transient boolean _drawn = false;
 
-    private transient boolean _zooming = false;    
+    private transient boolean _zooming = false;
 
     // NOTE: It is unfortunate to have to include the DTD here, but there
     // seems to be no other way to ensure that the generated data exactly
@@ -4331,7 +4331,7 @@ public class PlotBox extends JPanel implements Printable {
             // FIXME:  Code duplication with PlotFrame and Top.
             // See PlotFrame for notes.
 
-            // Native printing used not honor the user's 
+            // Native printing used not honor the user's
             // choice of portrait vs. landscape.
 
             PrinterJob job = PrinterJob.getPrinterJob();
@@ -4539,15 +4539,15 @@ public class PlotBox extends JPanel implements Printable {
         private boolean _control = false;
 
         private boolean _shift = false;
-    }    
+    }
 
     /**
      * TimedRepaint is a timer thread that will schedule a
      * redraw each _REPAINT_TIME_INTERVAL milliseonds.
-     */   
+     */
     private static class TimedRepaint extends Timer {
         static int _REPAINT_TIME_INTERVAL = 30;
-        
+
         public synchronized void addListener(PlotBox plotBox) {
             _listeners.add(plotBox);
             if (_listeners.size() == 1) {

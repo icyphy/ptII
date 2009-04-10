@@ -199,7 +199,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     public Dependency delayDependency(double delay) {
         return BooleanDependency.OTIMES_IDENTITY;
     }
-    
+
     /**
      * Schedule an actor to be fired at the specified time. If the thread that
      * calls this method is an instance of DDEThread, then the specified actor

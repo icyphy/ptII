@@ -204,37 +204,37 @@ public class ArrowKeySensor extends TypedAtomicActor {
     protected boolean _downKeyPressed = false;
 
     /** A flag indicating if the down arrow key has been released
-     *  since the last firing of the actor. 
+     *  since the last firing of the actor.
      */
     protected boolean _downKeyReleased = false;
 
     /** A flag indicating if the left arrow key has been released
-     *  since the last firing of the actor. 
+     *  since the last firing of the actor.
      */
     protected boolean _leftKeyPressed = false;
 
     /** A flag indicating if the left arrow key has been released
-     *  since the last firing of the actor. 
+     *  since the last firing of the actor.
      */
     protected boolean _leftKeyReleased = false;
 
     /** A flag indicating if the right arrow key has been pressed
-     *  since the last firing of the actor. 
+     *  since the last firing of the actor.
      */
     protected boolean _rightKeyPressed = false;
 
     /** A flag indicating if the right arrow key has been released
-     *  since the last firing of the actor. 
+     *  since the last firing of the actor.
      */
     protected boolean _rightKeyReleased = false;
 
     /** A flag indicating if the up arrow key has been pressed
-     *  since the last firing of the actor. 
+     *  since the last firing of the actor.
      */
     protected boolean _upKeyPressed = false;
 
     /** A flag indicating if the up arrow key has been released
-     *  since the last firing of the actor. 
+     *  since the last firing of the actor.
      */
     protected boolean _upKeyReleased = false;
 
@@ -388,29 +388,29 @@ public class ArrowKeySensor extends TypedAtomicActor {
                 // FindBugs suggests making this class static so as to decrease
                 // the size of instances and avoid dangling references.
                 // However, Java does allow inner classes of inner classes to be
-                // static.            
-            
+                // static.
+
             // This is a copy of diva/gui/toolbox/FocusMouseListener.java
             // because we don't want the dependency on diva.
 
             /** Invoked when the mouse is released.
              *  Ignored in this listener.
              *  @param event The corresponding event.
-             */                
+             */
             public void mouseReleased(MouseEvent event) {
             }
 
             /** Invoked when the mouse enters a component.
              *  Ignored in this listener.
              *  @param event The corresponding event.
-             */                
+             */
             public void mouseEntered(MouseEvent event) {
             }
 
             /** Invoked when the mouse exits a component.
              *  Ignored in this listener.
              *  @param event The corresponding event.
-             */                
+             */
             public void mouseExited(MouseEvent event) {
             }
 
@@ -430,7 +430,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             /** Invoked when the mouse is clicked (pressed and released).
              *  Ignored in this listener.
              *  @param event The corresponding event.
-             */                
+             */
             public void mouseClicked(MouseEvent event) {
             }
         }
@@ -453,28 +453,28 @@ public class ArrowKeySensor extends TypedAtomicActor {
     private static class ActionListenerExceptionCatcher implements ActionListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        
+
         /** Construct an instance that will wrap an ActionListener,
          * catch its exceptions and report it to the Ptolemy
-         * Message Handler. 
-         * @param actionListener The actionListener. 
+         * Message Handler.
+         * @param actionListener The actionListener.
          */
         public ActionListenerExceptionCatcher(ActionListener actionListener) {
-            _actionListener = actionListener;           
+            _actionListener = actionListener;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             try {
                 _actionListener.actionPerformed(e);
             } catch (Throwable ex) {
-                ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler.shortDescription(ex), ex); 
+                ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler.shortDescription(ex), ex);
             }
         }
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
-        
-        // The runnable.    
-        private ActionListener _actionListener;       
+
+        // The runnable.
+        private ActionListener _actionListener;
     }
 
 }

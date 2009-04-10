@@ -52,9 +52,9 @@ public class Sequence extends AtomicActor {
      * Construct a Sequence helper for the logicalAND lattice.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Sequence(PropertyConstraintSolver solver, 
+    public Sequence(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Sequence actor)
             throws IllegalActionException {
 
@@ -62,9 +62,9 @@ public class Sequence extends AtomicActor {
         _actor = actor;
      }
 
-    public List<Inequality> constraintList() 
+    public List<Inequality> constraintList()
             throws IllegalActionException {
-        setAtLeast(_actor.output, _actor.values);        
+        setAtLeast(_actor.output, _actor.values);
         return super.constraintList();
     }
 
@@ -77,5 +77,5 @@ public class Sequence extends AtomicActor {
         result.add(_actor.values);
         return result;
     }
-    
+
 }

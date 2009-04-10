@@ -62,7 +62,7 @@ public class UndoActionsList implements UndoAction {
     public void add(UndoAction action) {
         _actionList.add(action);
     }
-    
+
     /** Execute the action. */
     public void execute() throws Exception {
         for (UndoAction action : _actionList) {

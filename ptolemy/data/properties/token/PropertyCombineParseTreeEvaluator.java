@@ -13,12 +13,12 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
-    
+
     public PropertyCombineParseTreeEvaluator(Object object, PropertySolver solver) {
         _solver = solver;
         _object = object;
     }
-    
+
     /** Evaluate a numeric constant or an identifier. In the case of an
      *  identifier, its value is obtained from the scope or from the list
      *  of registered constants.
@@ -28,10 +28,10 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         super.visitLeafNode(node);
 
-        if (node.isEvaluated() && 
-            node.isConstant() && 
+        if (node.isEvaluated() &&
+            node.isConstant() &&
             node.getToken().getType().equals(BaseType.STRING)) {
-            
+
             String stringTokenValue = ((StringToken)node.getToken()).stringValue();
             if (stringTokenValue.equalsIgnoreCase("token::combinedValueToken")) {
                 // PropertyCombineSolver?
@@ -48,10 +48,10 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                 // PropertyTokenSolver?
             } else if (stringTokenValue.startsWith("token::")) {
                 stringTokenValue = stringTokenValue.replaceFirst("token::", "");
-                
+
                 // get solver
                 PropertyTokenSolver portValueSolver = (PropertyTokenSolver) _solver.findSolver(stringTokenValue);
-                
+
                 if (portValueSolver == null) {
                     // not found, treat as String
                     //TODO: treat as exception?
@@ -68,7 +68,7 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
             // PropertyConstraintSolver?
             } else if (stringTokenValue.startsWith("lattice::")) {
                 stringTokenValue = stringTokenValue.replaceFirst("lattice::", "");
-            
+
                 // get solver
                 PropertyConstraintSolver propertyConstraintSolver = (PropertyConstraintSolver) _solver.findSolver(stringTokenValue);
 
@@ -80,7 +80,7 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                     // get helper and property
                     Property property = propertyConstraintSolver.getProperty(_object);
                     if (property != null) {
-                        _evaluatedChildToken = new StringToken(property.toString());                            
+                        _evaluatedChildToken = new StringToken(property.toString());
                     } else {
                         _evaluatedChildToken = new StringToken(Token.NIL.toString());
                     }
@@ -88,7 +88,7 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
             }
         }
     }
-    
+
     private Object _object = null;
 
     private PropertySolver _solver;

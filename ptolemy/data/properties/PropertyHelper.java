@@ -54,18 +54,18 @@ import ptolemy.kernel.util.StringAttribute;
 ////PropertyHelper
 
 /**
-The base abstract class for a property helper. 
-A PropertyHelper defines constraints for a component in the model. 
-The model component can be an object of any Ptolemy class 
+The base abstract class for a property helper.
+A PropertyHelper defines constraints for a component in the model.
+The model component can be an object of any Ptolemy class
 (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A model component,
-in turn, may have one or multiple property-able objects. Each 
-constraint is relevant to a property-able object. For example, 
-the PropertyHelper associated with an actor may have each of its 
-IOPorts as property-able. 
+in turn, may have one or multiple property-able objects. Each
+constraint is relevant to a property-able object. For example,
+the PropertyHelper associated with an actor may have each of its
+IOPorts as property-able.
 
-<p>A property-able object is an object that can be annotated with 
-a Property object. Users can define different Property classes as 
-part of their use-case definition. 
+<p>A property-able object is an object that can be annotated with
+a Property object. Users can define different Property classes as
+part of their use-case definition.
 
 <p>Every PropertyHelper is associated a property
 solver. PropertyHelpers support hierarchical structuring. They may
@@ -91,7 +91,7 @@ public abstract class PropertyHelper {
 
     /**
      * Return the associated component object.
-     * 
+     *
      * @return The associated component.
      */
     public Object getComponent() {
@@ -100,9 +100,9 @@ public abstract class PropertyHelper {
 
     /**
      * Return the container entity for the specified ASTPtRootNode.
-     * 
+     *
      * @param node The specified ASTPtRootNode.
-     * 
+     *
      * @return The container entity for the specified ASTPtRootNode.
      */
     public Entity getContainerEntity(ASTPtRootNode node) {
@@ -120,7 +120,7 @@ public abstract class PropertyHelper {
      * return the concatenation of the prefix "Helper_" and the string
      * representation of the component object. This method does not
      * guarantee uniqueness.
-     * 
+     *
      * @return The name of the PropertyHelper.
      */
     public String getName() {
@@ -129,9 +129,9 @@ public abstract class PropertyHelper {
 
     /**
      * Return a list of property-able objects.
-     * 
+     *
      * @return a list of property-able objects.
-     * 
+     *
      * @exception IllegalActionException Thrown if the subclass throws it.
      */
     public abstract List<Object> getPropertyables()
@@ -140,11 +140,11 @@ public abstract class PropertyHelper {
     /**
      * Return a list of property-able objects that are of the
      * specified Class.
-     * 
+     *
      * @param filter The specified Class to filter the returned list.
      * @return A list of property-able objects that are of the specified
      * Class.
-     * @exception IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if
      * {@link #getPropertyables()} throws it.
      */
     public List<Object> getPropertyables(Class filter)
@@ -161,7 +161,7 @@ public abstract class PropertyHelper {
 
     /*
      * Return The PropertySolver that uses this helper.
-     * 
+     *
      * @return The PropertySolver that uses this helper.
      */
     public PropertySolver getSolver() {
@@ -173,7 +173,7 @@ public abstract class PropertyHelper {
      * cached states and the resolved properties of the property-able
      * objects. This call is recursive, so every sub-helper will be
      * reset and initialized after the call.
-     * 
+     *
      * @exception IllegalActionException Thrown if
      * {@link #getPropertyables()} throws it.
      */
@@ -240,7 +240,7 @@ public abstract class PropertyHelper {
 
     /**
      * Associate this PropertyHelper with the specified component.
-     * 
+     *
      * @param component The specified component.
      */
     public void setComponent(Object component) {
@@ -249,9 +249,9 @@ public abstract class PropertyHelper {
 
     /**
      * Set the property of specified object equal to the specified property.
-     * 
+     *
      * @param object The specified object.
-     * 
+     *
      * @param property The specified property.
      */
     public void setEquals(Object object, Property property) {
@@ -261,7 +261,7 @@ public abstract class PropertyHelper {
 
     /**
      * Return the string representation of the PropertyHelper.
-     * 
+     *
      * @return The string representation of the PropertyHelper.
      */
     public String toString() {
@@ -281,9 +281,9 @@ public abstract class PropertyHelper {
 
         /**
          * Construct a Channel with the specified port and channel number.
-         * 
+         *
          * @param portObject The specified port.
-         * 
+         *
          * @param channel The specified channel number.
          */
         public Channel(IOPort portObject, int channel) {
@@ -294,9 +294,9 @@ public abstract class PropertyHelper {
         /**
          * Return true if this channel is the same as the specified object;
          * otherwise, false.
-         * 
+         *
          * @param object The specified object.
-         * 
+         *
          * @return True if this channel is the same reference as the
          * specified object, otherwise false;
          */
@@ -308,7 +308,7 @@ public abstract class PropertyHelper {
 
         /**
          * Return the hash code for this channel.
-         * 
+         *
          * @return Hash code for this channel.
          */
         public int hashCode() {
@@ -319,7 +319,7 @@ public abstract class PropertyHelper {
 
         /**
          * Return the string representation of the channel.
-         * 
+         *
          * @return The string representation of the channel.
          */
         public String toString() {
@@ -343,7 +343,7 @@ public abstract class PropertyHelper {
     /**
      * Create an new ParseTreeAnnotationEvaluator that is tailored for the
      * use-case.
-     * 
+     *
      * @return A new ParseTreeAnnotationEvaluator.
      */
     protected abstract ParseTreeAnnotationEvaluator _annotationEvaluator();
@@ -351,7 +351,7 @@ public abstract class PropertyHelper {
     /**
      * Return the ParseTreeAnnotationEvaluator. This will creates a new
      * ParseTreeAnnotationEvaluator if it does not already exists.
-     * 
+     *
      * @return The ParseTreeAnnotationEvaluator.
      */
     private ParseTreeAnnotationEvaluator _getAnnotationEvaluator() {
@@ -365,7 +365,7 @@ public abstract class PropertyHelper {
      * Return the list of PropertyHelpers for ASTPtRootNodes. These
      * ASTPtRootNodes are nodes of the parse tree constructed from
      * parsing the expression of every property-able Attribute.
-     * 
+     *
      * @return The list of PropertyHelpers for ASTPtRootNodes.
      */
     protected List<PropertyHelper> _getASTNodeHelpers() {
@@ -390,7 +390,7 @@ public abstract class PropertyHelper {
 
     /**
      * Return the list of parse trees for all property-able Attributes.
-     * 
+     *
      * @return The list of ASTPtRootNodes.
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees() {
@@ -420,7 +420,7 @@ public abstract class PropertyHelper {
 
     /**
      * Return the list of property-able Attributes.
-     * 
+     *
      * @return The list of property-able Attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {
@@ -490,9 +490,9 @@ public abstract class PropertyHelper {
      * Return the list of receiving (down-stream) ports that are
      * connected to the specified port. This treats every port as an
      * opaque port.
-     * 
+     *
      * @param port The specified port.
-     * 
+     *
      * @return The list of receiving ports.
      */
     protected static List<IOPort> _getSinkPortList(IOPort port) {
@@ -516,9 +516,9 @@ public abstract class PropertyHelper {
      * Return the list of sending (up-stream) ports that are connected
      * to the specified port. This treats every port as an opaque
      * port.
-     * 
+     *
      * @param port The specified port.
-     * 
+     *
      * @return The list of sending ports.
      */
     protected static List<IOPort> _getSourcePortList(IOPort port) {
@@ -540,9 +540,9 @@ public abstract class PropertyHelper {
 
     /**
      * Return the list of sub-helpers.
-     * 
+     *
      * @return The list of sub-helpers.
-     * 
+     *
      * @exception IllegalActionException Thrown if the sub-class throws it.
      */
     protected abstract List<PropertyHelper> _getSubHelpers()
@@ -550,11 +550,11 @@ public abstract class PropertyHelper {
 
     /**
      * Return the ASTPtRootNode for the specified Attribute.
-     * 
+     *
      * @param attribute The specified attribute.
-     * 
+     *
      * @return The ASTPtRootNode for the specified Attribute.
-     * 
+     *
      * @exception IllegalActionException Thrown if
      * {#link ptolemy.data.properties.PropertySolver#getParseTree(Attribute)} throws it.
      */
@@ -566,9 +566,9 @@ public abstract class PropertyHelper {
     /**
      * Record the association between the specified ASTPtRootNode and the
      * specified Attribute.
-     * 
+     *
      * @param node The specified ASTPtRootNode.
-     * 
+     *
      * @param attribute The specified Attribute.
      */
     protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
@@ -589,7 +589,7 @@ public abstract class PropertyHelper {
 
     /*
      * Evaluate the expression of the specified AnnotationAttribute.
-     * 
+     *
      * @param annotation The specified AnnotationAttribute.
      * @exception IllegalActionException Thrown there is an error
      * parsing or evaluating the annotation.
@@ -618,9 +618,9 @@ public abstract class PropertyHelper {
 
     /*
      * Return the list of AnnotationAttributes specific to this use-case.
-     * 
+     *
      * @return The list of AnnotationAttributes.
-     * 
+     *
      * @exception IllegalActionException Thrown if there is a problem obtaining
      * the use-case identifier for an annotation attribute.
      */

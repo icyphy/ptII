@@ -47,11 +47,11 @@ import ptolemy.data.properties.lattice.TypeProperty;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Int extends LatticeProperty implements TypeProperty {
-        
+
     public Int(PropertyLattice lattice) {
         super(lattice);
     }
-    
+
     public Token getMaxValue() {
         return new LongToken((long)Math.pow(2, 31)-1);
     }

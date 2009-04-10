@@ -48,7 +48,7 @@ import javax.swing.undo.UndoManager;
  * <p> A convenience constructor has been provided such that a caller
  * can immediately have default shortcut key mappings for undo/redo
  * actions on the text component
- * 
+ *
  * @author Ben Leinfelder
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -57,7 +57,7 @@ import javax.swing.undo.UndoManager;
  * @author ben leinfelder
  */
 public class UndoListener implements UndoableEditListener {
-        
+
     /**
      * Construct an undo listener.
      * <p>This constructor allows simple usage without setting up key mapping
@@ -65,7 +65,7 @@ public class UndoListener implements UndoableEditListener {
      * provide a mechanism for invoking the undo and redo actions.)
      */
     public UndoListener() {}
-    
+
     /**
      * Construct an undo listener with default key mappings.
      * The default key mappings invoke the undo and redo actions on
@@ -83,7 +83,7 @@ public class UndoListener implements UndoableEditListener {
         // Set the mapping for shortcut keys;
         InputMap inputMap = textArea.getInputMap();
         ActionMap actionMap = textArea.getActionMap();
-        
+
         // Ctrl-z or equivalent to undo.
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
                              Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
@@ -95,8 +95,8 @@ public class UndoListener implements UndoableEditListener {
                         "redo");
         actionMap.put("redo", _redoAction);
     }
-        
-    
+
+
     /** Remember the edit and update the action state.
      *  @param event The event that occurred.
      */
@@ -105,7 +105,7 @@ public class UndoListener implements UndoableEditListener {
         _undoAction._updateUndoState();
         _redoAction._updateRedoState();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -117,7 +117,7 @@ public class UndoListener implements UndoableEditListener {
 
     /** The undo manager. */
     protected UndoManager _undo = new UndoManager();
-    
+
 
     /**
      * Perform the undo action.
@@ -149,7 +149,7 @@ public class UndoListener implements UndoableEditListener {
             }
         }
     }
-    
+
     /**
      * Peform the redo action.
      */

@@ -215,7 +215,7 @@ public class TimeKeeper {
      *  <P>
      *  This method is not synchronized so the calling method should be.
      *  @param receiver The receiver that is causing this method to be invoked.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public void sendOutNullTokens(DDEReceiver receiver) {
         Iterator ports = _actor.outputPortList().iterator();

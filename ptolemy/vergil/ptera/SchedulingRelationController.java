@@ -53,10 +53,10 @@ public class SchedulingRelationController extends TransitionController {
         super(controller);
         setEdgeRenderer(new SchedulingRelationRenderer());
     }
-    
+
     public void setConfiguration(Configuration configuration) {
             super.setConfiguration(configuration);
-            
+
             if (_lookInsideActionFactory != null) {
                     _menuFactory.removeMenuItemFactory(_lookInsideActionFactory);
             }

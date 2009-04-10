@@ -89,18 +89,18 @@ public class Test extends CCodeGeneratorHelper {
         if (isPrimitive(inputType)) {
             blockName = inputTypeString + blockName;
         } else {
-            if (multiChannel.length() == 0 && 
+            if (multiChannel.length() == 0 &&
                     (actor.input.getType() instanceof ArrayType)) {
                 blockName = "Array" + blockName;
             } else {
-                blockName = "Token" + blockName;                    
-            }                
+                blockName = "Token" + blockName;
+            }
             args.add(inputTypeString);
         }
-        
+
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            
+
             _codeStream.appendCodeBlock(blockName + multiChannel,
                     args);
         }

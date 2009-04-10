@@ -46,40 +46,40 @@ import ptolemy.domains.tdl.kernel.TDLModule;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * This execution strategy schedules events for a PTIDES platform considering that 
- * actors can preempt each other. 
- * 
+ * This execution strategy schedules events for a PTIDES platform considering that
+ * actors can preempt each other.
+ *
  * @author Patricia Derler
- * 
+ *
  */
 public class PreemptivePlatformExecutionStrategy extends
         PlatformExecutionStrategy {
     /**
      * Create new non-preemptive platform execution strategy.
-     * 
+     *
      * @param director
      *                required to display the schedule
      */
     public PreemptivePlatformExecutionStrategy(Director director) {
-        _director = director; 
+        _director = director;
     }
 
     /**
      * used to sort the set of events that are safe to fire so that the first
      * event in the list should be fired next.
-     * 
+     *
      * @author Patricia Derler
-     * 
+     *
      */
     private static class WCETComparator implements Comparator {
-        
-        protected WCETComparator(Time physicalTime) { 
-        } 
-        
+
+        protected WCETComparator(Time physicalTime) {
+        }
+
 
         /**
          * This compare method is used to sort all events.
-         * 
+         *
          * @param arg0
          *                First event.
          * @param arg1
@@ -90,10 +90,10 @@ public class PreemptivePlatformExecutionStrategy extends
         public int compare(Object arg0, Object arg1) {
             TimedEvent event1 = (TimedEvent) arg0;
             TimedEvent event2 = (TimedEvent) arg1;
-            Actor actor1 = event1.contents instanceof IOPort ? 
+            Actor actor1 = event1.contents instanceof IOPort ?
                     (Actor) ((IOPort) event1.contents).getContainer() :
                         (Actor) event1.contents;
-            Actor actor2 = event2.contents instanceof IOPort ? 
+            Actor actor2 = event2.contents instanceof IOPort ?
                     (Actor) ((IOPort) event2.contents).getContainer() :
                         (Actor) event2.contents;
             double wcet1 = PtidesActorProperties.getWCET(actor1);
@@ -120,12 +120,12 @@ public class PreemptivePlatformExecutionStrategy extends
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            
-           
+
+
 
             if (priority1 != priority2) {
                 return priority2 - priority1;
-            } 
+            }
             if (wcet1 > 0 && wcet2 == 0) {
                 return 1;
             } else if (wcet2 > 0 && wcet1 == 0) {
@@ -136,7 +136,7 @@ public class PreemptivePlatformExecutionStrategy extends
                     return -1;
                 else if (fixedWCET2 && !fixedWCET1)
                     return 1;
-                else 
+                else
                     return index1 - index2;
             } else { // wcet1 > 0 && wcet2 > 0
                 if (fireAtRT1 && fireAtRT2) {
@@ -172,12 +172,12 @@ public class PreemptivePlatformExecutionStrategy extends
      * next event that should be fired has to be fired at real time = model time
      * and real time is not there yet - the next event that could be fired has a
      * wcet > next real time event.
-     * 
+     *
      * @param actorsFiring
      *                Actors currently in execution.
      * @param eventsToFire
      *                Events that are safe to fire.
-     * @param nextRealTimeEvent Smallest time stamp of events that have to be 
+     * @param nextRealTimeEvent Smallest time stamp of events that have to be
      * fired at model time = real time.
      * @param physicalTime Current physical time of the model.
      * @return The next event that can be fired.
@@ -185,7 +185,7 @@ public class PreemptivePlatformExecutionStrategy extends
      *                 Thrown if an execution was missed.
      */
     public TimedEvent getNextEventToFire(Queue<TimedEvent> actorsFiring,
-            List<TimedEvent> eventsToFire, Time nextRealTimeEvent, 
+            List<TimedEvent> eventsToFire, Time nextRealTimeEvent,
             Time physicalTime) throws IllegalActionException {
         if (eventsToFire.size() == 0) {
             return null;
@@ -196,7 +196,7 @@ public class PreemptivePlatformExecutionStrategy extends
         while (index < eventsToFire.size()) {
             event = eventsToFire.get(index);
 
-            Actor actorToFire = event.contents instanceof IOPort ? 
+            Actor actorToFire = event.contents instanceof IOPort ?
                     (Actor) ((IOPort) event.contents).getContainer() :
                         (Actor) event.contents;
             if (actorsFiring.size() > 0
@@ -224,16 +224,16 @@ public class PreemptivePlatformExecutionStrategy extends
     }
 
     /**
-     * Determine whether the currently executing actor can be 
+     * Determine whether the currently executing actor can be
      * preempted by the new given actor.
      * @param currentlyExecuting Currently executing actor.
      * @param preemptingActor Actor that might preempt the currently executing actor.
      * @param preemptingActorTime Time stamp of the event that causes a firing of the
-     * possibly preempting actor. 
+     * possibly preempting actor.
      * @param physicalTime Current physical time.
      * @return True if the currently executing actor can be preempted.
      */
-    private boolean _actorPreempts(Actor currentlyExecuting, 
+    private boolean _actorPreempts(Actor currentlyExecuting,
             Actor preemptingActor,
             Time preemptingActorTime, Time physicalTime) {
         boolean fireAtRT1 = PtidesActorProperties.mustBeFiredAtRealTime(
@@ -254,5 +254,5 @@ public class PreemptivePlatformExecutionStrategy extends
         return false;
     }
 
-    
+
 }

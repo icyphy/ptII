@@ -60,46 +60,46 @@ public class Room extends DatabaseSelect {
     public Room(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         building = new StringParameter(this, "building");
         building.setExpression("Cory");
-        
+
         room = new StringParameter(this, "room");
         room.setExpression("545Q");
-        
+
         Parameter hide = new Parameter(trigger, "_hide");
         hide.setExpression("true");
-        
+
         columns.setVisibility(Settable.EXPERT);
         columns.setExpression(
                 "{bldg=string, room=string, lname=string, " +
                 "fnames=string, deskno=string, spaceid=string, classcd=string, " +
                 "sponsorlname=string, email=string, spacenotes=string, " +
                 "occupancy=string, departure=string}");
-        
+
         hide = new Parameter(columns.getPort(), "_hide");
         hide.setExpression("true");
 
         pattern.setVisibility(Settable.EXPERT);
         hide = new Parameter(pattern.getPort(), "_hide");
         hide.setExpression("true");
-        
+
         orderBy.setVisibility(Settable.EXPERT);
         orderBy.setExpression("deskno asc");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Name of the building. */
     public StringParameter building;
-    
+
     /** Name of the room. */
     public StringParameter room;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Read the occupants from the database and produce them on the output
      *  port.
      *  @throws IllegalActionException If the database query fails.

@@ -139,7 +139,7 @@ public class CaseDirector extends Director {
 
         if (defaultRefinement != null) {
             code.append(_INDENT2 + "} else {" + _eol);
-            CodeGeneratorHelper defaultHelper = 
+            CodeGeneratorHelper defaultHelper =
                 (CodeGeneratorHelper) _getHelper(defaultRefinement);
             code.append(defaultHelper.generateFireCode());
         }

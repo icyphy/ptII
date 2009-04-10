@@ -16,14 +16,14 @@ public class FirstTokenGotListener implements TokenGotListener, IOPortEventListe
     public FirstTokenGotListener(PropertyTokenSolver solver) {
         _solver = solver;
     }
-    
+
     public void tokenGotEvent(TokenGotEvent event) {
-        
+
         IOPort port = event.getPort();
         Token token = event.getToken();
         if (token == null) {
             token = event.getTokenArray()[0];
-        } 
+        }
 
         try {
             ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
@@ -31,17 +31,17 @@ public class FirstTokenGotListener implements TokenGotListener, IOPortEventListe
             assert false;
         }
     }
- 
+
     public void portEvent(IOPortEvent event) {
         if (event.getEventType() != IOPortEvent.GET_END) {
             return;
         }
-        
+
         IOPort port = event.getPort();
         Token token = event.getToken();
         if (token == null) {
             token = event.getTokenArray()[0];
-        } 
+        }
 
         try {
             ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));

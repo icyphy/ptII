@@ -80,7 +80,7 @@ public abstract class AbstractReceiver implements Receiver {
         throw new IllegalActionException(getContainer(), "Receiver class "
                 + getClass().getName() + " does not support clear().");
     }
-    
+
     /** Return a list with tokens that are currently in the receiver
      *  available for get() or getArray().
      *  @return A list of instances of Token.

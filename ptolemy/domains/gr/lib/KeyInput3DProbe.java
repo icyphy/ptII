@@ -68,7 +68,7 @@ public class KeyInput3DProbe extends KeyInput3D {
         if (_hasData) {
             keycode.send(0, new IntToken(1));
         } else {
-            keycode.send(0, new IntToken(0));            
+            keycode.send(0, new IntToken(0));
         }
     }
 

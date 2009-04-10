@@ -257,7 +257,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  of a boundary port, then return true; otherwise return false.
      *  @return True if this receiver is connected to the inside of a
      *   boundary port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
@@ -270,8 +270,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
-     * @throws InvalidStateException 
+     * @throws IllegalActionException
+     * @throws InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
@@ -285,7 +285,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
@@ -294,7 +294,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** This class serves as an example of a ConsumerReceiver and
      *  hence this method returns true.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
@@ -680,17 +680,17 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         // method. Otherwise you will miss notifies and cause deadlocks.
         Object lock = _getDirector();
         synchronized (lock) {
-            // FindBugs: Multithreaded correctness 
+            // FindBugs: Multithreaded correctness
             //  [M M Wa] Wait not in loop [WA_NOT_IN_LOOP]
-            // Actually this wait does not need to be in a 
+            // Actually this wait does not need to be in a
             // loop since callers of this method will put this method
             // in a loop.
-                
-            // FindBugs: Multithreaded correctness 
+
+            // FindBugs: Multithreaded correctness
             // [M M UW] Unconditional wait [UW_UNCOND_WAIT]
             // Actually this wait does not to have a conditional
             // wait since the callers of this method are doing this.
-                
+
             _checkFlags();
             lock.wait();
             _checkFlags();

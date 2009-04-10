@@ -373,7 +373,7 @@ public class EditorDropTarget extends DropTarget {
                     alternateGetMomlActionAttribute = (StringAttribute) config
                             .getAttribute("_alternateGetMomlAction");
                 }
-                
+
                 boolean appendGroupAuto = true;
                 if (alternateGetMomlActionAttribute != null) {
                     String alternateGetMomlClassName =
@@ -416,7 +416,7 @@ public class EditorDropTarget extends DropTarget {
                     result = dropObj.exportMoML(name);
                     moml.append(result);
                 }
-                
+
                 if (appendGroupAuto) {
                     moml.insert(0, "<group name=\"auto\">\n");
                     moml.append("<" + rootNodeName + " name=\"" + name +

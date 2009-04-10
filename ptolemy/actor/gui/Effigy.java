@@ -187,12 +187,12 @@ public class Effigy extends CompositeEntity {
                                 _modifiableURI = file.canWrite();
                             } else {
                                 // FIXME: we need a better way to check if
-                                // a URL is writable.  
+                                // a URL is writable.
 
                                 // Sigh.  If the filename has spaces in it,
                                 // then the URL will have %20s.  However,
                                 // the file does not have %20s.
-                                // See 
+                                // See
                                 // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=153
                                 path = StringUtilities.substitute(
                                         path, "%20", " ");

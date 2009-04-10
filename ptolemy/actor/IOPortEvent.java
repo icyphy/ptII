@@ -73,7 +73,7 @@ public class IOPortEvent implements DebugEvent {
     }
 
     /** Create a new port event with the given parameters.  This
-     *  constructor is used when a token is sent or sent inside, 
+     *  constructor is used when a token is sent or sent inside,
      *  received or recevied inside.
      *  @param port The IOPort where the event occured
      *  @param event The type of event.
@@ -99,12 +99,12 @@ public class IOPortEvent implements DebugEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   
+
     /** Return the port that caused this event.
      * @return The port.
      */
     public NamedObj getSource() {
-        return _port; 
+        return _port;
     }
 
     /** Return the channel on which the token was sent or received.
@@ -136,7 +136,7 @@ public class IOPortEvent implements DebugEvent {
         return _port;
     }
 
-    /** Return the token that was sent or received by the IOPort.  
+    /** Return the token that was sent or received by the IOPort.
      *  Return null if the event was for an array of tokens. To get
      *  the tokens that were sent use getTokenArray() instead.  The
      *  condition (getVectorLength == IOPortEvent.SINGLETOKEN) is true
@@ -188,19 +188,19 @@ public class IOPortEvent implements DebugEvent {
     }
 
     /** An event corresponding with a token being sent. */
-    public final static int SEND = 1;   
+    public final static int SEND = 1;
 
     /** An event corresponding with the beginning of a token being received. */
-    public final static int GET_BEGIN = 2;   
+    public final static int GET_BEGIN = 2;
 
     /** An event corresponding with the end of a token being received. */
     public final static int GET_END = 3;
 
     /** The token was broadcast on all channels. */
-    public final static int ALLCHANNELS = -1;   
+    public final static int ALLCHANNELS = -1;
 
     /** A single token related event in getVectorLength(). */
-    public final static int SINGLETOKEN = -1;  
+    public final static int SINGLETOKEN = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -211,7 +211,7 @@ public class IOPortEvent implements DebugEvent {
     // The IOPort that was activated.
     private IOPort _port;
 
-    // The event type. 
+    // The event type.
     // FIXME: we should use a type safe enumeration here.
     private int _event;
 

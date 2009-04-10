@@ -179,8 +179,8 @@ public class FSMViewerGraphController extends RunnableGraphController {
         // to handle both State and Transition.  We can't associate more
         // than one with the hot key, so that one handles both.
         _transitionController.addHotKeys(jgraph);
-        
-        _attributeController.addHotKeys(jgraph);        
+
+        _attributeController.addHotKeys(jgraph);
     }
 
     /** Create the controllers for nodes in this graph.

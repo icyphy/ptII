@@ -79,7 +79,7 @@ public abstract class AbstractGraphModel implements GraphModel {
                 // We only handle events that are actually added
                 // by _addEvent.
                 if (_addEvent(e)) {
-                    
+
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             // _getEvent will remove the event from the queue
@@ -101,7 +101,7 @@ public abstract class AbstractGraphModel implements GraphModel {
     }
 
 
-    
+
     /**
      * Remove the given listener from this graph model.
      * The listener will no longer be notified of changes
@@ -126,7 +126,7 @@ public abstract class AbstractGraphModel implements GraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**Add a GraphEvent to be processed. These elements will be put
      * in a queue if necessary (some repaints are not necessary).
      * @param e The GraphEvent to be processed.
@@ -145,29 +145,29 @@ public abstract class AbstractGraphModel implements GraphModel {
             return true;
         } else {
             return false;
-        }        
-    }    
-    
+        }
+    }
+
     /**Get a GraphEvent to process it. If there are no such events null
      * will be returned.
      * @return The GraphEvent to process.
-     */    
+     */
     private synchronized GraphEvent _getEvent() {
         if (!structuralChangeEvents.isEmpty()) {
             return structuralChangeEvents.removeFirst();
         }
         if (!otherEvents.isEmpty()) {
             return otherEvents.removeFirst();
-        }        
+        }
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // A queue to keep track of all GraphEvents that have a lot of structural changes
     // and hence will lead to a complete repaint of the model.
     private LinkedList<GraphEvent> structuralChangeEvents = new LinkedList<GraphEvent>();
-    
+
     // A queue to keep track of all other GraphEvents.
     private LinkedList<GraphEvent> otherEvents = new LinkedList<GraphEvent>();
 }

@@ -47,11 +47,11 @@ import ptolemy.data.properties.lattice.TypeProperty;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LongLong extends LatticeProperty implements TypeProperty {
-        
+
     public LongLong(PropertyLattice lattice) {
         super(lattice);
     }
-    
+
     public Token getMaxValue() {
         return new LongToken((long)Math.pow(2, 63)-1);
     }

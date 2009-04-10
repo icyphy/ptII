@@ -57,7 +57,7 @@ public class AnalyzeModel extends GTEvent {
     public AnalyzeModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _analyzerWrapper = new AnalyzerAttribute(this, "_analyzerWrapper");
     }
 
@@ -71,7 +71,7 @@ public class AnalyzeModel extends GTEvent {
 
         CompositeEntity entity = getModelParameter().getModel();
 
-        _analyzerWrapper.analyze(entity);        
+        _analyzerWrapper.analyze(entity);
 
         getModelParameter().setModel(entity);
 

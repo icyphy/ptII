@@ -36,8 +36,8 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// UpdateAnnotations
 
-/** 
- Update the annotations. 
+/**
+ Update the annotations.
  <p>When this class is registered with the MoMLParser.addMoMLFilter()
  method, it will cause MoMLParser to add a update annotations from
  the older style:
@@ -101,7 +101,7 @@ public class UpdateAnnotations implements MoMLFilter {
             return null;
         }
 
-        if (attributeName.equals("name")) { 
+        if (attributeName.equals("name")) {
             if (attributeValue.startsWith("annotation")
                     || (attributeValue.contains("annotation")
                         && attributeValue.contains(":"))) {
@@ -137,7 +137,7 @@ public class UpdateAnnotations implements MoMLFilter {
                     && attributeName.equals("value")) {
                 // Found the location
                 _currentlyProcessingLocation = false;
-            }                
+            }
         }
         if (_currentlyProcessingAnnotation
                 && container != null
@@ -201,7 +201,7 @@ public class UpdateAnnotations implements MoMLFilter {
                 // ptolemy.domains.fsm.modal.ModalController cannot be cast to ptolemy.kernel.util.Attribute
                 return;
             }
-            
+
             if (_textAttribute == null) {
                 //System.out.println("UpdateAnnotation: create TextAttribute 1");
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
@@ -285,7 +285,7 @@ public class UpdateAnnotations implements MoMLFilter {
             location.setLocation(xyLocation);
 
             location.validate();
-        }        
+        }
 
         if ((container != null)
                 && container.getFullName().equals(_currentAnnotationFullName)
@@ -295,7 +295,7 @@ public class UpdateAnnotations implements MoMLFilter {
             //System.out.println("UpdateAnnotation: closing up " + _textAttribute.getContainer().getFullName() + "\n" + _textAttribute.exportMoML());
             //NamedObj top = _textAttribute.toplevel();
             Attribute currentAttribute = (Attribute) container;
-            //String name = currentAttribute.getName(); 
+            //String name = currentAttribute.getName();
             currentAttribute.setContainer(null);
             MoMLParser.setModified(true);
             _reset();

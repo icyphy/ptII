@@ -138,7 +138,7 @@ public class ModalDirector extends FSMDirector {
         newObject._disabledActors = new HashSet();
         return newObject;
     }
-    
+
     /** Fire the modal model.
      *  If there is a preemptive transition enabled, execute its choice
      *  actions (outputActions) and fire its refinement. Otherwise,

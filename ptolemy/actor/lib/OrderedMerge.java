@@ -83,7 +83,7 @@ public class OrderedMerge extends TypedAtomicActor {
     public OrderedMerge(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         eliminateDuplicates = new Parameter(this, "eliminateDuplicates");
         eliminateDuplicates.setTypeEquals(BaseType.BOOLEAN);
         eliminateDuplicates.setExpression("false");
@@ -92,7 +92,7 @@ public class OrderedMerge extends TypedAtomicActor {
         inputB = new TypedIOPort(this, "inputB", true, false);
         inputB.setTypeSameAs(inputA);
         inputA.setTypeAtMost(BaseType.SCALAR);
-        
+
         // For the benefit of the DDF director, this actor sets
         // consumption rate values.
         inputA_tokenConsumptionRate = new Parameter(inputA,
@@ -124,7 +124,7 @@ public class OrderedMerge extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** If true, eliminate duplicate tokens in the output stream.
      *  This is a boolean that defaults to false.
      */
@@ -140,7 +140,7 @@ public class OrderedMerge extends TypedAtomicActor {
      *  the same type as the first input port.
      */
     public TypedIOPort inputB;
-    
+
     /** The token consumption rate for <i>inputB</i>. */
     public Parameter inputB_tokenConsumptionRate;
 
@@ -203,7 +203,7 @@ public class OrderedMerge extends TypedAtomicActor {
                 if (_nextPort == inputA) {
                     _tentativeNextPort = inputB;
                 } else {
-                    _tentativeNextPort = inputA;                    
+                    _tentativeNextPort = inputA;
                 }
             } else {
                 // Logic is different if we have to eliminate duplicates.
@@ -227,7 +227,7 @@ public class OrderedMerge extends TypedAtomicActor {
                             selectedA.send(0, BooleanToken.FALSE);
                         }
                         // Read from the same port again, so leave
-                        // _tentativeNextPort alone.                        
+                        // _tentativeNextPort alone.
                     } else if ((readToken.equals(_lastProduced))) {
                         // Token is the same as last produced.
                         // Do not send an output and leave everything the same
@@ -241,11 +241,11 @@ public class OrderedMerge extends TypedAtomicActor {
                             // Produce the smaller output.
                             output.send(0, readToken);
                             _tentativeLastProduced = readToken;
-        
+
                             if (_debugging) {
                                 _debug("Sent output token with value " + readToken);
                             }
-        
+
                             // Token was just read from _nextPort.
                             if (_nextPort == inputA) {
                                 selectedA.send(0, BooleanToken.TRUE);
@@ -266,10 +266,10 @@ public class OrderedMerge extends TypedAtomicActor {
                             } else {
                                 selectedA.send(0, BooleanToken.FALSE);
                             }
-        
+
                             _tentativeRecordedToken = readToken;
                             _tentativeReadFromA = (_nextPort == inputA);
-        
+
                             // Swap ports.
                             if (_nextPort == inputA) {
                                 _tentativeNextPort = inputB;
@@ -283,11 +283,11 @@ public class OrderedMerge extends TypedAtomicActor {
                     if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
                         // Produce the smaller output.
                         output.send(0, readToken);
-    
+
                         if (_debugging) {
                             _debug("Sent output token with value " + readToken);
                         }
-    
+
                         // Token was just read from _nextPort.
                         if (_nextPort == inputA) {
                             selectedA.send(0, BooleanToken.TRUE);
@@ -300,16 +300,16 @@ public class OrderedMerge extends TypedAtomicActor {
                         if (_debugging) {
                             _debug("Sent output token with value " + _recordedToken);
                         }
-    
+
                         if (_readFromA) {
                             selectedA.send(0, BooleanToken.TRUE);
                         } else {
                             selectedA.send(0, BooleanToken.FALSE);
                         }
-    
+
                         _tentativeRecordedToken = readToken;
                         _tentativeReadFromA = (_nextPort == inputA);
-    
+
                         // Swap ports.
                         if (_nextPort == inputA) {
                             _tentativeNextPort = inputB;
@@ -344,7 +344,7 @@ public class OrderedMerge extends TypedAtomicActor {
         _readFromA = _tentativeReadFromA;
         _nextPort = _tentativeNextPort;
         _lastProduced = _tentativeLastProduced;
-        
+
         if (_nextPort == inputA) {
             inputA_tokenConsumptionRate.setToken(_one);
             inputB_tokenConsumptionRate.setToken(_zero);
@@ -377,7 +377,7 @@ public class OrderedMerge extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The last produced token. Used to eliminate duplicates. */
     private ScalarToken _lastProduced;
 
@@ -404,7 +404,7 @@ public class OrderedMerge extends TypedAtomicActor {
 
     /** The tentative port from which to read next. */
     private TypedIOPort _tentativeNextPort = null;
-    
+
     /** A final static IntToken with value 0. */
     private final static IntToken _zero = new IntToken(0);
 }

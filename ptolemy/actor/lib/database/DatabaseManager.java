@@ -84,7 +84,7 @@ import ptolemy.util.StringUtilities;
  a ":". More information can be found at
  <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/sql/DriverManager.html">
  http://java.sun.com/j2se/1.5.0/docs/api/java/sql/DriverManager.html</a>.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3
@@ -117,7 +117,7 @@ public class DatabaseManager extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
+
     /** JDBC connection string to access the database.
      *  This always starts with "jdbc:driver", where the specific
      *  driver chosen determines how to interpret fields in the
@@ -136,13 +136,13 @@ public class DatabaseManager extends TypedAtomicActor {
      *  where "space" is the name of the database.
      */
     public StringParameter database;
-    
+
     /** User name. */
     public StringParameter userName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this base class,
      *  the method does nothing.  In derived classes, this method may
@@ -162,7 +162,7 @@ public class DatabaseManager extends TypedAtomicActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Close the connection to the database, if one is open.
      *  @throws IllegalActionException If closing the connection fails.
      */
@@ -178,7 +178,7 @@ public class DatabaseManager extends TypedAtomicActor {
             _connection = null;
         }
     }
-    
+
     /** Execute the specified SQL statement and return the result as
      *  a string.
      *  Note that if there is no connection to the database, this
@@ -221,7 +221,7 @@ public class DatabaseManager extends TypedAtomicActor {
                         columnNames[c] = columnName;
                     }
                     rows.add(columnNames);
-                    
+
                     // Next add each of the rows.
                     while (resultSet.next()) {
                         String[] row = new String[columnCount];
@@ -292,7 +292,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 return null;
             }
             statement = connection.prepareStatement(sql);
-            
+
             // Perform the query.
             ResultSet rset = statement.executeQuery();
             ResultSetMetaData metaData = rset.getMetaData();
@@ -330,7 +330,7 @@ public class DatabaseManager extends TypedAtomicActor {
         }
         return result;
     }
-    
+
     /** Execute the SQL update given in the specified string
      *  and return the number of affected rows or zero if the update
      *  does not return anything.
@@ -377,7 +377,7 @@ public class DatabaseManager extends TypedAtomicActor {
                     "Update failed.");
         }
     }
-    
+
     /** Find a database manager with the specified name for the specified
      *  actor.
      *  @param name Database manager name.
@@ -406,7 +406,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  Otherwise, use the parameter values and prompt for a password to
      *  open a new connection.
      *  @return A connection to the database, or null if the user cancels.
-     *  @throws IllegalActionException If 
+     *  @throws IllegalActionException If
      */
     public Connection getConnection() throws IllegalActionException {
         if (_connection != null) {
@@ -522,10 +522,10 @@ public class DatabaseManager extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The currently open connection. */
     private Connection _connection;
-    
+
     /** The password last entered. */
     private char[] _password;
 }

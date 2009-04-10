@@ -100,7 +100,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
-    public NondeterministicMerge(Workspace workspace) 
+    public NondeterministicMerge(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         // Added for the sake of Kepler's KAR handling, which needs this
         // constructor to instantiate composite actors.
@@ -168,7 +168,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
              *          that width inference might happen multiple times (and definitely
              *          will for certain type of models).
              */
-            
+
             Manager manager = getManager();
             if ((manager != null)
                     && (manager.getState() != Manager.IDLE)
@@ -178,25 +178,25 @@ public class NondeterministicMerge extends TypedCompositeActor {
             }
         }
     }
-    
-    /** Initialize this actor.     
+
+    /** Initialize this actor.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         _reinitializeInnerActors();
-        
+
         // super.initialize(); will initialize the director of this
         // composite actor (the MergeDirector), which will initialize the
         // newly created actors
         super.initialize();
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Construct a NondeterministicMerge. */
-    private void _constructor() 
+    private void _constructor()
             throws NameDuplicationException, IllegalActionException {
 
         input = new TypedIOPort(this, "input", true, false);
@@ -220,7 +220,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
 
         /*PNDirector director = */new MergeDirector(this, "director");
     }
-    
+
 
     /** Create the contained actors to handle the inputs.
      */
@@ -272,7 +272,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
             }
         }
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -376,7 +376,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
-        
+
         /** Queue an initialization request with the manager.
          *  The specified actor will be initialized at an appropriate time,
          *  between iterations, by calling its preinitialize() and initialize()
@@ -394,7 +394,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  composite actor (the MergeDirector), which will initialize the
          *  newly created actors. Hence we don't need to do it again here.
          *  @param actor The actor to initialize.
-         */        
+         */
         public void requestInitialization(Actor actor) {
         }
 

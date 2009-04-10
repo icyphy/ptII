@@ -54,24 +54,24 @@ public class Integrator extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Integrator(PropertyConstraintSolver solver, 
+    public Integrator(PropertyConstraintSolver solver,
             ptolemy.domains.ct.lib.Integrator actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();                
+        _lattice = (Lattice) getSolver().getLattice();
      }
 
-    public List<Inequality> constraintList() 
+    public List<Inequality> constraintList()
             throws IllegalActionException {
         /* always set output of feedback loop to FALSE if we want to
          * interpret the use-case as const/nonconst. By adding partial
          * evaluation a less conservative behavior could be implemented.
-         */       
-        setAtLeast(_actor.output, _lattice.FALSE);        
+         */
+        setAtLeast(_actor.output, _lattice.FALSE);
 
         return super.constraintList();
     }
