@@ -31,7 +31,7 @@
 
 ME =		ptolemy/codegen/kernel
 
-DIRS = 		test
+DIRS = 		userMacro test 
 
 # Root of the Java directory
 ROOT =		../../..
@@ -44,7 +44,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =    $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	userMacro/userMacro.jar
 
 JSRCS = \
 	ActorCodeGenerator.java \
@@ -70,12 +75,14 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CodeGenerator$$Code.class' \
 	'CodeGenerator$$1.class' \
 	'CodeGenerator$$TargetFilter.class' \
 	'CodeGeneratorHelper$$1.class' \
 	'CodeGeneratorHelper$$Channel.class' \
 	'CodeGeneratorHelper$$HelperScope.class' \
 	'CodeGeneratorHelper$$VariableScope.class' \
+	'CodeStream$$1.class' \
 	'CodeStream$$CodeBlock.class' \
 	'CodeStream$$CodeBlockTable.class' \
 	'CodeStream$$Signature.class'

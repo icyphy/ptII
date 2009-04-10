@@ -96,6 +96,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSALLJAR) \
 	'ConnectorInteractor$$1.class' \
 	'ConnectorManipulator$$TargetHighlighter.class' \
+	'PerimeterTarget$$1.class' \
 	'StraightTerminal$$1.class' \
 	'StraightTerminal$$ConnectSite.class'
  

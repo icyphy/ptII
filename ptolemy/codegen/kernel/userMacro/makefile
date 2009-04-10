@@ -1,10 +1,10 @@
-# Makefile polymorphic types
+# Makefile for the Ptolemy Classic style code generation user macros
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2005-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/codegen/java/kernel/type/polymorphic
+ME =		ptolemy/codegen/kernel/userMacro
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,25 +43,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	polymorphic
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	kernel
+PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AlphabetizeOperation.java
+	car.java \
+	cdr.java
 
-OTHER_FILES_TO_BE_JARED = \
-	add.j \
-	convert.j \
-	divide.j \
-	equals.j \
-	multiply.j \
-	negate.j \
-	print.j \
-	subtract.j \
-	toString.j
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -71,6 +62,15 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CodeGenerator$$1.class' \
+	'CodeGenerator$$TargetFilter.class' \
+	'CodeGeneratorHelper$$1.class' \
+	'CodeGeneratorHelper$$Channel.class' \
+	'CodeGeneratorHelper$$HelperScope.class' \
+	'CodeGeneratorHelper$$VariableScope.class' \
+	'CodeStream$$CodeBlock.class' \
+	'CodeStream$$CodeBlockTable.class' \
+	'CodeStream$$Signature.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

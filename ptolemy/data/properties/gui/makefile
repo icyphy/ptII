@@ -47,8 +47,10 @@ PTPACKAGE = 	gui
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	PropertyDisplayActions.java \
 	PropertyDisplayGUIFactory.java \
 	PropertySolverGUIFactory.java
+
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -59,9 +61,17 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'PropertyDisplayActions$$ClearDisplay.class' \
+	'PropertyDisplayActions$$ClearProperty.class' \
+	'PropertyDisplayActions$$ConfigureHighlightAction.class' \
+	'PropertyDisplayActions$$EditHighlightDialog.class' \
+	'PropertyDisplayActions$$HighlightProperty.class' \
+	'PropertyDisplayActions$$HighlighterController.class' \
+	'PropertyDisplayActions$$ShowProperty.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
+
 
 
 all: jclass

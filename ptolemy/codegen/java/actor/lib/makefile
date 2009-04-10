@@ -180,6 +180,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MovingAverage.j \
 	MultiplyDivide.j \
 	Publisher.j \
+	PublisherTest.j \
 	Pulse.j \
 	Ramp.j \
 	RandomSource.j \
@@ -190,6 +191,7 @@ OTHER_FILES_TO_BE_JARED = \
 	SubscriptionAggregator.j \
 	Test.j \
 	TrigFunction.j \
+	UnaryMathFunction.j \
 	Uniform.j \
 	VectorAssembler.j \
 	VectorDisassembler.j
@@ -287,7 +289,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = colt conversions logic string
+MISC_FILES = colt conversions embeddedJava hoc test logic string
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

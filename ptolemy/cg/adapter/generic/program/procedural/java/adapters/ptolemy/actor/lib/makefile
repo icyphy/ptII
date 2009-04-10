@@ -60,7 +60,8 @@ JSRCS = \
 	Ramp.java \
 	Test.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS:%.java=%.j)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

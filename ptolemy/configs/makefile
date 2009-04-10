@@ -84,6 +84,8 @@ OTHER_FILES_TO_BE_JARED = \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
 	ptIIplanet.gif \
+	pteraEffigyFactory.xml \
+	pteraTableauFactory.xml \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
@@ -100,6 +102,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityParameters.xml \
 	utilityPortParameter.xml \
 	utilityPriority.xml \
+	utilityPteraModalModel.xml \
 	utilityRequireVersion.xml \
 	utilityScopeExtender.xml \
 	utilitySharedParameter.xml \

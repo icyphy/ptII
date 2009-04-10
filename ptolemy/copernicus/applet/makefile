@@ -71,7 +71,9 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	cg \
-	doc
+	doc \
+	'JarSigner$$SignatureFile$$Block.class' \
+	'JarSigner$$SignatureFile.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

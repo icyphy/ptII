@@ -72,6 +72,7 @@ JSRCS = \
 	PropertyHelper.java \
 	PropertyableNamedObj.java \
 	PropertyableObject.java \
+	PropertyMoMLHandler.java \
 	PropertyRemover.java \
 	PropertyResolutionException.java \
 	PropertySolverBase.java \

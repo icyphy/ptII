@@ -72,7 +72,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'ContinuousIntegrator$$IntegratorCausalityInterface.class'
+	'ContinuousIntegrator$$IntegratorCausalityInterface.class' \
+	'HybridModalDirector$$ActorsFiredIterator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

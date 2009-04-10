@@ -1,10 +1,10 @@
-# Makefile polymorphic types
+# Makefile for the Ptolemy Classic style code generation 
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2005-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/codegen/java/kernel/type/polymorphic
+ME =		ptolemy/codegen/c/kernel/type/parameterizedTemplates
 
 DIRS =
 
@@ -43,25 +43,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	polymorphic
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	type
+PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AlphabetizeOperation.java
+	InstantiateFromTemplate.java
 
 OTHER_FILES_TO_BE_JARED = \
-	add.j \
-	convert.j \
-	divide.j \
-	equals.j \
-	multiply.j \
-	negate.j \
-	print.j \
-	subtract.j \
-	toString.j
+	ArrayTemplate.c 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -75,7 +66,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

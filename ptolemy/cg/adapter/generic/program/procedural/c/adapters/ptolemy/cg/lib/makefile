@@ -71,7 +71,8 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	'EmbeddedCodeActor$$EmbeddedActor.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

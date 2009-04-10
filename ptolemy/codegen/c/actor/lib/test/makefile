@@ -69,6 +69,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
 	auto \
+	BooleanSwitch.xml \
 	Exit.xml \
 	RampNecessaryFiles.c \
 	TestFailure2Channel.xml \
