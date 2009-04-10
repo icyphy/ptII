@@ -56,6 +56,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -185,6 +186,13 @@ public class ERGController extends ModalController {
         try {
             workspace.getReadAccess();
             if (_executiveDirectorVersion != workspace.getVersion()) {
+                NamedObj container = getContainer();
+                if (!(container instanceof ERGModalModel)) {
+                    _executiveDirector = null;
+                    _executiveDirectorVersion = workspace.getVersion();
+                    return _executiveDirector;
+                }
+
                 ERGModalModel modalModel = (ERGModalModel) getContainer();
                 if (modalModel.getController() == this) {
                     _executiveDirector = super.getDirector();
