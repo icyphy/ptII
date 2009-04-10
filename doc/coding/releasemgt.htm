@@ -250,6 +250,33 @@ or
 
 <li> Consider fixing other Eclipse warnings.
 
+<li> Use Eclipse Cleanup to clean the code
+  <ol>
+  <li>Set up cleanup by going to the preferences window in Eclipse:
+    <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
+    <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+  <li><code>Java</code> | <code>Code Style</code> | <code>Clean Up</code>
+  <li><code>New</code>, then type in a Profile name of "Ptolemy II" then hit OK
+  <li>In the "Profile 'Ptolemy II'" window:
+     <ul>
+       <li>Code Style: select "Use blocks in if/while/for/do statements" 
+       <li>Unnecessary Code: select "Remove unused private members"
+       <br>select "Remove unused local variables"
+       <li>Missing code: <b>unselect</b> "Add missing Annotations"
+       <li>Code Organizing: select "Format source code"
+        <br>select "Remove Trailing whitespace"
+        <br>select "Organize trailing whitespace"
+        <br>select "Sort members"
+        <br>select "Sort all members"
+      </ul>
+   <li>Save the cleanup settings by closing the Cleanup preferences window
+   <li>In the Preferences window, go to <code>Java</code> | <code>Appearance</code> |
+      <code>Members Sort Order</code> and change the order to
+      <pre>
+         Constructors
+         Methods
+      </pre>
+</ol>
 
 <li> Consider using 
 <a href="http://gcc.gnu.org/java/">GCJ: The GNU Compiler for Java</a>
