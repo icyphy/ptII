@@ -95,6 +95,7 @@ OPTIONAL_JSRCS = \
 	PtalonRecognizer.java \
 	PtalonLexer.java \
 	PtalonPopulator.java \
+	PtalonPopulatorTokenTypes.java \
 	PtalonScopeChecker.java \
 	PtalonTokenTypes.java
 
