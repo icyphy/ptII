@@ -36,7 +36,7 @@ ME =		ptolemy/cg/kernel/generic/program
 DIRS =		procedural
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
