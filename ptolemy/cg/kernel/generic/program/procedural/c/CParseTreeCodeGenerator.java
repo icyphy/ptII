@@ -80,7 +80,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
 
-
 ////ParseTreeEvaluator
 
 /**
@@ -108,13 +107,14 @@ import ptolemy.util.StringUtilities;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
-ParseTreeCodeGenerator {
+        ParseTreeCodeGenerator {
 
     GenericCodeGenerator _generator;
 
-    public CParseTreeCodeGenerator (GenericCodeGenerator generator) {
+    public CParseTreeCodeGenerator(GenericCodeGenerator generator) {
         _generator = generator;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -124,7 +124,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         return evaluateParseTree(node, null);
     }
 
@@ -163,7 +163,7 @@ ParseTreeCodeGenerator {
      *   evaluation.
      */
     public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _scope = scope;
         _trace = new StringBuffer();
         _depth = 0;
@@ -258,7 +258,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -308,16 +308,17 @@ ParseTreeCodeGenerator {
             if (valueType.equals(elementType)) {
                 result += ", " + childCode[i];
             } else {
-                result += ", $convert_" + _generator.codeGenType(valueType) + "_"
-                + _generator.codeGenType(elementType) + "(" + childCode[i] + ")";
+                result += ", $convert_" + _generator.codeGenType(valueType)
+                        + "_" + _generator.codeGenType(elementType) + "("
+                        + childCode[i] + ")";
             }
         }
-
 
         if (elementType instanceof ArrayType) {
             _childCode = "$new(" + "Array(" + result + "))";
         } else {
-            _childCode = "$new(" + _generator.codeGenType(elementType) + "Array(" + result + "))";
+            _childCode = "$new(" + _generator.codeGenType(elementType)
+                    + "Array(" + result + "))";
 
         }
 
@@ -340,7 +341,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -352,7 +353,7 @@ ParseTreeCodeGenerator {
         int numChildren = node.jjtGetNumChildren();
 
         _assert(numChildren > 0, node,
-        "The number of child nodes must be greater than zero");
+                "The number of child nodes must be greater than zero");
 
         //_fireCode.append("(");
         String result = "";
@@ -451,7 +452,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         String result = "";
 
@@ -546,10 +547,10 @@ ParseTreeCodeGenerator {
                 // throw exception
                 throw new IllegalActionException(
                         "Cannot index or apply arguments to token of type \""
-                        + value.getType() + "\" with value \""
-                        + value.toString() + "\". Index or apply "
-                        + "arguments only works with ArrayTokens, "
-                        + "MatrixTokens and FunctionTokens.");
+                                + value.getType() + "\" with value \""
+                                + value.toString() + "\". Index or apply "
+                                + "arguments only works with ArrayTokens, "
+                                + "MatrixTokens and FunctionTokens.");
             }
 
             return;
@@ -576,7 +577,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ASTPtRootNode cloneTree;
 
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
@@ -631,7 +632,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -647,7 +648,7 @@ ParseTreeCodeGenerator {
             // tree.
             throw new InternalErrorException(
                     "PtParser error: a functional-if node does not have "
-                    + "three children in the parse tree.");
+                            + "three children in the parse tree.");
         }
 
         String result = "";
@@ -730,7 +731,7 @@ ParseTreeCodeGenerator {
             } else if (_evaluatedChildToken instanceof LongToken) {
                 //_fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
                 _childCode = ((LongToken) _evaluatedChildToken).longValue()
-                + "LL";
+                        + "LL";
             } else {
                 //_fireCode.append(_evaluatedChildToken.toString());
                 _childCode = _evaluatedChildToken.toString();
@@ -781,7 +782,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -798,7 +799,7 @@ ParseTreeCodeGenerator {
         // which point no more children are evaluated.
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-        "The number of child nodes must be greater than zero");
+                "The number of child nodes must be greater than zero");
 
         _evaluateChild(node, 0);
 
@@ -815,7 +816,7 @@ ParseTreeCodeGenerator {
          */
         // Make sure that exactly one of AND or OR is set.
         _assert(node.isLogicalAnd() ^ node.isLogicalOr(), node,
-        "Invalid operation");
+                "Invalid operation");
 
         // Perform both the short-circuit AND and short-circuit OR in
         // one piece of code.
@@ -866,7 +867,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -898,9 +899,8 @@ ParseTreeCodeGenerator {
                     Type valueType = tokens[index].getType();
 
                     if (_generator.isPrimitive(valueType)) {
-                        result += "$new("
-                            + _generator.codeGenType(valueType)
-                            + "(" + _childCode + "))";
+                        result += "$new(" + _generator.codeGenType(valueType)
+                                + "(" + _childCode + "))";
                     }
 
                     if (!elementType.equals(valueType)) { // find max type
@@ -944,13 +944,13 @@ ParseTreeCodeGenerator {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                                                                           .getRowCount()
-                                                                           * columnCount];
+                        .getRowCount()
+                        * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
-                    .createSequence(tokens[3 * i], tokens[(3 * i) + 1],
-                            columnCount);
+                            .createSequence(tokens[3 * i], tokens[(3 * i) + 1],
+                                    columnCount);
                     System.arraycopy(newTokens, 0, matrixTokens, columnCount
                             * i, columnCount);
                 }
@@ -961,7 +961,7 @@ ParseTreeCodeGenerator {
                 // FIXME: better detail message that includes the thing
                 // we were parsing.
                 throw new IllegalActionException(null, null, ex,
-                "Matrix Token construction failed.");
+                        "Matrix Token construction failed.");
             }
         }
 
@@ -980,7 +980,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         //_fireCode.append(node.getMethodName() + "(");
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
@@ -1027,7 +1027,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitPowerNode(ASTPtPowerNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -1041,7 +1041,7 @@ ParseTreeCodeGenerator {
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-        "The number of child nodes must be greater than zero");
+                "The number of child nodes must be greater than zero");
 
         //int startIndex = _childCode.length();
 
@@ -1059,7 +1059,7 @@ ParseTreeCodeGenerator {
             //_fireCode.append(", ");
 
             //ptolemy.data.Token token = tokens[i];
-            /*ptolemy.data.Token token =*/ _evaluateChild(node, i);
+            /*ptolemy.data.Token token =*/_evaluateChild(node, i);
 
             result = "pow(" + result + ", " + _childCode;
 
@@ -1105,7 +1105,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitProductNode(ASTPtProductNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -1117,10 +1117,10 @@ ParseTreeCodeGenerator {
         List lexicalTokenList = node.getLexicalTokenList();
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-        "The number of child nodes must be greater than zero");
+                "The number of child nodes must be greater than zero");
         _assert(numChildren == (lexicalTokenList.size() + 1), node,
                 "The number of child nodes is "
-                + "not equal to number of operators plus one");
+                        + "not equal to number of operators plus one");
 
         //_fireCode.append("(");
         String result = "";
@@ -1140,8 +1140,8 @@ ParseTreeCodeGenerator {
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 if (type != null) {
                     result = "$multiply_" + _generator.codeGenType(resultType)
-                    + "_" + _generator.codeGenType(type) + "(" + result
-                    + ", " + _childCode + ")";
+                            + "_" + _generator.codeGenType(type) + "(" + result
+                            + ", " + _childCode + ")";
 
                     resultType = resultType.multiply(type);
 
@@ -1151,8 +1151,8 @@ ParseTreeCodeGenerator {
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
                     result = "$divide_" + _generator.codeGenType(resultType)
-                    + "_" + _generator.codeGenType(type) + "(" + result
-                    + ", " + _childCode + ")";
+                            + "_" + _generator.codeGenType(type) + "(" + result
+                            + ", " + _childCode + ")";
 
                     resultType = resultType.divide(type);
 
@@ -1162,7 +1162,6 @@ ParseTreeCodeGenerator {
             } else if (operator.kind == PtParserConstants.MODULO) {
                 result += "%" + _childCode;
             }
-
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 //childToken = childToken.multiply(nextToken);
@@ -1191,7 +1190,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             return;
@@ -1209,7 +1208,7 @@ ParseTreeCodeGenerator {
 
         _assert(node.getFieldNames().size() == numChildren, node,
                 "The number of labels and values does not "
-                + "match in parsing a record expression.");
+                        + "match in parsing a record expression.");
 
         String[] labels = (String[]) node.getFieldNames().toArray(
                 new String[numChildren]);
@@ -1224,7 +1223,7 @@ ParseTreeCodeGenerator {
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -1274,14 +1273,14 @@ ParseTreeCodeGenerator {
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             //resultToken = leftToken.isEqualTo(rightToken).not();
         } else { /*
-                              if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
-                              throw new IllegalActionException("The " + operator.image
-                              + " operator can only be applied between scalars.");
-                              }
+                                     if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
+                                     throw new IllegalActionException("The " + operator.image
+                                     + " operator can only be applied between scalars.");
+                                     }
 
-                              ScalarToken leftScalar = (ScalarToken) leftToken;
-                              ScalarToken rightScalar = (ScalarToken) rightToken;
-         */
+                                     ScalarToken leftScalar = (ScalarToken) leftToken;
+                                     ScalarToken rightScalar = (ScalarToken) rightToken;
+                */
 
             if (operator.kind == PtParserConstants.GTE) {
                 //result = leftScalar.isLessThan(rightScalar).not();
@@ -1311,7 +1310,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitShiftNode(ASTPtShiftNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -1330,7 +1329,7 @@ ParseTreeCodeGenerator {
 
         //_fireCode.append("(");
 
-        /*ptolemy.data.Token token =*/ _evaluateChild(node, 0);
+        /*ptolemy.data.Token token =*/_evaluateChild(node, 0);
         String result = _childCode;
 
         if (operator.kind == PtParserConstants.SHL) {
@@ -1344,7 +1343,7 @@ ParseTreeCodeGenerator {
             result += " >>> ";
         }
 
-        /*ptolemy.data.Token bitsToken =*/ _evaluateChild(node, 1);
+        /*ptolemy.data.Token bitsToken =*/_evaluateChild(node, 1);
         ptolemy.data.Token resultToken = null;
 
         //_fireCode.append(")");
@@ -1409,22 +1408,23 @@ ParseTreeCodeGenerator {
         List lexicalTokenList = node.getLexicalTokenList();
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-        "The number of child nodes must be greater than zero");
+                "The number of child nodes must be greater than zero");
         _assert(numChildren == (lexicalTokenList.size() + 1), node,
                 "The number of child nodes is "
-                + "not equal to number of operators plus one");
+                        + "not equal to number of operators plus one");
 
         //ptolemy.data.Token result = tokens[0];
         String result = "";
 
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
 
-        String childType = _generator.codeGenType(((ASTPtRootNode) node.jjtGetChild(0)).getType());
+        String childType = _generator.codeGenType(((ASTPtRootNode) node
+                .jjtGetChild(0)).getType());
 
         String nodeType = _generator.codeGenType(node.getType());
 
         result += "$convert_" + childType + "_" + nodeType + "(" + _childCode
-        + ")";
+                + ")";
 
         for (int i = 1; i < numChildren; i++) {
             childType = _generator.codeGenType(((ASTPtRootNode) node
@@ -1435,12 +1435,12 @@ ParseTreeCodeGenerator {
             //ptolemy.data.Token nextToken = tokens[i];
             if (operator.kind == PtParserConstants.PLUS) {
                 result = "$add_" + nodeType + "_" + childType + "(" + result
-                + ", ";
+                        + ", ";
 
                 //childToken = childToken.add(_evaluateChild(node, i));
             } else if (operator.kind == PtParserConstants.MINUS) {
                 result = "$subtract_" + nodeType + "_" + childType + "("
-                + result + ", ";
+                        + result + ", ";
 
                 //childToken = childToken.subtract(_evaluateChild(node, i));
             } else {
@@ -1465,7 +1465,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitUnaryNode(ASTPtUnaryNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             //_fireCode.append(_evaluatedChildToken.toString());
@@ -1475,7 +1475,7 @@ ParseTreeCodeGenerator {
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         _assert(node.jjtGetNumChildren() == 1, node,
-        "Unary node must have exactly one child!");
+                "Unary node must have exactly one child!");
 
         String result = "";
 
@@ -1553,7 +1553,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token[] _evaluateAllChildren(ASTPtRootNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
@@ -1602,7 +1602,7 @@ ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
         _traceEnter(child);
         child.visit(this);
@@ -1725,14 +1725,13 @@ ParseTreeCodeGenerator {
     /** The wrapup() method code. */
     protected StringBuffer _wrapupCode = new StringBuffer();
 
-    private String _specializeArgument(String function,
-            int argumentIndex, Type argumentType, String argumentCode) {
+    private String _specializeArgument(String function, int argumentIndex,
+            Type argumentType, String argumentCode) {
 
         if (function.equals("$arrayRepeat") && argumentIndex == 1) {
             if (_generator.isPrimitive(argumentType)) {
-                return "$new(" +
-                _generator.codeGenType(argumentType)
-                + "(" + argumentCode + "))";
+                return "$new(" + _generator.codeGenType(argumentType) + "("
+                        + argumentCode + "))";
             }
         }
         return argumentCode;
