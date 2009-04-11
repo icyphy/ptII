@@ -178,26 +178,125 @@ COMPACKAGES = \
 	com.JLex \
 	com.microstar.xml
 
-# Java packages for copernicus 
+# CG Codegen packages
+# cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g'
+CGPACKAGES = \
+	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
+	ptolemy.cg.adapter.generic.program.html.adapters.ptolemy.actor \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.cg.lib \
+	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
+	ptolemy.cg.gui \
+	ptolemy.cg.kernel.generic \
+	ptolemy.cg.kernel.generic.program \
+	ptolemy.cg.kernel.generic.program.html \
+	ptolemy.cg.kernel.generic.program.procedural \
+	ptolemy.cg.kernel.generic.program.procedural.c \
+	ptolemy.cg.kernel.generic.program.procedural.java \
+	ptolemy.cg.lib
 
-# Don't include copernicus.jhdl because it requires byucc.jhdl from JHDL.jar
-#JHDLPACKAGE = 		ptolemy.copernicus.jhdl
+# Codegen packages.  Use this command to update:
+# cd $PTII/ptolemy/codegen; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/codegen" dir}' | sed 's@/@.@g'
+CODEGENPACKAGES = \
+	ptolemy.codegen.actor \
+	ptolemy.codegen.c.actor \
+	ptolemy.codegen.c.actor.lib \
+	ptolemy.codegen.c.actor.lib.colt \
+	ptolemy.codegen.c.actor.lib.comm \
+	ptolemy.codegen.c.actor.lib.conversions \
+	ptolemy.codegen.c.actor.lib.gui \
+	ptolemy.codegen.c.actor.lib.hoc \
+	ptolemy.codegen.c.actor.lib.io \
+	ptolemy.codegen.c.actor.lib.javasound \
+	ptolemy.codegen.c.actor.lib.jni \
+	ptolemy.codegen.c.actor.lib.logic \
+	ptolemy.codegen.c.actor.lib.string \
+	ptolemy.codegen.c.actor.lib.test \
+	ptolemy.codegen.c.actor.lib.tutorial \
+	ptolemy.codegen.c.actor.parameters \
+	ptolemy.codegen.c.actor.sched \
+	ptolemy.codegen.c.domains.fsm.kernel \
+	ptolemy.codegen.c.domains.fsm.modal \
+	ptolemy.codegen.c.domains.giotto.kernel \
+	ptolemy.codegen.c.domains.hdf.kernel \
+	ptolemy.codegen.c.domains.pn.kernel \
+	ptolemy.codegen.c.domains.ptides.kernel \
+	ptolemy.codegen.c.domains.sdf.kernel \
+	ptolemy.codegen.c.domains.sdf.lib \
+	ptolemy.codegen.c.domains.sr.kernel \
+	ptolemy.codegen.c.domains.sr.lib \
+	ptolemy.codegen.c.domains.sr.lib.gui \
+	ptolemy.codegen.c.kernel \
+	ptolemy.codegen.c.kernel.type.parameterizedTemplates \
+	ptolemy.codegen.c.kernel.type.polymorphic \
+	ptolemy.codegen.c.targets.arduino \
+	ptolemy.codegen.c.targets.luminary \
+	ptolemy.codegen.c.targets.luminary.domains.ptides.kernel \
+	ptolemy.codegen.c.targets.mpi \
+	ptolemy.codegen.c.targets.mpi.actor \
+	ptolemy.codegen.c.targets.mpi.domains.pn.kernel \
+	ptolemy.codegen.c.targets.openRTOS \
+	ptolemy.codegen.c.targets.openRTOS.actor.lib \
+	ptolemy.codegen.c.targets.openRTOS.actor.lib.gui \
+	ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel \
+	ptolemy.codegen.c.targets.openRTOS.domains.pn.kernel \
+	ptolemy.codegen.c.targets.posix \
+	ptolemy.codegen.c.targets.posix.actor.lib.io \
+	ptolemy.codegen.c.targets.pret \
+	ptolemy.codegen.c.targets.pret.actor.lib.gui \
+	ptolemy.codegen.c.targets.pret.domains.giotto.kernel \
+	ptolemy.codegen.c.targets.win32 \
+	ptolemy.codegen.c.targets.win32.actor.lib.io \
+	ptolemy.codegen.c.targets.win32.domains.pn.kernel \
+	ptolemy.codegen.c.vergil.actor.lib \
+	ptolemy.codegen.chaco.kernel \
+	ptolemy.codegen.gui \
+	ptolemy.codegen.java.actor \
+	ptolemy.codegen.java.actor.lib \
+	ptolemy.codegen.java.actor.lib.colt \
+	ptolemy.codegen.java.actor.lib.conversions \
+	ptolemy.codegen.java.actor.lib.embeddedJava \
+	ptolemy.codegen.java.actor.lib.hoc \
+	ptolemy.codegen.java.actor.lib.logic \
+	ptolemy.codegen.java.actor.lib.string \
+	ptolemy.codegen.java.actor.parameters \
+	ptolemy.codegen.java.actor.sched \
+	ptolemy.codegen.java.domains.sdf.kernel \
+	ptolemy.codegen.java.domains.sdf.lib \
+	ptolemy.codegen.java.kernel \
+	ptolemy.codegen.java.kernel.type.polymorphic \
+	ptolemy.codegen.kernel \
+	ptolemy.codegen.kernel.test \
+	ptolemy.codegen.kernel.test.actor \
+	ptolemy.codegen.kernel.test.domains.sdf.kernel \
+	ptolemy.codegen.kernel.userMacro \
+	ptolemy.codegen.rtmaude.actor \
+	ptolemy.codegen.rtmaude.actor.lib \
+	ptolemy.codegen.rtmaude.domains.de.kernel \
+	ptolemy.codegen.rtmaude.kernel \
+	ptolemy.codegen.util \
+	ptolemy.codegen.vhdl.actor \
+	ptolemy.codegen.vhdl.actor.lib \
+	ptolemy.codegen.vhdl.actor.lib.gui \
+	ptolemy.codegen.vhdl.actor.lib.vhdl \
+	ptolemy.codegen.vhdl.domains.sdf.kernel \
+	ptolemy.codegen.vhdl.domains.sr.kernel \
+	ptolemy.codegen.vhdl.kernel \
 
-# Javadoc can't deal with packages that end with 'java', see
-# http://developer.java.sun.com/developer/bugParade/bugs/4507380.html
-# So, we expand the ptolemy.copernicus.java package
+# Java packages for copernicus
 COPERNICUSPACKAGES = \
 	ptolemy.copernicus.applet \
 	ptolemy.copernicus.gui \
 	ptolemy.copernicus.kernel \
-	$(JHDLPACKAGE) \
-	ptolemy.copernicus.shallow
+	ptolemy.copernicus.shallow \
 
-#	ptolemy.copernicus.c
-#	ptolemy/copernicus/java/*.java
-
-# Packages used by data/properties
-# Use this command:
+# Packages used by data/properties 
+# Use this command to update:
 # cd $PTII/ptolemy/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
 DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties \
@@ -220,10 +319,15 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.exampleSetLattice.actor.lib \
 	ptolemy.data.properties.lattice.exampleSetLattice.data.expr \
 	ptolemy.data.properties.lattice.exampleSetLattice.kernel \
+	ptolemy.data.properties.lattice.imageOntology \
+	ptolemy.data.properties.lattice.imageOntology.actor \
+	ptolemy.data.properties.lattice.imageOntology.actor.lib.image \
+	ptolemy.data.properties.lattice.imageOntology.kernel \
 	ptolemy.data.properties.lattice.logicalAND \
 	ptolemy.data.properties.lattice.logicalAND.actor \
 	ptolemy.data.properties.lattice.logicalAND.actor.lib \
 	ptolemy.data.properties.lattice.logicalAND.data.expr \
+	ptolemy.data.properties.lattice.logicalAND.domains.ct.lib \
 	ptolemy.data.properties.lattice.logicalAND.domains.fsm.kernel \
 	ptolemy.data.properties.lattice.logicalAND.domains.sdf.lib \
 	ptolemy.data.properties.lattice.logicalAND.kernel \
@@ -251,10 +355,7 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.token.firstValueToken.actor \
 	ptolemy.data.properties.token.firstValueToken.domains.fsm.kernel \
 	ptolemy.data.properties.token.firstValueToken.kernel \
-	ptolemy.data.properties.util \
-	ptolemy.domains.properties \
-	ptolemy.domains.properties.lib \
-	ptolemy.vergil.properties
+	ptolemy.data.properties.util
 
 # Packages used by Diva
 DIVAPACKAGES = \
@@ -414,8 +515,13 @@ PTBACKTRACK_PACKAGES = \
 #			ptolemy.backtrack.automatic.ptolemy.actor.lib \
 #			ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib \
 
-# All the Java 1.4 packages
-ALL1_4PACKAGES = \
+# This variable can be used by the user to add custom packages.
+USER_PACKAGES =
+
+# All the packages
+ALLPACKAGES = \
+	$(CGPACKAGES) \
+	$(CODEGENPACKAGES) \
 	$(COMPACKAGES) \
 	$(COPERNICUSPACKAGES) \
 	$(DATAPROPERTIESPACKAGES) \
@@ -440,6 +546,8 @@ ALL1_4PACKAGES = \
 	$(THALESPACKAGES) \
 	$(VIPTOSPACKAGES) \
 	$(VISUALSENSEPACKAGES) \
+	$(PTPTALON_PACKAGES) \
+	$(USER_PACKAGES) \
 	doc.doclets \
 	jni \
 	jni.gui \
@@ -460,6 +568,10 @@ ALL1_4PACKAGES = \
 	ptolemy.actor.lib.vhdl \
 	ptolemy.actor.sched \
 	ptolemy.actor.util \
+	ptolemy.caltrop \
+	ptolemy.caltrop.actors \
+	ptolemy.caltrop.ddi \
+	ptolemy.caltrop.util \
 	ptolemy.codegen.c.actor \
 	ptolemy.codegen.c.actor.lib \
 	ptolemy.codegen.c.actor.lib.comm \
@@ -542,20 +654,6 @@ ALL1_4PACKAGES = \
 	ptolemy.vergil.tree \
 	ptolemy.vergil.unit \
 	util.testsuite
-
-# This variable can be used by the user to add custom packages.
-USER_PACKAGES =
-
-# All the packages
-ALLPACKAGES = \
-	$(ALL1_4PACKAGES) \
-	$(PTPTALON_PACKAGES) \
-	$(USER_PACKAGES) \
-	ptolemy.caltrop \
-	ptolemy.caltrop.actors \
-	ptolemy.caltrop.ddi \
-	ptolemy.caltrop.util
-
 
 # All the Vergil "full"  generated documentation
 FULL_DOCS = \
