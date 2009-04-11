@@ -221,7 +221,7 @@ and run make.  See the top of the file for the appropriate make command.
 
 cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
 alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
-gif | grep -v .cvsignore | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
+gif | grep -v .svn | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
 grep "does not contain a Copyright" /tmp/copycheck | grep -v README
 </pre>
 
@@ -267,9 +267,7 @@ or
        <li>Code Organizing: select "Format source code"
         <br>select "Remove Trailing whitespace"
         <br>select "Organize trailing whitespace"
-        <br>select "Sort members"
-        <br>select "Sort all members"
-      </ul>
+     </ul>
    <li>Save the cleanup settings by closing the Cleanup preferences window
    <li>In the Preferences window, go to <code>Java</code> | <code>Appearance</code> |
       <code>Members Sort Order</code> and change the order to
@@ -297,19 +295,7 @@ grep error: gcj.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n
 to build Windows installers.  Building the Windows installer is fairly complex,
 below are some things to be aware of
   <menu>
-  <li> The Windows installer includes source files.  These sources
-  come from $PTII/adm/gen-<i>N.M</i>/ptII<i>N.M</i>.src.jar.  Obviously,
-  this jar file should be created on a Windows machine so the end
-  of line characters are Windows end of line characters.
-  </menu>
-
-
-<li> Look for files with bad permissions
-<pre>
-cat /tmp/f | egrep "(.java$|.htm$|.html$|makefile$|.tcl$|.xml$)" | xargs ls -l | awk '{ if ($1 ~ /x/) print $NF}' | grep -v chkjava > /tmp/execs
-cat /tmp/execs | xargs svn proplist
-cat /tmp/execs | xargs svn propdel svn:executable
-svn commit -m "Made regular .java files and other files not executable" `cat /tmp/execs`
+  <li> The Windows installer includes source files.  These sourcesosvn commit -m "Made regular .java files and other files not executable" `cat /tmp/execs`
 </pre>
 
 <li> Tag the tree as the release tree and create a branch

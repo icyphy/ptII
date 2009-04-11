@@ -11,8 +11,8 @@
 # The first thing to do is to generate a list of new files
 # by running diff between the old release and the new release
 
-oldVersion=6.0.2
-newVersion=7.0.devel
+oldVersion=7.0.1
+newVersion=7.2.devel
 
 diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs
@@ -29,7 +29,13 @@ if [ ! -f $newJavaFiles ]; then
     egrep "^Only in ${PTII}/adm/dists/ptII${newVersion}/" $diffOutput |
         egrep '.java$' |
         sed -e 's/Only in //' -e 's@: @/@' |
-	grep -v DEThreadActor.java > $newJavaFiles 
+	grep -v DEThreadActor.java |
+	sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@'> $newJavaFiles 
+    (cd $PTII/adm/dists/ptII$oldVersion; $PTII/adm/bin/ptIItxtfiles) | egrep '.java$' | sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@' | sort > /tmp/fixsince.oldJavaFiles
+    (cd $PTII/adm/dists/ptII$newVersion; $PTII/adm/bin/ptIItxtfiles) | egrep '.java$' | sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@' | sort > /tmp/fixsince.newFiles
+    comm -13 /tmp/fixsince.oldjavaFiles /tmp/fixsince.newFiles >> $newJavaFiles
+    sort $newJavaFiles | uniq | egrep -v "^com" > /tmp/fixsince.newJavaFiles.s
+    mv /tmp/fixsince.newJavaFiles.s $newJavaFiles
 fi
 ls -l $newJavaFiles
 
@@ -49,27 +55,49 @@ do
     echo "$file does not have an @since tag"
     awk '{  if ($0 ~ /@version/) {
 	       print $0
-	       print "@since Ptolemy II 6.1"
+	       print "@since Ptolemy II 7.1"
 	    } else {
 	       print $0
             }
          }' <$file >$tmpfile
+    grep @since $file >& /dev/null 
+    retval=$?
+    if [ $retval = 1 ]; then
+      echo "$file still does not have an @since tag, trying to add one after @version"
+      awk '{  if ($0 ~ /@author/) {
+	       print $0
+	       printf ("@version %cId%c\n", "$", "$")
+	       print "@since Ptolemy II 7.1"
+	    } else {
+	       print $0
+            }
+         }' <$file >$tmpfile
+     fi
+
   else
     echo $file  
-    sed -e 's/@since.*/@since Ptolemy II 6.1/' \
+    sed -e 's/@since.*/@since Ptolemy II 7.1/' \
 	$file > $tmpfile
 
   fi
-  sed -e 's/Copyright (c) 200[0-9]-200[0-9]/Copyright (c) 2008/' \
-      -e 's/Copyright (c) 199[0-9]-200[0-9]/Copyright (c) 2008/' \
-      -e 's/Copyright (c) 200[0-6]/Copyright (c) 2008/' \
-	< $tmpfile > $tmpfile2
-    diff $file $tmpfile2
-
+  # Don't perform copyright substitution on files that have been copied around. 
+#   echo $file | egrep "domains/modal|moml/unit|vergil/modal" >& /dev/null
+#   retval=$?
+#   if [ $retval = 1 ]; then
+#       echo "Updating copyright on $file"
+#       sed -e 's/Copyright (c) 200[0-9]-200[0-9]/Copyright (c) 2009/' \
+#           -e 's/Copyright (c) 199[0-9]-200[0-9]/Copyright (c) 2009/' \
+#           -e 's/Copyright (c) 200[0-7]/Copyright (c) 2009/' \
+# 	   < $tmpfile > $tmpfile2
+#        diff $file $tmpfile2
+#   else
+#       echo "Not updating copyright on $file"
+       diff $file $tmpfile
+#  fi
   # If everything looks alright, edit /tmp//fixsince.newJavaFiles and
   # remove the leading adm/dists/ptIIX.Y.devel and then uncomment the
   # lines below and rerun in $PTII
    
-  #cp $tmpfile2 $file
+  cp $tmpfile $file
   #cvs commit -m "This file is new since Ptolemy 6.1, so the copyright and @since tag should reflect that." $file
 done
