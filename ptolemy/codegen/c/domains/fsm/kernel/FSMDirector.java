@@ -36,7 +36,6 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.data.BooleanToken;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -235,10 +234,10 @@ public class FSMDirector extends Director {
        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
        ptolemy.domains.fsm.kernel.FSMActor controller = director
                .getController();
-       FSMActor controllerHelper = (FSMActor) _getHelper(controller);
+       //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
-       boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-               .booleanValue();
+       //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+       //        .booleanValue();
 
        int depth = 1;
 

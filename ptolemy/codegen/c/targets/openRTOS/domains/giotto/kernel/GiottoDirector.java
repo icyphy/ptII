@@ -38,7 +38,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -366,12 +365,12 @@ public class GiottoDirector extends
         System.out
                 .println("generatePostFireCode from openRTOS giotto director called here");
 
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
-                .getContainer()).deepEntityList()) {
+        //for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
+        //        .getContainer()).deepEntityList()) {
 
             //for each of the actors generate postfire code
             //code.append(generatePostFireCode(actor)); 
-        }
+        //}
 
         return code.toString();
     }
@@ -387,12 +386,11 @@ public class GiottoDirector extends
         code.append(_generateBlockCode("preinitBlock"));
         HashSet<Integer> frequencies = _getAllFrequencies();
 
-        StringBuffer frequencyTCode = new StringBuffer();
+        new StringBuffer();
 
         ArrayList args = new ArrayList();
         args.add("");
 
-        int currentPriorityLevel = 1;
         //if(_isTopGiottoDirector())
         //{
         args.set(0, "$actorSymbol()_scheduler");
@@ -575,16 +573,6 @@ public class GiottoDirector extends
         }
 
         return variableDeclarations.toString();
-    }
-
-    private String _generateVariableDeclarations(Actor actor) {
-        // TODO Auto-generated method stub
-        StringBuffer code = new StringBuffer();
-        // input variables
-        // output variables
-
-        return code.toString();
-
     }
 
     protected String _generateBlockCode(String blockName, List args)
@@ -927,7 +915,7 @@ public class GiottoDirector extends
                 j = 0;
                 IOPort port = (IOPort) inputPorts.next();
                 System.out.println("this port's name is " + port.getFullName());
-                Receiver[][] channelArray = port.getReceivers();
+                port.getReceivers();
                 // port.
                 List<IOPort> cip = port.sourcePortList();
                 if (cip.size() > 0) {
@@ -941,7 +929,7 @@ public class GiottoDirector extends
                     System.out.println(" ");
                 }
 
-                List<IOPort> connectedPorts = port.deepConnectedOutPortList();
+                port.deepConnectedOutPortList();
                 List<IOPort> connectToMe = port.sourcePortList();//port.connectedPortList(); //connectedPortList();
                 System.out.println("connectToMe size is " + connectToMe.size());
                 //System.out.println("before remove double connections");
@@ -1048,118 +1036,45 @@ public class GiottoDirector extends
         return code.toString();
     }
 
-    private List<IOPort> _removeDoubleConnections(List<IOPort> connectToMe) {
-        List<IOPort> result = new ArrayList();
-        IOPort ptA;
-        IOPort ptB;
-        int j = 0;
-        int i = 0;
-        boolean isConnected = false;
-        Iterator lIterator = connectToMe.iterator();
-        while (lIterator.hasNext()) {
-            ptA = (IOPort) lIterator.next();
-            i++;
-            j = i;
-            isConnected = false;
-            while (j < connectToMe.size()) {
-                ptB = connectToMe.get(j);
-                isConnected = _isConnected(ptA, ptB);
-                if (isConnected) {
-                    break;
-                } else {
-                    j++;
-                }
-            }
-            if (!isConnected) {
-                result.add(ptA);
-            }
-        }
-
-        return result;
-    }
-
-    private boolean _isConnected(IOPort portA, IOPort portB) {
-        // TODO Auto-generated method stub
-        boolean toReturn = false;
-        List<IOPort> portAPorts = portA.connectedPortList();
-        List<IOPort> portBPorts = portB.connectedPortList();
-        String name;
-        Iterator portItr = portAPorts.iterator();
-        System.out.print(portA.getFullName() + " is connected to : ");
-        while (portItr.hasNext()) {
-
-            name = ((IOPort) portItr.next()).getFullName();
-            System.out.print(name + " ");
-            if (name.equals(portB.getFullName())) {
-                toReturn = true;
-                break;
-            }
-        }
-        if (toReturn == false) {
-            System.out.println(" ");
-
-            portItr = portBPorts.iterator();
-
-            System.out.print(portB.getFullName() + " is connected to : ");
-            while (portItr.hasNext()) {
-
-                name = ((IOPort) portItr.next()).getFullName();
-                System.out.print(name + " ");
-                if (name.equals(portA.getFullName())) {
-                    toReturn = true;
-                    break;
-                }
-            }
-
-        }
-        System.out.println(" ");
-        System.out.println("PORTS " + portA.getFullName() + " "
-                + portB.getFullName() + " are " + toReturn + " connected");
-        return toReturn;
-    }
-
-    /** Generate PORT variables. A PORT allows control over the value read
-      *  A port is an efficient way to handle double buffering
-      *  @param none
-      *  @return port variables
-      */
-    private String _generatePortVariableDeclarations(Actor actor)
-            throws IllegalActionException {
-
-        System.out.println("get Port Variable Declarations called");
-        StringBuffer code = new StringBuffer();
-
-        Iterator outputPorts = actor.outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-            //if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
-            if (true) {
-                code.append("static " + targetType(outputPort.getType()) + " "
-                        + generateName(outputPort) + "_0_PORT");
-
-                if (outputPort.isMultiport()) {
-                    code.append("[" + outputPort.getWidthInside() + "]");
-                }
-
-                int bufferSize = getBufferSize(outputPort);
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            } else {
-                System.out.println("didn't match if");
-            }
-
-            // return "should define port here from CCodeGEneratorHelper";
-        }
-        //System.out.println("about to return: "+code.toString());
-        return code.toString();
-    }
+//    private boolean _isConnected(IOPort portA, IOPort portB) {
+//        // TODO Auto-generated method stub
+//        boolean toReturn = false;
+//        List<IOPort> portAPorts = portA.connectedPortList();
+//        List<IOPort> portBPorts = portB.connectedPortList();
+//        String name;
+//        Iterator portItr = portAPorts.iterator();
+//        System.out.print(portA.getFullName() + " is connected to : ");
+//        while (portItr.hasNext()) {
+//
+//            name = ((IOPort) portItr.next()).getFullName();
+//            System.out.print(name + " ");
+//            if (name.equals(portB.getFullName())) {
+//                toReturn = true;
+//                break;
+//            }
+//        }
+//        if (toReturn == false) {
+//            System.out.println(" ");
+//
+//            portItr = portBPorts.iterator();
+//
+//            System.out.print(portB.getFullName() + " is connected to : ");
+//            while (portItr.hasNext()) {
+//
+//                name = ((IOPort) portItr.next()).getFullName();
+//                System.out.print(name + " ");
+//                if (name.equals(portA.getFullName())) {
+//                    toReturn = true;
+//                    break;
+//                }
+//            }
+//
+//        }
+//        System.out.println(" ");
+//        System.out.println("PORTS " + portA.getFullName() + " "
+//                + portB.getFullName() + " are " + toReturn + " connected");
+//        return toReturn;
+//    }
 
     private ArrayList<String>[] _getActorFrequencyTable()
             throws IllegalActionException {
@@ -1217,18 +1132,6 @@ public class GiottoDirector extends
         actorFullName = actorFullName.replace('.', '_');
         actorFullName = actorFullName.replace(' ', '_');
         return actorFullName;
-    }
-
-    /**
-     * Generate the thread function name for a given actor.
-     * 
-     * @param actor
-     *            The given actor.
-     * @return A unique label for the actor thread function.
-     */
-    private String _getActorThreadLabel(Actor actor) {
-        return CodeGeneratorHelper.generateName((NamedObj) actor)
-                + "_ThreadFunction";
     }
 
     private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
@@ -1352,18 +1255,6 @@ public class GiottoDirector extends
         }
 
         return X;
-    }
-
-    private void _generateTransferInputsCode(IOPort source, StringBuffer code)
-            throws IllegalActionException {
-        //super.generateTransferInputsCode(source, code);
-
-    }
-
-    private void _generateTransferOutputsCode(IOPort source, StringBuffer code)
-            throws IllegalActionException {
-        super.generateTransferOutputsCode(source, code);
-
     }
 
     /**

@@ -1504,7 +1504,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String packageName = generatorPackage.stringValue();
 
-        Class helperClass = null;
         Class componentClass = object.getClass();
         String className = componentClass.getName();
 
@@ -1934,7 +1933,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    private String generateGlobalCode() throws IllegalActionException {
+    /*private String generateGlobalCode() throws IllegalActionException {
         // Global code should be independent of other code.
         StringBuffer globalCode = new StringBuffer();
         Object[] array = _globalCode.toArray();
@@ -1943,7 +1942,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             globalCode.append(((Code) code).string);
         }
         return globalCode.toString();
-    }
+    }*/
 
     /** Return true if the input contains code.
      *  In this context, code is considered to be anything other

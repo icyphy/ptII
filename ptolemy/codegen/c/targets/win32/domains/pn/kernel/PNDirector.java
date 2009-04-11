@@ -433,8 +433,6 @@ public class PNDirector extends Director {
 		List actorList = ((CompositeActor) _director.getContainer())
 				.deepEntityList();
 
-		Iterator actors = actorList.iterator();
-
 		// Generate the function for each actor thread.
         for (Actor actor : (List<Actor>) actorList) {
             StringBuffer functionCode = new StringBuffer();

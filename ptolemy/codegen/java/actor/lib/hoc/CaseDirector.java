@@ -72,7 +72,7 @@ public class CaseDirector extends Director {
 
         StringBuffer code = new StringBuffer();
 
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+        ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
 
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()

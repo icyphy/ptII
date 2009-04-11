@@ -668,7 +668,7 @@ public abstract class PropertySolverBase extends Attribute {
                 //new File(file.getParent(), classname + ".class").deleteOnExit();
                 try {
                     // Try to access the class and run its main method
-                    Class clazz = Class.forName(classname);
+                    Class.forName(classname);
                 } catch (Exception ex) {
                     throw new IllegalActionException(null, ex,
                     "Cannot load the class file for: " + classname);

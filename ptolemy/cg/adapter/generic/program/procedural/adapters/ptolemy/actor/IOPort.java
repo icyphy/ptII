@@ -31,7 +31,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.Receiver;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.lib.EmbeddedCodeActor;
@@ -223,34 +222,34 @@ public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
     }
 
 
-    private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
-        Receiver[][] receivers = port.getReceivers();
-
-        // For output ports getReceivers always returns an empty table.
-        if (receivers.length == 0) {
-            return null;
-        }
-
-        int staticOffset = -1;
-        Receiver receiver = null;
-        if (offset != null) {
-            try {
-                staticOffset = Integer.parseInt(offset);
-                receiver = receivers[channel][staticOffset];
-            } catch (Exception ex) {
-                staticOffset = -1;
-            }
-        }
-
-        if (staticOffset == -1) {
-            // FIXME: Assume all receivers are the same type for the channel.
-            // However, this may not be true.
-            assert (receivers.length > 0);
-            receiver = receivers[channel][0];
-        }
-        return receiver;
-    }
-
+//    private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
+//        Receiver[][] receivers = port.getReceivers();
+//
+//        // For output ports getReceivers always returns an empty table.
+//        if (receivers.length == 0) {
+//            return null;
+//        }
+//
+//        int staticOffset = -1;
+//        Receiver receiver = null;
+//        if (offset != null) {
+//            try {
+//                staticOffset = Integer.parseInt(offset);
+//                receiver = receivers[channel][staticOffset];
+//            } catch (Exception ex) {
+//                staticOffset = -1;
+//            }
+//        }
+//
+//        if (staticOffset == -1) {
+//            // FIXME: Assume all receivers are the same type for the channel.
+//            // However, this may not be true.
+//            assert (receivers.length > 0);
+//            receiver = receivers[channel][0];
+//        }
+//        return receiver;
+//    }
+//
 
 //    private boolean _isMpi() {
 //        return getCodeGenerator().getAttribute("mpi") != null;
@@ -258,9 +257,9 @@ public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
 
 
     private boolean _isPthread() {
-        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        boolean isPN = (((Actor) port.getContainer()).getDirector()
-                instanceof ptolemy.domains.pn.kernel.PNDirector);
+        //ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        //boolean isPN = (((Actor) port.getContainer()).getDirector()
+        //        instanceof ptolemy.domains.pn.kernel.PNDirector);
 
         /* FIXME rodiers
         return isPN && (null == getCodeGenerator().getAttribute("mpi"))

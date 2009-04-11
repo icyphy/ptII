@@ -482,7 +482,7 @@ public class JarSigner {
                 String baseName,
                 boolean signManifest) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
-            JDKsfClass = getClass().forName(JDK_SIGNATURE_FILE);
+            JDKsfClass = Class.forName(JDK_SIGNATURE_FILE);
 
             Constructor constructor = _findConstructor(JDKsfClass,
                     MessageDigest[].class,
@@ -534,9 +534,9 @@ public class JarSigner {
             public Block(SignatureFile sfg, PrivateKey privateKey,
                     X509Certificate[] certChain, boolean externalSF, ZipFile zipFile) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
-                Class blockClass = getClass().forName(JDK_BLOCK);
+                Class blockClass = Class.forName(JDK_BLOCK);
 
-                Class contentSignerClass = getClass().forName(JDK_CONTENT_SIGNER);
+                Class contentSignerClass = Class.forName(JDK_CONTENT_SIGNER);
 
                 Constructor constructor = _findConstructor(blockClass,
                         sfg.getJDKSignatureFileClass(),

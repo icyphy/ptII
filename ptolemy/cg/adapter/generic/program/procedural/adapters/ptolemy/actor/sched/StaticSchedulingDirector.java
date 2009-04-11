@@ -760,7 +760,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public String generateOffset(String offset, int channel, boolean isWrite) throws IllegalActionException {
 
-            Receiver receiver = _getReceiver(offset, channel, _port);
+            //Receiver receiver = _getReceiver(offset, channel, _port);
 
          // FIXME rodiers: reintroduce PN! (but somewhere else)
             if (false) {
@@ -917,8 +917,8 @@ public class StaticSchedulingDirector extends Director {
                     Object offsetObject = _ports.getWriteOffset(sinkPort,
                             sinkChannelNumber);
 
-                    Receiver receiver = _getReceiver(
-                            offsetObject.toString(), sinkChannelNumber, sinkPort);
+                    //Receiver receiver = _getReceiver(
+                    //        offsetObject.toString(), sinkChannelNumber, sinkPort);
 
                     // FIXME rodiers: reintroduce PN specifics (but somewhere else)
                     if (false) {
@@ -976,7 +976,7 @@ public class StaticSchedulingDirector extends Director {
         public String updateOffset(int rate)
         throws IllegalActionException {
 
-            Receiver receiver = _getReceiver(null, 0, _port);
+            //Receiver receiver = _getReceiver(null, 0, _port);
 
             String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...."
                                                      + CodeGeneratorAdapterStrategy.generateName(_port));
@@ -1147,33 +1147,33 @@ public class StaticSchedulingDirector extends Director {
         }
 
 
-        private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
-            Receiver[][] receivers = port.getReceivers();
-
-            // For output ports getReceivers always returns an empty table.
-            if (receivers.length == 0) {
-                return null;
-            }
-
-            int staticOffset = -1;
-            Receiver receiver = null;
-            if (offset != null) {
-                try {
-                    staticOffset = Integer.parseInt(offset);
-                    receiver = receivers[channel][staticOffset];
-                } catch (Exception ex) {
-                    staticOffset = -1;
-                }
-            }
-
-            if (staticOffset == -1) {
-                // FIXME: Assume all receivers are the same type for the channel.
-                // However, this may not be true.
-                assert (receivers.length > 0);
-                receiver = receivers[channel][0];
-            }
-            return receiver;
-        }
+//        private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
+//            Receiver[][] receivers = port.getReceivers();
+//
+//            // For output ports getReceivers always returns an empty table.
+//            if (receivers.length == 0) {
+//                return null;
+//            }
+//
+//            int staticOffset = -1;
+//            Receiver receiver = null;
+//            if (offset != null) {
+//                try {
+//                    staticOffset = Integer.parseInt(offset);
+//                    receiver = receivers[channel][staticOffset];
+//                } catch (Exception ex) {
+//                    staticOffset = -1;
+//                }
+//            }
+//
+//            if (staticOffset == -1) {
+//                // FIXME: Assume all receivers are the same type for the channel.
+//                // However, this may not be true.
+//                assert (receivers.length > 0);
+//                receiver = receivers[channel][0];
+//            }
+//            return receiver;
+//        }
 
         /**
          * Return true if the given string can be parse as an integer; otherwise,

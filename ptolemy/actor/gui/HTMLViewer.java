@@ -579,9 +579,6 @@ public class HTMLViewer extends TableauFrame implements Printable,
     /** The HTMLEditorKit associated with this viewer. */
     private static HTMLEditorKit _HTMLEditorKit;
 
-    /** The default style sheet, read in from _styleSheetURL. */
-    private StyleSheet _defaultStyleSheet;
-
     /** The url that refers to $PTII/doc/default.css. */
     private static URL _styleSheetURL;
 

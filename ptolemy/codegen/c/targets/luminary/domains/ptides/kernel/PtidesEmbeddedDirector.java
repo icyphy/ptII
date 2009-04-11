@@ -27,13 +27,11 @@
  */
 package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -176,12 +174,12 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        CompositeActor compositeActor =
-            (CompositeActor) _director.getContainer();
+        //CompositeActor compositeActor =
+        //    (CompositeActor) _director.getContainer();
 
         code.append(_codeGenerator.comment("Create a task for each actor."));
 
-        List<Actor> actorList = compositeActor.deepEntityList();
+        //List<Actor> actorList = compositeActor.deepEntityList();
 
         /* The xTaskCreate() function takes as parameters a task function
          * pointer, the task name, a stack size value, a pointer to
@@ -440,9 +438,9 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * The set of referable channels that are associated
-     * with a generated queue.
-     */
-    private HashSet<Channel> _queues = new HashSet<Channel>();
+//    /**
+//     * The set of referable channels that are associated
+//     * with a generated queue.
+//     */
+//    private HashSet<Channel> _queues = new HashSet<Channel>();
 }

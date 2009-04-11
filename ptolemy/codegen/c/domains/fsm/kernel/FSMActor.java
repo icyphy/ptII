@@ -166,7 +166,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         for (Actor actor : (List<Actor>)
                 ((TypedCompositeActor)  this.getDirector().getContainer()).deepEntityList()) {
             code.append(_eol+"void "+_getActorName(actor)+"(){"+_eol);
-           CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+           //CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
            //code.append( actorHelper.generateFireCode());
            code.append("}"+_eol);
 

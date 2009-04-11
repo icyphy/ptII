@@ -57,14 +57,14 @@ public class LatticeElement extends State {
         solutionColor = new ColorAttribute(this, "solutionColor");
         solutionColor.setToken("{1.0, 1.0, 1.0, 1.0}");
 
-        _icon = new LatticeElementIcon(this, "LatticeElementIcon");
+        /*_icon = */ new LatticeElementIcon(this, "LatticeElementIcon");
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    private LatticeElementIcon _icon;
+    //private LatticeElementIcon _icon;
 
     public ColorAttribute solutionColor;
 

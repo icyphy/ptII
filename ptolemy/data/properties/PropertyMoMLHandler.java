@@ -307,7 +307,6 @@ public class PropertyMoMLHandler extends Attribute {
                     String propertyToHighlight = ((StringAttribute) attribute).getExpression();
 
                     if (propertyToHighlight.equals(propertyString)) {
-                        String type = namedObj.getElementName();
 
                         String request = "<property name=\"_highlightColor\" " +
                                         "class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
@@ -359,8 +358,6 @@ public class PropertyMoMLHandler extends Attribute {
             request = "<deleteProperty name=\"_showInfo\"/>";
 
         } else {
-            String type = namedObj.getElementName();
-
             // Update the _showInfo attribute.
             request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\"" +
             propertyString +

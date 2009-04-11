@@ -682,8 +682,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
 
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
-                .getToken()).booleanValue();
+        //boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+        //        .getToken()).booleanValue();
 
         StringBuffer tempCode = new StringBuffer();
         Iterator outputPorts = container.outputPortList().iterator();

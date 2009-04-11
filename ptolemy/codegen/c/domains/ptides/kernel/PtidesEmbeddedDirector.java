@@ -125,7 +125,7 @@ public class PtidesEmbeddedDirector extends Director {
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
         .getContainer();
-        CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
+        //CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
 
         // FIXME: I don't really know what this does, and I don't know what I would use this for...
         // Generate code for creating external initial production.

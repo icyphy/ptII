@@ -910,7 +910,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Return the file size as a JNLP file attribute
      */
     private String _jarFileLengthAttribute(String fileName) throws IOException {
-        String fileLength = "";
         try {
             File file = new File(fileName);
             //System.out.println("AppletWriter: " + fileName + " " + file.length());

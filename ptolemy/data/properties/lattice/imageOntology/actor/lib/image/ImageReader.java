@@ -54,7 +54,7 @@ public class ImageReader extends PropertyConstraintHelper {
      * specific defined helper class. Default actor constraints
      * are set for this helper.
      * @param solver The given solver.
-     * @param actor The given ImageReader.
+     * @param actor The given ImageReader (ignored).
      * @exception IllegalActionException
      */
     public ImageReader(PropertyConstraintSolver solver,
@@ -64,7 +64,6 @@ public class ImageReader extends PropertyConstraintHelper {
         super(solver, actor, false);
 
         _lattice = (Lattice) getSolver().getLattice();
-        _actor = actor;
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -76,6 +75,5 @@ public class ImageReader extends PropertyConstraintHelper {
 
     }
 
-    private ptolemy.actor.lib.image.ImageReader _actor;
     private Lattice _lattice;
 }

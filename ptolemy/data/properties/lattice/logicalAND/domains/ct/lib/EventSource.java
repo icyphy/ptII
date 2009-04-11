@@ -62,7 +62,6 @@ public class EventSource extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-        _actor = actor;
         _lattice = (Lattice) getSolver().getLattice();
      }
 
@@ -94,6 +93,5 @@ public class EventSource extends AtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private ptolemy.domains.ct.lib.EventSource _actor;
     private Lattice _lattice;
 }

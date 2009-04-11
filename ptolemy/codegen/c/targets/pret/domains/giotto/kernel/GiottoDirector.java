@@ -249,7 +249,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         int threadID = 0;
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-            ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
+            //ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
 
             // FIXME: generate deadline instruction w/ period
 
