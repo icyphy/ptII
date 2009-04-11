@@ -44,7 +44,6 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.ComponentCodeGenerator;
 import ptolemy.codegen.kernel.PortCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

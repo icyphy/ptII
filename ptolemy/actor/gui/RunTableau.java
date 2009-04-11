@@ -27,13 +27,13 @@
 package ptolemy.actor.gui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.Graphics;
 import java.awt.print.PageFormat;
-import java.awt.print.PrinterException;
 import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;

@@ -28,7 +28,6 @@
 
 package ptolemy.cg.kernel.generic;
 
-import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

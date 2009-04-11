@@ -27,43 +27,21 @@
  */
 package ptolemy.data.properties;
 
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.properties.Property;
-import ptolemy.data.properties.PropertyAttribute;
-import ptolemy.data.properties.PropertySolver;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.data.type.BaseType;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.NodeControllerFactory;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.kernel.attributes.RectangleAttribute;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyHighlighter

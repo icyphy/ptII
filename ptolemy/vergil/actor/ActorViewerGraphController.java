@@ -50,7 +50,6 @@ import diva.graph.EdgeController;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeController;
-import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorViewerGraphController

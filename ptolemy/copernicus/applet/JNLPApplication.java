@@ -27,11 +27,7 @@
  */
 package ptolemy.copernicus.applet;
 
-import ptolemy.actor.gui.PtExecuteApplication;
 import ptolemy.actor.gui.jnlp.MenuApplication;
-import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// JNLPApplication

@@ -59,8 +59,6 @@ import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
-import ptolemy.domains.fsm.kernel.Configurer;
-import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.domains.properties.kernel.PropertyLatticeAttribute;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;

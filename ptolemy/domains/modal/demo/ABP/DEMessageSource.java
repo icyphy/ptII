@@ -27,9 +27,8 @@
  */
 package ptolemy.domains.modal.demo.ABP;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.lib.RandomSource;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.RandomSource;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;

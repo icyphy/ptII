@@ -27,6 +27,7 @@
 package ptolemy.component.data.type;
 
 import java.util.Arrays;
+
 import ptolemy.component.data.TupleToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;

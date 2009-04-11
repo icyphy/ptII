@@ -44,7 +44,6 @@ import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
-import diva.graph.GraphEvent;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 

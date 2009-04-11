@@ -27,7 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.properties.kernel;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.domains.properties.kernel.ModelAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

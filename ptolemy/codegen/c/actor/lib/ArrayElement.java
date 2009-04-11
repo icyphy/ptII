@@ -28,7 +28,6 @@
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.ArrayElement.

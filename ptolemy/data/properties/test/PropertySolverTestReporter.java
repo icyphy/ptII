@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URL;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -45,8 +44,6 @@ import java.util.Map;
 
 import ptolemy.data.properties.PropertySolver;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;

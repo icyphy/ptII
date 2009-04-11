@@ -29,14 +29,10 @@ COPYRIGHTENDKEY
 package ptolemy.cg.kernel.generic.program.html;
 
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

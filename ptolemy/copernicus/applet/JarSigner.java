@@ -17,10 +17,14 @@
 
 package ptolemy.copernicus.applet;
 
-import sun.misc.BASE64Encoder;
-import sun.security.util.ManifestDigester;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,21 +34,26 @@ import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
 import java.security.PrivateKey;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.KeySpec;
-import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.DSAPrivateKeySpec;
+import java.security.spec.KeySpec;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.jar.*;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 import java.util.zip.ZipFile;
+
+import sun.misc.BASE64Encoder;
+import sun.security.util.ManifestDigester;
 
 /**
  * Sign a Jar file.

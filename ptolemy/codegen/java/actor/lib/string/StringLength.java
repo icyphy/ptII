@@ -27,10 +27,7 @@
  */
 package ptolemy.codegen.java.actor.lib.string;
 
-import java.util.Set;
-
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.string.StringLength.

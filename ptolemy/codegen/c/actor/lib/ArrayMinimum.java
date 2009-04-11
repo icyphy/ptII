@@ -27,11 +27,7 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.ArrayList;
-
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.ArrayType;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.ArrayMinimum.

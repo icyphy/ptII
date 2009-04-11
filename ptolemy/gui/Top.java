@@ -49,9 +49,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.print.PrintService;
-import javax.print.attribute.standard.Destination;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Destination;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
