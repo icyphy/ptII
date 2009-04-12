@@ -928,7 +928,7 @@ chkpackagehtml:
 	@(cd ..; $(PTII)/adm/bin/chkpackagehtml `echo "$(ALLPACKAGES)" | sed 's/\*.java//g'`)
 
 # PtDoc, the XML format
-PTDOCPACKAGES = $(ALL1_4PACKAGES)
+PTDOCPACKAGES = $(ALLPACKAGES)
 # Comment out the above line and uncomment this line for testing.
 #PTDOCPACKAGES = ptolemy.actor.lib
 
