@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adapter	
+PTPACKAGE = 	adapter
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
