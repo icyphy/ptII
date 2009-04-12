@@ -115,11 +115,11 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/matlabSunOS.jar \
 
 # Not all hosts have matlab
-MATLAB_JARS =
-#MATLAB_JARS = \
-#	ptolemy/matlab/matlab.jar \
-#	ptolemy/matlab/demo/demo.jar \
-#	lib/matlab.jar
+#MATLAB_JARS =
+MATLAB_JARS = \
+	ptolemy/matlab/matlab.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
@@ -1000,7 +1000,7 @@ key_list:
 		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII7.2/jnlp-$(PTVERSION)
+DIST_BASE = ptolemyII/ptII8.0/jnlp-$(PTVERSION)
 DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -1029,7 +1029,7 @@ jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
-DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII7.0/$(PTVERSION)
+DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII8.0/$(PTVERSION)
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_JAR)/ptolemy/domains/gr
 	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
