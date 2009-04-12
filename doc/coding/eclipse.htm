@@ -8,7 +8,7 @@
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
 <p>
-These instructions assume you are using Eclipse Ganymede (based on 3.4.1) under 
+These instructions assume you are using Eclipse Ganymede SR2 (based on 3.4.1) under 
 Windows or Mac OS X.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
@@ -36,7 +36,7 @@ Other local pages:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
- <br>In January, 2009, we chose
+ <br>In April, 2009, we chose
  <B>Eclipse for RCP/Plug-in Developers</B>, which is 175Mb.
 The <B>Eclipse for RCP/Plug-in Developers</B> version includes the
 plug-in development environment (PDE), which is needed by the backtrack
@@ -44,12 +44,15 @@ facility, which is an optional part of Ptolemy II that allows models to
 restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
+<li> (<i>Mac OS X<i>):
+Untar the download file in <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
 <li> (<i>Windows</i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
 <br>If <code>eclipse\eclipse.exe</code> is not created, then it could
 be that the security policy on your machine is preventing the creation
 of <code>.exe</code> files.  If this is the case, then try running
 <code>unzip</code> from the command line.
+
 <li>Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
 <br>The first time this is run it will complete the installation process.
 <br>If Eclipse fails to start with the message "Windows cannot access the specified device, path or file. You may not have the appropriate permisions to access the item", then it may be necessary to make 
@@ -72,6 +75,11 @@ find . -name *.dll -exec chmod a+x {} \;
 The default configuration of Eclipse has some difficulties with Ptolemy II,
 so a few changes are necessary.
 <ol>
+<li>(<i>Mac OS X</i>):
+  There is no need to set the memory size for Eclipse under Mac OS X.  By default, it is set to 512 megabytes.  
+  For details about setting the memory size, see:
+  <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.user/tasks/running_eclipse.htm">Eclipse Workbench User Guide/Tasks/Running Eclipse</a>.
+  
 <li>(<i>Windows</i>): 
 We will need to change the default memory size for Eclipse
 because Ptolemy II is a big project.
@@ -136,9 +144,8 @@ to format comments.  We hope to change this policy in the future.
 
 <br>We handle these changes together:
  <ol>
-  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
-
-  <li> Expand the Java tree, expand <code>Code Style</code> | <code>Formatter</code>
+  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>),
+       expand <code>Java</code> | <code>Code Style</code> | <code>Formatter</code>
   <li> Under "Active profile", Click on "New..."
   <li> In the "New Profile" window, enter "Ptolemy II" into
        the "Profile Name" entry.
@@ -153,8 +160,11 @@ to format comments.  We hope to change this policy in the future.
   <li> A "Profile 'Ptolemy II'" window will appear.
        Under the "Indentation" tab, change the Tab policy to "Spaces only". 
   <li> Under the "New Lines" tab, select "at end of file"
-  <li> Under the "Comments" tab, <b>unselect</b> "Enable block comment formatting"
-  <li> Click OK.
+  <li> Under the "Comments" tab,
+       <br><b>unselect</b> "Enable Javadoc comment formatting" 
+       <br><b>unselect</b> "Enable block comment formatting" 
+       <br><b>unselect</b> "Enable line comment formatting" <!-- otherwise the headers for public methods etc. get changed -->
+ <li> Click OK.
   <li> In the Preferences Window, click Apply.
  </ol>
 
@@ -164,8 +174,8 @@ In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
 which require Java 5.0 or later.
 <br>Set Eclipse to use Java 5.0 or later source code compliance.
 <ol>
- <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
- <li> Expand the Java tree, select <code>Compiler</code>
+ <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>),
+      expand <code>Java</code> | <code>Compiler</code>
  <li> Make sure that Set "Compiler compliance level" is "1.5", "5.0"
  or later.
 <i>Note that Java 1.5 is the same as Java 5.0</i>.  What we don't want
@@ -192,8 +202,8 @@ warnings complains if a Serializable class does not have
 serialVersionUID declared.  Since this warning is only useful
 if you are tightly managing serialization, we turn it off:
  <ol>
-  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
-  <li> Expand the Java tree, select <code>Compiler</code> | <code>Errors/Warning</code>
+  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>),
+    Expand <code>Java</code> | <code>Compiler</code> | <code>Errors/Warning</code>
   <li> Under "Potential programming problems", change
   "Serializable class without serialVersionUID" to "Ignore"
   <li> Under "Generic Types", change
@@ -207,6 +217,7 @@ if you are tightly managing serialization, we turn it off:
 requires <code>tools.jar</code>, which is only in the Java Development
 Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
 JDK is selected for building, not a JRE.
+<br>(<i>Mac OS X</i>):  select <code>JVM 1.5.0 (Mac OS X Default)</code>.
 <br>While still in the preferences window 
 <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
@@ -243,10 +254,6 @@ and don't want to update regularly, then use this choice
 You can use both Eclipse and shell version of Subversion to update the tree.
 <br>(Use both the Eclipse Subversion plug-in (Subversive) and the
 shell <code>svn</code> command)
-
-
-
-
 
 </ol>
 
@@ -319,6 +326,8 @@ and browse to the PTII directory. Finish.
 <h3>OR</h3>
 
 <h3>3. Setting up Eclipse for use with Subversion: <a name="Subversive">Installing Subversive</a></h3>
+<p>There are at least two Subversion plugins for Eclipse, Subversive and Subclipse.  Either will work, for a brief comparison, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#SubclipseVsSubversion">Subclipse vs. Subversion</a>.  The instructions below are for Subversive. To use Subclipse, see <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse#7-installing-subversion-svn">Installing Subversion (SVN) into Eclipse</a>.
+
 <p>The <a href="http://www.eclipse.org/subversive/downloads.php" target="_top">Subversive</a>
 Eclipse plug-in adds Subversion to Eclipse.  After installation,
 you can use either Eclipse to manage your project, or the <code>svn</code>
@@ -351,12 +360,17 @@ JavaHL 1.4.5 and JavaHL 1.5.0 are installed, then Eclipse will have
 problems.  The version of JavaHL is dependent on the version of command line <code>svn</code> that is installed on your machine.
 <br>If <code>svn -version</code> returns 1.4, then install JavaHL 1.4.5.
 <br>If <code>svn -version</code> returns 1.5, then install JavaHL 1.5.
-<p><i>Mac OS X</i>: There is no need to install JavaHL
-<p>Select these packages:
+<br>Select these packages:
 <pre>
 JavaHL 1.4.5 Win32 Binaries(Optional)
 Native JavaHL 1.4 Implementation (Optional)
 Subversive SVN Connectors
+</pre>
+<p><i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
+<br>Select this package:
+<pre>
+Subversive SVN Connectors
+SVNKit 1.2.0 Implementation (Optional)
 </pre>
 <li>Click on <code>Install</code> and click through the rest of the installation.
 <li>When prompted to restart Eclipse, do so.
@@ -677,14 +691,18 @@ Follow the wizard, creating selections as follows:
 <li> In the "Check Out As" window, use the default, <code>Check out as a project configured using the New Project Wizard</code>, then hit <code>Finish</code>.
 
 <li> In the "Select a wizard" window, select <code>Java</code> | <code>Java Project</code>, then hit <code>Next</code>.
-<li> In the "Create a Java Project" window set "Project Name"
-     to: <CODE>ptII</CODE>
+<li> In the "Create a Java Project" window,
+     <br> set "Project Name" to: <CODE>ptII</CODE>
+     <br> set "Project Layout" to <code>Use project folder as root for sources and class files</code>.
+     This is done so that <code>$PTII/bin</code> will contain the Ptolemy II command line scripts instead of the
+     <code>*.class</code> files created by Eclipse.
 <li> Click Finish.
-<li> If you see a Confirm Overwrite Window that says, 
+<li> If you see a Confirm Overwrite Window that says:
 <blockquote>
  <code>The project you created, ptII, contains resources other than the standard .project file. If any of those resources have the same name and relative location of a resource you are checking out, the local resource will be replaced with the resource from the repository</code>
 </blockquote>
-then click <code>OK</code>.
+then you probably did not change "Project Layout" as per above.  Click cancel and recreate the Java Project.
+<li> In the "Open Associated Perspective?" window, click "Yes". 
 </ul>
 
 <p>
