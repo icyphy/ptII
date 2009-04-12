@@ -2,7 +2,7 @@
  This involves creation of the input and output driver files to take care
  of copying data between task ports.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 1998-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -939,7 +939,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String copyrightString = "/*"
             + _endLine
             + _endLine
-            + " Copyright (c) 2001-2008 The Regents of the University of California."
+            + " Copyright (c) 2001-2009 The Regents of the University of California."
             + _endLine
             + " All rights reserved."
             + _endLine
