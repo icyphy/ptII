@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A helper class for ptolemy.actor.lib.colt.ColtBinomialSelector.
  *
- * @see ptolemy.actor.lib.ColtBinomialSelector
+ * @see ptolemy.actor.lib.colt.ColtBinomialSelector
  * @author Teale Fristoe
  * @version $Id$
  * @since Ptolemy II 6.0
