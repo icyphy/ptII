@@ -1646,28 +1646,25 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             } else {
                 children = filter;
             }
-            for (Object childObject : children) {
-                NamedObj child = (NamedObj) childObject;
-                PatternObjectAttribute patternObject = GTTools
-                        .getPatternObjectAttribute(child);
-                if (isSet) {
-                    if (patternObject == null) {
-                        patternObject = new PatternObjectAttribute(child,
-                                "patternObject");
-                    }
-                    String name = _getNameWithinContainer(child,
-                            getFrameController().getTransformationRule()
-                            .getPattern());
-                    patternObject.setPersistent(true);
-                    patternObject.setExpression(name);
-                } else if (patternObject != null) {
-                    patternObject.setPersistent(false);
-                    patternObject.setExpression("");
+            PatternObjectAttribute patternObject = GTTools
+                .getPatternObjectAttribute(object);
+            if (isSet) {
+                if (patternObject == null) {
+                    patternObject = new PatternObjectAttribute(object,
+                            "patternObject");
                 }
-                if (child instanceof CompositeEntity) {
-                    _setOrClearPatternObjectAttributes((CompositeEntity) child,
-                            isSet, null);
-                }
+                String name = _getNameWithinContainer(object,
+                        getFrameController().getTransformationRule()
+                        .getPattern());
+                patternObject.setPersistent(true);
+                patternObject.setExpression(name);
+            } else if (patternObject != null) {
+                patternObject.setPersistent(false);
+                patternObject.setExpression("");
+            }
+            for (Object child : children) {
+                _setOrClearPatternObjectAttributes((NamedObj) child, isSet,
+                        null);
             }
         } catch (KernelException e) {
             throw new KernelRuntimeException(e, "Cannot set attribute.");
