@@ -44,18 +44,19 @@ facility, which is an optional part of Ptolemy II that allows models to
 restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
-<li> (<i>Mac OS X<i>):
+<li> (<i>Mac OS X</i>):
 Untar the download file in <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
-<li> (<i>Windows</i>): 
+<br> (<i>Windows</i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
 <br>If <code>eclipse\eclipse.exe</code> is not created, then it could
 be that the security policy on your machine is preventing the creation
 of <code>.exe</code> files.  If this is the case, then try running
 <code>unzip</code> from the command line.
 
-<li>Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
+<li>Finish the installation by running <code>/Applications/eclipse/Eclipse.app</code> or <CODE>eclipse/eclipse.exe</CODE>.
 <br>The first time this is run it will complete the installation process.
-<br>If Eclipse fails to start with the message "Windows cannot access the specified device, path or file. You may not have the appropriate permisions to access the item", then it may be necessary to make 
+<br> (<i>Windows</i>): 
+If Eclipse fails to start with the message "Windows cannot access the specified device, path or file. You may not have the appropriate permisions to access the item", then it may be necessary to make 
 <code>eclipse.exe</code> and a dll executable:
 <pre>
 chmod a+x eclipse.exe
@@ -84,7 +85,7 @@ so a few changes are necessary.
   There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
   <code>eclipse.ini<code> file.
 
-<p>In Windows,  create a shortcut to eclipse.exe by going to the 
+<p>In Windows,  create a shortcut to <code>eclipse.exe</code> by going to the 
 directory where Eclipse is installed, right clicking on eclipse.exe 
 and selecting <code>Create Shortcut</code>. 
 
@@ -113,8 +114,8 @@ of the pauses it creates. We suggest disabling this feature as
 follows:
 <ol>
 <li> While still in the preferences window 
-<br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+<br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <li> Select <code>General</code> | <code>Workspace</code>
 <li> Deselect <code>Build automatically</code>.
 <li> Click Apply. 
@@ -329,12 +330,11 @@ from the command line.
 Follow the <a href="http://www.eclipse.org/subversive/downloads.php" target="_top">Subversive installation instructions</a> or these instructions below
 <ol>
 <li> To download Subversive, in Eclipse, follow these menus
-<i>Windows</i>:
- <code>Help<code> | <code>Software Updates<code> | <code>Available Software</code>.  
-
 <br><i>Mac OS X</i>:
  <code>Help<code> | <code>Software Updates<code> | <code>Available
  Software</code> 
+<br><i>Windows</i>:
+ <code>Help<code> | <code>Software Updates<code> | <code>Available Software</code>.  
 <li>Click on "Add Site" and enter
 <pre>
 http://download.eclipse.org/technology/subversive/0.7/update-site/
@@ -352,7 +352,14 @@ and click on the box next to it.
 <pre>
 http://www.polarion.org/projects/subversive/download/eclipse/2.0/ganymede-site/
 </pre>
-<li><i>Windows</i>: <b>Note: select only one <code>JavaHL</code> Win32 binary</b>.  If both
+<li>
+<i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
+<br>Select this package:
+<pre>
+Subversive SVN Connectors
+SVNKit 1.2.0 Implementation (Optional)
+</pre>
+<p><i>Windows</i>: <b>Note: select only one <code>JavaHL</code> Win32 binary</b>.  If both
 JavaHL 1.4.5 and JavaHL 1.5.0 are installed, then Eclipse will have
 problems.  The version of JavaHL is dependent on the version of command line <code>svn</code> that is installed on your machine.
 <br>If <code>svn -version</code> returns 1.4, then install JavaHL 1.4.5.
@@ -363,12 +370,7 @@ JavaHL 1.4.5 Win32 Binaries(Optional)
 Native JavaHL 1.4 Implementation (Optional)
 Subversive SVN Connectors
 </pre>
-<p><i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
-<br>Select this package:
-<pre>
-Subversive SVN Connectors
-SVNKit 1.2.0 Implementation (Optional)
-</pre>
+
 <li>Click on <code>Install</code> and click through the rest of the installation.
 <li>When prompted to restart Eclipse, do so.
 </ol>
