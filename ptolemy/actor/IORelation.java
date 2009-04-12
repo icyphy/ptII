@@ -50,6 +50,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,18 +63,19 @@ import ptolemy.kernel.util.Workspace;
  ensure that IOPorts are only connected to IOPorts. A second purpose
  is to support the notion of a <i>width</i> to represent something
  like a bus. By default an IORelation is a bus for which the width will be
- inferred, which means that its width is -1. Calling setWidth() with
+ inferred, which corresponds to a width equal to Auto. Calling setWidth() with
  an argument larger than one makes the relation a bus of fixed width.
  Calling setWidth() with an argument equal to the value of
  WIDTH_TO_INFER makes the relation
- a bus with indeterminate width, in which case the width will be
+ a bus with indeterminate width or setting the value of the parameter width
+ equal to Auto in Vergil, in which case the width will be
  inferred (if possible) from the context.  In particular,
  if this relation is linked on the inside to a port with some
  width, then the width of this relation will be inferred to
  be the enough so that the widths of all inside linked relations
  adds up to the outside width of the port.
- The actual width of an IORelation
- can never be less than one. If this IORelation is linked to another
+ The actual width of an IORelation can also be become zero.
+ If this IORelation is linked to another
  instance of IORelation, then the width of the two IORelations is
  constrained to be the same.
  <p>
@@ -148,6 +150,7 @@ public class IORelation extends ComponentRelation {
      *  to WIDTH_TO_INFER, which means that the width will be inferred.
      */
     public Parameter width;
+        
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -809,6 +812,13 @@ public class IORelation extends ComponentRelation {
         _inferredWidth = width;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        private parameters                 ////
+    
+    /** A parameter to be able to set the width to Auto to automatically
+     * infer widths. This is an integer that equals WIDTH_TO_INFER.
+     */    
+    private Parameter _auto = null;    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -988,9 +998,16 @@ public class IORelation extends ComponentRelation {
     /** Create an initialize the width parameter. */
     private void _init() {
         try {
+            
+            _auto = new Parameter(this, "Auto");
+            _auto.setExpression(Integer.toString(WIDTH_TO_INFER));
+            _auto.setTypeEquals(BaseType.INT);
+            _auto.setVisibility(Settable.NONE);
+            
             width = new Parameter(this, "width");
-            width.setExpression(Integer.toString(WIDTH_TO_INFER));
+            width.setExpression("Auto");
             width.setTypeEquals(BaseType.INT);
+                        
         } catch (KernelException ex) {
             throw new InternalErrorException(ex);
         }
