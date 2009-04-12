@@ -47,8 +47,8 @@ public class SRDirector extends Director {
 
     /** Construct the code generator helper associated with the given
      *  SDFDirector.
-     *  @param sdfDirector The associated
-     *  ptolemy.domains.sdf.kernel.SDFDirector
+     *  @param srDirector The associated
+     *  ptolemy.domains.sr.kernel.SRDirector
      */
     public SRDirector(ptolemy.domains.sr.kernel.SRDirector srDirector) {
         super(srDirector);
