@@ -69,8 +69,6 @@ OTHER_FILES_TO_BE_JARED = \
 	codegen.xml \
 	customize.xml \
 	defaultFullConfiguration.xml \
-	ergEffigyFactory.xml \
-	ergTableauFactory.xml \
 	experimentalDirectors.xml \
 	extendedEffigyFactories.xml \
 	extendedTableauFactories.xml \
@@ -93,7 +91,6 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityAnalysis.xml \
 	utilityColorAttribute.xml \
 	utilityCompositeActor.xml \
-	utilityERGModalModel.xml \
 	utilityFileParameter.xml \
 	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
