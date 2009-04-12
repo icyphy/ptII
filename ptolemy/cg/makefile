@@ -54,7 +54,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	adapter/adapter.jar \
-	demo/demo.jar \
 	gui/gui.jar \
 	kernel/kernel.jar \
 	lib/lib.jar
