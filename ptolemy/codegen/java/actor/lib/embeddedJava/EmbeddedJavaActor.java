@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 7.1
- @see ptolemy.actor.lib.java.EmbeddedJavaActor
+ @see ptolemy.actor.lib.embeddedJava.EmbeddedJavaActor
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
