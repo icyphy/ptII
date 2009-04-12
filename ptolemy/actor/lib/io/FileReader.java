@@ -29,7 +29,7 @@ package ptolemy.actor.lib.io;
 import java.io.BufferedReader;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Source;
+import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class FileReader extends Source {
+public class FileReader extends LimitedFiringSource {
     /** Construct an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
