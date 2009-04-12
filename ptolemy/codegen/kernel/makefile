@@ -90,7 +90,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
