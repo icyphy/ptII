@@ -76,26 +76,18 @@ The default configuration of Eclipse has some difficulties with Ptolemy II,
 so a few changes are necessary.
 <ol>
 <li>(<i>Mac OS X</i>):
-  There is no need to set the memory size for Eclipse under Mac OS X.  By default, it is set to 512 megabytes.  
+  There is usuall no need to set the memory size for Eclipse under Mac OS X.  By default, it is set to 512 megabytes.  
   For details about setting the memory size, see:
   <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.user/tasks/running_eclipse.htm">Eclipse Workbench User Guide/Tasks/Running Eclipse</a>.
   
 <li>(<i>Windows</i>): 
-We will need to change the default memory size for Eclipse
-because Ptolemy II is a big project.
-In Windows,  create a shortcut to eclipse.exe by going to the
-directory where Eclipse is installed, right clicking on eclipse.exe
+  There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
+  <code>eclipse.ini<code> file.
+
+<p>In Windows,  create a shortcut to eclipse.exe by going to the 
+directory where Eclipse is installed, right clicking on eclipse.exe 
 and selecting <code>Create Shortcut</code>. 
 
-<p>Then right mouse click on the shortcut and select Properties and change
-the target to increase the memory allocated by default. E.g.,
-if you installed Eclipse in <CODE>C:\Program Files\eclipse</CODE>,
-then the Target should read:
-<pre>
-   "C:\Program Files\eclipse\eclipse.exe" -vmargs -Xmx256M
-</pre>
-The maximum memory size will now be 256 megabytes when you restart
-Eclipse.  You may allocate more memory if you wish.
 <p>To add Eclipse to the start menu, right click on the shortcut and 
 select <code>Pin to Start Menu</code>
 <p>
@@ -343,11 +335,16 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php" target="_to
 <br><i>Mac OS X</i>:
  <code>Help<code> | <code>Software Updates<code> | <code>Available
  Software</code> 
-
-<li>Then expand <code>Ganymede Update Site</code> | <code>Collaboration Tools</code> and select
+<li>Click on "Add Site" and enter
+<pre>
+http://download.eclipse.org/technology/subversive/0.7/update-site/
+</pre>
+Find
 <pre> 
 Subversive SVN Team Provider (Incubation)
 </pre>
+and click on the box next to it.
+  
 <li>Then click <code>Install</code> and click through the license agreement.  
 <li>When you are prompted to restart, click <code>No</code>, we will restart later
 
