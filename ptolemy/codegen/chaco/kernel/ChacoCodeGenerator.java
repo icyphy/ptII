@@ -121,7 +121,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
      * The algorithm is learned from the Berkeley SWAMI (Shared Wisdom 
      * through the Amalgamation of Many Interpretations) project.
      * 
-     * @see Fisher D, Hildrum K, Hong J, Newman M and Vuduc R, SWAMI: 
+     * <p>See Fisher D, Hildrum K, Hong J, Newman M and Vuduc R, SWAMI: 
      * a framework for collaborative filtering algorithm development 
      * and evaluation 1999. <a href=http://guir.berkeley.edu/projects/swami/>http://guir.berkeley.edu/projects/swami/</a>. 
      * @param  numberOfColors The number of distinct colors to generate.
