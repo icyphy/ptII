@@ -62,19 +62,17 @@ import ptolemy.kernel.util.Workspace;
  one another via message passing. One purpose of this relation is to
  ensure that IOPorts are only connected to IOPorts. A second purpose
  is to support the notion of a <i>width</i> to represent something
- like a bus. By default an IORelation is a bus for which the width will be
- inferred, which corresponds to a width equal to Auto. Calling setWidth() with
- an argument larger than one makes the relation a bus of fixed width.
- Calling setWidth() with an argument equal to the value of
- WIDTH_TO_INFER makes the relation
- a bus with indeterminate width or setting the value of the parameter width
- equal to Auto in Vergil, in which case the width will be
- inferred (if possible) from the context.  In particular,
- if this relation is linked on the inside to a port with some
- width, then the width of this relation will be inferred to
- be the enough so that the widths of all inside linked relations
- adds up to the outside width of the port.
- The actual width of an IORelation can also be become zero.
+ like a bus. By default an IORelation is a bus for which the width
+ will be inferred, which corresponds to a width equal to Auto. In
+ Vergil you can change the width from Auto to a specific value, to
+ explicitly specify the width of a relation. Specifying a width
+ equal to zero will disable the relation.
+ A width equal equal to -1 is equivalent to a width equal to Auto,
+ in which case the width will be inferred (if possible) from the
+ context. In particular, if this relation is linked on the inside
+ to a port with some width, then the width of this relation will
+ be inferred to be the enough so that the widths of all inside
+ linked relations adds up to the outside width of the port.
  If this IORelation is linked to another
  instance of IORelation, then the width of the two IORelations is
  constrained to be the same.
