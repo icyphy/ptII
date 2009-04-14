@@ -171,7 +171,14 @@ public class IOPortEvent implements DebugEvent {
      *  @return A user-readable string describing the event.
      */
     public String toString() {
-        StringBuffer buffer = new StringBuffer("The port " + _port + " sent ");
+        StringBuilder buffer = new StringBuilder("The port " + _port);
+        if (_event == SEND) {
+            buffer.append(" sent ");
+        } else if (_event == GET_BEGIN) {
+            buffer.append(" began reading  ");
+        } else if (_event == GET_END) {
+            buffer.append(" read ");
+        }
         if (_vectorLength != SINGLETOKEN) {
             buffer.append(_vectorLength);
             buffer.append(" tokens ");
