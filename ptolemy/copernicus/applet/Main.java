@@ -77,7 +77,6 @@ public class Main extends KernelMain {
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
             throws Exception {
-        new Exception("applet.Main.parseArgs(): " + attribute.getFullName() + " targetPath: " + attribute.getParameter("targetPath")).printStackTrace();
         _generatorAttributeFileName = attribute
                 .getParameter("generatorAttributeFileName");
         _modelPath = attribute.getParameter("modelPath");
