@@ -262,9 +262,12 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put(
                 "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put(
+                "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
+                "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.vergil.modal.modal.ModalTableauFactory",y
+        _graphicalClasses.put("ptolemy.vergil.modal.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.ptera.PteraTableauFactory",
                 "ptolemy.kernel.util.Attribute");
@@ -275,6 +278,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
         // 11/06 FSM uses StateIcon
         _graphicalClasses.put("ptolemy.vergil.fsm.StateIcon", null);
+
+        _graphicalClasses.put("ptolemy.vergil.modal.StateIcon", null);
 
         _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.EllipseAttribute", null);
