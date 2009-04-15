@@ -1,4 +1,4 @@
-package myActors;
+package ptolemy.apps.actorsTutorial09;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
