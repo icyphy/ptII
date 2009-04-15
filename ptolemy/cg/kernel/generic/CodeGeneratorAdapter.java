@@ -222,6 +222,15 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
         return _strategy.generateWrapupCode();
     }    
 
+    /** Get the code generator adapter associated with the given component.
+     *  @param component The given component.
+     *  @return The code generator adapter.
+     *  @exception IllegalActionException If the adapter class cannot be found.
+     */
+    final public CodeGeneratorAdapter getAdapter(NamedObj component) throws IllegalActionException {
+        return getCodeGenerator().getAdapter(component);
+    }
+
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
