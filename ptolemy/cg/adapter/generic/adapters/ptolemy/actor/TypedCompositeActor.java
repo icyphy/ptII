@@ -61,7 +61,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor
+        CodeGeneratorAdapter directorAdapter = (CodeGeneratorAdapter) getCodeGenerator().getAdapter(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateFireCode());
@@ -85,8 +85,9 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        CodeGeneratorAdapter directorAdapter = (CodeGeneratorAdapter)        
+        getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) 
+                getComponent()).getDirector());
 
         code.append(directorAdapter.generatePreinitializeCode());
 
@@ -97,7 +98,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor
+        CodeGeneratorAdapter directorAdapter = (CodeGeneratorAdapter) getCodeGenerator().getAdapter(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateInitializeCode());
@@ -109,7 +110,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor
+        CodeGeneratorAdapter directorAdapter = (CodeGeneratorAdapter) getCodeGenerator().getAdapter(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateWrapupCode());
@@ -134,7 +135,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
         }
 
         // Get shared code used by the director adapter.
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        CodeGeneratorAdapter directorAdapter = (CodeGeneratorAdapter) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         sharedCode.addAll(directorAdapter.getSharedCode());
 
