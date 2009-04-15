@@ -132,7 +132,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
-        inline.setExpression("false");
+        inline.setExpression("true");
 
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
