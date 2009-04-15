@@ -12,7 +12,7 @@ Token BooleanArray_new(int size, int given, ...);
 struct booleanarray {
     int size;                                   // size of the array.
     boolean* elements;                            // array of Token elements.
-    char elementType;                                 // type of the elements.
+    char elementType;     	                    // type of the elements.
 };
 typedef struct booleanarray* BooleanArrayToken;
 /**/
@@ -22,11 +22,11 @@ typedef struct booleanarray* BooleanArrayToken;
 #define BooleanArray_length(array) ((array).payload.BooleanArray->size)
 
 boolean BooleanArray_get(Token array, int i) {
-        // Token result;
-        // result.type = array.payload.BooleanArray->elementType;
-        // result.payload.Boolean = ((boolean *) array.payload.BooleanArray->elements)[i];
-        // return result;
-        return ((boolean *) array.payload.BooleanArray->elements)[i];
+	// Token result;
+	// result.type = array.payload.BooleanArray->elementType;
+	// result.payload.Boolean = ((boolean *) array.payload.BooleanArray->elements)[i];
+	// return result;
+	return ((boolean *) array.payload.BooleanArray->elements)[i];
 }
 
 // BooleanArray_set: set an element of an array.
@@ -39,7 +39,7 @@ void BooleanArray_set(Token array, int i, boolean element) {
 void BooleanArray_resize(Token array, int size) {
     array.payload.BooleanArray->size = size;
     array.payload.BooleanArray->elements = (boolean*) realloc(
-                    array.payload.BooleanArray->elements, size * sizeof(boolean));
+    		array.payload.BooleanArray->elements, size * sizeof(boolean));
 }
 
 // BooleanArray_insert: Append the specified element to the end of an array.
@@ -61,7 +61,7 @@ void BooleanArray_insert(Token array, boolean token) {
 // should be of type Token *.
 // If the "given" argument is greater than 0, then the last
 // argument is expected to be the type that of the elements.
-Token BooleanArray_new(int size, int given, ...) { //Revised
+Token BooleanArray_new(int size, int given, ...) {
     va_list argp;
     int i;
     Token result;
@@ -79,8 +79,8 @@ Token BooleanArray_new(int size, int given, ...) { //Revised
             va_start(argp, given);
             for (i = 0; i < given; i++) {
 
-                    // va_arg requires the second argument to be not be unsigned char.
-                    // so we'll promote it to int instead.
+            	// va_arg requires the second argument to be not be unsigned char.
+            	// so we'll promote it to int instead.
                 result.payload.BooleanArray->elements[i] = (boolean) va_arg(argp, int);
             }
             va_end(argp);
@@ -93,7 +93,8 @@ Token BooleanArray_new(int size, int given, ...) { //Revised
 
 /***BooleanArray_delete***/
 // BooleanArray_delete: FIXME: What does this do?
-Token BooleanArray_delete(Token token, ...) { //Revised
+Token BooleanArray_delete(Token token, ...) {
+	//Revised
     Token emptyToken;
     //Token element;
     //int i;
@@ -127,9 +128,9 @@ Token BooleanArray_equals(Token thisToken, ...) {
         return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
-            if (!$equals_Boolean_Boolean(BooleanArray_get(thisToken, i), BooleanArray_get(otherToken, i))) {
-                    return $new(Boolean(false));
-            }
+    	if (!$equals_Boolean_Boolean(BooleanArray_get(thisToken, i), BooleanArray_get(otherToken, i))) {
+    		return $new(Boolean(false));
+    	}
         // if (!functionTable[(int)BooleanArray_get(thisToken, i).type][FUNC_equals]
         //                 (BooleanArray_get(thisToken, i), BooleanArray_get(otherToken, i)).payload.Boolean) {
         //     return $new(Boolean(false));
@@ -197,7 +198,7 @@ Token BooleanArray_print(Token thisToken, ...) {
 // BooleanArray_toString: Return a string token with a string representation
 // of the specified array.
 Token BooleanArray_toString(Token thisToken, ...) {
-        int i;
+	int i;
     int currentSize, allocatedSize;
     char* string;
     char elementString[6];
@@ -211,23 +212,23 @@ Token BooleanArray_toString(Token thisToken, ...) {
 
     //printf("%d\n", thisToken.payload.BooleanArray->size);
     for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
-                // Calculate the require storage size.
+		// Calculate the require storage size.
 
-            // boolean temp = BooleanArray_get(thisToken, i);
+    	// boolean temp = BooleanArray_get(thisToken, i);
         sprintf(elementString, "%s", BooleantoString(BooleanArray_get(thisToken, i)));
         currentSize += strlen(elementString);
-                if (i != 0) {
-                        currentSize += 2;
-                }
+		if (i != 0) {
+			currentSize += 2;
+		}
 
-                // Re-allocate storage.
-                if (currentSize > allocatedSize) {
+		// Re-allocate storage.
+		if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-                // Concat the element strings and separators.
-                if (i != 0) {
+		// Concat the element strings and separators.
+		if (i != 0) {
             strcat(string, ", ");
         }
         strcat(string, elementString);
@@ -264,11 +265,11 @@ Token BooleanArray_add(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                BooleanArray_set(result, i, $add_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $add_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                BooleanArray_set(result, i, $add_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
+        	BooleanArray_set(result, i, $add_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
         } else {
-                BooleanArray_set(result, i, $add_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $add_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
         }
     }
 
@@ -306,11 +307,11 @@ Token BooleanArray_subtract(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                BooleanArray_set(result, i, $subtract_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $subtract_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                BooleanArray_set(result, i, $subtract_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
+        	BooleanArray_set(result, i, $subtract_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
         } else {
-                BooleanArray_set(result, i, $subtract_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $subtract_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
         }
     }
 
@@ -346,11 +347,11 @@ Token BooleanArray_multiply(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                BooleanArray_set(result, i, $multiply_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $multiply_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                BooleanArray_set(result, i, $multiply_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
+        	BooleanArray_set(result, i, $multiply_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
         } else {
-                BooleanArray_set(result, i, $multiply_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $multiply_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
         }
     }
 
@@ -386,11 +387,11 @@ Token BooleanArray_divide(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                BooleanArray_set(result, i, $divide_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $divide_Boolean_Boolean(BooleanArray_get(thisToken, 0),BooleanArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                BooleanArray_set(result, i, $divide_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
+        	BooleanArray_set(result, i, $divide_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, 0)));
         } else {
-                BooleanArray_set(result, i, $divide_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
+        	BooleanArray_set(result, i, $divide_Boolean_Boolean(BooleanArray_get(thisToken, i),BooleanArray_get(otherToken, i)));
         }
     }
 
@@ -468,17 +469,17 @@ Token BooleanArray_clone(Token thisToken, ...) {
 /***BooleanArray_sum***/
 // FIXME: WHAT DOES THIS FUNCTION DO?
 boolean BooleanArray_sum(Token token) {
-        boolean result;
-        int i;
+	boolean result;
+	int i;
 
-        if (token.payload.BooleanArray->size <= 0) {
-                return false;
-        } else {
-                result = BooleanArray_get(token, 0);
-        }
+	if (token.payload.BooleanArray->size <= 0) {
+		return false;
+	} else {
+		result = BooleanArray_get(token, 0);
+	}
 
     for (i = 1; i < token.payload.BooleanArray->size; i++) {
-            result = $add_Boolean_Boolean(result, BooleanArray_get(token, i));
+    	result = $add_Boolean_Boolean(result, BooleanArray_get(token, i));
     }
     return result;
 }
@@ -486,12 +487,12 @@ boolean BooleanArray_sum(Token token) {
 
 /***BooleanArray_repeat***/
 Token BooleanArray_repeat(int number, boolean value) {
-        Token result;
-        result = $new(BooleanArray(number, 0));
-        int i;
+	Token result;
+	result = $new(BooleanArray(number, 0));
+	int i;
 
-        for (i = 0; i < number; i++) {
-                BooleanArray_set(result, i, value);
+	for (i = 0; i < number; i++) {
+		BooleanArray_set(result, i, value);
     }
     return result;
 }
@@ -520,16 +521,16 @@ Token BooleanArray_convert(Token token, ...) {
 //        element = BooleanArray_get(token, i);
 //        if (targetType != token.payload.BooleanArray->elementType) {
 //
-//                BooleanArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+//        	BooleanArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
 //            // result.payload.BooleanArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
-//                BooleanArray_set(result, i, element);
+//        	BooleanArray_set(result, i, element);
 //        }
 //    }
 //
 //    va_end(argp);
 //    return result;
-        return token;
+	return token;
 }
 /**/
 

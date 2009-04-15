@@ -13,7 +13,7 @@ Token $TypeArray_new(int size, int given, ...);
 struct $typearray {
     int size;                                   // size of the array.
     $type* elements;                            // array of Token elements.
-    char elementType;                                 // type of the elements.
+    char elementType;     	                    // type of the elements.
 };
 typedef struct $typearray* $TypeArrayToken;
 /**/
@@ -23,11 +23,11 @@ typedef struct $typearray* $TypeArrayToken;
 #define $TypeArray_length(array) ((array).payload.$TypeArray->size)
 
 $type $TypeArray_get(Token array, int i) {
-        // Token result;
-        // result.type = array.payload.$TypeArray->elementType;
-        // result.payload.$Type = (array.payload.$TypeArray->elements)[i];
-        // return result;
-        return (array.payload.$TypeArray->elements)[i];
+	// Token result;
+	// result.type = array.payload.$TypeArray->elementType;
+	// result.payload.$Type = (array.payload.$TypeArray->elements)[i];
+	// return result;
+	return (array.payload.$TypeArray->elements)[i];
 }
 
 // $TypeArray_set: set an element of an array.
@@ -40,7 +40,7 @@ void $TypeArray_set(Token array, int i, $type element) {
 void $TypeArray_resize(Token array, int size) {
     array.payload.$TypeArray->size = size;
     array.payload.$TypeArray->elements = ($type*) realloc(
-                    array.payload.$TypeArray->elements, size * sizeof($type));
+    		array.payload.$TypeArray->elements, size * sizeof($type));
 }
 
 // $TypeArray_insert: Append the specified element to the end of an array.
@@ -62,8 +62,8 @@ void $TypeArray_insert(Token array, $type token) {
 // should be of type Token *.
 // If the "given" argument is greater than 0, then the last
 // argument is expected to be the type that of the elements.
-Token $TypeArray_new(int size, int given, ...) { //Revised
-    va_list argp;
+Token $TypeArray_new(int size, int given, ...) {
+	va_list argp;
     int i;
     Token result;
     result.type = TYPE_$TypeArray;
@@ -91,7 +91,7 @@ Token $TypeArray_new(int size, int given, ...) { //Revised
 
 /***$TypeArray_delete***/
 // $TypeArray_delete: FIXME: What does this do?
-Token $TypeArray_delete(Token token, ...) { //Revised
+Token $TypeArray_delete(Token token, ...) {
     Token emptyToken;
     //Token element;
     //int i;
@@ -125,9 +125,9 @@ Token $TypeArray_equals(Token thisToken, ...) {
         return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.$TypeArray->size; i++) {
-            if (!$equals_$Type_$Type($TypeArray_get(thisToken, i), $TypeArray_get(otherToken, i))) {
-                    return $new(Boolean(false));
-            }
+    	if (!$equals_$Type_$Type($TypeArray_get(thisToken, i), $TypeArray_get(otherToken, i))) {
+    		return $new(Boolean(false));
+    	}
     }
 
     va_end(argp);
@@ -191,7 +191,7 @@ Token $TypeArray_print(Token thisToken, ...) {
 // $TypeArray_toString: Return a string token with a string representation
 // of the specified array.
 Token $TypeArray_toString(Token thisToken, ...) {
-        int i;
+	int i;
     int currentSize, allocatedSize;
     char* string;
     char* elementString;
@@ -205,23 +205,23 @@ Token $TypeArray_toString(Token thisToken, ...) {
 
     //printf("%d\n", thisToken.payload.$TypeArray->size);
     for (i = 0; i < thisToken.payload.$TypeArray->size; i++) {
-                // Calculate the require storage size.
+		// Calculate the require storage size.
 
-            // $type temp = $TypeArray_get(thisToken, i);
+    	// $type temp = $TypeArray_get(thisToken, i);
         elementString = $toString_$Type($TypeArray_get(thisToken, i));
         currentSize += strlen(elementString);
-                if (i != 0) {
-                        currentSize += 2;
-                }
+		if (i != 0) {
+			currentSize += 2;
+		}
 
-                // Re-allocate storage.
-                if (currentSize > allocatedSize) {
+		// Re-allocate storage.
+		if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-                // Concat the element strings and separators.
-                if (i != 0) {
+		// Concat the element strings and separators.
+		if (i != 0) {
             strcat(string, ", ");
         }
         strcat(string, elementString);
@@ -258,11 +258,11 @@ Token $TypeArray_add(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                $TypeArray_set(result, i, $add_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $add_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                $TypeArray_set(result, i, $add_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
+        	$TypeArray_set(result, i, $add_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
         } else {
-                $TypeArray_set(result, i, $add_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $add_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
         }
     }
 
@@ -300,11 +300,11 @@ Token $TypeArray_subtract(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                $TypeArray_set(result, i, $subtract_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $subtract_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                $TypeArray_set(result, i, $subtract_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
+        	$TypeArray_set(result, i, $subtract_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
         } else {
-                $TypeArray_set(result, i, $subtract_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $subtract_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
         }
     }
 
@@ -340,11 +340,11 @@ Token $TypeArray_multiply(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                $TypeArray_set(result, i, $multiply_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $multiply_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                $TypeArray_set(result, i, $multiply_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
+        	$TypeArray_set(result, i, $multiply_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
         } else {
-                $TypeArray_set(result, i, $multiply_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $multiply_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
         }
     }
 
@@ -380,11 +380,11 @@ Token $TypeArray_divide(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                $TypeArray_set(result, i, $divide_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $divide_$Type_$Type($TypeArray_get(thisToken, 0),$TypeArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                $TypeArray_set(result, i, $divide_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
+        	$TypeArray_set(result, i, $divide_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, 0)));
         } else {
-                $TypeArray_set(result, i, $divide_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
+        	$TypeArray_set(result, i, $divide_$Type_$Type($TypeArray_get(thisToken, i),$TypeArray_get(otherToken, i)));
         }
     }
 
@@ -461,17 +461,17 @@ Token $TypeArray_clone(Token thisToken, ...) {
 /***$TypeArray_sum***/
 // FIXME: WHAT DOES THIS FUNCTION DO?
 $type $TypeArray_sum(Token token) {
-        $type result;
-        int i;
+	$type result;
+	int i;
 
-        if (token.payload.$TypeArray->size <= 0) {
-                return $zero_$Type();
-        } else {
-                result = $TypeArray_get(token, 0);
-        }
+	if (token.payload.$TypeArray->size <= 0) {
+		return $zero_$Type();
+	} else {
+		result = $TypeArray_get(token, 0);
+	}
 
     for (i = 1; i < token.payload.$TypeArray->size; i++) {
-            result = $add_$Type_$Type(result, $TypeArray_get(token, i));
+    	result = $add_$Type_$Type(result, $TypeArray_get(token, i));
     }
     return result;
 }
@@ -479,12 +479,12 @@ $type $TypeArray_sum(Token token) {
 
 /***$TypeArray_repeat***/
 Token $TypeArray_repeat(int number, $type value) {
-        Token result;
-        result = $new($TypeArray(number, 0));
-        int i;
+	Token result;
+	result = $new($TypeArray(number, 0));
+	int i;
 
-        for (i = 0; i < number; i++) {
-                $TypeArray_set(result, i, value);
+	for (i = 0; i < number; i++) {
+		$TypeArray_set(result, i, value);
     }
     return result;
 }
@@ -513,16 +513,16 @@ Token $TypeArray_convert(Token thisToken, ...) {
 //        element = $TypeArray_get(token, i);
 //        if (targetType != token.payload.$TypeArray->elementType) {
 //
-//                $TypeArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+//        	$TypeArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
 //            // result.payload.$TypeArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
-//                $TypeArray_set(result, i, element);
+//        	$TypeArray_set(result, i, element);
 //        }
 //    }
 //
 //    va_end(argp);
 //    return result;
-        return token;
+	return token;
 }
 /**/
 

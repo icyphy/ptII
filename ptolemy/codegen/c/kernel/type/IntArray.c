@@ -12,7 +12,7 @@ Token IntArray_new(int size, int given, ...);
 struct intarray {
     int size;                                   // size of the array.
     int* elements;                            // array of Token elements.
-    char elementType;                                 // type of the elements.
+    char elementType;     	                    // type of the elements.
 };
 typedef struct intarray* IntArrayToken;
 /**/
@@ -22,11 +22,11 @@ typedef struct intarray* IntArrayToken;
 #define IntArray_length(array) ((array).payload.IntArray->size)
 
 int IntArray_get(Token array, int i) {
-        // Token result;
-        // result.type = array.payload.IntArray->elementType;
-        // result.payload.Int = ((int *) array.payload.IntArray->elements)[i];
-        // return result;
-        return ((int *) array.payload.IntArray->elements)[i];
+	// Token result;
+	// result.type = array.payload.IntArray->elementType;
+	// result.payload.Int = ((int *) array.payload.IntArray->elements)[i];
+	// return result;
+	return ((int *) array.payload.IntArray->elements)[i];
 }
 
 // IntArray_set: set an element of an array.
@@ -39,7 +39,7 @@ void IntArray_set(Token array, int i, int element) {
 void IntArray_resize(Token array, int size) {
     array.payload.IntArray->size = size;
     array.payload.IntArray->elements = (int*) realloc(
-                    array.payload.IntArray->elements, size * sizeof(int));
+    		array.payload.IntArray->elements, size * sizeof(int));
 }
 
 // IntArray_insert: Append the specified element to the end of an array.
@@ -61,7 +61,7 @@ void IntArray_insert(Token array, int token) {
 // should be of type Token *.
 // If the "given" argument is greater than 0, then the last
 // argument is expected to be the type that of the elements.
-Token IntArray_new(int size, int given, ...) { //Revised
+Token IntArray_new(int size, int given, ...) {
     va_list argp;
     int i;
     Token result;
@@ -90,7 +90,7 @@ Token IntArray_new(int size, int given, ...) { //Revised
 
 /***IntArray_delete***/
 // IntArray_delete: FIXME: What does this do?
-Token IntArray_delete(Token token, ...) { //Revised
+Token IntArray_delete(Token token, ...) {
     Token emptyToken;
     //Token element;
     //int i;
@@ -124,9 +124,9 @@ Token IntArray_equals(Token thisToken, ...) {
         return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.IntArray->size; i++) {
-            if (IntArray_get(thisToken, i) != IntArray_get(otherToken, i)) {
-                    return $new(Boolean(false));
-            }
+    	if (IntArray_get(thisToken, i) != IntArray_get(otherToken, i)) {
+    		return $new(Boolean(false));
+    	}
     }
 
     va_end(argp);
@@ -190,7 +190,7 @@ Token IntArray_print(Token thisToken, ...) {
 // IntArray_toString: Return a string token with a string representation
 // of the specified array.
 Token IntArray_toString(Token thisToken, ...) {
-        int i;
+	int i;
     int currentSize, allocatedSize;
     char* string;
     char elementString[12];
@@ -204,23 +204,23 @@ Token IntArray_toString(Token thisToken, ...) {
 
     //printf("%d\n", thisToken.payload.IntArray->size);
     for (i = 0; i < thisToken.payload.IntArray->size; i++) {
-                // Calculate the require storage size.
+		// Calculate the require storage size.
 
-            // int temp = IntArray_get(thisToken, i);
+    	// int temp = IntArray_get(thisToken, i);
         sprintf(elementString, "%d", IntArray_get(thisToken, i));
         currentSize += strlen(elementString);
-                if (i != 0) {
-                        currentSize += 2;
-                }
+		if (i != 0) {
+			currentSize += 2;
+		}
 
-                // Re-allocate storage.
-                if (currentSize > allocatedSize) {
+		// Re-allocate storage.
+		if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-                // Concat the element strings and separators.
-                if (i != 0) {
+		// Concat the element strings and separators.
+		if (i != 0) {
             strcat(string, ", ");
         }
         strcat(string, elementString);
@@ -259,11 +259,11 @@ Token IntArray_add(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                IntArray_set(result, i, $add_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $add_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                IntArray_set(result, i, $add_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
+        	IntArray_set(result, i, $add_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
         } else {
-                IntArray_set(result, i, $add_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $add_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
         }
     }
 
@@ -303,11 +303,11 @@ Token IntArray_subtract(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                IntArray_set(result, i, $subtract_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $subtract_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                IntArray_set(result, i, $subtract_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
+        	IntArray_set(result, i, $subtract_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
         } else {
-                IntArray_set(result, i, $subtract_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $subtract_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
         }
     }
 
@@ -345,11 +345,11 @@ Token IntArray_multiply(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                IntArray_set(result, i, $multiply_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $multiply_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                IntArray_set(result, i, $multiply_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
+        	IntArray_set(result, i, $multiply_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
         } else {
-                IntArray_set(result, i, $multiply_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $multiply_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
         }
     }
 
@@ -387,11 +387,11 @@ Token IntArray_divide(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-                IntArray_set(result, i, $divide_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $divide_Int_Int(IntArray_get(thisToken, 0),IntArray_get(otherToken, i)));
         } else if (size2 == 1) {
-                IntArray_set(result, i, $divide_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
+        	IntArray_set(result, i, $divide_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, 0)));
         } else {
-                IntArray_set(result, i, $divide_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
+        	IntArray_set(result, i, $divide_Int_Int(IntArray_get(thisToken, i),IntArray_get(otherToken, i)));
         }
     }
 
@@ -469,17 +469,17 @@ Token IntArray_clone(Token thisToken, ...) {
 /***IntArray_sum***/
 // FIXME: WHAT DOES THIS FUNCTION DO?
 int IntArray_sum(Token token) {
-        int result;
-        int i;
+	int result;
+	int i;
 
-        if (token.payload.IntArray->size <= 0) {
-                return 0;
-        } else {
-                result = IntArray_get(token, 0);
-        }
+	if (token.payload.IntArray->size <= 0) {
+		return 0;
+	} else {
+		result = IntArray_get(token, 0);
+	}
 
     for (i = 1; i < token.payload.IntArray->size; i++) {
-            result = $add_Int_Int(result, IntArray_get(token, i));
+    	result = $add_Int_Int(result, IntArray_get(token, i));
     }
     return result;
 }
@@ -487,12 +487,12 @@ int IntArray_sum(Token token) {
 
 /***IntArray_repeat***/
 Token IntArray_repeat(int number, int value) {
-        Token result;
-        result = $new(IntArray(number, 0));
-        int i;
+	Token result;
+	result = $new(IntArray(number, 0));
+	int i;
 
-        for (i = 0; i < number; i++) {
-                IntArray_set(result, i, value);
+	for (i = 0; i < number; i++) {
+		IntArray_set(result, i, value);
     }
     return result;
 }
@@ -521,16 +521,16 @@ Token IntArray_convert(Token token, ...) {
 //        element = IntArray_get(token, i);
 //        if (targetType != token.payload.IntArray->elementType) {
 //
-//                IntArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+//        	IntArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
 //            // result.payload.IntArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
-//                IntArray_set(result, i, element);
+//        	IntArray_set(result, i, element);
 //        }
 //    }
 //
 //    va_end(argp);
 //    return result;
-        return token;
+	return token;
 }
 /**/
 
