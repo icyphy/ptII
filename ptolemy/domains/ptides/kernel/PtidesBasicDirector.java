@@ -147,8 +147,7 @@ public class PtidesBasicDirector extends DEDirector {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before
             // we declare that we are done.
-            if (!eventQueue.get().timeStamp().equals(getModelStopTime())) {
-            //if (!getEventQueue().get().timeStamp().equals(getModelStopTime())) {
+            if (!getEventQueue().get().timeStamp().equals(getModelStopTime())) {
                 result = false;
             }
         }
