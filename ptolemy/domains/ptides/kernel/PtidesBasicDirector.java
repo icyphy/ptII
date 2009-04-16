@@ -31,25 +31,28 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.kernel;
 
+import java.util.PriorityQueue;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DECQEventQueue;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -100,38 +103,6 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** Check whether the actor is a sensor, if it is, then call fireAt()
-     *  of the enclosing director, which keeps track of physical time. Then
-     *  the event associated with the sensor is put into _realTimeEventQueue.
-     *  If the actor is not a sensor, then we call fireAt of the super class.
-     *
-     *  FIXME: the enclosing director has to keep track of physical time
-     *
-     */
-    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        if (PtidesActorProperties.isSensor(actor) || PtidesActorProperties.isActuator((actor))) {
-
-            Actor container = (Actor) getContainer();
-
-            if (_debugging) {
-                    _debug("PtidesBasicDirector: Requests refiring of: "
-                            + container.getName() + " at time " + time);
-            }
-
-            int depth = _getDepthOfActor(actor);
-            // FIXME: ideally, the sensor should only produce one event of the same timestamp,
-            // so we shouldn't have to deal with microsteps here at all.
-            DEEvent newEvent = new DEEvent(actor, time, 0, depth);
-            _realTimeEventQueue.put(newEvent);
-
-            Director executiveDirector = container.getExecutiveDirector();
-            return executiveDirector.fireAt(container, time);
-
-        } else {
-            return super.fireAt(actor, time);
-        }
-    }
-
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
@@ -141,11 +112,9 @@ public class PtidesBasicDirector extends DEDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
+        sensorEventQueue = new PriorityQueue<RealTimeEvent>();
+        actuatorEventQueue = new PriorityQueue<RealTimeEvent>();
         _physicalTimeExecutionStarted = null;
-
-//        _realTimeEventQueue = new DECQEventQueue(((IntToken) minBinCount.getToken())
-//                .intValue(), ((IntToken) binCountFactor.getToken()).intValue(),
-//                ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
 
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
@@ -173,21 +142,15 @@ public class PtidesBasicDirector extends DEDirector {
         // Do not call super.postfire() because that requests a
         // refiring at the next event time on the event queue.
 
-        boolean stop = ((BooleanToken) stopWhenQueueIsEmpty.getToken()).booleanValue();
-        DEEventQueue eventQueue = getEventQueue();
-
         Boolean result = !_stopRequested;
         if (getModelTime().compareTo(getModelStopTime()) >= 0) {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before
             // we declare that we are done.
             if (!eventQueue.get().timeStamp().equals(getModelStopTime())) {
+            //if (!getEventQueue().get().timeStamp().equals(getModelStopTime())) {
                 result = false;
             }
-        }
-        if (eventQueue.isEmpty() && stop &&
-                _currentlyExecutingStack.isEmpty() && _realTimeEventQueue.isEmpty()) {
-            result = false;
         }
         return result;
     }
@@ -354,41 +317,6 @@ public class PtidesBasicDirector extends DEDirector {
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
         DEEventQueue eventQueue = getEventQueue();
-
-        // deals with actuators on eventQueue
-
-        // since actuators only need to assert the actuation signal when physical time is equal
-        // to the timestamp of the event, we do not need to do safe to process.
-        // FIXME: assume execution time of an actuator is always 0.
-        if (!eventQueue.isEmpty()) {
-            DEEvent eventFromQueue = eventQueue.get();
-            if (PtidesActorProperties.isActuator(eventFromQueue.actor())) {
-                Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
-                int compare = timeStampOfEventFromQueue.compareTo(physicalTime);
-                if (compare < 0) {
-                    throw new IllegalActionException("Actuator missed deadline");
-                } else if (compare > 0) {
-                    fireAt(super._getNextActorToFire(), eventFromQueue.timeStamp());
-                } else {
-                    setModelTime(timeStampOfEventFromQueue);
-                    // Request a refiring so we can process the next event
-                    // on the event queue at the current physical time.
-                    executiveDirector.fireAtCurrentTime((Actor)container);
-                    return super._getNextActorToFire();
-                }
-            }
-        }
-
-        // deals with sensors and actuators on _realTimeEventQueue
-        if (!_realTimeEventQueue.isEmpty()) {
-            DEEvent event = _realTimeEventQueue.get();
-            if (event.timeStamp().compareTo(physicalTime) == 0) {
-                _realTimeEventQueue.take();
-                setModelTime(event.timeStamp());
-                executiveDirector.fireAtCurrentTime((Actor)container);
-                return event.actor();
-            }
-        }
 
         if (!_currentlyExecutingStack.isEmpty()) {
             // Case 2: We are currently executing an actor.
@@ -648,10 +576,253 @@ public class PtidesBasicDirector extends DEDirector {
             ((TypedCompositeActor)container).requestChange(request);
         }
     }
+    
+    /** For all events in the sensorEventQueue, transfer input events that are ready.
+     *  For all events that are currently sitting at the input port, if the realTimeDelay
+     *  is 0.0, then transfer them into the platform, otherwise move them into the 
+     *  sensorEventQueue and call fireAt() of the executive director.
+     *  In either case, if the input port is a networkPort, we make sure the data token
+     *  transmitted is stripped of the previous timestamp. Instead, the timestamp is
+     *  used to set the timestamp of the event associated with this token.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if at least one data token is transferred.
+     */
+    protected boolean _transferInputs(IOPort port) throws IllegalActionException {
 
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferInputs on a port is not an opaque"
+                            + "input port.");
+        }
+        
+        boolean result = false;
+        Time physicalTime = _getPhysicalTime();
+        // First transfer all tokens that are already in the event queue for the sensor.
+        // FIXME: notice this is done NOT for the specific port
+        // in question. Instead, we do it for ALL events that can be transferred out of
+        // this platform.
+        // FIXME: there is _NO_ guarantee from the priorityQueue that these events are sent out
+        // in the order they arrive at the actuator. We can only be sure that they are sent
+        // in the order of the timestamps, but for two events of the same timestamp at an
+        // actuator, there's no guarantee on the order of events sent to the outside.
+        while (true) {
+            if (sensorEventQueue.isEmpty()) {
+                break;
+            }
+
+            RealTimeEvent tokenEvent = (RealTimeEvent)sensorEventQueue.peek();
+            int compare = tokenEvent.deliveryTime.compareTo(physicalTime);
+            
+            if (compare > 0) {
+                break;
+            } else if (compare == 0) {
+                // FIXME: Are these needed here? 
+                Parameter parameter = (Parameter)((NamedObj) tokenEvent.port).getAttribute("realTimeDelay");
+                double realTimeDelay = 0.0;
+                if (parameter != null) {
+                    realTimeDelay = ((DoubleToken)parameter.getToken()).doubleValue();
+                } else {
+                    // this shouldn't happen.
+                    throw new IllegalActionException("real time delay should not be 0.0");
+                }
+                
+                Time lastModelTime = _currentTime;
+                if (_isNetworkPort(tokenEvent.port)) {
+                    TimedToken timedToken = (TimedToken)(tokenEvent.token);
+                    // the timestamp of this network token is preserved from the last platform
+                    setModelTime(timedToken.getTimestamp());
+                    sensorEventQueue.poll();
+                    tokenEvent.port.sendInside(tokenEvent.channel, timedToken.getTokenValue());
+                } else {                
+                    setModelTime(tokenEvent.deliveryTime.subtract(realTimeDelay));
+                    sensorEventQueue.poll();
+                    tokenEvent.port.sendInside(tokenEvent.channel, tokenEvent.token);
+                }
+                if (_debugging) {
+                    _debug(getName(), "transferring input from "
+                            + tokenEvent.port.getName());
+                }
+                result = true;
+                setModelTime(lastModelTime);
+                
+            } else {
+                // FIXME: we should probably do something else here.
+                throw new IllegalArgumentException("missed transferring at the sensor. " +
+                		"Should transfer input at time = "
+                        + tokenEvent.deliveryTime + ", and current physical time = " + physicalTime);
+            }
+        }
+        
+        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("realTimeDelay");
+        // realTimeDelay is default to 0.0;
+        double realTimeDelay = 0.0;
+        if (parameter != null) {
+            realTimeDelay = ((DoubleToken)parameter.getToken()).doubleValue();
+        }
+        if (realTimeDelay == 0.0) {
+            Time lastModelTime = _currentTime;
+            if (_isNetworkPort(port)) {
+                _transferNetworkInputs(port);
+            } else {
+                setModelTime(physicalTime);
+                result = result || super._transferInputs(port);
+                setModelTime(lastModelTime);
+            }
+        } else {
+            for (int i = 0; i < port.getWidth(); i++) {
+                try {
+                    if (i < port.getWidthInside()) {
+                        if (port.hasToken(i)) {
+                            Token t = port.get(i);
+                            Time waitUntilTime = physicalTime.add(realTimeDelay);
+                            RealTimeEvent realTimeEvent = new RealTimeEvent(port, i, t, waitUntilTime);
+                            sensorEventQueue.add(realTimeEvent);
+                            result = true;
+                            
+                            // wait until physical time to transfer the output to the actuator
+                            Actor container = (Actor) getContainer();
+                            container.getExecutiveDirector().fireAt((Actor)container, waitUntilTime);
+                        }
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
+                }
+            }
+        }
+        return result;
+    }
+    
+    /** Overwrite the _transferOutputs() function.
+     *  First, for tokens that are stored in the actuator event queue and
+     *  send them to the outside of the platform if physical time has arrived.
+     *  If in either of the last two cases we have sent data to the outside, then we should return
+     *  true, otherwise return false.
+     *  The second step is to check if this port is a networkedOutput port, if it is, transfer
+     *  data tokens immediately to the outside by calling _transferNetworkingOutputs().
+     *  Finally, we check for current model time, if the current model time is equal to the physical
+     *  time, we can send the tokens to the outside. Else if current model time has exceeded
+     *  the physical time, and we still have tokens to transfer, then we have missed the deadline.
+     *  Else if current model time has not arrived at the physical time, then we put the token along
+     *  with the port and channel into the actuator event queue, and call fireAt of the executive
+     *  director so we could send it at a later physical time.
+     *  @see #_transferNetworkingOutputs()
+     */
+    protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferOutputs on a port that "
+                            + "is not an opaque input port.");
+        }
+        
+        // first check for current time, and transfer any tokens that are already ready to output.
+        boolean result = false;
+        Time physicalTime = _getPhysicalTime();
+        int compare = 0;
+        // FIXME: notice this is done NOT for the specific port
+        // in question. Instead, we do it for ALL events that can be transferred out of
+        // this platform.
+        // FIXME: there is _NO_ guarantee from the priorityQueue that these events are sent out
+        // in the order they arrive at the actuator. We can only be sure that they are sent
+        // in the order of the timestamps, but for two events of the same timestamp at an
+        // actuator, there's no guarantee on the order of events sent to the outside.
+        while (true) {
+            if (actuatorEventQueue.isEmpty()) {
+                break;
+            }
+            RealTimeEvent tokenEvent = (RealTimeEvent)actuatorEventQueue.peek();
+            compare = tokenEvent.deliveryTime.compareTo(physicalTime);
+            
+            if (compare > 0) {
+                break;
+            } else if (compare == 0) {
+                if (_isNetworkPort(tokenEvent.port)) {
+                    throw new IllegalActionException("transferring network event from the"
+                            + "actuator event queue");
+                }
+                actuatorEventQueue.poll();
+                tokenEvent.port.send(tokenEvent.channel, tokenEvent.token);
+                if (_debugging) {
+                    _debug(getName(), "transferring output "
+                            + tokenEvent.token
+                            + " from "
+                            + tokenEvent.port.getName());
+                }
+                result = true;
+            } else if (compare < 0) {
+                // FIXME: we should probably do something else here.
+                throw new IllegalArgumentException("missed deadline at the actuator. Deadline = "
+                        + tokenEvent.deliveryTime + ", and current physical time = " + physicalTime);
+            }
+        }
+        
+        if (_isNetworkPort(port)) {
+            // if we transferred once to the network output, then return true,
+            // and go through this once again.
+            while (true) {
+                if (!_transferNetworkOutputs(port)) {
+                    break;
+                }
+            }
+            // do not need to update the result, because this loop ensures
+            // we have transmitted all network output events, so no need
+            // to enter here again.
+        }
+        
+        compare = _currentTime.compareTo(physicalTime);
+        // if physical time has reached the timestamp of the last event, transmit data to the output
+        // now. Notice this does not guarantee tokens are transmitted, simply because there might
+        // not be any tokens to transmit.
+        if (compare == 0){
+            result = result || super._transferOutputs(port);
+        } else if (compare < 0) {
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                if (port.hasTokenInside(i)) {
+                    // FIXME: we should probably do something else here.
+                    throw new IllegalArgumentException("missed deadline at the actuator. Deadline = "
+                            + _currentTime + ", and current physical time = " + physicalTime);
+                }
+            }
+        } else {
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                try {
+                    if (port.hasTokenInside(i)) {
+                        Token t = port.getInside(i);
+                        RealTimeEvent tokenEvent = new RealTimeEvent(port, i, t, _currentTime);
+                        actuatorEventQueue.add(tokenEvent);
+                        // wait until physical time to transfer the output to the actuator
+                        Actor container = (Actor) getContainer();
+                        container.getExecutiveDirector().fireAt((Actor)container, _currentTime);
+                    }
+                } catch (NoTokenException ex) {
+                        // this shouldn't happen.
+                        throw new InternalErrorException(this, ex, null);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
-
+    
+    /** check if the port is a networkPort
+     *  this method is default to return false, i.e., an output port to the outside of the
+     *  platform is by default an actuator port.
+     * @throws IllegalActionException 
+     */
+    private boolean _isNetworkPort(IOPort port) throws IllegalActionException {
+        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("networkPort");
+        if (parameter != null) {
+            return ((BooleanToken)parameter.getToken()).booleanValue();
+        }
+        return false;
+    }
+    
     /** Call fireAt() of the executive director, which is in charge of bookkeeping the
      *  physical time.
      */
@@ -664,6 +835,108 @@ public class PtidesBasicDirector extends DEDirector {
             e.printStackTrace();
         }
     }
+    
+    /** transfer network inputs into the platform. The input token is expected to be
+     *  a timedToken from another network output. During this process, the
+     *  timedToken's timestamp is used as the timestamp of the event, and only
+     *  the tokenValue (actual token) is sent into the platform.
+     *  @param port The port we are transmitting into
+     *  @return true if transmission was successful
+     *  @throws IllegalActionException
+     */
+    private boolean _transferNetworkInputs(IOPort port)
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling transferNetworkInputs on port: " + port.getFullName());
+        }
+
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferNetworkInputs on a port is not an opaque"
+                            + "input port.");
+        }
+
+        boolean wasTransferred = false;
+
+        for (int i = 0; i < port.getWidth(); i++) {
+            try {
+                if (i < port.getWidthInside()) {
+                    if (port.hasToken(i)) {
+                        TimedToken timedToken = (TimedToken)port.get(i);
+
+                        if (_debugging) {
+                            _debug(getName(), "transferring input from "
+                                    + port.getName());
+                        }
+
+                        Time lastModelTime = _currentTime;
+                        setModelTime(timedToken.getTimestamp());
+
+                        port.sendInside(i, timedToken.getTokenValue());
+                        wasTransferred = true;
+                        
+                        setModelTime(lastModelTime);
+                    }
+                } else {
+                    // No inside connection to transfer tokens to.
+                    // In this case, consume one input token if there is one.
+                    if (_debugging) {
+                        _debug(getName(), "Dropping single input from "
+                                + port.getName());
+                    }
+
+                    if (port.hasToken(i)) {
+                        port.get(i);
+                    }
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        return wasTransferred;
+    }
+    
+    /** This function is basically the same as _transferOutputs(), but when the output
+     *  data token is transmitted, we transfer a TimedToken instead, so to keep track of
+     *  the timestamp of that token even when it travels outside of the current network. 
+     */
+    private boolean _transferNetworkOutputs(IOPort port)
+            throws IllegalActionException {
+        boolean result = false;
+        if (_debugging) {
+            _debug("Calling transferNetworkingOutputs on port: " + port.getFullName());
+        }
+
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferNetworkingOutputs on a port that "
+                    + "is not an opaque input port.");
+        }
+
+        for (int i = 0; i < port.getWidthInside(); i++) {
+            try {
+                if (port.hasTokenInside(i)) {
+                    Token t = port.getInside(i);
+
+                    if (_debugging) {
+                        _debug(getName(), "transferring networking output "
+                                + t
+                                + " from "
+                                + port.getName());
+                    }
+
+                    Token timedToken = new TimedToken(_currentTime, t);
+                    port.send(i, timedToken);
+                    result = true;
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        return result;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
@@ -673,6 +946,14 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Stack<DoubleTimedEvent> _currentlyExecutingStack;
 
+    /** a sorted set of RealTimeEvents that buffer events before they are sent to the output.
+     */
+    private PriorityQueue actuatorEventQueue;
+    
+    /** a sorted set of RealTimeEvents that buffer events when they arrive at the input of
+     *  the platform, but are not yet visible to the platform yet (because of real time delay d_o)
+     */
+    private PriorityQueue sensorEventQueue;
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
@@ -688,13 +969,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
-
-    /** Event queue for real-time events.
-     *  Keeps track of real-time events from sensors or actuators.
-     */
-    private DEEventQueue _realTimeEventQueue = new DECQEventQueue(((IntToken) minBinCount.getToken())
-            .intValue(), ((IntToken) binCountFactor.getToken()).intValue(),
-            ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
@@ -720,6 +994,28 @@ public class PtidesBasicDirector extends DEDirector {
 
         public String toString() {
             return super.toString() + ", remainingExecutionTime = " + remainingExecutionTime;
+        }
+    }
+    
+    /** A structure that holds a token with the port and channel it's connected to,
+     *  as well as the timestamp associated with this token.
+     *  This object is used to hold sensor and actuation events.
+     */
+    public class RealTimeEvent implements Comparable {
+        public IOPort port;
+        public int channel;
+        public Token token;
+        public Time deliveryTime;
+        
+        public RealTimeEvent(IOPort port, int channel, Token token, Time timestamp) {
+            this.port = port;
+            this.channel = channel;
+            this.token = token;
+            this.deliveryTime = timestamp;
+        }
+        
+        public int compareTo(Object other) {
+            return deliveryTime.compareTo(((RealTimeEvent)other).deliveryTime);
         }
     }
 }
