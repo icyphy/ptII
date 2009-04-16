@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -230,16 +231,17 @@ public abstract class PropertySolverBase extends Attribute {
         return result;
     }
 
-    /*
-     * Return the list of all property-able objects obtained from
-     * every PropertyHelper.
+    /**
+     * Return the set of all property-able objects obtained from
+     * all PropertyHelper.
      *
-     * @return The list of all property-able objects.
+     * @return The set of all property-able objects.
      * @exception IllegalActionException Thrown if
-     * {@link#getAllPropertyables()} throws it.
+     * an error occurs when getting the helpers or the property-able
+     * objects from them.
      */
-    public List getAllPropertyables() throws IllegalActionException {
-        List result = new LinkedList();
+    public Set getAllPropertyables() throws IllegalActionException {
+        HashSet result = new HashSet();
 
         for (PropertyHelper helper : getAllHelpers()) {
             result.addAll(helper.getPropertyables());

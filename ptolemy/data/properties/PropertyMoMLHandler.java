@@ -29,6 +29,7 @@ package ptolemy.data.properties;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
@@ -110,7 +111,7 @@ public class PropertyMoMLHandler extends Attribute {
         PropertySolver solver = (PropertySolver) getContainer();
         StringBuffer completeMoML = new StringBuffer("<group>");
         try {
-            List propertyables = solver.getAllPropertyables();
+            Set propertyables = solver.getAllPropertyables();
 
             for (Object propertyable : propertyables) {
                 if (propertyable instanceof NamedObj) {

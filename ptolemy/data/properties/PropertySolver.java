@@ -878,6 +878,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     public Parameter action;
 
+    /** If we are in TRAINING mode, then keep all the intermediate results. */    
     public Parameter all;
 
     public Parameter manualAnnotation;
