@@ -318,18 +318,11 @@ public class IORelation extends ComponentRelation {
 
                     Nameable container = getContainer();
 
-                    boolean foundDirector = false;
                     if (container instanceof CompositeActor) {
-                        Director director = ((CompositeActor) container).getDirector();
-
-                        if (director != null) {
-                            director.inferWidths();
-                            foundDirector = true;
-                        }
-                    }
-                    if (!foundDirector) {
+                        ((CompositeActor) container).inferWidths();
+                    } else {
                         throw new IllegalActionException(this, "Can't infer the widths " +
-                        "of the relations since no director present.");
+                        "of the relations since no container or container is not a CompositeActor.");
                     }
 
                     assert _inferredWidthVersion == _workspace.getVersion();
@@ -557,9 +550,10 @@ public class IORelation extends ComponentRelation {
         int width = _getUserWidth();
         boolean widthInferenceValid = width != WIDTH_TO_INFER || _inferredWidthVersion == _workspace.getVersion();
         if (!widthInferenceValid) {
-            Manager manager = _getManager();
-            if (manager != null) {
-                widthInferenceValid = !manager.needsWidthInference();
+            Nameable container = getContainer();
+
+            if (container instanceof CompositeActor) {
+                widthInferenceValid = !((CompositeActor) container).needsWidthInference();
                 if (widthInferenceValid) {
                     _inferredWidthVersion = _workspace.getVersion();
                 }
@@ -896,32 +890,15 @@ public class IORelation extends ComponentRelation {
         return _cachedWidth;
     }
 
-    /** Return the manager. If there is no Manager null is returned.
-     * @return The Manager.
+    /** Determine whether widths are currently being inferred or not.
+     *  @return True When widths are currently being inferred.
+     *  @exception IllegalActionException If toplevel not a CompositeActor. 
      */
-    private Manager _getManager() {
+    private boolean _inferringWidths() throws IllegalActionException {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
-            Director director = ((CompositeActor) container).getDirector();
-
-            if (director != null) {
-                Nameable directorContainer = director.getContainer();
-                if (directorContainer instanceof CompositeActor) {
-                    return ((CompositeActor) container).getManager();
-                }
-            }
-        }
-        return null;
-    }
-
-    /** Determine whether widths are currently being inferred or not.
-     *  @return True When widths are currently being inferred.
-     */
-    private boolean _inferringWidths() {
-        Manager manager = _getManager();
-        if (manager != null) {
-            return manager.inferringWidths();
+            return ((CompositeActor) container).inferringWidths();
         }
         return false;
     }
@@ -1124,12 +1101,13 @@ public class IORelation extends ComponentRelation {
                 Nameable container = getContainer();
 
                 if (container instanceof CompositeActor) {
+                    ((CompositeActor) container).notifyConnectivityChange();
                     Director director = ((CompositeActor) container).getDirector();
 
                     if (director != null) {
                         director.invalidateSchedule();
                         director.invalidateResolvedTypes();
-                        director.notifyConnectivityChange();
+                        
                     }
                 }
             } finally {

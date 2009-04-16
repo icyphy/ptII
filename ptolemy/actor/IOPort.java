@@ -4280,12 +4280,15 @@ public class IOPort extends ComponentPort {
         Nameable container = getContainer();
 
         if (container instanceof Actor) {
+            if (container instanceof CompositeActor) {
+                ((CompositeActor) container).notifyConnectivityChange();
+            }
+            
             Director director = ((Actor) container).getDirector();
 
             if (director != null) {
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();
-                director.notifyConnectivityChange();
             }
             // Need to do this for the executive director as well because the port
             // may belong to an opaque composite actor.
@@ -4293,7 +4296,6 @@ public class IOPort extends ComponentPort {
             if (executiveDirector != null) {
                 executiveDirector.invalidateSchedule();
                 executiveDirector.invalidateResolvedTypes();
-                executiveDirector.notifyConnectivityChange();
             }
         }
     }

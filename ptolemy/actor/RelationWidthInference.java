@@ -56,9 +56,33 @@ relations in a composite actor.
 */
 
 public class RelationWidthInference {
+    
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
+    
+    /**
+     * Create RelationWidthInference, the algorithm for width inference.
+     * Also set the top level to the value given as argument.
+     * @param topLevel The top level CompositeActor.
+     * @exception IllegalArgumentException If the specified actor is not the
+     *   top level container. That is, its container is not null.
+     */
+     public RelationWidthInference(CompositeActor topLevel) {
+         // Extra test for compositeActor != null since when the manager is changed
+         // the old manager gets a null pointer as compositeActor.
+         // Afterwards width inference should not be done anymore on this manager
+         // (this will throw a null pointer exception since _topLevel will be set to null).
+         if (topLevel != null && topLevel.getContainer() != null) {
+             throw new IllegalArgumentException(
+                     "TypedCompositeActor.resolveTypes: The specified actor is "
+                             + "not the top level container.");
+         }
+
+         _topLevel = topLevel;
+     }
+
+     
     /** Determine whether widths are currently being inferred or not.
      *  @return True When widths are currently being inferred.
      */
@@ -341,26 +365,6 @@ public class RelationWidthInference {
             // we shouldn't be doing width inference and hence the parameter should not be
             // changing.
     }
-
-    /**
-     * Set the top level to the value given as argument.
-     * @param topLevel The top level CompositeActor.
-     * @exception IllegalArgumentException If the specified actor is not the
-     *   top level container. That is, its container is not null.
-     */
-     public void setTopLevel(CompositeActor topLevel) {
-         // Extra test for compositeActor != null since when the manager is changed
-         // the old manager gets a null pointer as compositeActor.
-         // Afterwards width inference should not be done anymore on this manager
-         // (this will throw a null pointer exception since _topLevel will be set to null).
-         if (topLevel != null && topLevel.getContainer() != null) {
-             throw new IllegalArgumentException(
-                     "TypedCompositeActor.resolveTypes: The specified actor is "
-                             + "not the top level container.");
-         }
-
-         _topLevel = topLevel;
-     }
 
      ///////////////////////////////////////////////////////////////////
      ////                         protected methods                 ////

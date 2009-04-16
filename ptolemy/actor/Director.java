@@ -605,29 +605,6 @@ public class Director extends Attribute implements Executable {
         return false;
     }
 
-    /**
-     *  Infer the width of the relations for which no width has been
-     *  specified yet.
-     *  The specified actor must be the top level container of the model.
-     *  @exception IllegalActionException If the widths of the relations at port are not consistent
-     *                  or if the width cannot be inferred for a relation.
-     */
-    public void inferWidths() throws IllegalActionException {
-        Nameable container = getContainer();
-        boolean foundManager = false;
-        if (container instanceof CompositeActor) {
-            Manager manager = ((CompositeActor) container).getManager();
-            if (manager != null) {
-                manager.inferWidths();
-                foundManager = true;
-            }
-        }
-        if (!foundManager) {
-            throw new IllegalActionException(this, "Can't infer the widths " +
-            "of the relations since no manager present.");
-        }
-    }
-
     /** Initialize the model controlled by this director.  Set the
      *  current time to the start time or the current time of the
      *  executive director, and then invoke the initialize() method
@@ -829,47 +806,12 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /**
-     *  Return whether the current widths of the relation in the model
-     *  are no longer valid anymore and the widths need to be inferred again.
-     *  @return True when width inference needs to be executed again.
-     *  @exception IllegalActionException If no manager present.
-     */
-    public boolean needsWidthInference() throws IllegalActionException {
-        boolean needsWidthInference = false;
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            Manager manager = ((CompositeActor) container).getManager();
-            if (manager != null) {
-                needsWidthInference = manager.needsWidthInference();
-            } else {
-                throw new IllegalActionException(this, "Can't infer the widths " +
-                "of the relations since no manager present.");
-            }
-        }
-        return needsWidthInference;
-    }
-
     /** Return a new receiver of a type compatible with this director.
      *  In this base class, this returns an instance of Mailbox.
      *  @return A new Mailbox.
      */
     public Receiver newReceiver() {
         return new Mailbox();
-    }
-
-    /** Notify the manager that the connectivity in the model changed
-     *  (width of relation changed, relations added, linked to different ports, ...).
-     *  This will invalidate the current width inference.
-     */
-    public void notifyConnectivityChange() {
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            Manager manager = ((CompositeActor) container).getManager();
-            if (manager != null) {
-                manager.notifyConnectivityChange();
-            }
-        }
     }
 
     /** Return true if the director wishes to be scheduled for another

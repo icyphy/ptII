@@ -579,25 +579,6 @@ public class Manager extends NamedObj implements Runnable {
         return _state;
     }
 
-    /** Determine whether widths are currently being inferred or not.
-     *  @return True When widths are currently being inferred.
-     */
-    public boolean inferringWidths() {
-        return _relationWidthInference.inferringWidths();
-    }
-
-    /**
-     *  Infer the width of the relations for which no width has been
-     *  specified yet.
-     *  @exception IllegalActionException If the widths of the relations at port are not consistent
-     *                  or if the width cannot be inferred for a relation.
-     */
-    public void inferWidths() throws IllegalActionException {
-        if (_relationWidthInference.needsWidthInference()) {
-            _relationWidthInference.inferWidths();
-        }
-    }
-
     /** Initialize the model.  This calls the preinitialize() method of
      *  the container, followed by the resolveTypes() and initialize() methods.
      *  Set the Manager's state to PREINITIALIZING and INITIALIZING as
@@ -731,24 +712,6 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         return result;
-    }
-
-    /**
-     *  Return whether the current widths of the relation in the model
-     *  are no longer valid anymore and the widths need to be inferred again.
-     *  @return True when width inference needs to be executed again.
-     */
-    public boolean needsWidthInference() {
-        return _relationWidthInference.needsWidthInference();
-    }
-
-
-    /** Notify the manager that the connectivity in the model changed
-     *  (width of relation changed, relations added, linked to different ports, ...).
-     *  This will invalidate the current width inference.
-     */
-    public void notifyConnectivityChange() {
-        _relationWidthInference.notifyConnectivityChange();
     }
 
     /** Notify all the execution listeners of an exception.
@@ -1406,8 +1369,7 @@ public class Manager extends NamedObj implements Runnable {
     protected void _makeManagerOf(CompositeActor compositeActor) {
         if (compositeActor != null) {
             _workspace.remove(this);
-        }
-        _relationWidthInference.setTopLevel(compositeActor);
+        }        
 
         _container = compositeActor;
     }
@@ -1484,12 +1446,12 @@ public class Manager extends NamedObj implements Runnable {
      *          port are not consistent or if the width cannot be inferred
      *          for a relation.
      */
-    public void _inferWidths() throws IllegalActionException {
-        if (_relationWidthInference.needsWidthInference()) {
+    private void _inferWidths() throws IllegalActionException {
+        if (_container.needsWidthInference()) {
             State previousState = _state;
             try {
                 _setState(INFERING_WIDTHS);
-                _relationWidthInference.inferWidths();
+                _container.inferWidths();
             } finally {
                 _setState(previousState);
             }
@@ -1525,10 +1487,6 @@ public class Manager extends NamedObj implements Runnable {
     // Version at which preinitialize last successfully executed.
     private long _preinitializeVersion = -1;
 
-
-    // A helper class that does the width inference.
-    private RelationWidthInference _relationWidthInference = new RelationWidthInference();
-
     // Whether time and memory usage are printed at the end of model execution.
     private boolean _printTimeAndMemory = true;
 
@@ -1536,7 +1494,7 @@ public class Manager extends NamedObj implements Runnable {
     private boolean _resumeNotifyWaiting = false;
 
     // The state of the execution.
-    private State _state = IDLE;
+    private volatile State _state = IDLE;
 
     // If startRun() is used, then this points to the thread that was
     // created.

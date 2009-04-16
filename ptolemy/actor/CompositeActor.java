@@ -52,8 +52,10 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -129,6 +131,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public CompositeActor() {
         super();
+        _relationWidthInference = new RelationWidthInference(this);
     }
 
     /** Construct a CompositeActor in the specified workspace with no container
@@ -142,6 +145,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public CompositeActor(Workspace workspace) {
         super(workspace);
+        _relationWidthInference = new RelationWidthInference(this);
     }
 
     /** Create an actor with a name and a container.
@@ -571,6 +575,26 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+      /** Determine whether widths are currently being inferred or not.
+      *  @return True When widths are currently being inferred.
+     * @exception IllegalActionException If toplevel not a CompositeActor.
+      */
+     public boolean inferringWidths() throws IllegalActionException {
+         return _getWidthInferenceAlgo().inferringWidths();
+     }
+
+    /**
+     *  Infer the width of the relations for which no width has been
+     *  specified yet.
+     *  The specified actor must be the top level container of the model.
+     *  @exception IllegalActionException If the widths of the relations at port are not consistent
+     *                  or if the width cannot be inferred for a relation.
+     */
+    public void inferWidths() throws IllegalActionException {
+        RelationWidthInference relationWidthInference = _getWidthInferenceAlgo();
+        relationWidthInference.inferWidths();
+    }
+    
     /** Initialize this actor.  If this actor is opaque, invoke the
      *  initialize() method of its local director. Otherwise, throw an
      *  exception.  This method is read-synchronized on the workspace,
@@ -846,6 +870,30 @@ public class CompositeActor extends CompositeEntity implements Actor,
             return Executable.COMPLETED;
         }
     }
+    
+    /**
+     *  Return whether the current widths of the relation in the model
+     *  are no longer valid anymore and the widths need to be inferred again.
+     *  @return True when width inference needs to be executed again.
+     *  @exception KernelRuntimeException If toplevel not a CompositeActor.
+     */
+    public boolean needsWidthInference() throws KernelRuntimeException {
+        return _getWidthInferenceAlgo().needsWidthInference();
+    }
+    
+
+    /** Notify the manager that the connectivity in the model changed
+     *  (width of relation changed, relations added, linked to different ports, ...).
+     *  This will invalidate the current width inference. 
+     */
+    public void notifyConnectivityChange() {
+        try {
+            _getWidthInferenceAlgo().notifyConnectivityChange();
+        } catch (KernelRuntimeException ex) {
+            // Exception is not relevant when reporting changes. 
+        }
+    }
+    
 
     /** Return a new receiver of a type compatible with the local director.
      *  Derived classes may further specialize this to return a receiver
@@ -1239,6 +1287,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
         }
+        
+        if (container == null) {
+            _relationWidthInference = new RelationWidthInference(this);
+        } else {
+            _relationWidthInference = null;
+        }
     }
 
     /** Set the local director for execution of this CompositeActor.
@@ -1630,6 +1684,22 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Return the RelationWidthInference algorithm.
+     *  @return The RelationWidthInference algorithm.
+     *  @exception KernelRuntimeException If toplevel not a CompositeActor.
+     */
+    private RelationWidthInference _getWidthInferenceAlgo() throws KernelRuntimeException {
+        NamedObj container = getContainer();
+        if (container == null) {
+            assert _relationWidthInference != null;
+            return _relationWidthInference;
+        } else if (container instanceof CompositeActor) {
+            return ((CompositeActor) container)._getWidthInferenceAlgo();                
+        } else {
+            throw new KernelRuntimeException(this, "Can't infer the widths " +
+            "of the relations since the the top level is not a CompositeActor.");
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1683,4 +1753,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
+    
+    // A helper class that does the width inference.
+    private RelationWidthInference _relationWidthInference = null;
+    
 }
