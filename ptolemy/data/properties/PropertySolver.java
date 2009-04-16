@@ -63,15 +63,16 @@ A extended base abstract class for a property solver.
  */
 public abstract class PropertySolver extends PropertySolverBase {
 
-    /*
-     *
-     * @param container
-     *
-     * @param name
-     *
-     * @exception IllegalActionException
-     *
-     * @exception NameDuplicationException
+    /**
+     * Construct a PropertySolver with the specified container and
+     * name. If this is the first PropertySolver created in the model,
+     * the shared utility object will also be created.
+     * @param container The specified container.
+     * @param name The specified name.
+     * @exception IllegalActionException If the PropertySolver is
+     * not of an acceptable attribute for the container.
+     * @exception NameDuplicationException If the name coincides with an
+     * attribute already in the container.
      */
     public PropertySolver(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {
@@ -82,7 +83,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         action.setStringMode(true);
         _addActions(action);
 
-        _highlighter = new PropertyMoMLHandler(this, "PropertyMoMLHandler");
+        _momlHandler = new PropertyMoMLHandler(this, "PropertyMoMLHandler");
 
         manualAnnotation = new Parameter(this, "manualAnnotation",
                 BooleanToken.FALSE);
@@ -101,27 +102,23 @@ public abstract class PropertySolver extends PropertySolverBase {
         _sharedUtilities.addErrors(error);
     }
 
-    /*
+    /**
      * Check if there is any regression testing errors after resolving
      * properties. If so, throw a new PropertyFailedRegressionTestException with
      * an error message that includes all the properties that does not match the
      * regression test values.
-     *
      * @exception PropertyFailedRegressionTestException Thrown if there is any
      * errors in the regression test.
      */
     public void checkErrors() throws PropertyResolutionException {
-
-        // FIXME: remove the errors as well.
-
         List errors = _sharedUtilities.removeErrors();
 
         if (!errors.isEmpty()) {
             String errorMessage = errors.toString();
 
             if (isTesting()) {
-                throw new PropertyFailedRegressionTestException(this,
-                        errorMessage);
+                throw new PropertyFailedRegressionTestException(
+                        this, errorMessage);
             } else {
                 throw new PropertyResolutionException(this, errorMessage);
             }
@@ -133,35 +130,6 @@ public abstract class PropertySolver extends PropertySolverBase {
             _recordUnacceptableSolution(propertyable, getProperty(propertyable));
         }
         checkErrors();
-    }
-
-    /*
-     * Clear the manual annotation constraints assoicated with this solver
-     * use-case.
-     *
-     * @exception IllegalActionException Not Thrown.
-     */
-    public void clearAnnotations() throws IllegalActionException {
-
-        for (PropertyHelper helper : getAllHelpers()) {
-            if (helper.getComponent() instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) helper.getComponent();
-
-                for (AnnotationAttribute attribute : (List<AnnotationAttribute>) namedObj
-                        .attributeList(AnnotationAttribute.class)) {
-
-                    if (isIdentifiable(attribute.getUseCaseIdentifier())) {
-
-                        try {
-                            attribute.setContainer(null);
-                        } catch (NameDuplicationException e) {
-                            assert false;
-                        }
-                    }
-                }
-            }
-        }
-        _repaintGUI();
     }
 
     /**
@@ -191,16 +159,16 @@ public abstract class PropertySolver extends PropertySolverBase {
             return;
         }
 
-        if (_highlighter.highlight.getToken() == BooleanToken.TRUE) {
-            _highlighter.highlightProperties();
+        if (_momlHandler.highlight.getToken() == BooleanToken.TRUE) {
+            _momlHandler.highlightProperties();
         }
-        if (_highlighter.showText.getToken() == BooleanToken.TRUE) {
-            _highlighter.showProperties();
+        if (_momlHandler.showText.getToken() == BooleanToken.TRUE) {
+            _momlHandler.showProperties();
         }
     }
 
     public PropertyMoMLHandler getMoMLHandler() {
-        return _highlighter;
+        return _momlHandler;
     }
 
     /*
@@ -432,20 +400,20 @@ public abstract class PropertySolver extends PropertySolverBase {
             String actionValue = action.getExpression();
             if (actionValue.equals(CLEAR_ANNOTATION)) {
                 if (isInvoked) {
-                    clearAnnotations();
+                    _momlHandler.clearAnnotations();
                 }
                 return true;
             } else if (actionValue.equals(CLEAR)) {
                 if (isInvoked) {
                     _resolvedProperties.clear();
-                    _highlighter.clearProperties();
-                    _highlighter.clearDisplay();
+                    _momlHandler.clearProperties();
+                    _momlHandler.clearDisplay();
                 }
                 return true;
 
             } else if (actionValue.equals(VIEW)) {
                 if (isInvoked) {
-                    _highlighter.clearDisplay();
+                    _momlHandler.clearDisplay();
                     displayProperties();
                 }
                 return true;
@@ -464,7 +432,7 @@ public abstract class PropertySolver extends PropertySolverBase {
                     previousSolver = this;
                 }
 
-                previousSolver._highlighter.clearDisplay();
+                previousSolver._momlHandler.clearDisplay();
 
                 _sharedUtilities._previousInvokedSolver = this;
 
@@ -651,9 +619,8 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     }
 
-    /*
+    /**
      * Record tracing statistics.
-     *
      * @exception IllegalActionException
      */
     protected void _addStatistics() throws IllegalActionException {
@@ -666,13 +633,10 @@ public abstract class PropertySolver extends PropertySolverBase {
                 .length() > 0);
     }
 
-    /*
+    /**
      * Get the propertyable attribute contained by the given propertyable.
-     *
      * @param propertyable The given propertyable object.
-     *
      * @return The property attribute contained by the given propertyable.
-     *
      * @exception IllegalActionException
      */
     protected PropertyAttribute _getPropertyAttribute(NamedObj propertyable)
@@ -890,7 +854,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * The PropertyHighlighter that controls the property visualization.
      */
-    protected PropertyMoMLHandler _highlighter;
+    protected PropertyMoMLHandler _momlHandler;
 
     protected boolean _isInvoked;
 

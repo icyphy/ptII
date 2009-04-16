@@ -103,7 +103,7 @@ into a constraint solver.
 public abstract class PropertySolverBase extends Attribute {
 
 
-    /*
+    /**
      * Construct a PropertySolverBase with the specified container and
      * name. If this is the first PropertySolver created in the model,
      * the shared utility object will also be created.
@@ -388,21 +388,17 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Return the property value associated with the specified object.
-     *
      * @param object The specified object.
-     *
      * @return The property of the specified object.
      */
     public Property getProperty(Object object) {
         return getResolvedProperty(object);
     }
 
-    /*
+    /**
      * Return the resolved property for the specified object. This forces
      * resolution to happen if the object's property is not present.
-     *
      * @param object The specified object
-     *
      * @return The resolved property for the specified object.
      */
     public Property getResolvedProperty(Object object) {
@@ -449,7 +445,6 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Return the shared utility object.
-     *
      * @return The shared utility object.
      */
     public SharedUtilities getSharedUtilities() {
@@ -459,7 +454,6 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the use-case name. The use-case name is not guaranteed to be
      * unique.
-     *
      * @return The use-case name.
      */
     public abstract String getUseCaseName();
@@ -467,7 +461,6 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Mark the property of the specified object as non-settable. The
      * specified object has a fixed assigned property.
-     *
      * @param object The specified object.
      */
     public void markAsNonSettable(Object object) {
@@ -496,7 +489,6 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Perform property resolution.
-     *
      * @exception KernelException Thrown if sub-class throws it.
      */
     public abstract void resolveProperties() throws KernelException;
@@ -504,7 +496,6 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Set the resolved property of the specified object.
      * (See {@link #getResolvedProperty(Object)}).
-     *
      * @param object The specified object.
      * @param property The specified property.
      */
@@ -609,9 +600,38 @@ public abstract class PropertySolverBase extends Attribute {
     }
 
 
+    /**
+     * Return the package name that contains the class of this solver.
+     *
+     * @return The package name.
+     */
+    protected String _getPackageName() {
+        return getClass().getPackage().getName() + "." + getUseCaseName();
+    }
 
+    protected NamedObj _toplevel() {
+        NamedObj toplevel = toplevel();
 
+        // If the solver is in an OntologyAttribute, we
+        // want to analyze the outside model.
+        while (toplevel instanceof Configurer) {
+            NamedObj configuredObject = ((Configurer)
+                    toplevel).getConfiguredObject();
 
+            if (configuredObject == null) {
+                return toplevel;
+            }
+            toplevel = configuredObject.toplevel();
+        }
+        return toplevel;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////             private methods                               ////
+    
+    /**
+     * 
+     */
     private void _compileHelperClasses() throws IllegalActionException {
 
         OntologyComposite container = (OntologyComposite) getContainer();
@@ -625,6 +645,12 @@ public abstract class PropertySolverBase extends Attribute {
         }
     }
 
+    /**
+     * 
+     * @param entity
+     * @param userCode
+     * @throws IllegalActionException
+     */
     private void _compileUserCode(Entity entity, String userCode) throws IllegalActionException {
 
         String ptRoot = StringUtilities.getProperty("ptolemy.ptII.dir");
@@ -686,32 +712,6 @@ public abstract class PropertySolverBase extends Attribute {
         }
     }
 
-    /**
-     * Return the package name that contains the class of this solver.
-     *
-     * @return The package name.
-     */
-    protected String _getPackageName() {
-        return getClass().getPackage().getName() + "." + getUseCaseName();
-    }
-
-    protected NamedObj _toplevel() {
-        NamedObj toplevel = toplevel();
-
-        // If the solver is in an OntologyAttribute, we
-        // want to analyze the outside model.
-        while (toplevel instanceof Configurer) {
-            NamedObj configuredObject = ((Configurer)
-                    toplevel).getConfiguredObject();
-
-            if (configuredObject == null) {
-                return toplevel;
-            }
-            toplevel = configuredObject.toplevel();
-        }
-        return toplevel;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////             protected variables                           ////
 
@@ -743,15 +743,15 @@ public abstract class PropertySolverBase extends Attribute {
      */
     protected HashMap<Object, Property> _resolvedProperties = new HashMap<Object, Property>();
 
-    /*
-     * The shared utility object.
+    /**
+     * The utilities shared between all solvers.
      */
     protected SharedUtilities _sharedUtilities;
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
-    /*
+    /**
      * The expression parser.
      */
     private static PtParser _parser;
