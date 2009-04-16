@@ -1,4 +1,4 @@
-/*  This actor opens a window to display the specified model and applies its inputs to the model.
+/*  An actor that performs property analysis on input model.
 
  @Copyright (c) 1998-2009 The Regents of the University of California.
  All rights reserved.
@@ -34,19 +34,17 @@ import ptolemy.data.StringToken;
 import ptolemy.data.properties.AnalyzerAttribute;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// ModelGenerator
+//// ModelAnalyzer
 
 /**
-This actor opens a window to display the specified model.
-If inputs are provided, they are expected to be MoML strings
-that are to be applied to the model. This can be used, for
-example, to create animations.
+This actor performs property analysis on input model. Upon firing, it 
+consumes an input ActorToken and outputs the same model with added 
+property annotations. 
 
 @author  Man-Kit Leung
 @version $Id$
@@ -56,36 +54,39 @@ example, to create animations.
 */
 public class ModelAnalyzer extends Transformer {
 
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this adder within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public ModelAnalyzer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        setClassName("ptolemy.data.properties.ModelAnalyzer");
-
 
         errorMessage = new TypedIOPort(this, "errorMessage", false, true);
         errorMessage.setTypeEquals(BaseType.STRING);
 
         input.setTypeEquals(ActorToken.TYPE);
-
         output.setTypeEquals(ActorToken.TYPE);
 
         _analyzerWrapper = new AnalyzerAttribute(this, "_analyzerWrapper");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /**
+     * The errorMessage port. It is of type String.
+     */
     public TypedIOPort errorMessage;
 
-    /** React to a change in an attribute.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this class).
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
-        super.attributeChanged(attribute);
-    }
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -100,8 +101,13 @@ public class ModelAnalyzer extends Transformer {
         return newObject;
     }
 
+    /**
+     * Consumes one token from the input and annotate the model contained
+     * by the ActorToken with property information. Send a new ActorToken
+     * of the annotated model to the output port and any error messages
+     * to the errorMessage port.
+     */
     public void fire() throws IllegalActionException {
-
         ActorToken token = (ActorToken) input.get(0);
         CompositeEntity entity = (CompositeEntity) token.getEntity();
 
@@ -111,5 +117,9 @@ public class ModelAnalyzer extends Transformer {
         output.send(0, new ActorToken(entity));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    /** The analyzer attribute. */
     private AnalyzerAttribute _analyzerWrapper;
 }
