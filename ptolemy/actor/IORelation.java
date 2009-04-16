@@ -706,10 +706,20 @@ public class IORelation extends ComponentRelation {
                     "IORelation can only link to an IORelation.");
         }
 
-        if (((IORelation) relation)._getUserWidth() != _getUserWidth()) {
-            throw new IllegalActionException(this, relation,
-                    "Relations have different widths: " + _getUserWidth() + " != "
-                            + ((IORelation) relation)._getUserWidth());
+        int otherWidth = ((IORelation) relation)._getUserWidth();
+        int width = _getUserWidth();
+        if (otherWidth != width) {
+            // If one of both widths equals WIDTH_TO_INFER we set both to the other width
+            //  (which will be different from WIDTH_TO_INFER).
+            if (otherWidth == WIDTH_TO_INFER) {
+                ((IORelation) relation).setWidth(width);
+            } else if (width == WIDTH_TO_INFER) {
+                setWidth(otherWidth);
+            } else {
+                throw new IllegalActionException(this, relation,
+                        "Relations have different widths: " + _getUserWidth() + " != "
+                                + ((IORelation) relation)._getUserWidth());
+            }
         }
 
         super._checkRelation(relation, symmetric);
