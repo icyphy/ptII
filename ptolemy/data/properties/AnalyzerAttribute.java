@@ -80,115 +80,7 @@ public class AnalyzerAttribute extends Attribute {
 
     }
 
-    public void setContainer(NamedObj container) throws IllegalActionException, NameDuplicationException {
-        super.setContainer(container);
-
-        _moveParameter(property);
-        _moveParameter(showProperty);
-        _moveParameter(highlight);
-        _moveParameter(logMode);
-        _moveParameter(overwriteConstraint);
-        _moveParameter(overwriteDependentProperties);
-
-    }
-
-    public String analyze(CompositeEntity entity)
-    throws IllegalActionException {
-        String errorString = "";
-        String propertyValue = property.getExpression();
-
-        if (propertyValue.equals("Clear All")) {
-            try {
-                PropertyRemover remover = new PropertyRemover(entity, "ModelAnalyzerClearAll");
-                remover.removeProperties(entity);
-            } catch (NameDuplicationException e) {
-                assert false;
-            }
-        } else {
-
-            String actionValue = action.getExpression();
-
-            PropertySolver chosenSolver = null;
-            try {
-
-                URIAttribute attribute = (URIAttribute)
-                entity.getAttribute("_uri", URIAttribute.class);
-                if (attribute == null) {
-                    attribute = new URIAttribute(entity, "_uri");
-                }
-                if (attribute.getURI() == null) {
-                    URI uri = getModelURI(getName() + "_" + entity.getName());
-                    attribute.setURI(uri);
-                }
-
-                List solversInModel = entity.attributeList(PropertySolver.class);
-                if (solversInModel.size() > 0) {
-                    try {
-                        chosenSolver = ((PropertySolver) solversInModel.get(0)).findSolver(propertyValue);
-                    } catch (PropertyResolutionException ex) {
-
-                    }
-                }
-
-                if (chosenSolver == null) {
-                    chosenSolver = instantiateSolver(entity, propertyValue);
-                }
-
-                for (String solverName : chosenSolver.getDependentSolvers()) {
-                    try {
-                        chosenSolver.findSolver(solverName);
-                    } catch (PropertyResolutionException ex) {
-                        instantiateSolver(entity, solverName);
-                    }
-                }
-
-                if (chosenSolver instanceof PropertyConstraintSolver) {
-                    ((PropertyConstraintSolver) chosenSolver)
-                    .setLogMode(logMode.getToken() == BooleanToken.TRUE);
-                }
-
-                String previousAction = chosenSolver.setAction(actionValue);
-                chosenSolver.invokeSolver(this);
-                chosenSolver.setAction(previousAction);
-
-            } catch (PropertyFailedRegressionTestException ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
-
-            } catch (KernelException ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
-            } catch (URISyntaxException ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
-            } catch (Exception ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
-            }
-            /*catch (KernelException ex) {
-        errorMessage.send(0, new StringToken(KernelException.generateMessage(
-                entity, null, ex, "Failed: Checking/annotating failed while in progress.") + "\n\n"));
-    } */
-            finally {
-                if (chosenSolver != null) {
-                    chosenSolver.resetAll();
-                }
-                //        _removeSolvers(entity);
-            }
-        }
-        return errorString;
-    }
-
-    private void _moveParameter(Parameter parameter) throws IllegalActionException, NameDuplicationException {
-        if (parameter != null) {
-            if (parameter.getContainer() != getContainer()) {
-                parameter.setContainer(getContainer());
-            }
-        }
-    }
-
     public Parameter action;
-
 
     public Parameter highlight;
 
@@ -207,22 +99,87 @@ public class AnalyzerAttribute extends Attribute {
     public Parameter showProperty;
 
 
-    private void _addChoices() throws IllegalActionException {
-
-        List<Class> solvers =
-            getListOfSolverClass("ptolemy.data.properties.configuredSolvers");
-
-        if (solvers.size() > 0) {
-            property.setExpression(solvers.get(0).getSimpleName());
+    public String analyze(CompositeEntity entity)
+    throws IllegalActionException {
+        String errorString = "";
+        String propertyValue = property.getExpression();
+    
+        if (propertyValue.equals("Clear All")) {
+            try {
+                PropertyRemover remover = new PropertyRemover(entity, "ModelAnalyzerClearAll");
+                remover.removeProperties(entity);
+            } catch (NameDuplicationException e) {
+                assert false;
+            }
+        } else {
+    
+            String actionValue = action.getExpression();
+    
+            PropertySolver chosenSolver = null;
+            try {
+    
+                URIAttribute attribute = (URIAttribute)
+                entity.getAttribute("_uri", URIAttribute.class);
+                if (attribute == null) {
+                    attribute = new URIAttribute(entity, "_uri");
+                }
+                if (attribute.getURI() == null) {
+                    URI uri = getModelURI(getName() + "_" + entity.getName());
+                    attribute.setURI(uri);
+                }
+    
+                List solversInModel = entity.attributeList(PropertySolver.class);
+                if (solversInModel.size() > 0) {
+                    try {
+                        chosenSolver = ((PropertySolver) solversInModel.get(0)).findSolver(propertyValue);
+                    } catch (PropertyResolutionException ex) {
+    
+                    }
+                }
+    
+                if (chosenSolver == null) {
+                    chosenSolver = instantiateSolver(entity, propertyValue);
+                }
+    
+                for (String solverName : chosenSolver.getDependentSolvers()) {
+                    try {
+                        chosenSolver.findSolver(solverName);
+                    } catch (PropertyResolutionException ex) {
+                        instantiateSolver(entity, solverName);
+                    }
+                }
+    
+                if (chosenSolver instanceof PropertyConstraintSolver) {
+                    ((PropertyConstraintSolver) chosenSolver)
+                    .setLogMode(logMode.getToken() == BooleanToken.TRUE);
+                }
+    
+                String previousAction = chosenSolver.setAction(actionValue);
+                chosenSolver.invokeSolver(this);
+                chosenSolver.setAction(previousAction);
+    
+            } catch (PropertyFailedRegressionTestException ex) {
+                errorString = KernelException.generateMessage(
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+    
+            } catch (KernelException ex) {
+                errorString = KernelException.generateMessage(
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+            } catch (URISyntaxException ex) {
+                errorString = KernelException.generateMessage(
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+            } catch (Exception ex) {
+                errorString = KernelException.generateMessage(
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+            }
+            finally {
+                if (chosenSolver != null) {
+                    chosenSolver.resetAll();
+                }
+                //        _removeSolvers(entity);
+            }
         }
-
-        for (Class solver : solvers) {
-            property.addChoice(solver.getSimpleName());
-        }
-
-        property.addChoice("Clear All");
-
-        PropertySolver._addActions(action);
+        return errorString;
     }
 
     public URI getModelURI(String modelName) throws URISyntaxException {
@@ -302,6 +259,45 @@ public class AnalyzerAttribute extends Attribute {
             }
         }
         return null;
+    }
+
+    public void setContainer(NamedObj container) throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+    
+        _moveParameter(action);
+        _moveParameter(property);
+        _moveParameter(showProperty);
+        _moveParameter(highlight);
+        _moveParameter(logMode);
+        _moveParameter(overwriteConstraint);
+        _moveParameter(overwriteDependentProperties);
+    
+    }
+
+    private void _addChoices() throws IllegalActionException {
+    
+        List<Class> solvers =
+            getListOfSolverClass("ptolemy.data.properties.configuredSolvers");
+    
+        if (solvers.size() > 0) {
+            property.setExpression(solvers.get(0).getSimpleName());
+        }
+    
+        for (Class solver : solvers) {
+            property.addChoice(solver.getSimpleName());
+        }
+    
+        property.addChoice("Clear All");
+    
+        PropertySolver._addActions(action);
+    }
+
+    private void _moveParameter(Parameter parameter) throws IllegalActionException, NameDuplicationException {
+        if (parameter != null) {
+            if (parameter.getContainer() != getContainer()) {
+                parameter.setContainer(getContainer());
+            }
+        }
     }
 
     private List<Class> _solvers = new LinkedList<Class>();
