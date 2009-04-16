@@ -511,8 +511,6 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
-            <property name="Auto" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
             <vertex name="something different" value="22,33">
@@ -550,8 +548,6 @@ test UndoRename-1.6b {Test a vertex rename is updated across MoML} {
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
-            <property name="Auto" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
             <vertex name="any" value="22,33">

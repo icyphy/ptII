@@ -1011,6 +1011,7 @@ public class IORelation extends ComponentRelation {
             _auto.setExpression(Integer.toString(WIDTH_TO_INFER));
             _auto.setTypeEquals(BaseType.INT);
             _auto.setVisibility(Settable.NONE);
+            _auto.setPersistent(false);
             
             width = new Parameter(this, "width");
             width.setExpression("Auto");

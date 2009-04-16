@@ -241,8 +241,6 @@ test Test-1.5 {Export} {
         </port>
     </entity>
     <relation name="_R" class="ptolemy.actor.TypedIORelation">
-        <property name="Auto" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
