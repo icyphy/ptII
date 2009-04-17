@@ -395,9 +395,17 @@ public class ContinuousDirector extends FixedPointDirector implements
                         + _currentStepSize + " at index " + _index + ".");
             }
 
+            // fire it once first, since the composite actor has already passed in some tokens
+            super.fire();
+            // Outputs need to be produced now, since the
+            // values at the output ports are now the correct
+            // values at the _iterationBeginTime, which on
+            // the first pass through, will match the
+            // current environment time.
+            _transferOutputsToEnvironment();
             // Iterate until the solver is done with the integration step
             // or the maximum number of iterations is reached.
-            int iterations = 0;
+            int iterations = 1;
             while (!_ODESolver._isStepFinished() && iterations < _maxIterations
                     && !_stopRequested) {
                 // Resolve the fixed point at the current time.
@@ -416,14 +424,6 @@ public class ContinuousDirector extends FixedPointDirector implements
                     _resetAllReceivers();
                     _transferInputsToInside();
                     super.fire();
-                    if (iterations == 0) {
-                        // Outputs need to be produced now, since the
-                        // values at the output ports are now the correct
-                        // values at the _iterationBeginTime, which on
-                        // the first pass through, will match the
-                        // current environment time.
-                        _transferOutputsToEnvironment();
-                    }
                 }
                 // If the step size is zero, then one iteration is sufficient.
                 if (_currentStepSize == 0.0) {
