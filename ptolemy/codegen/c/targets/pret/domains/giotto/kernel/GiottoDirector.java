@@ -45,7 +45,6 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.giotto.kernel.GiottoReceiver;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -70,11 +69,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
+        //code.append("//fire code should be here. I'm from the PRET GiottoDirector "+_eol);
         System.out.println("generateFireCode from pret giotto director called here");
 
         return code.toString();
     }
+    
     /** Generate The fire function code. This method is called when the firing
      *  code of each actor is not inlined. Each actor's firing code is in a
      *  function with the same name as that of the actor.
@@ -90,9 +90,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
         //content moved to _generateActorsCode() which is called in preinitialize b/c code wasn't being generated for 
         //nested actors
-
-
     }
+    
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
         // Declare the thread handles.
@@ -304,15 +303,15 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             String index = CodeGeneratorHelper.generateName((NamedObj) actor) + "_frequency";
             code.append("for (int " + index + " = 0; " + index + " < " +
                     _getFrequency(actor) + "; ++" + index + ") {" + _eol);
-            code.append("DEAD0(" + cycles  + "); // period" + _eol);
-            code.append("DEAD1(" + (cycles-driverCycles)  + "); //period - wcet" + _eol);
+            code.append("DEAD0(" + (cycles-driverCycles)  + "); // period - driver_wcet" + _eol);
             code.append(_getActorName(actor)+"_driver_in();//read inputs from ports determinitically"+_eol);
             
             code.append(_getActorName(actor)+"();"+_eol);
-            code.append("DEAD1(0);" + _eol);
+            code.append("DEAD0(" + driverCycles  + "); // driver_wcet" + _eol);
+
             // code.append(helper.generateFireCode());
             //code.append(helper.generatePostfireCode());
-            code.append(_getActorName(actor)+"_driver_out();// output values to ports deterministically"+_eol);
+            code.append(_getActorName(actor)+"_driver_out(); // output values to ports deterministically"+_eol);
             code.append("}" + _eol); // end of for loop
 
             code.append("#endif /* THREAD_" + threadID + "*/\n");
