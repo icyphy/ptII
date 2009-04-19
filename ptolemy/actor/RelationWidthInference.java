@@ -69,14 +69,10 @@ public class RelationWidthInference {
      *   top level container. That is, its container is not null.
      */
      public RelationWidthInference(CompositeActor topLevel) {
-         // Extra test for compositeActor != null since when the manager is changed
-         // the old manager gets a null pointer as compositeActor.
-         // Afterwards width inference should not be done anymore on this manager
-         // (this will throw a null pointer exception since _topLevel will be set to null).
-         if (topLevel != null && topLevel.getContainer() != null) {
+         
+         if (topLevel == null) {
              throw new IllegalArgumentException(
-                     "TypedCompositeActor.resolveTypes: The specified actor is "
-                             + "not the top level container.");
+                     "The toplevel should not be a null pointer.");
          }
 
          _topLevel = topLevel;
@@ -99,6 +95,15 @@ public class RelationWidthInference {
      */
     public void inferWidths() throws IllegalActionException {
         if (_needsWidthInference) {
+            // Extra test for compositeActor != null since when the manager is changed
+            // the old manager gets a null pointer as compositeActor.
+            // Afterwards width inference should not be done anymore on this manager
+            // (this will throw a null pointer exception since _topLevel will be set to null).
+            if (_topLevel.getContainer() instanceof CompositeActor) {
+                throw new IllegalArgumentException(
+                        "Width inference failed: The specified actor is "
+                                + "not the top level container.");
+            }
             final boolean logTimings = false;
             boolean checkConsistencyAtMultiport = true;
 

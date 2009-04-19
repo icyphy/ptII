@@ -260,6 +260,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
         newObject._outputPortsVersion = -1;
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
+        if (newObject.getContainer() instanceof CompositeActor) {
+            newObject._relationWidthInference = null;
+        } else {            
+            newObject._relationWidthInference = new RelationWidthInference(this);
+        }
         return newObject;
     }
 
@@ -577,10 +582,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
       /** Determine whether widths are currently being inferred or not.
       *  @return True When widths are currently being inferred.
-     * @exception IllegalActionException If toplevel not a CompositeActor.
       */
-     public boolean inferringWidths() throws IllegalActionException {
-         return _getWidthInferenceAlgo().inferringWidths();
+     public boolean inferringWidths() {
+         return _getWidthInferenceAlgorithm().inferringWidths();
      }
 
     /**
@@ -591,7 +595,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *                  or if the width cannot be inferred for a relation.
      */
     public void inferWidths() throws IllegalActionException {
-        RelationWidthInference relationWidthInference = _getWidthInferenceAlgo();
+        RelationWidthInference relationWidthInference = _getWidthInferenceAlgorithm();
         relationWidthInference.inferWidths();
     }
     
@@ -878,7 +882,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @exception KernelRuntimeException If toplevel not a CompositeActor.
      */
     public boolean needsWidthInference() throws KernelRuntimeException {
-        return _getWidthInferenceAlgo().needsWidthInference();
+        return _getWidthInferenceAlgorithm().needsWidthInference();
     }
     
 
@@ -888,7 +892,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void notifyConnectivityChange() {
         try {
-            _getWidthInferenceAlgo().notifyConnectivityChange();
+            RelationWidthInference widthInferenceAlgorithm = _getWidthInferenceAlgorithm();
+            if (widthInferenceAlgorithm != null) {
+                widthInferenceAlgorithm.notifyConnectivityChange();
+            }
         } catch (KernelRuntimeException ex) {
             // Exception is not relevant when reporting changes. 
         }
@@ -1277,7 +1284,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
             oldDirector.invalidateSchedule();
             oldDirector.invalidateResolvedTypes();
         }
-
+        
+        if (!(container instanceof CompositeActor)) {
+            _relationWidthInference = new RelationWidthInference(this);
+        } else {
+            _relationWidthInference = null;
+        }
+        
         super.setContainer(container);
 
         Director director = getDirector();
@@ -1286,12 +1299,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (director != null) {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
-        }
-        
-        if (container == null) {
-            _relationWidthInference = new RelationWidthInference(this);
-        } else {
-            _relationWidthInference = null;
         }
     }
 
@@ -1685,19 +1692,18 @@ public class CompositeActor extends CompositeEntity implements Actor,
     }
 
     /** Return the RelationWidthInference algorithm.
+     *  _relationWidthInference is only stored at the top CompositeActor
+     *  for the complete model.
      *  @return The RelationWidthInference algorithm.
      *  @exception KernelRuntimeException If toplevel not a CompositeActor.
      */
-    private RelationWidthInference _getWidthInferenceAlgo() throws KernelRuntimeException {
+    private RelationWidthInference _getWidthInferenceAlgorithm() {
         NamedObj container = getContainer();
-        if (container == null) {
+        if (container instanceof CompositeActor) {
+            return ((CompositeActor) container)._getWidthInferenceAlgorithm();                
+        } else {
             assert _relationWidthInference != null;
             return _relationWidthInference;
-        } else if (container instanceof CompositeActor) {
-            return ((CompositeActor) container)._getWidthInferenceAlgo();                
-        } else {
-            throw new KernelRuntimeException(this, "Can't infer the widths " +
-            "of the relations since the the top level is not a CompositeActor.");
         }
     }
 
@@ -1754,7 +1760,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
     
-    // A helper class that does the width inference.
-    private RelationWidthInference _relationWidthInference = null;
+    /* A helper class that does the width inference.
+     * _relationWidthInference is only stored at the top CompositeActor
+     * for the complete model.
+     */
+    private RelationWidthInference _relationWidthInference;
     
 }
