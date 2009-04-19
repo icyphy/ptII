@@ -1,10 +1,10 @@
-# Makefile for CacheAwareScheduler kernel
+# Makefile for the Ptolemy II Finite State Machine (FSM) Domain kernel
 #
-# @Authors: Sanjeev Kohli
+# @Authors: Thomas Huining Feng
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2008-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,72 +29,44 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/apps/naomi
+ME =            ptolemy/apps/naomi/command
 
-DIRS =		command demo
+# Root of the ptII directory
+ROOT =		../../../..
 
-# Root of the Java directory
-ROOT =		../../..
-
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	naomi
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+DIRS = 		
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		command/command.jar
+CLASSPATH =	$(ROOT)
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Used to build zip files
+PTPACKAGE = 	command
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	CompositeNaomiAttribute.java \
-	Connector.java \
-	NaomiParameter.java \
-	TransformationParameter.java
+	Execute.java
 
-EXTRA_SRCS = 	$(JSRCS)
+OTHER_FILES_TO_BE_JARED =
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	'Connector$$1.class' \
-	'Connector$$2.class' \
-	'Connector$$3.class' \
-	'Connector$$Command.class' \
-	'Connector$$LinkNaomiAttributeAction.class' \
-	'Connector$$ListAction.class' \
-	'Connector$$LoadAction$$1.class' \
-	'Connector$$LoadAction.class' \
-	'Connector$$MappedNamespaceContext.class' \
-	'Connector$$SaveAction$$1.class' \
-	'Connector$$SaveAction.class' \
-	'Connector$$SyncAction$$1.class' \
-	'Connector$$SyncAction.class' \
-	'Connector$$Tuple.class' \
-	'Connector$$UnlinkNaomiAttributeAction.class' \
-	'NaomiParameter$$Method.class' \
-	'NaomiParameter$$PrivateMoMLChangeRequest.class'
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: all jars
 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
-
-
-
