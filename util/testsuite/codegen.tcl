@@ -467,7 +467,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	set args [list -q $modelPath \
 		      "-codeGenerator" $codeGenerator \
 		      "-compile" "true" \
-		      "-outputDirectory" "codeGenerator.tmp"]
+		      "-outputDirectory" "../cg/$modelName"]
 	# If toplevel iterations set, then pass those arguments to copernicus.
 	if { ${iterationsParameter} != ""} {
 	    lappend args "-iterations" ${iterationsParameter}
