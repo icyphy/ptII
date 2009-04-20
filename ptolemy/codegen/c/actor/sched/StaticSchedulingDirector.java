@@ -84,8 +84,9 @@ public class StaticSchedulingDirector extends Director {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(CodeStream.indent(_codeGenerator
-                .comment("The firing of the StaticSchedulingDirector")));
+        code.append(_codeGenerator.comment(
+                "The firing of the StaticSchedulingDirector"));
+        
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
 
@@ -117,11 +118,11 @@ public class StaticSchedulingDirector extends Director {
                 int count = firing.getIterationCount();
                 if (count > 1) {
                     if (!isIDefined) {
-                        code.append("int i;" + _eol);
+                        code.append("int $actorSymbol(i);" + _eol);
                         isIDefined = true;
                     }
-                    code.append("for (i = 0; i < " + count
-                            + " ; i++) {" + _eol);
+                    code.append("for ($actorSymbol(i) = 0; $actorSymbol(i) < " + count
+                            + " ; $actorSymbol(i)++) {" + _eol);
                 }
 
                 code.append(CodeGeneratorHelper.generateName((NamedObj)
@@ -134,7 +135,7 @@ public class StaticSchedulingDirector extends Director {
                 }
             }
         }
-        return code.toString();
+        return processCode(code.toString());
     }
 
     /**
