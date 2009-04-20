@@ -110,7 +110,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     }
 
     /** Set the component for which we are generating code.
-     *  @param component The associated component.
+     *  @param object The associated component.
      */
     public void setComponent(NamedObj object) {
         // FIXME: Why is this a namedObj when the analyzeActor()
@@ -328,30 +328,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     }
 
     /**
-     * Generate the expression that represents the offset in the generated
-     * code.
-     * @param offsetString The specified offset from the user.
-     * @param port The referenced port.
-     * @param channel The referenced port channel.
-     * @param isWrite Whether to generate the write or read offset.
-     * @return The expression that represents the offset in the generated code.
-     * @exception IllegalActionException If there is problems getting the port
-     *  buffer size or the offset in the channel and offset map.
-     *  FIXME rodiers: this is SDF specific
-
-    public String generateOffset(String offsetString, IOPort port, int channel,
-            boolean isWrite) throws IllegalActionException {
-
-        ptolemy.actor.Director director = getDirector();
-
-        PortCodeGenerator portAdapter =
-            (PortCodeGenerator) _getAdapter(port);
-
-        return processCode(portAdapter.generateOffset(
-                offsetString, channel, isWrite, director));
-    }
-
-    /**
      * Generate the postfire code. In this base class, do nothing. Subclasses
      * may extend this method to generate the postfire code of the associated
      * component and append the code to the given string buffer.
@@ -489,7 +465,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
 
     /** Generate a variable name for the NamedObj.
      *  @param namedObj The NamedObj to generate variable name for.
-     *  @see ptolemy.codegen.kernel.GenericCodeGenerator#generateVariableName(NamedObj)
+     *  @see ptolemy.cg.kernel.generic.GenericCodeGenerator#generateVariableName(NamedObj)
      *  @return The variable name for the NamedObj.
      */
     public String generateVariableName(NamedObj namedObj) {

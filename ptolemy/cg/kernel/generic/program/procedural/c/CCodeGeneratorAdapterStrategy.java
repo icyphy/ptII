@@ -71,14 +71,14 @@ import ptolemy.util.StringUtilities;
  code block to the output.
 
  <p>For a complete list of methods to define, see
- {@link ptolemy.codegen.kernel.CodeGeneratorAdapterStrategy}.
+ {@link ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy}.
 
- <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
+ <p>For further details, see <code>$PTII/ptolemy/cg/README.html</code>
 
  @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 7.1
- o @Pt.ProposedRating Yellow (cxh)
+ @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy {

@@ -1272,7 +1272,7 @@ public class StaticSchedulingDirector extends Director {
          *  @param port The given port.
          *  @return return The size of the buffer.
          * @exception IllegalActionException
-         *  @see #setBufferSize(int, int)
+         *  @see #setBufferSize(IOPort, int, int)
          */
         public int getBufferSize(IOPort port, int channelNumber) throws IllegalActionException {
             return _getPortInfo(port).getBufferSize(channelNumber);
@@ -1332,7 +1332,7 @@ public class StaticSchedulingDirector extends Director {
         /** Set the buffer size of channel of the port.
          *  @param channelNumber The number of the channel that is being set.
          *  @param bufferSize The size of the buffer.
-         *  @see #getBufferSize(int)
+         *  @see #getBufferSize(IOPort, int)
          */
         public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
             _getPortInfo(port).setBufferSize(channelNumber, bufferSize);
@@ -1374,8 +1374,8 @@ public class StaticSchedulingDirector extends Director {
 
 
         /** Update the read offset.
+         *  @param port The given port.
          *  @param rate  The rate of the channels.
-         *  @param directorHelper The Director helper
          *  @return The offset.
          */
         public String updateOffset(IOPort port, int rate)

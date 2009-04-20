@@ -74,7 +74,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
      * need type conversion.
      * @exception IllegalActionException If any of the adapters of the
      * inside actors is unavailable.
-     * @see ptolemy.codegen.kernel.CodeGeneratorAdapter#analyzeTypeConvert
+     * @see ptolemy.cg.kernel.generic.CodeGeneratorAdapter#analyzeTypeConvert
      */
     @Override
     public void analyzeTypeConvert() throws IllegalActionException {
