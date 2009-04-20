@@ -42,6 +42,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
@@ -84,6 +85,7 @@ import org.xml.sax.SAXException;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.gt.GTTools;
+import ptolemy.actor.gt.controller.TransformationAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
@@ -95,10 +97,12 @@ import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.UserActorLibrary;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -112,6 +116,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.VergilErrorHandler;
+import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 /**
 
@@ -1267,10 +1272,36 @@ public class Connector extends MoMLApplication {
         }
 
         if (transformation != null) {
-            List<EditorFactory> factories = transformation.attributeList(
-                    EditorFactory.class);
-            if (factories.size() > 0) {
-                EditorFactory factory = (EditorFactory) factories.get(0);
+            EditorFactory factory = null;
+
+            if (transformation instanceof TransformationAttribute) {
+                FileParameter target = (FileParameter) transformation
+                        .getAttribute("target", FileParameter.class);
+                if (target == null) {
+                    try {
+                        target = new FileParameter(transformation, "target");
+                        target.setPersistent(false);
+                    } catch (NameDuplicationException e) {
+                        // This should not happen.
+                        throw new InternalErrorException(e);
+                    }
+                }
+            } else {
+                List<EditorFactory> factories = transformation.attributeList(
+                        EditorFactory.class);
+                if (factories.size() > 0) {
+                    factory = (EditorFactory) factories.get(0);
+                }
+            }
+
+            if (factory == null) {
+                EditParametersDialog dialog = new EditParametersDialog(null,
+                        transformation);
+                if (!dialog.buttonPressed().equals("Commit")) {
+                    transformation = null;
+                }
+                dialog.dispose();
+            } else {
                 factory.createEditor(transformation, null);
                 Frame[] frames = Frame.getFrames();
                 for (Frame frame : frames) {
@@ -1311,8 +1342,34 @@ public class Connector extends MoMLApplication {
                         break;
                     }
                 }
-            } else {
-                new EditParametersDialog(null, transformation);
+            }
+
+            if (transformation instanceof TransformationAttribute) {
+                Writer writer = null;
+                try {
+                    FileParameter target = (FileParameter) transformation
+                            .getAttribute("target", FileParameter.class);
+                    writer = target.openForWriting();
+
+                    TransformationAttribute attribute =
+                        (TransformationAttribute) transformation;
+                    attribute.executeTransformation();
+
+                    model.executeChangeRequests();
+
+                    model.exportMoML(writer);
+                } catch (Exception e) {
+                    throw new IllegalActionException(transformation, e,
+                            "Unable to transform model.");
+                } finally {
+                    if (writer != null) {
+                        try {
+                            writer.close();
+                        } catch (IOException e) {
+                            // Ignore.
+                        }
+                    }
+                }
             }
         }
     }

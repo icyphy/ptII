@@ -31,7 +31,7 @@
 
 ME =		ptolemy/apps/naomi
 
-DIRS =		command demo
+DIRS =		demo
 
 # Root of the Java directory
 ROOT =		../../..
@@ -44,14 +44,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	naomi
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		command/command.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	CompositeNaomiAttribute.java \
