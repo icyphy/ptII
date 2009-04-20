@@ -221,7 +221,6 @@ ptolemy/domains/rtp
 ptolemy/domains/sc
 ptolemy/domains/sdf/codegen
 ptolemy/domains/sdf/demo/FixPointSystem
-ptolemy/domains/sdf/demo//OrthogonalCom/OrthogonalCom.java
 ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
