@@ -130,7 +130,7 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
         Director director = getDirectorAdapter();
 
         // Generate variable declarations for input ports.
-        String inputVariableDeclaration = director.generateInputVariableDeclaration();
+        String inputVariableDeclaration = director.generateInputVariableDeclaration(_adapter);
         if (inputVariableDeclaration.length() > 1) {
             code.append(_eol
                     + _codeGenerator.comment(name + "'s input variable declarations."));
@@ -138,7 +138,7 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
         }
 
         // Generate variable declarations for output ports.
-        String outputVariableDeclaration = director.generateOutputVariableDeclaration();
+        String outputVariableDeclaration = director.generateOutputVariableDeclaration(_adapter);
         if (outputVariableDeclaration.length() > 1) {
             code.append(_eol
                     + _codeGenerator.comment(name + "'s output variable declarations."));

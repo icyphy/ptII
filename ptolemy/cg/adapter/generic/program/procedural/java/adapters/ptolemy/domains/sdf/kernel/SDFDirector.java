@@ -35,6 +35,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -80,12 +81,12 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      *  getting port information.
      */
     @Override
-    public String generateInputVariableDeclaration()
+    public String generateInputVariableDeclaration(CodeGeneratorAdapter target)
         throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> inputPorts = ((Actor) getComponent().getContainer()).inputPortList()
+        Iterator<?> inputPorts = ((Actor) target.getComponent()).inputPortList()
         .iterator();
 
         while (inputPorts.hasNext()) {
@@ -107,11 +108,11 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      *  getting port information.
      */
     @Override
-    public String generateOutputVariableDeclaration()
+    public String generateOutputVariableDeclaration(CodeGeneratorAdapter target)
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> outputPorts = ((Actor) getComponent().getContainer()).outputPortList()
+        Iterator<?> outputPorts = ((Actor) target.getComponent()).outputPortList()
         .iterator();
 
         while (outputPorts.hasNext()) {

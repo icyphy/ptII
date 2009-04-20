@@ -540,14 +540,14 @@ public class Director extends CodeGeneratorAdapter {
         return "";
     }
 
-    public String generateInputVariableDeclaration()
+    public String generateInputVariableDeclaration(CodeGeneratorAdapter target)
             throws IllegalActionException {
         //TODO rodiers
         // TODO Auto-generated method stub
         return null;
     }
 
-    public String generateOutputVariableDeclaration()
+    public String generateOutputVariableDeclaration(CodeGeneratorAdapter target)
             throws IllegalActionException {
         //TODO rodiers
         // TODO Auto-generated method stub

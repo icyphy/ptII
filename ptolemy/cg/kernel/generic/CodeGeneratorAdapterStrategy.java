@@ -1546,10 +1546,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return name.replaceAll("\\$", "Dollar");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
     public static String generatePortReference(IOPort port,
             String[] channelAndOffset, boolean isWrite) {
 
@@ -2119,6 +2115,13 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The CodeGeneratorAdapter.*/
+    protected CodeGeneratorAdapter _adapter;
+    
 
     /** The code generator that contains this adapter class.
      */
@@ -2423,10 +2426,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
-    /** The CodeGeneratorAdapter.*/
-    CodeGeneratorAdapter _adapter;
 
     /**
      * The code block table that stores the code block body (StringBuffer)
