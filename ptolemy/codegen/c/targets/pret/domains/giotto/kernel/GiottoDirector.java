@@ -40,6 +40,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.DoubleToken;
@@ -559,8 +560,60 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
             code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
                     + _eol);
+            String srcReference;
+            String sinkReference;
+            
             //code.append(actorHelper.generateFireFunctionCode());
+            Iterator<IOPort> inputPorts;
+            if(actor instanceof CompositeActor) {
+                System.out.println("composite actor so doing stuff for that");
+                code.append("//should append stuff to transfer inputs in here"+_eol);
+//               CodeGeneratorHelper myHelper; 
+//                 
+//                
+//                // transfer input to a global port
+//             // Transfer the data to the inside.
+//                inputPorts = actor.inputPortList().iterator();
+//                String channelOffset [] = {"0","0"};
+//                while (inputPorts.hasNext()) {
+//                    IOPort inputPort = (IOPort) inputPorts.next();
+//                    if (!(inputPort instanceof ParameterPort)) {
+//                        //myHelper = (CodeGeneratorHelper)this._getHelper(inputPort.getContainer());
+//                        //sinkReference= this.driverGetReference((TypedIOPort)inputPort, channelOffset, true, true, myHelper);
+//                        //srcReference= this.driverGetReference((TypedIOPort)inputPort, channelOffset, true, true, myHelper);
+//                        
+//                        ArrayList args = new ArrayList();    
+//                        //args.add(sinkReference);
+//                        //args.add(srcReference);
+//                        code.append("//should copy from the Port to the Port of this composite actor");
+//                        //code.append( _generateBlockCode("updatePort", args));
+//                        //directorHelper.generateTransferInputsCode(inputPort, code);
+//                        //generateTransferInputsCode(inputPort, code);
+//                    }
+//                }
+//
+//                
+//                // Transfer the data to the outside.
+//                Iterator outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
+//                        .outputPortList().iterator();
+//
+//                while (outputPorts.hasNext()) {
+//                    IOPort outputPort = (IOPort) outputPorts.next();
+//                   // directorHelper.generateTransferOutputsCode(outputPort, code);
+//                    //generateTransferOutputsCode(outputPort, code);
+//                }
+//                
+//                
+//                
+//                
+//                
+//                
+//                
+//                 
+             }
+            else{
             code.append(actorHelper.generateFireCode());
+            }
             //code.append("$actorSymbol()");
             //code.append("//created by director "+_director.getDisplayName()+_eol);
             code.append("}" + _eol);
