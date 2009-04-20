@@ -51,7 +51,7 @@
 
 
 /*** prefireBlock ***/
-        $actorSymbol(_zero) = $tokenFunc($cgType(taps)_get($actorSymbol(_taps), 0)::zero());
+        $actorSymbol(_zero) = $zero_$cgType(input)();
 
         $actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.$cgType(taps)->size / $val(interpolation);
 

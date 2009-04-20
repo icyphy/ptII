@@ -1,36 +1,54 @@
 /*** zero_Array() ***/
-#define zero_Array(a) $Array_zero(a)
+Token zero_Array(a) {
+	return $Array_zero(a);
+}
 /**/
 
 /*** zero_Boolean() ***/
-#define zero_Boolean(a) (true)
+boolean zero_Boolean() {
+	return true;
+}
 /**/
 
 /*** zero_Double() ***/
-#define zero_Double(a) (0.0)
+double zero_Double() {
+	return 0.0;
+}
 /**/
 
 /*** zero_DoubleArray() ***/
-#define zero_DoubleArray(a) $DoubleArray_zero(a)
+Token zero_DoubleArray() {
+	$DoubleArray_zero(a);
+}
 /**/
 
 /*** zero_Int() ***/
-#define zero_Int(a) (0)
+int zero_Int() {
+	return 0;
+}
 /**/
 
 /*** zero_IntArray() ***/
-#define zero_IntArray(a) $IntArray_zero(a)
+Token zero_IntArray() {
+	return $IntArray_zero(a);
+}
 /**/
 
 /*** zero_Long() ***/
-#define zero_Long(a) (0)
+long long zero_Long() {
+	return 0;
+}
 /**/
 
 /*** zero_String() ***/
-#define zero_String(a) ""
+char* zero_String() {
+	return "";
+}
 /**/
 
 /*** zero_Token() ***/
-#define zero_Token(a) $tokenFunc(a::zero())
+Token zero_Token(a) {
+	$tokenFunc(a::zero());
+}
 /**/
 
