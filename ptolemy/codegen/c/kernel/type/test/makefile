@@ -86,6 +86,8 @@ JCLASS =	$(JSRCS:%.java=%.class)
 CUNIT_TESTS = \
 	IntTest
 
+KRUFT = $(CUNIT_TESTS)
+
 all: $(CUNIT_TESTS)
 	@echo "To run the tests, run 'make run' or 'make tests'"
 install:
