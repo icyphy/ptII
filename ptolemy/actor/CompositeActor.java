@@ -263,7 +263,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (newObject.getContainer() instanceof CompositeActor) {
             newObject._relationWidthInference = null;
         } else {            
-            newObject._relationWidthInference = new RelationWidthInference(this);
+            newObject._relationWidthInference = new RelationWidthInference(newObject);
         }
         return newObject;
     }
@@ -584,7 +584,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
       *  @return True When widths are currently being inferred.
       */
      public boolean inferringWidths() {
-         return _getWidthInferenceAlgorithm().inferringWidths();
+         RelationWidthInference widthInferenceAlgorithm = _getWidthInferenceAlgorithm();
+         if (widthInferenceAlgorithm != null) {
+             return widthInferenceAlgorithm.inferringWidths();
+         } else {
+             return false;
+         }
      }
 
     /**
