@@ -201,36 +201,6 @@ public class GenericCodeGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** Add an include command line argument the compile command.
-     *  @param includeCommand  The include command, for example
-     *  "-I/usr/local/include".
-     */
-    public void addInclude(String includeCommand) {
-        _includes.add(includeCommand);
-    }
-
-    /** Add a library command line argument the compile command.
-     *  @param libraryCommand  The library command, for example
-     *  "-L/usr/local/lib".
-     *  @see #addLibraryIfNecessary(String)
-     */
-    public void addLibrary(String libraryCommand) {
-        _libraries.add(libraryCommand);
-    }
-
-    /** If the compile command does not yet containe a library,
-     *         add a library command line argument the compile command.
-     *
-     *  @param libraryCommand  The library command, for example
-     *  "-L/usr/local/lib".
-     *  @see #addLibrary(String)
-     */
-    public void addLibraryIfNecessary(String libraryCommand) {
-        if (!_libraries.contains(libraryCommand)) {
-            _libraries.add(libraryCommand);
-        }
-    }
-
     /** If the attribute is the codeDirectory parameter, then set the
      *  base directory of the codeDirectory parameter.
      *  @param attribute The attribute that changed.
@@ -1158,6 +1128,23 @@ public class GenericCodeGenerator extends Attribute {
     final protected boolean _isTopLevel() {
         return getContainer().getContainer() == null;
     }
+    
+
+    /** Reset the code generator.
+     */
+    protected void _reset() {
+        // Reset the indent to zero.
+        _indent = 0;
+
+        // Reset the code file name so that getCodeFileName()
+        // accurately reports whether code was generated.
+        _codeFileName = null;
+
+        _newTypesUsed.clear();
+        _tokenFuncUsed.clear();
+        _typeFuncUsed.clear();
+        _adapterStore.clear();
+    }
 
     protected Class<? extends CodeGeneratorAdapterStrategy> _strategyClass() {
         return CodeGeneratorAdapterStrategy.class;
@@ -1562,24 +1549,6 @@ public class GenericCodeGenerator extends Attribute {
         return currentTime;
     }
 
-    /** Reset the code generator.
-     */
-    private void _reset() {
-        // Reset the indent to zero.
-        _indent = 0;
-
-        // Reset the code file name so that getCodeFileName()
-        // accurately reports whether code was generated.
-        _codeFileName = null;
-
-        _newTypesUsed.clear();
-        _tokenFuncUsed.clear();
-        _typeFuncUsed.clear();
-        _libraries.clear();
-        _includes.clear();
-        _adapterStore.clear();
-    }
-
     /** Split the code. */
     private String[] _splitBody(String prefix, String code) {
         // Split the initialize body into multiple methods
@@ -1902,20 +1871,6 @@ public class GenericCodeGenerator extends Attribute {
     /** Execute commands to run the generated code.
      */
     protected ExecuteCommands _executeCommands;
-
-
-    /** List of library command line arguments where each element is
-     *  a string, for example "-L/usr/local/lib".
-     *  This variable is a list so as to preserve the order that the
-     *  library commands were added to the list of libraries matters,
-     *  see the manual page for the -L option of the ld command.
-     */
-    protected List<String> _libraries = new LinkedList<String>();
-
-    /** Set of include command line arguments where each element is
-     *  a string, for example "-I/usr/local/include".
-     */
-    protected Set<String> _includes = new HashSet<String>();
 
     /** The model we for which we are generating code. */
     protected CompositeEntity _model;

@@ -28,6 +28,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.program.procedural;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -120,4 +125,68 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  parameter with default value false.
      */
     public Parameter sourceLineBinding;
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Add an include command line argument the compile command.
+     *  @param includeCommand  The include command, for example
+     *  "-I/usr/local/include".
+     */
+    public void addInclude(String includeCommand) {
+        _includes.add(includeCommand);
+    }
+
+    /** Add a library command line argument the compile command.
+     *  @param libraryCommand  The library command, for example
+     *  "-L/usr/local/lib".
+     *  @see #addLibraryIfNecessary(String)
+     */
+    public void addLibrary(String libraryCommand) {
+        _libraries.add(libraryCommand);
+    }
+
+    /** If the compile command does not yet containe a library,
+     *         add a library command line argument the compile command.
+     *
+     *  @param libraryCommand  The library command, for example
+     *  "-L/usr/local/lib".
+     *  @see #addLibrary(String)
+     */
+    public void addLibraryIfNecessary(String libraryCommand) {
+        if (!_libraries.contains(libraryCommand)) {
+            _libraries.add(libraryCommand);
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+
+    /** Reset the code generator.
+     */
+    protected void _reset() {
+        super._reset();
+
+        _includes.clear();
+        _libraries.clear();
+    }
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+        
+    /** Set of include command line arguments where each element is
+     *  a string, for example "-I/usr/local/include".
+     */
+    protected Set<String> _includes = new HashSet<String>();
+
+    /** List of library command line arguments where each element is
+     *  a string, for example "-L/usr/local/lib".
+     *  This variable is a list so as to preserve the order that the
+     *  library commands were added to the list of libraries matters,
+     *  see the manual page for the -L option of the ld command.
+     */
+    protected List<String> _libraries = new LinkedList<String>();
+
 }
