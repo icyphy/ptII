@@ -51,10 +51,6 @@ public class HTMLCodeGenerator extends ProgramCodeGenerator {
     /** Create a new instance of the HTMLCodeGenerator.
      *  @param container The container.
      *  @param name The name of the HTMLCodeGenerator.
-     *  @param outputFileExtension The extension of the output file.
-     *   (for example c in case of C and java in case of Java)
-     *  @param templateExtension The extension of the template files.
-     *   (for example c in case of C and j in case of Java).
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the

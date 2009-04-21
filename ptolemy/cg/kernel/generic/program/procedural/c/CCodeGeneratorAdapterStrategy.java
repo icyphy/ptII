@@ -31,12 +31,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
@@ -104,7 +102,6 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
 
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
-     *  @see #setCodeGenerator(CodeGenerator)
      */
     public CCodeGenerator getCodeGenerator() {
         return (CCodeGenerator) _codeGenerator;

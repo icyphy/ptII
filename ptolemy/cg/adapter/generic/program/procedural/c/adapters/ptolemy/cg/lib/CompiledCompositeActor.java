@@ -74,13 +74,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  <i>codeDirectory</i> parameter.
      *  @exception IllegalActionException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
-     *  @see ptolemy.codegen.kernel.CodeGeneratorAdapter#copyFilesToCodeDirectory(NamedObj, CodeGenerator)
+     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy#copyFilesToCodeDirectory(NamedObj, CodeGenerator)
      */
     public static long copyFilesToCodeDirectory(
             ptolemy.actor.TypedCompositeActor compositeActor)
             throws IOException, IllegalActionException {
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
-        // will not depend on ptolemy.codegen.
+        // will not depend on ptolemy.cg.
         GenericCodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
         return CodeGeneratorAdapterStrategy.copyFilesToCodeDirectory(compositeActor,
                 codeGenerator);
@@ -96,7 +96,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throws IllegalActionException {
 
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
-        // will not depend on ptolemy.codegen.
+        // will not depend on ptolemy.cg.
 
         // FindBugs wants this.
         if (!(compositeActor instanceof ptolemy.cg.lib.CompiledCompositeActor)) {

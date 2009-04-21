@@ -104,7 +104,6 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
 
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
-     *  @see #setCodeGenerator(CodeGenerator)
      */
     public JavaCodeGenerator getCodeGenerator() {
         return (JavaCodeGenerator) _codeGenerator;
