@@ -57,7 +57,6 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
-	ActorCodeGenerator.java \
 	CodeGeneratorAdapter.java \
 	CodeGeneratorAdapterStrategy.java \
 	CodeGeneratorUtilities.java \
