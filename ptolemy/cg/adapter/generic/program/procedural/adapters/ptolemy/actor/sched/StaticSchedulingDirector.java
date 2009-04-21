@@ -609,7 +609,6 @@ public class StaticSchedulingDirector extends Director {
      *  channel index and offset.
      * @exception IllegalActionException If the channel index or offset
      *  specified in the given string is illegal.
-     *  FIXME rodiers: SDF specific
      */
     private String[] _getChannelAndOffset(String name)
     throws IllegalActionException {
@@ -676,14 +675,18 @@ public class StaticSchedulingDirector extends Director {
         return null;
     }
 
-
-
+    /** A class that keeps track of information necessary to 
+     *  generate communication code at ports inside a StaticScheduled model.
+     */
     private class PortInfo {
 
+        /** Create a PortInfo instance.
+         *  @param port The port for which we are doing
+         *  extra bookkeeping to generate code.
+         */         
         public PortInfo(IOPort port) {
             _port = port;
         }
-
 
         /** Get the buffer size of channel of the port.
          *  @param channelNumber The number of the channel that is being set.
@@ -1259,7 +1262,8 @@ public class StaticSchedulingDirector extends Director {
         private HashMap<CodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes =
             new HashMap<CodeGeneratorAdapterStrategy.Channel, Integer>();
 
-        //TODO rodiers
+        /** The port for which we are doing extra bookkeeping to generate code.
+         */ 
         private IOPort _port;
 
         /** A HashMap that keeps track of the read offsets of each input channel of
@@ -1409,8 +1413,10 @@ public class StaticSchedulingDirector extends Director {
             return _getPortInfo(port).updateOffset(rate);
         }
 
-        /**
-         * @param port
+        /** Return the information necessary to generate
+         *  communication code at the given port.
+         * @param port The given port for which we want to
+         *      retrieve information to generate code.
          */
         private PortInfo _getPortInfo(IOPort port) {
             PortInfo info = null;
@@ -1423,7 +1429,6 @@ public class StaticSchedulingDirector extends Director {
             return info;
         }
 
-        // TODO rodiers: use a HashSet i.s.o. HashMap
         private Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
     }
 

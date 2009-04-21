@@ -235,7 +235,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      */
     // TODO rodiers: do we want to have this public?
     // BTW is this really necessary? (the code stream is used to set
-    // corrrect in the adapter embedded code actor. However
+    // correct in the adapter embedded code actor. However
     final public CodeStream getCodeStream() {
         return _codeStream;
     }
