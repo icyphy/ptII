@@ -215,7 +215,7 @@ ChangeLogThisYear.txt:
 	$(SVN2CLDIR)/svn2cl.sh --include-rev -r "{`date +%Y`-12-31}:{`date +%Y`-01-01}" --stdout > ChangeLogThisYear.txt
 
 update:
-	-svn --accept postpone update
+	-svn update
 	$(MAKE) -k clean fast
 
 mvnClean:
