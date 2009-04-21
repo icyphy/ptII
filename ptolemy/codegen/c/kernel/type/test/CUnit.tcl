@@ -58,6 +58,5 @@ test CUnit-1.1 {Run the CUnit tests} {
     string range $result [string last {--Run Summary} $result] end 
 } {--Run Summary: Type      Total     Ran  Passed  Failed
                suites        1       1     n/a       0
-               tests         1       1       0       0
-               asserts       2       2       1       0
-}
+               tests         1       1       1       0
+               asserts       1       1       1       0}
