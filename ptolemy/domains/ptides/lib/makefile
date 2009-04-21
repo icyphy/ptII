@@ -48,8 +48,15 @@ PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	ActuatorTransmitter.java \
+	EnvironmentReceiver.java \
+	EnvironmentTransmitter.java \
+	NetworkReceiver.java \
+	NetworkTransmitter.java \
 	ScheduleListener.java \
-	SchedulePlotter.java
+	SchedulePlotter.java \
+	SensorReceiver.java
+	
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml

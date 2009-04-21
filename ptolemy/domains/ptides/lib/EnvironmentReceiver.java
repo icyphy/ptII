@@ -5,7 +5,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class EnvironmentReceiver extends TypedAtomicActor {
+public abstract class EnvironmentReceiver extends TypedAtomicActor {
     public EnvironmentReceiver(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
