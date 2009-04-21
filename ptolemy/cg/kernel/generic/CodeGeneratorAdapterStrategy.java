@@ -393,7 +393,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         StringBuffer code = new StringBuffer();
 
         // Type conversion code for inter-actor port conversion.
-        Iterator<Channel> channels = _getTypeConvertChannels().iterator();
+        Iterator<Channel> channels = getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
             Channel source = channels.next();
 
@@ -411,57 +411,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         }
         return code.toString();
     }
-
-
-    /** Generate variable declarations for inputs and outputs and parameters.
-     *  Append the declarations to the given string buffer.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the adapter class for the model
-     *   director cannot be found.
-     */
-    public String generateVariableDeclaration() throws IllegalActionException {
-        return "";
-    }
-
-    /** Generate variable initialization for the referenced parameters.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the adapter class for the model
-     *   director cannot be found.
-     */
-    public String generateVariableInitialization()
-    throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        //  Generate variable initialization for referenced parameters.
-        if (!_referencedParameters.isEmpty()) {
-            code.append(_eol
-                    + _codeGenerator.comment(1, getComponent().getName()
-                            + "'s parameter initialization"));
-
-            Iterator<Parameter> parameters = _referencedParameters.iterator();
-
-            while (parameters.hasNext()) {
-                Parameter parameter = parameters.next();
-                try {
-                    // avoid duplication.
-                    if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                        code.append(_INDENT1
-                                + _codeGenerator
-                                .generateVariableName(parameter)
-                                + " = "
-                                + getParameterValue(parameter.getName(),
-                                        getComponent()) + ";" + _eol);
-                    }
-                } catch (Throwable throwable) {
-                    throw new IllegalActionException(getComponent(), throwable,
-                            "Failed to generate variable initialization for \""
-                            + parameter + "\"");
-                }
-            }
-        }
-        return code.toString();
-    }
-
 
     /** Generate a variable name for the NamedObj.
      *  @param namedObj The NamedObj to generate variable name for.
@@ -978,24 +927,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return null;
     }
 
-    /** Get the read offset in the buffer of a given channel from which a token
-     *  should be read. The channel is given by its containing port and
-     *  the channel number in that port.
-     *  @param inputPort The given port.
-     *  @param channelNumber The given channel number.
-     *  @return The offset in the buffer of a given channel from which a token
-     *   should be read.
-     *  @exception IllegalActionException Thrown if the adapter class cannot
-     *   be found.
-     *  @see #setReadOffset(IOPort, int, Object)
-     */
-//    public Object getReadOffset(IOPort inputPort, int channelNumber)
-//    throws IllegalActionException {
-//
-//        return ((PortCodeGenerator) _getAdapter(inputPort))
-//        .getReadOffset(channelNumber);
-//    }
-
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -1023,42 +954,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return directorAdapter.getReference(name, isWrite, _adapter);
     }
 
-
-    public String getReference(Attribute attribute, String[] channelAndOffset)
-    throws IllegalActionException {
-        StringBuffer result = new StringBuffer();
-        //FIXME: potential bug: if the attribute is not a parameter,
-        //it will be referenced but not declared.
-        if (attribute instanceof Parameter) {
-            _referencedParameters.add((Parameter) attribute);
-        }
-
-        result.append(_codeGenerator.generateVariableName(attribute));
-
-        if (!channelAndOffset[0].equals("")) {
-            throw new IllegalActionException(getComponent(),
-            "a parameter cannot have channel number.");
-        }
-
-        if (!channelAndOffset[1].equals("")) {
-            //result.append("[" + channelAndOffset[1] + "]");
-
-            // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
-            // We are not certain that attribute is parameter.
-            Type elementType = ((ArrayType) ((Parameter) attribute)
-                    .getType()).getElementType();
-
-            result.insert(0, "Array_get(");
-            if (isPrimitive(elementType)) {
-                // Generate type specific Array_get(). e.g. IntArray_get().
-                result.insert(0, "/*CGH77*/" + codeGenType(elementType));
-            }
-            result.insert(0, "/*CGH77*/");
-
-            result.append(" ," + channelAndOffset[1] + ")");
-        }
-        return result.toString();
-    }
 
     /**
      * Generate the shared code. This is the first generate method invoked out
@@ -1678,6 +1573,14 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return null;
     }
 
+    /**
+     * Get the set of channels that need to be type converted.
+     * @return Set of channels that need to be type converted.
+     */
+    public Set<Channel> getTypeConvertChannels() {
+        return _portConversions.keySet();
+    }
+    
     public static void main(String[] args) {
         selfTest();
     }
@@ -1776,7 +1679,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
         + source.channelNumber + ", " + offset;
-        String sourceRef = ((CodeGeneratorAdapterStrategy) _getAdapter(source.port
+        String sourceRef = ((CodeGeneratorAdapter) _getAdapter(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
@@ -1789,7 +1692,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((CodeGeneratorAdapterStrategy) _getAdapter(sink.port
+        String sinkRef = ((CodeGeneratorAdapter) _getAdapter(sink.port
                 .getContainer())).getReference(sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
@@ -1865,17 +1768,9 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    protected ComponentCodeGenerator _getAdapter(NamedObj component)
+    protected CodeGeneratorAdapter _getAdapter(NamedObj component)
     throws IllegalActionException {
         return _codeGenerator.getAdapter(component);
-    }
-
-    /**
-     * Get the set of channels that need to be type converted.
-     * @return Set of channels that need to be type converted.
-     */
-    protected Set<Channel> _getTypeConvertChannels() {
-        return _portConversions.keySet();
     }
 
     /**
@@ -2120,11 +2015,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
 
     /** The parse tree to use with expressions. */
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
-
-    /** A hashset that keeps track of parameters that are referenced for
-     *  the associated actor.
-     */
-    protected HashSet<Parameter> _referencedParameters = new HashSet<Parameter>();
 
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)

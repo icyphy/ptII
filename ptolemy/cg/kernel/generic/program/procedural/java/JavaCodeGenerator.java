@@ -45,7 +45,6 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.PointerToken;
-import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
@@ -210,7 +209,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        return _INDENT1 + "initialize();" + _eol;
+        return INDENT1 + "initialize();" + _eol;
     }
 
     /** Generate line number information.  In this class, lines
@@ -289,9 +288,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (_isTopLevel()) {
-            return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
+            return INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
-            return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
+            return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
             + _eol + "}" + _eol;
         }
     }
@@ -310,7 +309,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireExitCode() throws IllegalActionException {
-        return _INDENT1 + "return true;" + _eol + "}" + _eol;
+        return INDENT1 + "return true;" + _eol + "}" + _eol;
     }
 
     /** Generate the postfire procedure name.
@@ -319,7 +318,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generatePostfireProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "postfire();" + _eol;
+        return INDENT1 + "postfire();" + _eol;
     }
 
     /**
@@ -378,7 +377,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             // Dynamically generate all the types within the union.
             if (i > 0) {
-                typeMembers.append(_INDENT2);
+                typeMembers.append(INDENT2);
             }
             typeMembers.append(typesArray[i] + "Token " + typesArray[i] + ";");
             if (i < typesArray.length - 1) {
@@ -618,6 +617,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableDeclaration());
@@ -662,7 +662,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 NamedObj container = variable.getContainer();
                 CodeGeneratorAdapter containerAdapter = (CodeGeneratorAdapter) getAdapter(container);
-                code.append(_INDENT1
+                code.append(INDENT1
                         + generateVariableName(variable)
                         + " = "
                         + containerAdapter.getParameterValue(variable.getName(),
@@ -696,7 +696,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "wrapup();" + _eol;
+        return INDENT1 + "wrapup();" + _eol;
     }
 
     /** Split a long function body into multiple functions.
@@ -1048,7 +1048,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ActorCodeGenerator compositeActorAdapter = getAdapter(getContainer());
+        CodeGeneratorAdapter compositeActorAdapter = getAdapter(getContainer());
         Set includingFiles = compositeActorAdapter.getHeaderFiles();
 
         //includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc

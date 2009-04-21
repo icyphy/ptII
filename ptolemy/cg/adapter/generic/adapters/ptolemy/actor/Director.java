@@ -40,7 +40,6 @@ import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
-import ptolemy.cg.kernel.generic.ComponentCodeGenerator;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.expr.Parameter;
@@ -54,7 +53,6 @@ import ptolemy.kernel.util.NamedObj;
  This class is also associated with a code generator.
 
  FIXME: need documentation on how subclasses should extend this class.
- FIXME rodiers: indirectly this class derives from ActorCodeGenerator. Does not seem logical to me.
 
  @see GenericCodeGenerator
  @author Ye Zhou, Gang Zhou
@@ -78,7 +76,25 @@ public class Director extends CodeGeneratorAdapter {
     /////////////////////////////////////////////////////////////////
     ////                Public Methods                           ////
 
+    /** Generate the send code for Port port.
+     *  @param port The port for which to generate send code. 
+     *  @param channel The channel for which the send code is generated.
+     *  @param dataToken The token to be sent
+     *  @return The code that sends the dataToken on the channel.
+     */    
+    public String generateCodeForSend(IOPort port, int channel, String dataToken)
+    throws IllegalActionException {
+        return "";
+    }
 
+    /** Generate the get code for Port port.
+     *  @param port The port for which to generate get code.
+     *  @param channel The channel for which the get code is generated.
+     *  @return The code that gets data from the channel.
+     */
+    public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
+        return "";
+    }
     /** Generate the code for the firing of actors.
      *  In this base class, it is attempted to fire all the actors once.
      *  In subclasses such as the adapters for SDF and Giotto directors, the
@@ -133,7 +149,7 @@ public class Director extends CodeGeneratorAdapter {
     public Set<String> getHeaderFiles() throws IllegalActionException {
         return new HashSet<String>();
     }
-
+    
     /** Generate a main loop for an execution under the control of
      *  this director.  In this base class, this simply delegates
      *  to generateFireCode() and generatePostfireCOde().
@@ -344,15 +360,22 @@ public class Director extends CodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-
-        Iterator<?> actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+        CompositeActor container = (CompositeActor) _director.getContainer();
+        GenericCodeGenerator codeGenerator = getCodeGenerator(); 
+        {
+            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter(container);
+            code.append(_generateVariableDeclaration(adapterObject));
+        }
+        
+        Iterator<?> actors = container.deepEntityList().iterator();
+        
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
-            code.append(adapterObject.generateVariableDeclaration());
+            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter((NamedObj) actor);
+            code.append(_generateVariableDeclaration(adapterObject));
         }
 
         return code.toString();
@@ -363,16 +386,23 @@ public class Director extends CodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    public String generateVariableInitialization()
-    throws IllegalActionException {
+    @Override
+    public String generateVariableInitialization() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-
-        Iterator<?> actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+        
+        CompositeActor container = (CompositeActor) _director.getContainer();
+        GenericCodeGenerator codeGenerator = getCodeGenerator(); 
+        {
+            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter(container);
+            code.append(_generateVariableInitialization(adapterObject));
+        }
+        
+        Iterator<?> actors = container.deepEntityList().iterator();
+        
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
-            code.append(adapterObject.generateVariableInitialization());
+            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter((NamedObj) actor);
+            code.append(_generateVariableInitialization(adapterObject));
         }
 
         return code.toString();
@@ -396,18 +426,31 @@ public class Director extends CodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ComponentCodeGenerator adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
             code.append(adapterObject.generateWrapupCode());
         }
 
         return code.toString();
     }
 
+    /** Return the reference to the specified parameter or port of the
+     *  associated actor. For a parameter, the returned string is in
+     *  the form "fullName_parameterName". For a port, the returned string
+     *  is in the form "fullName_portName[channelNumber][offset]", if
+     *  any channel number or offset is given.
+     *
+     *  FIXME: need documentation on the input string format.
+     *
+     *  @param name The name of the parameter or port
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @return The reference to that parameter or port (a variable name,
+     *   for example).
+     *  @exception IllegalActionException If the parameter or port does not
+     *   exist or does not have a value.
+     */
     public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target)
         throws IllegalActionException {
-        //TODO rodiers
-        assert false;
-        return null;
+        return "";
     }
 
     // FIXME rodiers: Method only used for PN (in IOPort). Move to PNDirector?
@@ -525,33 +568,33 @@ public class Director extends CodeGeneratorAdapter {
         return powerOfTwo;
     }
 
+    /** Generate variable declarations for inputs and outputs and parameters.
+     *  Append the declarations to the given string buffer.
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    protected String _generateVariableDeclaration(CodeGeneratorAdapter target) throws IllegalActionException {    
+        return "";
+    }
+
+    /** Generate variable initialization for the referenced parameters.
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    protected String _generateVariableInitialization(CodeGeneratorAdapter target)
+    throws IllegalActionException {
+        return "";
+    }
+    
+
     ////////////////////////////////////////////////////////////////////
     ////                     protected variables                    ////
 
     /** The associated director.
      */
     protected ptolemy.actor.Director _director;
-
-    public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
-        return "";
-    }
-
-    public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
-        return "";
-    }
-
-    public String generateInputVariableDeclaration(CodeGeneratorAdapter target)
-            throws IllegalActionException {
-        //TODO rodiers
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public String generateOutputVariableDeclaration(CodeGeneratorAdapter target)
-            throws IllegalActionException {
-        //TODO rodiers
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

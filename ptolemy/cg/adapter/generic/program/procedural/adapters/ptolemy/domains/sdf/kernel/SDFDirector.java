@@ -27,6 +27,8 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
@@ -38,11 +40,16 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sche
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -235,6 +242,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         //}
     }
 
+    
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -411,6 +419,91 @@ public class SDFDirector extends StaticSchedulingDirector {
         return code.toString();
     }
 
+
+    /** Generate variable initialization for the referenced parameters.
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    @Override
+    protected String _generateVariableInitialization(CodeGeneratorAdapter target)
+    throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        GenericCodeGenerator codeGenerator = getCodeGenerator();
+
+        //  Generate variable initialization for referenced parameters.
+        if (!_referencedParameters.isEmpty() && _referencedParameters.containsKey(target)) {
+            code.append(_eol
+                    + codeGenerator.comment(1, target.getComponent().getName()
+                            + "'s parameter initialization"));
+
+
+            for (Parameter parameter : _referencedParameters.get(target)) {
+                try {
+                    // avoid duplication.
+                    if (!codeGenerator.getModifiedVariables().contains(parameter)) {
+                        code.append(GenericCodeGenerator.INDENT1
+                                + codeGenerator
+                                .generateVariableName(parameter)
+                                + " = "
+                                + target.getParameterValue(parameter.getName(),
+                                        target.getComponent()) + ";" + _eol);
+                    }
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(target.getComponent(), throwable,
+                            "Failed to generate variable initialization for \""
+                            + parameter + "\"");
+                }
+            }
+        }
+        return code.toString();
+    }
+
+    /**
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     */
+    @Override
+    protected String _getReference(CodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
+    throws IllegalActionException {
+        StringBuffer result = new StringBuffer();
+        //FIXME: potential bug: if the attribute is not a parameter,
+        //it will be referenced but not declared.
+        if (attribute instanceof Parameter) {
+            if (!_referencedParameters.containsKey(target)) {
+                _referencedParameters.put(target, new HashSet<Parameter>());
+            }
+            _referencedParameters.get(target).add((Parameter) attribute);
+        }
+
+        result.append(getCodeGenerator().generateVariableName(attribute));
+
+        if (!channelAndOffset[0].equals("")) {
+            throw new IllegalActionException(getComponent(),
+            "a parameter cannot have channel number.");
+        }
+
+        if (!channelAndOffset[1].equals("")) {
+            //result.append("[" + channelAndOffset[1] + "]");
+
+            // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
+            // We are not certain that attribute is parameter.
+            Type elementType = ((ArrayType) ((Parameter) attribute)
+                    .getType()).getElementType();
+
+            result.insert(0, "Array_get(");
+            if (getStrategy().isPrimitive(elementType)) {
+                // Generate type specific Array_get(). e.g. IntArray_get().
+                result.insert(0, "/*CGH77*/" + getStrategy().codeGenType(elementType));
+            }
+            result.insert(0, "/*CGH77*/");
+
+            result.append(" ," + channelAndOffset[1] + ")");
+        }
+        return result.toString();
+    }
+    
     /** Check to see if the buffer size for the current schedule is greater
      *  than the previous size. If so, set the buffer size to the current
      *  buffer size needed.
@@ -665,8 +758,6 @@ public class SDFDirector extends StaticSchedulingDirector {
         return newBufferSize;
     }
     
-
-
     /** Reset the offsets of all inside buffers of all output ports of the
      *  associated composite actor to the default value of 0.
      *
@@ -707,4 +798,12 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
     
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                 ////
+    
+    /** A hashmap that keeps track of parameters that are referenced for
+     *  the associated actor.
+     */
+    protected HashMap<CodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<CodeGeneratorAdapter, HashSet<Parameter>>();
+    
 }

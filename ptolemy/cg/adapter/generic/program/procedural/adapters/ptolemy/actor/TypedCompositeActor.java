@@ -268,13 +268,11 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
      *   the actor.
      */
     @Override
-    public String generateVariableDeclaration() throws IllegalActionException {
+    final public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(super.generateVariableDeclaration());
-
         Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+                .getDirector());        
         code.append(directorAdapter.generateVariableDeclaration());
 
         return processCode(code.toString());
@@ -287,14 +285,12 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
      *   the actor.
      */
     @Override
-    public String generateVariableInitialization()
+    final public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         // code.append(_eol + getCodeGenerator().comment(1, "Composite actor "
         //                + getComponent().getName()
         //                + "'s variable initialization."));
-
-        code.append(super.generateVariableInitialization());
 
         Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());

@@ -31,7 +31,6 @@ import java.util.Set;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
@@ -68,8 +67,7 @@ import ptolemy.util.StringUtilities;
 * @Pt.AcceptedRating Yellow (eal)
 */
 //FIXME: Why extend NamedObj? Extend Attribute and store in the actor being adapted?
-//FIXME: We probably don't want to derive from ActorCodeGenerator.
-public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator {
+public class CodeGeneratorAdapter extends NamedObj {
 
     /** Construct the code generator adapter associated
      *  with the given component.
@@ -197,7 +195,7 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        return _strategy.generateVariableDeclaration();
+        return "";
     }
 
     /** Generate variable initialization for the referenced parameters.
@@ -206,7 +204,7 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
      *   director cannot be found.
      */
     public String generateVariableInitialization() throws IllegalActionException {
-        return _strategy.generateVariableInitialization();
+        return "";
     }
     
     /**
@@ -337,13 +335,6 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
     public String getReference(String name, boolean isWrite) 
             throws IllegalActionException {
         return _strategy.getReference(name, isWrite);
-    }
-    
-
-    public String getReference(Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
-        return _strategy.getReference(attribute, 
-                channelAndOffset); 
     }
 
     /**

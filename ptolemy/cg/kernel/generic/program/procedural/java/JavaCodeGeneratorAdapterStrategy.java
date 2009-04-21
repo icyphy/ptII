@@ -28,18 +28,11 @@
 package ptolemy.cg.kernel.generic.program.procedural.java;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,53 +100,6 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
         // if we could use the same JavaParseTreeCodeGenerator over and over.
         _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
         return _parseTreeCodeGenerator;
-    }
-
-    /** Generate variable declarations for inputs and outputs and parameters.
-     *  Append the declarations to the given string buffer.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the adapter class for the model
-     *   director cannot be found.
-     */
-    public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        String name = CodeGeneratorAdapterStrategy.generateName(getComponent());
-        // Generate variable declarations for referenced parameters.
-        String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
-        if (referencedParameterDeclaration.length() > 1) {
-            code.append(_eol
-                    + _codeGenerator.comment(name + "'s referenced parameter declarations."));
-            code.append(referencedParameterDeclaration);
-        }
-        
-        Director director = getDirectorAdapter();
-
-        // Generate variable declarations for input ports.
-        String inputVariableDeclaration = director.generateInputVariableDeclaration(_adapter);
-        if (inputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + _codeGenerator.comment(name + "'s input variable declarations."));
-            code.append(inputVariableDeclaration);
-        }
-
-        // Generate variable declarations for output ports.
-        String outputVariableDeclaration = director.generateOutputVariableDeclaration(_adapter);
-        if (outputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + _codeGenerator.comment(name + "'s output variable declarations."));
-            code.append(outputVariableDeclaration);
-        }
-
-        // Generate type convert variable declarations.
-        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration();
-        if (typeConvertVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + _codeGenerator.comment(name + "'s type convert variable declarations."));
-            code.append(typeConvertVariableDeclaration);
-        }
-
-        return processCode(code.toString());
     }
 
     /** Get the code generator associated with this adapter class.
@@ -244,120 +190,6 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
         files.addAll(_includeFiles);
         return files;
     }    
-
-    /** Generate referenced parameter declarations.
-     *  @return a String that declares referenced parameters.
-     *  @exception IllegalActionException If thrown while
-     *  getting modified variable information.
-     */
-    protected String _generateReferencedParameterDeclaration()
-    throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        if (_referencedParameters != null) {
-            Iterator<Parameter> parameters = _referencedParameters.iterator();
-
-            while (parameters.hasNext()) {
-                Parameter parameter = (Parameter) parameters.next();
-
-                // avoid duplicate declaration.
-                if (!_codeGenerator.getModifiedVariables().contains(parameter)) {
-                    code.append("static " + targetType(parameter.getType())
-                            + " " + generateVariableName(parameter) + ";"
-                            + _eol);
-                }
-            }
-        }
-
-        return code.toString();
-    }
-
-    /** Generate type convert variable declarations.
-     *  @return a String that declares type convert variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    protected String _generateTypeConvertVariableDeclaration()
-    throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> channels = _getTypeConvertChannels().iterator();
-        while (channels.hasNext()) {
-            Channel channel = (Channel) channels.next();
-            Type portType = ((TypedIOPort) channel.port).getType();
-
-            if (isPrimitive(portType)) {
-
-                code.append("static ");
-                code.append(targetType(portType));
-                code.append(" " + getTypeConvertReference(channel));
-
-                //int bufferSize = getBufferSize(channel.port);
-                int bufferSize = Math.max(DFUtilities
-                        .getTokenProductionRate(channel.port), DFUtilities
-                        .getTokenConsumptionRate(channel.port));
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
-        }
-        return code.toString();
-    }
-
-    public String getReference(Attribute attribute, String[] channelAndOffset)
-    throws IllegalActionException {
-        StringBuffer result = new StringBuffer();
-        //FIXME: potential bug: if the attribute is not a parameter,
-        //it will be referenced but not declared.
-        if (attribute instanceof Parameter) {
-            _referencedParameters.add((Parameter) attribute);
-        }
-
-        result.append(_codeGenerator.generateVariableName(attribute));
-
-        if (!channelAndOffset[0].equals("")) {
-            throw new IllegalActionException(getComponent(),
-            "a parameter cannot have channel number.");
-        }
-
-        if (!channelAndOffset[1].equals("")) {
-            // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
-            // We are not certain that attribute is parameter.
-            Type elementType = ((ArrayType) ((Parameter) attribute)
-                    .getType()).getElementType();
-
-            //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "(" 
-                    + codeGenType(elementType).replace("Array", "Token").replace("Matrix", "Token")
-                    + ")(/*JCGH44*/Array_get(");
-            if (isPrimitive(elementType)) {
-                result.insert(0, "("); 
-            }
-
-            result.append(" ," + channelAndOffset[1] + ")");
-
-
-            if (isPrimitive(elementType)) {
-                String cgType = codeGenType(elementType).toLowerCase();
-                if (cgType.equals("integer")) {
-                    cgType = "int";
-                }
-                String operator = "Value()";
-                if (cgType.equals("string")) {
-                    cgType = "";
-                    operator = "toString()";
-                }
-                result.append(".payload/*jcgh2*/))."
-                        + cgType
-                        + operator);
-            } else {
-                result.append(")");
-            }
-        }
-        return result.toString();
-    }
 
     protected String _replaceMacro(String macro, String parameter)
     throws IllegalActionException {

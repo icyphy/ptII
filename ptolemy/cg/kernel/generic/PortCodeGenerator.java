@@ -31,16 +31,14 @@ package ptolemy.cg.kernel.generic;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * @author Man-kit Leung
+ * @author Man-kit Leung, Bert Rodiers
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
 
-// FIXME: This looks rather C specific!
-
-public interface PortCodeGenerator extends ComponentCodeGenerator {
+public interface PortCodeGenerator {
 
     /** Generate the get code.
      *  @param channel The channel for which the get code is generated.

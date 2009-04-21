@@ -44,7 +44,6 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
@@ -204,7 +203,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        return _INDENT1 + "initialize();" + _eol;
+        return INDENT1 + "initialize();" + _eol;
     }
 
     /** Generate line number information.  In this class, lines
@@ -269,9 +268,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateMainExitCode() throws IllegalActionException {
         if (_isTopLevel()) {
-            return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
+            return INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
-            return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
+            return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol;
         }
     }
@@ -300,7 +299,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireExitCode() throws IllegalActionException {
-        return _INDENT1 + "return true;" + _eol + "}" + _eol;
+        return INDENT1 + "return true;" + _eol + "}" + _eol;
     }
 
     /** Generate the postfire procedure name.
@@ -309,7 +308,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generatePostfireProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "postfire(void);" + _eol;
+        return INDENT1 + "postfire(void);" + _eol;
     }
 
     /**
@@ -639,6 +638,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableDeclaration());
@@ -683,7 +683,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
                 NamedObj container = variable.getContainer();
                 CodeGeneratorAdapter containerAdapter =  getAdapter(container);
-                code.append(_INDENT1
+                code.append(INDENT1
                         + generateVariableName(variable)
                         + " = "
                         + containerAdapter.getParameterValue(variable.getName(),
@@ -729,7 +729,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "wrapup();" + _eol;
+        return INDENT1 + "wrapup();" + _eol;
     }
 
     /** Split a long function body into multiple functions.
@@ -800,7 +800,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *   include directories.
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
-        ActorCodeGenerator adapter = getAdapter(getContainer());
+        CodeGeneratorAdapter adapter = getAdapter(getContainer());
 
         Set actorIncludeDirectories = adapter.getIncludeDirectories();
         Iterator includeIterator = actorIncludeDirectories.iterator();
@@ -814,7 +814,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
-        ActorCodeGenerator adapter = getAdapter(getContainer());
+        CodeGeneratorAdapter adapter = getAdapter(getContainer());
 
         Set actorLibraryDirectories = adapter.getLibraryDirectories();
         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();

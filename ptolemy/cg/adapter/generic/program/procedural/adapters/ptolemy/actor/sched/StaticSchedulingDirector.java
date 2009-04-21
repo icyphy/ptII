@@ -43,7 +43,6 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
@@ -191,7 +190,7 @@ public class StaticSchedulingDirector extends Director {
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
-        ActorCodeGenerator modelAdapter = getCodeGenerator().getAdapter(_director
+        CodeGeneratorAdapter modelAdapter = getCodeGenerator().getAdapter(_director
                 .getContainer());
         modelAdapter.generateModeTransitionCode(code);
 
@@ -243,7 +242,21 @@ public class StaticSchedulingDirector extends Director {
     }
 
 
-    // FIXME: documentation
+    /** Return the reference to the specified parameter or port of the
+     *  associated actor. For a parameter, the returned string is in
+     *  the form "fullName_parameterName". For a port, the returned string
+     *  is in the form "fullName_portName[channelNumber][offset]", if
+     *  any channel number or offset is given.
+     *
+     *  FIXME: need documentation on the input string format.
+     *
+     *  @param name The name of the parameter or port
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @return The reference to that parameter or port (a variable name,
+     *   for example).
+     *  @exception IllegalActionException If the parameter or port does not
+     *   exist or does not have a value.
+     */
     public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target)
     throws IllegalActionException {
 
@@ -292,7 +305,7 @@ public class StaticSchedulingDirector extends Director {
         if (attribute != null) {
             String refType = _getRefType(attribute);
 
-            String result = getReference(
+            String result = _getReference(target,
                     attribute, channelAndOffset);
 
             return getStrategy()._generateTypeConvertMethod(result, castType, refType);
@@ -302,6 +315,9 @@ public class StaticSchedulingDirector extends Director {
                 + name);
     }
 
+    /** 
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     */
     public String getReference(TypedIOPort port,
             String[] channelAndOffset,
             boolean forComposite,
@@ -484,7 +500,15 @@ public class StaticSchedulingDirector extends Director {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-
+    
+    /** 
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     */
+    protected String _getReference(CodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
+        throws IllegalActionException {
+        return "";
+    }
+    
     /** Update the offsets of the buffers associated with the ports connected
      *  with the given port in its downstream.
      *
@@ -651,6 +675,8 @@ public class StaticSchedulingDirector extends Director {
         }
         return null;
     }
+
+
 
     private class PortInfo {
 
@@ -1402,4 +1428,5 @@ public class StaticSchedulingDirector extends Director {
     }
 
     protected Ports _ports = new Ports();
+    
 }
