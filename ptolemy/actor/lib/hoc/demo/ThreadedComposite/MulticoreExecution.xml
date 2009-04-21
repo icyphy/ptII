@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MulticoreExecution" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 967, 679}, maximized=false}">
     </property>
@@ -92,7 +92,7 @@
                 </property>
                 <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
                 </property>
-                <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Aggregate computation time">
+                <property name="title" class="ptolemy.data.expr.StringParameter" value="Aggregate computation time">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 110.0]">
                 </property>
@@ -101,10 +101,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 110.0]">
                 </property>
             </entity>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -113,9 +109,15 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="Auto" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
             <link port="input" relation="relation2"/>
-            <link port="ExecutionTime.input" relation="relation2"/>
             <link port="ExecutionTime.output" relation="relation"/>
+            <link port="ExecutionTime.trigger" relation="relation2"/>
             <link port="Display.input" relation="relation3"/>
             <link port="Accumulator.input" relation="relation"/>
             <link port="Accumulator.output" relation="relation3"/>
@@ -180,7 +182,7 @@
                 </property>
                 <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
                 </property>
-                <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Aggregate computation time">
+                <property name="title" class="ptolemy.data.expr.StringParameter" value="Aggregate computation time">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 110.0]">
                 </property>
@@ -189,10 +191,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 110.0]">
                 </property>
             </entity>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -201,9 +199,15 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="Auto" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
             <link port="input" relation="relation2"/>
-            <link port="ExecutionTime.input" relation="relation2"/>
             <link port="ExecutionTime.output" relation="relation"/>
+            <link port="ExecutionTime.trigger" relation="relation2"/>
             <link port="Display.input" relation="relation3"/>
             <link port="Accumulator.input" relation="relation"/>
             <link port="Accumulator.output" relation="relation3"/>

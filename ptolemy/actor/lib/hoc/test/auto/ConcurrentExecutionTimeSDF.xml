@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConcurrentExecutionTimeSDF" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 390, 865, 429}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 390, 865, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 319]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.0, 159.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.0, 175.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -40,11 +40,12 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 90.0]">
         </property>
-        <port name="input" class="ptolemy.actor.lib.hoc.MirrorPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
         <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime">
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100L">
@@ -73,11 +74,12 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 175.0}">
         </property>
-        <port name="input" class="ptolemy.actor.lib.hoc.MirrorPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
         <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime">
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100L">
@@ -131,10 +133,10 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="ThreadedComposite.input" relation="relation2"/>
     <link port="ThreadedComposite.output" relation="relation"/>
-    <link port="ThreadedComposite2.input" relation="relation2"/>
+    <link port="ThreadedComposite.trigger" relation="relation2"/>
     <link port="ThreadedComposite2.output" relation="relation3"/>
+    <link port="ThreadedComposite2.trigger" relation="relation2"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp2.output" relation="relation4"/>
     <link port="Ramp2.trigger" relation="relation"/>

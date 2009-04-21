@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ExecutionTime extends Transformer {
+public class ExecutionTime extends LimitedFiringSource {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -127,9 +127,11 @@ public class ExecutionTime extends Transformer {
     public void fire() throws IllegalActionException {
         long start = System.currentTimeMillis();
         super.fire();
-        if (input.hasToken(0)) {
-            // Read and discard the input.
-            input.get(0);
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                // Read and discard the input.
+                trigger.get(i);
+            }
         }
         long executionTimeValue = ((LongToken)executionTime.getToken()).longValue();
         long granularityValue = ((LongToken)granularity.getToken()).longValue();
