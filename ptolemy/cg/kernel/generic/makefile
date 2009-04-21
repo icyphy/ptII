@@ -61,7 +61,6 @@ JSRCS = \
 	CodeGeneratorAdapterStrategy.java \
 	CodeGeneratorUtilities.java \
 	CodeStream.java \
-	ComponentCodeGenerator.java \
 	GenericCodeGenerator.java \
 	ParseTreeCodeGenerator.java \
 	PortCodeGenerator.java
