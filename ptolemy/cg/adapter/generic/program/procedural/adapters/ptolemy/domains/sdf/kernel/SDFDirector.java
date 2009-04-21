@@ -426,7 +426,6 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    @Override
     protected String _generateVariableInitialization(CodeGeneratorAdapter target)
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -464,7 +463,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     /**
      *  @param target The CodeGeneratorAdapter for which code needs to be generated.
      */
-    @Override
     protected String _getReference(CodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
     throws IllegalActionException {
         StringBuffer result = new StringBuffer();
