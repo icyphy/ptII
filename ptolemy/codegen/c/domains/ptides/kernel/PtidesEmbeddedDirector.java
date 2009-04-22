@@ -63,7 +63,7 @@ public class PtidesEmbeddedDirector extends Director {
 
     /** Construct the code generator helper associated with the given
      *  PtidesEmbeddedDirector.
-     *  @param ptidesEmbeddedDirector The associated
+     *  @param ptidesEmbeddedDirector The associated director
      *  ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector
      */
     public PtidesEmbeddedDirector(ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector ptidesEmbeddedDirector) {
@@ -180,9 +180,15 @@ public class PtidesEmbeddedDirector extends Director {
         StringBuffer code =
             new StringBuffer(super.generatePreinitializeCode());
 
-        _updatePortBufferSize();
+        // Deal with buffers by first updating the buffer size on each of the output ports.
+        // Then, for each output port, we also need to create two variables, which keep
+        // track of where the head and tail of the data values are in the buffer.
 
+        code.append(_generatePtrToEventHeadCodeInputs());
+        
         code.append(_generateActorFireCode());
+        
+        // FIXME: after each firing, the output needs to be sent to the 
 
         List args = new LinkedList();
         args.add(_generateDirectorHeader());
@@ -198,6 +204,16 @@ public class PtidesEmbeddedDirector extends Director {
         code.append(_codeStream.getCodeBlock("preinitPIBlock", args));
 
         return code.toString();
+    }
+    
+    /**
+     * Generate the type conversion fire code. Here we don't actually want to generate
+     * any type conversion statement, the type conversion is done within the event creation.
+     * @return The generated code.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateTypeConvertFireCode() throws IllegalActionException {
+        return "";
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -248,24 +264,24 @@ public class PtidesEmbeddedDirector extends Director {
 
         return processCode(code.toString());
     }
+    
+//    public String getReference(TypedIOPort port, String[] channelAndOffset,
+//            boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
+//            throws IllegalActionException {
+//        if (port.isInput()){
+//            return "Event_Head_" + port.getContainer().getName() + "_" + port.getName()
+//                + "[" + channelAndOffset[0] + "]->" + port.getType().toString() + "_Value";
+//        } else {
+//            return helper.getReference(port, channelAndOffset, forComposite, isWrite);
+//        }
+//    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Check for the given channel of the given port to see if
-     *  variables are needed for recording read offset and write
-     *  offset. If the buffer size of a channel divides the readTokens
-     *  and writeTokens given in the argument, then there is no need
-     *  for the variables. Otherwise the integer offsets are replaced
-     *  with variables and the code to initialize these variables are
-     *  generated.  If padded buffers are desired (based on the padBuffers
-     *  parameter of the CodeGenerator), pad the buffers.
+    /** Generate code for director header.
      *
-     *  @param port The port to be checked.
-     *  @param channelNumber The channel number.
-     *  @param readTokens The number of tokens read.
-     *  @param writeTokens The number of tokens written.
-     *  @return Code that declares the read and write offset variables.
+     *  @return Code that declaresheader for director
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.
      */
@@ -381,8 +397,67 @@ public class PtidesEmbeddedDirector extends Director {
             CodeGeneratorHelper helper = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
             code.append("void " + CodeGeneratorHelper.generateName((NamedObj) actor) + "() " + "{" + _eol);
             code.append(helper.generateFireCode());
-            code.append(helper.generateTypeConvertFireCode());
+            
+            // After each actor firing, the Event Head ptr needs to point to null
+            code.append(_generateClearEventHeadCode(actor));
             code.append("}" + _eol);
+        }
+        
+        return code.toString();
+    }
+        
+    /** code that keeps track of the head and tail of each buffer, as well as the size of
+     *  each buffer. The size is used to make sure this buffer does not overflow.
+     *  @return code
+     *  @throws IllegalActionException
+     */
+    private String _generateBufferHeadTailCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        for (Actor actor: (List<Actor>)(((CompositeActor) _director.getContainer()).deepEntityList())) {
+            for (IOPort outputPort: (List<IOPort>)actor.outputPortList()){
+                for (int channel = 0; channel < outputPort.getWidth(); channel++) {
+                    code.append("static int " + actor.getName() + "_" + outputPort.getName() + "_" + channel 
+                            + "_Head = 0;" + _eol);
+                    code.append("static int " + actor.getName() + "_" + outputPort.getName() + "_" + channel
+                            + "_Tail = 0;" + _eol);
+                    code.append("static int " + actor.getName() + "_" + outputPort.getName() + "_" + channel 
+                            + "_Size = 0;" + _eol);
+                }
+            }
+        }
+        return code.toString();
+    }
+    
+    /** This code reset the Event_Head pointer for each channel to null.
+     * @param actor The actor which the input channels reside, whose pointers are pointed to null
+     * @return
+     * @throws IllegalActionException 
+     */
+    private String _generateClearEventHeadCode(Actor actor) throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("/* generate code for clearing Event Head buffer. */" + _eol);
+        for (IOPort inputPort: (List<IOPort>)actor.inputPortList()) {
+            for (int channel = 0; channel < inputPort.getWidth(); channel++) {
+                code.append("Event_Head_" + actor.getName() + "_" + inputPort.getName() 
+                        + "[" + channel + "] = NULL;" + _eol);
+            }
+        }
+        return code.toString();
+    }
+    
+    private String _generatePtrToEventHeadCodeInputs() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        for (Actor actor: (List<Actor>)(((CompositeActor) _director.getContainer()).deepEntityList())) {
+            for (IOPort inputPort: (List<IOPort>)actor.inputPortList()){
+                if (inputPort.getWidth() > 0) {
+                    code.append("Event* Event_Head_" + actor.getName() + "_" + inputPort.getName() 
+                            + "[" + inputPort.getWidth() + "] = {NULL");
+                    for (int channel = 1; channel < inputPort.getWidth(); channel++) {
+                        code.append(", NULL");
+                    }
+                    code.append("};" + _eol);
+                }
+            }
         }
         return code.toString();
     }
