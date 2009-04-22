@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Box3D" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="GRODirector" class="ptolemy.domains.gro.kernel.GRODirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
+        </property>
+        <property name="iterationInterval" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 60.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="ViewScreen3D" class="ptolemy.domains.gro.lib.ViewScreen3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="Box3D" class="ptolemy.domains.gro.lib.Box3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 180.0]">
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="Auto" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation"/>
+    <link port="Box3D.out" relation="relation"/>
+</entity>
