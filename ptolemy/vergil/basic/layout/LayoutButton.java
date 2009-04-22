@@ -1,6 +1,6 @@
-/*
+/* A button to perform automatic graph layout.
 
- Copyright (c) 2008-2009 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,18 +25,18 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.gui;
+package ptolemy.vergil.basic.layout;
 
-import ptolemy.actor.gui.properties.ComboBox;
-import ptolemy.actor.gui.properties.GUIAction;
-import ptolemy.actor.gui.properties.ComboBox.Item;
-import ptolemy.data.BooleanToken;
+import javax.swing.JFrame;
+
+import ptolemy.actor.gui.properties.Button;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
-//// ComboItem
+//// LayoutButton
 
 /**
 
@@ -47,24 +47,33 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ComboItem extends Item {
+public class LayoutButton extends Button {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+    /** Construct a GUI property with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
-    public ComboItem(ComboBox container, String name)
+    public LayoutButton(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        parse.setToken(BooleanToken.TRUE);
-        parse.setVisibility(Settable.NONE);
     }
 
-    protected GUIAction _createAction() throws IllegalActionException,
-            NameDuplicationException {
-        return new GTGUIAction(this, "_actionHandler");
+    /** Perform the layout action.
+     */
+    public void perform() {
+        // Get the frame and the current model here.
+        JFrame frame = _action.getFrame();
+        NamedObj model = _action.getModel();
+
+        MessageHandler.message("Perform layout action.");
     }
 }

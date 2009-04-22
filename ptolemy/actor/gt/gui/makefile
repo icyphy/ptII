@@ -49,7 +49,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ComboItem.java
+	ComboItem.java \
+	GTGUIAction.java
 
 EXTRA_SRCS =	$(JSRCS)
 

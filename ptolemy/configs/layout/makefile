@@ -1,10 +1,10 @@
-# Makefile for Ptolemy run control panel classes
+# Makefile for the Ptolemy with all domains runtime configuration 
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 2002-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,62 +29,56 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gui/properties
+ME =		ptolemy/configs/layout
 
-# PTJACL_DIR is set to ptjacl by configure in $PTII/mk/ptII.mk if
-# ptjacl.jar was found and the Ptolemy Tcl implementation is available
-
-# $PTII/configure looks for Jython and sets PTJYTHON_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
-
-DIRS =
+# There is no demo directory, put demos in the corresponding domain
+# directory so that we can find them if we are looking at domains.
+# An alternative would be to split the demo subdirectory into
+# directories by domain
+DIRS =		#demo
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../..
 
-# PlotTableauFrame.java requires diva.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTBSH_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
+PTPACKAGE = 	layout
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	ActionGUIProperty.java \
-	Button.java \
-	ComboBox.java \
-	GUIAction.java \
-	GUIProperty.java \
-	Panel.java \
-	Separator.java \
-	ToolBar.java
+JSRCS =
 
-# Files to be included in the jar file
-OTHER_FILES_TO_BE_JARED =
-	
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# HTML Files that are derived from other HTML files.
+DERIVED_FILES =
+
+OTHER_FILES_TO_BE_JARED = \
+	configuration.xml \
+	graphTableauFactory.xml \
+	intro.htm \
+	welcomeWindow.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'Button$$1.class' \
-	'ComboBox$$Item$$1.class' \
-	'ComboBox$$Item.class'
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass $(DERIVED_FILES)
+	@echo "nothing need be done for make all in this directory"
 
-install: jclass jars
+install: all jars
+	@echo "nothing need be done for make install in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

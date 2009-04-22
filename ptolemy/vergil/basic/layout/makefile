@@ -1,10 +1,10 @@
-# Makefile for Ptolemy run control panel classes
+# Makefile for the Ptolemy II Finite State Machine (FSM) Domain kernel
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Thomas Huining Feng
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 2008-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,45 +29,30 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gui/properties
+ME =            ptolemy/vergil/basic/layout
 
-# PTJACL_DIR is set to ptjacl by configure in $PTII/mk/ptII.mk if
-# ptjacl.jar was found and the Ptolemy Tcl implementation is available
-
-# $PTII/configure looks for Jython and sets PTJYTHON_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
-
-DIRS =
-
-# Root of the Java directory
+# Root of the ptII directory
 ROOT =		../../../..
 
-# PlotTableauFrame.java requires diva.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTBSH_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	properties
+DIRS = 		
+
+CLASSPATH =	$(ROOT)
+
+# Used to build zip files
+PTPACKAGE = 	layout
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
 JSRCS = \
-	ActionGUIProperty.java \
-	Button.java \
-	ComboBox.java \
-	GUIAction.java \
-	GUIProperty.java \
-	Panel.java \
-	Separator.java \
-	ToolBar.java
+	LayoutButton.java
 
-# Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED =
-	
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -75,16 +60,13 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'Button$$1.class' \
-	'ComboBox$$Item$$1.class' \
-	'ComboBox$$Item.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+install: all jars
 
-install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

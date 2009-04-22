@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/basic
 
-DIRS =		img test
+DIRS =		img layout test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -50,7 +50,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		img/img.jar
+		img/img.jar \
+		layout/layout.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

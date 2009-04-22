@@ -175,6 +175,13 @@ public class Separator extends GUIProperty {
         return new JSeparator();
     }
 
+    /** Initialize this separator.
+     * 
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
+     */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         orientation = new StringParameter(this, "orientation");
