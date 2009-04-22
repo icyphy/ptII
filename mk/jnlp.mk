@@ -123,6 +123,7 @@ MATLAB_JARS = \
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
+			lib/kieler.jar \
 			lib/jasminclasses.jar \
 			lib/jython.jar \
 			lib/ptCal.jar \
@@ -144,6 +145,7 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 999
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
+	lib/kieler.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
@@ -223,6 +225,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	doc/docConfig.jar \
 	lib/diva.jar \
+	lib/kieler.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
