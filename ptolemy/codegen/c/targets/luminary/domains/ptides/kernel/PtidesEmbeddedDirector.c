@@ -21,7 +21,7 @@ initPDBlock();
 /*** init timer ***/
 void initializeTimers(void) {
 
-         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
 
         IntPrioritySet(INT_TIMER0A, 0x00);
@@ -113,49 +113,12 @@ void Timer0IntHandler(void) {
 
         timeSet(&lastTimerInterruptTime, &MAX_TIME);
         TimerDisable(TIMER0_BASE, TIMER_BOTH);
-    IntDisable(INT_TIMER0A);
+        IntDisable(INT_TIMER0A);
         IntDisable(INT_TIMER0B);
         TimerIntDisable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
         TimerIntDisable(TIMER0_BASE, TIMER_TIMB_TIMEOUT);
         disableInterrupts();
         addStack();
-}
-/**/
-
-/*** time manipulation ***/
-void timeAdd(Time* time1, Time* time2, Time* timeSum) {
-        timeSum->secs = time1->secs + time2->secs;
-        timeSum->nsecs = time1->nsecs + time2->nsecs;
-        if (timeSum->nsecs > 1000000000) {
-                timeSum->nsecs -= 1000000000;
-                timeSum->secs++;
-        }
-}
-int timeCompare(Time* time1, Time* time2) {
-        if (time1->secs < time2->secs) {
-                return -1;
-        } else if (time1->secs == time2->secs && time1->nsecs < time2->nsecs) {
-                return -1;
-        } else if (time1->secs == time2->secs && time1->nsecs == time2->nsecs) {
-                return 0;
-        }
-        return 1;
-}
-void timeSet(Time* time, Time* refTime) {
-        time->secs = refTime->secs;
-        time->nsecs = refTime->nsecs;
-}
-void timeSub(Time* time1, Time* time2, Time* timeSub) {
-        if (timeCompare(time1, time2) == -1) {
-                die("cannot subtract");
-        }
-        timeSub->secs = time1->secs - time2->secs;
-        if (time1->nsecs < time2->nsecs) {
-                timeSub->secs--;
-                timeSub->nsecs = time1->nsecs + 1000000000 - time2->nsecs;
-        } else {
-                timeSub->nsecs = time1->nsecs - time2->nsecs;
-        }
 }
 /**/
 
