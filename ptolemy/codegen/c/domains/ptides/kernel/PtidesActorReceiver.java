@@ -47,7 +47,13 @@ public class PtidesActorReceiver extends ptolemy.codegen.c.actor.Receiver {
         // Generate a new event.
         List args = new ArrayList();
         args.add(sinkType);
-        args.add(generateTypeConvertCode(sourceType, sinkType, token));
+
+        // The next line does not compile:
+        //args.add(generateTypeConvertCode(sourceType, sinkType, token));
+        if (1 == 1) {
+            throw new RuntimeException("This code does not compile");
+        }
+
         //args.add(token);
         args.add("");//timestamp
         args.add("");//microstep
