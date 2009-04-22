@@ -11,6 +11,7 @@
     <classpathentry kind="lib" path="lib/saxon8-dom.jar"/>
     <classpathentry kind="lib" path="lib/chic.jar"/>
     <classpathentry kind="lib" path="lib/jython.jar"/>
+    <classpathentry kind="lib" path="lib/kieler.jar"/>
     <classpathentry kind="lib" path="lib/ptcolt.jar"/>
     <classpathentry kind="lib" path="lib/ptjacl.jar"/>
     <classpathentry kind="lib" path="lib/mapss.jar"/>

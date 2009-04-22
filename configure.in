@@ -737,7 +737,7 @@ ECLIPSE_EXCLUDING_SRC=""
 
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
-
+ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/kieler.jar"/>'
 
 case "`uname -s`" in
      Darwin) 
@@ -754,6 +754,7 @@ case "`uname -s`" in
      *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
 	;;
 esac
+
 
 #####################################################################
 #####################################################################
