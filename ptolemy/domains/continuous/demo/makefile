@@ -34,7 +34,7 @@ ME =		ptolemy/domains/continuous/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		ContinuousInsideDE HierarchicalModalModel Integration \
+DIRS =		CarTracking ContinuousInsideDE HierarchicalModalModel Integration \
 		LevelCrossingDetector Lorenz NewtonsCradle Sinusoid Switch
 
 CLASSPATH =	$(ROOT)
