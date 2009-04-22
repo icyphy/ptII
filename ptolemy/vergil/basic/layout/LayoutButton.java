@@ -24,56 +24,84 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic.layout;
 
 import javax.swing.JFrame;
+
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.basic.BasicLayoutTarget;
 
 import ptolemy.actor.gui.properties.Button;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.basic.AbstractBasicGraphModel;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 
 //////////////////////////////////////////////////////////////////////////
 //// LayoutButton
 
 /**
-
-
- @author Thomas Huining Feng
- @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
  */
 public class LayoutButton extends Button {
 
-    /** Construct a GUI property with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The container.
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public LayoutButton(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-    }
+	/**
+	 * Construct a GUI property with the given name contained by the specified
+	 * entity. The container argument must not be null, or a
+	 * NullPointerException will be thrown. This attribute will use the
+	 * workspace of the container for synchronization and version counts. If the
+	 * name argument is null, then the name is set to the empty string.
+	 * Increment the version of the workspace.
+	 * 
+	 * @param container
+	 *            The container.
+	 * @param name
+	 *            The name of this attribute.
+	 * @exception IllegalActionException
+	 *                If the attribute is not of an acceptable class for the
+	 *                container, or if the name contains a period.
+	 * @exception NameDuplicationException
+	 *                If the name coincides with an attribute already in the
+	 *                container.
+	 */
+	public LayoutButton(NamedObj container, String name)
+			throws IllegalActionException, NameDuplicationException {
+		super(container, name);
+	}
 
-    /** Perform the layout action.
-     */
-    public void perform() {
-        // Get the frame and the current model here.
-        JFrame frame = _action.getFrame();
-        NamedObj model = _action.getModel();
+	/**
+	 * Perform the layout action.
+	 */
+	public void perform() {
+		// Get the frame and the current model here.
+		JFrame frame = _action.getFrame();
+		// check for supported type of editor
+		if (frame instanceof ActorGraphFrame) {
+			BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
 
-        MessageHandler.message("Perform layout action.");
-    }
+			// fetch everything needed to build the LayoutTarget
+			GraphController graphController = graphFrame.getJGraph().getGraphPane().getGraphController();
+			GraphModel graphModel = graphFrame.getJGraph().getGraphPane().getGraphController().getGraphModel();
+			BasicLayoutTarget layoutTarget = new BasicLayoutTarget(graphController);
+			
+			// create Kieler layouter for this layout target
+			KielerLayout layout = new KielerLayout(layoutTarget);
+
+			// perform layout
+			layout.layout(graphModel.getRoot());
+			
+		} else
+			MessageHandler
+					.error("For now only actor oriented graphs with ports are supported by KIELER layout.");
+	}
 }
