@@ -18,7 +18,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+// import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import ptolemy.actor.Actor;
 import ptolemy.gui.MessageHandler;
@@ -152,6 +152,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 					klayout.setWidth((float) bounds.getWidth());
 					klayout.setXpos((float) bounds.getX());
 					klayout.setYpos((float) bounds.getY());
+					LayoutOptions.setFixedSize(klayout);
 					// store node for later applying layout back
 					_ptolemy2KielerNodes.put(node, knode);
 					_kieler2ptolemyNodes.put(knode, node);
@@ -343,9 +344,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 		ResourceSet resourceSet = new ResourceSetImpl();
 
 		// Register the default resource factory -- only needed for stand-alone!
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put(Resource.Factory.Registry.DEFAULT_EXTENSION,
-						new XMIResourceFactoryImpl());
+//		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+//				.put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+//						new XMIResourceFactoryImpl());
 
 		try {
 			// Get the URI of the model file.
@@ -362,4 +363,6 @@ public class KielerLayout extends AbstractGlobalLayout {
 		} catch (IOException e) {
 		}
 	}
+	
+	
 }
