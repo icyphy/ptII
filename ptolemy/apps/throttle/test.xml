@@ -299,7 +299,7 @@
                 </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="119.0, 103.0">
+                <vertex name="vertex1" value="119.0, 103.0">
                 </vertex>
                 <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
                 </property>

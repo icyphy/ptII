@@ -156,7 +156,7 @@
             <link port="Scale.output" relation="relation2"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="85.0, 131.0">
+            <vertex name="vertex1" value="85.0, 131.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">

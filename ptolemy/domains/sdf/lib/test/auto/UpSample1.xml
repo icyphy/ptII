@@ -77,7 +77,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="376.0, 253.0">
+        <vertex name="vertex1" value="376.0, 253.0">
         </vertex>
     </relation>
     <link port="UpSample0.input" relation="relation2"/>

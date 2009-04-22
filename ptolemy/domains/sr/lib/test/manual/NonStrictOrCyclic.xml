@@ -124,15 +124,15 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="315.0, 259.0">
+        <vertex name="vertex1" value="315.0, 259.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="492.0, 312.0">
+        <vertex name="vertex1" value="492.0, 312.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="133.0, 259.0">
+        <vertex name="vertex1" value="133.0, 259.0">
         </vertex>
     </relation>
     <link port="True.output" relation="relation3"/>

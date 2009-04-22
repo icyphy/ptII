@@ -441,7 +441,7 @@
             <link port="mode1.outgoingPort" relation="relation4"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="115.0, 165.0">
+            <vertex name="vertex1" value="115.0, 165.0">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -461,11 +461,11 @@
         <link port="controller.switch" relation="relation4"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="175.0, 175.0">
+        <vertex name="vertex1" value="175.0, 175.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="390.0, 215.0">
+        <vertex name="vertex1" value="390.0, 215.0">
         </vertex>
     </relation>
     <link port="GPS" relation="relation"/>

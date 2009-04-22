@@ -305,15 +305,15 @@
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="204.0, 105.0">
+        <vertex name="vertex1" value="204.0, 105.0">
         </vertex>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="204.0, 225.0">
+        <vertex name="vertex1" value="204.0, 225.0">
         </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="204.0, 345.0">
+        <vertex name="vertex1" value="204.0, 345.0">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">

@@ -349,19 +349,19 @@
         </port>
     </entity>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="132.0, 225.0">
+        <vertex name="vertex1" value="132.0, 225.0">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="228.0, 135.0">
+        <vertex name="vertex1" value="228.0, 135.0">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="324.0, 105.0">
+        <vertex name="vertex1" value="324.0, 105.0">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="420.0, 90.0">
+        <vertex name="vertex1" value="420.0, 90.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

@@ -184,7 +184,7 @@
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="447.0, 192.0">
+        <vertex name="vertex1" value="447.0, 192.0">
         </vertex>
     </relation>
     <link port="DiscreteRandomSource1.output" relation="relation2"/>

@@ -194,7 +194,7 @@
     <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="1:1:R5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="440.0, 200.0">
+        <vertex name="vertex0" value="440.0, 200.0">
         </vertex>
     </relation>
     <relation name="1:relation3" class="ptolemy.actor.TypedIORelation">

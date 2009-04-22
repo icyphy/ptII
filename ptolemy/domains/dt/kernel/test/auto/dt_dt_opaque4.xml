@@ -225,19 +225,19 @@
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="199.0, 157.0">
+        <vertex name="vertex1" value="199.0, 157.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="337.0, 157.0">
+        <vertex name="vertex1" value="337.0, 157.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="317.0, 268.0">
+        <vertex name="vertex1" value="317.0, 268.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="437.0, 69.0">
+        <vertex name="vertex1" value="437.0, 69.0">
         </vertex>
     </relation>
     <link port="TopSrc.output" relation="relation5"/>

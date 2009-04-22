@@ -100,11 +100,11 @@
         </port>
     </entity>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="367.0, 129.0">
+        <vertex name="vertex1" value="367.0, 129.0">
         </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="257.0, 177.0">
+        <vertex name="vertex1" value="257.0, 177.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

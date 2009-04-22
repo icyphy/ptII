@@ -44,7 +44,7 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="241.0, 188.0">
+        <vertex name="vertex1" value="241.0, 188.0">
         </vertex>
     </relation>
     <link port="CurrentTime.output" relation="relation"/>

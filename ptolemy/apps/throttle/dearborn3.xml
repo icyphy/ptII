@@ -326,7 +326,7 @@
             </port>
         </entity>
         <relation name="Copy1:relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="376.0, 146.0">
+            <vertex name="vertex1" value="376.0, 146.0">
             </vertex>
         </relation>
         <relation name="Copy1:relation9" class="ptolemy.actor.TypedIORelation">
@@ -338,7 +338,7 @@
         <relation name="Copy1:relation20" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="386.0, 399.0">
+            <vertex name="vertex1" value="386.0, 399.0">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -592,7 +592,7 @@
                 </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="119.0, 103.0">
+                <vertex name="vertex1" value="119.0, 103.0">
                 </vertex>
                 <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -1140,7 +1140,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </relation>
             <relation name="1:relation26" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 264.0">
+                <vertex name="vertex1" value="120.0, 264.0">
                 </vertex>
                 <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -1166,7 +1166,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </relation>
             <relation name="1:relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="229.0, 103.0">
+                <vertex name="vertex1" value="229.0, 103.0">
                 </vertex>
                 <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -1176,7 +1176,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </relation>
             <relation name="1:relation15" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 152.0">
+                <vertex name="vertex1" value="150.0, 152.0">
                 </vertex>
                 <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -1186,7 +1186,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </relation>
             <relation name="1:relation23" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="74.0, 103.0">
+                <vertex name="vertex1" value="74.0, 103.0">
                 </vertex>
                 <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -1455,19 +1455,19 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="init.mode" relation="modeRelation"/>
     </entity>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="225.93880295897793, 139.95090786819108">
+        <vertex name="vertex1" value="225.93880295897793, 139.95090786819108">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="541.0, 248.0">
+        <vertex name="vertex1" value="541.0, 248.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="651.0, 181.0">
+        <vertex name="vertex1" value="651.0, 181.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="668.0, 167.0">
+        <vertex name="vertex1" value="668.0, 167.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

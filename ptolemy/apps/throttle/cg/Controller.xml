@@ -431,7 +431,7 @@
         </port>
     </entity>
     <relation name="1:relation23" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="185.0, 80.0">
+        <vertex name="vertex1" value="185.0, 80.0">
         </vertex>
     </relation>
     <relation name="1:relation13" class="ptolemy.actor.TypedIORelation">
@@ -449,11 +449,11 @@
     <relation name="1:relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="1:relation26" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 264.0">
+        <vertex name="vertex1" value="120.0, 264.0">
         </vertex>
     </relation>
     <relation name="1:relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="110.0, 205.0">
+        <vertex name="vertex1" value="110.0, 205.0">
         </vertex>
     </relation>
     <relation name="1:relation24" class="ptolemy.actor.TypedIORelation">

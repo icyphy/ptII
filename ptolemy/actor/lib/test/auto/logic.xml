@@ -195,21 +195,21 @@
         </port>
     </entity>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="340.0, 96.0">
+        <vertex name="vertex1" value="340.0, 96.0">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="181.0, 103.0">
+        <vertex name="vertex1" value="181.0, 103.0">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="198.0, 174.0">
+        <vertex name="vertex1" value="198.0, 174.0">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="223.0, 209.0">
+        <vertex name="vertex1" value="223.0, 209.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

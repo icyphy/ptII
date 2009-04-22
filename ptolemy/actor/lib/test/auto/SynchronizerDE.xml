@@ -226,19 +226,19 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="15.850000000000023, 339.2">
+        <vertex name="vertex1" value="15.850000000000023, 339.2">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="51.85000000000002, 340.3999995231628">
+        <vertex name="vertex1" value="51.85000000000002, 340.3999995231628">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="118.85000000000002, 338.79999999999995">
+        <vertex name="vertex1" value="118.85000000000002, 338.79999999999995">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="88.85000000000002, 338.59999999999997">
+        <vertex name="vertex1" value="88.85000000000002, 338.59999999999997">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
@@ -252,19 +252,19 @@
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="237.45000000000005, 145.2">
+        <vertex name="vertex1" value="237.45000000000005, 145.2">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="360.45000000000005, 318.4">
+        <vertex name="vertex1" value="360.45000000000005, 318.4">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="338.45000000000005, 533.5999999999999">
+        <vertex name="vertex1" value="338.45000000000005, 533.5999999999999">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="339.45000000000005, 598.8">
+        <vertex name="vertex1" value="339.45000000000005, 598.8">
         </vertex>
     </relation>
     <link port="Clock1.output" relation="relation4"/>

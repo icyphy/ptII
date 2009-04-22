@@ -226,7 +226,7 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 180.0">
+        <vertex name="vertex1" value="135.0, 180.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -236,7 +236,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="480.0, 180.0">
+        <vertex name="vertex1" value="480.0, 180.0">
         </vertex>
     </relation>
     <link port="RepeatCompositeSDF.input" relation="relation"/>

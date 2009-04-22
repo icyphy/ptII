@@ -107,7 +107,7 @@ output port.
         <relation name="0:relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="0:relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="209.0, 237.0">
+            <vertex name="vertex1" value="209.0, 237.0">
             </vertex>
         </relation>
         <link port="0:port3" relation="0:relation2"/>

@@ -131,7 +131,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="230.0, 305.0">
+        <vertex name="vertex1" value="230.0, 305.0">
         </vertex>
     </relation>
     <link port="BooleanSwitch.input" relation="relation3"/>

@@ -139,7 +139,7 @@ by a higher frequency one (the carrier).</doc>
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="182.0, 95.0">
+        <vertex name="vertex0" value="182.0, 95.0">
         </vertex>
     </relation>
     <relation name="r3" class="ptolemy.actor.TypedIORelation">

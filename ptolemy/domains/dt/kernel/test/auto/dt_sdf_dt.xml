@@ -380,23 +380,23 @@
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="199.0, 157.0">
+        <vertex name="vertex1" value="199.0, 157.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="337.0, 157.0">
+        <vertex name="vertex1" value="337.0, 157.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="325.0, 220.0">
+        <vertex name="vertex1" value="325.0, 220.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="433.0, 94.0">
+        <vertex name="vertex1" value="433.0, 94.0">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="346.0, 291.0">
+        <vertex name="vertex1" value="346.0, 291.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">

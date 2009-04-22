@@ -208,11 +208,11 @@ integer matrices</text>
     <relation name="2:1:R2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="2:relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="435.0, 235.0">
+        <vertex name="vertex1" value="435.0, 235.0">
         </vertex>
     </relation>
     <relation name="2:1:R1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="115.0, 235.0">
+        <vertex name="vertex0" value="115.0, 235.0">
         </vertex>
     </relation>
     <relation name="2:relation" class="ptolemy.actor.TypedIORelation">

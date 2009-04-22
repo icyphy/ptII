@@ -415,11 +415,11 @@ system with forced spring pull-back.</text></svg></configure>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="286.0, 196.0">
+            <vertex name="vertex1" value="286.0, 196.0">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="381.0, 271.0">
+            <vertex name="vertex1" value="381.0, 271.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -435,7 +435,7 @@ system with forced spring pull-back.</text></svg></configure>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="701.0, 471.0">
+            <vertex name="vertex1" value="701.0, 471.0">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1764,7 +1764,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <relation name="1:1:relation5" class="ptolemy.actor.TypedIORelation">
                                     </relation>
                                     <relation name="1:1:relation2" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="71.0, 141.0">
+                                        <vertex name="vertex1" value="71.0, 141.0">
                                         </vertex>
                                     </relation>
                                     <relation name="1:1:relation19" class="ptolemy.actor.TypedIORelation">
@@ -1772,7 +1772,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <relation name="1:1:relation6" class="ptolemy.actor.TypedIORelation">
                                     </relation>
                                     <relation name="1:1:relation14" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="346.0, 246.0">
+                                        <vertex name="vertex1" value="346.0, 246.0">
                                         </vertex>
                                     </relation>
                                     <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
@@ -1784,7 +1784,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <relation name="1:1:relation9" class="ptolemy.actor.TypedIORelation">
                                     </relation>
                                     <relation name="1:1:relation7" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="236.0, 316.0">
+                                        <vertex name="vertex1" value="236.0, 316.0">
                                         </vertex>
                                     </relation>
                                     <relation name="1:1:relation12" class="ptolemy.actor.TypedIORelation">
@@ -1912,7 +1912,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="91.0, 196.0">
+                                        <vertex name="vertex1" value="91.0, 196.0">
                                         </vertex>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1998,7 +1998,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="91.0, 196.0">
+                                        <vertex name="vertex1" value="91.0, 196.0">
                                         </vertex>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -2084,7 +2084,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="91.0, 196.0">
+                                        <vertex name="vertex1" value="91.0, 196.0">
                                         </vertex>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -2104,15 +2104,15 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="Scale.output" relation="relation4"/>
                                 </entity>
                                 <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
-                                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="66.0, 126.0">
+                                    <vertex name="vertex1" value="66.0, 126.0">
                                     </vertex>
                                 </relation>
                                 <relation name="1:relation3" class="ptolemy.actor.TypedIORelation">
-                                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="206.0, 376.0">
+                                    <vertex name="vertex1" value="206.0, 376.0">
                                     </vertex>
                                 </relation>
                                 <relation name="1:relation2" class="ptolemy.actor.TypedIORelation">
-                                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="66.0, 296.0">
+                                    <vertex name="vertex1" value="66.0, 296.0">
                                     </vertex>
                                 </relation>
                                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -2747,7 +2747,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <relation name="1:1:relation5" class="ptolemy.actor.TypedIORelation">
                                     </relation>
                                     <relation name="1:1:relation2" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="71.0, 141.0">
+                                        <vertex name="vertex1" value="71.0, 141.0">
                                         </vertex>
                                     </relation>
                                     <relation name="1:1:relation19" class="ptolemy.actor.TypedIORelation">
@@ -2755,7 +2755,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <relation name="1:1:relation6" class="ptolemy.actor.TypedIORelation">
                                     </relation>
                                     <relation name="1:1:relation14" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="346.0, 246.0">
+                                        <vertex name="vertex1" value="346.0, 246.0">
                                         </vertex>
                                     </relation>
                                     <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
@@ -2767,7 +2767,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <relation name="1:1:relation9" class="ptolemy.actor.TypedIORelation">
                                     </relation>
                                     <relation name="1:1:relation7" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="236.0, 316.0">
+                                        <vertex name="vertex1" value="236.0, 316.0">
                                         </vertex>
                                     </relation>
                                     <relation name="1:1:relation12" class="ptolemy.actor.TypedIORelation">
@@ -2895,7 +2895,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="91.0, 196.0">
+                                        <vertex name="vertex1" value="91.0, 196.0">
                                         </vertex>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -2981,7 +2981,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="91.0, 196.0">
+                                        <vertex name="vertex1" value="91.0, 196.0">
                                         </vertex>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -3067,7 +3067,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="91.0, 196.0">
+                                        <vertex name="vertex1" value="91.0, 196.0">
                                         </vertex>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -3087,15 +3087,15 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <link port="Scale.output" relation="relation4"/>
                                 </entity>
                                 <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
-                                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="66.0, 126.0">
+                                    <vertex name="vertex1" value="66.0, 126.0">
                                     </vertex>
                                 </relation>
                                 <relation name="1:relation3" class="ptolemy.actor.TypedIORelation">
-                                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="206.0, 376.0">
+                                    <vertex name="vertex1" value="206.0, 376.0">
                                     </vertex>
                                 </relation>
                                 <relation name="1:relation2" class="ptolemy.actor.TypedIORelation">
-                                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="66.0, 296.0">
+                                    <vertex name="vertex1" value="66.0, 296.0">
                                     </vertex>
                                 </relation>
                                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -3408,7 +3408,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                         </relation>
                         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="51.0, 176.0">
+                            <vertex name="vertex1" value="51.0, 176.0">
                             </vertex>
                         </relation>
                         <link port="tps" relation="relation"/>
@@ -3628,7 +3628,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                     </relation>
                     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="176.0, 121.0">
+                        <vertex name="vertex1" value="176.0, 121.0">
                         </vertex>
                     </relation>
                     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -3652,7 +3652,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <link port="task fault detection.task_error_p" relation="relation8"/>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="66.0, 196.0">
+                    <vertex name="vertex1" value="66.0, 196.0">
                     </vertex>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -3662,15 +3662,15 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="526.0, 76.0">
+                    <vertex name="vertex1" value="526.0, 76.0">
                     </vertex>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="511.0, 61.0">
+                    <vertex name="vertex1" value="511.0, 61.0">
                     </vertex>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="416.0, 186.0">
+                    <vertex name="vertex1" value="416.0, 186.0">
                     </vertex>
                 </relation>
                 <link port="throttle_motor" relation="relation2"/>
@@ -3692,11 +3692,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <link port="monitor.mode" relation="relation5"/>
             </entity>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="431.0, 241.0">
+                <vertex name="vertex1" value="431.0, 241.0">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="226.0, 231.0">
+                <vertex name="vertex1" value="226.0, 231.0">
                 </vertex>
             </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -4403,19 +4403,19 @@ respectively pwm is on or off.</text></svg></configure>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="106.0, 51.0">
+                <vertex name="vertex1" value="106.0, 51.0">
                 </vertex>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="116.0, 116.0">
+                <vertex name="vertex1" value="116.0, 116.0">
                 </vertex>
             </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="126.0, 181.0">
+                <vertex name="vertex1" value="126.0, 181.0">
                 </vertex>
             </relation>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="136.0, 246.0">
+                <vertex name="vertex1" value="136.0, 246.0">
                 </vertex>
             </relation>
             <relation name="relation16" class="ptolemy.actor.TypedIORelation">
@@ -4830,15 +4830,15 @@ respectively pwm is on or off.</text></svg></configure>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="106.0, 51.0">
+                <vertex name="vertex1" value="106.0, 51.0">
                 </vertex>
             </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="116.0, 121.0">
+                <vertex name="vertex1" value="116.0, 121.0">
                 </vertex>
             </relation>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="126.0, 186.0">
+                <vertex name="vertex1" value="126.0, 186.0">
                 </vertex>
             </relation>
             <relation name="relation16" class="ptolemy.actor.TypedIORelation">
@@ -4954,11 +4954,11 @@ respectively pwm is on or off.</text></svg></configure>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="76.0, 101.0">
+            <vertex name="vertex1" value="76.0, 101.0">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="456.0, 91.0">
+            <vertex name="vertex1" value="456.0, 91.0">
             </vertex>
         </relation>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
@@ -4968,7 +4968,7 @@ respectively pwm is on or off.</text></svg></configure>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="241.0, 281.0">
+            <vertex name="vertex1" value="241.0, 281.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -4976,7 +4976,7 @@ respectively pwm is on or off.</text></svg></configure>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="471.0, 96.0">
+            <vertex name="vertex1" value="471.0, 96.0">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -5252,7 +5252,7 @@ respectively pwm is on or off.</text></svg></configure>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="101.0, 126.0">
+            <vertex name="vertex1" value="101.0, 126.0">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -5308,21 +5308,21 @@ respectively pwm is on or off.</text></svg></configure>
         <link port="throttle_positions.output" relation="relation5"/>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="456.0, 436.0">
+        <vertex name="vertex1" value="456.0, 436.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="246.0, 231.0">
+        <vertex name="vertex1" value="246.0, 231.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="236.0, 221.0">
+        <vertex name="vertex1" value="236.0, 221.0">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="136.0, 421.0">
+        <vertex name="vertex1" value="136.0, 421.0">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
