@@ -13,23 +13,19 @@ import javax.media.opengl.GLCanvas;
 //         displayT.start();
          Frame frame = new Frame("Jogl 3D Shape/Rotation");
          GLCanvas canvas = new GLCanvas();
-         GLCanvas canvas2 = new GLCanvas();
+         Frame frame2 = new Frame("Jogl 3D Shape/Rotation");
          
          
          canvas.addGLEventListener(new JavaRenderer());
-         canvas2.addGLEventListener(new JavaRenderer());
 
          frame.add(canvas);
-         frame.add(canvas2);
          
          frame.setSize(640, 480);
          frame.setUndecorated(true);
-         int size = frame.getExtendedState();
-         size |= Frame.MAXIMIZED_BOTH;
-         frame.setExtendedState(size);
+         //int size = frame.getExtendedState();
+         //size |= Frame.MAXIMIZED_BOTH;
+         //frame.setExtendedState(size);
 
-         
-         
          
          frame.addWindowListener(new WindowAdapter() {
              public void windowClosing(WindowEvent e) {

@@ -27,10 +27,16 @@
  */
 package ptolemy.domains.gro.kernel;
 
+import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.glu.GLU;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -39,6 +45,7 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -88,7 +95,10 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating yellow (chf)
  @Pt.AcceptedRating yellow (vogel)
  */
-public class GRODirector extends StaticSchedulingDirector {
+
+public class GRODirector extends StaticSchedulingDirector implements GLEventListener { 
+    private GL _gl;
+    private static final GLU glu = new GLU();
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -702,4 +712,58 @@ public class GRODirector extends StaticSchedulingDirector {
     private int _startIteration = 0;
 
     private int _stopIteration = 0;
+
+    public void display(GLAutoDrawable arg0) {
+    
+        try {
+            fire();
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+       
+       
+        
+    }
+
+    public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void init(GLAutoDrawable gLDrawable) {
+        _gl = gLDrawable.getGL();
+        _gl.glShadeModel(GL.GL_SMOOTH);
+        _gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        _gl.glClearDepth(1.0f);
+        _gl.glEnable(GL.GL_DEPTH_TEST);
+        _gl.glDepthFunc(GL.GL_LEQUAL);
+        _gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, 
+        GL.GL_NICEST);
+        //gLDrawable.addKeyListener(this);
+        
+    }
+    
+    public GL getGL() {
+         
+        return _gl;
+        //gLDrawable.addKeyListener(this);
+        
+    }
+
+   
+    public void reshape(GLAutoDrawable gLDrawable, int x, 
+                int y, int width, int height) {
+                    final GL gl = gLDrawable.getGL();
+                    if(height <= 0) {
+                        height = 1;
+                    }
+                    final float h = (float)width / (float)height;
+                    gl.glMatrixMode(GL.GL_PROJECTION);
+                    gl.glLoadIdentity();
+                    glu.gluPerspective(50.0f, h, 1.0, 1000.0);
+                    gl.glMatrixMode(GL.GL_MODELVIEW);
+                    gl.glLoadIdentity();
+        
+    }
 }
