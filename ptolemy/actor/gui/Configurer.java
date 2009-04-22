@@ -30,15 +30,20 @@ package ptolemy.actor.gui;
 import java.awt.Component;
 import java.awt.Window;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import ptolemy.gui.CloseListener;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DecoratedAttribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
@@ -85,20 +90,14 @@ public class Configurer extends JPanel implements CloseListener {
         _object = object;
 
         // Record the original values so a restore can happen later.
-        _originalValues = new HashMap();
-
-        Iterator parameters = _object.attributeList(Settable.class).iterator();
-
-        while (parameters.hasNext()) {
-            Settable parameter = (Settable) parameters.next();
-
-            if (isVisible(_object, parameter)) {
-                _originalValues.put(parameter, parameter.getExpression());
-            }
+        _originalValues = new HashMap<Settable, String>();
+        Set<Settable> parameters = _getVisibleSettables(object, true);
+        for (Settable parameter : parameters) {
+            _originalValues.put(parameter, parameter.getExpression());
         }
 
         boolean foundOne = false;
-        Iterator editors = object.attributeList(EditorPaneFactory.class)
+        Iterator<?> editors = object.attributeList(EditorPaneFactory.class)
                 .iterator();
 
         while (editors.hasNext()) {
@@ -188,29 +187,27 @@ public class Configurer extends JPanel implements CloseListener {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 // First check for changes.
-                Iterator parameters = _object.attributeList(Settable.class)
-                        .iterator();
+                
+                // FIXME Currently it is not possible to restore decorated attributes
+                //      since they don't show up in moml yet.
+                Set<Settable> parameters = _getVisibleSettables(_object, false);
                 boolean hasChanges = false;
                 StringBuffer buffer = new StringBuffer("<group>\n");
 
-                while (parameters.hasNext()) {
-                    Settable parameter = (Settable) parameters.next();
+                for (Settable parameter : parameters) {
+                    String newValue = parameter.getExpression();
+                    String oldValue = (String) _originalValues
+                            .get(parameter);
 
-                    if (isVisible(_object, parameter)) {
-                        String newValue = parameter.getExpression();
-                        String oldValue = (String) _originalValues
-                                .get(parameter);
-
-                        if (!newValue.equals(oldValue)) {
-                            hasChanges = true;
-                            buffer.append("<property name=\"");
-                            buffer.append(((NamedObj) parameter)
-                                    .getName(_object));
-                            buffer.append("\" value=\"");
-                            buffer.append(StringUtilities
-                                    .escapeForXML(oldValue));
-                            buffer.append("\"/>\n");
-                        }
+                    if (!newValue.equals(oldValue)) {
+                        hasChanges = true;
+                        buffer.append("<property name=\"");
+                        buffer.append(((NamedObj) parameter)
+                                .getName(_object));
+                        buffer.append("\" value=\"");
+                        buffer.append(StringUtilities
+                                .escapeForXML(oldValue));
+                        buffer.append("\"/>\n");
                     }
                 }
 
@@ -245,29 +242,27 @@ public class Configurer extends JPanel implements CloseListener {
         // window is destroyed.
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                Iterator parameters = _object.attributeList(Settable.class)
-                        .iterator();
+                // FIXME Currently it is not possible to restore decorated attributes
+                //      since they don't show up in moml yet.
+                
+                Set<Settable> parameters = _getVisibleSettables(_object, false); 
                 StringBuffer buffer = new StringBuffer("<group>\n");
-                final List parametersReset = new LinkedList();
+                final List<Settable> parametersReset = new LinkedList<Settable>();
 
-                while (parameters.hasNext()) {
-                    Settable parameter = (Settable) parameters.next();
+                for (Settable parameter : parameters) {
+                    String newValue = parameter.getExpression();
+                    String defaultValue = parameter.getDefaultExpression();
 
-                    if (isVisible(_object, parameter)) {
-                        String newValue = parameter.getExpression();
-                        String defaultValue = parameter.getDefaultExpression();
-
-                        if ((defaultValue != null)
-                                && !newValue.equals(defaultValue)) {
-                            buffer.append("<property name=\"");
-                            buffer.append(((NamedObj) parameter)
-                                    .getName(_object));
-                            buffer.append("\" value=\"");
-                            buffer.append(StringUtilities
-                                    .escapeForXML(defaultValue));
-                            buffer.append("\"/>\n");
-                            parametersReset.add(parameter);
-                        }
+                    if ((defaultValue != null)
+                            && !newValue.equals(defaultValue)) {
+                        buffer.append("<property name=\"");
+                        buffer.append(((NamedObj) parameter)
+                                .getName(_object));
+                        buffer.append("\" value=\"");
+                        buffer.append(StringUtilities
+                                .escapeForXML(defaultValue));
+                        buffer.append("\"/>\n");
+                        parametersReset.add(parameter);
                     }
                 }
 
@@ -286,7 +281,7 @@ public class Configurer extends JPanel implements CloseListener {
 
                             // Reset the derived level, which has the side
                             // effect of marking the object not overridden.
-                            Iterator parameters = parametersReset.iterator();
+                            Iterator<Settable> parameters = parametersReset.iterator();
 
                             while (parameters.hasNext()) {
                                 Settable parameter = (Settable) parameters
@@ -316,7 +311,7 @@ public class Configurer extends JPanel implements CloseListener {
      *  @param button The name of the button that was used to close the window.
      */
     public void windowClosed(Window window, String button) {
-        Iterator listeners = _closeListeners.iterator();
+        Iterator<Component> listeners = _closeListeners.iterator();
 
         while (listeners.hasNext()) {
             CloseListener listener = (CloseListener) listeners.next();
@@ -324,15 +319,65 @@ public class Configurer extends JPanel implements CloseListener {
         }
     }
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+
+    /** Return the visible Settables of NamedObj object. When addDecoratedAttributes is true
+     *  we will also return the decorated attributes.
+     *  @param object The named object for which to show the visible
+     *          Settables
+     *  @param object addDecoratedAttributes A flag that specifies whether 
+     *          decorated attributes should also be included.
+     *  @return The visible attributes.
+     */
+    static private Set<Settable> _getVisibleSettables(final NamedObj object, boolean addDecoratedAttributes) {
+        Set<Settable> attributes = new HashSet<Settable>();
+        Iterator<?> parameters = object.attributeList(Settable.class).iterator();                
+
+        while (parameters.hasNext()) {
+            Settable parameter = (Settable) parameters.next();
+
+            if (isVisible(object, parameter)) {
+                attributes.add(parameter);
+            }
+        }
+        
+        if (addDecoratedAttributes) {
+            // Get decorated attributes
+            NamedObj toplevel = object.toplevel();
+            List<?> decorators = toplevel.attributeList(Decorator.class);
+            
+            for (Object decorator : decorators) {
+                List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator).getDecoratorAttributes(object);
+                
+                for (DecoratedAttribute decoratedAttribute : decoratedAttributes) {
+                    Attribute attribute = decoratedAttribute.getAttribute();
+                    if (attribute instanceof Settable) {
+                        Settable settable = (Settable) attribute;
+                        if (isVisible(object, settable)) {
+                            attributes.add(settable);
+                        }
+                        
+                    }
+                }
+            }
+        }
+        return attributes;
+    }
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
     // A list of panels in this configurer that implement CloseListener,
     // if there are any.
-    private List _closeListeners = new LinkedList();
+    private List<Component> _closeListeners = new LinkedList<Component>();
 
     // The object that this configurer configures.
     private NamedObj _object;
 
     // A record of the original values.
-    private HashMap _originalValues;
+    private HashMap<Settable, String> _originalValues;
 }

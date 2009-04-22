@@ -29,6 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sch
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -46,15 +47,19 @@ import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DecoratedAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////
@@ -84,6 +89,23 @@ public class StaticSchedulingDirector extends Director {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
+
+    /** Create and return the decorated attributes for the corresponding Ptolemy Component
+     *  @param genericCodeGenerator The code generator that is the decorator for the
+     *  corresponding Ptolemy Component.
+     *  @return The decorated attributes.
+     */    
+    public List<DecoratedAttribute> createDecoratedAttributes(
+            GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException {
+        
+        List<DecoratedAttribute> decoratedAttributes = new LinkedList<DecoratedAttribute>();
+        Parameter padBuffers = new Parameter(this, "padBuffers");
+        padBuffers.setTypeEquals(BaseType.BOOLEAN);
+        padBuffers.setExpression("true");
+
+        decoratedAttributes.add(new DecoratedAttribute(padBuffers, genericCodeGenerator));
+        return decoratedAttributes;
+    }   
 
     /** Generate the code for the firing of actors according to the SDF
      *  schedule.
@@ -498,6 +520,17 @@ public class StaticSchedulingDirector extends Director {
         return variableDeclarations.toString();
     }
 
+    /** Return whether we need to pad buffers or not.
+     *  @return True when we need to pad buffers.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
+     */
+    final public Boolean padBuffers() throws IllegalActionException {
+        return ((BooleanToken) ((Parameter) getCodeGenerator().getDecoratorAttribute(getComponent(), "padBuffers").getAttribute())
+                .getToken()).booleanValue();
+    }
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
     
@@ -914,8 +947,7 @@ public class StaticSchedulingDirector extends Director {
 
         // Update the write offset of the [multiple] connected ports.
         public String updateConnectedPortsOffset(int rate) throws IllegalActionException {
-            boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
-                    .getToken()).booleanValue();
+            boolean padBuffers = padBuffers();
 
             StringBuffer code = new StringBuffer();
             code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
@@ -1070,8 +1102,7 @@ public class StaticSchedulingDirector extends Director {
 
             boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().allowDynamicMultiportReference
                     .getToken()).booleanValue();
-            boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
-                    .getToken()).booleanValue();
+            boolean padBuffers = padBuffers();
 
 
             //if (MpiPNDirector.isLocalBuffer(port, channel)) {
@@ -1229,8 +1260,7 @@ public class StaticSchedulingDirector extends Director {
          */
         private String _updateOffset(int channel, int rate) throws IllegalActionException {
             StringBuffer code = new StringBuffer();
-            boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
-                    .getToken()).booleanValue();
+            boolean padBuffers = padBuffers();
 
             // Update the offset for each channel.
             if (getReadOffset(channel) instanceof Integer) {

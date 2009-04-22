@@ -28,11 +28,14 @@
 package ptolemy.actor.gui;
 
 import java.awt.Component;
-import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JLabel;
 
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DecoratedAttribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -119,12 +122,28 @@ public class EditorPaneFactory extends Attribute {
      */
     public static Component createEditorPane(NamedObj object,
             PtolemyQuery query) {
-        Iterator parameters = object.attributeList(Settable.class).iterator();
+        List<Settable> parameters = new LinkedList<Settable>(object.attributeList(Settable.class));
+        
+
+        // Get decorated attributes
+        NamedObj toplevel = object.toplevel();
+    
+        List<?> decorators = toplevel.attributeList(Decorator.class);
+        for (Object decorator : decorators) {
+            List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator).getDecoratorAttributes(object);
+            
+            for (DecoratedAttribute decoratedAttribute : decoratedAttributes) {
+                Attribute attribute = decoratedAttribute.getAttribute();
+                if (attribute instanceof Settable) {
+                    Settable settable = (Settable) attribute;
+                    parameters.add(settable);
+                }
+            }
+        }
+        
         boolean foundOne = false;
 
-        while (parameters.hasNext()) {
-            Settable parameter = (Settable) parameters.next();
-
+        for (Settable parameter : parameters) {
             if (Configurer.isVisible(object, parameter)) {
                 foundOne = true;
                 query.addStyledEntry(parameter);

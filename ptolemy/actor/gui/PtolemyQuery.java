@@ -127,7 +127,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             _handler.addChangeListener(this);
         }
 
-        _varToListOfEntries = new HashMap();
+        _varToListOfEntries = new HashMap<Settable, List<String>>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ public class PtolemyQuery extends Query implements QueryListener,
         boolean foundStyle = false;
 
         if (attribute instanceof NamedObj) {
-            Iterator styles = ((NamedObj) attribute).attributeList(
+            Iterator<?> styles = ((NamedObj) attribute).attributeList(
                     ParameterEditorStyle.class).iterator();
 
             while (styles.hasNext() && !foundStyle) {
@@ -435,14 +435,14 @@ public class PtolemyQuery extends Query implements QueryListener,
         // contained by the list.
         if (_varToListOfEntries.get(attribute) == null) {
             // No mapping for attribute exists.
-            List entryNameList = new LinkedList();
+            List<String> entryNameList = new LinkedList<String>();
             entryNameList.add(entryName);
             _varToListOfEntries.put(attribute, entryNameList);
         } else {
             // attribute is mapped to a list of entry names, but need to
             // check whether entryName is in the list. If not, add it.
-            List entryNameList = (List) _varToListOfEntries.get(attribute);
-            Iterator entryNames = entryNameList.iterator();
+            List<String> entryNameList = _varToListOfEntries.get(attribute);
+            Iterator<String> entryNames = entryNameList.iterator();
             boolean found = false;
 
             while (entryNames.hasNext()) {
@@ -665,7 +665,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         ((PasswordAttribute) attribute).setPassword(password);
                         attribute.validate();
 
-                        Iterator derived = ((PasswordAttribute) attribute)
+                        Iterator<?> derived = ((PasswordAttribute) attribute)
                                 .getDerivedList().iterator();
 
                         while (derived.hasNext()) {
@@ -850,12 +850,12 @@ public class PtolemyQuery extends Query implements QueryListener,
                 if (_attributes.containsValue(attribute)) {
                     // Get the list of entry names that the attribute
                     // is attached to.
-                    List entryNameList = (List) _varToListOfEntries
+                    List<String> entryNameList = _varToListOfEntries
                             .get(attribute);
 
                     // For each entry name, call set() to update its
                     // value with the value of attribute
-                    Iterator entryNames = entryNameList.iterator();
+                    Iterator<String> entryNames = entryNameList.iterator();
 
                     String newValue = _getTranslatedExpression(attribute);
 
@@ -896,7 +896,7 @@ public class PtolemyQuery extends Query implements QueryListener,
         // the attributes.
         removeQueryListener(this);
 
-        Iterator attributes = _attributes.values().iterator();
+        Iterator<Settable> attributes = _attributes.values().iterator();
 
         while (attributes.hasNext()) {
             Settable attribute = (Settable) attributes.next();
@@ -973,7 +973,7 @@ public class PtolemyQuery extends Query implements QueryListener,
     private PtolemyQuery _query = null;
 
     // Maps an entry name to the most recent error-free value.
-    private Map _revertValue = new HashMap();
+    private Map<String, String> _revertValue = new HashMap<String, String>();
 
     // Saved error handler to restore after change.
     private ErrorHandler _savedErrorHandler = null;
@@ -984,5 +984,5 @@ public class PtolemyQuery extends Query implements QueryListener,
 
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.
-    private Map _varToListOfEntries;
+    private Map<Settable, List<String>> _varToListOfEntries;
 }

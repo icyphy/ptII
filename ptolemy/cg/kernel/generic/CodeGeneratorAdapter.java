@@ -27,11 +27,15 @@
  */
 package ptolemy.cg.kernel.generic;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.util.DecoratedAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
@@ -88,6 +92,15 @@ public class CodeGeneratorAdapter extends NamedObj {
      */
     public void analyzeTypeConvert() throws IllegalActionException {
         _strategy.analyzeTypeConvert();
+    }
+    
+    /** Create and return the decorated attributes for the corresponding Ptolemy Component
+     *  @param genericCodeGenerator The code generator that is the decorator for the
+     *  corresponding Ptolemy Component.
+     *  @return The decorated attributes.
+     */
+    public List<DecoratedAttribute> createDecoratedAttributes(GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException {
+            return new LinkedList<DecoratedAttribute>();
     }
 
     /**

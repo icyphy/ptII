@@ -62,6 +62,8 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DecoratedAttribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -88,7 +90,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
  */
-public class GenericCodeGenerator extends Attribute {
+public class GenericCodeGenerator extends Attribute implements Decorator {
 
     // Note: If you add publicly settable parameters, update
     // _commandFlags or _commandOptions.
@@ -137,10 +139,6 @@ public class GenericCodeGenerator extends Attribute {
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
         overwriteFiles.setExpression("true");
-
-        padBuffers = new Parameter(this, "padBuffers");
-        padBuffers.setTypeEquals(BaseType.BOOLEAN);
-        padBuffers.setExpression("true");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
@@ -192,11 +190,6 @@ public class GenericCodeGenerator extends Attribute {
      *  value is a parameter with the value true.
      */
     public Parameter overwriteFiles;
-
-    /** If true, then buffers are padded to powers of two.
-     *  TODO: This parameter is SDF specific.
-     */
-    public Parameter padBuffers;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -673,6 +666,58 @@ public class GenericCodeGenerator extends Attribute {
     public NamedObj getComponent() {
         return getContainer();
     }
+    
+   /** Return the name of the decorator.
+    * @return The name of the decorator.
+    */
+   public String getDecoratorName() {
+       return this.getFullName();
+   }
+   
+   /** Return the decorated attribute with the given name for the target NamedObj.
+    * If the attribute can't be found null be returned.
+    * @param target The NamedObj that will be decorated.
+    * @param name The name of the attribute.
+    * @return The attribute with the given name for the target NamedObj. 
+    */
+   public DecoratedAttribute getDecoratorAttribute(NamedObj target, String name){
+       List<DecoratedAttribute> attributes = getDecoratorAttributes(target);
+       for (DecoratedAttribute attribute : attributes) {
+           if (attribute.getAttribute().getName() == name) {
+               return attribute;
+           }
+       }
+       return null;
+   }
+
+   /** Return the decorated attributes for the target NamedObj.
+    * @param target The NamedObj that will be decorated.
+    * @return A list of decorated attributes for the target NamedObj. 
+    */
+   public List<DecoratedAttribute> getDecoratorAttributes(NamedObj target){
+       if (_decoratedAttributes.containsKey(target)) {
+           return _decoratedAttributes.get(target);
+       } else {
+           CodeGeneratorAdapter adapter;
+           List<DecoratedAttribute> attributes = new LinkedList<DecoratedAttribute>();
+           try {
+               adapter = _getAdapter(target);
+           } catch (IllegalActionException e) {
+               // If no adapter, return empty list
+               return attributes;
+           }           
+           try {
+               attributes = adapter.createDecoratedAttributes(this);
+           } catch (IllegalActionException e) {
+               e.printStackTrace();
+           } catch (NameDuplicationException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+           }
+           _decoratedAttributes.put(target, attributes);
+           return attributes;
+       }
+   }    
 
     /** Get the command executor, which can be either non-graphical
      *  or graphical.  The initial default is non-graphical, which
@@ -1046,7 +1091,7 @@ public class GenericCodeGenerator extends Attribute {
      * @return The code generator adapter.
      * @exception IllegalActionException If the adapter class cannot be found.
      */
-    final protected Object _getAdapter(Object object) throws IllegalActionException {
+    final protected CodeGeneratorAdapter _getAdapter(Object object) throws IllegalActionException {
 
         if (_adapterStore.containsKey(object)) {
             return _adapterStore.get(object);
@@ -1946,6 +1991,9 @@ public class GenericCodeGenerator extends Attribute {
      */
     private String _codeFileName = null;
 
+    /** The decorated attributes for a certain NamedObj.*/
+    Map<NamedObj, List<DecoratedAttribute>> _decoratedAttributes = new HashMap<NamedObj, List<DecoratedAttribute>>();
+        
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
     /** The current indent level when pretty printing code. */

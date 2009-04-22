@@ -53,7 +53,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////
 ////SDFDirector
 
@@ -357,8 +356,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
-                .getToken()).booleanValue();
+        boolean padBuffers = padBuffers();
 
         int bufferSize = _ports.getBufferSize(port, channelNumber);
 
