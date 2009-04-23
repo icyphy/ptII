@@ -25,7 +25,6 @@ public class ViewScreen3D extends TypedAtomicActor {
         
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
         GLPipelineObject.setInput(true);
-        //GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
         GLPipelineObject.setMultiport(true);
 
         
@@ -61,7 +60,7 @@ public class ViewScreen3D extends TypedAtomicActor {
         _canvas = new GLCanvas();
 
         _animator = new Animator(_canvas);
-        _animator.setRunAsFastAsPossible(true);
+        //_animator.setRunAsFastAsPossible(true);
         _animator.start();
         _canvas.addGLEventListener((GRODirector)getDirector());
         
@@ -79,7 +78,6 @@ public class ViewScreen3D extends TypedAtomicActor {
             }
         });
         _frame.setVisible(true);
-//      frame.show();
         _canvas.requestFocus();
     }
 

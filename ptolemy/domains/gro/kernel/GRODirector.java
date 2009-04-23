@@ -618,23 +618,16 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
     private int _stopIteration = 0;
 
-    float rotateT = 0.0f;
 
     public void display(GLAutoDrawable gLDrawable) {
     
         try {
-            rotateT += 0.2;
-            
             _gl = gLDrawable.getGL();
             _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
             _gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
             _gl.glLoadIdentity();
             _gl.glTranslatef(0.0f, 0.0f, -5.0f);
             
-            _gl.glRotatef(rotateT, 1.0f, 0.0f, 0.0f);
-            _gl.glRotatef(rotateT, 0.0f, 1.0f, 0.0f);
-            _gl.glRotatef(rotateT, 0.0f, 0.0f, 1.0f);
-            _gl.glRotatef(rotateT, 0.0f, 1.0f, 0.0f);
 
             fire();
         } catch (IllegalActionException e) {

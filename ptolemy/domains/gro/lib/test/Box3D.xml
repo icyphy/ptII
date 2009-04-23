@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={93, 306, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 268, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="ViewScreen3D" class="ptolemy.domains.gro.lib.ViewScreen3D">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 225.0]">
         </property>
         <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -30,8 +30,12 @@
             </property>
         </port>
     </entity>
+    <entity name="Rotate" class="ptolemy.domains.gro.lib.Rotate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 225.0]">
+        </property>
+    </entity>
     <entity name="Box3D" class="ptolemy.domains.gro.lib.Box3D">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 185.0]">
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -39,10 +43,32 @@
             </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <entity name="Triangle3D" class="ptolemy.domains.gro.lib.Triangle3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 275.0]">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <link port="ViewScreen3D.GLPipelineObject" relation="relation"/>
-    <link port="Box3D.out" relation="relation"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation2"/>
+    <link port="Rotate.GLPipelineObjectIn" relation="relation3"/>
+    <link port="Rotate.GLPipelineObjectIn" relation="relation"/>
+    <link port="Rotate.GLPipelineObjectOut" relation="relation2"/>
+    <link port="Box3D.out" relation="relation3"/>
+    <link port="Triangle3D.GLPipelineObject" relation="relation"/>
 </entity>
