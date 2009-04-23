@@ -37,7 +37,6 @@ import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringBufferExec;
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,7 +73,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  <i>codeDirectory</i> parameter.
      *  @exception IllegalActionException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
-     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy#copyFilesToCodeDirectory(NamedObj, CodeGenerator)
+     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.copyFilesToCodeDirectory(NamedObj, GenericCodeGenerator)
      */
     public static long copyFilesToCodeDirectory(
             ptolemy.actor.TypedCompositeActor compositeActor)

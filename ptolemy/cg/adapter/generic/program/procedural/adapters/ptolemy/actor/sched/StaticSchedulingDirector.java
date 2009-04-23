@@ -90,13 +90,17 @@ public class StaticSchedulingDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Create and return the decorated attributes for the corresponding Ptolemy Component
+    /** Create and return the decorated attributes for the corresponding Ptolemy Component.
      *  @param genericCodeGenerator The code generator that is the decorator for the
      *  corresponding Ptolemy Component.
      *  @return The decorated attributes.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
      */    
     public List<DecoratedAttribute> createDecoratedAttributes(
-            GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException {
+            GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException  {
         
         List<DecoratedAttribute> decoratedAttributes = new LinkedList<DecoratedAttribute>();
         Parameter padBuffers = new Parameter(this, "padBuffers");
@@ -273,6 +277,7 @@ public class StaticSchedulingDirector extends Director {
      *  FIXME: need documentation on the input string format.
      *
      *  @param name The name of the parameter or port
+     *  @param isWrite Whether to generate the write or read offset.
      *  @param target The CodeGeneratorAdapter for which code needs to be generated.
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
@@ -339,6 +344,8 @@ public class StaticSchedulingDirector extends Director {
 
     /** 
      *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @return The reference to that parameter or port (a variable name,
+     *   for example).
      */
     public String getReference(TypedIOPort port,
             String[] channelAndOffset,
@@ -882,6 +889,7 @@ public class StaticSchedulingDirector extends Director {
 
         /** Initialize the offsets.
          *  @return The code to initialize the offsets.
+         *  @exception IllegalActionException Thrown if offsets can't be initialized.
          */
         public String initializeOffsets() throws IllegalActionException {
 
@@ -945,7 +953,14 @@ public class StaticSchedulingDirector extends Director {
 
 
 
-        // Update the write offset of the [multiple] connected ports.
+        /** Update the offsets of the buffers associated with the ports connected
+         *  with the given port in its downstream.
+         *
+         *  @return The generated code.
+         *  @param rate The rate, which must be greater than or equal to 0.
+         *  @exception IllegalActionException If thrown while reading or writing
+         *   offsets, or getting the buffer size, or if the rate is less than 0.
+         */
         public String updateConnectedPortsOffset(int rate) throws IllegalActionException {
             boolean padBuffers = padBuffers();
 
@@ -1033,6 +1048,8 @@ public class StaticSchedulingDirector extends Director {
          *  @param rate  The rate of the channels.
          *  @param directorHelper The Director helper
          *  @return The offset.
+         *  @exception IllegalActionException If thrown while getting a token,
+         *  adapter, read offset or buffer size.
          */
         public String updateOffset(int rate)
         throws IllegalActionException {
@@ -1310,6 +1327,7 @@ public class StaticSchedulingDirector extends Director {
 
     }
 
+    /** A helper class that allows generating code for ports.*/
     protected class Ports
     {
 
@@ -1390,6 +1408,7 @@ public class StaticSchedulingDirector extends Director {
         }
 
         /** Set the buffer size of channel of the port.
+         *  @param port The given port. 
          *  @param channelNumber The number of the channel that is being set.
          *  @param bufferSize The size of the buffer.
          *  @see #getBufferSize(IOPort, int)
@@ -1427,7 +1446,16 @@ public class StaticSchedulingDirector extends Director {
             _getPortInfo(port).setWriteOffset(channelNumber, writeOffset);
         }
 
-        // Update the write offset of the [multiple] connected ports.
+        /** Update the offsets of the buffers associated with the ports connected
+         *  with the given port in its downstream.
+         *
+         *  @param port The port whose directly connected downstream actors update
+         *   their write offsets.
+         *  @return The generated code.
+         *  @param rate The rate, which must be greater than or equal to 0.
+         *  @exception IllegalActionException If thrown while reading or writing
+         *   offsets, or getting the buffer size, or if the rate is less than 0.
+         */
         public String updateConnectedPortsOffset(IOPort port, int rate) throws IllegalActionException {
             return _getPortInfo(port).updateConnectedPortsOffset(rate);
         }
@@ -1437,9 +1465,11 @@ public class StaticSchedulingDirector extends Director {
          *  @param port The given port.
          *  @param rate  The rate of the channels.
          *  @return The offset.
+         *  @exception IllegalActionException If thrown while getting a token,
+         *  adapter, read offset or buffer size.
          */
-        public String updateOffset(IOPort port, int rate)
-                throws IllegalActionException {
+        public String updateOffset(IOPort port, int rate) throws IllegalActionException
+        {
             return _getPortInfo(port).updateOffset(rate);
         }
 
@@ -1461,7 +1491,8 @@ public class StaticSchedulingDirector extends Director {
 
         private Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
     }
-
+    
+    /** The meta information about the ports in the container */
     protected Ports _ports = new Ports();
     
 }

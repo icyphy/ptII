@@ -94,10 +94,14 @@ public class CodeGeneratorAdapter extends NamedObj {
         _strategy.analyzeTypeConvert();
     }
     
-    /** Create and return the decorated attributes for the corresponding Ptolemy Component
+    /** Create and return the decorated attributes for the corresponding Ptolemy Component.
      *  @param genericCodeGenerator The code generator that is the decorator for the
      *  corresponding Ptolemy Component.
      *  @return The decorated attributes.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
      */
     public List<DecoratedAttribute> createDecoratedAttributes(GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException {
             return new LinkedList<DecoratedAttribute>();

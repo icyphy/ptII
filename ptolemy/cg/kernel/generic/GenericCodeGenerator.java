@@ -683,7 +683,7 @@ public class GenericCodeGenerator extends Attribute implements Decorator {
    public DecoratedAttribute getDecoratorAttribute(NamedObj target, String name){
        List<DecoratedAttribute> attributes = getDecoratorAttributes(target);
        for (DecoratedAttribute attribute : attributes) {
-           if (attribute.getAttribute().getName() == name) {
+           if (attribute.getAttribute().getName().equals(name)) {
                return attribute;
            }
        }

@@ -503,6 +503,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
+     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.

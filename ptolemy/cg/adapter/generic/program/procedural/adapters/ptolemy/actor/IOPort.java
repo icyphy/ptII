@@ -62,23 +62,10 @@ public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
     /////////////////////////////////////////////////////////////////////
     ////                           public methods                    ////
 
-    /** Generate the send code.
-     *  @param channel The channel for which the send code is generated.
-     *  @param dataToken The token to be sent
-     *  @return The code that sends the dataToken on the channel.
-     */    
-    public String generateCodeForSend(String channel, String dataToken)
-    throws IllegalActionException {
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
-        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        int channelNumber = Integer.valueOf(channel);
-
-        return directorAdapter.generateCodeForSend(port, channelNumber, dataToken);
-    }
-
     /** Generate the get code.
      *  @param channel The channel for which the get code is generated.
      *  @return The code that gets data from the channel.
+     *  @exception IllegalActionException If the director adapter class cannot be found.
      */
     public String generateCodeForGet(String channel) throws IllegalActionException {
         ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
@@ -86,6 +73,20 @@ public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
         int channelNumber = Integer.valueOf(channel);
 
         return directorAdapter.generateCodeForGet(port, channelNumber);
+    }
+    
+    /** Generate the send code.
+     *  @param channel The channel for which the send code is generated.
+     *  @param dataToken The token to be sent
+     *  @return The code that sends the dataToken on the channel.
+     *  @exception IllegalActionException If the director adapter class cannot be found.
+     */    
+    public String generateCodeForSend(String channel, String dataToken) throws IllegalActionException {
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        int channelNumber = Integer.valueOf(channel);
+
+        return directorAdapter.generateCodeForSend(port, channelNumber, dataToken);
     }
 
     public String generateInitializeCode() throws IllegalActionException {
@@ -223,8 +224,10 @@ public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
     }
     //End FIXME rodiers
      */
-
-
+    
+    /**
+     * @exception IllegalActionException If the director adapter class cannot be found.
+     */
     private ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director _getDirectorAdapter() throws IllegalActionException {
         Director director = getDirector();
         return (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator().getAdapter(director);

@@ -82,8 +82,7 @@ public class Director extends CodeGeneratorAdapter {
      *  @param dataToken The token to be sent
      *  @return The code that sends the dataToken on the channel.
      */    
-    public String generateCodeForSend(IOPort port, int channel, String dataToken)
-    throws IllegalActionException {
+    public String generateCodeForSend(IOPort port, int channel, String dataToken) {
         return "";
     }
 
@@ -92,7 +91,7 @@ public class Director extends CodeGeneratorAdapter {
      *  @param channel The channel for which the get code is generated.
      *  @return The code that gets data from the channel.
      */
-    public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
+    public String generateCodeForGet(IOPort port, int channel) {
         return "";
     }
     /** Generate the code for the firing of actors.
@@ -442,6 +441,7 @@ public class Director extends CodeGeneratorAdapter {
      *  FIXME: need documentation on the input string format.
      *
      *  @param name The name of the parameter or port
+     *  @param isWrite Whether to generate the write or read offset.
      *  @param target The CodeGeneratorAdapter for which code needs to be generated.
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
