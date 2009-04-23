@@ -30,6 +30,7 @@ package ptolemy.data.properties.lattice.logicalAND.data.expr;
 
 import java.util.List;
 
+import ptolemy.data.expr.Constants;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,7 +66,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        if (_node.isConstant()) {
+        if (_node.isConstant() || Constants.get(_node.getName()) != null) {
             setEquals(_node, _lattice.TRUE);
         }
 
