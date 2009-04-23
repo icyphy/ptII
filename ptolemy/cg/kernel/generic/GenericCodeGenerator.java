@@ -116,11 +116,6 @@ public class GenericCodeGenerator extends Attribute implements Decorator {
         // Note: If you add publicly settable parameters, update
         // _commandFlags or _commandOptions.
 
-        allowDynamicMultiportReference = new Parameter(this,
-        "allowDynamicMultiportReference");
-        allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
-        allowDynamicMultiportReference.setExpression("false");
-
         codeDirectory = new FileParameter(this, "codeDirectory");
         codeDirectory.setExpression("$HOME/cg/");
 
@@ -159,18 +154,11 @@ public class GenericCodeGenerator extends Attribute implements Decorator {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
-    /** If true, then channels in multiports can be dynamically
-     *  referenced using the $ref macro.
-     *  TODO: This parameter is SDF specific.
-     */
-    public Parameter allowDynamicMultiportReference;
-
     /** The directory in which to put the generated code.
      *  This is a file parameter that must specify a directory.
      *  The default is $HOME/codegen.
      */
     public FileParameter codeDirectory;
-
 
     /** The name of the package(s) in which to look for adapter
      *  classes. The string can either be just
@@ -549,7 +537,7 @@ public class GenericCodeGenerator extends Attribute implements Decorator {
     public String generatePostfireProcedureName() throws IllegalActionException {
         return "";
     }
-
+    
     /** Generate type conversion code.
      *
      *  @return The type conversion code.
@@ -559,7 +547,6 @@ public class GenericCodeGenerator extends Attribute implements Decorator {
      *   actor generates the type conversion code.
      */
     public String generateTypeConvertCode() throws IllegalActionException {
-
         return "";
     }
 

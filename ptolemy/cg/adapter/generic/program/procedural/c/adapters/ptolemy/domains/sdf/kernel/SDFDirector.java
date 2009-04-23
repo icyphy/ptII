@@ -562,8 +562,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      */
     private String _generateInputVariableDeclaration(CodeGeneratorAdapter target)
             throws IllegalActionException {
-        boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().allowDynamicMultiportReference
-                .getToken()).booleanValue();
+        boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
 
         StringBuffer code = new StringBuffer();
 

@@ -1133,7 +1133,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return result.toString();
     }
 
-    /** Set the adapter
+    /** Set the adapter.
      *  @param adapter The given adapter.
      */
     final public void setAdapter(CodeGeneratorAdapter adapter) {

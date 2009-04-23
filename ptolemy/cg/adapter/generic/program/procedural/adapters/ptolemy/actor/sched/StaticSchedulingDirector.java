@@ -90,6 +90,22 @@ public class StaticSchedulingDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+
+    /** Return whether the channels in multiports can be dynamically
+     *  referenced using the $ref macro.
+     *  @return True when the channels in multiports can be dynamically
+     *  referenced using the $ref macro.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
+     */
+    final public Boolean allowDynamicMultiportReference() throws IllegalActionException {
+        return ((BooleanToken) ((Parameter) getCodeGenerator().getDecoratorAttribute(getComponent(), "allowDynamicMultiportReference").getAttribute())
+                .getToken()).booleanValue();
+    }
+        
+    
     /** Create and return the decorated attributes for the corresponding Ptolemy Component.
      *  @param genericCodeGenerator The code generator that is the decorator for the
      *  corresponding Ptolemy Component.
@@ -108,6 +124,17 @@ public class StaticSchedulingDirector extends Director {
         padBuffers.setExpression("true");
 
         decoratedAttributes.add(new DecoratedAttribute(padBuffers, genericCodeGenerator));
+
+        /** If true, then channels in multiports can be dynamically
+         *  referenced using the $ref macro.
+         */
+        Parameter allowDynamicMultiportReference = new Parameter(this,
+        "allowDynamicMultiportReference");
+        allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
+        allowDynamicMultiportReference.setExpression("false");
+        
+        decoratedAttributes.add(new DecoratedAttribute(allowDynamicMultiportReference, genericCodeGenerator));
+        
         return decoratedAttributes;
     }   
 
@@ -353,8 +380,7 @@ public class StaticSchedulingDirector extends Director {
             boolean isWrite, CodeGeneratorAdapter target) throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
-        boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().
-                allowDynamicMultiportReference.getToken()).booleanValue();
+        boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
 
         int channelNumber = 0;
         boolean isChannelNumberInt = true;
@@ -538,6 +564,7 @@ public class StaticSchedulingDirector extends Director {
         return ((BooleanToken) ((Parameter) getCodeGenerator().getDecoratorAttribute(getComponent(), "padBuffers").getAttribute())
                 .getToken()).booleanValue();
     }
+    
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
     
@@ -1117,10 +1144,8 @@ public class StaticSchedulingDirector extends Director {
         private String _generateOffset(String offsetString, int channel, boolean isWrite)
         throws IllegalActionException {
 
-            boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().allowDynamicMultiportReference
-                    .getToken()).booleanValue();
+            boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
             boolean padBuffers = padBuffers();
-
 
             //if (MpiPNDirector.isLocalBuffer(port, channel)) {
             //    int i = 1;
