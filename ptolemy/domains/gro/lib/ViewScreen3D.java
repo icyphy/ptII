@@ -25,7 +25,7 @@ public class ViewScreen3D extends TypedAtomicActor {
         
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
         GLPipelineObject.setInput(true);
-        GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
+        //GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
         GLPipelineObject.setMultiport(true);
 
         

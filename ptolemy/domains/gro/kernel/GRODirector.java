@@ -663,7 +663,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         }
 
         try {
-            GRScheduler scheduler = new GRScheduler(workspace());
+            Scheduler scheduler = new Scheduler(workspace());
             setScheduler(scheduler);
         } catch (Exception ex) {
             // if setScheduler fails, then we should just set it to Null.
@@ -716,6 +716,9 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
     public void display(GLAutoDrawable arg0) {
     
         try {
+            _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+            _gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+            _gl.glLoadIdentity();
             fire();
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
@@ -733,6 +736,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
     public void init(GLAutoDrawable gLDrawable) {
         _gl = gLDrawable.getGL();
+      
         _gl.glShadeModel(GL.GL_SMOOTH);
         _gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         _gl.glClearDepth(1.0f);
@@ -740,6 +744,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         _gl.glDepthFunc(GL.GL_LEQUAL);
         _gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, 
         GL.GL_NICEST);
+       
         //gLDrawable.addKeyListener(this);
         
     }

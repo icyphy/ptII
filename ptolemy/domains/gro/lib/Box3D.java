@@ -2,6 +2,7 @@ package ptolemy.domains.gro.lib;
 
 import javax.media.opengl.GL;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.domains.gro.kernel.GROActor;
 import ptolemy.domains.gro.kernel.GRODirector;
 import ptolemy.kernel.CompositeEntity;
@@ -13,58 +14,43 @@ public class Box3D extends GROActor {
     public Box3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
+        GLPipelineObject.setOutput(true);
+        //GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
+        GLPipelineObject.setMultiport(true);
+
         // TODO Auto-generated constructor stub
     }
+    
+    public TypedIOPort GLPipelineObject;
 
-    @Override
-    protected void _makeSceneGraphConnection() throws IllegalActionException {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void _setViewScreen(GROActor actor) throws IllegalActionException {
-        // TODO Auto-generated method stub
-
-    }
+  
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called fire()");
         }
         GL gl = ((GRODirector) getDirector()).getGL();
-        gl.glBegin(GL.GL_TRIANGLES);
+        gl.glBegin(GL.GL_QUADS); 
+        gl.glColor3f(0.3f, 0.7f, 0.3f); 
+        gl.glVertex3f(-1000.0f, 0.0f,  1000.0f); 
+        gl.glVertex3f( 1000.0f, 0.0f,  1000.0f); 
+        gl.glVertex3f( 1000.0f, 0.0f, -1000.0f); 
+        gl.glVertex3f(-1000.0f, 0.0f, -1000.0f); 
+        gl.glEnd();
+    }
+
+
+    @Override
+    protected void _makeSceneGraphConnection() throws IllegalActionException {
+        // TODO Auto-generated method stub
         
-        // Front
-        gl.glColor3f(0.0f, 1.0f, 1.0f); 
-        gl.glVertex3f(0.0f, 1.0f, 0.0f);
-        gl.glColor3f(0.0f, 0.0f, 1.0f); 
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glColor3f(0.0f, 0.0f, 0.0f); 
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
- 
-        // Right Side Facing Front
-        gl.glColor3f(0.0f, 1.0f, 1.0f); 
-        gl.glVertex3f(0.0f, 1.0f, 0.0f);
-        gl.glColor3f(0.0f, 0.0f, 1.0f); 
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glColor3f(0.0f, 0.0f, 0.0f); 
-        gl.glVertex3f(0.0f, -1.0f, -1.0f);
- 
-        // Left Side Facing Front
-        gl.glColor3f(0.0f, 1.0f, 1.0f); 
-        gl.glVertex3f(0.0f, 1.0f, 0.0f);
-        gl.glColor3f(0.0f, 0.0f, 1.0f); 
-        gl.glVertex3f(0.0f, -1.0f, -1.0f);
-        gl.glColor3f(0.0f, 0.0f, 0.0f); 
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
- 
-        // Bottom
-        gl.glColor3f(0.0f, 0.0f, 0.0f); 
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glColor3f(0.1f, 0.1f, 0.1f); 
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glColor3f(0.2f, 0.2f, 0.2f); 
-        gl.glVertex3f(0.0f, -1.0f, -1.0f);
+    }
+
+
+    @Override
+    protected void _setViewScreen(GROActor actor) throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
     }
     
 
