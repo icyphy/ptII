@@ -36,6 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorGraphModel.VertexModel;
 import de.cau.cs.kieler.core.KielerException;
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
 import de.cau.cs.kieler.core.alg.IKielerProgressMonitor;
@@ -72,6 +73,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 	private Map<KNode, NamedObj> _kieler2ptolemyEntityNodes;
 	private Map<Set<Relation>, Set<KEdge>> _ptolemy2KielerEdges;
 	private Map<Port, KPort> _ptolemy2KielerPorts;
+	private Map<KPort, Port> _kieler2PtolemyPorts;
 
 	private Map<Relation, List<Object>> _relations2EdgesVertices;
 
@@ -122,6 +124,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 		_kieler2ptolemyEntityNodes = new HashMap<KNode, NamedObj>();
 		_ptolemy2KielerEdges = new HashMap<Set<Relation>, Set<KEdge>>();
 		_ptolemy2KielerPorts = new HashMap<Port, KPort>();
+		_kieler2PtolemyPorts = new HashMap<KPort, Port>();
 		_relations2EdgesVertices = new HashMap<Relation, List<Object>>();
 
 		// create graph in KIELER API
@@ -174,7 +177,8 @@ public class KielerLayout extends AbstractGlobalLayout {
 					// store node for later applying layout back
 					_ptolemy2KielerNodes.put(node, knode);
 					_kieler2ptolemyDivaNodes.put(knode, node);
-					_kieler2ptolemyEntityNodes.put(knode, (NamedObj)semanticNode);
+					_kieler2ptolemyEntityNodes.put(knode,
+							(NamedObj) semanticNode);
 
 					// handle ports
 					if (semanticNode instanceof Actor) {
@@ -327,6 +331,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 			LayoutOptions.setPortConstraints(kportlayout,
 					PortConstraints.FIXED_POS);
 			_ptolemy2KielerPorts.put(port, kport);
+			_kieler2PtolemyPorts.put(kport, port);
 		}
 	}
 
@@ -337,45 +342,116 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 * @param kgraph
 	 */
 	private void applyLayout(KNode kgraph) {
-		// apply node layout
-		for (KNode knode : kgraph.getChildren()) {
-			KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(knode);
-			// transform coordinate systems
-			kNode2Ptolemy(klayout);
-			// somehow place does not work for long time
-			Object node = _kieler2ptolemyDivaNodes.get(knode);
-			LayoutUtilities.place(getLayoutTarget(), node, klayout.getXpos(),
-					klayout.getYpos());
-			
-			//NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
-			//Location location = (Location)namedObj.getAttribute("_location");
-			//location.setExpression("{"+klayout.getXpos()+","+klayout.getYpos()+"}");
-			
-		}
-		// route edges
-		for (Set<Relation> relationGroup : _ptolemy2KielerEdges.keySet()) {
-			Set<KEdge> kedges = _ptolemy2KielerEdges.get(relationGroup);
-			// create a new connection tree, that represents on what segments in
-			// the KIELER graph
-			// the edges are routed at the same place
-			HyperedgeConnectionTree connectionTree = new HyperedgeConnectionTree();
-			connectionTree.addAll(kedges);
-			// dynamically add relations
-			addRelationswithVertices(connectionTree);
+		GraphModel graph = this.getLayoutTarget().getGraphModel();
+		if (graph instanceof ActorGraphModel) {
+			// apply node layout
+			for (KNode knode : kgraph.getChildren()) {
+				KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(knode);
+				NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
+				
+				// transform koordinate systems
+				// but not if the item is a text documentation, because this
+				// behaves different in Ptolemy. strange.
+				if( ! (namedObj instanceof Attribute) )
+				// transform coordinate systems
+					kNode2Ptolemy(klayout);
+
+				this
+						.setLocation(namedObj, klayout.getXpos(), klayout
+								.getYpos());
+
+			}
+			// route edges
+			for (Set<Relation> relationGroup : _ptolemy2KielerEdges.keySet()) {
+				Set<KEdge> kedges = _ptolemy2KielerEdges.get(relationGroup);
+
+				// remove old relation group
+				for (Relation oldRelation : relationGroup) {
+					this.removeRelation(oldRelation);
+				}
+
+				// create a new connection tree, that represents on what
+				// segments in
+				// the KIELER graph
+				// the edges are routed at the same place
+				HyperedgeConnectionTree connectionTree = new HyperedgeConnectionTree();
+				connectionTree.addAll(kedges);
+				// dynamically add relations
+				String firstRelation = addRelationswithVertices(connectionTree);
+				// also link source port with first relation
+				if (firstRelation != null) {
+					KEdge edge = kedges.iterator().next();
+					Port port = _kieler2PtolemyPorts.get(edge.getSourcePort());
+					this.link("port", port.getName(compositeActor), "relation",
+							firstRelation);
+				}
+			}
 		}
 	}
 
-	private void addRelationswithVertices(HyperedgeConnectionTree connectionTree) {
+	private String addRelationswithVertices(
+			HyperedgeConnectionTree connectionTree) {
 		List<KPoint> bendpoints = connectionTree.bendPointList();
+		System.out.println("Tree: " + connectionTree);
+		String firstRelationName = null;
+		String relationName = null;
+		// for all bendpoints
 		for (KPoint point : bendpoints) {
-			if( point != null ){
-				Relation relation = this.createRelationWithVertex( point.getX(), point.getY() );
+			if (point != null) {
+				// create new Relation
+				String newRelationName = this.createRelationWithVertex(point
+						.getX(), point.getY());
+				if (relationName != null) {
+					// and link all Relations
+					this.link("relation1", relationName, "relation2",
+							newRelationName);
+				}
+				relationName = newRelationName;
+				if (firstRelationName == null) {
+					firstRelationName = relationName;
+				}
+			} else {
+				// this means this is a leaf node directly connected to a port
+				KEdge edge = connectionTree.commonEdgeSet().iterator().next();
+				Port targetPort = _kieler2PtolemyPorts
+						.get(edge.getTargetPort());
+				Port sourcePort = _kieler2PtolemyPorts
+						.get(edge.getSourcePort());
+				if (relationName != null) {
+					// a relation was created before so connect with that
+					this.link("relation", relationName, "port", targetPort
+							.getName(compositeActor));
+				} else {
+					// direct port to port connection
+					// FIXME: why does this create a Vertex with location 0,0 ??
+					String dummyRelationName = this.createRelation();
+					this.link("port", sourcePort.getName(compositeActor),
+							"relation", dummyRelationName);
+					this.link("relation", dummyRelationName, "port", targetPort
+							.getName(compositeActor));
+				}
 			}
 		}
 		// also add recursively
 		for (HyperedgeConnectionTree subtree : connectionTree.subTreeList()) {
-			addRelationswithVertices(subtree);
+			String firstOfChildren = addRelationswithVertices(subtree);
+			// also link last relation of this level with first relation of next
+			// level
+			this.link("relation1", relationName, "relation2", firstOfChildren);
 		}
+		
+		// we are a leaf and need to connect to the target port
+		if(connectionTree.subTreeList().isEmpty()){
+			KEdge edge = connectionTree.commonEdgeSet().iterator().next();
+			Port targetPort = _kieler2PtolemyPorts
+					.get(edge.getTargetPort());
+			if (relationName != null) {
+				// a relation was created before so connect with that
+				this.link("relation", relationName, "port", targetPort
+						.getName(compositeActor));
+			}
+		}
+		return firstRelationName;
 	}
 
 	private void printStatus(KNode kgraph,
@@ -474,23 +550,64 @@ public class KielerLayout extends AbstractGlobalLayout {
 						.getHeight()));
 	}
 
-	private Relation createRelationWithVertex(double x, double y) {
+	private String createRelationWithVertex(double x, double y) {
 		String relationName = compositeActor.uniqueName("relation");
-		Relation relation = null;
-		try {
-			relation = compositeActor.newRelation(relationName);
-			Vertex vertex = new Vertex(relation, relationName);
-            double[] location = {x,y};
-			vertex.setLocation(location);
-		} catch (IllegalActionException e) {
-			// exceptions will only fail with wrong naming, so here it's ok
-		} catch (NameDuplicationException e) {
-		}
-		return relation;
+		String vertexName = compositeActor.uniqueName("vertex");
+
+		String moml = "<relation name=\"" + relationName
+				+ "\" class=\"ptolemy.actor.TypedIORelation\">"
+				+ "<vertex name=\"" + vertexName + "\" value=\"{" + x + " , "
+				+ y + "}\"></vertex></relation>";
+
+		MoMLChangeRequest request = new MoMLChangeRequest(this, compositeActor,
+				moml);
+		request.setUndoable(true);
+		compositeActor.requestChange(request);
+		return relationName;
+	}
+
+	private String createRelation() {
+		String relationName = compositeActor.uniqueName("relation");
+
+		String moml = "<relation name=\"" + relationName
+				+ "\" class=\"ptolemy.actor.TypedIORelation\">" + "</relation>";
+
+		MoMLChangeRequest request = new MoMLChangeRequest(this, compositeActor,
+				moml);
+		request.setUndoable(true);
+		compositeActor.requestChange(request);
+		return relationName;
+	}
+
+	private void link(String type1, String name1, String type2, String name2) {
+		String moml = "<link " + type1 + "=\"" + name1 + "\" " + type2 + "=\""
+				+ name2 + "\"/>\n";
+		System.out.println(moml);
+		MoMLChangeRequest request = new MoMLChangeRequest(this, compositeActor,
+				moml);
+		request.setUndoable(true);
+		compositeActor.requestChange(request);
+
+	}
+
+	private void setLocation(NamedObj obj, double x, double y) {
+		String moml = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{"
+				+ x + "," + y + "}\"></property>";
+		MoMLChangeRequest request = new MoMLChangeRequest(this, obj, moml);
+		request.setUndoable(true);
+		obj.requestChange(request);
+	}
+
+	private void removeRelation(Relation relation) {
+		NamedObj container = relation.getContainer();
+		// Delete the relation.
+		String moml = "<deleteRelation name=\"" + relation.getName() + "\"/>\n";
+		MoMLChangeRequest request = new MoMLChangeRequest(this, container, moml);
+		request.setUndoable(true);
+		container.requestChange(request);
 	}
 
 	public void setModel(NamedObj model) {
-		this.compositeActor = (CompositeActor)model;
+		this.compositeActor = (CompositeActor) model;
 	}
-
 }
