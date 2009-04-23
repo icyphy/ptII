@@ -18,22 +18,34 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-// import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import ptolemy.actor.Actor;
-import ptolemy.gui.MessageHandler;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.gui.LocationAttribute;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.graph.GraphInvalidStateException;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
 import de.cau.cs.kieler.core.KielerException;
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
 import de.cau.cs.kieler.core.alg.IKielerProgressMonitor;
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KGraphFactory;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.KPortType;
+import de.cau.cs.kieler.kiml.layout.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.layout.options.LayoutDirection;
@@ -56,11 +68,14 @@ public class KielerLayout extends AbstractGlobalLayout {
 
 	// Maps ptolemy nodes to kieler nodes and edges
 	private Map<Object, KNode> _ptolemy2KielerNodes;
-	private Map<KNode, Object> _kieler2ptolemyNodes;
-	private Map<Relation, List<KEdge>> _ptolemy2KielerEdges;
+	private Map<KNode, Object> _kieler2ptolemyDivaNodes;
+	private Map<KNode, NamedObj> _kieler2ptolemyEntityNodes;
+	private Map<Set<Relation>, Set<KEdge>> _ptolemy2KielerEdges;
 	private Map<Port, KPort> _ptolemy2KielerPorts;
 
 	private Map<Relation, List<Object>> _relations2EdgesVertices;
+
+	private CompositeActor compositeActor;
 
 	public KielerLayout(LayoutTarget target) {
 		super(target);
@@ -83,16 +98,16 @@ public class KielerLayout extends AbstractGlobalLayout {
 
 			// apply layout to ptolemy model
 			applyLayout(kgraph);
-		} catch (KielerException exception) {
-			MessageHandler.error("Failed executing automatic KIELER layout: "
-					+ exception.getMessage(), exception);
+		} catch (KielerException e) {
+			throw new GraphInvalidStateException(e,
+					"KIELER runtime exception: " + e.getMessage());
 		}
 
 		// print some status information
 		printStatus(kgraph, progressMonitor);
 
 		// write to XML file for debugging layout
-		writeToFile(kgraph);
+		// writeToFile(kgraph);
 	}
 
 	/**
@@ -103,8 +118,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 */
 	private KNode createGraph(Object composite) {
 		_ptolemy2KielerNodes = new HashMap<Object, KNode>();
-		_kieler2ptolemyNodes = new HashMap<KNode, Object>();
-		_ptolemy2KielerEdges = new HashMap<Relation, List<KEdge>>();
+		_kieler2ptolemyDivaNodes = new HashMap<KNode, Object>();
+		_kieler2ptolemyEntityNodes = new HashMap<KNode, NamedObj>();
+		_ptolemy2KielerEdges = new HashMap<Set<Relation>, Set<KEdge>>();
 		_ptolemy2KielerPorts = new HashMap<Port, KPort>();
 		_relations2EdgesVertices = new HashMap<Relation, List<Object>>();
 
@@ -152,10 +168,13 @@ public class KielerLayout extends AbstractGlobalLayout {
 					klayout.setWidth((float) bounds.getWidth());
 					klayout.setXpos((float) bounds.getX());
 					klayout.setYpos((float) bounds.getY());
+					// transform coordinates
+					ptolemy2KNode(klayout);
 					LayoutOptions.setFixedSize(klayout);
 					// store node for later applying layout back
 					_ptolemy2KielerNodes.put(node, knode);
-					_kieler2ptolemyNodes.put(knode, node);
+					_kieler2ptolemyDivaNodes.put(knode, node);
+					_kieler2ptolemyEntityNodes.put(knode, (NamedObj)semanticNode);
 
 					// handle ports
 					if (semanticNode instanceof Actor) {
@@ -212,50 +231,85 @@ public class KielerLayout extends AbstractGlobalLayout {
 				}
 			}
 
-			// iterate all found relations and create KEdges (possibly multiple
-			// per relation)
-			for (Relation relation : _relations2EdgesVertices.keySet()) {
-				List<Port> linkedPorts = relation.linkedPortList();
-				Port source = null;
-				for (Port port : linkedPorts) {
-					if (_ptolemy2KielerPorts.get(port).getType().equals(
-							KPortType.OUTPUT)) {
-						// take the first found output to be the one and only
-						// source
-						// could there be relations with more than one source??
-						source = port;
-						break;
-					}
-				}
-				// there should always be a source port for a relation...
-				assert source != null;
-				List<KEdge> kedges = new ArrayList<KEdge>();
-				_ptolemy2KielerEdges.put(relation, kedges);
-				// iterate all other ports and create a new KEdge to that
-				for (Port port : linkedPorts) {
-					if (!_ptolemy2KielerPorts.get(port).getType().equals(
-							KPortType.OUTPUT)) {
-
-						// create new edge in KIELER graph
-						KEdge kedge = KimlLayoutUtil.createInitializedEdge();
-						KPort kSourcePort = _ptolemy2KielerPorts.get(source);
-						kedge.setSourcePort(kSourcePort);
-						kedge.setSource(kSourcePort.getNode()); // FIXME: set
-																// port
-																// correctly
-						KPort kTargetPort = _ptolemy2KielerPorts.get(port);
-						kedge.setTargetPort(kTargetPort); // FIXME: set port
-															// correctly
-						kedge.setTarget(kTargetPort.getNode()); // FIXME: set
-																// target
-																// correctly
-						// store edge mapping for later applying layout
-						kedges.add(kedge);
-					}
-				}
+			// find out what is connected to what, i.e. aggregate all relations
+			// to relation groups
+			Set<List<Relation>> relationGroups = getRelationGroups(_relations2EdgesVertices
+					.keySet());
+			for (List<Relation> relationGroup : relationGroups) {
+				// better work with a set to make no assumptions about the order
+				Set<Relation> relationGroupSet = new HashSet<Relation>();
+				relationGroupSet.addAll(relationGroup);
+				createKEdges(relationGroupSet);
 			}
 		}
 		return kgraph;
+	}
+
+	private Set<List<Relation>> getRelationGroups(Set<Relation> relations) {
+		Set<List<Relation>> relationGroups = new HashSet<List<Relation>>();
+		for (Relation relation : relations) {
+			List<Relation> relationGroup = relation.relationGroupList();
+			// check if we already have this relation group
+			// TODO: verify whether relation groups are unique. Then you could
+			// perform this check much more efficiently
+			boolean found = false;
+			for (List<Relation> listedRelationGroup : relationGroups) {
+				if (listedRelationGroup.containsAll(relationGroup)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				relationGroups.add(relationGroup);
+			}
+		}
+		return relationGroups;
+	}
+
+	private void createKEdges(Set<Relation> relationGroup) {
+		if (relationGroup != null && !relationGroup.isEmpty()) {
+			// get any of the relations to work with
+			Relation anyRelation = relationGroup.iterator().next();
+			// find all ports connected to the relation group
+			List<Port> linkedPorts = anyRelation.linkedPortList();
+			Port source = null;
+			for (Port port : linkedPorts) {
+				if (_ptolemy2KielerPorts.get(port).getType().equals(
+						KPortType.OUTPUT)) {
+					// take the first found output to be the one and only
+					// source
+					// could there be relations with more than one source??
+					source = port;
+					break;
+				}
+			}
+			// there should always be a source port for a relation...
+			// but unfortunately that is not true. there can be invalid Ptolemy
+			// models. Kieler cannot handle that yet.
+			if (source == null) {
+				throw new GraphInvalidStateException(
+						"A relation group is not connected to any source port. This is not supported by KIELER.");
+			}
+			Set<KEdge> kedges = new HashSet<KEdge>();
+			_ptolemy2KielerEdges.put(relationGroup, kedges);
+			// iterate all other ports and create a new KEdge to that
+			for (Port port : linkedPorts) {
+				if (!_ptolemy2KielerPorts.get(port).getType().equals(
+						KPortType.OUTPUT)) {
+
+					// create new edge in KIELER graph
+					KEdge kedge = KimlLayoutUtil.createInitializedEdge();
+					KPort kSourcePort = _ptolemy2KielerPorts.get(source);
+					kedge.setSourcePort(kSourcePort);
+					kedge.setSource(kSourcePort.getNode());
+					KPort kTargetPort = _ptolemy2KielerPorts.get(port);
+					kedge.setTargetPort(kTargetPort);
+					kedge.setTarget(kTargetPort.getNode());
+					// store edge mapping for later applying layout
+					kedges.add(kedge);
+				}
+			}
+		}
 	}
 
 	private void createKPorts(KNode knode, List<Port> ports, KPortType portType) {
@@ -285,26 +339,42 @@ public class KielerLayout extends AbstractGlobalLayout {
 	private void applyLayout(KNode kgraph) {
 		// apply node layout
 		for (KNode knode : kgraph.getChildren()) {
-			Object node = _kieler2ptolemyNodes.get(knode);
 			KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(knode);
+			// transform coordinate systems
+			kNode2Ptolemy(klayout);
+			// somehow place does not work for long time
+			Object node = _kieler2ptolemyDivaNodes.get(knode);
 			LayoutUtilities.place(getLayoutTarget(), node, klayout.getXpos(),
 					klayout.getYpos());
+			
+			//NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
+			//Location location = (Location)namedObj.getAttribute("_location");
+			//location.setExpression("{"+klayout.getXpos()+","+klayout.getYpos()+"}");
+			
 		}
-		// place relation vertices
-		for (Relation relation : _relations2EdgesVertices.keySet()) {
-			if (!_relations2EdgesVertices.get(relation).isEmpty()) {
-				List<Object> vertices = _relations2EdgesVertices.get(relation);
-				List<KEdge> kedges = _ptolemy2KielerEdges.get(relation);
-				for (int i = 0; i < kedges.size() - 1; i++) {
-					KEdge kedge1 = kedges.get(i);
-					KEdge kedge2 = kedges.get(i + 1);
-					KPoint splitpoint = findSplitPoint(kedge1, kedge2);
-					if (vertices.size() > i) {
-						LayoutUtilities.place(this.getLayoutTarget(), vertices
-								.get(i), splitpoint.getX(), splitpoint.getY());
-					}
-				}
+		// route edges
+		for (Set<Relation> relationGroup : _ptolemy2KielerEdges.keySet()) {
+			Set<KEdge> kedges = _ptolemy2KielerEdges.get(relationGroup);
+			// create a new connection tree, that represents on what segments in
+			// the KIELER graph
+			// the edges are routed at the same place
+			HyperedgeConnectionTree connectionTree = new HyperedgeConnectionTree();
+			connectionTree.addAll(kedges);
+			// dynamically add relations
+			addRelationswithVertices(connectionTree);
+		}
+	}
+
+	private void addRelationswithVertices(HyperedgeConnectionTree connectionTree) {
+		List<KPoint> bendpoints = connectionTree.bendPointList();
+		for (KPoint point : bendpoints) {
+			if( point != null ){
+				Relation relation = this.createRelationWithVertex( point.getX(), point.getY() );
 			}
+		}
+		// also add recursively
+		for (HyperedgeConnectionTree subtree : connectionTree.subTreeList()) {
+			addRelationswithVertices(subtree);
 		}
 	}
 
@@ -319,7 +389,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 		EList bendpoints2 = KimlLayoutUtil.getEdgeLayout(edge2).getBendPoints();
 		// initialize point with first available bendpoint
 		KPoint point = (KPoint) bendpoints1.get(0);
-		assert point != null;
+		if (point == null)
+			throw new GraphInvalidStateException(
+					"KIELER internal error. A bendpoint list is empty.");
 		for (int i = 0; i < bendpoints1.size(); i++) {
 			if (bendpoints2.size() > i) {
 				KPoint p1 = (KPoint) bendpoints1.get(i);
@@ -344,9 +416,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 		ResourceSet resourceSet = new ResourceSetImpl();
 
 		// Register the default resource factory -- only needed for stand-alone!
-//		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-//				.put(Resource.Factory.Registry.DEFAULT_EXTENSION,
-//						new XMIResourceFactoryImpl());
+		// resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+		// .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+		// new XMIResourceFactoryImpl());
 
 		try {
 			// Get the URI of the model file.
@@ -357,12 +429,68 @@ public class KielerLayout extends AbstractGlobalLayout {
 			Resource resource = resourceSet.createResource(fileURI);
 
 			resource.getContents().add(kgraph);
-			
+
 			// Print the contents of the resource to System.out.
 			resource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
 		}
 	}
-	
-	
+
+	/**
+	 * Transform a location from a Kieler node from Kieler coordinate system to
+	 * ptolemy coordinate system. That is Kieler gives locations to be the upper
+	 * left corner of an item and Ptolemy as the center point of the item.
+	 * 
+	 * @param kshapeLayout
+	 *            LAyout of KNode kieler graphical node that contains bounds
+	 *            with location and size
+	 * @return KPoint in Ptolemy coordinate system
+	 */
+	private void kNode2Ptolemy(KShapeLayout kshapeLayout) {
+		kshapeLayout
+				.setXpos((float) (kshapeLayout.getXpos() + 0.5 * kshapeLayout
+						.getWidth()));
+		kshapeLayout
+				.setYpos((float) (kshapeLayout.getYpos() + 0.5 * kshapeLayout
+						.getHeight()));
+	}
+
+	/**
+	 * Transform a location from a Kieler node from Kieler coordinate system to
+	 * ptolemy coordinate system. That is Kieler gives locations to be the upper
+	 * left corner of an item and Ptolemy as the center point of the item.
+	 * 
+	 * @param kshapeLayout
+	 *            LAyout of KNode kieler graphical node that contains bounds
+	 *            with location and size
+	 * @return KPoint in Ptolemy coordinate system
+	 */
+	private void ptolemy2KNode(KShapeLayout kshapeLayout) {
+		kshapeLayout
+				.setXpos((float) (kshapeLayout.getXpos() - 0.5 * kshapeLayout
+						.getWidth()));
+		kshapeLayout
+				.setYpos((float) (kshapeLayout.getYpos() - 0.5 * kshapeLayout
+						.getHeight()));
+	}
+
+	private Relation createRelationWithVertex(double x, double y) {
+		String relationName = compositeActor.uniqueName("relation");
+		Relation relation = null;
+		try {
+			relation = compositeActor.newRelation(relationName);
+			Vertex vertex = new Vertex(relation, relationName);
+            double[] location = {x,y};
+			vertex.setLocation(location);
+		} catch (IllegalActionException e) {
+			// exceptions will only fail with wrong naming, so here it's ok
+		} catch (NameDuplicationException e) {
+		}
+		return relation;
+	}
+
+	public void setModel(NamedObj model) {
+		this.compositeActor = (CompositeActor)model;
+	}
+
 }
