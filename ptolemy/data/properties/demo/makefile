@@ -31,7 +31,7 @@
 ME =		ptolemy/data/properties/demo
 
 # Keep these alphabetical please.
-DIRS = 		ConstNonconst LogicalAND LogicalOrBackward RegressionTest Workflow
+DIRS = 		ConstNonconst LogicalAND LogicalOrBackward RegressionTest Sinewave Workflow
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -47,7 +47,11 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	ConstNonconst/ConstNonconst.jar \
-	LogicalAND/LogicalAND.jar
+	LogicalAND/LogicalAND.jar \
+	LogicalOrBackward/LogicalOrBackward.jar \
+	RegressionTest/RegressionTest.jar \
+	Sinewave/Sinewave.jar \
+	Workflow/Workflow.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
