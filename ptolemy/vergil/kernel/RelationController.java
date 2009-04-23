@@ -192,7 +192,7 @@ public class RelationController extends ParameterizedNodeController {
                 IORelation ioRelation = (IORelation) relation;
                 try {
                     boolean isWidthFixed = ioRelation.isWidthFixed();
-                    if ( (isWidthFixed || !ioRelation.needsWidthInference()) && ioRelation.getWidth() > 0) {
+                    if ( (isWidthFixed || !ioRelation.needsWidthInference()) && ioRelation.getWidth() > 1) {
                         // Restore width and height to the default to get a reasonable slash.
                         width = 12.0;
                         height = 12.0;
