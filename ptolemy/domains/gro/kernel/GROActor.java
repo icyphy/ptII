@@ -63,8 +63,6 @@ abstract public class GROActor extends TypedAtomicActor {
     public GROActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _allowAttributeChanges = false;
-        _isSceneGraphInitialized = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,10 +74,7 @@ abstract public class GROActor extends TypedAtomicActor {
      *    during the scene graph initialization.
      */
     public void fire() throws IllegalActionException {
-        if (!_isSceneGraphInitialized) {
-            _makeSceneGraphConnection();
-            _isSceneGraphInitialized = true;
-        }
+        super.fire();
     }
 
     /** Check whether the current director is a GRDirector. If not,
@@ -90,52 +85,8 @@ abstract public class GROActor extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _isSceneGraphInitialized = false;
-
-        /*if (!(getDirector() instanceof GRDirector)) {
-         throw new IllegalActionException(this,
-         "GR Actors can only be used under a GR Director");
-         }*/
     }
-
-    /** Reset this actor back to uninitialized state to prepare for
-     *  the next execution.
-     *
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _isSceneGraphInitialized = false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Setup the scene graph connections of this actor. Derived GR Actors
-     *  should override this method.
-     *
-     *  @exception IllegalActionException Always thrown for this base class.
-     */
-    abstract protected void _makeSceneGraphConnection()
-            throws IllegalActionException;
-
-    /** Set the view screen that the actor is connected to.
-     *  @param actor The actor.
-     *  @exception IllegalActionException Thrown if there is a problem
-     *  setting the view screen.
-     */
-    abstract protected void _setViewScreen(GROActor actor)
-            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** Indicator of whether the scene graph is initialized. */
-    protected boolean _isSceneGraphInitialized;
-
-    /** Boolean variable to determine whether attribute changes are
-     * allowed. For speed reasons, attribute changes may be disallowed in
-     * some models
-     */
-    protected boolean _allowAttributeChanges;
 }

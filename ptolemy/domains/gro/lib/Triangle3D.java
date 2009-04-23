@@ -66,17 +66,4 @@ public class Triangle3D extends GROActor {
         gl.glVertex3f(0.0f, -1.0f, -1.0f);
         gl.glEnd();
     }
-
-    @Override
-    protected void _makeSceneGraphConnection() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    protected void _setViewScreen(GROActor actor) throws IllegalActionException {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

@@ -9,9 +9,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class Box3D extends GROActor {
+public class Square3D extends GROActor {
 
-    public Box3D(CompositeEntity container, String name)
+    public Square3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");

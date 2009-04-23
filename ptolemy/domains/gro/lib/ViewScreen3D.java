@@ -8,12 +8,12 @@ import javax.media.opengl.GLCanvas;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.domains.gr.kernel.SceneGraphToken;
-import ptolemy.domains.gro.JavaRenderer;
 import ptolemy.domains.gro.kernel.GRODirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import com.sun.opengl.util.Animator;
 
 public class ViewScreen3D extends TypedAtomicActor {
 
@@ -48,9 +48,7 @@ public class ViewScreen3D extends TypedAtomicActor {
     /** Fire this actor.*/
     
     public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called fire()");
-        }
+        //_canvas.display();
     }
     
     /** Initialize the execution.  Create the ViewScreen frame along with the canvas and
@@ -59,34 +57,38 @@ public class ViewScreen3D extends TypedAtomicActor {
      */
     
     public void initialize() throws IllegalActionException {
-        Frame frame = new Frame("Jogl 3D Shape/Rotation");
-        GLCanvas canvas = new GLCanvas();
+        _frame = new Frame("Jogl 3D Shape/Rotation");
+        _canvas = new GLCanvas();
+
+        _animator = new Animator(_canvas);
+        _animator.setRunAsFastAsPossible(true);
+        _animator.start();
+        _canvas.addGLEventListener((GRODirector)getDirector());
         
-        
-        
-        canvas.addGLEventListener((GRODirector)getDirector());
-        
-        frame.add(canvas);
-        frame.setSize(320, 240);
-        frame.setUndecorated(true);
-        int size = frame.getExtendedState();
+        _frame.add(_canvas);
+        _frame.setSize(320, 240);
+        _frame.setUndecorated(true);
+        int size = _frame.getExtendedState();
         //size |= Frame.MAXIMIZED_BOTH;
-        frame.setExtendedState(size);
-        frame.setResizable(true);
+        _frame.setExtendedState(size);
+        _frame.setResizable(true);
        
-        
-        
-        
-        frame.addWindowListener(new WindowAdapter() {
+        _frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 bQuit = true;
             }
         });
-        frame.setVisible(true);
+        _frame.setVisible(true);
 //      frame.show();
-        canvas.requestFocus();
-        while( !bQuit ) {
-            canvas.display();
-        }
+        _canvas.requestFocus();
     }
+
+    public void wrapup() throws IllegalActionException {
+        _animator.stop();
+        _frame.dispose();
+    }
+    
+    Animator _animator;
+    Frame _frame;
+    GLCanvas _canvas;
 }

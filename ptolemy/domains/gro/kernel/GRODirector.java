@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.gro.kernel;
 
-import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -43,9 +42,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -56,7 +53,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRReceiver;
-import ptolemy.domains.gr.kernel.GRScheduler;
 import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -65,7 +61,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -179,15 +174,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         return newObject;
     }
 
-    /** Override the super class method. This method does nothing and
-     *  everything is postponed to the postfire() method. This assures
-     *  that inputs are stable.
-     */
-    public void fire() throws IllegalActionException {
-        // do nothing.
-        // Everything is postponed to the postfire() method.
-    }
-
     /** Schedule a firing of the given actor at the given time.
      *  If there is an executive director, this method delegates to it.
      *  Otherwise, it sets its own notion of current time to that
@@ -296,41 +282,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         
         _stopIteration = ((IntToken) ((ArrayToken) 
                 (iterationInterval.getToken())).getElement(1)).intValue();
-        
 
-        // Get the ViewScreen.
-        ViewScreenInterface viewScreen = _getViewScreen();
-
-        Actor container = (Actor) getContainer();
-        while (viewScreen == null) {
-            // Tolerate GR nested within GR, in which case
-            // the view screen should be that of the enclosing composite.
-            // There could be an intervening FSMDirector, etc.
-            Director executiveDirector = container.getExecutiveDirector();
-            if (executiveDirector instanceof GRODirector) {
-
-                // FIXME: We want to enhance this to handle multiple ViewScreens
-                viewScreen = ((GRODirector)executiveDirector)._getViewScreen();
-            } else {
-                if (executiveDirector == null) {
-                    throw new IllegalActionException(this,
-                            "GR model does not contain a view screen.");
-                }
-                container = (Actor) container.getContainer();
-            }
-        }
-
-        // Set the view screen for all the actors.
-        Iterator actors = ((TypedCompositeActor)container)
-                .deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            NamedObj actor = (NamedObj) actors.next();
-
-            if (actor instanceof GROActor) {
-                ((GROActor) actor)._setViewScreen((GROActor) viewScreen);
-            }
-        }
     }
 
     /** Process the mutation that occurred.  Reset this director
@@ -346,14 +298,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         // made between ports and/or relations.
         _reset();
         super.invalidateSchedule();
-    }
-
-    /** Return a new receiver consistent with the GR domain.
-     *
-     *  @return A new GRReceiver.
-     */
-    public Receiver newReceiver() {
-        return new GRReceiver();
     }
 
     /** Iterate all actors under control of this director and fire them.
@@ -372,7 +316,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         // Iterate all actors under control of this director and fire them.
         // This is done in postfire() to ensure that all inputs are stable.
 
-        _fire();
+        //_fire();
 
         // Have to transfer outputs! Presumably outputs are only
         // instances of SceneGraphToken going to a higher-level
@@ -427,7 +371,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
         if (scheduler == null) {
             throw new IllegalActionException("Attempted to initialize "
-                    + "GR system with no scheduler");
+                    + "GRO system with no scheduler");
         }
 
         // force the schedule to be computed.
@@ -614,32 +558,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         }
     }
 
-    /** Return the one view screen in the model under the control
-     *  of this director.
-     *  @return The one view screen.
-     *  @exception IllegalActionException If there is more than one
-     *   view screen.
-     */
-    private ViewScreenInterface _getViewScreen() throws IllegalActionException {
-        ViewScreenInterface viewScreen = null;
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        Iterator actors = container.deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Object actor = actors.next();
-
-            if (actor instanceof ViewScreenInterface) {
-                if (viewScreen != null) {
-                    throw new IllegalActionException(this,
-                            "GR model cannot contain more than one view screen.");
-                }
-
-                viewScreen = (ViewScreenInterface) actor;
-            }
-        }
-        return viewScreen;
-    }
-
     /** Most of the constructor initialization is relegated to this method.
      *  Initialization process includes :
      *    - create a new actor table to cache all actors contained
@@ -648,20 +566,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
      *    - set period value
      */
     private void _init() {
-        try {
-            // If Java3D is not present, then this class is usually
-            // the class that is reported as missing.
-            Class.forName("javax.vecmath.Tuple3f");
-        } catch (Exception ex) {
-            throw new InternalErrorException(
-                    this,
-                    ex,
-                    "The GR domain requires that Java 3D be installed.\n"
-                            + "Java 3D can be downloaded from\n"
-                            + "http://java.sun.com/products/java-media/3D/\n"
-                            + "For details see $PTII/ptolemy/domains/gr/main.htm");
-        }
-
         try {
             Scheduler scheduler = new Scheduler(workspace());
             setScheduler(scheduler);
@@ -674,7 +578,8 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         }
 
         try {
-            iterationInterval = new Parameter(this, "iterationInterval", new IntToken(0));
+            iterationInterval = new Parameter(this, "iterationInterval");
+            iterationInterval.setExpression("{0, 1000}");
             iterationInterval.setTypeEquals(new ArrayType(BaseType.INT, 2));
             iterationTimeLowerBound = new Parameter(this,
                     "iterationTimeLowerBound", new IntToken(33));
@@ -713,12 +618,24 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
     private int _stopIteration = 0;
 
-    public void display(GLAutoDrawable arg0) {
+    float rotateT = 0.0f;
+
+    public void display(GLAutoDrawable gLDrawable) {
     
         try {
+            rotateT += 0.2;
+            
+            _gl = gLDrawable.getGL();
             _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
             _gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
             _gl.glLoadIdentity();
+            _gl.glTranslatef(0.0f, 0.0f, -5.0f);
+            
+            _gl.glRotatef(rotateT, 1.0f, 0.0f, 0.0f);
+            _gl.glRotatef(rotateT, 0.0f, 1.0f, 0.0f);
+            _gl.glRotatef(rotateT, 0.0f, 0.0f, 1.0f);
+            _gl.glRotatef(rotateT, 0.0f, 1.0f, 0.0f);
+
             fire();
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
@@ -736,7 +653,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
     public void init(GLAutoDrawable gLDrawable) {
         _gl = gLDrawable.getGL();
-      
         _gl.glShadeModel(GL.GL_SMOOTH);
         _gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         _gl.glClearDepth(1.0f);
@@ -744,9 +660,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         _gl.glDepthFunc(GL.GL_LEQUAL);
         _gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, 
         GL.GL_NICEST);
-       
         //gLDrawable.addKeyListener(this);
-        
     }
     
     public GL getGL() {
