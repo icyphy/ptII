@@ -236,4 +236,8 @@ public class HyperedgeConnectionTree {
 	public List<HyperedgeConnectionTree> subTreeList(){
 		return _subTrees;
 	}
+	
+	public Set<KEdge> commonEdgeSet(){
+		return _commonEdges;
+	}
 }
