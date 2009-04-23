@@ -991,51 +991,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // Run the pass over the code after pseudo preprocessing
         code = super._finalPassOverCode(code);
 
-        if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
-
-            String filename = _getOutputFilename();
-            //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
-
-            tokenizer = new StringTokenizer(code.toString(),
-                    _eol);
-
-            code = new StringBuffer();
-
-            String lastLine = null;
-            if (tokenizer.hasMoreTokens()) {
-                lastLine = tokenizer.nextToken();
-            }
-
-            for (int i = 2; tokenizer.hasMoreTokens();) {
-                String line = tokenizer.nextToken();
-                if (lastLine.trim().length() == 0) {
-                    lastLine = line;
-                } else if (line.trim().length() == 0) {
-                    // Get another line.
-                } else {
-                    if (lastLine.trim().startsWith("#line")) {
-                        if (!line.trim().startsWith("#line")) {
-                            code.append(lastLine + _eol);
-                            i++;
-                        }
-                    } else {
-                        code.append(lastLine + _eol);
-                        i++;
-
-                        if (!line.trim().startsWith("#line")) {
-                            code.append("#line " + i++ + " \"" + filename
-                                    + "\"" + _eol);
-                        }
-                    }
-                    lastLine = line;
-                }
-            }
-
-            if (lastLine != null && lastLine.trim().length() != 0) {
-                code.append(lastLine + _eol);
-            }
-        }
-
         return code;
     }
 

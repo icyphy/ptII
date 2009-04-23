@@ -38,7 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -913,8 +913,8 @@ public class CodeStream {
     private boolean _needLineInfo() throws IllegalActionException {
         Token sourceLineBinding = null;
 
-        if (_codeGenerator instanceof ProceduralCodeGenerator) {
-            sourceLineBinding = ((ProceduralCodeGenerator) _codeGenerator).sourceLineBinding.getToken();
+        if (_codeGenerator instanceof CCodeGenerator) {
+            sourceLineBinding = ((CCodeGenerator) _codeGenerator).sourceLineBinding.getToken();
         } else {
             return false;
         }

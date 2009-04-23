@@ -91,6 +91,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         generateCpp.setTypeEquals(BaseType.BOOLEAN);
         generateCpp.setExpression("false");
 
+        sourceLineBinding = new Parameter(this, "sourceLineBinding");
+        sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
+        sourceLineBinding.setExpression("false");
 
         generatorPackageList.setExpression("generic.program.procedural.c");
     }
@@ -108,6 +111,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public Parameter generateCpp;
 
+    /** If true, then the generated source is bound to the line
+     *  number and file of the (adapter) templates. Otherwise, the
+     *  source is bound only to the output file. This is a boolean
+     *  parameter with default value false.
+     */
+    public Parameter sourceLineBinding;
+        
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
