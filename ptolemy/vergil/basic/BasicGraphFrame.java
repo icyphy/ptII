@@ -874,7 +874,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return _jgraph;
     }
 
-    /** Return the JCanvasPanner instance
+    /** Return the JCanvasPanner instance.
      *  @return the JCanvasPanner
      */
     public JCanvasPanner getGraphPanner() {

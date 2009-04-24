@@ -65,7 +65,7 @@ public class DecoratedAttribute {
     // and decorated attributes have to be treated in a special way.
     
     /** Construct a DecoratedAttribute from the name of the decorator and an attribute
-     * (the actual decorated attribute)
+     * (the actual decorated attribute).
      * @param decorator The decorator.
      * @param attribute The actual decorated attribute. 
      */

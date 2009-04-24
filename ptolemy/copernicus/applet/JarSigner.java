@@ -83,7 +83,7 @@ public class JarSigner {
      *  cd $PTII
      *  make ptKeystore
      *  make jnlp_list
-     *  <pre>
+     *  </pre>
      *  <p>Usage:
      *  <pre>
      *  java -classpath $PTII ptolemy.copernicus.applet.JarSigner JNLPApplication.jar JNLPSignedApplication.jar
@@ -92,6 +92,9 @@ public class JarSigner {
      *  <pre>
      *  jarsigner -verify -verbose -certs JNLPSignedApplication.jar
      *  </pre>
+     *  @param args An array of two arguments, the first element is the name of the jar file
+     *  to be read in, the second is the name of the signed jar file to be created.
+     
      */
     public static void main(String args[]) {
         if (args.length != 2) {
@@ -123,6 +126,8 @@ public class JarSigner {
      *  @param alias The alias of the certificate.  This is the string used when the key is created.
      *  @param storePassword  The password of the key store.
      *  @param keyPassword  The password of the key store.
+     *  @exception Exception  If there is a problem open or closing files, or a problem signing
+     *  the jar file.
      */
     public static void sign(String jarFileName, String signedJarFileName, String keystoreFileName, String alias, char[] storePassword, char[] keyPassword) throws Exception {
         FileInputStream fileIn = null;
@@ -309,6 +314,21 @@ public class JarSigner {
 
     /** The actual JAR signing method. This is the method which
      * will be called by those wrapping the JARSigner class.
+     * @param jarFile The jar file to be read in and signed.
+     * @param outputStream  The stream to which the signed jar file should  be written.
+     * @throws NoSuchAlgorithmException If the SHA1 algorithm cannot be found or there
+     * is a problem generating the block.
+     * @throws InvalidKeyException If the certificate key is not valid.
+     * @throws SignatureException If there is a problem with the signature.
+     * @throws IOException If there is a problem reading or writing a file.
+     * @throws IllegalAccessException If there is a problem getting the metaname from the
+     * the signature file.
+     * @throws InvocationTargetException If there is a problem creating the signature file
+     * or getting the metaname from the signature.
+     * @throws NoSuchMethodException If thrown while creating the signature file.
+     * @throws CertificateException If there is a problem generating the block.
+     * @throws InstantiationException If thrown while creating the signature file.
+     * @throws ClassNotFoundException If thrown while generating the signature block.
      */
     public void _signJarFile(JarFile jarFile, OutputStream outputStream)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, CertificateException, InstantiationException, ClassNotFoundException {

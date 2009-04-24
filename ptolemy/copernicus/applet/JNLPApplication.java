@@ -58,6 +58,10 @@ import ptolemy.actor.gui.jnlp.MenuApplication;
  @Pt.AcceptedRating Red (cxh)
  */
 public class JNLPApplication extends MenuApplication {
+    /* Main method that sets user.dir as necessary and calls
+     * VergilApplication.main()
+     * @param args Arguments to be passed on to VergilApplication.main()
+     */
     public static void main(final String[] args) {
         // See the class comment of MenuApplication
         // about why we set the security manager to null.
