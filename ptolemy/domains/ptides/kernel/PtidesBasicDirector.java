@@ -1040,7 +1040,7 @@ public class PtidesBasicDirector extends DEDirector {
             // if we transferred once to the network output, then return true,
             // and go through this once again.
             while (true) {
-                if (!_transferNetworkOutputs(port)) {
+                if (!super._transferOutputs(port)) {
                     break;
                 }
             }
@@ -1197,48 +1197,6 @@ public class PtidesBasicDirector extends DEDirector {
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }
-    }
-    
-    /** This function is basically the same as _transferOutputs(). We simply trasfer
-     *  the output outside of the platform. We return true if a transfer happened, and
-     *  false if no token is available for transfer.
-     */
-    private boolean _transferNetworkOutputs(IOPort port)
-            throws IllegalActionException {
-        boolean result = false;
-        if (_debugging) {
-            _debug("Calling transferNetworkingOutputs on port: " + port.getFullName());
-        }
-
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferNetworkingOutputs on a port that "
-                    + "is not an opaque input port.");
-        }
-
-        for (int i = 0; i < port.getWidthInside(); i++) {
-            try {
-                if (port.hasTokenInside(i)) {
-                    Token t = port.getInside(i);
-
-                    if (_debugging) {
-                        _debug(getName(), "currentPhysicalTime = "
-                                + _getPhysicalTime()
-                                + "; transferring networking output "
-                                + t
-                                + " from "
-                                + port.getName());
-                    }
-
-                    port.send(i, t);
-                    result = true;
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
