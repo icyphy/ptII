@@ -89,7 +89,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * Create a new instance of the C code generator helper.
      * @param component The actor object for this helper.
      */
-    public CCodeGeneratorHelper(NamedObj component) {
+    public CCodeGeneratorHelper(Object component) {
         super(component);
         _parseTreeCodeGenerator = getParseTreeCodeGenerator();
     }
