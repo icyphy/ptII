@@ -80,6 +80,9 @@ public class AnalyzerAttribute extends Attribute {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                   ports and parameters                    ////
+
     public Parameter action;
 
     public Parameter highlight;
@@ -98,6 +101,9 @@ public class AnalyzerAttribute extends Attribute {
      */
     public Parameter showProperty;
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public String analyze(CompositeEntity entity)
     throws IllegalActionException {
@@ -274,6 +280,9 @@ public class AnalyzerAttribute extends Attribute {
     
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
     private void _addChoices() throws IllegalActionException {
     
         List<Class> solvers =
@@ -299,6 +308,9 @@ public class AnalyzerAttribute extends Attribute {
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
 
     private List<Class> _solvers = new LinkedList<Class>();
 

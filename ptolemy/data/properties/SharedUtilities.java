@@ -48,7 +48,7 @@ public class SharedUtilities {
         // need to be reset when cloned. Otherwise, it will lead
         // to bugs that are hard to detect, and inconsistency
         // will occur.
-        id = count++;
+        _id = _count++;
     }
 
     /**
@@ -114,7 +114,7 @@ public class SharedUtilities {
 
     /**
      * Clear and return the previously recorded errors.
-     * @return The previously recorded errors.
+     * @return The list of previously recorded errors.
      */
     public List removeErrors() {
         List result = new ArrayList(_errors);
@@ -138,7 +138,7 @@ public class SharedUtilities {
      * Return the representation for the SharedUtilities object.
      */
     public String toString() {
-        String result = "sharedUtilities#" + id;
+        String result = "sharedUtilities#" + _id;
         return result;
     }
 
@@ -151,6 +151,8 @@ public class SharedUtilities {
     protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
         _attributes.put(node, attribute);
     }
+
+    protected PropertySolver _previousInvokedSolver = null;
 
     /**
      * The set of solvers that have already been invoked.
@@ -165,8 +167,7 @@ public class SharedUtilities {
 
     private ArrayList<String> _errors = new ArrayList<String>();
 
-    protected PropertySolver _previousInvokedSolver = null;
+    private static int _count = 0;
 
-    public int id;
-    public static int count = 0;
+    private int _id;
 }
