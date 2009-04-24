@@ -31,11 +31,35 @@ public class Box3D extends GROActor {
         }
         GL gl = ((GRODirector) getDirector()).getGL();
         gl.glBegin(GL.GL_QUADS); 
+        
         gl.glColor3f(0.3f, 0.7f, 0.3f); 
-        gl.glVertex3f(-1.0f, 0.0f,  1.0f); 
-        gl.glVertex3f( 1.0f, 0.0f,  1.0f); 
-        gl.glVertex3f( 1.0f, 0.0f, -1.0f); 
-        gl.glVertex3f(-1.0f, 0.0f, -1.0f); 
+      
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f);  // Bottom Face
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);  // Front Face
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+
+   
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f);  // Back Face
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);
+
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);  // Right face
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);
+
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f);  // Left Face
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+        
         gl.glEnd();
     }
 
