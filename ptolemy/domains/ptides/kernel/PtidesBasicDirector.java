@@ -31,19 +31,25 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.kernel;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -54,6 +60,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
@@ -103,6 +110,270 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
+    /** Advance the current model tag to that of the earliest event in
+     *  the event queue, and fire all actors that have requested or
+     *  are triggered to be fired at the current tag. If
+     *  <i>synchronizeToRealTime</i> is true, then before firing, wait
+     *  until real time matches or exceeds the timestamp of the
+     *  event. Note that the default unit for time is seconds.
+     *  <p>
+     *  Each actor is fired repeatedly (prefire(), fire()),
+     *  until either it has no more input tokens, or its prefire() method
+     *  returns false. Note that if the actor fails to consume its
+     *  inputs, then this can result in an infinite loop.
+     *  Each actor that is fired is then postfired once at the
+     *  conclusion of the iteration.
+     *  </p><p>
+     *  If there are no events in the event queue, then the behavior
+     *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
+     *  false, then this thread will stall until events become
+     *  available in the event queue. Otherwise, time will advance to
+     *  the stop time and the execution will halt.</p>
+     *
+     *  @exception IllegalActionException If the firing actor throws it, or
+     *   event queue is not ready, or an event is missed, or time is set
+     *   backwards.
+     */
+    public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("========= DE director fires at " + getModelTime()
+                    + "  with microstep as " + _microstep);
+        }
+
+        // NOTE: This fire method does not call super.fire()
+        // because this method is very different from that of the super class.
+        // A BIG while loop that handles all events with the same tag.
+        while (true) {
+            // Find the next actor to be fired.
+            Actor actorToFire = _getNextActorToFire();
+
+            // Check whether the actor to be fired is null.
+            // -- If the actor to be fired is null,
+            // There are two conditions that the actor to be fired
+            // can be null.
+            if (actorToFire == null) {
+                if (_isTopLevel()) {
+                    // Case 1:
+                    // If this director is an executive director at
+                    // the top level, a null actor means that there are
+                    // no events in the event queue.
+                    if (_debugging) {
+                        _debug("No more events in the event queue.");
+                    }
+
+                    // Setting the following variable to true makes the
+                    // postfire method return false.
+                    // Do not do this if _stopFireRequested is true,
+                    // since there may in fact be actors to fire, but
+                    // their firing has been deferred.
+                    if (!_stopFireRequested) {
+                        _noMoreActorsToFire = true;
+                    }
+                } else {
+                    // Case 2:
+                    // If this director belongs to an opaque composite model,
+                    // which is not at the top level, the director may be
+                    // invoked by an update of an external parameter port.
+                    // Therefore, no actors contained by the composite model
+                    // need to be fired.
+                    // NOTE: There may still be events in the event queue
+                    // of this director that are scheduled for future firings.
+                    if (_debugging) {
+                        _debug("No actor requests to be fired "
+                                + "at the current tag.");
+                    }
+                }
+                // Nothing more needs to be done in the current iteration.
+                // Simply return.
+                // Since we are now actually stopping the firing, we can set this false.
+                _stopFireRequested = false;
+                return;
+            }
+
+            // -- If the actor to be fired is not null.
+            // If the actor to be fired is the container of this director,
+            // the next event to be processed is in an inside receiver of
+            // an output port of the container. In this case, this method
+            // simply returns, and gives the outside domain a chance to react
+            // to that event.
+            // NOTE: Topological sort always assigns the composite actor the
+            // lowest priority. This guarantees that all the inside actors
+            // have fired (reacted to their triggers) before the composite
+            // actor fires.
+            if (actorToFire == getContainer()) {
+                // Since we are now actually stopping the firing, we can set this false.
+                _stopFireRequested = false;
+                return;
+            }
+
+            if (_debugging) {
+                _debug("****** Actor to fire: " + actorToFire.getFullName());
+            }
+
+            // Keep firing the actor to be fired until there are no more input
+            // tokens available in any of its input ports with the same tag, or its prefire()
+            // method returns false.
+            boolean refire;
+
+            do {
+                refire = false;
+
+                // NOTE: There are enough tests here against the
+                // _debugging variable that it makes sense to split
+                // into two duplicate versions.
+                if (_debugging) {
+                    // Debugging. Report everything.
+                    // If the actor to be fired is not contained by the container,
+                    // it may just be deleted. Put this actor to the
+                    // list of disabled actors.
+                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
+                        _debug("Actor no longer under the control of this director. Disabling actor.");
+                        _disableActor(actorToFire);
+                        break;
+                    }
+
+                    _debug(new FiringEvent(this, actorToFire,
+                            FiringEvent.BEFORE_PREFIRE));
+
+                    if (!actorToFire.prefire()) {
+                        _debug("*** Prefire returned false.");
+                        break;
+                    }
+
+                    _debug(new FiringEvent(this, actorToFire,
+                            FiringEvent.AFTER_PREFIRE));
+
+                    _debug(new FiringEvent(this, actorToFire,
+                            FiringEvent.BEFORE_FIRE));
+                    actorToFire.fire();
+                    _debug(new FiringEvent(this, actorToFire,
+                            FiringEvent.AFTER_FIRE));
+
+                    _debug(new FiringEvent(this, actorToFire,
+                            FiringEvent.BEFORE_POSTFIRE));
+
+                    if (!actorToFire.postfire()) {
+                        _debug("*** Postfire returned false:",
+                                ((Nameable) actorToFire).getName());
+
+                        // This actor requests not to be fired again.
+                        _disableActor(actorToFire);
+                        break;
+                    }
+
+                    _debug(new FiringEvent(this, actorToFire,
+                            FiringEvent.AFTER_POSTFIRE));
+                } else {
+                    // No debugging.
+                    // If the actor to be fired is not contained by the container,
+                    // it may just be deleted. Put this actor to the
+                    // list of disabled actors.
+                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
+                        _disableActor(actorToFire);
+                        break;
+                    }
+
+                    if (!actorToFire.prefire()) {
+                        break;
+                    }
+
+                    actorToFire.fire();
+
+                    // NOTE: It is the fact that we postfire actors now that makes
+                    // this director not comply with the actor abstract semantics.
+                    // However, it's quite a redesign to make it comply, and the
+                    // semantics would not be backward compatible. It really needs
+                    // to be a new director to comply.
+                    if (!actorToFire.postfire()) {
+                        // This actor requests not to be fired again.
+                        _disableActor(actorToFire);
+                        break;
+                    }
+                }
+
+                // Check all the input ports of the actor to see whether there
+                // are more input tokens to be processed.
+                // FIXME: This particular situation can only occur if either the
+                // actor failed to consume a token, or multiple
+                // events with the same destination were queued with the same tag.
+                // In theory, both are errors. One possible fix for the latter
+                // case would be to requeue the token with a larger microstep.
+                // A possible fix for the former (if we can detect it) would
+                // be to throw an exception. This would be far better than
+                // going into an infinite loop.
+                Iterator<?> inputPorts = actorToFire.inputPortList().iterator();
+
+                while (inputPorts.hasNext() && !refire) {
+                    IOPort port = (IOPort) inputPorts.next();
+
+                    // iterate all the channels of the current input port.
+                    for (int i = 0; i < port.getWidth(); i++) {
+                        if (port.hasToken(i)) {
+                            refire = true;
+
+                            // Found a channel that has input data,
+                            // jump out of the for loop.
+                            break;
+                        }
+                    }
+                }
+            } while (refire); // close the do {...} while () loop
+            // NOTE: On the above, it would be nice to be able to
+            // check _stopFireRequested, but this doesn't actually work.
+            // In particular, firing an actor may trigger a call to stopFire(),
+            // for example if the actor makes a change request, as for example
+            // an FSM actor will do.  This will prevent subsequent firings,
+            // incorrectly.
+
+            // The following code enforces that a firing of a
+            // DE director only handles events with the same tag.
+            // If the earliest event in the event queue is in the future,
+            // this code terminates the current iteration.
+            // This code is applied on both embedded and top-level directors.
+            synchronized (_eventQueue) {
+                if (!_eventQueue.isEmpty()) {
+                    DEEvent next = _eventQueue.get();
+
+                    if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
+                        // If the next event is in the future time,
+                        // jump out of the big while loop and
+                        // proceed to postfire().
+                        // NOTE: we reset the microstep to 0 because it is
+                        // the contract that if the event queue has some events
+                        // at a time point, the first event must have the
+                        // microstep as 0. See the
+                        // _enqueueEvent(Actor actor, Time time) method.
+                        _microstep = 0;
+                        break;
+                    } else if (next.microstep() > _microstep) {
+                        // If the next event is has a bigger microstep,
+                        // jump out of the big while loop and
+                        // proceed to postfire().
+                        break;
+                    } else if (next.timeStamp().compareTo(getModelTime()) < 0) {
+                        _microstep = 0;
+                        break;
+                    } else if (next.microstep() < _microstep) {
+                        // FIXME: what should happen in this case??
+                        break;
+                    } else {
+                        // The next event has the same tag as the current tag,
+                        // indicating that at least one actor is going to be
+                        // fired at the current iteration.
+                        // Continue the current iteration.
+                    }
+                }
+            }
+        } // Close the BIG while loop.
+
+        // Since we are now actually stopping the firing, we can set this false.
+        _stopFireRequested = false;
+
+        if (_debugging) {
+            _debug("DE director fired!");
+        }
+    }
+    
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
@@ -112,9 +383,11 @@ public class PtidesBasicDirector extends DEDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
-        sensorEventQueue = new PriorityQueue<RealTimeEvent>();
-        actuatorEventQueue = new PriorityQueue<RealTimeEvent>();
+        realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
+        realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
         _physicalTimeExecutionStarted = null;
+        
+        // _calculateModelTimeOffsets();
 
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
@@ -580,9 +853,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  For all events that are currently sitting at the input port, if the realTimeDelay
      *  is 0.0, then transfer them into the platform, otherwise move them into the 
      *  sensorEventQueue and call fireAt() of the executive director.
-     *  In either case, if the input port is a networkPort, we make sure the data token
-     *  transmitted is stripped of the previous timestamp. Instead, the timestamp is
-     *  used to set the timestamp of the event associated with this token.
+     *  In either case, if the input port is a networkPort, we make sure the timestamp of
+     *  the data token transmitted is set to the timestamp of the local event associated 
+     *  with this token.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
@@ -608,18 +881,18 @@ public class PtidesBasicDirector extends DEDirector {
         // in the order of the timestamps, but for two events of the same timestamp at an
         // actuator, there's no guarantee on the order of events sent to the outside.
         while (true) {
-            if (sensorEventQueue.isEmpty()) {
+            if (realTimeOutputEventQueue.isEmpty()) {
                 break;
             }
 
-            RealTimeEvent tokenEvent = (RealTimeEvent)sensorEventQueue.peek();
-            int compare = tokenEvent.deliveryTime.compareTo(physicalTime);
+            RealTimeEvent realTimeEvent = (RealTimeEvent)realTimeOutputEventQueue.peek();
+            int compare = realTimeEvent.deliveryTime.compareTo(physicalTime);
             
             if (compare > 0) {
                 break;
             } else if (compare == 0) {
                 // FIXME: Are these needed here? 
-                Parameter parameter = (Parameter)((NamedObj) tokenEvent.port).getAttribute("realTimeDelay");
+                Parameter parameter = (Parameter)((NamedObj) realTimeEvent.port).getAttribute("realTimeDelay");
                 double realTimeDelay = 0.0;
                 if (parameter != null) {
                     realTimeDelay = ((DoubleToken)parameter.getToken()).doubleValue();
@@ -629,32 +902,33 @@ public class PtidesBasicDirector extends DEDirector {
                 }
                 
                 Time lastModelTime = _currentTime;
-                if (_isNetworkPort(tokenEvent.port)) {
-                    TimedToken timedToken = (TimedToken)(tokenEvent.token);
-                    // the timestamp of this network token is preserved from the last platform
-                    setModelTime(timedToken.getTimestamp());
-                    sensorEventQueue.poll();
-                    tokenEvent.port.sendInside(tokenEvent.channel, timedToken.getTokenValue());
+                if (_isNetworkPort(realTimeEvent.port)) {
+                    // If the token is transferred from a network port, then there is no need to
+                    // set the proper timestamp associated with the token. This is because we rely
+                    // on the fact every network input port is directly connected to a networkReceiver,
+                    // which will set the correct timestamp associated with the token.
+                    realTimeOutputEventQueue.poll();
+                    realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
                 } else {                
-                    setModelTime(tokenEvent.deliveryTime.subtract(realTimeDelay));
-                    sensorEventQueue.poll();
-                    tokenEvent.port.sendInside(tokenEvent.channel, tokenEvent.token);
+                    setModelTime(realTimeEvent.deliveryTime.subtract(realTimeDelay));
+                    realTimeOutputEventQueue.poll();
+                    realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
+                    setModelTime(lastModelTime);
                 }
                 if (_debugging) {
                     _debug(getName(), "transferring input from "
-                            + tokenEvent.port.getName());
+                            + realTimeEvent.port.getName());
                 }
                 result = true;
-                setModelTime(lastModelTime);
                 
             } else {
                 // FIXME: we should probably do something else here.
                 throw new IllegalArgumentException("missed transferring at the sensor. " +
                 		"Should transfer input at time = "
-                        + tokenEvent.deliveryTime + ", and current physical time = " + physicalTime);
+                        + realTimeEvent.deliveryTime + ", and current physical time = " + physicalTime);
             }
         }
-        
+
         Parameter parameter = (Parameter)((NamedObj) port).getAttribute("realTimeDelay");
         // realTimeDelay is default to 0.0;
         double realTimeDelay = 0.0;
@@ -664,7 +938,11 @@ public class PtidesBasicDirector extends DEDirector {
         if (realTimeDelay == 0.0) {
             Time lastModelTime = _currentTime;
             if (_isNetworkPort(port)) {
-                _transferNetworkInputs(port);
+                // If the token is transferred from a network port, then there is no need to
+                // set the proper timestamp associated with the token. This is because we rely
+                // on the fact every network input port is directly connected to a networkReceiver,
+                // which will set the correct timestamp associated with the token.
+                super._transferInputs(port);
             } else {
                 setModelTime(physicalTime);
                 result = result || super._transferInputs(port);
@@ -678,10 +956,10 @@ public class PtidesBasicDirector extends DEDirector {
                             Token t = port.get(i);
                             Time waitUntilTime = physicalTime.add(realTimeDelay);
                             RealTimeEvent realTimeEvent = new RealTimeEvent(port, i, t, waitUntilTime);
-                            sensorEventQueue.add(realTimeEvent);
+                            realTimeOutputEventQueue.add(realTimeEvent);
                             result = true;
                             
-                            // wait until physical time to transfer the output to the actuator
+                            // wait until physical time to transfer the token into the platform
                             Actor container = (Actor) getContainer();
                             container.getExecutiveDirector().fireAt((Actor)container, waitUntilTime);
                         }
@@ -698,8 +976,6 @@ public class PtidesBasicDirector extends DEDirector {
     /** Overwrite the _transferOutputs() function.
      *  First, for tokens that are stored in the actuator event queue and
      *  send them to the outside of the platform if physical time has arrived.
-     *  If in either of the last two cases we have sent data to the outside, then we should return
-     *  true, otherwise return false.
      *  The second step is to check if this port is a networkedOutput port, if it is, transfer
      *  data tokens immediately to the outside by calling _transferNetworkingOutputs().
      *  Finally, we check for current model time, if the current model time is equal to the physical
@@ -729,10 +1005,10 @@ public class PtidesBasicDirector extends DEDirector {
         // in the order of the timestamps, but for two events of the same timestamp at an
         // actuator, there's no guarantee on the order of events sent to the outside.
         while (true) {
-            if (actuatorEventQueue.isEmpty()) {
+            if (realTimeInputEventQueue.isEmpty()) {
                 break;
             }
-            RealTimeEvent tokenEvent = (RealTimeEvent)actuatorEventQueue.peek();
+            RealTimeEvent tokenEvent = (RealTimeEvent)realTimeInputEventQueue.peek();
             compare = tokenEvent.deliveryTime.compareTo(physicalTime);
             
             if (compare > 0) {
@@ -742,7 +1018,7 @@ public class PtidesBasicDirector extends DEDirector {
                     throw new IllegalActionException("transferring network event from the"
                             + "actuator event queue");
                 }
-                actuatorEventQueue.poll();
+                realTimeInputEventQueue.poll();
                 tokenEvent.port.send(tokenEvent.channel, tokenEvent.token);
                 if (_debugging) {
                     _debug(getName(), "transferring output "
@@ -791,7 +1067,7 @@ public class PtidesBasicDirector extends DEDirector {
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
                         RealTimeEvent tokenEvent = new RealTimeEvent(port, i, t, _currentTime);
-                        actuatorEventQueue.add(tokenEvent);
+                        realTimeInputEventQueue.add(tokenEvent);
                         // wait until physical time to transfer the output to the actuator
                         Actor container = (Actor) getContainer();
                         container.getExecutiveDirector().fireAt((Actor)container, _currentTime);
@@ -808,6 +1084,92 @@ public class PtidesBasicDirector extends DEDirector {
     
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
+    
+    /** Causality analysis that happens at the initialization phase.
+     *  The goal is to annotate each port with a minDelay parameter,
+     *  which is the offset used for safe to process analysis.
+     *  
+     *  Start from each input port that is connected to the outside of the platform
+     *  (These input ports indicate sensors and network interfaces), and traverse
+     *  the graph until we reach the output port connected to the outside of
+     *  the platform (actuators). For each input port in between, first calcualte
+     *  the real time delay - model time delay from the sensor/network to the input
+     *  port. Then for each actor, calculate the minimum model time offset by
+     *  studying the real time delay - model time delay values at each of its input
+     *  ports. Finally annotate the offset as the minDelay.
+     *  @throws IllegalActionException 
+     */
+    private boolean _calculateModelTimeOffsets() throws IllegalActionException {
+        
+        // FIXME: If there are composite actors within the top level composite actor, 
+        // does this algorithm work? 
+        // initialize all port model delays to infinity.
+        HashMap portDelays = new HashMap<IOPort, Time>();
+        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
+                portDelays.put(inputPort, new Time(this, Double.MAX_VALUE));
+            }
+            for (TypedIOPort outputPort : (List<TypedIOPort>)(actor.outputPortList())) {
+                portDelays.put(outputPort, new Time(this, Double.MAX_VALUE));
+            }
+        }
+        
+        // Now start from each sensor (input port at the top level), traverse through all
+        // ports.
+        for (TypedIOPort startPort : (List<TypedIOPort>)(((TypedCompositeActor)getContainer()).portList())) {
+            if (startPort.isInput()) {
+                // Setup a local priority queue to store all reached ports
+                HashMap localPortDelays = new HashMap<IOPort, Time>(portDelays);
+                
+                PriorityQueue distQueue = new PriorityQueue<TimedEvent>();
+                Time timeDelay = new Time(this, -_getMinDelay(startPort));
+                distQueue.add(new TimedEvent(timeDelay, startPort));
+
+                // Dijkstra's algorithm to find all shortest time delays.
+                while (!distQueue.isEmpty()) {
+                    IOPort port = (IOPort)((TimedEvent)distQueue.remove()).contents;
+                    Time prevModelTime = (Time)localPortDelays.get(port);
+                    Actor actor = (Actor)port.getContainer();
+                    if (port.isInput() && port.isOutput()){
+                        throw new IllegalActionException("the causality anlysis cannot deal with" +
+                        		"port that are both input and output");
+                    }
+                    // we do not want to traverse to the outside of the platform.
+                    if (actor != getContainer()) {
+                        if (port.isInput()) {
+                            // Time modelTimeDelay = 
+                        } else { // port is an output port
+                            for (IOPort sinkPort: (List<IOPort>)port.sinkPortList() ) {
+                                // need to make sure
+                                if (((Time)localPortDelays.get(sinkPort)).compareTo(prevModelTime) > 0) {
+                                    localPortDelays.put(sinkPort, prevModelTime);                                
+                                }
+                            }
+                        }
+                    } // else do nothing
+                }
+                portDelays = localPortDelays;
+            }
+        }
+        
+        // Each port should now have a delay associated with it. Now for each actor, go
+        // through all ports and annotate the minDelay parameter.
+        return true;
+    }
+    
+    /** Returns the minDelay parameter
+     *  @param port
+     *  @return minDelay parameter
+     *  @throws IllegalActionException
+     */
+    private double _getMinDelay(IOPort port) throws IllegalActionException {
+        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
+        if (parameter != null) {
+            return ((DoubleToken)parameter.getToken()).doubleValue();
+        } else {
+            return 0.0;
+        }
+    }
     
     /** check if the port is a networkPort
      *  this method is default to return false, i.e., an output port to the outside of the
@@ -835,70 +1197,9 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
     
-    /** transfer network inputs into the platform. The input token is expected to be
-     *  a timedToken from another network output. During this process, the
-     *  timedToken's timestamp is used as the timestamp of the event, and only
-     *  the tokenValue (actual token) is sent into the platform.
-     *  @param port The port we are transmitting into
-     *  @return true if transmission was successful
-     *  @throws IllegalActionException
-     */
-    private boolean _transferNetworkInputs(IOPort port)
-            throws IllegalActionException {
-        if (_debugging) {
-            _debug("Calling transferNetworkInputs on port: " + port.getFullName());
-        }
-
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferNetworkInputs on a port is not an opaque"
-                            + "input port.");
-        }
-
-        boolean wasTransferred = false;
-
-        for (int i = 0; i < port.getWidth(); i++) {
-            try {
-                if (i < port.getWidthInside()) {
-                    if (port.hasToken(i)) {
-                        TimedToken timedToken = (TimedToken)port.get(i);
-
-                        if (_debugging) {
-                            _debug(getName(), "transferring input from "
-                                    + port.getName());
-                        }
-
-                        Time lastModelTime = _currentTime;
-                        setModelTime(timedToken.getTimestamp());
-
-                        port.sendInside(i, timedToken.getTokenValue());
-                        wasTransferred = true;
-                        
-                        setModelTime(lastModelTime);
-                    }
-                } else {
-                    // No inside connection to transfer tokens to.
-                    // In this case, consume one input token if there is one.
-                    if (_debugging) {
-                        _debug(getName(), "Dropping single input from "
-                                + port.getName());
-                    }
-
-                    if (port.hasToken(i)) {
-                        port.get(i);
-                    }
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-        return wasTransferred;
-    }
-    
-    /** This function is basically the same as _transferOutputs(), but when the output
-     *  data token is transmitted, we transfer a TimedToken instead, so to keep track of
-     *  the timestamp of that token even when it travels outside of the current network. 
+    /** This function is basically the same as _transferOutputs(). We simply trasfer
+     *  the output outside of the platform. We return true if a transfer happened, and
+     *  false if no token is available for transfer.
      */
     private boolean _transferNetworkOutputs(IOPort port)
             throws IllegalActionException {
@@ -919,14 +1220,15 @@ public class PtidesBasicDirector extends DEDirector {
                     Token t = port.getInside(i);
 
                     if (_debugging) {
-                        _debug(getName(), "transferring networking output "
+                        _debug(getName(), "currentPhysicalTime = "
+                                + _getPhysicalTime()
+                                + "; transferring networking output "
                                 + t
                                 + " from "
                                 + port.getName());
                     }
 
-                    Token timedToken = new TimedToken(_currentTime, t);
-                    port.send(i, timedToken);
+                    port.send(i, t);
                     result = true;
                 }
             } catch (NoTokenException ex) {
@@ -945,14 +1247,14 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Stack<DoubleTimedEvent> _currentlyExecutingStack;
 
-    /** a sorted set of RealTimeEvents that buffer events before they are sent to the output.
+    /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
      */
-    private PriorityQueue actuatorEventQueue;
+    private PriorityQueue realTimeInputEventQueue;
     
-    /** a sorted set of RealTimeEvents that buffer events when they arrive at the input of
-     *  the platform, but are not yet visible to the platform yet (because of real time delay d_o)
+    /** a sorted queue of RealTimeEvents that stores events when they arrive at the input of
+     *  the platform, but are not yet visible to the platform (because of real time delay d_o)
      */
-    private PriorityQueue sensorEventQueue;
+    private PriorityQueue realTimeOutputEventQueue;
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
