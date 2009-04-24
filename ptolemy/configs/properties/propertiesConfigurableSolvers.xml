@@ -19,6 +19,7 @@
 		    <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue"
 		              y="20">-A-</text></svg></configure>
 		  </property>
+		  <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
 		</property>
 		
         <property name="PropertyConstraintSolver" class="ptolemy.data.properties.lattice.PropertyConstraintSolver">
