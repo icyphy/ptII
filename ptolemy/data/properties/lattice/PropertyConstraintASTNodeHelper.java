@@ -216,6 +216,10 @@ public class PropertyConstraintASTNodeHelper
         }
         return null;
     }
+    
+    protected ASTPtRootNode _getNode() {
+        return (ASTPtRootNode) getComponent();
+    }
 
     public void setAtLeastByDefault(Object term1, Object term2) {
         setAtLeast(term1, term2);

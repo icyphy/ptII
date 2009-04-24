@@ -30,12 +30,11 @@ package ptolemy.data.properties.lattice.logicalAND.domains.sdf.lib;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Const
+//// SampleDelay
 
 /**
  A helper class for ptolemy.actor.lib.SampleDelay.
@@ -49,11 +48,9 @@ import ptolemy.kernel.util.IllegalActionException;
 public class SampleDelay extends AtomicActor {
 
     /**
-     * Construct a Const helper for the staticDynamic lattice.
-     * This set a permanent constraint for the output port to
-     * be STATIC, but does not use the default actor constraints.
+     * Construct a SampleDelay helper for the logicalAND lattice.
      * @param solver The given solver.
-     * @param actor The given Source actor
+     * @param actor The given SampleDelay actor
      * @exception IllegalActionException
      */
     public SampleDelay(PropertyConstraintSolver solver,
@@ -61,9 +58,10 @@ public class SampleDelay extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-        _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();
      }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                            public methods                 ////
 
     public List<Inequality> constraintList()
             throws IllegalActionException {
@@ -71,13 +69,11 @@ public class SampleDelay extends AtomicActor {
          * interpret the use-case as const/nonconst. By adding partial
          * evaluation a less conservative behavior could be implemented.
          */
-        setAtLeast(_actor.output, _lattice.FALSE);
+        ptolemy.domains.sdf.lib.SampleDelay actor = 
+            (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+        
+        setAtLeast(actor.output, _lattice.getElement("FALSE"));
 
         return super.constraintList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private ptolemy.domains.sdf.lib.SampleDelay _actor;
-    private Lattice _lattice;
 }

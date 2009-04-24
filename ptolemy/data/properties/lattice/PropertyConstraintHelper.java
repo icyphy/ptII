@@ -97,6 +97,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
         setComponent(component);
         _useDefaultConstraints = useDefaultConstraints;
         _solver = solver;
+        _lattice = solver.getLattice();
     }
 
 //    /**
@@ -621,6 +622,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
+    /** The property lattice **/
+    protected PropertyLattice _lattice;
 
     /** Indicate whether this helper uses the default actor constraints. */
     protected boolean _useDefaultConstraints;

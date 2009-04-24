@@ -27,13 +27,11 @@
  */
 package ptolemy.data.properties.lattice.logicalAND.actor.lib;
 
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -64,50 +62,38 @@ public class Source extends AtomicActor {
     throws IllegalActionException {
 
         super(solver, actor, false);
-        _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();
     }
 
-    public Source(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Source actor,
-            boolean useDefaultConstraints)
-    throws IllegalActionException {
-
-        super(solver, actor, useDefaultConstraints);
-        _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                            public methods                 ////
 
     public List<Inequality> constraintList()
     throws IllegalActionException {
+        ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
         // add default constraints if no constraints specified in actor helper
 
         if (_ownConstraints.isEmpty()) {
             // force outputs to FALSE by default; overwrite in actor specific helper class
-            setAtLeast(_actor.output, _lattice.FALSE);
+            setAtLeast(actor.output, _lattice.getElement("FALSE"));
         }
 
         return super.constraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private ptolemy.actor.lib.Source _actor;
-    private Lattice _lattice;
+    ////                         protected methods                 ////
 
     protected void _setEffectiveTerms() {
-        Iterator ports = _actor.portList().iterator();
-        while (ports.hasNext()) {
-            TypedIOPort port = (TypedIOPort) ports.next();
-            if ((port.numLinks() <= 0) &&
-                    (port.isInput()) &&
-                    (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
+        ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
+
+        for (TypedIOPort port : (List<TypedIOPort>) actor.portList()) {
+            if ((port.numLinks() <= 0) && (port.isInput()) &&
+                (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
 
                 if (!isAnnotated(port)) {
                     getPropertyTerm(port).setEffective(false);
                 }
             }
         }
-
     }
 }

@@ -31,7 +31,6 @@ import java.util.List;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -62,7 +61,6 @@ public class EventSource extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-        _lattice = (Lattice) getSolver().getLattice();
      }
 
     public List<Inequality> constraintList()
@@ -83,15 +81,12 @@ public class EventSource extends AtomicActor {
         }
 
         if (isStatic) {
-            setAtLeast(actor.output, _lattice.TRUE);
+            setAtLeast(actor.output, _lattice.getElement("TRUE"));
         } else {
-            setAtLeast(actor.output, _lattice.FALSE);
+            setAtLeast(actor.output, _lattice.getElement("FALSE"));
         }
 
         return super.constraintList();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private Lattice _lattice;
 }

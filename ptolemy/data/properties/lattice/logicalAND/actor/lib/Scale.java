@@ -58,12 +58,11 @@ public class Scale extends AtomicActor {
 
         super(solver, actor, false);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();
    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
         if (_actor.factor.getToken().isEqualTo(new IntToken(0)).booleanValue()) {
-            setAtLeast(_actor.output, _lattice.TRUE);
+            setAtLeast(_actor.output, _lattice.getElement("TRUE"));
         } else {
             setAtLeast(_actor.output, _actor.input);
         }
@@ -74,6 +73,5 @@ public class Scale extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.actor.lib.Scale _actor;
-    private Lattice _lattice;
 }
 

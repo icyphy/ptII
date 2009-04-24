@@ -59,11 +59,11 @@ public class Lattice extends PropertyLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public /*static*/ Property TRUE = new True(this);
+    private /*static*/ Property TRUE = new True(this);
 
-    public /*static*/ Property FALSE = new False(this);
+    private /*static*/ Property FALSE = new False(this);
 
-    public /*static*/ Property UNKNOWN = new Unknown(this);
+    private /*static*/ Property UNKNOWN = new Unknown(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -72,26 +72,18 @@ public class Lattice extends PropertyLattice {
     // The infinite property lattice
     public Lattice() {
         super();
-        _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice =
-            (DirectedAcyclicGraph) _lattice.basicLattice();
+        addNodeWeight(TRUE);
+        addNodeWeight(FALSE);
+        addNodeWeight(UNKNOWN);
 
-
-        basicLattice.addNodeWeight(TRUE);
-
-        basicLattice.addNodeWeight(FALSE);
-
-        basicLattice.addNodeWeight(UNKNOWN);
-
-        basicLattice.addEdge(UNKNOWN, TRUE);
-
-        basicLattice.addEdge(TRUE, FALSE);
+        addEdge(UNKNOWN, TRUE);
+        addEdge(TRUE, FALSE);
 
         // FIXME: Replace this with an assert when we move to 1.5
-        if (!basicLattice.isLattice()) {
+        if (!isLattice()) {
             throw new InternalErrorException("ThePropertyLattice: The "
-                    + "property hierarchy is not a lattice.");
+                    + "property graph is not a lattice.");
         }
     }
 

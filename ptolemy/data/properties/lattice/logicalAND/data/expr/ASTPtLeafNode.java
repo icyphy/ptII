@@ -32,7 +32,6 @@ import java.util.List;
 
 import ptolemy.data.expr.Constants;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,22 +58,19 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     public ASTPtLeafNode(PropertyConstraintSolver solver,
         ptolemy.data.expr.ASTPtLeafNode node)
             throws IllegalActionException {
-
         super(solver, node, true);
-        _lattice = (Lattice) getSolver().getLattice();
-        _node = node;
-    }
-
-    public List<Inequality> constraintList() throws IllegalActionException {
-        if (_node.isConstant() || Constants.get(_node.getName()) != null) {
-            setEquals(_node, _lattice.TRUE);
-        }
-
-        return super.constraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private ptolemy.data.expr.ASTPtLeafNode _node;
-    private Lattice _lattice;
+    ////                            public methods                 ////
+    
+    public List<Inequality> constraintList() throws IllegalActionException {
+        ptolemy.data.expr.ASTPtLeafNode node = 
+            (ptolemy.data.expr.ASTPtLeafNode) _getNode();
+        
+        if (node.isConstant() || Constants.get(node.getName()) != null) {
+            setEquals(node, _lattice.getElement("TRUE"));
+        }
+        return super.constraintList();
+    }
 }

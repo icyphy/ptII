@@ -33,7 +33,6 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.Attribute;
@@ -61,7 +60,6 @@ public class Limiter extends AtomicActor {
             ptolemy.actor.lib.Limiter actor) throws IllegalActionException {
 
         super(solver, actor, false);
-        _lattice = (Lattice) getSolver().getLattice();
         _actor = actor;
    }
 
@@ -81,7 +79,6 @@ public class Limiter extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.actor.lib.Limiter _actor;
-    private Lattice _lattice;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -100,16 +97,16 @@ public class Limiter extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
             Property inputProperty = (Property) getSolver().getProperty(_actor.input);
-            if ((inputProperty == null) || (inputProperty == _lattice.UNKNOWN)) {
+            if ((inputProperty == null) || (inputProperty == _lattice.getElement("UNKNOWN"))) {
                 return inputProperty;
             }
 
-            if ((getSolver().getProperty(_actor.bottom) == _lattice.TRUE) &&
-                (getSolver().getProperty(_actor.top) == _lattice.TRUE) &&
+            if ((getSolver().getProperty(_actor.bottom) == _lattice.getElement("TRUE")) &&
+                (getSolver().getProperty(_actor.top) == _lattice.getElement("TRUE")) &&
                 (!((ScalarToken)_actor.bottom.getToken()).isLessThan(
                   ((ScalarToken)_actor.top.getToken())).booleanValue())) {
 
-                return(_lattice.TRUE);
+                return(_lattice.getElement("TRUE"));
             }
 
             return(getSolver().getProperty(_actor.input));
@@ -127,9 +124,6 @@ public class Limiter extends AtomicActor {
                 getPropertyTerm(_actor.input)
             };
         }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
     }
 }
 

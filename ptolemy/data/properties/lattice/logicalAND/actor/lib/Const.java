@@ -59,7 +59,7 @@ public class Const extends Source {
             ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
 
-        super(solver, actor, false);
+        super(solver, actor);
         _actor = actor;
      }
 

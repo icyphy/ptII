@@ -71,7 +71,7 @@ public class Integrator extends AtomicActor {
          * interpret the use-case as const/nonconst. By adding partial
          * evaluation a less conservative behavior could be implemented.
          */
-        setAtLeast(_actor.output, _lattice.FALSE);
+        setAtLeast(_actor.output, _lattice.getElement("FALSE"));
 
         return super.constraintList();
     }

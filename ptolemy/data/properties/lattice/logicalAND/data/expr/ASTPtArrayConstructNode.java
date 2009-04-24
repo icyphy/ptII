@@ -36,7 +36,6 @@ import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -66,27 +65,28 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
             throws IllegalActionException {
 
         super(solver, node, true);
-        _lattice = (Lattice) getSolver().getLattice();
-        _node = node;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     public List<Inequality> constraintList() throws IllegalActionException {
-        setAtLeast(_node, new FunctionTerm());
+        setAtLeast(_getNode(), new FunctionTerm());
         return super.constraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private ptolemy.data.expr.ASTPtArrayConstructNode _node;
-    private Lattice _lattice;
+    ////                  private inner classes                    ////
 
     /**
      *
      * @author Thomas Mandl
      *
      */
-    private class FunctionTerm
-    extends MonotonicFunction {
+    private class FunctionTerm extends MonotonicFunction {
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
 
         /**
          * @exception IllegalActionException
@@ -96,17 +96,18 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
             boolean isAllSameTokenValue = true;
             Token token = null;
 
-            for (int i = 0; i < _node.jjtGetNumChildren(); i++) {
+            for (int i = 0; i < _getNode().jjtGetNumChildren(); i++) {
                 ptolemy.data.expr.ASTPtRootNode childNode =
-                    (ptolemy.data.expr.ASTPtRootNode) _node.jjtGetChild(i);
+                    (ptolemy.data.expr.ASTPtRootNode) _getNode().jjtGetChild(i);
 
                 Property childProperty =
                     getSolver().getProperty(childNode);
 
-                if ((childProperty == null) || (childProperty == _lattice.UNKNOWN) || (childProperty == _lattice.FALSE)) {
+                if ((childProperty == null) || (childProperty == _lattice.getElement("UNKNOWN")) 
+                        || (childProperty == _lattice.getElement("FALSE"))) {
                     return childProperty;
                 } else if (!(childNode.isConstant() && childNode.isEvaluated())) {
-                    return _lattice.FALSE;
+                    return _lattice.getElement("FALSE");
                 } else {
                     if (token == null) {
                         token = childNode.getToken();
@@ -118,7 +119,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
                 }
             }
 
-            return (isAllSameTokenValue) ? _lattice.TRUE : _lattice.FALSE;
+            return (isAllSameTokenValue) ? _lattice.getElement("TRUE") : _lattice.getElement("FALSE");
         }
 
 
@@ -129,12 +130,15 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
         public void setEffective(boolean isEffective) {
         }
 
+        ///////////////////////////////////////////////////////////////////
+        ////                      protected methods                    ////
+        
         protected InequalityTerm[] _getDependentTerms() {
             List<InequalityTerm> terms = new ArrayList<InequalityTerm>();
 
             try {
-                for (int i = 0; i < _node.jjtGetNumChildren(); i++) {
-                    Object child = _node.jjtGetChild(i);
+                for (int i = 0; i < _getNode().jjtGetNumChildren(); i++) {
+                    Object child = _getNode().jjtGetChild(i);
 
                     PropertyConstraintASTNodeHelper helper;
 

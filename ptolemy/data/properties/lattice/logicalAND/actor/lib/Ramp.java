@@ -31,12 +31,11 @@ import java.util.List;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Const
+//// Ramp
 
 /**
  A helper class for ptolemy.actor.lib.Ramp.
@@ -53,32 +52,26 @@ public class Ramp extends Source {
             ptolemy.actor.lib.Ramp actor)
             throws IllegalActionException {
 
-        super(solver, actor, false);
+        super(solver, actor);
         _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
         if (_actor.step.getPort().connectedPortList().isEmpty()) {
             setAtLeast(_actor.output, _actor.step);
             if (_actor.step.getToken().isEqualTo(new IntToken(0)).booleanValue()) {
-                setAtLeast(_actor.output, _lattice.TRUE);
+                setAtLeast(_actor.output, _lattice.getElement("TRUE"));
             } else {
-                setAtLeast(_actor.output, _lattice.FALSE);
+                setAtLeast(_actor.output, _lattice.getElement("FALSE"));
             }
         } else {
             // since we do not have partial evaluation we have to set
             // the property to a conservative solution
-            setAtLeast(_actor.output, _lattice.FALSE);
+            setAtLeast(_actor.output, _lattice.getElement("FALSE"));
         }
 
         return super.constraintList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private ptolemy.actor.lib.Ramp _actor;
-    private Lattice _lattice;
 
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
@@ -88,4 +81,9 @@ public class Ramp extends Source {
 
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Ramp _actor;
+
 }
