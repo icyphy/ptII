@@ -272,6 +272,7 @@ test ComponentPort-3.3f {test insidePorts with null inside links} {
 ######################################################################
 ####
 #
+# NOTE: Level-crossing links are now allowed.
 test ComponentPort-3.4 {Level-crossing link error} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
@@ -281,8 +282,7 @@ test ComponentPort-3.4 {Level-crossing link error} {
     set a1 [java::new ptolemy.kernel.ComponentRelation $e2 A1]
     catch {$p1 link $a1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Link crosses levels of the hierarchy
-  in .E1.P1 and .E1.E2.A1}}
+} {{}}
 
 ######################################################################
 ####

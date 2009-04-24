@@ -747,9 +747,16 @@ public class ComponentPort extends Port {
 
     /** Override the base class to throw an exception if the relation is
      *  not a ComponentRelation, or if the container of the port or
-     *  relation is null, or if the link crosses levels of the hierarchy,
-     *  or if the container of this port is a class definition and the
-     *  link is not an inside link.
+     *  relation is null, or if the container of this port is a class
+     *  definition and the link is not an inside link.
+     *  This method used to also throw an exception
+     *  if the link crosses levels of the hierarchy,
+     *  but it no longer does. The Vergil user interface provides
+     *  no mechanism for creating such links, so this error would
+     *  be rather difficult to make. We now assume that the designer
+     *  truly intended to do this, so this method is identical
+     *  to _checkLiberalLink().
+     *  <p>
      *  This method is used in a "strategy pattern," where the link
      *  methods call it to check the validity of a link, and derived
      *  classes perform more elaborate checks.
@@ -765,6 +772,9 @@ public class ComponentPort extends Port {
      *   link is not an inside link.
      */
     protected void _checkLink(Relation relation) throws IllegalActionException {
+        _checkLiberalLink(relation);
+        /* Removed to support models that have level crossing links in MoML.
+         * EAL 4/21/09.
         super._checkLink(relation);
 
         if (relation != null) {
@@ -798,6 +808,7 @@ public class ComponentPort extends Port {
             // class for the relation.
             relation._checkPort(this);
         }
+        */
     }
 
     /** Deeply list the ports connected to this port on the outside.
