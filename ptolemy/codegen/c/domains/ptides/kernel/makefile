@@ -56,6 +56,7 @@ JSRCS = \
 	PtidesEmbeddedDirector.java
 
 OTHER_FILES_TO_BE_JARED = \
+	PtidesActorReceiver.c \
 	PtidesDirector.c \
 	PtidesEmbeddedDirector.c
 
