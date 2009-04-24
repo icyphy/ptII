@@ -381,7 +381,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // "relation", etc.
                 String oldValue = value;
                 // If we have seen a createIfNecessary="true",
-                // then skip if there alread is an element with that name.
+                // then skip if there already is an element with that name.
                 String createIfNecessary = (String) _attributes
                         .get("createIfNecessary");
                 value = _current.uniqueName(oldValue);
