@@ -352,10 +352,12 @@ public class PtidesBasicDirector extends DEDirector {
                         break;
                     } else if (next.timeStamp().compareTo(getModelTime()) < 0) {
                         _microstep = 0;
-                        break;
+                        // FIXME: reset microstep and keep firing in the current iteration??
                     } else if (next.microstep() < _microstep) {
                         // FIXME: what should happen in this case??
-                        break;
+                        _microstep = next.microstep();
+                        // FIXME: same timestamp, but microstep is smaller, so we want to
+                        // reset the microstep and firing again at the current iteration?
                     } else {
                         // The next event has the same tag as the current tag,
                         // indicating that at least one actor is going to be
