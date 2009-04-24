@@ -2,6 +2,128 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Sinewave" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Custom" class="ptolemy.domains.properties.kernel.PropertyLatticeAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 335.0]">
+        </property>
+        <configure>
+            <entity name="Model" class="ptolemy.domains.properties.PropertyLatticeComposite">
+                <entity name="continuous" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,1.0,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 160.0]">
+                    </property>
+                </entity>
+                <entity name="discrete" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 165.0]">
+                    </property>
+                </entity>
+                <entity name="Unknown" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="isAcceptableSolution" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 235.0]">
+                    </property>
+                </entity>
+                <entity name="Mix" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 80.0]">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.03664981486767589">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7128888519156533">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0050283960368577955">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.4177890368688795">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.024834597195704626">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7515255602596176">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.030736356885893688">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.3210154577113524">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <link port="continuous.incomingPort" relation="relation2"/>
+                <link port="continuous.outgoingPort" relation="relation3"/>
+                <link port="discrete.incomingPort" relation="relation"/>
+                <link port="discrete.outgoingPort" relation="relation4"/>
+                <link port="Unknown.outgoingPort" relation="relation2"/>
+                <link port="Unknown.outgoingPort" relation="relation"/>
+                <link port="Mix.incomingPort" relation="relation3"/>
+                <link port="Mix.incomingPort" relation="relation4"/>
+            </entity>
+        </configure>
+    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -10,13 +132,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[281.25, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={247, 454, 823, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 996, 776}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 658]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.5578440656565, 196.1661931818181}">
     </property>
     <property name="F" class="ptolemy.data.expr.Parameter" value="440">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -75,7 +197,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a sine wave generator that produces a sine wave according to function:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 275.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -87,7 +209,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="sin(2 * pi * F * n / Fs)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 300.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -99,7 +221,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 325.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -113,24 +235,114 @@
         </property>
         <property name="Log constraints to file" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 495.0]">
         </property>
     </property>
     <property name="PropertyRemover" class="ptolemy.data.properties.PropertyRemover">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 425.0]">
+        </property>
+    </property>
+    <property name="PropertyConstraintSolver" class="ptolemy.data.properties.lattice.PropertyConstraintSolver">
+        <property name="PropertyMoMLHandler" class="ptolemy.data.properties.PropertyMoMLHandler">
+            <property name="abc" class="ptolemy.kernel.util.StringAttribute" value="property value">
+            </property>
+            <property name="abcHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="propertyLattice" class="ptolemy.data.expr.StringParameter" value="Actor::Custom">
+        </property>
+        <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out &gt;= in">
+        </property>
+        <property name="connectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="compositeConnectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="fsmConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="expressionASTNodeConstraintType" class="ptolemy.data.expr.StringParameter" value="parent &gt;= child">
+        </property>
+        <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 505.0]">
+        </property>
+    </property>
+    <property name="Custom::2" class="ptolemy.data.properties.AnnotationAttribute" value="Two.output = discrete">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 415.0]">
+        </property>
+    </property>
+    <property name="Custom::0" class="ptolemy.data.properties.AnnotationAttribute" value="Ramp.output = continuous">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 395.0]">
+        </property>
+    </property>
+    <property name="Custom::3" class="ptolemy.data.properties.AnnotationAttribute" value="Pi.output = discrete">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 435.0]">
+        </property>
+    </property>
+    <property name="Custom::4" class="ptolemy.data.properties.AnnotationAttribute" value="F.output = discrete">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 455.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[101.25, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[311.25, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 145.0]">
         </property>
     </entity>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[156.25, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 130.0]">
         </property>
     </entity>
     <entity name="S" class="ptolemy.actor.lib.Const">
@@ -140,10 +352,10 @@
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.25, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 250.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -155,7 +367,7 @@
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[81.25, 80.0]">
@@ -170,10 +382,10 @@
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.25, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 115.0}">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -185,20 +397,30 @@
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.25, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 155.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={249, 278, 665, 248}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 193]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[496.25, 145.0]">
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 125.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -211,11 +433,13 @@
         </configure>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
+        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[411.25, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 145.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
