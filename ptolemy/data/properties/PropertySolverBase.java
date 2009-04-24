@@ -47,6 +47,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Node;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.domains.properties.kernel.OntologyAttribute.OntologyComposite;
 import ptolemy.kernel.Entity;
@@ -485,6 +486,7 @@ public abstract class PropertySolverBase extends Attribute {
             solver.reset();
         }
         getSharedUtilities().resetAll();
+        PropertyLattice.resetAll();
     }
 
     /**
