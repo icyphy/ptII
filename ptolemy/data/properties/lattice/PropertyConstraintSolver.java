@@ -406,6 +406,29 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
+    protected PropertyHelper _getHelper(Object component)
+    throws IllegalActionException {
+        PropertyHelper helper = null;
+        
+        try {
+            helper = super._getHelper(component);
+        } catch (IllegalActionException ex) {
+        }
+            
+        if (helper == null) {
+            if (component instanceof CompositeEntity) {
+                helper = new PropertyConstraintCompositeHelper(
+                        this, (CompositeEntity) component);
+            } else if (component instanceof ASTPtRootNode) {
+                helper = new PropertyConstraintASTNodeHelper(
+                        this, (ASTPtRootNode) component);
+            } else {
+                helper = new PropertyConstraintHelper(this, component);
+            }
+        }
+        _helperStore.put(component, helper);
+        return helper;
+    }
     /**
      * Return a new property term manager. Subclass can
      * implements a its own manager and override this method
