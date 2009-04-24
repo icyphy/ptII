@@ -606,7 +606,7 @@ set moml11_2 {
            <port name="B" class="ptolemy.actor.TypedIOPort"></port>
        </entity>
    </entity>
-   <link port="C" relation="C1.R1"/>
+   <link port="C" relation="C1.Rxx"/>
 </entity>
 }
 test MoMLParser-1.11.2 {test link errors to cover LinkRequest.toString() } {
@@ -617,11 +617,13 @@ test MoMLParser-1.11.2 {test link errors to cover LinkRequest.toString() } {
 
     set toplevel [$parser parse $moml11_2]
     java::call ptolemy.moml.MoMLParser setErrorHandler [java::null]
-    list [string range [$recorderErrorHandler getMessages] 0 166]
+    # This used to fail because LevelCrossing Links had problems, now we
+    # try to link to a non-existent relation
+    list [string range [$recorderErrorHandler getMessages] 0 130]
 } {{RecorderErrorHandler: Error encountered in:
-link C to C1.R1
-ptolemy.kernel.util.IllegalActionException: Link crosses levels of the hierarchy
-  in .foo.C and .foo.C1.R1}}
+link C to C1.Rxx
+com.microstar.xml.XmlException: No relation named "C1.Rxx" in .foo in }}
+
 
 
 ######################################################################
