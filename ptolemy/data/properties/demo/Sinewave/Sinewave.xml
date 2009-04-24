@@ -278,7 +278,7 @@
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 415.0]">
         </property>
@@ -293,7 +293,7 @@
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 395.0]">
         </property>
@@ -308,7 +308,7 @@
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 435.0]">
         </property>
@@ -323,7 +323,7 @@
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.data.properties.gui.DeepParameterEditorFactory">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 455.0]">
         </property>
