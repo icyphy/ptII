@@ -60,6 +60,14 @@ public class Property {
         return true;
     }
 
+    public String getColor() {
+        return _color;
+    }
+    
+    public void setColor(String color) {
+        _color = color;
+    }
+    
     /** Determine if this Type corresponds to an instantiable token
      *  class.
      *  @return True if this type corresponds to an instantiable
@@ -70,6 +78,8 @@ public class Property {
     }
 
     protected String _name = "";
+
+    private String _color = "";
 
     public String toString() {
         if (_name.length() > 0) {

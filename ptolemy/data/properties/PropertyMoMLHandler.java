@@ -332,6 +332,15 @@ public class PropertyMoMLHandler extends Attribute {
             propertyString = "";
         }
 
+        if (property != null && property.getColor().length() > 0) {
+            request = "<property name=\"_highlightColor\" " +
+            "class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
+            property.getColor() + "\"/>";
+            request = _completeHierarchyInMoML(propertyable, request);
+            return request;
+        } 
+
+
         //Highlight Propertyable namedObj's.
         for (ColorAttribute colorAttribute : (List<ColorAttribute>)
                 attributeList(ColorAttribute.class)) {
@@ -357,7 +366,6 @@ public class PropertyMoMLHandler extends Attribute {
                             // Remove the _highlightColor attribute if we don't have
                             // any property to display.
                             request = "<deleteProperty name=\"_highlightColor\"/>";
-
                         } else {
                             request = "<property name=\"_highlightColor\" " +
                             "class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
