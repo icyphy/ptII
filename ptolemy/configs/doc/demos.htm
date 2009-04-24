@@ -355,6 +355,30 @@ in various ways.
 
   </li>
 
+  <li><i>Event-Oriented Modeling with Ptera</i>:
+    <a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash_FSM.xml">CarWash</a> with DE, Ptera and FSM
+    
+    (See also <a href="../../actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a>, <a href="../../domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a>).
+    <br>
+
+ The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model
+of computation. A model in Ptera is represented with a graph of nodes and edges,
+where nodes represent events and directed edges between events represent
+scheduling relation. One or more events can be selected as initial events, which
+are scheduled at model time 0.0. When an event is fired, it possibly performs
+certain actions, and if there are outgoing edges from that event, the events at
+the end points of those edges are scheduled after non-negative delays. One or
+more events can also be selected as final events. The firing of final events
+causes the event queue to be emptied after their actions are performed, and
+therefore no more events can be processed.
+
+
+    <br>
+
+
+
+  </li>
+
   <li><i>Process Networks</i>:
     <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
 OrderedMerge</a> (see also
@@ -544,9 +568,10 @@ used to make models much more compact.
   </li>
   
   <li><i>Model Transformation</i>:
-    <a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a>
+    <a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a>
 (see also
     <a href="../../domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a>,
+    <a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a>,
     <a href="../../actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a>,
     <a href="../../actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a>,
     <a href="../../actor/gt/demo/MapReduce/MapReduce.xml">MapReduce</a>,
@@ -558,8 +583,8 @@ used to make models much more compact.
     models to be transformed, and outputs are tokens containing the results. Multiple transformations can be
     programmed by a model to transform the input models step by step. Other actors that are commonly used in model
     transformation include ModelGenerator to generate initial models, and ModelView to show the contents of input
-    models in new windows. In the <a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a>
-    demo, a transformation is repeatedly applied on the initial model (<a href="../../actor/gt/demo/ConstOptimization/BaseModel.xml">BaseModel</a>)
+    models in new windows. In the <a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a>
+    demo, a transformation is repeatedly applied to the initial model (<a href="../../actor/gt/demo/SinewaveOptimization/Sinewave.xml">Sinewave</a>)
     to statically evaluate arithmetic operations in it, until no more simplification can be done.
   <br>
   </li>
