@@ -39,7 +39,6 @@ import ptolemy.data.properties.lattice.PropertyConstraintAttribute;
 import ptolemy.data.properties.token.PropertyTokenAttribute;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -295,24 +294,25 @@ public abstract class PropertySolver extends PropertySolverBase {
 
 
     /**
-     * 
-     * @return
+     * Invoke the solver directly.
+     * @return True if the invocation succeeds; otherwise false
+     *  which means an error has occurred during the process.
      */
     public boolean invokeSolver() {
         return invokeSolver(null);
     }
 
     /**
-     * Invoke the solver from the given analyzer.
-     * @param analyzer The given model analyzer.
+     * Invoke the solver from another component (e.g. model analyzer).
+     * @param component The given component.
      * @return True if the invocation succeeds; otherwise false
      *  which means an error has occurred during the process.
      */
-    public boolean invokeSolver(NamedObj analyzer) {
+    public boolean invokeSolver(NamedObj component) {
         boolean success = false;
 
         try {
-            success = resolveProperties(analyzer, true);
+            success = resolveProperties(component, true);
 
             updateProperties();
 
@@ -364,8 +364,9 @@ public abstract class PropertySolver extends PropertySolverBase {
      * Return true if the specified property-able object is
      * settable; otherwise false which means that its property
      * has been set by PropertyHelper.setEquals().
-     * @param object
-     * @return
+     * @param object The specified property-able object.
+     * @return True if the specified property-able object is
+     * settable, otherwise false.
      */
     public boolean isSettable(Object object) {
         return !_nonSettables.contains(object);
@@ -705,6 +706,11 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                      public variables                     ////
+
+    public static final String NONDEEP_TEST_OPTION = "-nondeep";
+
+    ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
     /**
@@ -853,6 +859,47 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                    protected variables                    ////
+
+    /** The model analyzer, if the solver is created by one; otherwise,
+     * this is null. */
+    protected NamedObj _analyzer = null;
+
+    /**
+     * The handler that issues MoML requests and makes model changes.
+     */
+    protected PropertyMoMLHandler _momlHandler;
+
+    /** True if the solver is invoked directly; otherwise, false which
+     * means it acts as an intermediate solver.
+     */
+    protected boolean _isInvoked;
+
+    /**
+     * The system-specific end-of-line character. 
+     */
+    protected static final String _eol = StringUtilities
+    .getProperty("line.separator");
+
+    /** The display label for "annotate" in the action choices */
+    protected static final String ANNOTATE = "ANNOTATE";
+
+    /** The display label for "clear" in the action choices */
+    protected static final String CLEAR = "CLEAR";
+
+    /** The display label for "clear annotation" in the action choices */
+    protected static final String CLEAR_ANNOTATION = "CLEAR_ANNOTATION";
+
+    /** The display label for "test" in the action choices */
+    protected static final String TEST = "TEST";
+
+    /** The display label for "training" in the action choices */
+    protected static final String TRAINING = "TRAINING";
+
+    /** The display label for "view" in the action choices */
+    protected static final String VIEW = "VIEW";
+
+    ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
     /**
@@ -895,49 +942,6 @@ public abstract class PropertySolver extends PropertySolverBase {
             attribute.setExpression("");
         }
     }
-
-    public static final String NONDEEP_TEST_OPTION = "-nondeep";
-
-    ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
-
-    /** The model analyzer, if the solver is created by one; otherwise,
-     * this is null. */
-    protected NamedObj _analyzer = null;
-
-    /**
-     * The handler that issues MoML requests and makes model changes.
-     */
-    protected PropertyMoMLHandler _momlHandler;
-
-    /** True if the solver is invoked directly; otherwise, false which
-     * means it acts as an intermediate solver.
-     */
-    protected boolean _isInvoked;
-
-    /**
-     * The system-specific end-of-line character. 
-     */
-    protected static final String _eol = StringUtilities
-    .getProperty("line.separator");
-
-    /** The display label for "annotate" in the action choices */
-    protected static final String ANNOTATE = "ANNOTATE";
-
-    /** The display label for "clear" in the action choices */
-    protected static final String CLEAR = "CLEAR";
-
-    /** The display label for "clear annotation" in the action choices */
-    protected static final String CLEAR_ANNOTATION = "CLEAR_ANNOTATION";
-
-    /** The display label for "test" in the action choices */
-    protected static final String TEST = "TEST";
-
-    /** The display label for "training" in the action choices */
-    protected static final String TRAINING = "TRAINING";
-
-    /** The display label for "view" in the action choices */
-    protected static final String VIEW = "VIEW";
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
