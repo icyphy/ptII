@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =		ManyPlatforms OnePlatform PtidesTDL TDLModuleInPtides ThreePlatforms \
+DIRS =		ManyPlatforms OnePlatform OnePlatformPtidesBasic PtidesTDL TDLModuleInPtides ThreePlatforms \
 		TriggeredSensors TwoPlatforms
 
 # Root of the Java directory
@@ -50,6 +50,8 @@ PTPACKAGE = 	demo
 PTCLASSALLJARS = \
 	ManyPlatforms/ManyPlatforms.jar \
 	OnePlatform/OnePlatform.jar \
+	OnePlatformPtidesBasic/OnePlatformPtidesBasic.jar \
+	PtidesSimulator/PtidesSimulator.jar \
 	ThreePlatforms/ThreePlatforms.jar \
 	TriggeredSensors/TriggeredSensors.jar \
 	TwoPlatforms/TwoPlatforms.jar
