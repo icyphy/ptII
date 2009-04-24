@@ -28,12 +28,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -49,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  both simulation and code generation purposes.
 *   
 *  This actor takes the input token, and creates a RecordToken, with two lables:
-*  timestamp, and tokenValue. It then sends the output token to its output port. 
+*  timeStamp, and tokenValue. It then sends the output token to its output port. 
 *   
 *  @author jiazou, matic
 *  @version 
@@ -65,7 +71,7 @@ public class NetworkTransmitter extends EnvironmentTransmitter {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
-    /** Creates a RecordToken with two lables: timestamp, and tokenValue. 
+    /** Creates a RecordToken with two lables: timeStamp, and tokenValue. 
      *  The tokenValue is the token consumed from the input.
      *  It then sends the output token to its output port. 
      *  @exception IllegalActionException If there is no director, or the
@@ -81,7 +87,7 @@ public class NetworkTransmitter extends EnvironmentTransmitter {
 
         if (input.hasToken(0)) {
             
-            String[] labels = new String[]{"timestamp", "tokenValue"};
+            String[] labels = new String[]{"timeStamp", "tokenValue"};
             Token[] values = new Token[]{
                     new DoubleToken(director.getModelTime().getDoubleValue()),
                     input.get(0)};
@@ -91,6 +97,28 @@ public class NetworkTransmitter extends EnvironmentTransmitter {
         }
     }
     
+    /** Return the type constraints of this actor. The type constraint is
+     *  that the output RecordToken has two fields, a "timeStamp" of type
+     *  double and a "tokenValue" of type same as the input type.
+     *  @return a list of Inequality.
+     */
+    public Set<Inequality> typeConstraints() {
+        String[] labels = { "timeStamp", "tokenValue" };
+        Type[] types = { BaseType.DOUBLE, BaseType.UNKNOWN };
+        RecordType type = new RecordType(labels, types);
+        output.setTypeEquals(type);
+
+        // since the output port has a clone of the above RecordType, need to
+        // get the type from the output port.
+        RecordType outputType = (RecordType) output.getType();
+
+        HashSet typeConstraints = new HashSet<Inequality>();
+        Inequality inequality = new Inequality(input.getTypeTerm(),
+                    outputType.getTypeTerm("tokenValue"));
+        typeConstraints.add(inequality);
+        return typeConstraints;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
