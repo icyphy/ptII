@@ -41,7 +41,7 @@ include $(CONFIG)
 
 DIRS = 		
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/kieler.jar
 
 # Used to build zip files
 PTPACKAGE = 	layout
