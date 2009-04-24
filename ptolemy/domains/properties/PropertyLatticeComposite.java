@@ -128,6 +128,8 @@ public class PropertyLatticeComposite extends FSMActor {
                 LatticeProperty property =
                     new LatticeProperty(this, element.getName());
 
+                property.setColor(element.solutionColor.getExpression());
+
                 _properties.add(property);
 
                 addNodeWeight(property);
