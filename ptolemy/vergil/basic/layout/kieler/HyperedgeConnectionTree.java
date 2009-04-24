@@ -58,22 +58,31 @@ public class HyperedgeConnectionTree {
 			// if not, put it in subtree
 			else {
 				// search existing subTrees
+				boolean makeNewSubtree = true;
 				for (HyperedgeConnectionTree subTree : _subTrees) {
 					KPoint subTreePoint = subTree.getFirstCommonBendPoint();
 					// if there is already a fitting subtree, put it there
 					if (equals(point, subTreePoint)) {
+						makeNewSubtree = false;
 						subTree.addEdge(edge);
 						subTree.calculateCommonBendpoints();
 					}
-					// if not, make a new
-					else {
+					else{
 						HyperedgeConnectionTree newTree = new HyperedgeConnectionTree(
-								_startingIndex + 1);
-						_subTrees.add(newTree);
-						newTree.addEdge(edge);
+												_startingIndex + 1);
+										_subTrees.add(newTree);
+										newTree.addEdge(edge);
 					}
 				}
+				// if not, make a new
+			//	if (makeNewSubtree) {
+			//		HyperedgeConnectionTree newTree = new HyperedgeConnectionTree(
+			//				_startingIndex + 1);
+			//		_subTrees.add(newTree);
+			//		newTree.addEdge(edge);
+			//	}
 			}
+
 		}
 	}
 
@@ -187,7 +196,7 @@ public class HyperedgeConnectionTree {
 	public KPoint getBendPoint(KEdge edge, int index) {
 		KEdgeLayout layout = KimlLayoutUtil.getEdgeLayout(edge);
 		EList<KPoint> bendpoints = layout.getBendPoints();
-		if (bendpoints.size() <= index)
+		if (bendpoints.size() <= index || index < 0)
 			return null;
 		KPoint point = bendpoints.get(index);
 		return point;
@@ -212,7 +221,7 @@ public class HyperedgeConnectionTree {
 				s.append(point + " ");
 		}
 		for (KEdge edge : _commonEdges) {
-			s.append(":E");
+			s.append(":E(" + edge.hashCode() + ")");
 		}
 		s.append("\n");
 		for (HyperedgeConnectionTree subtree : _subTrees) {
@@ -228,16 +237,16 @@ public class HyperedgeConnectionTree {
 		}
 		return false;
 	}
-	
-	public List<KPoint> bendPointList(){
+
+	public List<KPoint> bendPointList() {
 		return _commonBendpoints;
 	}
-	
-	public List<HyperedgeConnectionTree> subTreeList(){
+
+	public List<HyperedgeConnectionTree> subTreeList() {
 		return _subTrees;
 	}
-	
-	public Set<KEdge> commonEdgeSet(){
+
+	public Set<KEdge> commonEdgeSet() {
 		return _commonEdges;
 	}
 }

@@ -29,10 +29,12 @@ package ptolemy.vergil.basic.layout;
 
 import javax.swing.JFrame;
 
+import de.cau.cs.kieler.core.KielerException;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.properties.Button;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -85,8 +87,9 @@ public class LayoutButton extends Button {
 	public void perform() {
 		// Get the frame and the current model here.
 		JFrame frame = _action.getFrame();
+		NamedObj model = _action.getModel();
 		// check for supported type of editor
-		if (frame instanceof ActorGraphFrame) {
+		if (frame instanceof ActorGraphFrame && model instanceof CompositeActor) {
 			BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
 
 			// fetch everything needed to build the LayoutTarget
@@ -96,9 +99,16 @@ public class LayoutButton extends Button {
 			
 			// create Kieler layouter for this layout target
 			KielerLayout layout = new KielerLayout(layoutTarget);
+			layout.setModel((CompositeActor)_action.getModel());
 
 			// perform layout
+			try{
 			layout.layout(graphModel.getRoot());
+			} catch (Exception exception) {
+				MessageHandler.error("Failed executing automatic KIELER layout: "
+						+ exception.getMessage(), exception);
+			}
+
 			
 		} else
 			MessageHandler
