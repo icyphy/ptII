@@ -37,28 +37,16 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.jni.CompiledCompositeActor;
-import ptolemy.actor.lib.jni.PointerToken;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.DFUtilities;
-import ptolemy.codegen.c.kernel.CCodegenUtilities;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
@@ -499,7 +487,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                             super.generateTransferOutputsCode(inputPort, code) ; 
                       // else do nothing
                     }
-               }else if(dir.getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector"){
+               }else if((dir.getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector") ||dir.getClassName()=="ptolemy.domains.sdf.kernel.SDFDirector"){
                    code.append(actorHelper.generateFireCode());
                }
                 else
@@ -644,14 +632,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
            
             ArrayList args = new ArrayList();  
             args.add(_generateDriverName((NamedObj) actor)+"_in");
-           /*if(temp.length() == 0)   // if no type conversion is necessary
-            output=transferIn.toString()+actorDriverCode+transferOut.toString();
-           else
-               output=transferIn.toString()+temp+transferOut.toString();
-          
-           args.add(output);
-           */
-            args.add(actorDriverCode);
+           args.add(actorDriverCode);
             code.append(_generateBlockCode("driverCode", args));
             }
         
@@ -685,19 +666,16 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 while(outputPorts.hasNext())
                 {
                     TypedIOPort sourcePort = (TypedIOPort)outputPorts.next();
-                    List <IOPort> ports = sourcePort.insidePortList();
-                    for(IOPort port : ports)
+                    TypedIOPort sp = sourcePort; // not the real value.. this was just assigned so the compiler would stop complaining
+                    List <TypedIOPort> ports = sourcePort.insidePortList();
+                    for(TypedIOPort port : ports)
                     {
                         if (port.isOutput()) {
-                            System.out.println("connected to output port-:"+port.getFullName());
-                        }
+                            sp = port;
+                           }
                         
                     }
-                    Actor tempactor =(Actor)ports.get(0).getContainer();
-                    List <IOPort> portlist= tempactor.outputPortList();
-                    
-                    TypedIOPort sp = (TypedIOPort)portlist.get(0);
-                    
+                   
                      // FIXME: this currently assumes that the actor on the inside of the composite actor only has one output port and that
                      // port's output info needs to be moved over. I also haven't figure out how to support multiport at the moment
                        String channelOffset [] = {"0","0"};
@@ -792,7 +770,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     int _getThenIncrementCurrentSharedMemoryAddress(TypedIOPort port) throws IllegalActionException {
         String type = targetType(port.getType());
        int portWidth = port.getWidth();
-       System.out.println("portwidth is: "+portWidth);
+       //System.out.println("portwidth is: "+portWidth);
        int offset = 0 ;
       if (type.equals("int")||type.equals("long")||type.equals("float")||type.equals("void *"))
        {
