@@ -1855,6 +1855,22 @@ public class DEDirector extends Director implements TimedDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The queue used for sorting events. */
+    protected DEEventQueue _eventQueue;
+
+    /** The current microstep. */
+    protected int _microstep = 0;
+
+    /** Set to true when it is time to end the execution. */
+    protected boolean _noMoreActorsToFire = false;
+
+    /** Flag that stopFire() has been called. */
+    protected boolean _stopFireRequested = false;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** initialize parameters. Set all parameters to their default values.
@@ -1937,9 +1953,6 @@ public class DEDirector extends Director implements TimedDirector {
      */
     private Set<Actor> _disabledActors;
 
-    /** The queue used for sorting events. */
-    private DEEventQueue _eventQueue;
-
     /** Set to true when the time stamp of the token to be dequeue
      *  has exceeded the stopTime.
      */
@@ -1950,20 +1963,11 @@ public class DEDirector extends Director implements TimedDirector {
      */
     private boolean _isInitializing = false;
 
-    /** The current microstep. */
-    private int _microstep = 0;
-
-    /** Set to true when it is time to end the execution. */
-    private boolean _noMoreActorsToFire = false;
-
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;
 
     /** Start time. */
     private transient Time _startTime;
-
-    /** Flag that stopFire() has been called. */
-    private boolean _stopFireRequested = false;
 
     /** Stop time. */
     private transient Time _stopTime;
