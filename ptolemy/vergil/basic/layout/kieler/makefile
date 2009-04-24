@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy II Layout tools
+# Makefile for Kieler layout tool
 #
-# @Authors: Thomas Huining Feng
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,31 +29,28 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/vergil/basic/layout
+ME =            ptolemy/vergil/basic/layout/kieler
 
 # Root of the ptII directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		kieler
+DIRS =
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/kieler.jar
 
 # Used to build zip files
-PTPACKAGE = 	layout
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kieler/kieler.jar
+PTPACKAGE = 	kieler
+PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
-	LayoutButton.java
+	HyperedgeConnectionTree.java \
+	HyperedgeConnectionTreeTest.java \
+	KielerLayout.java
 
 OTHER_FILES_TO_BE_JARED =
 
