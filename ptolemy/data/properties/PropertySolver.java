@@ -98,6 +98,32 @@ public abstract class PropertySolver extends PropertySolverBase {
         //new PropertyDisplayActions(this, "PropertyDisplayActions");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                   ports and parameters                    ////
+
+    /** The action mode of the solver (e.g. ANNOTATE, TRAINING, 
+     * CLEAR, and etc.). */
+    public Parameter action;
+
+    /** A boolean parameter. If true and the solver is in training mode, 
+     * made all the intermediate results persistent in MoML. 
+     * Otherwise, only the results of the invoked solver is
+     * made persistent and the intermediate results are discarded. */    
+    public Parameter all;
+
+    /** A boolean parameter. If true, the solver looks for the manual
+     * annotated constraints in the model. Otherwise, these constraints 
+     * have no effects in the resolution.
+     */
+    public Parameter manualAnnotation;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Record the specified error message.
+     * @param error The specified error message string.
+     */
     public void addErrors(String error) {
         _sharedUtilities.addErrors(error);
     }
@@ -171,21 +197,26 @@ public abstract class PropertySolver extends PropertySolverBase {
         return _momlHandler;
     }
 
-    /*
+    /**
      * Return the previous resolved property for the given object.
-     *
      * @param object The given object.
-     *
      * @return The previous resolved property for the given object.
      */
     public Property getPreviousProperty(Object object) {
         return (Property) _previousProperties.get(object);
     }
 
-    /*
+    /**
+     * Return the statistics map.
+     * @return The statistics map.
+     */
+    public Map<Object, Object> getStats() {
+        return _stats;
+    }
+
+    /**
      * Return the trained exception message string. If there is no trained
      * exception, an empty string is return.
-     *
      * @return The trained exception message string.
      */
     public String getTrainedException() {
@@ -198,9 +229,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
     }
 
-    /*
+    /**
      * Return the name of the trained exception attribute.
-     *
      * @return The name of the trained exception attribute.
      */
     public Attribute getTrainedExceptionAttribute() {
@@ -211,19 +241,50 @@ public abstract class PropertySolver extends PropertySolverBase {
         return _TRAINED_EXCEPTION_ATTRIBUTE_NAME;
     }
 
-    /*
+    /**
+     * Return the error message string that shows the mismatch between the two
+     * given exception strings. This method does not compare the content between
+     * the input strings. It merely wraps the input strings into a larger error
+     * message that says there is a mismatch between the two. This is used to
+     * generate the error message for failed regression test that detects a
+     * mismatch between the expected (trained) exception and the generate
+     * exception.
+     * @param exception The first input error message.
+     * @param trainedException The second input error message.
+     * @return The exception message string.
+     */
+    public static String getTrainedExceptionMismatchMessage(String exception,
+            String trainedException) {
+        return "The generated exception:" + _eol
+        + "-------------------------------------------------------"
+        + _eol + exception + _eol
+        + "-------------------------------------------------------"
+        + _eol + " does not match the trained exception:" + _eol
+        + "-------------------------------------------------------"
+        + _eol + trainedException + _eol
+        + "-------------------------------------------------------"
+        + _eol;
+    }
+
+    /**
      * Increment the given field the solver statistics by a given number. This
      * is used for incrementing integer type statistics. If the given field does
      * not exist, it starts the count of the field at zero.
-     *
      * @param field The given field of the solver statistics.
-     *
      * @param increment The given number to increment by.
      */
     public void incrementStats(Object field, long increment) {
         incrementStats(_stats, field, increment);
     }
 
+    /**
+     * Increment the given field in the given statistics map by a given number. 
+     * This is used for incrementing integer type statistics. If the given
+     * field does not exist, it starts the count of the field at zero.
+     * @param map The statistics map.
+     * @param field The field (key) to increment.
+     * @param increment The increment amount.
+     */
     public static void incrementStats(Map map, Object field, Number increment) {
         Number current = (Number) map.get(field);
         if (current == null) {
@@ -233,10 +294,20 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
 
+    /**
+     * 
+     * @return
+     */
     public boolean invokeSolver() {
         return invokeSolver(null);
     }
 
+    /**
+     * Invoke the solver from the given analyzer.
+     * @param analyzer The given model analyzer.
+     * @return True if the invocation succeeds; otherwise false
+     *  which means an error has occurred during the process.
+     */
     public boolean invokeSolver(NamedObj analyzer) {
         boolean success = false;
 
@@ -250,7 +321,7 @@ public abstract class PropertySolver extends PropertySolverBase {
             displayProperties();
 
             if (isTraining() && success) {
-                setTesting();
+                _setTesting();
             }
 
         } catch (KernelException e) {
@@ -261,16 +332,15 @@ public abstract class PropertySolver extends PropertySolverBase {
         return success;
     }
 
+    /** True if the solver is in clearing mode; otherwise false. */
     public boolean isClear() {
         return action.getExpression().equals(PropertySolver.CLEAR);
     }
 
-    /*
+    /**
      * Return true if the solver can be identified by the given use-case string;
      * otherwise, false.
-     *
      * @param usecase The given use-case label.
-     *
      * @return True if the solver can be identified by the given use-case
      * string; otherwise, false.
      */
@@ -279,48 +349,59 @@ public abstract class PropertySolver extends PropertySolverBase {
         || usecase.equals(getExtendedUseCaseName());
     }
 
+    /** True if the solver is in clearing mode; otherwise false. */
     public boolean isManualAnnotate() {
         return manualAnnotation.getExpression().equals("true");
     }
 
+    /** True if the solver is in resolution mode; otherwise false. */
     public boolean isResolve() {
         return ((action.getExpression().equals(ANNOTATE)) ||
-                // (action.getExpression().equals(ANNOTATE_ALL)) ||
-                // (action.getExpression().equals(MANUAL_ANNOTATE)) ||
                 (action.getExpression().equals(TRAINING)));
     }
 
+    /**
+     * Return true if the specified property-able object is
+     * settable; otherwise false which means that its property
+     * has been set by PropertyHelper.setEquals().
+     * @param object
+     * @return
+     */
     public boolean isSettable(Object object) {
         return !_nonSettables.contains(object);
     }
 
+    /** True if the solver is in testing mode; otherwise false. */
     public boolean isTesting() {
         return action.getExpression().equals(PropertySolver.TEST);
     }
 
+    /** True if the solver is in training mode; otherwise false. */
     public boolean isTraining() {
         return action.getExpression().equals(TRAINING);
     }
 
+    /** True if the solver is in viewing mode; otherwise false. */
     public boolean isView() {
         return action.getExpression().equals(PropertySolver.VIEW);
     }
 
-    /*
+    /**
      * Record the previous property of the given object.
-     *
      * @param object The given object.
-     *
      * @param property The given property.
      */
     public void recordPreviousProperty(Object object, Property property) {
         _previousProperties.put(object, property);
     }
 
-    /*
-     * @param exceptionMessage
-     *
-     * @exception IllegalActionException
+    /**
+     * Record the specified exception message as a trained exception.
+     * This make the trained exception persistent by creating or updating
+     * the trained exception attribute contained by this solver.
+     * @param exceptionMessage The given exception message.
+     * @exception IllegalActionException Thrown if an error occurs when
+     *  creating or updating the trained exception attribute.
      */
     public void recordTrainedException(String exceptionMessage)
     throws IllegalActionException {
@@ -338,6 +419,11 @@ public abstract class PropertySolver extends PropertySolverBase {
         attribute.setExpression(exceptionMessage);
     }
 
+    /**
+     * Reset the solver. This removes the internal states
+     * of the solver (e.g. previously recorded properties,
+     * statistics, and etc.).
+     */
     public void reset() {
         super.reset();
         _analyzer = null;
@@ -345,22 +431,23 @@ public abstract class PropertySolver extends PropertySolverBase {
         _stats = new TreeMap<Object, Object>();
     }
 
+    /**
+     * 
+     */
     public void resolveProperties() throws KernelException {
         resolveProperties(_analyzer, false);
     }
 
-    /*
+    /**
      * Resolve the properties.
-     *
      * @exception KernelException
      */
     public boolean resolveProperties(boolean isInvoked) throws KernelException {
         return resolveProperties(_analyzer, isInvoked);
     }
 
-    /*
+    /**
      * Resolve the properties (invoked from a ModelAnalyzer).
-     *
      * @exception KernelException
      */
     public boolean resolveProperties(NamedObj analyzer)
@@ -368,18 +455,14 @@ public abstract class PropertySolver extends PropertySolverBase {
         return resolveProperties(analyzer, false);
     }
 
-    /*
+    /**
      * Resolve the property values for the top-level entity that contains the
      * solver.
-     *
      * @param analyzer The model analyzer that invokes the solver. However, this
      * is null if the solver is invoked directly from its GUI.
-     *
      * @param isInvoked Whether the solver is directly invoked or activated
      * through solver dependencies.
-     *
      * @return True if resolution succeeds as expected; Otherwise, false.
-     *
      * @exception IllegalActionException TODO
      */
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
@@ -517,27 +600,29 @@ public abstract class PropertySolver extends PropertySolverBase {
         return success;
     }
 
+    /**
+     * Set the action mode of the solver. This sets the
+     * expression of the action parameter to the specified
+     * action value string.
+     * @param actionString The specified action value.
+     * @return The previous value of the action parameter.
+     */
     public String setAction(String actionString) {
         String oldAction = action.getExpression();
         action.setExpression(actionString);
         return oldAction;
     }
 
-    /*
-     * Set the solver to testing mode.
+    /**
+     * Prepare for automatic testing. In this base class, do nothing.
      */
-    public void setTesting() {
-        action.setPersistent(true);
-        setAction(TEST);
-        _repaintGUI();
+    public void setOptions(Map options) {
+        return;
     }
 
-    /*
+    /**
      * Update the property. This method is called from both invoked and
      * auxiliary solvers.
-     *
-     * @exception IllegalActionException
-     *
      * @exception IllegalActionException
      */
     public void updateProperties() throws IllegalActionException {
@@ -619,6 +704,22 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /**
+     * Populate the possible choices for the specified action parameter.
+     * @param actionParameter The specified action parameter.
+     */
+    protected static void _addActions(Parameter actionParameter) {
+        actionParameter.addChoice(ANNOTATE);
+        actionParameter.addChoice(CLEAR);
+        actionParameter.addChoice(TEST);
+        actionParameter.addChoice(TRAINING);
+        actionParameter.addChoice(VIEW);
+        actionParameter.addChoice(CLEAR_ANNOTATION);
+    }
+
     /**
      * Record tracing statistics.
      * @exception IllegalActionException
@@ -694,13 +795,6 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /*
-     * Prepare for automatic testing. In this base class, do nothing.
-     */
-    public void setOptions(Map options) {
-        return;
-    }
-
-    /*
      * Check the given property against the trained property recorded on the
      * given NamedObj. It also restore the trained property that is temporarily
      * cleared for regression testing.
@@ -758,6 +852,15 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    /**
+     * Record as an error for the given property-able object and 
+     * its resolved property. If the given property is null, it
+     * does nothing. If the given property is unacceptable, an error
+     * is recorded for the given property-able object and the property.
+     */
     private void _recordUnacceptableSolution(Object propertyable,
             Property property) {
 
@@ -769,18 +872,17 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
     }
 
-    private void _repaintGUI() {
-        requestChange(new ChangeRequest(this, "Repaint the GUI.") {
-            protected void _execute() throws Exception {
-            }
-        });
+    /**
+     * Set the solver to testing mode.
+     */
+    private void _setTesting() {
+        action.setPersistent(true);
+        setAction(TEST);
     }
 
-    /*
+    /**
      * @param attribute
-     *
      * @param property
-     *
      * @exception IllegalActionException
      */
     private void _updatePropertyAttribute(PropertyAttribute attribute,
@@ -794,94 +896,68 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
     }
 
-    /*
-     * Return the error message string that shows the mismatch between the two
-     * given exception strings. This method does not compare the content between
-     * the input strings. It merely wraps the input strings into a larger error
-     * message that says there is a mismatch between the two. This is used to
-     * generate the error message for failed regression test that detects a
-     * mismatch between the expected (trained) exception and the generate
-     * exception.
-     *
-     * @param exception The first input error message.
-     *
-     * @param trainedException The second input error message.
-     *
-     * @return The exception message string.
-     */
-    public static String getTrainedExceptionMismatchMessage(String exception,
-            String trainedException) {
-        return "The generated exception:" + _eol
-        + "-------------------------------------------------------"
-        + _eol + exception + _eol
-        + "-------------------------------------------------------"
-        + _eol + " does not match the trained exception:" + _eol
-        + "-------------------------------------------------------"
-        + _eol + trainedException + _eol
-        + "-------------------------------------------------------"
-        + _eol;
-    }
-
-
-    /*
-     *
-     * @param actionParameter
-     */
-    protected static void _addActions(Parameter actionParameter) {
-        actionParameter.addChoice(ANNOTATE);
-        actionParameter.addChoice(CLEAR);
-        actionParameter.addChoice(TEST);
-        actionParameter.addChoice(TRAINING);
-        actionParameter.addChoice(VIEW);
-        actionParameter.addChoice(CLEAR_ANNOTATION);
-    }
-
-    public Map<Object, Object> getStats() {
-        return _stats;
-    }
-
-    public Parameter action;
-
-    /** If we are in TRAINING mode, then keep all the intermediate results. */    
-    public Parameter all;
-
-    public Parameter manualAnnotation;
-
     public static final String NONDEEP_TEST_OPTION = "-nondeep";
 
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected variables                    ////
+
+    /** The model analyzer, if the solver is created by one; otherwise,
+     * this is null. */
     protected NamedObj _analyzer = null;
 
-    /*
-     * The PropertyHighlighter that controls the property visualization.
+    /**
+     * The handler that issues MoML requests and makes model changes.
      */
     protected PropertyMoMLHandler _momlHandler;
 
+    /** True if the solver is invoked directly; otherwise, false which
+     * means it acts as an intermediate solver.
+     */
     protected boolean _isInvoked;
 
-    private Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
-
-    private HashMap<Object, Property> _previousProperties = new HashMap<Object, Property>();
-
+    /**
+     * The system-specific end-of-line character. 
+     */
     protected static final String _eol = StringUtilities
     .getProperty("line.separator");
 
-    /* The display label for "annotate" in the action choices */
+    /** The display label for "annotate" in the action choices */
     protected static final String ANNOTATE = "ANNOTATE";
 
-    /* The display label for "clear" in the action choices */
+    /** The display label for "clear" in the action choices */
     protected static final String CLEAR = "CLEAR";
 
-    /* The display label for "clear annotation" in the action choices */
+    /** The display label for "clear annotation" in the action choices */
     protected static final String CLEAR_ANNOTATION = "CLEAR_ANNOTATION";
 
-    /* The display label for "test" in the action choices */
+    /** The display label for "test" in the action choices */
     protected static final String TEST = "TEST";
 
-    /* The display label for "training" in the action choices */
+    /** The display label for "training" in the action choices */
     protected static final String TRAINING = "TRAINING";
 
-    /* The display label for "view" in the action choices */
+    /** The display label for "view" in the action choices */
     protected static final String VIEW = "VIEW";
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+
+    /**
+     * The record of the previously resolved properties. It is a map
+     * between the property-able objects and their resolved properties.
+     */
+    private HashMap<Object, Property> _previousProperties = new HashMap<Object, Property>();
+
+    /**
+     * The record of statistics for the resolution. It is a mapping
+     * between keys and values. To keep track of numerical data, 
+     * by inserting an Integer or Long as value (See 
+     * {@link #incrementStats(Object, long)}).
+     */
+    private Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
+
+    /**
+     * The name of the trained exception attribute.
+     */
     private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
 }
