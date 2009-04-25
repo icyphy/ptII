@@ -35,6 +35,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -85,9 +86,15 @@ public class RenameConfigurer extends Query implements ChangeListener,
             nameShowing = !_isPropertySet(_object, "_hideName");
         }
 
-        // Don't include the Show name check box for Attributes
+        // Don't include the Show name check box for
+        // AbstractSettableAttributes We choose
+        // AbstractSettableAttribute because we don't want the
+        // "Show name" check box for RequireVersion, which eventually
+        // extends AbstractSettableAttribute, but we do want the
+        // "Show name" check box for Director, which extends Attribute.
+        // See
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3363
-        if (!(object instanceof Attribute)) {
+        if (!(object instanceof AbstractSettableAttribute)) {
             addCheckBox("Show name", "Show name", nameShowing);
         }
     }
@@ -126,9 +133,9 @@ public class RenameConfigurer extends Query implements ChangeListener,
             }
 
 
-            // Don't include the Show name check box for Attributes
+            // Don't include the Show name check box for AbstractSettableAttributes
             // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3363
-            if (!(_object instanceof Attribute)) {
+            if (!(_object instanceof AbstractSettableAttribute)) {
                 // Remove or show name.
                 boolean showName = getBooleanValue("Show name");
 
