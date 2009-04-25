@@ -1,5 +1,10 @@
-This directory contains the interface automaton models for some Ptolemy II
-components with respect to token passing. They are:
+These models are interface automata. When you open the Graph
+menu, there are commands to compose them with other automata. 
+
+These models are interface automaton models for some Ptolemy II
+components with respect to token passing. 
+
+They are:
 
 SDFActor.xml: An SDF sink actor. This actor does not call hasToken() before
               calling get().

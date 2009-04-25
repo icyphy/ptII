@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PNDomain" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0">
+<entity name="PNDomain" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
         <configure>
@@ -16,6 +16,12 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 617]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[2, 19]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 86, 1017, 728}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 308.5}">
     </property>
     <port name="p" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -63,121 +69,77 @@
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 344.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="1" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 250.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="2" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 150.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="3" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 219.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="4" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 255.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="5" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 279.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="6" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 269.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="7" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 355.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="8" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 239.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="10" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 214.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="9" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 339.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
-    <relation name="relation" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="f=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3254771514076133">
         </property>
@@ -187,17 +149,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="f!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation2" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hT_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4287185307179583">
         </property>
@@ -207,17 +165,15 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hT?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation3" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hTT=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4218357720972681">
         </property>
@@ -227,17 +183,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hTT!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation5" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation5" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.28032503730375635">
         </property>
@@ -247,17 +199,15 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation6" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation6" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3718445693601721">
         </property>
@@ -267,17 +217,15 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation7" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation7" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2859522276884024">
         </property>
@@ -287,17 +235,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation8" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation8" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="g_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3392349839113073">
         </property>
@@ -307,17 +251,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation9" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation9" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2856836740732707">
         </property>
@@ -327,17 +267,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation10" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation10" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hT_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.469871743409237">
         </property>
@@ -347,17 +283,15 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hT?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation11" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation11" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hTT=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.40077843620216336">
         </property>
@@ -367,17 +301,15 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hTT!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation12" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation12" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.337868779834355">
         </property>
@@ -387,17 +319,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation13" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation13" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="g_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.36391411269417556">
         </property>
@@ -407,17 +335,15 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation14" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation14" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.385604354353143">
         </property>
@@ -427,17 +353,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation18" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation18" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fR_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5172056114038637">
         </property>
@@ -447,17 +369,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fR?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation4" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation4" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hT_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4984677738230471">
         </property>
@@ -467,17 +385,15 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hT?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="relation15" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation15" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hTT=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.44962213105108706">
         </property>
@@ -487,9 +403,9 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hTT!">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </relation>
     <link port="0.incomingPort" relation="relation18"/>

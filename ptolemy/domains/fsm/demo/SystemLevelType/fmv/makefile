@@ -74,16 +74,10 @@ all: jclass
 
 install: all jars
 
-demo: demo_ptolemy demo_vergil
-
-demo_ptolemy:
-	for demo in $(DEMOS) \
-	do
-		"$(PTII)/bin/ptolemy" $$demo; \
-	done
-
-demo_vergil:
-	for demo in $(DEMOS) \
+# Running "make demo" in the parent directory runs "make demo" in this directory first.
+demo:
+	"$(PTII)/bin/vergil" ../README.txt
+	for demo in $(DEMOS); \
 	do \
 		"$(PTII)/bin/vergil" $$demo; \
 	done

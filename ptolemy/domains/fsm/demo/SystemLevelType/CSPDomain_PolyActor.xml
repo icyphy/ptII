@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SDFDomain_SDFActor" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0_0">
+<entity name="CSPDomain_PolyActor" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton">
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="f" class="ptolemy.data.expr.Parameter">
     </property>
@@ -26,6 +26,12 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={311, 167, 817, 565}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
     <port name="p" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 180.0">
@@ -37,112 +43,72 @@
         </property>
     </port>
     <entity name="0_0" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="299.0, 242.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="1_1" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 313.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="2_2" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 337.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="6_1" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="89.0, 320.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="7_2" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 210.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="1_6" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 360.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="6_3" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="99.0, 114.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="8_4" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="204.0, 91.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="9_4" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="347.0, 87.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="1_5" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 184.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
-    <relation name="SDFDomain_SDFActor" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="f=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -150,19 +116,17 @@
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="f;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor2" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hT=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -170,18 +134,14 @@
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hT;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p_isPresent">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
@@ -190,18 +150,16 @@
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p?">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor3" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hT=true">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
@@ -211,18 +169,16 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hT;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor4" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor4" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hTF=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -231,18 +187,16 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hTF;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor6" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor6" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fR=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -251,18 +205,16 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fR;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor7" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor7" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hTT=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -271,18 +223,16 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hTT;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor8" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor8" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="g=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -291,18 +241,16 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain9" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain9" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -311,18 +259,16 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR!">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor10" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor10" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -331,18 +277,16 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t;">
         </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
-    <relation name="SDFDomain_SDFActor12" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor12" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fR=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -351,9 +295,9 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fR;">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </relation>
     <link port="0_0.incomingPort" relation="SDFDomain_SDFActor6"/>
