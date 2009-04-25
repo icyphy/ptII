@@ -30,6 +30,7 @@ package ptolemy.cg.lib;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -63,6 +64,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -292,6 +296,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         ++_version;
                         _updateSanitizedActorName();
                     }
+                    String generatorPackageString = generatorPackage.getExpression();
+                    if (generatorPackageString.equals("generic.program.procedural.c")) {
+                        _generateAndCompileJNICode();
+                    }
                     _generateAndCompileEmbeddedCode();
                     _generatedCodeVersion = _workspace.getVersion();
                 }
@@ -432,6 +440,41 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Compile the Java code.
+     *  The <code>javac</code> and <code>javah</code> commands are
+     *  executed on the the java file.
+     *  @exception IllegalActionException If there is a problem reading
+     *  the <i>codeDirectory</i> parameter.
+     */
+    protected void _compileJNICode() throws IllegalActionException {
+        StringBufferExec executeCommands = new StringBufferExec(true);
+
+        List<String> commands = new LinkedList<String>();
+
+        // Create the .class file.
+        commands.add("javac -classpath . " + _sanitizedActorName + ".java");
+
+        // Create the .h file.
+        commands.add("javah -classpath . " + _sanitizedActorName);
+
+        if (_debugging) {
+            _debugAndSystemOut("Execute command: " + commands.get(0));
+            _debugAndSystemOut("Execute command: " + commands.get(1));
+        }
+
+        executeCommands.setWorkingDirectory(codeDirectory.asFile());
+        executeCommands.setCommands(commands);
+        executeCommands.start();
+        int lastSubprocessReturnCode = executeCommands
+                .getLastSubprocessReturnCode();
+        if (lastSubprocessReturnCode != 0) {
+            throw new IllegalActionException(this,
+                    "Execution of subcommands failed, last process returned "
+                            + lastSubprocessReturnCode + ", which is not 0:\n"
+                            + executeCommands.buffer.toString());
+        }
+    }
+    
     /** Generate and compile Java code.
      *  @exception IllegalActionException If the adapter class cannot
      *  be found, or if the static generateCode(TypedCompositeActor)
@@ -440,6 +483,85 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     protected void _generateAndCompileEmbeddedCode() throws IllegalActionException {
         _invokeAdapterMethod("generateCode");
     }
+    
+    /** Generate and compile the JNI code.
+     *  @exception IllegalActionException If thrown while getting the path
+     *  to the shared object, while writing the Java file, or while
+     *  compiling the Java file.
+     */
+    protected void _generateAndCompileJNICode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        String sharedObjectPath = _sharedObjectPath(_sanitizedActorName);
+        code.append("public class " + _sanitizedActorName + " {\n" + "\n"
+                + "    public native Object[] fire(" + _getArguments() + ");\n"
+                + "    public native void initialize();\n"
+                + "    public native void wrapup();\n"
+                + "    static {\n"
+
+                // + "        String library = \"" + _sanitizedActorName + "\";\n"
+                // + "        System.loadLibrary(library);\n"
+
+                + "        String library = \"" + sharedObjectPath + "\";\n"
+                + "        System.load(library);\n" + "    }\n" + "}\n");
+
+        String codeFileName = _sanitizedActorName + ".java";
+
+        // Write the code to a file with the same name as the model into
+        // the directory named by the codeDirectory parameter.
+        try {
+            File codeDirectoryFile = codeDirectory.asFile();
+            if (codeDirectoryFile.isFile()) {
+                throw new IOException("Error: " + codeDirectory.stringValue()
+                        + " is a file, " + "it should be a directory.");
+            }
+            if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+                throw new IOException("Failed to make the \""
+                        + codeDirectory.stringValue() + "\" directory.");
+            }
+
+            // FIXME: Note that we need to make the directory before calling
+            // getBaseDirectory()
+            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+
+            // Check if needs to overwrite.
+            File writeFile = new File(codeDirectoryFile, codeFileName);
+            if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
+                    && writeFile.exists()) {
+                if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
+                        + " exists. OK to overwrite?")) {
+                    /*
+                    throw new IllegalActionException(this,
+                            "Please select another file name.");
+                            */
+                    return;
+                }
+            }
+
+            Writer writer = null;
+            try {
+                if (_debugging) {
+                    _debugAndSystemOut("Generate \"" + codeFileName + "\" in \""
+                            + codeDirectory.getBaseDirectory() + "\"");
+                }
+
+                writer = FileUtilities.openForWriting(codeFileName,
+                        codeDirectory.getBaseDirectory(), false);
+                writer.write(code.toString());
+            } finally {
+                if (writer != null) {
+                    writer.close();
+                }
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to write \"" + codeFileName + "\" in "
+                            + codeDirectory.getBaseDirectory());
+        }
+
+        _compileJNICode();
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -515,47 +637,41 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         }
         return false;
     }
-
-    /** Get the name of the shared object.
-     *  @param sanitizedActorName The sanitized actor name on
-     *  which to base the name of the shared object.
-     *  @return The name of the .dll or .so file.
-     *  @exception IllegalActionException If there is a problem
-     *  reading the <i>codeDirectory</i> parameter.
+    
+    /** Send a debug message to all debug listeners that have registered.
+     * Then print the message to System.out.
+     * @param message The given debug message.
      */
-    private String _sharedObjectPath(String sanitizedActorName)
-            throws IllegalActionException {
-        String sharedObjectPath = null;
-        String generatorPackageString = generatorPackage.getExpression();
-        String fileName = "";
-        try {
-            if (generatorPackageString.equals("generic.program.procedural.java")) {
-                fileName = sanitizedActorName + ".class";
-            } else if (generatorPackageString.equals("generic.program.procedural.c")) {
-                String osName = StringUtilities.getProperty("os.name");
-                if (osName != null) {
-                    if (osName.startsWith("Windows")) {
-                        fileName = sanitizedActorName + ".dll";
-                    } else if (osName.startsWith("Mac OS X")) {
-                        fileName = "lib" + sanitizedActorName + ".dylib";
-                    } else {
-                        fileName = "lib" + sanitizedActorName + ".so";
-                    }
-                }
-            } else {
-                throw new IllegalActionException(this,
-                "generatorPackage " + generatorPackage + " not supported.");
-            }
-            sharedObjectPath = codeDirectory.asFile().getCanonicalPath()
-            + File.separator + fileName;
-            sharedObjectPath = sharedObjectPath.replace("\\", "/");
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot generate library path.");
-        }
-
-        return sharedObjectPath;
+    private void _debugAndSystemOut(String message) {
+        super._debug(message);
+        System.out.println(message);
     }
+
+    private String _getArguments() {
+
+        StringBuffer arguments = new StringBuffer();
+        Iterator<?> inputPorts = inputPortList().iterator();
+        int i = 0;
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            if (!(inputPort instanceof ParameterPort)) {
+
+                if (i != 0) {
+                    arguments.append(", ");
+                }
+                i++;
+                //FIXME: need to consider carefully for structured data type
+                Type type = ((TypedIOPort) inputPort).getType();
+                String typeName = type.toString();
+                if (typeName.equals("unknown") || typeName.equals("Pointer")) {
+                    // If a port is not connected, then use int as a default.
+                    typeName = "int";
+                }
+                arguments.append(typeName + "[][] " + inputPort.getName());
+            }
+        }
+        return arguments.toString();
+    }    
 
     /** Invoke a method in the corresponding adapter class.
      *  @param methodName The name of a method in the adapter class.
@@ -659,6 +775,47 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throw new InternalErrorException(this, ex,
                     "Problem setting up coSimulation parameter");
         }
+    }
+    
+    /** Get the name of the shared object.
+     *  @param sanitizedActorName The sanitized actor name on
+     *  which to base the name of the shared object.
+     *  @return The name of the .dll or .so file.
+     *  @exception IllegalActionException If there is a problem
+     *  reading the <i>codeDirectory</i> parameter.
+     */
+    private String _sharedObjectPath(String sanitizedActorName)
+            throws IllegalActionException {
+        String sharedObjectPath = null;
+        String generatorPackageString = generatorPackage.getExpression();
+        String fileName = "";
+        try {
+            if (generatorPackageString.equals("generic.program.procedural.java")) {
+                fileName = sanitizedActorName + ".class";
+            } else if (generatorPackageString.equals("generic.program.procedural.c")) {
+                String osName = StringUtilities.getProperty("os.name");
+                if (osName != null) {
+                    if (osName.startsWith("Windows")) {
+                        fileName = sanitizedActorName + ".dll";
+                    } else if (osName.startsWith("Mac OS X")) {
+                        fileName = "lib" + sanitizedActorName + ".dylib";
+                    } else {
+                        fileName = "lib" + sanitizedActorName + ".so";
+                    }
+                }
+            } else {
+                throw new IllegalActionException(this,
+                "generatorPackage " + generatorPackage + " not supported.");
+            }
+            sharedObjectPath = codeDirectory.asFile().getCanonicalPath()
+            + File.separator + fileName;
+            sharedObjectPath = sharedObjectPath.replace("\\", "/");
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot generate library path.");
+        }
+
+        return sharedObjectPath;
     }
 
     private Object _transferInputs(IOPort port) throws IllegalActionException {
