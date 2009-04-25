@@ -109,15 +109,7 @@ all: jclass
 
 install: all jars
 
-demo: demo_ptolemy demo_vergil
-
-demo_ptolemy:
-	for demo in $(DEMOS); \
-	do
-		"$(PTII)/bin/ptolemy" $$demo; \
-	done
-
-demo_vergil:
+demo:
 	for demo in $(DEMOS); \
 	do \
 		"$(PTII)/bin/vergil" $$demo; \

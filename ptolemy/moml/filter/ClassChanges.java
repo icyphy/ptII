@@ -234,6 +234,16 @@ public class ClassChanges implements MoMLFilter {
                 "ptolemy.domains.fsm.kernel.InterfaceAutomaton",
                 "ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton");
 
+        // Moved InterfaceAutomatonTransition
+        _classChanges.put(
+                "ptolemy.domains.modal.kernel.InterfaceAutomatonTransition",
+                "ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition");
+
+        // Moved InterfaceAutomatonTransition
+        _classChanges.put(
+                "ptolemy.domains.modal.kernel.InterfaceAutomaton",
+                "ptolemy.domains.modal.kernel.ia.InterfaceAutomaton");
+
         // Moved ModalTableauFactory
         _classChanges.put(
                 "ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
