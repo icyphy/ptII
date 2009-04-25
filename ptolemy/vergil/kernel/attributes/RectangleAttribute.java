@@ -70,6 +70,14 @@ public class RectangleAttribute extends FilledShapeAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        // Set centered to true so that when we resize, the rectangle
+        // does not jump up and to the left.
+        // ResizablePolygonAttribute had a similar
+        // problem. Interestingly, EllipseAttribute already had
+        // centered set to true.  For more information, see
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3988
+        centered.setToken("true");
+
         rounding = new Parameter(this, "rounding");
         rounding.setTypeEquals(BaseType.DOUBLE);
         rounding.setExpression("0.0");
