@@ -16,7 +16,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-// import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+//import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -26,6 +26,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.kernel.attributes.TextAttribute;
 import de.cau.cs.kieler.core.KielerException;
@@ -36,6 +37,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.KPortType;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.layout.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.layout.options.LayoutDirection;
@@ -46,6 +48,7 @@ import de.cau.cs.kieler.klodd.hierarchical.HierarchicalDataflowLayoutProvider;
 import diva.graph.GraphModel;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.graph.layout.LayoutTarget;
+import diva.graph.modular.EdgeModel;
 
 /**
  * Ptolemy Layouter that uses the KIELER layout algorithm from an external
@@ -69,20 +72,22 @@ import diva.graph.layout.LayoutTarget;
  * This class is a try to leverage this to apply KIELER algorithms with Ptolemy.
  * No Eclipse is required with that. Only one standalone external library.
  * 
- * Calling the layout() method will create a new Kieler graph datastructure, 
- * run Kieler layout algorithms on it and augment it with resulting layout
+ * Calling the layout() method will create a new Kieler graph datastructure, run
+ * Kieler layout algorithms on it and augment it with resulting layout
  * information (locations and sizes of nodes, bendoints of connections). Then
- * this layout gets applied to the Ptolemy model. Moving of nodes in 
- * Ptolemy is done via adding or changing location attributes. Setting bendpoints
- * is not yet supported in Ptolemy, hence this has to be emulated here. For each
- * bendpoint for an edge in a Kieler graph, a new Relation with a Vertex is 
- * inserted in the Ptolemy model. They get interconnected and old Relations get removed.
+ * this layout gets applied to the Ptolemy model. Moving of nodes in Ptolemy is
+ * done via adding or changing location attributes. Setting bendpoints is not
+ * yet supported in Ptolemy, hence this has to be emulated here. For each
+ * bendpoint for an edge in a Kieler graph, a new Relation with a Vertex is
+ * inserted in the Ptolemy model. They get interconnected and old Relations get
+ * removed.
  * 
- * This transformation uses severe model structure transformations which are not yet 
- * stable to be semantic preserving. So regard this only as a testing version and proof of concept.
+ * This transformation uses severe model structure transformations which are not
+ * yet stable to be semantic preserving. So regard this only as a testing
+ * version and proof of concept.
  * 
- * WARNING: Never run this layouter on important models where you don't have backups!
- *          The model structure get changed and might alter the model semantics!
+ * WARNING: Never run this layouter on important models where you don't have
+ * backups! The model structure get changed and might alter the model semantics!
  * 
  * 
  * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
@@ -131,6 +136,15 @@ public class KielerLayout extends AbstractGlobalLayout {
 	private Map<Relation, List<Object>> _relations2EdgesVertices;
 
 	/**
+	 * Map Ptolemy links (= Edges in Diva) to Edges in Kieler
+	 */
+	private Map<Object, KEdge> _ptolemyDiva2KielerEdges;
+
+	private Map<KEdge, Object> _kieler2PtolemyDivaEdges;
+
+	private Map<Object, Object> _ptolemyDivaEdge2ptolemySourcePort;
+
+	/**
 	 * The top level Ptolemy composite actor that contains the diagram that is
 	 * to be laid out.
 	 */
@@ -143,6 +157,8 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 * String and then carry them out in only one operation whereas possible.
 	 */
 	private StringBuffer _momlChangeRequest;
+
+	private boolean _debug = false;
 
 	/**
 	 * Constructor taking a LayoutTarget for specifying some methods for layout
@@ -202,7 +218,8 @@ public class KielerLayout extends AbstractGlobalLayout {
 
 			// write to XML file for debugging layout
 			// writing to file requires XMI resource factory
-			//writeToFile(kgraph);
+			if(_debug ) 
+				writeToFile(kgraph);
 
 			// apply layout to ptolemy model
 			applyLayout(kgraph);
@@ -242,24 +259,37 @@ public class KielerLayout extends AbstractGlobalLayout {
 		_kieler2ptolemyDivaNodes = new HashMap<KNode, Object>();
 		_kieler2ptolemyEntityNodes = new HashMap<KNode, NamedObj>();
 		_ptolemy2KielerEdges = new HashMap<Set<Relation>, Set<KEdge>>();
+		_ptolemyDiva2KielerEdges = new HashMap<Object, KEdge>();
+		_kieler2PtolemyDivaEdges = new HashMap<KEdge, Object>();
 		_ptolemy2KielerPorts = new HashMap<Port, KPort>();
 		_kieler2PtolemyPorts = new HashMap<KPort, Port>();
 		_relations2EdgesVertices = new HashMap<Relation, List<Object>>();
+		_ptolemyDivaEdge2ptolemySourcePort = new HashMap<Object, Object>();
 
 		// create graph in KIELER API
 		KNode kgraph = KimlLayoutUtil.createInitializedNode();
 
 		// set some global layout options
-		LayoutOptions.setLayoutDirection(KimlLayoutUtil.getShapeLayout(kgraph),
-				LayoutDirection.HORIZONTAL);
+		LayoutOptions.setLayouterName(KimlLayoutUtil.getShapeLayout(kgraph),
+				"Block Layout");
+
+		// The graph will layout all unconnected nodes with a specialized Block
+		// Layouter
+		// the actual connected components will get layouted within a subnode in
+		// the graph
+
+		KNode kGraphLayoutNode = KimlLayoutUtil.createInitializedNode();
+		kGraphLayoutNode.setParent(kgraph);
+		LayoutOptions.setLayoutDirection(KimlLayoutUtil
+				.getShapeLayout(kGraphLayoutNode), LayoutDirection.HORIZONTAL);
+		LayoutOptions.setLayouterName(KimlLayoutUtil
+				.getShapeLayout(kGraphLayoutNode), "KLoDD Hierarchical");
 
 		// traverse ptolemy graph
 		LayoutTarget target = this.getLayoutTarget();
 		GraphModel graph = target.getGraphModel();
 		if (graph instanceof ActorGraphModel) {
 			ActorGraphModel aGraph = (ActorGraphModel) graph;
-
-			Set relationSet = new HashSet<Relation>();
 
 			// process nodes
 			for (Iterator iterator = aGraph.nodes(composite); iterator
@@ -284,7 +314,6 @@ public class KielerLayout extends AbstractGlobalLayout {
 					// size
 					// and position
 					KNode knode = KimlLayoutUtil.createInitializedNode();
-					knode.setParent(kgraph);
 					KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(knode);
 					klayout.setHeight((float) bounds.getHeight());
 					klayout.setWidth((float) bounds.getWidth());
@@ -293,6 +322,14 @@ public class KielerLayout extends AbstractGlobalLayout {
 					// transform coordinates
 					ptolemy2KNode(klayout);
 					LayoutOptions.setFixedSize(klayout);
+
+					// store node in the correct composite node depending on
+					// whether it has connections or not
+					if (hasConnections((NamedObj) semanticNode))
+						knode.setParent(kGraphLayoutNode);
+					else
+						knode.setParent(kgraph);
+
 					// store node for later applying layout back
 					_ptolemy2KielerNodes.put(node, knode);
 					_kieler2ptolemyDivaNodes.put(knode, node);
@@ -326,46 +363,162 @@ public class KielerLayout extends AbstractGlobalLayout {
 				}
 
 				// handle relation vertices
-				if (semanticNode instanceof Relation) {
-					Relation relation = (Relation) semanticNode;
-					// put relation in map
-					if (!_relations2EdgesVertices.containsKey(relation)) {
-						// make list to store all vertices for a relation
-						ArrayList list = new ArrayList();
-						list.add(node);
-						_relations2EdgesVertices.put(relation, list);
-					} else
-						_relations2EdgesVertices.get(relation).add(node);
+				else if (semanticNode instanceof Relation) {
+					// Relation relation = (Relation) semanticNode;
+					// // put relation in map
+					// if (!_relations2EdgesVertices.containsKey(relation)) {
+					// // make list to store all vertices for a relation
+					// ArrayList list = new ArrayList();
+					// list.add(node);
+					// _relations2EdgesVertices.put(relation, list);
+					// } else
+					// _relations2EdgesVertices.get(relation).add(node);
+
+					// regard a relation vertex as a Kieler KNode
+					KNode kVertexNode = createKNodeForVertex((Vertex) node);
+					// add it to the graph
+					kVertexNode.setParent(kGraphLayoutNode);
+					// store it in the maps
+					_ptolemy2KielerNodes.put(node, kVertexNode);
+					_kieler2ptolemyDivaNodes.put(kVertexNode, node);
+					_kieler2ptolemyEntityNodes.put(kVertexNode,
+							(NamedObj) semanticNode);
 				}
 
-				// iterate outgoing edges
-				for (Iterator iterator2 = aGraph.outEdges(node); iterator2
-						.hasNext();) {
-					Object edge = iterator2.next();
-					Relation relation = (Relation) aGraph
-							.getSemanticObject(edge);
-					// put relation in map if it's not in there yet
-					if (!_relations2EdgesVertices.containsKey(relation)) {
-						ArrayList list = new ArrayList();
-						list.add(node);
-						_relations2EdgesVertices.put(relation, list);
+				// check if the node has ports
+				Iterator portIter = null;
+				if (semanticNode instanceof Relation) {
+					// if object is a relation vertex, it is itself kinda port
+					List relations = new ArrayList();
+					relations.add(node);
+					portIter = relations.iterator();
+				} else if (semanticNode instanceof Actor) {
+					portIter = aGraph.nodes(node);
+				}
+				if (portIter != null) {
+					for (; portIter.hasNext();) {
+						Object divaPort = portIter.next();
+						// iterate all outgoing edges
+						for (Iterator iterator3 = aGraph.outEdges(divaPort); iterator3
+								.hasNext();) {
+							Object divaEdge = iterator3.next();
+							// store Diva edge in corresponding map with no
+							// KEdge that will be created later
+							_ptolemyDiva2KielerEdges.put(divaEdge, null);
+
+						}
 					}
-					System.out.println("Edge: " + relation);
 				}
 			}
 
-			// find out what is connected to what, i.e. aggregate all relations
-			// to relation groups
-			Set<List<Relation>> relationGroups = getRelationGroups(_relations2EdgesVertices
-					.keySet());
-			for (List<Relation> relationGroup : relationGroups) {
-				// better work with a set to make no assumptions about the order
-				Set<Relation> relationGroupSet = new HashSet<Relation>();
-				relationGroupSet.addAll(relationGroup);
-				createKEdges(relationGroupSet);
+			// // find out what is connected to what, i.e. aggregate all
+			// relations
+			// // to relation groups
+			// Set<List<Relation>> relationGroups =
+			// getRelationGroups(_relations2EdgesVertices
+			// .keySet());
+			// for (List<Relation> relationGroup : relationGroups) {
+			// // better work with a set to make no assumptions about the order
+			// Set<Relation> relationGroupSet = new HashSet<Relation>();
+			// relationGroupSet.addAll(relationGroup);
+			// createKEdges(relationGroupSet);
+			// }
+
+			// create Kieler KEdges for Diva edges
+			for (Object divaEdge : _ptolemyDiva2KielerEdges.keySet()) {
+				EdgeModel edgeModel = aGraph.getEdgeModel(divaEdge);
+				Object sourceNode = edgeModel.getHead(divaEdge);
+				Object targetNode = edgeModel.getTail(divaEdge);
+				// directions of Diva Edges actually might differ actual Ptolemy
+				// model directions, so check those
+				KPort kRealSourcePort = getSource(divaEdge, aGraph, null);
+				KPort ksourcePort = this.getPort(sourceNode, KPortType.OUTPUT);
+				
+				if(kRealSourcePort != ksourcePort){
+					// swap source and target
+					Object temp = sourceNode;
+					sourceNode = targetNode;
+					targetNode = temp;
+				}
+				
+				// create KEdge
+				ksourcePort = this.getPort(sourceNode, KPortType.OUTPUT);
+				KPort ktargetPort = this.getPort(targetNode, KPortType.INPUT);
+
+				KEdge kedge = KimlLayoutUtil.createInitializedEdge();
+				kedge.setSourcePort(ksourcePort);
+				kedge.setTargetPort(ktargetPort);
+				kedge.setSource(ksourcePort.getNode());
+				kedge.setTarget(ktargetPort.getNode());
+
+				// add KEdge to map
+				_ptolemyDiva2KielerEdges.put(divaEdge, kedge);
+				_kieler2PtolemyDivaEdges.put(kedge, divaEdge);
 			}
 		}
 		return kgraph;
+	}
+
+	private KPort getSource(Object divaEdge, ActorGraphModel aGraph, Object ignoreNode) {
+		EdgeModel edgeModel = aGraph.getEdgeModel(divaEdge);
+		Object[] nodes = new Object[2];
+		nodes[0] = edgeModel.getHead(divaEdge);
+		nodes[1] = edgeModel.getTail(divaEdge);
+		// which of the two is actually first in data flow direction?
+
+		// see if you can find out anything about ports
+		for (int i = 0; i < nodes.length; i++) {
+			if (nodes[i] instanceof Port) {
+				Port port = (Port) nodes[i];
+				NamedObj obj = port.getContainer();
+				if (obj instanceof Actor) {
+					Actor actor = (Actor) obj;
+					if (actor.outputPortList().contains(port))
+						return getPort(nodes[i], KPortType.OUTPUT);
+					else if (actor.inputPortList().contains(port))
+						;
+					// then return the other one
+					// FIXME: Vertices are no ports!
+					return getPort(nodes[(i + 1)% nodes.length], KPortType.OUTPUT);
+				}
+			}
+		}
+
+		// things get more complex if we have two relations...
+		// so here try to search recursively until you found any source
+
+		for (int i = 0; i < nodes.length; i++) {
+			// check only for vertices and if the node is not marked to be ignored (to avoid loops)
+			if (nodes[i] instanceof Vertex && nodes[i] != ignoreNode) {
+				// look at all edges to or from the vertex except our original
+				// one
+				Set<Object> edges = new HashSet<Object>();
+				edges.addAll(getList(aGraph.outEdges(nodes[i])));
+				edges.addAll(getList(aGraph.inEdges(nodes[i])));
+				edges.remove(divaEdge);
+				for (Object object : edges) {
+					KPort foundSourcePort = getSource(object, aGraph, nodes[i]);
+					if (foundSourcePort != null) {
+						// yeah, somewhere along that edge we found a source
+						return getPort(nodes[i], KPortType.OUTPUT);
+					}
+				}
+			}
+		}
+		 
+		// if nothing was found yet, we could not determine whether the edge is
+		// connected to a source somewhere or not
+		return null;
+
+	}
+
+	private static List getList(Iterator iter) {
+		List list = new ArrayList();
+		for (; iter.hasNext();) {
+			Object o = iter.next();
+			list.add(o);
+		}
+		return list;
 	}
 
 	/**
@@ -522,12 +675,14 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 *            apply to the Ptolemy model
 	 */
 	private void applyLayout(KNode kgraph) {
+		System.out.println("GRAPH:\n" + toString(kgraph));
 		_momlChangeRequest = new StringBuffer();
 		GraphModel graph = this.getLayoutTarget().getGraphModel();
 		if (graph instanceof ActorGraphModel) {
 			// apply node layout
-			for (KNode knode : kgraph.getChildren()) {
-				KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(knode);
+			for (KNode knode : _kieler2ptolemyEntityNodes.keySet()) {
+				KShapeLayout absoluteLayout = getAbsoluteLayout(knode);
+
 				NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
 
 				// transform koordinate systems
@@ -535,41 +690,48 @@ public class KielerLayout extends AbstractGlobalLayout {
 				// behaves different in Ptolemy. strange.
 				if (!(namedObj instanceof TextAttribute))
 					// transform coordinate systems
-					kNode2Ptolemy(klayout);
+					kNode2Ptolemy(absoluteLayout);
 
-				this
-						.setLocation(namedObj, klayout.getXpos(), klayout
-								.getYpos());
+				if (namedObj instanceof Relation) {
+					Vertex vertex = (Vertex) _kieler2ptolemyDivaNodes
+							.get(knode);
+					setLocation(vertex, (Relation) namedObj, absoluteLayout
+							.getXpos(), absoluteLayout.getYpos());
+				} else
+					setLocation(namedObj, absoluteLayout.getXpos(),
+							absoluteLayout.getYpos());
 
 			}
 			// route edges
-			for (Set<Relation> relationGroup : _ptolemy2KielerEdges.keySet()) {
-				Set<KEdge> kedges = _ptolemy2KielerEdges.get(relationGroup);
-
-				// remove old relation group
-				this.removeRelations(relationGroup);
-
-				// create a new connection tree, that represents on what
-				// segments in
-				// the KIELER graph
-				// the edges are routed at the same place
-				for (KEdge edge : kedges) {
-					System.out.println(toString(edge));
-				}
-				HyperedgeConnectionTree connectionTree = new HyperedgeConnectionTree();
-				connectionTree.addAll(kedges);
-				System.out.println("Edges: " + kedges.size() + " Tree: "
-						+ connectionTree);
-				// dynamically add relations
-				String firstRelation = addRelationswithVertices(connectionTree);
-				// also link source port with first relation
-				if (firstRelation != null) {
-					KEdge edge = kedges.iterator().next();
-					Port port = _kieler2PtolemyPorts.get(edge.getSourcePort());
-					this.link("port", port.getName(_compositeActor),
-							"relation", firstRelation);
-				}
-			}
+			// for (Set<Relation> relationGroup : _ptolemy2KielerEdges.keySet())
+			// {
+			// Set<KEdge> kedges = _ptolemy2KielerEdges.get(relationGroup);
+			//
+			// // remove old relation group
+			// this.removeRelations(relationGroup);
+			//
+			// // create a new connection tree, that represents on what
+			// // segments in
+			// // the KIELER graph
+			// // the edges are routed at the same place
+			// for (KEdge edge : kedges) {
+			// System.out.println(toString(edge));
+			// }
+			// HyperedgeConnectionTree connectionTree = new
+			// HyperedgeConnectionTree();
+			// connectionTree.addAll(kedges);
+			// System.out.println("Edges: " + kedges.size() + " Tree: "
+			// + connectionTree);
+			// // dynamically add relations
+			// String firstRelation = addRelationswithVertices(connectionTree);
+			// // also link source port with first relation
+			// if (firstRelation != null) {
+			// KEdge edge = kedges.iterator().next();
+			// Port port = _kieler2PtolemyPorts.get(edge.getSourcePort());
+			// this.link("port", port.getName(_compositeActor),
+			// "relation", firstRelation);
+			// }
+			// }
 		}
 
 		// create change request and fire it
@@ -580,6 +742,25 @@ public class KielerLayout extends AbstractGlobalLayout {
 				_compositeActor, _momlChangeRequest.toString());
 		request.setUndoable(true);
 		_compositeActor.requestChange(request);
+	}
+
+	private KShapeLayout getAbsoluteLayout(KNode node) {
+		KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(node);
+		KShapeLayout absoluteLayout = KLayoutDataFactory.eINSTANCE
+				.createKShapeLayout();
+		absoluteLayout.setHeight(klayout.getHeight());
+		absoluteLayout.setWidth(klayout.getWidth());
+		float offsetX = 0, offsetY = 0;
+		KNode parent = node.getParent();
+		while (parent != null) {
+			KShapeLayout parentLayout = KimlLayoutUtil.getShapeLayout(parent);
+			offsetX += parentLayout.getXpos();
+			offsetY += parentLayout.getYpos();
+			parent = parent.getParent();
+		}
+		absoluteLayout.setXpos(klayout.getXpos() + offsetX);
+		absoluteLayout.setYpos(klayout.getYpos() + offsetY);
+		return absoluteLayout;
 	}
 
 	/**
@@ -845,6 +1026,33 @@ public class KielerLayout extends AbstractGlobalLayout {
 	}
 
 	/**
+	 * Create a MoMLChangeRequest to move a Ptolemy model object and schedule it
+	 * immediately. The request is addressed to a specific NamedObj in the
+	 * Ptolemy model and hence does not get buffered because there is only
+	 * exactly one move request per layout run per node.
+	 * 
+	 * @param obj
+	 *            Ptolemy node to be moved
+	 * @param x
+	 *            new coordinate
+	 * @param y
+	 *            new coordinate
+	 */
+	private void setLocation(Vertex vertex, Relation relation, double x,
+			double y) {
+		String moml = "<vertex name=\"" + vertex.getName() + "\" value=\"[" + x
+				+ "," + y + "]\"></vertex>\n";
+		// need to request a MoML Change for a particular Vertex
+		// and not the
+		// top level element
+		// so we need multiple requests here
+		MoMLChangeRequest request = new MoMLChangeRequest(this, relation, moml
+				.toString());
+		request.setUndoable(true);
+		relation.requestChange(request);
+	}
+
+	/**
 	 * Create a MoMLChangeRequest to remove a set of relations in a Ptolemy
 	 * model object and schedule it immediately. As mixing creation of new
 	 * relations and removing of old relation requests in the request buffer
@@ -909,11 +1117,108 @@ public class KielerLayout extends AbstractGlobalLayout {
 	private String toString(KEdge edge) {
 		StringBuffer string = new StringBuffer();
 		string.append("[E:");
+		string.append("Source:" + edge.getSource().hashCode());
+		string.append(" Target:" + edge.getTarget().hashCode() + " Bends:");
 		KEdgeLayout layout = KimlLayoutUtil.getEdgeLayout(edge);
 		for (KPoint point : layout.getBendPoints()) {
 			string.append(point.getX() + "," + point.getY() + " ");
 		}
+
 		string.append("]");
 		return string.toString();
+	}
+
+	/**
+	 * Check whether the given Ptolemy model object has any connections, i.e. is
+	 * connected to any other components via some link.
+	 * 
+	 * @param namedObj
+	 * @return
+	 */
+	private boolean hasConnections(NamedObj namedObj) {
+		if (namedObj instanceof Attribute)
+			return false;
+		if (namedObj instanceof Actor) {
+			Actor actor = (Actor) namedObj;
+			List<Port> ports = new ArrayList<Port>();
+			ports.addAll(actor.inputPortList());
+			ports.addAll(actor.outputPortList());
+			for (Port port : ports) {
+				// if any port of an actor is conencted to any other
+				// assume that there is also no visible connection
+				if (!port.connectedPortList().isEmpty())
+					return true;
+			}
+			return false;
+		}
+		// default to false
+		return false;
+	}
+
+	private KNode createKNodeForVertex(Vertex vertex) {
+		KNode knode = KimlLayoutUtil.createInitializedNode();
+		// simulate vertex by node with size 0
+		KShapeLayout layout = KimlLayoutUtil.getShapeLayout(knode);
+		layout.setHeight(1);
+		layout.setWidth(1);
+		LayoutOptions.setFixedSize(layout);
+		// as Kieler so far only suport nodes WITH port constraints,
+		// add dummy ports
+		KPort kinputport = KimlLayoutUtil.createInitializedPort();
+		KShapeLayout portLayout = KimlLayoutUtil.getShapeLayout(knode);
+		portLayout.setHeight(1);
+		portLayout.setWidth(1);
+		portLayout.setXpos(1);
+		portLayout.setYpos(1);
+		kinputport.setType(KPortType.INPUT);
+		kinputport.setNode(knode);
+		KPort koutputport = KimlLayoutUtil.createInitializedPort();
+		portLayout = KimlLayoutUtil.getShapeLayout(knode);
+		portLayout.setHeight(1);
+		portLayout.setWidth(1);
+		portLayout.setXpos(1);
+		portLayout.setYpos(1);
+		koutputport.setType(KPortType.OUTPUT);
+		koutputport.setNode(knode);
+		return knode;
+	}
+
+	private KPort getPort(Object ptolemyObject, KPortType type) {
+		if (ptolemyObject instanceof Vertex) {
+			KNode knode = _ptolemy2KielerNodes.get(ptolemyObject);
+			for (KPort port : knode.getPorts()) {
+				if (port.getType().equals(type))
+					return port;
+			}
+		} else if (ptolemyObject instanceof Port) {
+			return _ptolemy2KielerPorts.get(ptolemyObject);
+		}
+		return null;
+	}
+
+	private String toString(KNode knode) {
+		return toString(knode, 0);
+	}
+
+	private String toString(KNode knode, int level) {
+		StringBuffer buffer = new StringBuffer();
+		KShapeLayout layout = KimlLayoutUtil.getShapeLayout(knode);
+		buffer.append("Node: X" + layout.getXpos() + ",Y" + layout.getYpos()
+				+ ",W" + layout.getWidth() + ",H" + layout.getHeight()
+				+ " Hash:" + knode.hashCode() + "\n");
+		List<KPort> ports = knode.getPorts();
+		for (KPort port : ports) {
+			buffer.append("      Port: " + port.getType() + port.hashCode()
+					+ "\n");
+		}
+		List<KEdge> edges = knode.getOutgoingEdges();
+		for (KEdge edge : edges) {
+			buffer.append(toString(edge) + "\n");
+		}
+		List<KNode> children = knode.getChildren();
+		for (KNode node : children) {
+			buffer.append(+level + " " + toString(node, level + 1));
+		}
+		return buffer.toString();
 	}
 }
