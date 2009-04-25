@@ -85,7 +85,11 @@ public class RenameConfigurer extends Query implements ChangeListener,
             nameShowing = !_isPropertySet(_object, "_hideName");
         }
 
-        addCheckBox("Show name", "Show name", nameShowing);
+        // Don't include the Show name check box for Attributes
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3363
+        if (!(object instanceof Attribute)) {
+            addCheckBox("Show name", "Show name", nameShowing);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,47 +125,52 @@ public class RenameConfigurer extends Query implements ChangeListener,
                 moml.append("\"/>");
             }
 
-            // Remove or show name.
-            boolean showName = getBooleanValue("Show name");
 
-            if (_object instanceof Port) {
-                boolean previousShowName = _isPropertySet(_object, "_showName");
+            // Don't include the Show name check box for Attributes
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3363
+            if (!(_object instanceof Attribute)) {
+                // Remove or show name.
+                boolean showName = getBooleanValue("Show name");
 
-                if (showName != previousShowName) {
-                    if (showName) {
-                        moml
+                if (_object instanceof Port) {
+                    boolean previousShowName = _isPropertySet(_object, "_showName");
+
+                    if (showName != previousShowName) {
+                        if (showName) {
+                            moml
                                 .append("<property name=\"_showName\" "
                                         + "class=\"ptolemy.data.expr.SingletonParameter\""
                                         + " value=\"true\"/>");
-                    } else {
-                        if (!(_object.getAttribute("_showName") instanceof Parameter)) {
-                            moml.append("<deleteProperty name=\"_showName\"/>");
                         } else {
-                            moml
+                            if (!(_object.getAttribute("_showName") instanceof Parameter)) {
+                                moml.append("<deleteProperty name=\"_showName\"/>");
+                            } else {
+                                moml
                                     .append("<property name=\"_showName\" "
                                             + "class=\"ptolemy.data.expr.SingletonParameter\""
                                             + " value=\"false\"/>");
+                            }
                         }
                     }
-                }
-            } else {
-                boolean previousShowName = !_isPropertySet(_object, "_hideName");
+                } else {
+                    boolean previousShowName = !_isPropertySet(_object, "_hideName");
 
-                if (showName != previousShowName) {
-                    if (showName) {
-                        if (!(_object.getAttribute("_hideName") instanceof Parameter)) {
-                            moml.append("<deleteProperty name=\"_hideName\"/>");
-                        } else {
-                            moml
+                    if (showName != previousShowName) {
+                        if (showName) {
+                            if (!(_object.getAttribute("_hideName") instanceof Parameter)) {
+                                moml.append("<deleteProperty name=\"_hideName\"/>");
+                            } else {
+                                moml
                                     .append("<property name=\"_hideName\" "
                                             + "class=\"ptolemy.data.expr.SingletonParameter\""
                                             + " value=\"false\"/>");
-                        }
-                    } else {
-                        moml
+                            }
+                        } else {
+                            moml
                                 .append("<property name=\"_hideName\" "
                                         + "class=\"ptolemy.data.expr.SingletonParameter\""
                                         + " value=\"true\"/>");
+                        }
                     }
                 }
             }
