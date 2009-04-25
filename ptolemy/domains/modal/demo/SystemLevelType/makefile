@@ -112,7 +112,7 @@ install: all jars
 demo:
 	for demo in $(DEMOS); \
 	do \
-		"$(PTII)/bin/vergil" $$demo; \
+		"$(PTII)/bin/vergil" -modal $$demo; \
 	done
 
 # Get the rest of the rules
