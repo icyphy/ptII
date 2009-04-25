@@ -110,3 +110,25 @@ test VersionAttribute-3.0 {clone: This used to throw an exception because of Nam
 test VersionAttribute-3.0 {majorCurrentVersion} {
     java::call ptolemy.kernel.attributes.VersionAttribute majorCurrentVersion
 } {8.0}
+
+test VersionAttribute-4.0 {Delete a RequireVersion when we have a VersionAttribute and a RequireVersion} {
+    # VersionAttribute.equals() has a bug where if we have two VersionAttributes, then only the
+    # first one was deleted.
+    # http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3984
+    set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
+    set versionAttribute [java::new ptolemy.kernel.attributes.VersionAttribute $n "versionAttribute"]
+    set CURRENT_VERSION [java::field \
+	    ptolemy.kernel.attributes.VersionAttribute CURRENT_VERSION]
+    $versionAttribute setExpression [$CURRENT_VERSION getExpression]
+    set requireVersion [java::new ptolemy.kernel.attributes.RequireVersion $n "requireVersion"]
+    $requireVersion setExpression [$CURRENT_VERSION getExpression]
+    $requireVersion setContainer [java::null]
+    list [$n exportMoML]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="my NamedObj" class="ptolemy.kernel.util.NamedObj">
+    <property name="versionAttribute" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+</entity>
+}}

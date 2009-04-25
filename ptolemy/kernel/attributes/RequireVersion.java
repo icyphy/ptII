@@ -70,6 +70,33 @@ public class RequireVersion extends VersionAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if the hash code of this object is equal (==) to
+     *  the hash code of the argument.
+     *  @param object  The specified object that is compared against.
+     *  @return True if the specified version is the same as this one.
+     */
+    public boolean equals(Object object) {
+        // VersionAttribute.equals() has a bug where if we had a 
+        // VersionAttribute and a RequireVersion and the RequireVersion
+        // is deleted, then only the first VersionAttribute was deleted, so we
+        // define equals() and hashCode().  For details, see
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3984
+        if (object instanceof RequireVersion) {
+            return this.hashCode() == object.hashCode();
+        }
+
+        return false;
+    }
+
+    /** Return a hash code value for attribute. This method returns 
+     *  the identity hash code for this attribute.  The hashCode()
+     *  method of the super class is <b>not</b> called.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+        return System.identityHashCode(this);
+    }
+
     /** Set the required version, check it against the currently
      *  executing version, and throw an exception if the executing
      *  version is older.
