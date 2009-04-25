@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @version 
  *  @since Ptolemy II 7.1
  */
-public class SensorReceiver extends EnvironmentReceiver {
+public class SensorInputDevice extends InputDevice {
     
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -66,12 +66,26 @@ public class SensorReceiver extends EnvironmentReceiver {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public SensorReceiver(CompositeEntity container, String name)
+    public SensorInputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port.  This base class imposes no type constraints except
+     *  that the type of the input cannot be greater than the type of the
+     *  output.
+     */
+    public TypedIOPort input;
+
+    /** The output port. By default, the type of this port is constrained
+     *  to be at least that of the input.
+     */
+    public TypedIOPort output;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
@@ -95,18 +109,4 @@ public class SensorReceiver extends EnvironmentReceiver {
             output.send(0, token);
         }
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The input port.  This base class imposes no type constraints except
-     *  that the type of the input cannot be greater than the type of the
-     *  output.
-     */
-    public TypedIOPort input;
-
-    /** The output port. By default, the type of this port is constrained
-     *  to be at least that of the input.
-     */
-    public TypedIOPort output;
 }

@@ -57,19 +57,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  both simulation and code generation purposes.
 *  
 *  This actor assumes the incoming token is a RecordToken, and includes a 
-*  token value as well as a timeStamp associated with the token value. Thus 
+*  token value as well as a timestamp associated with the token value. Thus 
 *  this actor parses the RecordToken and sends the output token with the
-*  timeStamp equal to the timeStamp stored in the RecordToken. 
+*  timestamp equal to the timestamp stored in the RecordToken. 
 *  
-*  In other words, we assume the RecordToken has these two labels: timeStamp,
+*  In other words, we assume the RecordToken has these two labels: timestamp,
 *  tokenValue. 
 *   
 *  @author jiazou, matic
 *  @version 
 *  @since Ptolemy II 7.1
 */
-public class NetworkReceiver extends EnvironmentReceiver {
-    public NetworkReceiver(CompositeEntity container, String name)
+public class NetworkInputDevice extends InputDevice {
+    public NetworkInputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
@@ -90,11 +90,20 @@ public class NetworkReceiver extends EnvironmentReceiver {
      */
     public TypedIOPort output;
     
+    /** label of the timestamp that's transmitterd within the RecordToken.  
+     */
+    private static final String timestamp = "timestamp";
+    
+
+    /** label of the payload that's transmitterd within the RecordToken.  
+     */
+    private static final String payload = "payload";
+    
     
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
-    /** Parses the input RecordToken and produces an output token of a timeStamp
-     *  equal to the timeStamp specified within the RecordToken.
+    /** Parses the input RecordToken and produces an output token of a timestamp
+     *  equal to the timestamp specified within the RecordToken.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent. Or, if the
      *  record has size != 2.
@@ -112,26 +121,26 @@ public class NetworkReceiver extends EnvironmentReceiver {
 
             if (record.labelSet().size() != 2) {
                 throw new IllegalActionException("the record has a size not equal to 2"
-                        + "However here we assume the Record is of types: timeStamp"
+                        + "However here we assume the Record is of types: timestamp"
                         + "+ Token");
             }
             
             Time recordTimeStamp = new Time(getDirector(), 
-                    ((DoubleToken)record.get("timeStamp")).doubleValue());
+                    ((DoubleToken)record.get(timestamp)).doubleValue());
             Time lastModelTime = director.getModelTime();
             director.setModelTime(recordTimeStamp);
-            output.send(0, record.get("tokenValue"));
+            output.send(0, record.get(payload));
             director.setModelTime(lastModelTime);
         }
     }
     
     /** Return the type constraints of this actor. The type constraint is
-     *  that the input RecordToken has two fields, a "timeStamp" of type
+     *  that the input RecordToken has two fields, a "timestamp" of type
      *  double and a "tokenValue" of type same as the output type.
      *  @return a list of Inequality.
      */
     public Set<Inequality> typeConstraints() {
-        String[] labels = { "timeStamp", "tokenValue" };
+        String[] labels = { timestamp, payload };
         Type[] types = { BaseType.DOUBLE, BaseType.GENERAL };
         RecordType type = new RecordType(labels, types);
         input.setTypeAtMost(type);
@@ -154,14 +163,14 @@ public class NetworkReceiver extends EnvironmentReceiver {
                 return BaseType.UNKNOWN;
             } else if (input.getType() instanceof RecordType) {
                 RecordType type = (RecordType) input.getType();
-                Type fieldType = type.get("tokenValue");
+                Type fieldType = type.get(payload);
                 if (fieldType == null) {
                     return BaseType.UNKNOWN;
                 } else {
                     return fieldType;
                 }
             } else {
-                throw new IllegalActionException(NetworkReceiver.this,
+                throw new IllegalActionException(NetworkInputDevice.this,
                         "Invalid type for input port");
             }
         }

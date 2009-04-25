@@ -34,18 +34,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// EnvironmentReceiver
+////EnvironmentTransmitter
 
 /** Base class for environment receivers.
- *  @author jiazou, matic
- *  @version 
- *  @since Ptolemy II 7.1
- */
-public abstract class EnvironmentReceiver extends TypedAtomicActor {
-
-    public EnvironmentReceiver(CompositeEntity container, String name)
+*  @author jiazou, matic
+*  @version 
+*  @since Ptolemy II 7.1
+*/
+public abstract class OutputDevice extends TypedAtomicActor {
+    
+    public OutputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-
 }

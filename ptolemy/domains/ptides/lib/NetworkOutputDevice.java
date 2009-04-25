@@ -55,14 +55,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  both simulation and code generation purposes.
 *   
 *  This actor takes the input token, and creates a RecordToken, with two lables:
-*  timeStamp, and tokenValue. It then sends the output token to its output port. 
+*  timestamp, and payload. It then sends the output token to its output port. 
 *   
 *  @author jiazou, matic
 *  @version 
 *  @since Ptolemy II 7.1
 */
-public class NetworkTransmitter extends EnvironmentTransmitter {
-    public NetworkTransmitter(CompositeEntity container, String name)
+public class NetworkOutputDevice extends OutputDevice {
+    public NetworkOutputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
@@ -70,9 +70,32 @@ public class NetworkTransmitter extends EnvironmentTransmitter {
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port.  This base class imposes no type constraints except
+     *  that the type of the input cannot be greater than the type of the
+     *  output.
+     */
+    public TypedIOPort input;
+
+    /** The output port. By default, the type of this port is constrained
+     *  to be at least that of the input.
+     */
+    public TypedIOPort output;
+    
+    /** label of the timestamp that's transmitterd within the RecordToken.  
+     */
+    private static final String timestamp = "timestamp";
+    
+
+    /** label of the payload that's transmitterd within the RecordToken.  
+     */
+    private static final String payload = "payload";
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
-    /** Creates a RecordToken with two lables: timeStamp, and tokenValue. 
-     *  The tokenValue is the token consumed from the input.
+    /** Creates a RecordToken with two lables: timestamp, and payload. 
+     *  The payload is the token consumed from the input.
      *  It then sends the output token to its output port. 
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
@@ -87,7 +110,7 @@ public class NetworkTransmitter extends EnvironmentTransmitter {
 
         if (input.hasToken(0)) {
             
-            String[] labels = new String[]{"timeStamp", "tokenValue"};
+            String[] labels = new String[]{timestamp, payload};
             Token[] values = new Token[]{
                     new DoubleToken(director.getModelTime().getDoubleValue()),
                     input.get(0)};
@@ -98,12 +121,12 @@ public class NetworkTransmitter extends EnvironmentTransmitter {
     }
     
     /** Return the type constraints of this actor. The type constraint is
-     *  that the output RecordToken has two fields, a "timeStamp" of type
-     *  double and a "tokenValue" of type same as the input type.
+     *  that the output RecordToken has two fields, a "timestamp" of type
+     *  double and a "payload" of type same as the input type.
      *  @return a list of Inequality.
      */
     public Set<Inequality> typeConstraints() {
-        String[] labels = { "timeStamp", "tokenValue" };
+        String[] labels = { timestamp, payload };
         Type[] types = { BaseType.DOUBLE, BaseType.UNKNOWN };
         RecordType type = new RecordType(labels, types);
         output.setTypeEquals(type);
@@ -114,22 +137,8 @@ public class NetworkTransmitter extends EnvironmentTransmitter {
 
         HashSet typeConstraints = new HashSet<Inequality>();
         Inequality inequality = new Inequality(input.getTypeTerm(),
-                    outputType.getTypeTerm("tokenValue"));
+                    outputType.getTypeTerm(payload));
         typeConstraints.add(inequality);
         return typeConstraints;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The input port.  This base class imposes no type constraints except
-     *  that the type of the input cannot be greater than the type of the
-     *  output.
-     */
-    public TypedIOPort input;
-
-    /** The output port. By default, the type of this port is constrained
-     *  to be at least that of the input.
-     */
-    public TypedIOPort output;
 }
