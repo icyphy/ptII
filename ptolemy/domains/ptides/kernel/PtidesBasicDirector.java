@@ -34,7 +34,6 @@ package ptolemy.domains.ptides.kernel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
@@ -45,11 +44,13 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.DefaultCausalityInterface;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -110,6 +111,30 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
+    /**
+     * Return the default dependency between input and output ports which for
+     * the Ptides domain is a RealDependency.
+     *
+     * @return The default dependency which describes a delay of 0.0 between
+     *         ports.
+     */
+    public Dependency defaultDependency() {
+        return RealDependency.OTIMES_IDENTITY;
+    }
+
+
+    /**
+     * Return a real dependency representing a model-time delay of the
+     * specified amount.
+     *
+     * @param delay
+     *            A non-negative delay.
+     * @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return RealDependency.valueOf(delay);
+    }
+    
     /** Advance the current model tag to that of the earliest event in
      *  the event queue, and fire all actors that have requested or
      *  are triggered to be fired at the current tag. If
@@ -300,7 +325,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // case would be to requeue the token with a larger microstep.
                 // A possible fix for the former (if we can detect it) would
                 // be to throw an exception. This would be far better than
-                // going into an infinite loop.
+                // going into an infinite loop. 
                 Iterator<?> inputPorts = actorToFire.inputPortList().iterator();
 
                 while (inputPorts.hasNext() && !refire) {
@@ -351,9 +376,15 @@ public class PtidesBasicDirector extends DEDirector {
                         // proceed to postfire().
                         break;
                     } else if (next.timeStamp().compareTo(getModelTime()) < 0) {
+                        // This case should _ONLY_ happen if the Network
+                        // reset microstep, have the executive director fire us at the current physical time,
+                        // then break out of the current loop to wait for firing of the top event in the
+                        // next iteration.
                         _microstep = 0;
-                        // FIXME: reset microstep and keep firing in the current iteration??
+                        ((Actor)getContainer()).getExecutiveDirector().fireAtCurrentTime((Actor)getContainer());
+                        break;
                     } else if (next.microstep() < _microstep) {
+                        // This case should never happen.
                         // FIXME: what should happen in this case??
                         _microstep = next.microstep();
                         // FIXME: same timestamp, but microstep is smaller, so we want to
@@ -375,7 +406,7 @@ public class PtidesBasicDirector extends DEDirector {
             _debug("DE director fired!");
         }
     }
-    
+
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
@@ -793,7 +824,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException
-     *  @see #setTimedInterrupt()
+     *  @see #_setTimedInterrupt()
      */
     protected boolean _safeToProcess(DEEvent event) {
         IOPort port = event.ioPort();
@@ -979,14 +1010,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  First, for tokens that are stored in the actuator event queue and
      *  send them to the outside of the platform if physical time has arrived.
      *  The second step is to check if this port is a networkedOutput port, if it is, transfer
-     *  data tokens immediately to the outside by calling _transferNetworkingOutputs().
+     *  data tokens immediately to the outside by calling super._transferOutputs(port).
      *  Finally, we check for current model time, if the current model time is equal to the physical
      *  time, we can send the tokens to the outside. Else if current model time has exceeded
      *  the physical time, and we still have tokens to transfer, then we have missed the deadline.
      *  Else if current model time has not arrived at the physical time, then we put the token along
      *  with the port and channel into the actuator event queue, and call fireAt of the executive
      *  director so we could send it at a later physical time.
-     *  @see #_transferNetworkingOutputs()
      */
     protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
@@ -1139,7 +1169,15 @@ public class PtidesBasicDirector extends DEDirector {
                     // we do not want to traverse to the outside of the platform.
                     if (actor != getContainer()) {
                         if (port.isInput()) {
-                            // Time modelTimeDelay = 
+                            // FIXME: do we assumes all input ports are causally related to all output ports?
+                            for (IOPort outputPort : (List<IOPort>)((Actor)port.getContainer()).outputPortList()) {
+                                DefaultCausalityInterface causalityInterface = 
+                                    (DefaultCausalityInterface) (actor.getCausalityInterface());
+                                RealDependency minimumDelay = (RealDependency) causalityInterface
+                                    .getDependency(port, outputPort);
+                                Time modelTime = prevModelTime.add(minimumDelay.value());
+                                localPortDelays.put(outputPort, modelTime);
+                            }
                         } else { // port is an output port
                             for (IOPort sinkPort: (List<IOPort>)port.sinkPortList() ) {
                                 // need to make sure
