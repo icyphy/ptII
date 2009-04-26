@@ -1,4 +1,4 @@
-/* A code generation helper class for domains.ptides.lib.SensorReceiver
+/* A code generation helper class for domains.ptides.lib.ActuatorTransmitter
  @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,24 +31,24 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- A code generation helper class for ptolemy.domains.ptides.lib.SensorReceiver
+ A code generation helper class for ptolemy.domains.ptides.lib.ActorTransmitter
 
  @author Jeff C. Jensen
  @since Ptolemy II 7.1
  */
-public class SensorReceiver extends CCodeGeneratorHelper {
+public class ActuatorTransmitter extends CCodeGeneratorHelper {
 
     /**
-     * Construct a SensorReceiver helper.
+     * Construct a ActorTransmitter helper.
      * @param actor The associated actor.
      */
-    public SensorReceiver(ptolemy.domains.ptides.lib.SensorReceiver actor) {
+    public ActuatorTransmitter(ptolemy.domains.ptides.lib.ActuatorTransmitter actor) {
         super(actor);
     }
 
     /**
      * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from SensorReceiver.c,
+     * Reads the <code>preinitBlock</code> from ActuatorTransmitter.c,
      * replace macros with their values and return the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
@@ -58,8 +58,9 @@ public class SensorReceiver extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.ptides.lib.SensorReceiver actor = (ptolemy.domains.ptides.lib.SensorReceiver) getComponent();
+        ptolemy.domains.ptides.lib.ActuatorTransmitter actor = (ptolemy.domains.ptides.lib.ActuatorTransmitter) getComponent();
 
+        code.append("\n\n//ActuatorTransmitter PreInit Stub\n");
         return code.toString();
     }
 }
