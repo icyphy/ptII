@@ -123,6 +123,10 @@ public class NonStrictTest extends Sink {
         tolerance.setExpression("1.0E-9");
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
+        requireAllCorrectValues = new SharedParameter(this,
+                "requireAllCorrectValues", getClass(), "false");
+        requireAllCorrectValues.setTypeEquals(BaseType.BOOLEAN);
+
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
@@ -143,6 +147,16 @@ public class NonStrictTest extends Sink {
      *  value 10<sup>-9</sup>.
      */
     public Parameter tolerance;
+
+    /** If true, and the number of tokens seen in wrapup() is not
+     *  equal to or greater than the number of elements in the
+     *  <i>correctValues</i> array, then throw an exception.  The
+     *  default value is currently false, though this may change.  It
+     *  is a shared parameter, meaning that changing it for any one
+     *  instance in a model will change it for all instances in the
+     *  model.
+     */
+    public Parameter requireAllCorrectValues;
 
     /** If true, then do not check inputs, but rather collect them into
      *  the <i>correctValues</i> array.  This parameter is a boolean,
@@ -346,7 +360,10 @@ public class NonStrictTest extends Sink {
                         + "expecting "
                         + ((ArrayToken) (correctValues.getToken())).length()
                         + " tokens.";
-
+                if (((BooleanToken) requireAllCorrectValues.getToken()).booleanValue()) {
+                    // FIXME: this produce a dialog for each failed test.
+                    throw new IllegalActionException(this, errorMessage); 
+                }
                 System.err.println("Warning: '" + getFullName() + "' "
                         + errorMessage);
             }
