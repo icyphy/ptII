@@ -84,7 +84,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
    /** Generates the preinitialization code for the Giotto Director which includes
     * generating driver code for all the actors as well as the firefunction code.
     * None of the methods can be inlined in this implementation.
-    * @param none
     * @return String containing the preinitialization code.
     */
     
@@ -184,11 +183,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
   
     /**
-     * @param port, the port whose information is desired
+     * Returns a reference for this port.
+     * @param port
      * @param channelAndOffset
      * @param forComposite
      * @param isWrite
-     * @param helper, codegerator helper associated with this port
+     * @param helper
      * @return string containing the port information
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
@@ -290,7 +290,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     /**
      * This method creates port variables for the actor passed in as a parameter.
      * @param actor- Actor whose port variables need to be declared
-     * @return
+     * @return Port variables associated with this actor
      * @throws IllegalActionException
      */
 
@@ -531,7 +531,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      *  NOTE: Duplicate ports connected through a fork are removed. IE. if an input is connected to a fork
      *  and the fork is connected to two other places... it removes the first place from the list of places and keeps the last place
      *  need to ask Jackie if there is a way to work around this b/c Reciever [][] recievers = getRecievers doesn't work.
-     *  @param none
      *  @return code that copies outputs to a port, and inputs from a port in a driver method
      */ 
     public String _generateInDriverCode() throws IllegalActionException {
@@ -754,10 +753,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
      
      /**
-      * Generate the type conversion fire code. This method is called by the
-      * Director to append necessary fire code to handle type conversion.
-      * @param forComposite True if we are generating code for a composite.
-      * @return The generated code.
+      * This method simply overwrites the base class method and returns a blank string
       * @exception IllegalActionException Not thrown in this base class.
       */
      public String _generateTypeConvertFireCode(IOPort source,IOPort sink)
