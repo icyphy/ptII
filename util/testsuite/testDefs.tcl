@@ -657,5 +657,5 @@ if {"$isRunningNightlyBuild" == "true" \
 }
 
 proc createAndExecute {file} {
-    java::new ptolemy.actor.gui.MoMLSimpleApplication $file
+    java::new ptolemy.moml.MoMLSimpleApplication $file
 }
