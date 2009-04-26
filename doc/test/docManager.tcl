@@ -123,7 +123,7 @@ foreach i $configs {
 				 $configuration $className \
 				 true false false false]
 		    if [java::isnull $url] {
-			lappend results "\nFailed to find ptdoc for $className"
+			lappend results "\nFailed to find ptdoc for $className.  Try doing (cd $PTII/doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make)"
 		    }
 
 
