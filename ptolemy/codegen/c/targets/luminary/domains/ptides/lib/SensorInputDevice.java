@@ -1,5 +1,5 @@
 /* A code generation helper class for domains.ptides.lib.SensorReceiver
- @Copyright (c) 2007 The Regents of the University of California.
+ @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,22 +27,22 @@
 package ptolemy.codegen.c.targets.luminary.domains.ptides.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.domains.ptides.lib.SensorReceiver
 
- @author Jeff C. Jensen
+ @author Jeff C. Jensen, Jia Zou
+ @version $Id$
  @since Ptolemy II 7.1
  */
-public class SensorReceiver extends CCodeGeneratorHelper {
+public class SensorInputDevice extends CCodeGeneratorHelper {
 
     /**
      * Construct a SensorReceiver helper.
      * @param actor The associated actor.
      */
-    public SensorReceiver(ptolemy.domains.ptides.lib.SensorReceiver actor) {
+    public SensorInputDevice(ptolemy.domains.ptides.lib.SensorInputDevice actor) {
         super(actor);
     }
 
@@ -58,7 +58,7 @@ public class SensorReceiver extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.ptides.lib.SensorReceiver actor = (ptolemy.domains.ptides.lib.SensorReceiver) getComponent();
+        ptolemy.domains.ptides.lib.SensorInputDevice actor = (ptolemy.domains.ptides.lib.SensorInputDevice) getComponent();
 
         return code.toString();
     }

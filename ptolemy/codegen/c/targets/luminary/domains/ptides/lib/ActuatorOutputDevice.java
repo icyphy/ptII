@@ -1,5 +1,5 @@
 /* A code generation helper class for domains.ptides.lib.ActuatorTransmitter
- @Copyright (c) 2007 The Regents of the University of California.
+ @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,22 +27,22 @@
 package ptolemy.codegen.c.targets.luminary.domains.ptides.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.domains.ptides.lib.ActorTransmitter
 
- @author Jeff C. Jensen
+ @author Jeff C. Jensen, Jia Zou
+ @version $Id$
  @since Ptolemy II 7.1
  */
-public class ActuatorTransmitter extends CCodeGeneratorHelper {
+public class ActuatorOutputDevice extends CCodeGeneratorHelper {
 
     /**
      * Construct a ActorTransmitter helper.
      * @param actor The associated actor.
      */
-    public ActuatorTransmitter(ptolemy.domains.ptides.lib.ActuatorTransmitter actor) {
+    public ActuatorOutputDevice(ptolemy.domains.ptides.lib.ActuatorOutputDevice actor) {
         super(actor);
     }
 
@@ -58,7 +58,7 @@ public class ActuatorTransmitter extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.ptides.lib.ActuatorTransmitter actor = (ptolemy.domains.ptides.lib.ActuatorTransmitter) getComponent();
+        ptolemy.domains.ptides.lib.ActuatorOutputDevice actor = (ptolemy.domains.ptides.lib.ActuatorOutputDevice) getComponent();
 
         code.append("\n\n//ActuatorTransmitter PreInit Stub\n");
         return code.toString();
