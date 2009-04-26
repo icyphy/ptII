@@ -100,6 +100,9 @@ JSRESTORE =	jsrestore
 # The pathname to the JavaScope.zip file
 JSCLASSPATH = 	/users/ptdesign/vendors/sun/JavaScope/JavaScope.zip
 
+# KIELER_JAR is used in ptolemy/vergil/basic/layout/makefile for layout
+KIELER_JAR = $(PTII)/lib/kieler.jar
+
 # KVM is the JDK for PalmOS, see
 # http://java.sun.com/products/kvm
 KVM_CLASSES = @KVM_CLASSES@
