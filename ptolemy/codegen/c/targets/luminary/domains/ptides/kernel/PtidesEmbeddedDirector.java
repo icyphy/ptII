@@ -67,8 +67,8 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
     /**
      * Construct the code generator helper associated with the given
      * PtidesDirector.
-     * @param ptidesDirector The associated
-     *  ptolemy.domains.ptides.kernel.PtidesDirector
+     * @param PtidesEmbeddedDirector The associated
+     *  ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector
      */
     public PtidesEmbeddedDirector(ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector ptidesEmbeddedDirector) {
         super(ptidesEmbeddedDirector);
@@ -76,93 +76,6 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-
-    /**
-     * Generate code for getting data from the specified channel.
-     * The generated code should also get data upon asking for it.
-     * Upon return the data can be access through using the
-     * $ref(port#channalNumber) macro.
-     *
-     * @param port The specified port.
-     * @param channelNumber The specified channel.
-     * @return The code for getting data from specified channel.
-     * @exception IllegalActionException If the specified port channel has
-     *  more than one referable queues.
-     * @exception IllegalActionException If the
-     * {@link #getReferenceChannels(IOPort, int), #processCode(String)}
-     *  method throws the exceptions.
-     */
-    public String generateCodeForGet(IOPort port, int channelNumber)
-    throws IllegalActionException {
-        /* FIXME: top level send and get should involve networking components, ignore for now.
-        List<Channel> channels = getReferenceChannels(port, channelNumber);
-
-        if (channels.size() == 0) {
-            return "";
-        } if (channels.size() != 1) {
-            throw new IllegalActionException(this,
-                    "There are more than one channel to get data from. " +
-            "This is ambiguous.");
-        }
-
-        Channel referenceChannel = channels.get(0);
-        IOPort referencePort = referenceChannel.port;
-
-        if (referencePort.getWidth() <= 0) {
-            return "";
-        }
-
-        CodeGeneratorHelper actorHelper =
-            (CodeGeneratorHelper) _getHelper(port.getContainer());
-
-        String dataVariable = "$ref(" + referencePort.getName()
-        + "#" + referenceChannel.channelNumber + ")";
-        String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
-        String waitTime = _getMaxDelay(referenceChannel);
-
-        return actorHelper.processCode("while ( pdTRUE != xQueueReceive(" + queue + ", &" + dataVariable
-                + ", " + waitTime + ") );" + _eol);
-         */
-        return "";
-    }
-
-    /**
-     * Generate code for sending data to the specified channel.
-     * The generated code should also send the code successfully,
-     * assume an infinite amount of buffer space is available.
-     * @param port The specified port.
-     * @param channelNumber The specified channel.
-     * @param dataToken The specified expression for the data being send.
-     * @return The code for sending data to the specified channel.
-     * @exception IllegalActionException If the
-     * {@link #getReferenceChannels(IOPort, int), #processCode(String)}
-     *  method throws the exceptions.
-     */
-    public String generateCodeForSend(IOPort port, int channelNumber,
-            String dataToken) throws IllegalActionException {
-        /* FIXME: top level send and get should involve networking components, ignore for now.
-        StringBuffer result = new StringBuffer();
-        List<Channel> channels = getReferenceChannels(port, channelNumber);
-
-        for (Channel referenceChannel : channels) {
-            IOPort referencePort = referenceChannel.port;
-
-            CodeGeneratorHelper actorHelper =
-                (CodeGeneratorHelper) _getHelper(referencePort.getContainer());
-
-            //            String dataVariable = "$ref(" + referencePort.getName()
-            //                + "#" + referenceChannel.channelNumber + ")";
-
-            String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
-            String waitTime = _getMaxDelay(referenceChannel);
-
-            result.append(actorHelper.processCode("while ( pdTRUE != xQueueSend(" +
-                    queue + ", &" + dataToken + ", " + waitTime + ") );" + _eol));
-        }
-        return result.toString();
-         */
-        return "";
-    }
 
     /**
      * Generate the director fire code.
@@ -255,7 +168,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      * Generate the main loop code.
      * If the inline parameter of the code generator is checked, it
      * generates the fire code; otherwise, it generates the a call to
-     * the fire function generated by {@link #generateFireFunction()).
+     * the fire function generated by {@link #generateFireFunction()}.
      * @return The main loop code.
      * @exception IllegalActionException If looking up the inline
      *  parameter or generating the fire code throws it.
