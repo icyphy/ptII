@@ -285,6 +285,30 @@ in various ways.
 
   </li>
 
+  <li><i>Event-Oriented Modeling with Ptera</i>:
+    <a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash_FSM.xml">CarWash</a> with DE, Ptera and FSM
+    
+    (See also <a href="../../actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a>, <a href="../../domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a>).
+    <br>
+
+ The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model
+of computation. A model in Ptera is represented with a graph of nodes and edges,
+where nodes represent events and directed edges between events represent
+scheduling relation. One or more events can be selected as initial events, which
+are scheduled at model time 0.0. When an event is fired, it possibly performs
+certain actions, and if there are outgoing edges from that event, the events at
+the end points of those edges are scheduled after non-negative delays. One or
+more events can also be selected as final events. The firing of final events
+causes the event queue to be emptied after their actions are performed, and
+therefore no more events can be processed.
+
+
+    <br>
+
+
+
+  </li>
+
   <li><i>Process Networks</i>:
     <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
 OrderedMerge</a> (see also
