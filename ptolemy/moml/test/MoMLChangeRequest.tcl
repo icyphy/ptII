@@ -259,6 +259,43 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
 </entity>
 }
 
+######################################################################
+####
+#
+test MoMLChangeRequest-1.8 {Test property deletion of a RequireVersion attribute} {
+    # VersionAttribute.equals() has a bug where if we had a 
+    # VersionAttribute and a RequireVersion and the RequireVersion
+    # is deleted, then only the first VersionAttribute was deleted, so we
+    # define equals() and hashCode().  For details, see
+    # http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3984
+    set VersionAttribute [java::new ptolemy.kernel.attributes.RequireVersion $toplevel "VersionAttribute"]
+    set requireVersion [java::new ptolemy.kernel.attributes.RequireVersion $toplevel "RequireVersion"]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <group>
+        <deleteProperty name="RequireVersion"/>
+        </group>
+    }]
+    set change
+    $manager requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </property>
+    <property name="VersionAttribute" class="ptolemy.kernel.attributes.RequireVersion" value="8.0.beta">
+    </property>
+    <entity name="rec" class="ptolemy.actor.lib.Recorder">
+    </entity>
+</entity>
+}
+
+
 # FIXME:  delete links
 
 ######################################################################
