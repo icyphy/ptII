@@ -37,8 +37,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// EnvironmentReceiver
 
 /** Base class for environment receivers.
- *  @author jiazou, matic
- *  @version 
+ *  @author Jia Zou, Slobodan Matic
+ *  @version $ld$
  *  @since Ptolemy II 7.1
  */
 public abstract class InputDevice extends TypedAtomicActor {

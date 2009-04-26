@@ -37,10 +37,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////EnvironmentTransmitter
 
 /** Base class for environment receivers.
-*  @author jiazou, matic
-*  @version 
-*  @since Ptolemy II 7.1
-*/
+ *  @author Jia Zou, Slobodan Matic
+ *  @version $ld$
+ *  @since Ptolemy II 7.1
+ */
 public abstract class OutputDevice extends TypedAtomicActor {
     
     public OutputDevice(CompositeEntity container, String name)

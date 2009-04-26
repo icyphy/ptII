@@ -48,18 +48,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////NetworkTransmitter
 
 /** 
-*  Note this actor (or some other subclass of this class) should
-*  be directly connected to a network output port in a PtidesBasicDirector.
-*  
-*  Unlike ActuatorTransmitter for example, this actor is necessarily needed for
-*  both simulation and code generation purposes.
-*   
-*  This actor takes the input token, and creates a RecordToken, with two lables:
-*  timestamp, and payload. It then sends the output token to its output port. 
-*   
-*  @author jiazou, matic
-*  @version 
-*  @since Ptolemy II 7.1
+ *  Note this actor (or some other subclass of this class) should
+ *  be directly connected to a network output port in a PtidesBasicDirector.
+ *  
+ *  Unlike ActuatorTransmitter for example, this actor is necessarily needed for
+ *  both simulation and code generation purposes.
+ *   
+ *  This actor takes the input token, and creates a RecordToken, with two lables:
+ *  timestamp, and payload. It then sends the output token to its output port. 
+ *   
+ *  @author Jia Zou, Slobodan Matic
+ *  @version $ld$
+ *  @since Ptolemy II 7.1
 */
 public class NetworkOutputDevice extends OutputDevice {
     public NetworkOutputDevice(CompositeEntity container, String name)

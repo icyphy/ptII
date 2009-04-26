@@ -48,8 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  
  *  However the same argument does not hold for a NetworkReceiver.
  *   
- *  @author jiazou, matic
- *  @version 
+ *  @author Jia Zou, Slobodan Matic
+ *  @version $ld$
  *  @since Ptolemy II 7.1
  */
 public class SensorInputDevice extends InputDevice {
