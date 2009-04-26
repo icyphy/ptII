@@ -230,6 +230,8 @@ test Test-1.5 {Export} {
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -327,6 +329,25 @@ test Test-2.2.2 {Fail the array test} {
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
 Value was: {1.0, 42.0, 3.0}. Should have been: {1.0, 2.0, 3.0}
+  in .top.test}}
+
+
+######################################################################
+#### 
+#
+test Test-2.2.3 {Fail the array test with insufficient data} {
+    # Uses 2.2 above
+    set value [getParameter $const value]
+    $value setToken [java::new ptolemy.data.ArrayToken "{1.0, 2.0, 3.0}"]
+   
+    set correctValues [getParameter $test correctValues]
+    $correctValues setExpression "{{{1.0, 2.0, 3.0}}, {{1.0, 2.0, 3.0}}, {{1.0, 2.0, 3.0}}}"
+    set requireAllCorrectValues [getParameter $test requireAllCorrectValues]
+    $requireAllCorrectValues setExpression "true" 
+    puts [$e22 exportMoML]
+    catch {[$e22 getManager] execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
   in .top.test}}
 
 ######################################################################
