@@ -6,14 +6,27 @@ RIT128x96x4Init(1000000);
 /**/
 
 /***preinitBlock***/
-
+#include "semphr.h" 
 /**/
+
 /***declareTaskHandle($name)***/
- xTaskHandle $name_handle;
+ xTaskHandle $name_task;
+ /**/
+ 
+ /***declareSemaphoreHandle($name)***/
+ xSemaphoreHandle $name;
  /**/
 
 /***createTask($name, $stackSize, $priority)***/
-xTaskCreate($name, "$name", $stackSize, NULL,$priority,$name_handle);
+xTaskCreate($name, "$name", $stackSize, NULL,$priority,$name_task);
+/**/
+
+/***createCountingSemaphore($name, $maxCount, $initialValue)***/
+$name_handle = xSemaphoreCreateCounting($maxCount,$initialValue );
+/**/
+
+/***createBinarySemaphore($name)***/
+vSemaphoreCreateBinary($name);
 /**/
 
 /***createSchedulerThread($period)***/
