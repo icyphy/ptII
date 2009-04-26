@@ -48,15 +48,14 @@ PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	ActuatorTransmitter.java \
-	EnvironmentReceiver.java \
-	EnvironmentTransmitter.java \
-	NetworkReceiver.java \
-	NetworkTransmitter.java \
+	ActuatorOutputDevice.java \
+	InputDevice.java \
+	NetworkInputDevice.java \
+	NetworkOutputDevice.java \
+	OutputDevice.java \
 	ScheduleListener.java \
 	SchedulePlotter.java \
-	SensorReceiver.java
-	
+	SensorInputDevice.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml
@@ -71,6 +70,8 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'NetworkInputDevice$$1.class' \
+	'NetworkInputDevice$$PortFunction.class' \
 	'ScheduleListener$$ScheduleEventType.class' \
 	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
 
