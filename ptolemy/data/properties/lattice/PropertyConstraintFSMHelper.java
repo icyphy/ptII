@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.AtomicActor.
+/* A helper class for ptolemy.domains.fsm.kernel.FSMActor.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -191,49 +191,6 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         return _union(_ownConstraints, _subHelperConstraints);
     }
 
-    private void _checkIneffectiveOutputPorts(
-            FSMActor actor,
-            Set<NamedObj> setDestinations1,
-            Set<NamedObj> setDestinations2) {
-
-        Iterator outputs = actor.outputPortList().iterator();
-        while (outputs.hasNext()) {
-            IOPort output = (IOPort) outputs.next();
-            if ((!setDestinations1.isEmpty()) && (!setDestinations2.isEmpty())) {
-                if ((!setDestinations1.contains(output)) && (!setDestinations2.contains(output))) {
-                    getPropertyTerm(output).setEffective(false);
-                }
-            } else if (setDestinations1.isEmpty()) {
-                if (!setDestinations2.contains(output)) {
-                    getPropertyTerm(output).setEffective(false);
-                }
-            } else if (setDestinations2.isEmpty()) {
-                if (!setDestinations1.contains(output)) {
-                    getPropertyTerm(output).setEffective(false);
-                }
-            }
-        }
-    }
-
-
-    /**
-     *
-     */
-    protected List<ASTPtRootNode> _getAttributeParseTrees() {
-        List<ASTPtRootNode> result = super._getAttributeParseTrees();
-
-        ptolemy.domains.fsm.kernel.FSMActor actor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
-
-        Iterator states = actor.entityList(State.class).iterator();
-        while (states.hasNext()) {
-            State state = (State) states.next();
-
-            result.addAll(getParseTrees(state));
-        }
-        return result;
-    }
-
     public List<ASTPtRootNode> getParseTrees(State state) {
         List<ASTPtRootNode> result = new LinkedList<ASTPtRootNode>();
         Iterator transitions =
@@ -266,22 +223,19 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         }
     }
 
-    /**
-     *
-     */
-
-    /**
-     * @param actions
-     * @return
-     */
-    private List<ASTPtRootNode> _getParseTrees(AbstractActionsAttribute actions) {
-        List<ASTPtRootNode> parseTrees = actions.getParseTreeList();
-
-        Iterator iterator = parseTrees.iterator();
-        while (iterator.hasNext()) {
-            putAttribute((ASTPtRootNode) iterator.next(), actions);
+    protected List<ASTPtRootNode> _getAttributeParseTrees() {
+        List<ASTPtRootNode> result = super._getAttributeParseTrees();
+    
+        ptolemy.domains.fsm.kernel.FSMActor actor =
+            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+    
+        Iterator states = actor.entityList(State.class).iterator();
+        while (states.hasNext()) {
+            State state = (State) states.next();
+    
+            result.addAll(getParseTrees(state));
         }
-        return parseTrees;
+        return result;
     }
 
     /**
@@ -321,6 +275,44 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
      */
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         return _getASTNodeHelpers();
+    }
+
+    private void _checkIneffectiveOutputPorts(
+            FSMActor actor,
+            Set<NamedObj> setDestinations1,
+            Set<NamedObj> setDestinations2) {
+    
+        Iterator outputs = actor.outputPortList().iterator();
+        while (outputs.hasNext()) {
+            IOPort output = (IOPort) outputs.next();
+            if ((!setDestinations1.isEmpty()) && (!setDestinations2.isEmpty())) {
+                if ((!setDestinations1.contains(output)) && (!setDestinations2.contains(output))) {
+                    getPropertyTerm(output).setEffective(false);
+                }
+            } else if (setDestinations1.isEmpty()) {
+                if (!setDestinations2.contains(output)) {
+                    getPropertyTerm(output).setEffective(false);
+                }
+            } else if (setDestinations2.isEmpty()) {
+                if (!setDestinations1.contains(output)) {
+                    getPropertyTerm(output).setEffective(false);
+                }
+            }
+        }
+    }
+    
+    /**
+     * @param actions
+     * @return
+     */
+    private List<ASTPtRootNode> _getParseTrees(AbstractActionsAttribute actions) {
+        List<ASTPtRootNode> parseTrees = actions.getParseTreeList();
+    
+        Iterator iterator = parseTrees.iterator();
+        while (iterator.hasNext()) {
+            putAttribute((ASTPtRootNode) iterator.next(), actions);
+        }
+        return parseTrees;
     }
 
 }

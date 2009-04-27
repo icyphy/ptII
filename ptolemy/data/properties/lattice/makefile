@@ -79,6 +79,7 @@ JSRCS = \
 	PropertyConstraintCompositeHelper.java \
 	PropertyConstraintFSMHelper.java \
 	PropertyConstraintHelper.java \
+	PropertyConstraintModalFSMHelper.java \
 	PropertyConstraintSolver.java \
 	PropertyLattice.java \
 	PropertySet.java \
