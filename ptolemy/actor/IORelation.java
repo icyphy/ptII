@@ -1076,6 +1076,20 @@ public class IORelation extends ComponentRelation {
                 }
 
 
+                // Invalidate schedule and type resolution.
+                Nameable container = getContainer();
+
+                if (container instanceof CompositeActor) {
+                    ((CompositeActor) container).notifyConnectivityChange();
+                    Director director = ((CompositeActor) container).getDirector();
+
+                    if (director != null) {
+                        director.invalidateSchedule();
+                        director.invalidateResolvedTypes();
+                        
+                    }
+                }
+
                 // According to the comments this used to happen for this reason:
                 //      Do this as a second pass so that it does not
                 //      get executed if the change is aborted
@@ -1094,20 +1108,6 @@ public class IORelation extends ComponentRelation {
 
                     if (portContainer != null) {
                         portContainer.connectionsChanged(p);
-                    }
-                }
-
-                // Invalidate schedule and type resolution.
-                Nameable container = getContainer();
-
-                if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).notifyConnectivityChange();
-                    Director director = ((CompositeActor) container).getDirector();
-
-                    if (director != null) {
-                        director.invalidateSchedule();
-                        director.invalidateResolvedTypes();
-                        
                     }
                 }
             } finally {
