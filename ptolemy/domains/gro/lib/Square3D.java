@@ -17,7 +17,6 @@ public class Square3D extends GROActor {
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
         GLPipelineObject.setOutput(true);
         //GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
-        GLPipelineObject.setMultiport(true);
 
         // TODO Auto-generated constructor stub
     }

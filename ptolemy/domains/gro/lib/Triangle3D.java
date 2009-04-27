@@ -20,7 +20,6 @@ public class Triangle3D extends GROActor {
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
         GLPipelineObject.setOutput(true);
         //GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
-        GLPipelineObject.setMultiport(true);
     }
     
     public TypedIOPort GLPipelineObject;
