@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/PtidesBasicTwoPlatformsEventDifferByMicrostep
+ME =		ptolemy/domains/ptides/demo/PtidesBasicOnePlatform
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,14 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesBasicTwoPlatformsEventDifferByMicrostep
+PTPACKAGE = 	PtidesBasicOnePlatform
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	PtidesBasicTwoPlatformsEventDifferByMicrostep.xml 
+	PtidesBasicOnePlatform.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -77,10 +77,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PtidesBasicTwoPlatformsEventDifferByMicrostep.xml
+	"$(PTII)/bin/ptolemy" PtidesBasicOnePlatform.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" PtidesBasicTwoPlatformsEventDifferByMicrostep.xml
+	"$(PTII)/bin/vergil" PtidesBasicOnePlatform.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
