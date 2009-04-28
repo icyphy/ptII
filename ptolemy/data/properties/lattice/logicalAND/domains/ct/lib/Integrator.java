@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.domains.sdf.lib.SampleDelay.
+/*  A helper class for ptolemy.domains.ct.lib.Integrator.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -30,54 +30,59 @@ package ptolemy.data.properties.lattice.logicalAND.domains.ct.lib;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Const
+//// Integrator
 
 /**
- A helper class for ptolemy.actor.lib.SampleDelay.
+ A helper class for ptolemy.domains.ct.lib.Integrator.
 
- @author Man-Kit Leung, Thomas Mandl
+ @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
 public class Integrator extends AtomicActor {
 
     /**
-     * Construct a Const helper for the staticDynamic lattice.
-     * This set a permanent constraint for the output port to
-     * be STATIC, but does not use the default actor constraints.
+     * Construct a Integrator helper for the logicalAND ontology.
      * @param solver The given solver.
-     * @param actor The given Source actor
-     * @exception IllegalActionException
+     * @param actor The given Integrator actor
+     * @exception IllegalActionException Thrown if the
+     *  super class throws it.
      */
     public Integrator(PropertyConstraintSolver solver,
             ptolemy.domains.ct.lib.Integrator actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
-        _actor = actor;
-        _lattice = (Lattice) getSolver().getLattice();
      }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                            public methods                 ////
+
+    /**
+     * Return the list of constraints that specifies the analysis
+     * for the Integrator actor. This analysis is conservative. It
+     * always sets the output to FALSE, which is the top of the 
+     * logicalAND ontology lattice.
+     * @return The list of constraints.
+     * @exception IllegalActionException Thrown if an error 
+     *  occurs when getting the FALSE element from the lattice
+     *  or the super class throws it.
+     */
     public List<Inequality> constraintList()
             throws IllegalActionException {
-        /* always set output of feedback loop to FALSE if we want to
-         * interpret the use-case as const/nonconst. By adding partial
-         * evaluation a less conservative behavior could be implemented.
-         */
-        setAtLeast(_actor.output, _lattice.getElement("FALSE"));
+        
+        ptolemy.domains.ct.lib.Integrator actor = 
+            (ptolemy.domains.ct.lib.Integrator) getComponent();
+        
+        setAtLeast(actor.output, _lattice.getElement("FALSE"));
 
         return super.constraintList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private ptolemy.domains.ct.lib.Integrator _actor;
-    private Lattice _lattice;
 }

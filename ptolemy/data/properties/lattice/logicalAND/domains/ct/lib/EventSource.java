@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.domains.sdf.lib.EventSource.
+/* A helper class for ptolemy.domains.ct.lib.EventSource.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -42,19 +42,18 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
 public class EventSource extends AtomicActor {
 
     /**
-     * Construct a EventSource helper for the staticDynamic lattice.
-     * This set a permanent constraint for the output port to
-     * be STATIC, but does not use the default actor constraints.
+     * Construct a EventSource helper for the logicalAND ontology.
      * @param solver The given solver.
-     * @param actor The given Source actor
-     * @exception IllegalActionException
+     * @param actor The given EventSource actor.
+     * @exception IllegalActionException Thrown if the
+     *  super class throws it.
      */
     public EventSource(PropertyConstraintSolver solver,
             ptolemy.domains.ct.lib.EventSource actor)
@@ -63,6 +62,15 @@ public class EventSource extends AtomicActor {
         super(solver, actor, false);
      }
 
+    /**
+     * Return the list of constraints that specifies the analysis
+     * for the EventSource actor.
+     * @return The list of constraints.
+     * @exception IllegalActionException Thrown if an error 
+     *  occurs when getting the elements from the lattice, 
+     *  reading the values from the values parameter of the EventSource
+     *  actor, or the super class throws it.
+     */
     public List<Inequality> constraintList()
             throws IllegalActionException {
 
@@ -88,5 +96,4 @@ public class EventSource extends AtomicActor {
 
         return super.constraintList();
     }
-
 }
