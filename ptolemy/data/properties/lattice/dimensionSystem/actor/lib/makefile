@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem Actor Lib Logic
+# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem Actor Lib
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/flatUnitSystem/actor/lib/logic
+ME =        ptolemy/data/properties.lattice.dimensionSystem/actor/lib
 
-DIRS =      
+DIRS =      logic
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../../../..
+ROOT =      ../../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,16 +43,18 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     logic
+PTPACKAGE =     lib
 
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	logic/logic.jar
 
 JSRCS = \
-	Comparator.java
+	Expression.java \
+	MultiplyDivide.java
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

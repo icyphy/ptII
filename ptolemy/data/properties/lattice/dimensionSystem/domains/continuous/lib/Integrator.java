@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.MultiplyDivide.
+/* A helper class for ptolemy.domains.continuous.lib.Integrator.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.flatUnitSystem.actor.lib;
+package ptolemy.data.properties.lattice.dimensionSystem.domains.continuous.lib;
 
 import java.util.List;
 
@@ -38,27 +38,27 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// MultiplyDivide
+//// Integrator
 
 /**
- A helper class for ptolemy.actor.lib.MultiplyDivide.
+ A helper class for ptolemy.domains.continuous.lib.Integrator.
 
  @author Man-Kit Leung
- @version $Id: MultiplyDivide.java 53046 2009-04-10 23:04:25Z cxh $
+ @version $Id: Integrator.java 53046 2009-04-10 23:04:25Z cxh $
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class MultiplyDivide extends PropertyConstraintHelper {
+public class Integrator extends PropertyConstraintHelper {
 
     /**
-     * Construct a MultiplyDivide helper for the flatUnitSystem lattice.
+     * Construct a Integrator helper for the flatUnitSystem lattice.
      * @param solver The given solver.
-     * @param actor The given MultiplyDivide actor
+     * @param actor The given Integrator actor
      * @exception IllegalActionException
      */
-    public MultiplyDivide(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.MultiplyDivide actor)
+    public Integrator(PropertyConstraintSolver solver,
+            ptolemy.domains.continuous.lib.Integrator actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
@@ -66,18 +66,12 @@ public class MultiplyDivide extends PropertyConstraintHelper {
 
     public List<Inequality> constraintList()
             throws IllegalActionException {
-        ptolemy.actor.lib.MultiplyDivide actor = 
-            (ptolemy.actor.lib.MultiplyDivide) getComponent();
+        ptolemy.domains.continuous.lib.Integrator actor = 
+            (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
-//        if (actor.multiply.getWidth() != 1 || actor.divide.getWidth() != 1) {
-//            throw new IllegalActionException(actor, "The property analysis " +
-//            		"currently supports only binary division (e.g. exactly 1 " +
-//            		"connection to the multiply port and 1 connection " +
-//            		"to the divide port.");
-//        }
-        
-        setAtLeast(actor.output, new FunctionTerm(actor.multiply, actor.divide));
-        
+        // TODO: write a monotonic function.
+        setAtLeast(actor.state, new FunctionTerm(actor.derivative));
+
         return super.constraintList();
     }
 
@@ -88,12 +82,10 @@ public class MultiplyDivide extends PropertyConstraintHelper {
     // if is not Complex; otherwise, the result is Double.
     private class FunctionTerm extends MonotonicFunction {
 
-        TypedIOPort _multiply;
-        TypedIOPort _divide;
+        TypedIOPort _derivative;
         
-        public FunctionTerm(TypedIOPort multiply, TypedIOPort divide) {
-            _multiply = multiply;
-            _divide = divide;
+        public FunctionTerm(TypedIOPort derivative) {
+            _derivative = derivative;
         }
 
         ///////////////////////////////////////////////////////////////
@@ -105,40 +97,22 @@ public class MultiplyDivide extends PropertyConstraintHelper {
          */
         public Object getValue() throws IllegalActionException {
             
-            Property multiplyProperty = (Property) getSolver().getProperty(_multiply);
-            Property divideProperty = (Property) getSolver().getProperty(_divide);
+            Property inputProperty = (Property) getSolver().getProperty(_derivative);
 
-            Property time = _lattice.getElement("TIME");
-            Property position = _lattice.getElement("POSITION");
-            Property speed = _lattice.getElement("SPEED");
-            Property acceleration = _lattice.getElement("ACCELERATION");
-            Property unitless = _lattice.getElement("UNITLESS");
-            Property unknown = _lattice.getElement("UNKNOWN");
-            
-            if (multiplyProperty == speed && divideProperty == time) {
-                return acceleration;
+            if (inputProperty == _lattice.getElement("SPEED")) {
+                return _lattice.getElement("POSITION");
             }
 
-            if (multiplyProperty == position && divideProperty == time) {
-                return speed;
+            if (inputProperty == _lattice.getElement("ACCELERATION")) {
+                return _lattice.getElement("SPEED");
             }
 
-            if (multiplyProperty == position && divideProperty == speed) {
-                return time;
+            if (inputProperty == null || 
+                    inputProperty == _lattice.getElement("UNKNOWN")) {
+                return _lattice.getElement("UNKNOWN");
+            } else {
+                return _lattice.getElement("TOP");
             }
-
-            if (multiplyProperty == speed && divideProperty == acceleration) {
-                return time;
-            }
-
-            if (divideProperty == unitless) {
-                return multiplyProperty;
-            }
-            
-            if (multiplyProperty == unknown || divideProperty == unknown) {
-                return unknown;
-            } 
-            return _lattice.getElement("TOP");
         }
 
         public boolean isEffective() {
@@ -150,8 +124,7 @@ public class MultiplyDivide extends PropertyConstraintHelper {
 
         protected InequalityTerm[] _getDependentTerms() {
             return new InequalityTerm[] {
-                getPropertyTerm(_multiply),
-                getPropertyTerm(_divide)
+                getPropertyTerm(_derivative)
             };
         }
     }

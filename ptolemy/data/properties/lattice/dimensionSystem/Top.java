@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.data.properties.lattice.flatUnitSystem;
+package ptolemy.data.properties.lattice.dimensionSystem;
 
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
@@ -39,18 +39,22 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  A class that represents dynamic property in the flatUnitSystem lattice.
 
  @author Man-Kit Leung
- @version $Id: False.java 53046 2009-04-10 23:04:25Z cxh $
+ @version $Id: Unknown.java 53046 2009-04-10 23:04:25Z cxh $
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Speed extends LatticeProperty {
+public class Top extends LatticeProperty {
 
     /**
      * Construct a Dynamic property object
      * @param lattice
      */
-    public Speed(PropertyLattice lattice) {
+    public Top(PropertyLattice lattice) {
         super(lattice);
+    }
+
+    public boolean isAcceptableSolution() {
+        return false;
     }
 }

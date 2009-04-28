@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem Domains Continuous Lib
+# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem Actor
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/flatUnitSystem/domains/continuous/lib
+ME =        ptolemy/data/properties.lattice.dimensionSystem/actor
 
-DIRS =      
+DIRS =      lib
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../../../..
+ROOT =      ../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,16 +43,16 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     lib
+PTPACKAGE =     actor
 
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	lib/lib.jar
 
-JSRCS = \
-	Integrator.java
+JSRCS =
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

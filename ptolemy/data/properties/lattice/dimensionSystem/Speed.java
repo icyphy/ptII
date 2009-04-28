@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.data.properties.lattice.flatUnitSystem;
+package ptolemy.data.properties.lattice.dimensionSystem;
 
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
@@ -44,13 +44,13 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Position extends LatticeProperty {
+public class Speed extends LatticeProperty {
 
     /**
      * Construct a Dynamic property object
      * @param lattice
      */
-    public Position(PropertyLattice lattice) {
+    public Speed(PropertyLattice lattice) {
         super(lattice);
     }
 }

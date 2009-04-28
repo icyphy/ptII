@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem
+# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem Domains Continuous
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/flatUnitSystem
+ME =        ptolemy/data/properties.lattice.dimensionSystem/domains/continuous
 
-DIRS =      actor data domains
+DIRS =      lib
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../..
+ROOT =      ../../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,26 +43,16 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     flatUnitSystem
+PTPACKAGE =     continuous
 
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar \
-	domains/domains.jar
+	lib/lib.jar
 
-JSRCS = \
-	Acceleration.java \
-	Lattice.java \
-	Position.java \
-	Speed.java \
-	Time.java \
-	Top.java \
-	Unitless.java \
-	Unknown.java
+JSRCS =
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

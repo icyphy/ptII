@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.flatUnitSystem.actor.lib.logic;
+package ptolemy.data.properties.lattice.dimensionSystem.actor.lib.logic;
 
 import java.util.List;
 

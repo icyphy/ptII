@@ -26,35 +26,31 @@
 
 
  */
-package ptolemy.data.properties.lattice.flatUnitSystem;
+package ptolemy.data.properties.lattice.dimensionSystem;
 
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// UnitLess
+//// Property
 
 /**
- A class that represents unitless property in the flatUnitSystem lattice.
+ A class that represents dynamic property in the flatUnitSystem lattice.
 
  @author Man-Kit Leung
- @version $Id: UnitLess.java 53046 2009-04-10 23:04:25Z cxh $
- @since Ptolemy II 7.2
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
+ @version $Id: False.java 53046 2009-04-10 23:04:25Z cxh $
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (cxh)
  */
-public class Unitless extends LatticeProperty {
+public class Position extends LatticeProperty {
 
     /**
-     * Construct a Unitless property object
+     * Construct a Dynamic property object
      * @param lattice
      */
-    public Unitless(PropertyLattice lattice) {
+    public Position(PropertyLattice lattice) {
         super(lattice);
-    }
-
-    public boolean isAcceptableSolution() {
-        return false;
     }
 }

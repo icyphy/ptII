@@ -26,35 +26,27 @@
 
 
  */
-package ptolemy.data.properties.lattice.flatUnitSystem;
+package ptolemy.data.properties.lattice.dimensionSystem;
 
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// Acceleration
 
 /**
- A class that represents dynamic property in the flatUnitSystem lattice.
+ A base class representing a property.
 
  @author Man-Kit Leung
- @version $Id: Unknown.java 53046 2009-04-10 23:04:25Z cxh $
+ @version $Id: Acceleration.java 53046 2009-04-10 23:04:25Z cxh $
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Top extends LatticeProperty {
+public class Acceleration extends LatticeProperty {
 
-    /**
-     * Construct a Dynamic property object
-     * @param lattice
-     */
-    public Top(PropertyLattice lattice) {
+    public Acceleration(PropertyLattice lattice) {
         super(lattice);
-    }
-
-    public boolean isAcceptableSolution() {
-        return false;
     }
 }

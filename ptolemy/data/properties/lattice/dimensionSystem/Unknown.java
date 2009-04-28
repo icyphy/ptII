@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.data.properties.lattice.flatUnitSystem;
+package ptolemy.data.properties.lattice.dimensionSystem;
 
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
