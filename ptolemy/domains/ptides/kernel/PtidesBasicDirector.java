@@ -135,6 +135,13 @@ public class PtidesBasicDirector extends DEDirector {
         return RealDependency.valueOf(delay);
     }
     
+    /** Get the current microstep.
+     *  @return microstep of the current time.
+     */
+    public int getMicrostep() {
+        return _microstep;
+    }
+    
     /** Advance the current model tag to that of the earliest event in
      *  the event queue, and fire all actors that have requested or
      *  are triggered to be fired at the current tag. If
@@ -359,7 +366,7 @@ public class PtidesBasicDirector extends DEDirector {
                 if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
 
-                    if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
+                    if ((next.timeStamp().compareTo(getModelTime()) != 0)) {
                         // If the next event is in the future time,
                         // jump out of the big while loop and
                         // proceed to postfire().
@@ -370,25 +377,11 @@ public class PtidesBasicDirector extends DEDirector {
                         // _enqueueEvent(Actor actor, Time time) method.
                         _microstep = 0;
                         break;
-                    } else if (next.microstep() > _microstep) {
-                        // If the next event is has a bigger microstep,
+                    } else if (next.microstep() != _microstep) {
+                        // If the next event is has a different microstep,
                         // jump out of the big while loop and
                         // proceed to postfire().
                         break;
-                    } else if (next.timeStamp().compareTo(getModelTime()) < 0) {
-                        // This case should _ONLY_ happen if the Network
-                        // reset microstep, have the executive director fire us at the current physical time,
-                        // then break out of the current loop to wait for firing of the top event in the
-                        // next iteration.
-                        _microstep = 0;
-                        ((Actor)getContainer()).getExecutiveDirector().fireAtCurrentTime((Actor)getContainer());
-                        break;
-                    } else if (next.microstep() < _microstep) {
-                        // This case should never happen.
-                        // FIXME: what should happen in this case??
-                        _microstep = next.microstep();
-                        // FIXME: same timestamp, but microstep is smaller, so we want to
-                        // reset the microstep and firing again at the current iteration?
                     } else {
                         // The next event has the same tag as the current tag,
                         // indicating that at least one actor is going to be
@@ -473,11 +466,21 @@ public class PtidesBasicDirector extends DEDirector {
         }
         return true;
     }
+    
+    /** This method allows the microstep to be set to some value.
+     *  This method should be used with extreme caution. This method should
+     *  only be used when events from outside of the platform arrive, and
+     *  by coincidence the current model time is equal to the model time
+     *  of the event. In which case the microstep should be set to 0.
+     *  @throws IllegalActionException
+     */
+    public void setMicrostep(int microstep) throws IllegalActionException {
+        _microstep = microstep;
+    }
 
     /** Set a new value to the current time of the model, where
-     *  the new time must be no earlier than the current time.
-     *  Derived classes will likely override this method to ensure that
-     *  the time is valid.
+     *  the new time _can_ be smaller than the current model time,
+     *  because PTIDES allow events to be processed out of timestamp order.
      *
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
@@ -499,6 +502,13 @@ public class PtidesBasicDirector extends DEDirector {
             // the new time is equal to the current time, do nothing.
         }
         _currentTime = newTime;
+    }
+    
+    /** Set the timestamp and microstep of the current time.
+     */
+    public void setTag(Time timestamp, int microstep) throws IllegalActionException {
+        setModelTime(timestamp);
+        setMicrostep(microstep);
     }
 
     /** Override the base class to reset the icon idle if animation
@@ -638,7 +648,7 @@ public class PtidesBasicDirector extends DEDirector {
             } else if (comparison == 0) {
                 // Currently executing actor finishes now, so we want to return it.
                 // First set current model time.
-                setModelTime(currentEvent.timeStamp);
+                setTag(currentEvent.timeStamp, currentEvent.microstep);
                 _currentlyExecutingStack.pop();
                 // If there is now something on _currentlyExecutingStack,
                 // then we are resuming its execution now.
@@ -693,6 +703,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         DEEvent eventFromQueue = getEventQueue().get();
         Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
+        int microstepOfEventFromQueue = eventFromQueue.microstep();
 
         if (!_safeToProcess(eventFromQueue)) {
             // not safe to process, wait until some physical time.
@@ -706,7 +717,7 @@ public class PtidesBasicDirector extends DEDirector {
         if (executionTime.compareTo(_zero) == 0) {
             // If execution time is zero, return the actor.
             // It will be fired now.
-            setModelTime(timeStampOfEventFromQueue);
+            setTag(timeStampOfEventFromQueue, microstepOfEventFromQueue);
 
             // Request a refiring so we can process the next event
             // on the event queue at the current physical time.
@@ -752,7 +763,7 @@ public class PtidesBasicDirector extends DEDirector {
                             + currentlyExecutingEvent.remainingExecutionTime);
                 }
             }
-            _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue, actorToFire, executionTime));
+            _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue, microstepOfEventFromQueue, actorToFire, executionTime));
             _physicalTimeExecutionStarted = physicalTime;
 
             // Animate if appropriate.
@@ -938,15 +949,19 @@ public class PtidesBasicDirector extends DEDirector {
                 if (_isNetworkPort(realTimeEvent.port)) {
                     // If the token is transferred from a network port, then there is no need to
                     // set the proper timestamp associated with the token. This is because we rely
-                    // on the fact every network input port is directly connected to a networkReceiver,
+                    // on the fact every network input port is directly connected to a networkInputDevice,
                     // which will set the correct timestamp associated with the token.
                     realTimeOutputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
                 } else {                
-                    setModelTime(realTimeEvent.deliveryTime.subtract(realTimeDelay));
+                    int lastMicrostep = _microstep;
+                    // Since the event comes from a sensor, and we assume no sensor
+                    // will produce two events of the same timestamp, the microstep
+                    // of the new event is set to 0.
+                    setTag(realTimeEvent.deliveryTime.subtract(realTimeDelay), 0);
                     realTimeOutputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
-                    setModelTime(lastModelTime);
+                    setTag(lastModelTime, lastMicrostep);
                 }
                 if (_debugging) {
                     _debug(getName(), "transferring input from "
@@ -977,9 +992,9 @@ public class PtidesBasicDirector extends DEDirector {
                 // which will set the correct timestamp associated with the token.
                 super._transferInputs(port);
             } else {
-                setModelTime(physicalTime);
+                setTag(physicalTime, 0);
                 result = result || super._transferInputs(port);
-                setModelTime(lastModelTime);
+                setTag(lastModelTime, 0);
             }
         } else {
             for (int i = 0; i < port.getWidth(); i++) {
@@ -1284,15 +1299,19 @@ public class PtidesBasicDirector extends DEDirector {
          * @param actor The destination actor.
          * @param executionTime The execution time of the actor.
          */
-        public DoubleTimedEvent(Time timeStamp, Object actor, Time executionTime) {
+        public DoubleTimedEvent(Time timeStamp, int microstep, Object actor, Time executionTime) {
             super(timeStamp, actor);
+            this.microstep = microstep;
             remainingExecutionTime = executionTime;
         }
 
         public Time remainingExecutionTime;
+        
+        public int microstep;
 
         public String toString() {
-            return super.toString() + ", remainingExecutionTime = " + remainingExecutionTime;
+            return super.toString() + ", microstep = " + microstep
+                    + "remainingExecutionTime = " + remainingExecutionTime;
         }
     }
     
