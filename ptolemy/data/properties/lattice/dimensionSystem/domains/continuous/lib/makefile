@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem Domains Continuous Lib
+# Makefile for Java Ptolemy Data Properties Lattice DimensionSystem Domains Continuous Lib
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #

@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem
+# Makefile for Java Ptolemy Data Properties Lattice DimensionSystem
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -43,7 +43,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     flatUnitSystem
+PTPACKAGE =     dimensionSystem
 
 PTCLASSJAR =
 

@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice FlatUnitSystem Actor
+# Makefile for Java Ptolemy Data Properties Lattice DimensionSystem Actor
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
