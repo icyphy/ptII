@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PtidesSimulator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 101, 1032, 775}, maximized=false}">
     </property>
@@ -254,30 +254,70 @@
             <link port="Const.output" relation="relation3"/>
             <link port="Const.trigger" relation="relation5"/>
         </entity>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 200.0]">
             </property>
-        </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </entity>
+        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 130.0]">
             </property>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </entity>
+        <entity name="NetworkOutputDevice" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[438.00474548339844, 196.6781234741211]">
+            </property>
+        </entity>
+        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{451.9657745361328, 118.0059700012207}">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <link port="sensor" relation="relation2"/>
-        <link port="actuator" relation="relation6"/>
-        <link port="networkIn" relation="relation"/>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="sensor" relation="relation3"/>
+        <link port="actuator" relation="relation5"/>
+        <link port="networkIn" relation="relation4"/>
         <link port="networkOut" relation="relation7"/>
         <link port="Computation2.in" relation="relation2"/>
         <link port="Computation2.in2" relation="relation"/>
         <link port="Computation2.out2" relation="relation6"/>
-        <link port="Computation2.out3" relation="relation7"/>
+        <link port="Computation2.out3" relation="relation8"/>
+        <link port="NetworkInputDevice.input" relation="relation4"/>
+        <link port="NetworkInputDevice.output" relation="relation"/>
+        <link port="SensorInputDevice.input" relation="relation3"/>
+        <link port="SensorInputDevice.output" relation="relation2"/>
+        <link port="NetworkOutputDevice.input" relation="relation8"/>
+        <link port="NetworkOutputDevice.output" relation="relation7"/>
+        <link port="ActuatorOutputDevice.input" relation="relation6"/>
+        <link port="ActuatorOutputDevice.output" relation="relation5"/>
     </entity>
     <entity name="Network Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 485.0}">
@@ -426,8 +466,8 @@
 <title>TimedPlotter2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-1.25" max="26.25"/>
-<yRange min="-4.188466666666668" max="2.0184666666666664"/>
+<xRange min="0.0" max="25.0"/>
+<yRange min="-3.730000000000001" max="1.5599999999999996"/>
 <default marks="dots"/>
 </plot>?>
             </configure>
@@ -676,7 +716,7 @@
                 </property>
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={578, 479, 815, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 335, 815, 517}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -845,10 +885,6 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
@@ -859,16 +895,20 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-            </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
             <link port="out" relation="relation8"/>
@@ -888,30 +928,70 @@
             <link port="Const.output" relation="relation3"/>
             <link port="Const.trigger" relation="relation2"/>
         </entity>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <entity name="NetworkInputDevice" class="ptolemy.domains.ptides.lib.NetworkInputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 185.0}">
             </property>
-        </relation>
+        </entity>
+        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 115.0}">
+            </property>
+        </entity>
+        <entity name="NetworkOutputDevice" class="ptolemy.domains.ptides.lib.NetworkOutputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 200.0]">
+            </property>
+        </entity>
+        <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 115.0]">
+            </property>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
         <link port="sensor" relation="relation2"/>
-        <link port="actuator" relation="relation6"/>
-        <link port="networkIn" relation="relation"/>
+        <link port="actuator" relation="relation5"/>
+        <link port="networkIn" relation="relation4"/>
         <link port="networkOut" relation="relation7"/>
-        <link port="Computation2.in" relation="relation2"/>
+        <link port="Computation2.in" relation="relation3"/>
         <link port="Computation2.in2" relation="relation"/>
-        <link port="Computation2.out2" relation="relation6"/>
-        <link port="Computation2.out3" relation="relation7"/>
+        <link port="Computation2.out2" relation="relation8"/>
+        <link port="Computation2.out3" relation="relation6"/>
+        <link port="NetworkInputDevice.input" relation="relation4"/>
+        <link port="NetworkInputDevice.output" relation="relation"/>
+        <link port="SensorInputDevice.input" relation="relation2"/>
+        <link port="SensorInputDevice.output" relation="relation3"/>
+        <link port="NetworkOutputDevice.input" relation="relation6"/>
+        <link port="NetworkOutputDevice.output" relation="relation7"/>
+        <link port="ActuatorOutputDevice.input" relation="relation8"/>
+        <link port="ActuatorOutputDevice.output" relation="relation5"/>
     </entity>
     <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={767, 624, 508, 355}, maximized=false}">
