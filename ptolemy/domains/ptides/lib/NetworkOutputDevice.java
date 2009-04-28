@@ -34,11 +34,13 @@ import java.util.Set;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -87,7 +89,10 @@ public class NetworkOutputDevice extends OutputDevice {
      */
     private static final String timestamp = "timestamp";
     
-
+    /** label of the microstep that's transmitterd within the RecordToken.  
+     */
+    private static final String microstep= "microstep";
+    
     /** label of the payload that's transmitterd within the RecordToken.  
      */
     private static final String payload = "payload";
@@ -104,15 +109,18 @@ public class NetworkOutputDevice extends OutputDevice {
         super.fire();
         Director director = getDirector();
 
-        if (director == null) {
-            throw new IllegalActionException(this, "No director!");
+        if (director == null || !(director instanceof PtidesBasicDirector)) {
+            throw new IllegalActionException(this, "Director not recognizable!");
         }
+
+        PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
 
         if (input.hasToken(0)) {
             
-            String[] labels = new String[]{timestamp, payload};
+            String[] labels = new String[]{timestamp, microstep, payload};
             Token[] values = new Token[]{
-                    new DoubleToken(director.getModelTime().getDoubleValue()),
+                    new DoubleToken(ptidesDirector.getModelTime().getDoubleValue()),
+                    new IntToken(ptidesDirector.getMicrostep()),
                     input.get(0)};
             RecordToken record = new RecordToken(labels, values);
             
@@ -126,8 +134,8 @@ public class NetworkOutputDevice extends OutputDevice {
      *  @return a list of Inequality.
      */
     public Set<Inequality> typeConstraints() {
-        String[] labels = { timestamp, payload };
-        Type[] types = { BaseType.DOUBLE, BaseType.UNKNOWN };
+        String[] labels = { timestamp, microstep, payload };
+        Type[] types = { BaseType.DOUBLE, BaseType.INT, BaseType.UNKNOWN };
         RecordType type = new RecordType(labels, types);
         output.setTypeEquals(type);
 

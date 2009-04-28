@@ -31,19 +31,17 @@ package ptolemy.domains.ptides.lib;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -54,24 +52,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////NetworkReceiver
 
 /** 
- *  Note this actor (or some other subclass of this class) should
- *  be directly connected to a network input port in a PtidesBasicDirector.
- *  
- *  Unlike SensorReceiver for example, this actor is necessarily needed for
- *  both simulation and code generation purposes.
- *  
- *  This actor assumes the incoming token is a RecordToken, and includes a 
- *  token value as well as a timestamp associated with the token value. Thus 
- *  this actor parses the RecordToken and sends the output token with the
- *  timestamp equal to the timestamp stored in the RecordToken. 
- *  
- *  In other words, we assume the RecordToken has these two labels: timestamp,
- *  tokenValue. 
- *   
- *  @author Jia Zou, Slobodan Matic
- *  @version $ld$
- *  @since Ptolemy II 7.1
- */
+*  Note this actor (or some other subclass of this class) should
+*  be directly connected to a network input port in a PtidesBasicDirector.
+*  
+*  Unlike SensorReceiver for example, this actor is necessarily needed for
+*  both simulation and code generation purposes.
+*  
+*  This actor assumes the incoming token is a RecordToken, and includes a 
+*  token value as well as a timestamp associated with the token value. Thus 
+*  this actor parses the RecordToken and sends the output token with the
+*  timestamp equal to the timestamp stored in the RecordToken. 
+*  
+*  In other words, we assume the RecordToken has these two labels: timestamp,
+*  tokenValue. 
+*   
+*  @author jiazou, matic
+*  @version 
+*  @since Ptolemy II 7.1
+*/
 public class NetworkInputDevice extends InputDevice {
     public NetworkInputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -98,19 +96,14 @@ public class NetworkInputDevice extends InputDevice {
      */
     private static final String timestamp = "timestamp";
     
-
+    /** label of the microstep that's transmitterd within the RecordToken.  
+     */
+    private static final String microstep= "microstep";
+    
     /** label of the payload that's transmitterd within the RecordToken.  
      */
     private static final String payload = "payload";
     
-    /** A local event queue to store the delayed output tokens. */
-    protected CalendarQueue _delayedOutputTokens;
-
-    /** Current input. */
-    protected Token _currentInput;
-
-    /** Current output. */
-    protected Token _currentOutput;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
@@ -124,95 +117,33 @@ public class NetworkInputDevice extends InputDevice {
         super.fire();
         Director director = getDirector();
 
-        if (director == null) {
-            throw new IllegalActionException(this, "No director!");
+        if (director == null || !(director instanceof PtidesBasicDirector)) {
+            throw new IllegalActionException(this, "Director not recognizable!");
         }
 
+        PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
+        
         // consume input
         if (input.hasToken(0)) {
-            _currentInput = input.get(0);
-        } else {
-            _currentInput = null;
-        }
+            RecordToken record = (RecordToken) input.get(0);
 
-        // produce output
-        // NOTE: The amount of delay may be zero.
-        // In this case, if there is already some token scheduled to
-        // be produced at the current time before the current input
-        // arrives, that token is produced. While the current input
-        // is delayed to the next available firing at the current time.
-        Time currentTime = getDirector().getModelTime();
-        _currentOutput = null;
-
-        if (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
-            Time eventTime = earliestEvent.timeStamp;
-
-            if (eventTime.equals(currentTime)) {
-                _currentOutput = (Token) earliestEvent.contents;
-                output.send(0, _currentOutput);
+            if (record.labelSet().size() != 3) {
+                throw new IllegalActionException("the record has a size not equal to 3: "
+                        + "Here we assume the Record is of types: timestamp"
+                        + " + microstep + token");
             }
-        }
-    }
-    
-    /** Initialize the states of this actor.
-     *  @exception IllegalActionException If a derived class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _currentInput = null;
-        _currentOutput = null;
-        _delayedOutputTokens = new CalendarQueue(
-                new TimedEvent.TimeComparator());
-    }
-    
-    /** Process the current input if it has not been processed. Schedule
-     *  a firing to produce the earliest output token.
-     *  @exception IllegalActionException If scheduling to refire cannot
-     *  be performed or the superclass throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
-        
-        Time currentTime = getDirector().getModelTime();
-
-        // Remove the token that is sent at the current time.
-        if (_delayedOutputTokens.size() > 0) {
-            if (_currentOutput != null) {
-                _delayedOutputTokens.take();
-            }
-        }
-
-        // Handle the refiring of the multiple tokens
-        // that are scheduled to be produced at the same time.
-        if (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
-            Time eventTime = earliestEvent.timeStamp;
-
-            if (eventTime.equals(currentTime)) {
-                _fireAt(currentTime);
-            }
-        }
-
-        // Process the current input.
-        if (_currentInput != null) {
-            RecordToken record = (RecordToken) _currentInput;
-
-            if (record.labelSet().size() != 2) {
-                throw new IllegalActionException("the record has a size not equal to 2"
-                        + "However here we assume the Record is of types: timestamp"
-                        + "+ Token");
-            }
-
+            
             Time recordTimeStamp = new Time(getDirector(), 
-                    ((DoubleToken)record.get(timestamp)).doubleValue());
+                    ((DoubleToken)(record.get(timestamp))).doubleValue());
             
-            _delayedOutputTokens
-                    .put(new TimedEvent(recordTimeStamp, record.get(payload)));
+            int recordMicrostep = ((IntToken)(record.get(microstep))).intValue(); 
             
-            _fireAt(recordTimeStamp);
+            Time lastModelTime = ptidesDirector.getModelTime();
+            int lastMicrostep = ptidesDirector.getMicrostep();
+            ptidesDirector.setTag(recordTimeStamp, recordMicrostep);
+            output.send(0, record.get(payload));
+            ptidesDirector.setTag(lastModelTime, lastMicrostep);
         }
-
-        return super.postfire();
     }
     
     /** Return the type constraints of this actor. The type constraint is
@@ -221,8 +152,8 @@ public class NetworkInputDevice extends InputDevice {
      *  @return a list of Inequality.
      */
     public Set<Inequality> typeConstraints() {
-        String[] labels = { timestamp, payload };
-        Type[] types = { BaseType.DOUBLE, BaseType.GENERAL };
+        String[] labels = { timestamp, microstep, payload };
+        Type[] types = { BaseType.DOUBLE, BaseType.INT, BaseType.GENERAL };
         RecordType type = new RecordType(labels, types);
         input.setTypeAtMost(type);
 
