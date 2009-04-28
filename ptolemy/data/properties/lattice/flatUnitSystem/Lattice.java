@@ -29,7 +29,6 @@ package ptolemy.data.properties.lattice.flatUnitSystem;
 
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertyLattice;
-import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
  simultaneously and modifying these data structures. To ensure
  thread safety, the methods need to be synchronized.
 
- @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
+ @author Man-Kit Leung
  @version $Id: Lattice.java 53046 2009-04-10 23:04:25Z cxh $
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
@@ -56,59 +55,52 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public class Lattice extends PropertyLattice {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    public Property TOP = new Top(this);
-    
-    public Property TIME = new Time(this);
-
-    public Property ACCELERATION = new Acceleration(this);
-    
-    public Property SPEED = new Speed(this);
-
-    public Property POSITION = new Position(this);
-
-    public Property UNKNOWN = new Unknown(this);
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-
-
-    // The infinite property lattice
+    // The finite property lattice
     public Lattice() {
         super();
-        _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice =
-            (DirectedAcyclicGraph) _lattice.basicLattice();
+        addNodeWeight(TOP);
+        addNodeWeight(TIME);
+        addNodeWeight(ACCELERATION);
+        addNodeWeight(SPEED);
+        addNodeWeight(POSITION);
+        addNodeWeight(UNITLESS);
+        addNodeWeight(UNKNOWN);
 
+        addEdge(UNKNOWN, TIME);
+        addEdge(UNKNOWN, UNITLESS);
+        addEdge(UNKNOWN, POSITION);
+        addEdge(UNKNOWN, SPEED);
+        addEdge(UNKNOWN, ACCELERATION);
 
-        basicLattice.addNodeWeight(TOP);
-        basicLattice.addNodeWeight(TIME);
-        basicLattice.addNodeWeight(ACCELERATION);
-        basicLattice.addNodeWeight(SPEED);
-        basicLattice.addNodeWeight(POSITION);
-        basicLattice.addNodeWeight(UNKNOWN);
-
-        basicLattice.addEdge(UNKNOWN, TIME);
-        basicLattice.addEdge(UNKNOWN, POSITION);
-        basicLattice.addEdge(UNKNOWN, SPEED);
-        basicLattice.addEdge(UNKNOWN, ACCELERATION);
-
-        basicLattice.addEdge(TIME, TOP);
-        basicLattice.addEdge(POSITION, TOP);
-        basicLattice.addEdge(SPEED, TOP);
-        basicLattice.addEdge(ACCELERATION, TOP);
+        addEdge(TIME, TOP);
+        addEdge(UNITLESS, TOP);
+        addEdge(POSITION, TOP);
+        addEdge(SPEED, TOP);
+        addEdge(ACCELERATION, TOP);
 
         // FIXME: Replace this with an assert when we move to 1.5
-        if (!basicLattice.isLattice()) {
+        if (!isLattice()) {
             throw new InternalErrorException("ThePropertyLattice: The "
                     + "property hierarchy is not a lattice.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                          public fields                    ////
 
+    public final Property TOP = new Top(this);
+    
+    public final Property TIME = new Time(this);
+
+    public final Property ACCELERATION = new Acceleration(this);
+    
+    public final Property SPEED = new Speed(this);
+
+    public final Property POSITION = new Position(this);
+
+    public final Property UNITLESS = new Unitless(this);
+
+    public final Property UNKNOWN = new Unknown(this);
+    
 }
