@@ -102,7 +102,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
-import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -116,7 +115,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.VergilErrorHandler;
-import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 /**
 
@@ -862,7 +860,8 @@ public class Connector extends MoMLApplication {
                     }
                 } else if (child instanceof Variable) {
                     String moml = "<property name=\"" + child.getName() +
-                            "\" value=\"" + value + "\"/>";
+                            "\" value=\"" + StringUtilities.escapeForXML(value)
+                            + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             child.getContainer(), moml);
                     if (_undoable) {
