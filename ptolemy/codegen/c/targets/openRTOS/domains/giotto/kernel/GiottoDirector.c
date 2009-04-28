@@ -6,7 +6,7 @@ RIT128x96x4Init(1000000);
 /**/
 
 /***preinitBlock***/
-#include "semphr.h" 
+#include "semphr.h"
 /**/
 
 /***declareTaskHandle($name)***/

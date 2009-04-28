@@ -123,6 +123,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         
         HashSet files = new HashSet();
         files.add("<stdio.h>");
+        //files.add("\"semphr.h\"");
         return files;
     }
 
@@ -186,25 +187,27 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // priority level for the scheduling thread.
             currentPriorityLevel %= _MAX_PRIORITY_LEVEL - 1;
         }
-        
-      /*  for (Actor actor : (List<Actor>) 
+        code.append("//initialize actor variables"+_eol);
+       for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-            
-            List outputPortList = actor.outputPortList();
-            //System.out.println("this actor"+actor.getDisplayName()+" has "+inputPortList.size()+" input ports.");
-            Iterator outputPorts = outputPortList.iterator();
-            while(outputPorts.hasNext())
-            {
-                IOPort outpt = (IOPort)outputPorts.next();
-                int width = outpt.getWidth();
-                if(width > 1)
-                    code.append("static int"+_getActorName(actor)+"_"+outpt.getName()+"_PORT["+width+"]"+_eol);
-                else
-                    code.append("static int"+_getActorName(actor)+"_"+outpt.getName()+"_PORT"+_eol);   
+          List <TypedIOPort> portList = actor.outputPortList();
+          Iterator outpts = portList.iterator();
+          Attribute initOutput = ((Entity)actor).getAttribute("initialOutputValue");
+          TypedIOPort tempPt;
+          while(outpts.hasNext())
+          {
+              tempPt = (TypedIOPort)outpts.next();
+              if(initOutput == null)
+                  code.append(_getPortName(tempPt)+ " = 0;"+_eol);
+              else
+              {
+                  //check the different types of the output port
+                  code.append(_getPortName(tempPt)+ " = "+((IntToken) ((Variable) initOutput).getToken()).intValue()+ ";"+_eol);
+              }
+          }
            
-            }
+      
         }
-        */
         code.append(super.generateInitializeCode());
         
         System.out.println("about to return:"+_eol+processCode(code.toString()));
@@ -321,30 +324,33 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
            for(int k = 0; k < _getAllFrequencies().size();k++){
                i = (Integer)myFrequencies[k];
             code.append("static void $actorSymbol()_frequency"+i+"(void * pvParameters){"+_eol);
-           // code.append("portTickType xLastWakeTime;"+_eol);
+           code.append("portTickType xLastWakeTime;"+_eol);
             //code.append("int count;"+_eol);
             //code.append("char buff[50];"+_eol);
-            //code.append("const portTickType xFrequency =("+ periodString+")/"+i+"/ "+outerActorFrequency+ "/portTICK_RATE_MS;"+_eol);
-            //code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
+            code.append("portTickType xFrequency = 0;"+_eol);
+                    //+ periodString+")/"+i+"/ "+outerActorFrequency+ "/portTICK_RATE_MS;"+_eol);
+            code.append("xLastWakeTime = gxLastWakeTime;"+_eol);
             //code.append("count = 0;"+_eol);
             code.append("   for(;;){"+_eol);
-            //code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
+            code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
+            code.append("xFrequency =("+ periodString+")/"+i+"/ "+outerActorFrequency+ "/portTICK_RATE_MS;"+_eol);
             //code.append("count++;"+_eol);
            // code.append("// here I should call driver code method for each of the actors"+_eol);
             //code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
             //code.append("//sprintf(buff,\"f"+i+"thread %d\",count);"+_eol);
             //code.append("//RIT128x96x4StringDraw(buff, 0,_,15);"+_eol);
             code.append("if(xSemaphoreTake($actorSymbol()_frequency"+i+"input,(portTickType)0)== pdTRUE){"+_eol);
-            code.append("if(xSemaphoreGive($actorSymbol()_frequency"+i+"input)){"+_eol);
-            code.append("//not able to release input ready semaphore");
-            code.append(_eol+"}"+_eol);
+            //code.append("if(xSemaphoreGive($actorSymbol()_frequency"+i+"input)){"+_eol);
+            //code.append("//not able to release input ready semaphore");
+            //code.append(_eol+"}"+_eol);
             for(int j = 0; j<ActorFrequencies[i].size();j++) {
                 //call generate driver code for each of the actors
                 code.append(ActorFrequencies[i].get(j)+"();"+_eol);
             }
+            code.append("if(xSemaphoreGive($actorSymbol()_frequency"+i+"output)){}"+_eol);
             code.append("} else{"+_eol);//close
             code.append("//wait until it's avaliable"+_eol);
-            code.append("vTaskSuspend(NULL);");
+            //code.append("vTaskSuspend(NULL);");
             code.append(_eol+"}"+_eol);  // close else
             code.append(_eol+"}"+_eol);// close the for loop
             if(i < _getAllFrequencies().size())
@@ -376,8 +382,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // Declare the thread handles.
             System.out.println("generatePreinitializeCode from openRTOS giotto director called here");
             
+            
+            if(_isTopGiottoDirector())
+            {
             code.append("//speed of the processor clock"+_eol);
             code.append(" unsigned long g_ulSystemClock;"+_eol);
+            code.append("portTickType gxLastWakeTime;"+_eol);
+            }
             code.append(_generateBlockCode("preinitBlock"));
             HashSet<Integer> frequencies = _getAllFrequencies();
     
@@ -505,13 +516,31 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     int myLCM = _lcm(intFrequencies);
     System.out.println("The LCM of my frequencies are "+ myLCM);
     
-    code.append("const portTickType xFrequency = "+period+"/"+myLCM+"/"+outerActorFrequency+"/portTICK_RATE_MS;"+_eol);
-    code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
+    code.append("portTickType xFrequency = 0;"+_eol);
+    //+period+"/"+myLCM+"/"+outerActorFrequency+"/portTICK_RATE_MS;"+_eol);
+    
+    if(_isTopGiottoDirector())
+    {
+        code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
+        code.append("gxLastWakeTime = xLastWakeTime;"+_eol);
+    }
+    else
+    {
+        code.append("xLastWakeTime = gxLastWakeTime;"+_eol);
+    }
     code.append("count = 0;"+_eol);
     code.append("schedTick = 0;"+_eol);
+    //take all the inputs for the frequency threads so that they can't start until they've gotten the go ahead from the scheduler
+    code.append("//take input semaphores"+_eol);
+    int ss;
+    for(int k = 0; k < _getAllFrequencies().size();k++){
+        ss = (Integer)myFrequencies[k];
+                     code.append("if(xSemaphoreTake($actorSymbol()_frequency"+ss+"input,(portTickType)0) ==  pdTRUE){}"+_eol);
+    }
     code.append("    for(;;){"+_eol);
     code.append("     vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
     code.append("count++;"+_eol);
+    code.append("xFrequency = "+period+"/"+myLCM+"/"+outerActorFrequency+"/portTICK_RATE_MS;"+_eol);
     
    // code.append("//sprintf(buff,\"sc:%d\",count);"+_eol);
     //code.append("//RIT128x96x4StringDraw(buff, _,40,25);"+_eol);
@@ -540,7 +569,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
        }
        code.append("if(xSemaphoreGive($actorSymbol()_frequency"+i+"input)){"+_eol);
        code.append("}"+_eol);
-       code.append("vTaskResume("+ _getThreadName(i)+"_task);"+_eol);
+       //code.append("vTaskResume("+ _getThreadName(i)+"_task);"+_eol);
        code.append("} else{"+_eol);// close if got semaphore
        code.append("//there was an overrun");
        code.append(_eol+"}"+_eol);
@@ -591,11 +620,19 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
            variableDeclarations.append(helperObject.generateVariableDeclaration());
            if((actor instanceof CompositeActor)!= true )
            {
-              List <IOPort> actorPorts = actor.outputPortList();
+              List <TypedIOPort> actorPorts = actor.outputPortList();
               if(actorPorts.size()> 0)
               {
-               variableDeclarations.append(_eol+"//not composite actor so may need extra variable, later, make sure you check the type. It's default to static int at the moment"+_eol);
-               variableDeclarations.append("static int "+_getActorName(actor)+"_output;"+_eol);
+               Iterator portItr = actorPorts.iterator();
+               TypedIOPort actorport;
+               String type;
+                   while(portItr.hasNext())
+                   {
+                       actorport = (TypedIOPort)portItr.next();
+                       //variableDeclarations.append(_eol+"//not composite actor so may need extra variable, later, make sure you check the type. It's default to static int at the moment"+_eol);
+                       type = targetType(actorport.getType());
+                       variableDeclarations.append("static "+type+" "+_getActorName(actor)+"_output;"+_eol);
+                   }
               }
               
            }
@@ -747,11 +784,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
              code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
                      + _eol);
-             code.append("//about to check to see if it's a composite actor"+_eol);
-             code.append(_eol+"//my director's name is: "+actor.getDirector().getClassName());
+             //code.append("//about to check to see if it's a composite actor"+_eol);
+             //code.append(_eol+"//my director's name is: "+actor.getDirector().getClassName());
                    //code.append();
              // take the semaphores connected to your output ports
-             code.append("// I should take the semaphores for my output ports here"+_eol);
+            // code.append("// I should take the semaphores for my output ports here"+_eol);
                                     
              if(actor instanceof CompositeActor&&!(actor.getDirector().getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector")) {
                  System.out.println("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
@@ -822,7 +859,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                  System.out.println("not composite actor");
              }
             System.out.println("about to call generateFirecode on the composite actor"); 
-            code.append(_eol+"//about to call generateFireCode on the actorHelper");
+           // code.append(_eol+"//about to call generateFireCode on the actorHelper");
            code.append(_eol+actorHelper.generateFireCode());
              System.out.println("after calling the generateFireCode on composite actor");
              /*if(actor instanceof CompositeActor&&(actor.getDirector().getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector")){
@@ -971,7 +1008,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             while (inputPorts.hasNext()) {
                 i = 0;  // this is a test to see if this is to be done here, if so remove the i++ from the end of the loop
                 j = 0;
-                 IOPort port = (IOPort)inputPorts.next();
+                 TypedIOPort port = (TypedIOPort)inputPorts.next();
                  System.out.println("this port's name is "+port.getFullName());
                  Receiver[][] channelArray = port.getReceivers();
                 // port.
@@ -1007,7 +1044,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 // Iterator cpIterator = connectedPorts.iterator();
                 Iterator cpIterator = connectToMe.iterator();
                  while(cpIterator.hasNext()){//&&(j <connectToMe.size()-1)){
-                   IOPort sourcePort = (IOPort)cpIterator.next();
+                   TypedIOPort sourcePort = (TypedIOPort)cpIterator.next();
                 // FIXME: figure out the channel number for the sourcePort.
                    // if you need to transfer inputs inside
                    if(actor instanceof CompositeActor) {
@@ -1037,16 +1074,32 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                      System.out.println("after second call to getReference");
                      j++;
                      
-                     temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
+                     //temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
                      System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
                      System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
         
-                     ArrayList args = new ArrayList();    
+                     
+                     temp=_typeConversion(sourcePort,port);
+                     System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
+                     System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+                     String src;
+                     temp=_typeConversion(sourcePort,port);
+                     if( temp .length()==0 )
+                         src = srcReference;
+                     else
+                         src= temp+"("+srcReference+")";
+                     
+                     actorDriverCode +=sinkReference+" = "+ src+";"+_eol;
+                      
+                     
+                     
+                  /*   ArrayList args = new ArrayList();    
                       args.add(sinkReference);
                       args.add(srcReference);
                       
                      
                       actorDriverCode += _generateBlockCode("updatePort", args);
+                      */
                      }
                  
                  if(actor instanceof CompositeActor) {
@@ -1067,14 +1120,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             
            
             ArrayList args = new ArrayList();  
-            args.add(_generateDriverName((NamedObj) actor));
-           if(temp.length() == 0)   // if no type conversion is necessary
-            output=transferIn.toString()+actorDriverCode+transferOut.toString();
-           else
-               output=transferIn.toString()+temp+transferOut.toString();
-          
-           args.add(output);
-            code.append(_generateBlockCode("driverCode", args));
+            code.append("void "+_generateDriverName((NamedObj) actor));
+            code.append("(){"+_eol);
+            code.append(actorDriverCode+_eol);           
+            //code.append(_generateBlockCode("driverCode", args));
+            code.append("}"+_eol);
             }
         
         System.out.println("about to return :");
@@ -1276,6 +1326,15 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
          actorFullName = actorFullName.replace('.', '_');
          actorFullName = actorFullName.replace(' ', '_');
         return actorFullName;
+    }
+    private String _getPortName(IOPort port)
+    {
+        String portFullName= port.getFullName();
+        portFullName = portFullName.substring(1,portFullName.length());
+        portFullName = portFullName.replace('.', '_');
+        portFullName = portFullName.replace(' ', '_');
+        
+        return portFullName;
     }
 
     /**
@@ -1506,6 +1565,26 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
     
         return X;
+    }
+    
+    private String _typeConversion(TypedIOPort source,TypedIOPort sink)
+    {
+        
+        String sourceType;
+        String sinkType;
+        sourceType = targetType(source.getType());
+        sinkType = targetType(sink.getType());
+        if(sourceType.equals(sinkType))
+            return "";
+        else
+        {
+            char tc = sourceType.charAt(0);
+            sourceType = Character.toUpperCase(tc)+sourceType.substring(1);
+            tc = sinkType.charAt(0);
+            sinkType = Character.toUpperCase(tc)+sinkType.substring(1);
+            sinkType.replace(tc, Character.toUpperCase(tc));
+            return sourceType+"to"+sinkType;
+        }
     }
  
     
