@@ -59,6 +59,7 @@ import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.properties.kernel.PropertyLatticeAttribute;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
@@ -115,25 +116,25 @@ public class PropertyConstraintSolver extends PropertySolver {
         // FIXME: What should we use for the extension of the
         // lattice decription file?
         propertyLattice = new StringParameter(this, "propertyLattice");
-        propertyLattice.setExpression("staticDynamic");
+        propertyLattice.setExpression("logicalAND");
 
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
 
         actorConstraintType = new StringParameter(this, "actorConstraintType");
-        actorConstraintType.setExpression("out == meet(in1, in2, ...)");
+        actorConstraintType.setExpression("out >= in");
 
         connectionConstraintType = new StringParameter(this, "connectionConstraintType");
-        connectionConstraintType.setExpression("sink == meet(src1, src2, ...)");
+        connectionConstraintType.setExpression("sink >= src");
 
         compositeConnectionConstraintType = new StringParameter(this, "compositeConnectionConstraintType");
-        compositeConnectionConstraintType.setExpression("sink == meet(src1, src2, ...)");
+        compositeConnectionConstraintType.setExpression("sink >= src");
 
         fsmConstraintType = new StringParameter(this, "fsmConstraintType");
-        fsmConstraintType.setExpression("sink == meet(src1, src2, ...)");
+        fsmConstraintType.setExpression("sink >= src");
 
         expressionASTNodeConstraintType = new StringParameter(this, "expressionASTNodeConstraintType");
-        expressionASTNodeConstraintType.setExpression("parent == meet(child1, child2, ...)");
+        expressionASTNodeConstraintType.setExpression("parent >= child");
 
         logMode = new Parameter(this, "logMode");
         logMode.setTypeEquals(BaseType.BOOLEAN);
@@ -414,9 +415,15 @@ public class PropertyConstraintSolver extends PropertySolver {
             helper = super._getHelper(component);
         } catch (IllegalActionException ex) {
         }
-            
+
         if (helper == null) {
-            if (component instanceof CompositeEntity) {
+            if (component instanceof FSMActor) {
+                helper = new PropertyConstraintFSMHelper(
+                        this, (FSMActor) component);
+            } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
+                helper = new PropertyConstraintModalFSMHelper(this, 
+                        (ptolemy.domains.modal.kernel.FSMActor) component);                
+            }else if (component instanceof CompositeEntity) {
                 helper = new PropertyConstraintCompositeHelper(
                         this, (CompositeEntity) component);
             } else if (component instanceof ASTPtRootNode) {
