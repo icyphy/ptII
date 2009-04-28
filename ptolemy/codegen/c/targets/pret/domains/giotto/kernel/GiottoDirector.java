@@ -118,11 +118,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             if (iterationCount <= 0) {
                 code.append(_eol + "while (true) {" + _eol);
             } else {
+                code.append(_eol + ";;" + _eol);
                 // Declare iteration outside of the loop to avoid
                 // mode" with gcc-3.3.3
-                code.append(_eol + "int iteration;" + _eol);
-                code.append("for (iteration = 0; iteration < "
-                        + iterationCount + "; iteration ++) {" + _eol);
+                //code.append(_eol + "int iteration;" + _eol);
+                //code.append("for (iteration = 0; iteration < "
+                  //      + iterationCount + "; iteration ++) {" + _eol);
                 //call the actor methods here....
             }
         }
@@ -815,7 +816,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             return sourceType+"to"+sinkType;
         }
     }
-
     static private int currentSharedMemoryAddress = 0x3F800000;
 
 
