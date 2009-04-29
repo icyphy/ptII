@@ -50,6 +50,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	CarTracking/CarTracking.jar \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
 	HierarchicalModalModel/HierarchicalModalModel.jar \
 	Integration/Integration.jar \
