@@ -170,10 +170,8 @@ test IOPort-5.1 {Test getWidth} {
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true false]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 1
-    $manager inferWidths
     set temp [$p1 getWidth]
     $p1 liberalLink $r1
-    $manager inferWidths
     list $temp [$p1 getWidth]
 } {0 1}
 
@@ -190,7 +188,6 @@ test IOPort-5.2 {Test getWidth} {
     $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
-    $manager inferWidths
     $p1 getWidth
 } {2}
 
@@ -207,7 +204,6 @@ test IOPort-5.3 {Test getWidth} {
     $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
-    $manager inferWidths
     $p1 getWidth
 } {3}
 
@@ -231,12 +227,10 @@ test IOPort-5.4 {Test getWidth after unlinking} {
     # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
-    $manager inferWidths
     $director preinitialize
 
     $p1 getRemoteReceivers
     $p2 unlink $r1
-    $manager inferWidths    
     list [$p1 getWidth] [$p2 getWidth]
 } {1 0}
 
@@ -573,7 +567,6 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     # send() method.
     $p1 {send int ptolemy.data.Token} 0 $token
     catch {$p2 get 0} msg
-    $manager inferWidths
     list [$p2 getWidth] $msg
 } {0 {ptolemy.kernel.util.IllegalActionException: Channel index 0 is out of range, because width is only 0.
   in .<Unnamed Object>.E2.P2}}
@@ -606,7 +599,6 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     set token [java::new ptolemy.data.StringToken foo]
     catch {$p1 hasRoom 0} msg1
     catch {$p2 get 0} msg2
-    $manager inferWidths
     list [$p2 getWidth] $msg1 $msg2
 } {1 {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
   in .<Unnamed Object>.E1.P1} {ptolemy.actor.NoTokenException: Attempt to get data from an empty mailbox.
@@ -912,55 +904,63 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     $container connect $output $input edge0
     $container description
 } {ptolemy.actor.TypedCompositeActor {.} attributes {
-    {ptolemy.kernel.util.SingletonConfigurableAttribute {.._iconDescription} attributes {
-    }}
+	{ptolemy.kernel.util.SingletonConfigurableAttribute {.._iconDescription} attributes {
+	}}
 } ports {
 } classes {
 } entities {
-    {ptolemy.actor.TypedAtomicActor {..source} attributes {
-        {ptolemy.kernel.util.SingletonConfigurableAttribute {..source._iconDescription} attributes {
-        }}
-    } ports {
-        {ptolemy.actor.TypedIOPort {..source.output} attributes {
-        } links {
-            {ptolemy.actor.TypedIORelation {..edge0} attributes {
-                {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
-                {ptolemy.data.expr.Parameter {..edge0.width} -1}
-            } configuration {width 0}}
-        } insidelinks {
-        } configuration {output opaque {width 0}} receivers {
-        } remotereceivers {
-        } type {declared unknown resolved unknown}}
-    }}
-    {ptolemy.actor.TypedAtomicActor {..dest} attributes {
-        {ptolemy.kernel.util.SingletonConfigurableAttribute {..dest._iconDescription} attributes {
-        }}
-    } ports {
-        {ptolemy.actor.TypedIOPort {..dest.input} attributes {
-        } links {
-            {ptolemy.actor.TypedIORelation {..edge0} attributes {
-                {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
-                {ptolemy.data.expr.Parameter {..edge0.width} -1}
-            } configuration {width 0}}
-        } insidelinks {
-        } configuration {input opaque {width 0}} receivers {
-        } remotereceivers {
-        } type {declared unknown resolved unknown}}
-    }}
+	{ptolemy.actor.TypedAtomicActor {..source} attributes {
+		{ptolemy.kernel.util.SingletonConfigurableAttribute {..source._iconDescription} attributes {
+		}}
+	} ports {
+		{ptolemy.actor.TypedIOPort {..source.output} attributes {
+		} links {
+			{ptolemy.actor.TypedIORelation {..edge0} attributes {
+				{ptolemy.data.expr.Parameter {..edge0.Auto} -1}
+				{ptolemy.data.expr.Parameter {..edge0.width} -1}
+			} configuration {width 1}}
+		} insidelinks {
+		} configuration {output opaque {width 1}} receivers {
+		} remotereceivers {
+			{
+			}
+		} type {declared unknown resolved unknown}}
+	}}
+	{ptolemy.actor.TypedAtomicActor {..dest} attributes {
+		{ptolemy.kernel.util.SingletonConfigurableAttribute {..dest._iconDescription} attributes {
+		}}
+	} ports {
+		{ptolemy.actor.TypedIOPort {..dest.input} attributes {
+		} links {
+			{ptolemy.actor.TypedIORelation {..edge0} attributes {
+				{ptolemy.data.expr.Parameter {..edge0.Auto} -1}
+				{ptolemy.data.expr.Parameter {..edge0.width} -1}
+			} configuration {width 1}}
+		} insidelinks {
+		} configuration {input opaque {width 1}} receivers {
+			{
+			}
+		} remotereceivers {
+		} type {declared unknown resolved unknown}}
+	}}
 } relations {
-    {ptolemy.actor.TypedIORelation {..edge0} attributes {
-        {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
-        {ptolemy.data.expr.Parameter {..edge0.width} -1}
-    } links {
-        {ptolemy.actor.TypedIOPort {..source.output} attributes {
-        } configuration {output opaque {width 0}} receivers {
-        } remotereceivers {
-        } type {declared unknown resolved unknown}}
-        {ptolemy.actor.TypedIOPort {..dest.input} attributes {
-        } configuration {input opaque {width 0}} receivers {
-        } remotereceivers {
-        } type {declared unknown resolved unknown}}
-    } configuration {width 0}}
+	{ptolemy.actor.TypedIORelation {..edge0} attributes {
+		{ptolemy.data.expr.Parameter {..edge0.Auto} -1}
+		{ptolemy.data.expr.Parameter {..edge0.width} -1}
+	} links {
+		{ptolemy.actor.TypedIOPort {..source.output} attributes {
+		} configuration {output opaque {width 1}} receivers {
+		} remotereceivers {
+			{
+			}
+		} type {declared unknown resolved unknown}}
+		{ptolemy.actor.TypedIOPort {..dest.input} attributes {
+		} configuration {input opaque {width 1}} receivers {
+			{
+			}
+		} remotereceivers {
+		} type {declared unknown resolved unknown}}
+	} configuration {width 1}}
 }}
 
 
@@ -995,7 +995,7 @@ test IOPort-11.1 {Check liberalLink on transparent multiport and inferred width}
     $r2 setWidth 3
     $p0 link $r2
     $p2 link $r2       
-    catch {$manager inferWidths} msg
+    catch {$r1 getWidth} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The inside and outside widths of port ..E0.P0 are not consistent.
 The inferred width of relation ..E0.R1 would be negative.
@@ -1006,7 +1006,6 @@ test IOPort-11.15 {Check inferred width} {
     set r3 [java::new ptolemy.actor.IORelation $ex R3]
     $r3 setWidth 3
     $p0 link $r3
-    $manager inferWidths
     set result [list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth]]
     $r3 setWidth 4
     lappend result [$p0 getWidth] [$p1 getWidth] [$p2 getWidth]
@@ -1024,10 +1023,9 @@ test IOPort-11.2 {Check liberalLink: link a linked relation from inside } {
     $r1 setWidth 1
     $p0 link $r1
     $p0 link $r1
-    catch {$manager inferWidths} msg1
+    catch {$r1 getWidth} msg1
     list $msg1
-
-} {{}}
+} {1}
 
 test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -1041,7 +1039,7 @@ test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
     $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r2
-    catch {$manager inferWidths} msg1    
+    catch {$r2 getWidth} msg1    
     set widthInferenceNotDeterministic "ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.
 Please make the width inference deterministic by explicitly specifying the width of this relation.
   in *"        
@@ -1066,7 +1064,7 @@ test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
     set r3 [java::new ptolemy.actor.IORelation $ex R3]
     $r3 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r3
-    catch {$manager inferWidths} msg1
+    catch {$r3 getWidth} msg1
     string match $widthInferenceNotDeterministic $msg1
 } {1}
 
@@ -1085,9 +1083,9 @@ test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     set r2 [java::new ptolemy.actor.IORelation $ex R2]
     $r2 setWidth 2
     $p0 link $r2
-    catch {$manager inferWidths} msg1
+    catch {$r2 getWidth} msg1
     list $msg1
-} {{}}
+} {2}
 
 test IOPort-11.6 {Check cannot link a relation twice to a single port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -1118,7 +1116,7 @@ test IOPort-11.7 {No two relations from both inside and outside can be a bus} {
     set r2 [java::new ptolemy.actor.IORelation $ex R2]
     $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r2
-    catch {$manager inferWidths} msg1
+    catch {$r2 getWidth} msg1
     string match $widthInferenceNotDeterministic $msg1
 } {1}
 
