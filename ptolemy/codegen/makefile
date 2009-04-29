@@ -56,6 +56,7 @@ PTCLASSALLJARS = \
 	c/c.jar \
 	demo/demo.jar \
 	gui/gui.jar \
+	java/java.jar \
 	kernel/kernel.jar \
 	chaco/chaco.jar
 
