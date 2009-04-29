@@ -102,7 +102,7 @@ public class LatticeProperty extends Property implements PropertyTerm {
      */
     public boolean isSubstitutionInstance(Property property) {
         return //(this == UNKNOWN) ||
-        (this == _lattice.basicLattice().bottom()) ||
+        (this == _lattice.bottom()) ||
         (this == property);
     }
 

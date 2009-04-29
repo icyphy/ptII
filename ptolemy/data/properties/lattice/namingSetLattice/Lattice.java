@@ -1,4 +1,4 @@
-/* Property hierarchy.
+/* An ontology lattice.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -30,10 +30,9 @@ package ptolemy.data.properties.lattice.namingSetLattice;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertySet;
 import ptolemy.data.properties.lattice.PropertySetLattice;
-import ptolemy.graph.DirectedAcyclicGraph;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyLattice
+//// Lattice
 
 /**
  Property hierarchy base class.
@@ -52,33 +51,16 @@ import ptolemy.graph.DirectedAcyclicGraph;
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
- @see ptolemy.graph.CPO
+
  */
 public class Lattice extends PropertySetLattice {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-
-
-    // The infinite property lattice
+    /** Construct a new ontology lattice. */
     public Lattice() {
         super();
-        _lattice.setBasicLattice(new DirectedAcyclicGraph());
-
-        DirectedAcyclicGraph basicLattice =
-            (DirectedAcyclicGraph) _lattice.basicLattice();
 
         // Add the empty set as the bottom.
-        basicLattice.addNodeWeight(new PropertySet(this,
+        addNodeWeight(new PropertySet(this,
                 new Property[0]));
-
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }

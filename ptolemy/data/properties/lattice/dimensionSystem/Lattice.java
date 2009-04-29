@@ -1,4 +1,4 @@
-/* Property hierarchy.
+/* An ontology lattice.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -29,33 +29,22 @@ package ptolemy.data.properties.lattice.dimensionSystem;
 
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertyLattice;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyLattice
+//// Lattice
 
 /**
- Property hierarchy base class.
- Note that all public methods are synchronized.
- There are more than one instances of a property lattice.
- Although the property lattice is constructed once and then typically
- does not change during execution, the methods need to be synchronized
- because there are various data structures used to cache results that
- are expensive to compute. These data structures do change during
- execution. Multiple threads may be accessing the property lattice
- simultaneously and modifying these data structures. To ensure
- thread safety, the methods need to be synchronized.
+ The ontology lattice for dimension analysis.
 
  @author Man-Kit Leung
  @version $Id: Lattice.java 53046 2009-04-10 23:04:25Z cxh $
- @since Ptolemy II 7.1
+ @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
- @see ptolemy.graph.CPO
  */
 public class Lattice extends PropertyLattice {
 
-    // The finite property lattice
+    /** Construct a new ontology lattice. */
     public Lattice() {
         super();
 
@@ -79,28 +68,27 @@ public class Lattice extends PropertyLattice {
         addEdge(SPEED, TOP);
         addEdge(ACCELERATION, TOP);
 
-        // FIXME: Replace this with an assert when we move to 1.5
         if (!isLattice()) {
-            throw new InternalErrorException("ThePropertyLattice: The "
-                    + "property hierarchy is not a lattice.");
+            throw new AssertionError("This ontology is not a lattice.");
+
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public fields                    ////
+    ////                         private variables                 ////
 
-    public final Property TOP = new Top(this);
+    private Property TOP = new Top(this);
     
-    public final Property TIME = new Time(this);
+    private Property TIME = new Time(this);
 
-    public final Property ACCELERATION = new Acceleration(this);
+    private Property ACCELERATION = new Acceleration(this);
     
-    public final Property SPEED = new Speed(this);
+    private Property SPEED = new Speed(this);
 
-    public final Property POSITION = new Position(this);
+    private Property POSITION = new Position(this);
 
-    public final Property UNITLESS = new Unitless(this);
+    private Property UNITLESS = new Unitless(this);
 
-    public final Property UNKNOWN = new Unknown(this);
+    private Property UNKNOWN = new Unknown(this);
     
 }

@@ -1,4 +1,4 @@
-/* Property hierarchy.
+/* An ontology lattice.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -29,11 +29,9 @@ package ptolemy.data.properties.lattice.academicFalseTrueEqualPriority;
 
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertyLattice;
-import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyLattice
+//// Lattice
 
 /**
  Property hierarchy base class.
@@ -52,48 +50,38 @@ import ptolemy.kernel.util.InternalErrorException;
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
- @see ptolemy.graph.CPO
+
  */
 public class Lattice extends PropertyLattice {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    public /*static*/ Property CONFLICT = new Conflict(this);
-    public /*static*/ Property TRUE = new True(this);
-    public /*static*/ Property FALSE = new False(this);
-    public /*static*/ Property UNKNOWN = new Unknown(this);
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-
-
-    // The infinite property lattice
+    /** Construct a new ontology lattice. */
     public Lattice() {
         super();
-        _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice =
-            (DirectedAcyclicGraph) _lattice.basicLattice();
+        addNodeWeight(CONFLICT);
+        addNodeWeight(TRUE);
+        addNodeWeight(FALSE);
+        addNodeWeight(UNKNOWN);
 
-        basicLattice.addNodeWeight(CONFLICT);
-        basicLattice.addNodeWeight(TRUE);
-        basicLattice.addNodeWeight(FALSE);
-        basicLattice.addNodeWeight(UNKNOWN);
+        addEdge(UNKNOWN, FALSE);
+        addEdge(UNKNOWN, TRUE);
+        addEdge(FALSE, CONFLICT);
+        addEdge(TRUE, CONFLICT);
 
-        basicLattice.addEdge(UNKNOWN, FALSE);
-        basicLattice.addEdge(UNKNOWN, TRUE);
-        basicLattice.addEdge(FALSE, CONFLICT);
-        basicLattice.addEdge(TRUE, CONFLICT);
-
-        // FIXME: Replace this with an assert when we move to 1.5
-        if (!basicLattice.isLattice()) {
-            throw new InternalErrorException("ThePropertyLattice: The "
-                    + "property hierarchy is not a lattice.");
+        if (!isLattice()) {
+            throw new AssertionError("This ontology is not a lattice.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    public Property CONFLICT = new Conflict(this);
+
+    public Property TRUE = new True(this);
+    
+    public Property FALSE = new False(this);
+    
+    public Property UNKNOWN = new Unknown(this);
 
 }

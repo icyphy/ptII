@@ -510,7 +510,7 @@ public class PropertyConstraintSolver extends PropertySolver {
              */
 
             if (constraintList.size() > 0) {
-                CPO cpo = getLattice().lattice();
+                CPO cpo = getLattice();
 
                 // Instantiate our own customized version of InequalitySolver.
                 // ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(cpo);
@@ -616,7 +616,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                 // property conflicts.
                 for (Inequality inequality : constraintList) {
 
-                    if (!inequality.isSatisfied(_lattice.lattice())) {
+                    if (!inequality.isSatisfied(_lattice)) {
                         conflicts.add(inequality);
 
                     } else {

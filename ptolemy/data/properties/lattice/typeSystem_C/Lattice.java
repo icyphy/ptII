@@ -1,4 +1,4 @@
-/* Property hierarchy.
+/* An ontology lattice.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyLattice
+//// Lattice
 
 /**
  Property hierarchy base class.
@@ -57,122 +57,86 @@ import ptolemy.kernel.util.InternalErrorException;
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
- @see ptolemy.graph.CPO
+
  */
 public class Lattice extends PropertyLattice {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    public Property CONFLICT = new Conflict(this);
-
-    public Property DOUBLEDOUBLE = new Double(this);
-    public Property DOUBLE = new Double(this);
-    public Property FLOAT = new Float(this);
-
-    public Property LONGLONG = new LongLong(this);
-    public Property LONG = new Long(this);
-    public Property INT = new Int(this);
-    public Property SHORT = new Short(this);
-    public Property CHAR = new Char(this);
-
-    public Property ULONGLONG = new ULongLong(this);
-    public Property ULONG = new ULong(this);
-    public Property UINT = new UInt(this);
-    public Property USHORT = new UShort(this);
-    public Property UCHAR = new UChar(this);
-
-    public Property BOOLEAN = new Boolean(this);
-
-    public Property VOID = new Void(this);
-
-    public Property UNKNOWN = new Unknown(this);
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-
-
-    // The infinite property lattice
+    /** Construct a new ontology lattice. */
     public Lattice() {
         super();
-        _lattice.setBasicLattice(new DirectedAcyclicGraph());
-
-        DirectedAcyclicGraph basicLattice =
-            (DirectedAcyclicGraph) _lattice.basicLattice();
 
 // FIXME: how to convert from Ptolemy type system to EDC type system?
-        basicLattice.addNodeWeight(CONFLICT);
+        addNodeWeight(CONFLICT);
 
-        basicLattice.addNodeWeight(DOUBLEDOUBLE);
-        basicLattice.addNodeWeight(DOUBLE);
-        basicLattice.addNodeWeight(FLOAT);
+        addNodeWeight(DOUBLEDOUBLE);
+        addNodeWeight(DOUBLE);
+        addNodeWeight(FLOAT);
 
-        basicLattice.addNodeWeight(LONGLONG);
-        basicLattice.addNodeWeight(LONG);
-        basicLattice.addNodeWeight(INT);
-        basicLattice.addNodeWeight(SHORT);
-        basicLattice.addNodeWeight(CHAR);
+        addNodeWeight(LONGLONG);
+        addNodeWeight(LONG);
+        addNodeWeight(INT);
+        addNodeWeight(SHORT);
+        addNodeWeight(CHAR);
 
-        basicLattice.addNodeWeight(ULONGLONG);
-        basicLattice.addNodeWeight(ULONG);
-        basicLattice.addNodeWeight(UINT);
-        basicLattice.addNodeWeight(USHORT);
-        basicLattice.addNodeWeight(UCHAR);
+        addNodeWeight(ULONGLONG);
+        addNodeWeight(ULONG);
+        addNodeWeight(UINT);
+        addNodeWeight(USHORT);
+        addNodeWeight(UCHAR);
 
-        basicLattice.addNodeWeight(BOOLEAN);
+        addNodeWeight(BOOLEAN);
 
-        basicLattice.addNodeWeight(VOID);
+        addNodeWeight(VOID);
 
-        basicLattice.addNodeWeight(UNKNOWN);
+        addNodeWeight(UNKNOWN);
 
 
-        basicLattice.addEdge(UNKNOWN, VOID);
-        basicLattice.addEdge(UNKNOWN, BOOLEAN);
-        basicLattice.addEdge(UNKNOWN, UCHAR);
-        basicLattice.addEdge(UNKNOWN, CHAR);
-        basicLattice.addEdge(UNKNOWN, FLOAT);
+        addEdge(UNKNOWN, VOID);
+        addEdge(UNKNOWN, BOOLEAN);
+        addEdge(UNKNOWN, UCHAR);
+        addEdge(UNKNOWN, CHAR);
+        addEdge(UNKNOWN, FLOAT);
 
-        basicLattice.addEdge(CHAR, SHORT);
-        basicLattice.addEdge(SHORT, INT);
-        basicLattice.addEdge(INT, LONG);
-        basicLattice.addEdge(LONG, LONGLONG);
+        addEdge(CHAR, SHORT);
+        addEdge(SHORT, INT);
+        addEdge(INT, LONG);
+        addEdge(LONG, LONGLONG);
 
-        basicLattice.addEdge(UCHAR, USHORT);
-        basicLattice.addEdge(USHORT, UINT);
-        basicLattice.addEdge(UINT, ULONG);
-        basicLattice.addEdge(ULONG, ULONGLONG);
+        addEdge(UCHAR, USHORT);
+        addEdge(USHORT, UINT);
+        addEdge(UINT, ULONG);
+        addEdge(ULONG, ULONGLONG);
 
-        basicLattice.addEdge(UCHAR, SHORT);
-        basicLattice.addEdge(USHORT, INT);
+        addEdge(UCHAR, SHORT);
+        addEdge(USHORT, INT);
         // UINT and ULONG have same range
-        basicLattice.addEdge(UINT, LONGLONG);
-        basicLattice.addEdge(ULONG, LONGLONG);
+        addEdge(UINT, LONGLONG);
+        addEdge(ULONG, LONGLONG);
 
         // FIXME: Is it possible to convert boolean to anything but boolean?
-        // basicLattice.addEdge(BOOLEAN, SINT8);
+        // addEdge(BOOLEAN, SINT8);
 
-        basicLattice.addEdge(FLOAT, DOUBLE);
-        basicLattice.addEdge(DOUBLE, DOUBLEDOUBLE);
+        addEdge(FLOAT, DOUBLE);
+        addEdge(DOUBLE, DOUBLEDOUBLE);
 
         // FIXME: convert boolean to REAL32?
-//        basicLattice.addEdge(BOOLEAN, REAL32);
+//        addEdge(BOOLEAN, REAL32);
 
         // FIXME: automatic conversion from integer to real types valid?
         // do we need explicit modeling of int -> real and real -> int?
         // does not work since UINT32 and SINT32 need to have single LUB (INVALID)
-//        basicLattice.addEdge(SINT32, REAL32);
-//        basicLattice.addEdge(UINT32, REAL32);
+//        addEdge(SINT32, REAL32);
+//        addEdge(UINT32, REAL32);
 
-      basicLattice.addEdge(VOID, CONFLICT);
-      basicLattice.addEdge(BOOLEAN, CONFLICT);
-      basicLattice.addEdge(ULONGLONG, CONFLICT);
-      basicLattice.addEdge(LONGLONG, CONFLICT);
-      basicLattice.addEdge(DOUBLEDOUBLE, CONFLICT);
+        addEdge(VOID, CONFLICT);
+        addEdge(BOOLEAN, CONFLICT);
+        addEdge(ULONGLONG, CONFLICT);
+        addEdge(LONGLONG, CONFLICT);
+        addEdge(DOUBLEDOUBLE, CONFLICT);
 
-        // FIXME: Replace this with an assert when we move to 1.5
-        if (!basicLattice.isLattice()) {
-            throw new InternalErrorException("ThePropertyLattice: The "
-                    + "property hierarchy is not a lattice.");
+        if (!isLattice()) {
+            throw new AssertionError("This ontology is not a lattice.");
+
         }
     }
 
@@ -239,5 +203,29 @@ public class Lattice extends PropertyLattice {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    public Property CONFLICT = new Conflict(this);
+
+    public Property DOUBLEDOUBLE = new Double(this);
+    public Property DOUBLE = new Double(this);
+    public Property FLOAT = new Float(this);
+
+    public Property LONGLONG = new LongLong(this);
+    public Property LONG = new Long(this);
+    public Property INT = new Int(this);
+    public Property SHORT = new Short(this);
+    public Property CHAR = new Char(this);
+
+    public Property ULONGLONG = new ULongLong(this);
+    public Property ULONG = new ULong(this);
+    public Property UINT = new UInt(this);
+    public Property USHORT = new UShort(this);
+    public Property UCHAR = new UChar(this);
+
+    public Property BOOLEAN = new Boolean(this);
+
+    public Property VOID = new Void(this);
+
+    public Property UNKNOWN = new Unknown(this);
 
 }
