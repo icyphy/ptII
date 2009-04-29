@@ -49,7 +49,6 @@ $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Hysteresis/Hysteresis.xml
 $CLASSPATH/ptolemy/domains/de/demo/Clock/Clock.xml
-$CLASSPATH/ptolemy/apps/naomi/demo/Intersection/Intersection.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
