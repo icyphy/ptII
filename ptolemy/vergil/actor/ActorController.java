@@ -706,7 +706,7 @@ public abstract class ActorController extends AttributeController {
         }
 
         /** Perform the action.
-         *  @param even The action event
+         *  @param event The action event
          */
         public void actionPerformed(ActionEvent event) {
             if ((_configuration == null) && (_tableauFrame == null)) {
