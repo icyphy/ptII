@@ -78,7 +78,7 @@
         // Handle a special case where the number of reference points is
         // 1. The code for order 3 later won't work for this case.
         if (numRefPoints == 1) {
-            return Array_get(values, 0).payload.Double;
+            return DoubleArray_get(values, 0);
         }
 
         // indexIndexStart is the index to indexes whose entry is the
@@ -87,9 +87,9 @@
 
         // search though all indexes to find iStart.
         for (i = 0; i < numRefPoints; i++) {
-            if (Array_get(indexes, i).payload.Int == index) {
-                return Array_get(values, i).payload.Double;
-            } else if (Array_get(indexes, i).payload.Int < index) {
+            if (IntArray_get(indexes, i) == index) {
+                return DoubleArray_get(values, i);
+            } else if (IntArray_get(indexes, i) < index) {
                 indexIndexStart = i;
             } else {
                 break;
@@ -99,9 +99,9 @@
         // Perform interpolation
         if (order == 0) {
             if (indexIndexStart != -1) {
-                return Array_get(values, indexIndexStart).payload.Double;
+                return DoubleArray_get(values, indexIndexStart);
             } else {
-                return Array_get(values, numRefPoints - 1).payload.Double;
+                return DoubleArray_get(values, numRefPoints - 1);
             }
         }
 
@@ -116,19 +116,19 @@
         double vEnd;
 
         if (indexIndexStart == -1) {
-            iStart = Array_get(indexes, numRefPoints - 1).payload.Int - period;
-            vStart = Array_get(values, numRefPoints - 1).payload.Double;
+            iStart = IntArray_get(indexes, numRefPoints - 1) - period;
+            vStart = DoubleArray_get(values, numRefPoints - 1);
         } else {
-            iStart = Array_get(indexes, indexIndexStart).payload.Int;
-            vStart = Array_get(values, indexIndexStart).payload.Double;
+            iStart = IntArray_get(indexes, indexIndexStart);
+            vStart = DoubleArray_get(values, indexIndexStart);
         }
 
         if (indexIndexStart == (numRefPoints - 1)) {
-            iEnd = Array_get(indexes, 0).payload.Int + period;
-            vEnd = Array_get(values, 0).payload.Double;
+            iEnd = IntArray_get(indexes, 0) + period;
+            vEnd = DoubleArray_get(values, 0);
         } else {
-            iEnd = Array_get(indexes, indexIndexStart + 1).payload.Int;
-            vEnd = Array_get(values, indexIndexStart + 1).payload.Double;
+            iEnd = IntArray_get(indexes, indexIndexStart + 1);
+            vEnd = DoubleArray_get(values, indexIndexStart + 1);
         }
 
         if (order == 1) {
@@ -146,37 +146,37 @@
         double vAfterEnd;
 
         if (indexIndexStart == -1) {
-            iBeforeStart = Array_get(indexes, numRefPoints - 2).payload.Int - period;
-            vBeforeStart = Array_get(values, numRefPoints - 2).payload.Double;
+            iBeforeStart = IntArray_get(indexes, numRefPoints - 2) - period;
+            vBeforeStart = DoubleArray_get(values, numRefPoints - 2);
         } else if (indexIndexStart == 0) {
             if (period > 0) {
-                iBeforeStart = Array_get(indexes, numRefPoints - 1).payload.Int - period;
-                vBeforeStart = Array_get(values, numRefPoints - 1).payload.Double;
+                iBeforeStart = IntArray_get(indexes, numRefPoints - 1) - period;
+                vBeforeStart = DoubleArray_get(values, numRefPoints - 1);
             } else {
                 // Not periodic
-                iBeforeStart = Array_get(indexes, 0).payload.Int - 1;
+                iBeforeStart = IntArray_get(indexes, 0) - 1;
                 vBeforeStart = 0.0;
             }
         } else {
-            iBeforeStart = Array_get(indexes, indexIndexStart - 1).payload.Int;
-            vBeforeStart = Array_get(values, indexIndexStart - 1).payload.Double;
+            iBeforeStart = IntArray_get(indexes, indexIndexStart - 1);
+            vBeforeStart = DoubleArray_get(values, indexIndexStart - 1);
         }
 
         if (indexIndexStart == (numRefPoints - 1)) {
-            iAfterEnd = Array_get(indexes, 1).payload.Int + period;
-            vAfterEnd = Array_get(values, 1).payload.Double;
+            iAfterEnd = IntArray_get(indexes, 1) + period;
+            vAfterEnd = DoubleArray_get(values, 1);
         } else if (indexIndexStart == (numRefPoints - 2)) {
             if (period > 0) {
-                iAfterEnd = Array_get(indexes, 0).payload.Int + period;
-                vAfterEnd = Array_get(values, 0).payload.Double;
+                iAfterEnd = IntArray_get(indexes, 0) + period;
+                vAfterEnd = DoubleArray_get(values, 0);
             } else {
                 // Not periodic
-                iAfterEnd = Array_get(indexes, numRefPoints - 1).payload.Int + 1;
+                iAfterEnd = IntArray_get(indexes, numRefPoints - 1) + 1;
                 vAfterEnd = 0.0;
             }
         } else {
-            iAfterEnd = Array_get(indexes, indexIndexStart + 2).payload.Int;
-            vAfterEnd = Array_get(values, indexIndexStart + 2).payload.Double;
+            iAfterEnd = IntArray_get(indexes, indexIndexStart + 2);
+            vAfterEnd = DoubleArray_get(values, indexIndexStart + 2);
         }
 
         // computer the tangent at Start and End.

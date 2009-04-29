@@ -101,7 +101,7 @@ $ref(peakIndices) = $new(IntArray(0, 0));
     double $actorClass(maxValue) = $actorClass(localMax);
 
     for ($actorClass(i) = 0; $actorClass(i) <= $actorClass(inputSize) - 1; $actorClass(i) += $actorClass(increment)) {
-        $actorClass(indata) = Array_get($ref(input), $actorClass(i)).payload.Double;
+        $actorClass(indata) = DoubleArray_get($ref(input), $actorClass(i));
 
         if ($actorClass(indata) > $actorClass(maxValue)) {
             $actorClass(maxValue) = $actorClass(indata);
@@ -133,7 +133,7 @@ $ref(peakIndices) = $new(IntArray(0, 0));
 
 /*** fireBlock2 ($scale) ***/
             for ($actorClass(i) = $actorClass(start); $actorClass(i) <= $actorClass(end); $actorClass(i) += $actorClass(increment)) {
-                $actorClass(indata) = Array_get($ref(input), $actorClass(i)).payload.Double;
+                $actorClass(indata) = DoubleArray_get($ref(input), $actorClass(i));
 
                 if ($actorClass(searchValley)) {
                     if ($actorClass(indata) < $actorClass(localMin)) {
@@ -165,7 +165,7 @@ $ref(peakIndices) = $new(IntArray(0, 0));
                     DoubleArray_insert($ref(peakValues), $actorClass(localMax));
                     IntArray_insert($ref(peakIndices), $actorClass(localMaxIndex));
 
-                    if ($ref(peakValues).payload.Array->size > $val(maximumNumberOfPeaks)) {
+                    if ($ref(peakValues).payload.DoubleArray->size > $val(maximumNumberOfPeaks)) {
                         break;
                     }
 
