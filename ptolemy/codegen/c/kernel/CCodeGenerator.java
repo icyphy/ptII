@@ -462,7 +462,7 @@ public class CCodeGenerator extends CodeGenerator {
                     // supported by all types.
                 }
             }
-            typeFunctionCode.append(processCode(typeStreams[i].toString()));
+            typeFunctionCode.append(typeStreams[i].toString());
         }
 
         // Append type-polymorphic functions included in the function table.
@@ -540,7 +540,7 @@ public class CCodeGenerator extends CodeGenerator {
         // Type_new(), Type_delete(), and etc.
         code.append(typeFunctionCode);
 
-        return code.toString();
+        return processCode(code.toString());
     }
 
     private HashSet<String> _getTypeIDToUsed(HashSet<String> types) {
