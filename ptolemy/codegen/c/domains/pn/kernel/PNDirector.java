@@ -66,92 +66,99 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PNDirector extends Director {
 
-        /**
-         * Construct the code generator helper associated with the given PNDirector.
-         *
-         * @param pnDirector
-         *            The associated ptolemy.domains.pn.kernel.PNDirector
-         */
-        public PNDirector(ptolemy.domains.pn.kernel.PNDirector pnDirector) {
-                super(pnDirector);
+    /**
+     * Construct the code generator helper associated with the given PNDirector.
+     *
+     * @param pnDirector
+     *            The associated ptolemy.domains.pn.kernel.PNDirector
+     */
+    public PNDirector(ptolemy.domains.pn.kernel.PNDirector pnDirector) {
+        super(pnDirector);
 
-        }
+    }
 
-        // //////////////////////////////////////////////////////////////////////
-        // // public methods ////
+    // //////////////////////////////////////////////////////////////////////
+    // // public methods ////
 
-        /**
-         * Generate the body code that lies between variable declaration and wrapup.
-         *
-         * @return The generated body code.
-         * @exception IllegalActionException
-         *                If the {@link #_generateFireCode()} method throws the
-         *                exceptions.
-         */
+    /**
+     * Generate the body code that lies between variable declaration and wrapup.
+     *
+     * @return The generated body code.
+     * @exception IllegalActionException
+     *                If the {@link #_generateFireCode()} method throws the
+     *                exceptions.
+     */
     public String generateFireCode() throws IllegalActionException {
-                StringBuffer code = new StringBuffer();
-                CompositeActor compositeActor = (CompositeActor) _director
-                                .getContainer();
+        StringBuffer code = new StringBuffer();
+        CompositeActor compositeActor = (CompositeActor) _director
+        .getContainer();
 
-                code.append(_codeGenerator.comment("Create a thread for each actor."));
-                code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
+        code.append(_codeGenerator.comment("Create a thread for each actor."));
+        code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
 
-                List<Actor> actorList = compositeActor.deepEntityList();
+        List<Actor> actorList = compositeActor.deepEntityList();
 
-                for (Actor actor : actorList) {
-                        // Generate the thread pointer.
-                        code.append("pthread_t thread_");
-                        code.append(_getActorThreadLabel(actor));
-                        code.append(";" + _eol);
-                }
-
-                for (Actor actor : actorList) {
-                        code.append("pthread_create(");
-                        code.append("&thread_" + _getActorThreadLabel(actor));
-                        code.append(", &pthread_custom_attr, ");
-                        code.append(_getActorThreadLabel(actor));
-                        code.append(", NULL);" + _eol);
-                }
-
-                for (Actor actor : actorList) {
-                        code.append("pthread_join(");
-                        code.append("thread_" + _getActorThreadLabel(actor));
-                        code.append(", NULL);" + _eol);
-                }
-                return code.toString();
+        for (Actor actor : actorList) {
+            // Generate the thread pointer.
+            code.append("pthread_t thread_");
+            code.append(_getActorThreadLabel(actor));
+            code.append(";" + _eol);
         }
 
-        /**
-         * Get the files needed by the code generated from this helper class. This
-         * base class returns an empty set.
-         *
-         * @return A set of strings that are header files needed by the code
-         *         generated from this helper class.
-         * @exception IllegalActionException
-         *                If something goes wrong.
-         */
-        public Set getHeaderFiles() throws IllegalActionException {
-                Set files = new HashSet();
-                files.add("<pthread.h>");
-                // files.add("<thread.h>");
-                return files;
+        for (Actor actor : actorList) {
+            code.append("pthread_create(");
+            code.append("&thread_" + _getActorThreadLabel(actor));
+            code.append(", &pthread_custom_attr, ");
+            code.append(_getActorThreadLabel(actor));
+            code.append(", NULL);" + _eol);
         }
 
-        /**
-         * Return the libraries specified in the "libraries" blocks in the templates
-         * of the actors included in this CompositeActor.
-         *
-         * @return A Set of libraries.
-         * @exception IllegalActionException
-         *                If thrown when gathering libraries.
-         */
-        public Set getLibraries() throws IllegalActionException {
-                Set libraries = new LinkedHashSet();
-                libraries.add("pthread");
-                // libraries.add("thread");
-                return libraries;
+        for (Actor actor : actorList) {
+            code.append("pthread_join(");
+            code.append("thread_" + _getActorThreadLabel(actor));
+            code.append(", NULL);" + _eol);
         }
+        return code.toString();
+    }
 
+    /**
+     * Get the files needed by the code generated from this helper class. This
+     * base class returns an empty set.
+     *
+     * @return A set of strings that are header files needed by the code
+     *         generated from this helper class.
+     * @exception IllegalActionException
+     *                If something goes wrong.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = new HashSet();
+        files.add("<pthread.h>");
+        // files.add("<thread.h>");
+        return files;
+    }
+
+    /**
+     * Return the libraries specified in the "libraries" blocks in the templates
+     * of the actors included in this CompositeActor.
+     *
+     * @return A Set of libraries.
+     * @exception IllegalActionException
+     *                If thrown when gathering libraries.
+     */
+    public Set getLibraries() throws IllegalActionException {
+        Set libraries = new LinkedHashSet();
+        libraries.add("pthread");
+        // libraries.add("thread");
+        return libraries;
+    }
+
+    /**
+     * Return the code for getting data from the specific port channel.
+     * @param port The specified port.
+     * @param channel The specified channel.
+     * @return the code for getting data from the specific port channel.
+     * @exception IllegalActionException Not thrown here.
+     */
     public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
 
         // getReadOffset()
@@ -159,428 +166,474 @@ public class PNDirector extends Director {
         return "";
     }
 
+    /**
+     * Return the code for sending data from the specific port channel.
+     * @param port The specified port.
+     * @param channel The specified channel.
+     * @return the code for sending data from the specific port channel.
+     * @exception IllegalActionException Not thrown here.
+     */
     public String generateCodeForSend(IOPort port, int channel) throws IllegalActionException {
         return "";
     }
 
-        /**
-         * Generate the initialize code for the associated PN director.
-         *
-         * @return The generated initialize code.
-         * @exception IllegalActionException
-         *                If the helper associated with an actor throws it while
-         *                generating initialize code for the actor.
-         */
-        public String generateInitializeCode() throws IllegalActionException {
-                StringBuffer code = new StringBuffer();
+    /**
+     * Return the generated label for the director header.
+     * @return The generated label for the director header.
+     */
+    public String generateDirectorHeader() {
+        return CodeGeneratorHelper.generateName(_director) + "_controlBlock";
+    }
 
-                code.append(_codeGenerator
-                                .comment("Initialization code of the PNDirector."));
+    /**
+     * Generate the initialize code for the associated PN director.
+     * @return The generated initialize code.
+     * @exception IllegalActionException If the helper associated 
+     * with the director throws it while generating initialize code.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
 
-                // Don't generate the code to initialize all the actors.
-                // code.append(super.generateInitializeCode());
+        code.append(_codeGenerator
+                .comment("Initialization code of the PNDirector."));
 
-                List args = new LinkedList();
-                args.add(generateDirectorHeader());
+        // Don't generate the code to initialize all the actors.
+        // code.append(super.generateInitializeCode());
+
+        List args = new LinkedList();
+        args.add(generateDirectorHeader());
         args.add(_generateActorNameFileForDebugging());
 
-                // Initialize the director head variable.
-                code.append(_codeStream.getCodeBlock("initBlock", args));
+        // Initialize the director head variable.
+        code.append(_codeStream.getCodeBlock("initBlock", args));
 
-                args.remove(1);
+        args.remove(1);
 
-                // Initialize each buffer variables.
-                for (String bufferVariable : _buffers) {
-                        args.set(0, bufferVariable);
-                        code.append(_codeStream.getCodeBlock("initBuffer", args));
-                }
-                return code.toString();
+        // Initialize each buffer variables.
+        for (String bufferVariable : _buffers) {
+            args.set(0, bufferVariable);
+            code.append(_codeStream.getCodeBlock("initBuffer", args));
         }
+        return code.toString();
+    }
 
-        /**
-     *
+    /**
+     * Return the main loop code for the associated PN director.
+     * @return The generated main loop code.
+     * @exception IllegalActionException If the helper associated 
+     * with the director throws it while generating main loop code.
      */
-        public String generateMainLoop() throws IllegalActionException {
+    public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         code.append(((CodeGeneratorHelper) _getHelper(_director
                 .getContainer())).generateFireCode());
 
         return code.toString();
+    }
+
+    /**
+     * Return the generated header label for the specified port channel. 
+     * @param port The specified port.
+     * @param channel The specified channel number.
+     * @return The generated header label for the specified port channel.
+     */
+    public static String generatePortHeader(IOPort port, int i) {
+        return CodeGeneratorHelper.generateName(port) + "_" + i + "_pnHeader";
+    }
+
+    /**
+     * Generate the postfire code for the associated PN director.
+     * @return The generated postfire code.
+     * @exception IllegalActionException If the helper associated 
+     * with the director throws it while generating postfire code.
+     */
+    public String generatePostfireCode() throws IllegalActionException {
+        return "";
+    }
+
+    /**
+     * Generate the preinitialize code for the associated PN director.
+     *
+     * @return The generated preinitialize code.
+     * @exception IllegalActionException
+     *                If the helper associated with an actor throws it while
+     *                generating preinitialize code for the actor.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer bufferCode = new StringBuffer();
+    
+        _buffers.clear();
+    
+        List actorList = ((CompositeEntity) _director.getContainer())
+        .deepEntityList();
+    
+        Iterator actors = actorList.iterator();
+        while (actors.hasNext()) {
+            Entity actor = (Entity) actors.next();
+            Iterator ports = actor.portList().iterator();
+    
+            while (ports.hasNext()) {
+                IOPort port = (IOPort) ports.next();
+                bufferCode.append(_createDynamicOffsetVariables(port));
+            }
         }
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
+    
+        List args = new LinkedList();
+        args.add(generateDirectorHeader());
+    
+        args.add(((CompositeActor) _director.getContainer()).deepEntityList()
+                .size());
+    
+        args.add(_buffers.size());
+        args.add(_generateActorNameFileForDebugging());
+        code.append(_codeStream.getCodeBlock("preinitBlock", args));
+    
+        code.append(bufferCode);
+    
+        _generateThreadFunctionCode(code);
+    
+        return code.toString();
+    }
 
-        /**
-         * Generate the preinitialize code for the associated PN director.
-         *
-         * @return The generated preinitialize code.
-         * @exception IllegalActionException
-         *                If the helper associated with an actor throws it while
-         *                generating preinitialize code for the actor.
-         */
-        public String generatePreinitializeCode() throws IllegalActionException {
-                StringBuffer bufferCode = new StringBuffer();
+    /**
+     * Generate the transfer output code for the specified port.
+     * @return The generated transfer output code.
+     * @param port The specified port.
+     * @param code The given buffer to generate code to.
+     * @exception IllegalActionException Not thrown here.
+     */
+    public void generateTransferOutputsCode(IOPort port, StringBuffer code)
+    throws IllegalActionException {
+        code.append(_codeGenerator.comment("PNDirector: "
+                + "Transfer tokens to the outside."));
+    }
 
-                _buffers.clear();
+    /**
+     * Generate code for transferring enough tokens to complete an internal
+     * iteration.
+     *
+     * @param inputPort
+     *            The port to transfer tokens.
+     * @param code
+     *            The string buffer that the generated code is appended to.
+     * @exception IllegalActionException
+     *                If thrown while transferring tokens.
+     */
+    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+    throws IllegalActionException {
+        code.append(_codeGenerator.comment("PNDirector: "
+                + "Transfer tokens to the inside."));
 
-                List actorList = ((CompositeEntity) _director.getContainer())
-                                .deepEntityList();
+        int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
-                Iterator actors = actorList.iterator();
-                while (actors.hasNext()) {
-                        Entity actor = (Entity) actors.next();
-                        Iterator ports = actor.portList().iterator();
+        CompositeActor container = (CompositeActor) getComponent()
+        .getContainer();
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-                        while (ports.hasNext()) {
-                                IOPort port = (IOPort) ports.next();
-                                bufferCode.append(_createDynamicOffsetVariables(port));
-                        }
+        for (int i = 0; i < inputPort.getWidth(); i++) {
+            if (i < inputPort.getWidthInside()) {
+                String name = inputPort.getName();
+
+                if (inputPort.isMultiport()) {
+                    name = name + '#' + i;
                 }
-                StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
-                List args = new LinkedList();
-                args.add(generateDirectorHeader());
-
-                args.add(((CompositeActor) _director.getContainer()).deepEntityList()
-                                .size());
-
-                args.add(_buffers.size());
-                args.add(_generateActorNameFileForDebugging());
-                code.append(_codeStream.getCodeBlock("preinitBlock", args));
-
-                code.append(bufferCode);
-
-                _generateThreadFunctionCode(code);
-
-                return code.toString();
-        }
-
-        public String generatePostfireCode() throws IllegalActionException {
-                return "";
-        }
-
-    public void generateTransferOutputsCode(IOPort inputPort, StringBuffer code)
-                        throws IllegalActionException {
-                code.append(_codeGenerator.comment("PNDirector: "
-                                + "Transfer tokens to the outside."));
-        }
-
-        /**
-         * Generate code for transferring enough tokens to complete an internal
-         * iteration.
-         *
-         * @param inputPort
-         *            The port to transfer tokens.
-         * @param code
-         *            The string buffer that the generated code is appended to.
-         * @exception IllegalActionException
-         *                If thrown while transferring tokens.
-         */
-        public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-                        throws IllegalActionException {
-                code.append(_codeGenerator.comment("PNDirector: "
-                                + "Transfer tokens to the inside."));
-
-                int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-
-                CompositeActor container = (CompositeActor) getComponent()
-                                .getContainer();
-                ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-
-                for (int i = 0; i < inputPort.getWidth(); i++) {
-                        if (i < inputPort.getWidthInside()) {
-                                String name = inputPort.getName();
-
-                                if (inputPort.isMultiport()) {
-                                        name = name + '#' + i;
-                                }
-
-                                for (int k = 0; k < rate; k++) {
-                                        code.append(compositeActorHelper.getReference("@" + name
-                                                        + "," + k));
-                                        code.append(" = " + _eol);
-                                        code.append(compositeActorHelper.getReference(name + ","
-                                                        + k));
-                                        code.append(";" + _eol);
-                                }
-                        }
+                for (int k = 0; k < rate; k++) {
+                    code.append(compositeActorHelper.getReference("@" + name
+                            + "," + k));
+                    code.append(" = " + _eol);
+                    code.append(compositeActorHelper.getReference(name + ","
+                            + k));
+                    code.append(";" + _eol);
                 }
-                // Generate the type conversion code before fire code.
-                code.append(compositeActorHelper.generateTypeConvertFireCode(true));
-
-                // The offset of the input port itself is updated by outside director.
-                _updateConnectedPortsOffset(inputPort, code, rate);
+            }
         }
+        // Generate the type conversion code before fire code.
+        code.append(compositeActorHelper.generateTypeConvertFireCode(true));
 
-        /**
-         * Generate variable initialization for the referenced parameters.
-         *
-         * @return code The generated code.
-         * @exception IllegalActionException
-         *                If the helper class for the model director cannot be
-         *                found.
-         */
-        public String generateVariableInitialization()
-                        throws IllegalActionException {
-                return "";
-        }
+        // The offset of the input port itself is updated by outside director.
+        _updateConnectedPortsOffset(inputPort, code, rate);
+    }
 
-        /**
-         * Generate the wrapup code for the associated PN director.
-         *
-         * @return The generated preinitialize code.
-         * @exception IllegalActionException
-         *                If the helper associated with an actor throws it while
-         *                generating preinitialize code for the actor.
-         */
-        public String generateWrapupCode() throws IllegalActionException {
-                StringBuffer code = new StringBuffer();
+    /**
+     * Generate variable initialization for the referenced parameters.
+     *
+     * @return code The generated code.
+     * @exception IllegalActionException
+     *                If the helper class for the model director cannot be
+     *                found.
+     */
+    public String generateVariableInitialization()
+    throws IllegalActionException {
+        return "";
+    }
 
-                // Note: We don't need to call the super class method nor
-                // append the wrapup code for each of the containing actor.
-                // Instead, the actor wrapup code resides in the actor
-                // thread function code.
+    /**
+     * Generate the wrapup code for the associated PN director.
+     *
+     * @return The generated preinitialize code.
+     * @exception IllegalActionException
+     *                If the helper associated with an actor throws it while
+     *                generating preinitialize code for the actor.
+     */
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
 
-                List args = new LinkedList();
-                args.add(generateDirectorHeader());
+        // Note: We don't need to call the super class method nor
+        // append the wrapup code for each of the containing actor.
+        // Instead, the actor wrapup code resides in the actor
+        // thread function code.
+
+        List args = new LinkedList();
+        args.add(generateDirectorHeader());
         args.add(_generateActorNameFileForDebugging());
 
-                code.append(_codeStream.getCodeBlock("wrapupBlock", args));
+        code.append(_codeStream.getCodeBlock("wrapupBlock", args));
 
-                return code.toString();
+        return code.toString();
+    }
+
+    /**
+     * Return the size of the generated buffer for the specified
+     * port channel. This returns the value of  
+     * "initialQueueCapacity" parameter of the PNDirector
+     * @param port The specified port.
+     * @param channel The specified channel number.
+     * @exception IllegalActionException If an error occurs
+     *  when getting the value from the parameter.
+     */
+    public int getBufferSize(IOPort port, int channelNumber)
+    throws IllegalActionException {
+        IntToken sizeToken = (IntToken) ((ptolemy.domains.pn.kernel.PNDirector) _director).initialQueueCapacity
+        .getToken();
+
+        // FIXME: Force buffer size to be at least 2.
+        // We need to handle size 1 as special case.
+        return Math.max(sizeToken.intValue(), 2);
+    }
+
+    /**
+     * Generate the shared code for the associated PN director.
+     * @return The generated shared code.
+     * @exception IllegalActionException If the helper associated 
+     * with the director throws it while generating shared code.
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        Set sharedCode = new HashSet();
+        // sharedCode.add(_codeStream.getCodeBlock("sharedBlock"));
+        return sharedCode;
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    // // protected methods ////
+
+    /**
+     * Create offset variables for the channels of the given port. The offset
+     * variables are generated unconditionally.
+     *
+     * @param port
+     *            The port whose offset variables are generated.
+     * @return Code that declares the read and write offset variables.
+     * @exception IllegalActionException
+     *                If getting the rate or reading parameters throws it.
+     */
+    protected String _createDynamicOffsetVariables(IOPort port)
+    throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code
+        .append(_eol
+                + _codeGenerator
+                .comment("PN Director's offset variable declarations."));
+
+        int width;
+        if (port.isInput()) {
+            width = port.getWidth();
+        } else {
+            width = 0;// port.getWidthInside();
         }
 
-        public int getBufferSize(IOPort port, int channelNumber)
-                        throws IllegalActionException {
-                IntToken sizeToken = (IntToken) ((ptolemy.domains.pn.kernel.PNDirector) _director).initialQueueCapacity
-                                .getToken();
+        if (width != 0) {
 
-                // FIXME: Force buffer size to be at least 2.
-                // We need to handle size 1 as special case.
-                return Math.max(sizeToken.intValue(), 2);
+            // Declare the buffer header struct.
+            List args = new LinkedList();
+            args.add(""); // buffer header name
+            args.add(""); // director header name
+            args.add(""); // capacity
+            args.add(""); // index
+
+            // FIXME: Do some filtering, only generate needed buffer.
+            for (int i = 0; i < width; i++) {
+                args.set(0, generatePortHeader(port, i));
+                args.set(1, generateDirectorHeader());
+                args.set(2, getBufferSize(port, i));
+                args.set(3, _buffers.size());
+
+                code.append(_codeStream.getCodeBlock("declareBufferHeader",
+                        args));
+
+                // Record all the buffer instantiated.
+                _buffers.add(generatePortHeader(port, i));
+            }
         }
+        return code.toString();
+    }
 
-        public Set getSharedCode() throws IllegalActionException {
-                Set sharedCode = new HashSet();
-                // sharedCode.add(_codeStream.getCodeBlock("sharedBlock"));
-                return sharedCode;
-        }
+    /**
+     * Generate the notTerminate flag variable for the associated PN director.
+     * Generating notTerminate instead of terminate saves the negation in
+     * checking the flag (e.g. "while (!terminate) ...").
+     *
+     * @return The varaible label of the notTerminate flag.
+     */
+    protected String _generateNotTerminateFlag() {
+        return "true";// "director_controlBlock.controlBlock";
+    }
 
-        // //////////////////////////////////////////////////////////////////////
-        // // protected methods ////
+    /**
+     * @param code
+     *            The given code buffer.
+     * @exception IllegalActionException
+     */
+    private void _generateThreadFunctionCode(StringBuffer code)
+    throws IllegalActionException {
 
-        /**
-         * Create offset variables for the channels of the given port. The offset
-         * variables are generated unconditionally.
-         *
-         * @param port
-         *            The port whose offset variables are generated.
-         * @return Code that declares the read and write offset variables.
-         * @exception IllegalActionException
-         *                If getting the rate or reading parameters throws it.
-         */
-        protected String _createDynamicOffsetVariables(IOPort port)
-                        throws IllegalActionException {
-                StringBuffer code = new StringBuffer();
-                code
-                                .append(_eol
-                                                + _codeGenerator
-                                                                .comment("PN Director's offset variable declarations."));
+        List actorList = ((CompositeActor) _director.getContainer())
+        .deepEntityList();
 
-                int width;
-                if (port.isInput()) {
-                        width = port.getWidth();
-                } else {
-                        width = 0;// port.getWidthInside();
-                }
+        // Generate the function for each actor thread.
+        for (Actor actor : (List<Actor>) actorList) {
+            StringBuffer functionCode = new StringBuffer();
 
-                if (width != 0) {
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
-                        // Declare the buffer header struct.
-                        List args = new LinkedList();
-                        args.add(""); // buffer header name
-                        args.add(""); // director header name
-                        args.add(""); // capacity
-                        args.add(""); // index
+            code.append(_eol + "void* " + _getActorThreadLabel(actor)
+                    + "(void* arg) {" + _eol);
 
-                        // FIXME: Do some filtering, only generate needed buffer.
-                        for (int i = 0; i < width; i++) {
-                                args.set(0, generatePortHeader(port, i));
-                                args.set(1, generateDirectorHeader());
-                                args.set(2, getBufferSize(port, i));
-                                args.set(3, _buffers.size());
-
-                                code.append(_codeStream.getCodeBlock("declareBufferHeader",
-                                                args));
-
-                                // Record all the buffer instantiated.
-                                _buffers.add(generatePortHeader(port, i));
-                        }
-                }
-                return code.toString();
-        }
-
-        public static String generatePortHeader(IOPort port, int i) {
-                return CodeGeneratorHelper.generateName(port) + "_" + i + "_pnHeader";
-        }
-
-        /**
-         * Generate the notTerminate flag variable for the associated PN director.
-         * Generating notTerminate instead of terminate saves the negation in
-         * checking the flag (e.g. "while (!terminate) ...").
-         *
-         * @return The varaible label of the notTerminate flag.
-         */
-        protected String _generateNotTerminateFlag() {
-                return "true";// "director_controlBlock.controlBlock";
-        }
-
-        public String generateDirectorHeader() {
-                return CodeGeneratorHelper.generateName(_director) + "_controlBlock";
-        }
-
-        /**
-         * @param code
-         *            The given code buffer.
-         * @exception IllegalActionException
-         */
-        private void _generateThreadFunctionCode(StringBuffer code)
-                        throws IllegalActionException {
-
-                List actorList = ((CompositeActor) _director.getContainer())
-                                .deepEntityList();
-
-                // Generate the function for each actor thread.
-                for (Actor actor : (List<Actor>) actorList) {
-                        StringBuffer functionCode = new StringBuffer();
-
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-                        code.append(_eol + "void* " + _getActorThreadLabel(actor)
-                                        + "(void* arg) {" + _eol);
-
-                        // Generate debug code for printing the thread ID and actor name.
+            // Generate debug code for printing the thread ID and actor name.
             List args = new LinkedList();
             args.add(_generateActorNameFileForDebugging());
             args.add(actor.getDisplayName());
             code.append(_codeStream.getCodeBlock("printThreadName", args));
 
-                        // mainLoop
+            // mainLoop
 
-                        // Check if the actor is an opague CompositeActor.
-                        // The actor is guaranteed to be opague from calling
-                        // deepEntityList(),
-                        // so all we need to check whether or not it is a CompositeActor.
-                        if (actor instanceof CompositeActor) {
-                                Director directorHelper = (Director) _getHelper(actor
-                                                .getDirector());
+            // Check if the actor is an opague CompositeActor.
+            // The actor is guaranteed to be opague from calling
+            // deepEntityList(),
+            // so all we need to check whether or not it is a CompositeActor.
+            if (actor instanceof CompositeActor) {
+                Director directorHelper = (Director) _getHelper(actor
+                        .getDirector());
 
-                                // If so, it should contain a different Director.
-                                assert (directorHelper != this);
+                // If so, it should contain a different Director.
+                assert (directorHelper != this);
 
-                                functionCode.append(directorHelper.generateMainLoop());
+                functionCode.append(directorHelper.generateMainLoop());
 
-                                functionCode.append("$incrementReadBlockingThreads(&"
-                                                + generateDirectorHeader() + ");" + _eol);
-                        } else {
+                functionCode.append("$incrementReadBlockingThreads(&"
+                        + generateDirectorHeader() + ");" + _eol);
+            } else {
 
-                                String pnPostfireCode = "";
+                String pnPostfireCode = "";
 
-                                String loopCode = "while (true) {" + _eol;
+                String loopCode = "while (true) {" + _eol;
 
-                                // Generate a for loop if there is a firing count limit.
-                                if (actor instanceof LimitedFiringSource) {
-                                        int firingCount = ((IntToken) ((LimitedFiringSource) actor)
-                                                .firingCountLimit.getToken()).intValue();
+                // Generate a for loop if there is a firing count limit.
+                if (actor instanceof LimitedFiringSource) {
+                    int firingCount = ((IntToken) ((LimitedFiringSource) actor)
+                            .firingCountLimit.getToken()).intValue();
 
-                                        if (firingCount != 0) {
-                                            loopCode = "int i = 0;" + _eol +
-                                            "for (; i < " + firingCount + "; i++) {" + _eol;
-                                        }
-                                        pnPostfireCode = _eol;
-                                }
-
-                                functionCode.append(loopCode);
-
-                                functionCode.append(helper.generateFireCode());
-
-                                // FIXME: Doesn't look like the following comment is correct.
-                                // If not inline, generateFireCode() would be a call
-                                // to the fire function which already includes the
-                                // type conversion code.
-//                                if (inline) {
-//                functionCode.append(helper.generateTypeConvertFireCode());
-//                                }
-
-                                functionCode.append(helper.generatePostfireCode());
-
-                                boolean forComposite = actor instanceof CompositeActor;
-
-                                // Increment port offset.
-                                for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
-                                        // Determine the amount to increment.
-                                        int rate = 0;
-                                        try {
-                                                rate = DFUtilities.getRate(port);
-                                        } catch (NullPointerException ex) {
-                                                // int i = 0;
-                                        }
-                                        PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
-                                        CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
-
-                                        if (portCGHelper.checkRemote(forComposite, port)) {
-                                                pnPostfireCode += portHelper
-                                                                .updateConnectedPortsOffset(rate, _director);
-                                        }
-                                        if (port.isInput()) {
-                                                pnPostfireCode += portHelper.updateOffset(rate,
-                                                                _director);
-                                        }
-                                }
-
-                                // Code for incrementing buffer offsets.
-                                functionCode.append(pnPostfireCode);
-
-                                functionCode.append("}" + _eol);
-                                functionCode.append("$incrementReadBlockingThreads(&"
-                                                + generateDirectorHeader() + ");" + _eol);
-                        }
-
-                        // wrapup
-                        functionCode.append(helper.generateWrapupCode());
-
-                        functionCode.append("return NULL;" + _eol);
-                        functionCode.append("}" + _eol);
-
-                        // init
-                        // This needs to be called last because all references
-                        // need to be collected before generating their initialization.
-                        String initializeCode = helper.generateInitializeCode();
-                        String variableInitializeCode = helper
-                                        .generateVariableInitialization();
-                        code.append(variableInitializeCode);
-                        code.append(initializeCode);
-
-                        code.append(functionCode);
+                    if (firingCount != 0) {
+                        loopCode = "int i = 0;" + _eol +
+                        "for (; i < " + firingCount + "; i++) {" + _eol;
+                    }
+                    pnPostfireCode = _eol;
                 }
+
+                functionCode.append(loopCode);
+
+                functionCode.append(helper.generateFireCode());
+
+                // FIXME: Doesn't look like the following comment is correct.
+                // If not inline, generateFireCode() would be a call
+                // to the fire function which already includes the
+                // type conversion code.
+                //                                if (inline) {
+                //                functionCode.append(helper.generateTypeConvertFireCode());
+                //                                }
+
+                functionCode.append(helper.generatePostfireCode());
+
+                boolean forComposite = actor instanceof CompositeActor;
+
+                // Increment port offset.
+                for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
+                    // Determine the amount to increment.
+                    int rate = 0;
+                    try {
+                        rate = DFUtilities.getRate(port);
+                    } catch (NullPointerException ex) {
+                        // int i = 0;
+                    }
+                    PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
+                    CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
+
+                    if (portCGHelper.checkRemote(forComposite, port)) {
+                        pnPostfireCode += portHelper
+                        .updateConnectedPortsOffset(rate, _director);
+                    }
+                    if (port.isInput()) {
+                        pnPostfireCode += portHelper.updateOffset(rate,
+                                _director);
+                    }
+                }
+
+                // Code for incrementing buffer offsets.
+                functionCode.append(pnPostfireCode);
+
+                functionCode.append("}" + _eol);
+                functionCode.append("$incrementReadBlockingThreads(&"
+                        + generateDirectorHeader() + ");" + _eol);
+            }
+
+            // wrapup
+            functionCode.append(helper.generateWrapupCode());
+
+            functionCode.append("return NULL;" + _eol);
+            functionCode.append("}" + _eol);
+
+            // init
+            // This needs to be called last because all references
+            // need to be collected before generating their initialization.
+            String initializeCode = helper.generateInitializeCode();
+            String variableInitializeCode = helper
+            .generateVariableInitialization();
+            code.append(variableInitializeCode);
+            code.append(initializeCode);
+
+            code.append(functionCode);
         }
+    }
 
     private String _generateActorNameFileForDebugging() {
         return CodeGeneratorHelper.generateName((NamedObj) _director) +
         "_nameMapFile";
     }
 
-        /**
-         * Generate the thread function name for a given actor.
-         *
-         * @param actor
-         *            The given actor.
-         * @return A unique label for the actor thread function.
-         */
-        private String _getActorThreadLabel(Actor actor) {
-                return CodeGeneratorHelper.generateName((NamedObj) actor)
-                                + "_ThreadFunction";
-        }
+    /**
+     * Generate the thread function name for a given actor.
+     *
+     * @param actor
+     *            The given actor.
+     * @return A unique label for the actor thread function.
+     */
+    private String _getActorThreadLabel(Actor actor) {
+        return CodeGeneratorHelper.generateName((NamedObj) actor)
+        + "_ThreadFunction";
+    }
 
-        private HashSet<String> _buffers = new HashSet<String>();
+    private HashSet<String> _buffers = new HashSet<String>();
 
 }
