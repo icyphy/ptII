@@ -452,7 +452,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
      *  director returns false in its prefire().
      */
     private void _fire() throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
         // FIXME: Look into JOGL to see if there is support
         // for setting the frame display rate.
@@ -474,88 +473,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
         _lastIterationTime = currentTime;
 
-        if (container == null) {
-            throw new InvalidStateException(this, getName()
-                    + " fired, but it has no container!");
-        }
-
-        Scheduler scheduler = getScheduler();
-
-        if (scheduler == null) {
-            throw new IllegalActionException(this, "Attempted to fire "
-                    + "GR system with no scheduler");
-        }
-
-        Schedule schedule = scheduler.getSchedule();
-
-        Iterator actors = schedule.actorIterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-
-            if (_disabledActors.contains(actor)) {
-                continue;
-            }
-            
-            // only fire the view screen actors if 
-            if (actor instanceof ViewScreenInterface) {
-                if (_iteration < _startIteration || _iteration > _stopIteration) {
-                    continue;
-                }
-            }
-
-            // If an actor returns true to prefire(), fire() and postfire()
-            // will be called.
-            if (_debugging) {
-                _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_PREFIRE,
-                        1));
-            }
-
-            if (actor instanceof CompositeActor) {
-                CompositeActor compositeActor = (CompositeActor) actor;
-                Director insideDirector = compositeActor.getDirector();
-                // FIXME: This is bogus.  This is assuming there is no
-                // more than one inside director, and is delegating the
-                // incrementing of time to that inside director.
-                _insideDirector = insideDirector;
-                _pseudoTimeEnabled = true;
-            }
-
-            boolean flag = actor.prefire();
-
-            if (_debugging) {
-                _debug(new FiringEvent(this, actor, FiringEvent.AFTER_PREFIRE,
-                        1));
-            }
-
-            if (flag) {
-                if (_debugging) {
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_FIRE, 1));
-                }
-
-                actor.fire();
-
-                if (_debugging) {
-                    _debug(new FiringEvent(this, actor, FiringEvent.AFTER_FIRE,
-                            1));
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_POSTFIRE, 1));
-                }
-
-                if (!actor.postfire()) {
-                    _disabledActors.add(actor);
-                }
-
-                if (_debugging) {
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.AFTER_POSTFIRE, 1));
-                }
-            }
-
-            // Make sure we reset the pseudotime flag.
-            _pseudoTimeEnabled = false;
-        }
     }
 
     /** Most of the constructor initialization is relegated to this method.
@@ -567,6 +484,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
      */
     private void _init() {
         try {
+            //Scheduler scheduler = new Scheduler(workspace());
             Scheduler scheduler = new Scheduler(workspace());
             setScheduler(scheduler);
         } catch (Exception ex) {
@@ -620,7 +538,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
 
     public void display(GLAutoDrawable gLDrawable) {
-    
         try {
             _gl = gLDrawable.getGL();
             _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
@@ -628,15 +545,15 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             _gl.glLoadIdentity();
             _gl.glTranslatef(0.0f, 0.0f, -5.0f);
             
+            _gl.glPushMatrix();
 
             fire();
+            
+            _gl.glPopMatrix();
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
-       
-       
-        
     }
 
     public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
