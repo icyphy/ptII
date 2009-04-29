@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Expression.
+/* A helper class for ptolemy.actor.lib.CurrentTime.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -35,18 +35,18 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Expression
+//// CurrentTime
 
 /**
- A helper class for ptolemy.actor.lib.Expression.
+ A helper class for ptolemy.actor.lib.CurrentTime.
 
- @author Man-Kit Leung
+ @author Charles Shelton
  @version $Id: Expression.java 53046 2009-04-10 23:04:25Z cxh $
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Expression extends AtomicActor {
+public class CurrentTime extends AtomicActor {
 
     /**
      * Construct a Expression helper for the flatUnitSystem lattice.
@@ -54,27 +54,29 @@ public class Expression extends AtomicActor {
      * @param actor The given Expression actor
      * @exception IllegalActionException
      */
-    public Expression(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Expression actor)
+    public CurrentTime(PropertyConstraintSolver solver,
+            ptolemy.actor.lib.CurrentTime actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
+        
+        _actor = actor;
     }
 
-    public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Expression actor = 
-            (ptolemy.actor.lib.Expression) getComponent();
-        
-        setAtLeast(actor.output, actor.expression);
+    
+    public List<Inequality> constraintList() throws IllegalActionException {       
+        setAtLeast(_actor.output, _lattice.getElement("TIME"));
         return super.constraintList();
     }
 
+    
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
-
-        ptolemy.actor.lib.Expression actor = 
-            (ptolemy.actor.lib.Expression) getComponent();
-        result.add(actor.expression);
+        result.remove(_actor.trigger);
+        
         return result;
     }
+    
+    
+    private ptolemy.actor.lib.CurrentTime _actor;
 }

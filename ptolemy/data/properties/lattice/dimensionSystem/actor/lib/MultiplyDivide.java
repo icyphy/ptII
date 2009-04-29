@@ -32,8 +32,8 @@ import java.util.List;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class MultiplyDivide extends PropertyConstraintHelper {
+public class MultiplyDivide extends AtomicActor {
 
     /**
      * Construct a MultiplyDivide helper for the flatUnitSystem lattice.

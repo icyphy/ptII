@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Expression.
+/* A helper class for ptolemy.actor.lib.Const.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -30,51 +30,58 @@ package ptolemy.data.properties.lattice.dimensionSystem.actor.lib;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Expression
+//// Const
 
 /**
- A helper class for ptolemy.actor.lib.Expression.
+ A helper class for ptolemy.actor.lib.Const.
 
- @author Man-Kit Leung
- @version $Id: Expression.java 53046 2009-04-10 23:04:25Z cxh $
- @since Ptolemy II 7.2
+ @author Charles Shelton
+ @version $Id: Const.java 53211 2009-04-24 02:59:19Z mankit $
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Expression extends AtomicActor {
+public class Const extends Source {
 
     /**
-     * Construct a Expression helper for the flatUnitSystem lattice.
+     * Construct a Const helper for the dimensionSystem lattice.
      * @param solver The given solver.
-     * @param actor The given Expression actor
+     * @param actor The given Const actor
      * @exception IllegalActionException
      */
-    public Expression(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Expression actor)
+    public Const(PropertyConstraintSolver solver,
+            ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
 
-        super(solver, actor, false);
+        super(solver, actor);
+        _actor = actor;
     }
 
-    public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Expression actor = 
-            (ptolemy.actor.lib.Expression) getComponent();
-        
-        setAtLeast(actor.output, actor.expression);
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    public List<Inequality> constraintList()
+            throws IllegalActionException {
+        setAtLeast(_actor.output, _actor.value);
         return super.constraintList();
     }
 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    private ptolemy.actor.lib.Const _actor;
+
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
-
-        ptolemy.actor.lib.Expression actor = 
-            (ptolemy.actor.lib.Expression) getComponent();
-        result.add(actor.expression);
+        result.add(_actor.value);
+        result.remove(_actor.trigger);
         return result;
     }
+
 }
