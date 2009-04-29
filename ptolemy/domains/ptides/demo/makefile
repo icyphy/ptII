@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 	PtidesBasicOnePlatform/PtidesBasicOnePlatform.jar \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
 	PtidesSimulator/PtidesSimulator.jar \
+	TDLModuleInPtides/TDLModuleInPtides.jar \
 	ThreePlatforms/ThreePlatforms.jar \
 	TriggeredSensors/TriggeredSensors.jar \
 	TwoPlatforms/TwoPlatforms.jar
