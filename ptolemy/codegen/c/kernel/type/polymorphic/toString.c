@@ -171,8 +171,45 @@ char* toString_Int(int i) {
 /**/
 
 /*** toString_IntArray() ***/
-char* toString_IntArray(Token a) {
-	return $IntArray_toString(a);
+char* toString_IntArray(Token thisToken) {
+	int i;
+    int currentSize, allocatedSize;
+    char* string;
+    char elementString[12];
+    allocatedSize = 256;
+    string = (char*) malloc(allocatedSize);
+    string[0] = '{';
+    string[1] = '\0';
+
+    // Space for '{', '}', and '\0' characters.
+    currentSize = 3;
+
+    //printf("%d\n", thisToken.payload.IntArray->size);
+    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+		// Calculate the require storage size.
+
+    	// int temp = IntArray_get(thisToken, i);
+        sprintf(elementString, "%d", IntArray_get(thisToken, i));
+        currentSize += strlen(elementString);
+		if (i != 0) {
+			currentSize += 2;
+		}
+
+		// Re-allocate storage.
+		if (currentSize > allocatedSize) {
+            allocatedSize *= 2;
+            string = (char*) realloc(string, allocatedSize);
+        }
+
+		// Concat the element strings and separators.
+		if (i != 0) {
+            strcat(string, ", ");
+        }
+        strcat(string, elementString);
+    }
+
+    strcat(string, "}");
+    return string;
 }
 /**/
 
