@@ -73,7 +73,9 @@ public class JarSigner {
     public JarSigner(String alias, PrivateKey privateKey, X509Certificate[] certChain) {
         _alias = alias;
         _privateKey = privateKey;
-        _certChain = certChain;
+        // Findbugs: EI2 May expose internal representation by incorporating
+        // reference to immutable object
+        System.arraycopy(certChain, 0, _certChain, 0,  certChain.length);
     }
 
     /** JarSigner test driver.
@@ -144,15 +146,13 @@ public class JarSigner {
                         + "\" from keystore \"" + keystoreFileName + "\"");
             }
             X509Certificate certChain[] = new X509Certificate[0];
-            if (chain != null) {
-                certChain = new X509Certificate[chain.length];
+            certChain = new X509Certificate[chain.length];
 
-                CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                for (int count = 0; count < chain.length; count++) {
-                    ByteArrayInputStream certIn = new ByteArrayInputStream(chain[0].getEncoded());
-                    X509Certificate cert = (X509Certificate) cf.generateCertificate(certIn);
-                    certChain[count] = cert;
-                }
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            for (int count = 0; count < chain.length; count++) {
+                ByteArrayInputStream certIn = new ByteArrayInputStream(chain[0].getEncoded());
+                X509Certificate cert = (X509Certificate) cf.generateCertificate(certIn);
+                certChain[count] = cert;
             }
 
             Key key = keyStore.getKey(alias, keyPassword);
@@ -222,8 +222,12 @@ public class JarSigner {
     /** Create a signature file object out of the manifest and the
      * message digest.
      */
-    private SignatureFile _createSignatureFile(Manifest manifest, MessageDigest messageDigest)
+    private /*static*/ SignatureFile _createSignatureFile(Manifest manifest, MessageDigest messageDigest)
             throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+
+        // Findbugs: SIC: Should be a static inner class.  However,
+        // this method references this._alias and returns a new object.
+
         // construct the signature file and the signature block for
         // this manifest
         ManifestDigester manifestDigester = new ManifestDigester(_serialiseManifest(manifest));
@@ -297,7 +301,7 @@ public class JarSigner {
     /** A small helper function that will convert a manifest into an
      * array of bytes.
      */
-    private byte[] _serialiseManifest(Manifest manifest)
+    private static byte[] _serialiseManifest(Manifest manifest)
             throws IOException {
         ByteArrayOutputStream baos = null;
         try {
