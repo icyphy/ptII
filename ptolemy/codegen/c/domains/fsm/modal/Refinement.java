@@ -27,7 +27,13 @@
  */
 package ptolemy.codegen.c.domains.fsm.modal;
 
+import java.util.List;
+
+import ptolemy.actor.Actor;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// Refinement
@@ -49,4 +55,5 @@ public class Refinement extends TypedCompositeActor {
     public Refinement(ptolemy.domains.fsm.modal.Refinement component) {
         super(component);
     }
+   
 }
