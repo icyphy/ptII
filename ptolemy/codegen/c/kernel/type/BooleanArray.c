@@ -198,7 +198,7 @@ Token BooleanArray_print(Token thisToken, ...) {
 // BooleanArray_toString: Return a string token with a string representation
 // of the specified array.
 Token BooleanArray_toString(Token thisToken, ...) {
-	return $new(String($toString_BooleanArray(thisToken));
+	return $new(String($toString_BooleanArray(thisToken)));
 }
 /**/
 

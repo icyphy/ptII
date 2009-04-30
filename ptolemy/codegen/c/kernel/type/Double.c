@@ -61,7 +61,7 @@ Token Double_print(Token thisToken, ...) {
 
 /***Double_toString***/
 Token Double_toString(Token thisToken, ...) {
-    return $new(String(DoubletoString(thisToken.payload.Double)));
+    return $new(String($toString_Double(thisToken.payload.Double)));
 }
 /**/
 

@@ -55,7 +55,7 @@ Token Int_print(Token thisToken, ...) {
 
 /***Int_toString***/
 Token Int_toString(Token thisToken, ...) {
-    return $new(String(InttoString(thisToken.payload.Int)));
+    return $new(String($toString_Int(thisToken.payload.Int)));
 }
 /**/
 

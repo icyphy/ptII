@@ -194,7 +194,7 @@ Token Array_print(Token thisToken, ...) {
 	// Array_toString: Return a string token with a string representation
 	// of the specified array.
 	Token Array_toString(Token thisToken, ...) {
-		return $new(String($toString_Array(thisToken));
+		return $new(String($toString_Array(thisToken)));
 		// String_new() calls strdup(), so we free here
 		// FIXME: If we free here, then the SequenceArrayToString.xml test crashes?
 		//free(string);

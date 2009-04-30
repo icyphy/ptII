@@ -41,7 +41,7 @@ Token Long_print(Token thisToken, ...) {
 
 /***Long_toString***/
 Token Long_toString(Token thisToken, ...) {
-    return $new(String(LongtoString(thisToken.payload.Long)));
+    return $new(String($toString_Long(thisToken.payload.Long)));
 }
 /**/
 

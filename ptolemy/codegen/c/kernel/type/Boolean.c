@@ -68,7 +68,7 @@ Token Boolean_print(Token thisToken, ...) {
 
 /***Boolean_toString***/
 Token Boolean_toString(Token thisToken, ...) {
-    return $new(String(BooleantoString(thisToken.payload.Boolean)));
+    return $new(String($toString_Boolean(thisToken.payload.Boolean)));
 }
 /**/
 
