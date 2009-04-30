@@ -528,7 +528,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                        }
                        code.append(_eol+actorTransferCode+_eol);
                        code.append("//display name: "+actor.getDisplayName()+_eol);
-                       code.append(_getActorName(actor)+"_EmbeddedActor()"+_eol);
+                       code.append(_getActorName(actor)+"_EmbeddedActor();"+_eol);
                        code.append("//jni actor"+_eol);
                        code.append("//transfer outputs out"+_eol);
                 
