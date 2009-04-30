@@ -16,7 +16,9 @@ char* toString_Array(Token thisToken) {
     for (i = 0; i < thisToken.payload.Array->size; i++) {
 
             // Calculate the require storage size.
-            elementString = functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
+            elementString = $tokenFunc(Array_get(thisToken, i)::toString());
+            	//functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
+
             currentSize += strlen(elementString.payload.String);
             if (i != 0) {
                     currentSize += 2;

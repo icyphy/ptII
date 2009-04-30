@@ -398,7 +398,7 @@ Token DoubleArray_one(Token thisToken, ...) {
 
     result = $new(DoubleArray(thisToken.payload.DoubleArray->size, 0));
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-        DoubleArray_set(result, i, $one_Double());
+        DoubleArray_set(result, i, 1.0);
     }
     return result;
 }
