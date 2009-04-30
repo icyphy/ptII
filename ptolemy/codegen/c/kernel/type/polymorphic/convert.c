@@ -3,7 +3,7 @@
 /**/
 
 /*** convert_Boolean_Array() ***/
-inline Token convert_Boolean_Array(boolean a) {
+Token convert_Boolean_Array(boolean a) {
   return $new(Array(1, 1, $new(Boolean(a)), TYPE_Boolean));
 }
 /**/
@@ -13,23 +13,14 @@ inline Token convert_Boolean_Array(boolean a) {
 /**/
 
 /*** convert_Boolean_Int() ***/
-inline int convert_Boolean_Int(boolean a) {
+int convert_Boolean_Int(boolean a) {
     return a ? 1 : 0;
 }
 /**/
 
 /*** convert_Boolean_String() ***/
 char* convert_Boolean_String(boolean a) {
-    char *results;
-    if (a) {
-        // AVR does not have strdup
-        results = (char*) malloc(sizeof(char) * 5);
-        strcpy(results, "true");
-    } else {
-        results = (char*) malloc(sizeof(char) * 6);
-        strcpy(results, "false");
-    }
-    return results;
+	return $toString_Boolean(a);
 }
 /**/
 
@@ -74,7 +65,7 @@ Token convert_DoubleArray_StringArray(Token token) {
 /**/
 
 /*** convert_Double_Array() ***/
-inline Token convert_Double_Array(double a) {
+Token convert_Double_Array(double a) {
   return $new(Array(1, 1, $new(Double(a)), TYPE_Double));
 }
 /**/
@@ -86,34 +77,20 @@ double convert_Double_Double(double a) {
 /**/
 
 /*** convert_Double_DoubleArray() ***/
-inline Token convert_Double_DoubleArray(double a) {
+Token convert_Double_DoubleArray(double a) {
   return $new(DoubleArray(1, 1, a));
 }
 /**/
 
 /*** convert_Double_Int() ***/
-inline int convert_Double_Int(double a) {
+int convert_Double_Int(double a) {
     return (int) a;
 }
 /**/
 
 /*** convert_Double_String() ***/
 char* convert_Double_String(double a) {
-    int index;
-    char* string = (char*) malloc(sizeof(char) * 20);
-    sprintf(string, "%.14g", a);
-
-    // Make sure that there is a decimal point.
-    if (strrchr(string, '.') == NULL) {
-        index = strlen(string);
-        if (index == 20) {
-            string = (char*) realloc(string, sizeof(char) * 22);
-        }
-        string[index] = '.';
-        string[index + 1] = '0';
-        string[index + 2] = '\0';
-    }
-    return string;
+	return $toString_Double(a);
 }
 /**/
 
@@ -126,7 +103,7 @@ Token convert_Double_StringArray(double d) {
 /**/
 
 /*** convert_Double_Token() ***/
-inline Token convert_Double_Token(double a) {
+Token convert_Double_Token(double a) {
     return $new(Double(a));
 }
 /**/
@@ -182,19 +159,21 @@ Token convert_Int_Array(int a) {
 /**/
 
 /*** convert_Int_Boolean() ***/
-inline boolean convert_Int_Boolean(int a) {
+boolean convert_Int_Boolean(int a) {
     return (a != 0) ? true : false;
 }
 /**/
 
 /*** convert_Int_Double() ***/
-inline double convert_Int_Double(int a) {
+double convert_Int_Double(int a) {
     return (double) a;
 }
 /**/
 
 /*** convert_Int_Int() ***/
-#define convert_Int_Int(a) a
+int convert_Int_Int(int a) {
+    return a;
+}
 /**/
 
 /*** convert_Int_Long() ***/
@@ -205,11 +184,7 @@ long long convert_Int_Long(int a) {
 
 /*** convert_Int_String() ***/
 char* convert_Int_String(int a) {
-        // FIXME: should the string representation include the double quotes ""?
-
-    char* string = (char*) malloc(sizeof(char) * 12);
-    sprintf((char*) string, "%d", a);
-    return string;
+	return $toString_Int(a);
 }
 /**/
 
@@ -237,14 +212,20 @@ Token convert_Long_Array(long long a) {
 #define convert_Long_Long(a) a
 /**/
 
+/*** convert_Long_String() ***/
+char* convert_Long_String(int a) {
+	return $toString_Long(a);
+}
+/**/
+
 /*** convert_Long_Token() ***/
-inline Token convert_Long_Token(long long a) {
+Token convert_Long_Token(long long a) {
     return $new(Long(a));
 }
 /**/
 
 /*** convert_Matrix_Matrix() ***/
-inline Token convert_Matrix_Matrix(Token a1) {
+Token convert_Matrix_Matrix(Token a1) {
     return a1;
 }
 /**/
@@ -254,7 +235,7 @@ inline Token convert_Matrix_Matrix(Token a1) {
 /**/
 
 /*** convert_String_Array() ***/
-inline Token convert_String_Array(char* a) {
+Token convert_String_Array(char* a) {
   return $new(Array(1, 1, $new(String(a)), TYPE_String));
 }
 /**/
@@ -273,6 +254,10 @@ char* convert_String_Boolean(char* a) {
 #define convert_String_Int atoi
 /**/
 
+/*** convert_String_Long() ***/
+#define convert_String_Int atol
+/**/
+
 /*** convert_String_String() ***/
 #define convert_String_String(a) a
 /**/
@@ -289,3 +274,8 @@ Token convert_String_StringArray(char* s) {
 #define convert_Token_Token(a) a
 /**/
 
+/*** convert_UnsignedByte_String() ***/
+char* convert_UnsignedByte_String(unsigned char a) {
+	return $toString_UnsignedByte(a);
+}
+/**/

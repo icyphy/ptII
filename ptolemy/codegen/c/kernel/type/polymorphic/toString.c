@@ -42,8 +42,17 @@ char* toString_Array(Token thisToken) {
 /**/
 
 /*** toString_Boolean() ***/
-char* toString_Boolean(boolean a) {
-	return BooleantoString(a);
+char* toString_Boolean(boolean b) {
+    char *results;
+    if (b) {
+        // AVR does not have strdup
+        results = (char*) malloc(sizeof(char) * 5);
+        strcpy(results, "true");
+    } else {
+        results = (char*) malloc(sizeof(char) * 6);
+        strcpy(results, "false");
+    }
+    return results;
 }
 /**/
 
@@ -91,8 +100,22 @@ char* toString_BooleanArray(Token thisToken) {
 /**/
 
 /*** toString_Double() ***/
-char* toString_Double(double a) {
-	return DoubletoString(a);
+char* toString_Double(double d) {
+    int index;
+    char* string = (char*) malloc(sizeof(char) * 20);
+    sprintf(string, "%.14g", d);
+
+        // Make sure that there is a decimal point.
+    if (strrchr(string, '.') == NULL) {
+        index = strlen(string);
+        if (index == 20) {
+            string = (char*) realloc(string, sizeof(char) * 22);
+        }
+        string[index] = '.';
+        string[index + 1] = '0';
+        string[index + 2] = '\0';
+    }
+    return string;
 }
 /**/
 
@@ -140,8 +163,10 @@ char* toString_DoubleArray(Token thisToken) {
 /**/
 
 /*** toString_Int() ***/
-char* toString_Int(int a) {
-	return InttoString(a);
+char* toString_Int(int i) {
+    char* string = (char*) malloc(sizeof(char) * 12);
+    sprintf((char*) string, "%d", i);
+    return string;
 }
 /**/
 
@@ -152,8 +177,10 @@ char* toString_IntArray(Token a) {
 /**/
 
 /*** toString_Long() ***/
-char* toString_Long(long long a) {
-	return LongtoString(a);
+char* toString_Long(long long l) {
+    char* string = (char*) malloc(sizeof(char) * 22);
+    sprintf(string, "%lld", l);
+    return string;
 }
 /**/
 
@@ -219,6 +246,14 @@ char* toString_StringArray(Token thisToken) {
 /*** toString_Token() ***/
 char* toString_Token(Token a) {
 	return $tokenFunc(a::toString()).payload.String;
+}
+/**/
+
+/*** toString_UnsignedByte() ***/
+char* toString_Token(unsigned char b) {
+    char* string = (char*) malloc(sizeof(char) * 3);
+    sprintf(string, "%d", (int) b);
+    return string;
 }
 /**/
 
