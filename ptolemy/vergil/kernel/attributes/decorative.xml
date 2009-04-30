@@ -13,9 +13,30 @@
 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
 <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute"/>
 <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute"/>
-<property name="Polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute"/>
+<property name="Polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+      <!-- Set centered to true so that when we resize, the rectangle
+        does not jump up and to the left.
+        RectangleAttribute had a similar
+        problem. Interestingly, EllipseAttribute already had
+        centered set to true.  For more information, see
+	Rather than setting centered to true in the constructor, we
+	set it here so that new models will have the proper behavior.
+        http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3988 -->
+    <property name="centered" class="ptolemy.data.expr.Parameter" value="true"/>
+</property>
 <property name="NameIcon" class="ptolemy.vergil.icon.NameIcon"/>
-<property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute"/>
+<property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+      <!-- Set centered to true so that when we resize, the rectangle
+        does not jump up and to the left.
+        ResizablePolygonAttribute had a similar
+        problem. Interestingly, EllipseAttribute already had
+        centered set to true.  
+	Rather than setting centered to true in the constructor, we
+	set it here so that new models will have the proper behavior.
+	For more information, see
+        http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3988 -->
+    <property name="centered" class="ptolemy.data.expr.Parameter" value="true"/>
+</property>
       </group>
     ?>
   </configure>
