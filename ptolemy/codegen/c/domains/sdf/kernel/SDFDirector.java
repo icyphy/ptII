@@ -31,8 +31,10 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.CompiledCompositeActor;
 import ptolemy.actor.lib.jni.PointerToken;
@@ -155,6 +157,12 @@ public class SDFDirector extends StaticSchedulingDirector {
         _intFlag = false;
         _doubleFlag = false;
         _booleanFlag = false;
+        
+        //if not inline do this
+        if(!_isTopDirector())
+            code.append(generateFireFunctionCode());
+            
+        
 
         return code.toString();
     }
@@ -956,6 +964,19 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
+    
+    private boolean _isTopDirector() {
+        Director director = ((TypedCompositeActor)
+             _director.getContainer()).getExecutiveDirector();
+ 
+        if (director == null) { // true for the top most director
+            
+         return true;  
+        }
+                      
+    return false;
+ }  
+   
 
     /** Pad the buffer for the channel of the given port with the given
      *  channel number to a power of two.  Return the new buffer size.
