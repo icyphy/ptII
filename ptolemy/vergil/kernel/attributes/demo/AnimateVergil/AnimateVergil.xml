@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AnimateVergil" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
@@ -44,13 +44,13 @@
         </property>
     </property>
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 5.0]">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="483.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="532.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="47.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="56.0">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
         </property>
@@ -60,7 +60,9 @@
         </property>
     </property>
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 10.0">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 5.0]">
         </property>
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -86,7 +88,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 70.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 80.0]">
         </property>
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -208,6 +210,8 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="center" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates decorative attributes that are available in the utilities&#10;library, including, for example, this annotation and the enclosing rectangle.">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="20">
@@ -216,7 +220,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 35.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
