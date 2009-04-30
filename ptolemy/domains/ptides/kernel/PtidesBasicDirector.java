@@ -1,6 +1,5 @@
-/* Basic Ptides director that uses DE and delivers correct
- * but not necessarily optimal execution.
- *
+/* Basic Ptides director that uses DE and delivers correct but not necessarily optimal execution.
+
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
@@ -835,7 +834,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException
-     *  @see #_setTimedInterrupt()
+     *  @see #_setTimedInterrupt(Time)
      */
     protected boolean _safeToProcess(DEEvent event) {
         IOPort port = event.ioPort();

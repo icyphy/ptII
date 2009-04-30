@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  tokenValue. 
 *   
 *  @author jiazou, matic
-*  @version 
+*  @version $Id$
 *  @since Ptolemy II 7.1
 */
 public class NetworkInputDevice extends InputDevice {

@@ -67,7 +67,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
     /**
      * Construct the code generator helper associated with the given
      * PtidesDirector.
-     * @param PtidesEmbeddedDirector The associated
+     * @param ptidesEmbeddedDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector
      */
     public PtidesEmbeddedDirector(ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector ptidesEmbeddedDirector) {

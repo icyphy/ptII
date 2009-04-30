@@ -224,7 +224,7 @@ public class PNDirector extends Director {
     /**
      * Return the generated free slots label for the specified port channel. 
      * @param port The specified port.
-     * @param channel The specified channel number.
+     * @param channelNumber The specified channel number.
      * @return The generated free slots label for the specified port channel.
      */
     public static String generateFreeSlots(IOPort port, int channelNumber) {
@@ -584,7 +584,7 @@ public class PNDirector extends Director {
      * return the value of the "_localBufferSize" parameter of the 
      * director.
      * @param port The specified port.
-     * @param channel The specified channel number.
+     * @param channelNumber The specified channel number.
      * @exception IllegalActionException If an error occurs
      *  when getting the value from the parameter.
      */
