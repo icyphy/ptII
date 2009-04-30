@@ -28,6 +28,7 @@
 package ptolemy.codegen.c.kernel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -566,6 +567,8 @@ ParseTreeCodeGenerator {
                     ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(),
                     _childCode);
         }
+        
+        _childCode = result + ")";
     }
 
     /** Define a function, where the children specify the argument types
@@ -1758,10 +1761,12 @@ ParseTreeCodeGenerator {
     private int _depth = 0;
 
     private static Map cFunctionMap = new HashMap();
+
     static {
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");
         cFunctionMap.put("sum", "$arraySum");
     }
+
 
 }
