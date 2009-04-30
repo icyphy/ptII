@@ -152,14 +152,18 @@ public abstract class ActorController extends AttributeController {
             _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
         }
 
-        if (_configuration != null) {
-            // NOTE: The following requires that the configuration be
-            // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _openInstanceAction));
 
+        // NOTE: The following requires that the configuration be
+        // non-null, or it will report an error.  However, in order to
+        // get the "Look Inside" menu to work for composite actors in
+        // Kepler, we create these menu items now.
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                        _lookInsideAction));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                        _openInstanceAction));
+
+
+        if (_configuration != null) {
             if (access == FULL) {
                 // Create an Appearance submenu.
                 _createAppearanceSubmenu();
@@ -246,13 +250,6 @@ public abstract class ActorController extends AttributeController {
         }
 
         if (_configuration != null) {
-            // NOTE: The following requires that the configuration be
-            // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _openInstanceAction));
-
             if (_access == FULL) {
                 // Create an Appearance submenu.
                 _createAppearanceSubmenu();
@@ -777,7 +774,7 @@ public abstract class ActorController extends AttributeController {
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Open Actor");
-
+            
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             // Avoid Control_O, which is open file.
