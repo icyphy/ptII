@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/luminary/domains/ptides
 
-DIRS =      kernel
+DIRS =      kernel lib
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../..
