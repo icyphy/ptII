@@ -1043,9 +1043,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
          
      }
 
-    
-
-      private int _portNumber = 0;
+    private int _portNumber = 0;
 
     private boolean _doubleFlag;
 
