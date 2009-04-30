@@ -52,6 +52,14 @@ public class BooleanSelect extends CCodeGeneratorHelper {
     }
 
 
+    /**
+     * Return the code generated for sending the true input data. 
+     * Iterate through the connections to the true port
+     * and append the "trueBlock" code block from the template.
+     * @return The generated code.
+     * @throws IllegalActionException Thrown if an error occurs
+     * when getting the width for the port or the code block.
+     */
     public String sendTrueInputs() throws IllegalActionException {
         ptolemy.actor.lib.BooleanSelect actor =
             (ptolemy.actor.lib.BooleanSelect) getComponent();
@@ -70,6 +78,14 @@ public class BooleanSelect extends CCodeGeneratorHelper {
         return processCode(code.toString());
     }
 
+    /**
+     * Return the code generated for sending the false input data. 
+     * Iterate through the connections to the true port
+     * and append the "falseBlock" code block from the template.
+     * @return The generated code.
+     * @throws IllegalActionException Thrown if an error occurs
+     * when getting the width for the port or the code block.
+     */
     public String sendFalseInputs() throws IllegalActionException {
         ptolemy.actor.lib.BooleanSelect actor =
             (ptolemy.actor.lib.BooleanSelect) getComponent();
@@ -87,5 +103,4 @@ public class BooleanSelect extends CCodeGeneratorHelper {
         }
         return processCode(code.toString());
     }
-
 }
