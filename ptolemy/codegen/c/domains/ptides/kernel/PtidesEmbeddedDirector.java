@@ -319,12 +319,12 @@ public class PtidesEmbeddedDirector extends Director {
 
         // The references are associated with their own helper, so we need
         // to find the associated helper.
-        String sourcePortChannel = source.port.getName() + "#"
+        String sourcePortChannel = generateSimpleName(source.port) + "#"
         + source.channelNumber + ", " + offset;
         String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
-        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
+        String sinkPortChannel = generateSimpleName(sink.port) + "#" + sink.channelNumber
         + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
@@ -416,11 +416,11 @@ public class PtidesEmbeddedDirector extends Director {
         for (Actor actor: (List<Actor>)(((CompositeActor) _director.getContainer()).deepEntityList())) {
             for (IOPort outputPort: (List<IOPort>)actor.outputPortList()){
                 for (int channel = 0; channel < outputPort.getWidth(); channel++) {
-                    code.append("static int " + actor.getName() + "_" + outputPort.getName() + "_" + channel 
+                    code.append("static int " + generateSimpleName((NamedObj) actor) + "_" + generateSimpleName(outputPort) + "_" + channel 
                             + "_Head = 0;" + _eol);
-                    code.append("static int " + actor.getName() + "_" + outputPort.getName() + "_" + channel
+                    code.append("static int " + generateSimpleName((NamedObj) actor) + "_" + generateSimpleName(outputPort) + "_" + channel
                             + "_Tail = 0;" + _eol);
-                    code.append("static int " + actor.getName() + "_" + outputPort.getName() + "_" + channel 
+                    code.append("static int " + generateSimpleName((NamedObj) actor) + "_" + generateSimpleName(outputPort) + "_" + channel 
                             + "_Size = 0;" + _eol);
                 }
             }
@@ -438,7 +438,7 @@ public class PtidesEmbeddedDirector extends Director {
         code.append("/* generate code for clearing Event Head buffer. */" + _eol);
         for (IOPort inputPort: (List<IOPort>)actor.inputPortList()) {
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
-                code.append("Event_Head_" + actor.getName() + "_" + inputPort.getName() 
+                code.append("Event_Head_" + generateSimpleName((NamedObj) actor) + "_" + generateSimpleName(inputPort) 
                         + "[" + channel + "] = NULL;" + _eol);
             }
         }
@@ -450,7 +450,7 @@ public class PtidesEmbeddedDirector extends Director {
         for (Actor actor: (List<Actor>)(((CompositeActor) _director.getContainer()).deepEntityList())) {
             for (IOPort inputPort: (List<IOPort>)actor.inputPortList()){
                 if (inputPort.getWidth() > 0) {
-                    code.append("Event* Event_Head_" + actor.getName() + "_" + inputPort.getName() 
+                    code.append("Event* Event_Head_" + generateSimpleName((NamedObj) actor) + "_" + generateSimpleName(inputPort) 
                             + "[" + inputPort.getWidth() + "] = {NULL");
                     for (int channel = 1; channel < inputPort.getWidth(); channel++) {
                         code.append(", NULL");

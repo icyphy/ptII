@@ -132,7 +132,7 @@ public class PNDirector extends Director {
         CodeGeneratorHelper actorHelper = 
             (CodeGeneratorHelper) _getHelper(port.getContainer());
         
-        String dataVariable = "$ref(" + referencePort.getName()
+        String dataVariable = "$ref(" + generateSimpleName(referencePort)
             + "#" + referenceChannel.channelNumber + ")";
         String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
         String waitTime = _getMaxDelay(referenceChannel);

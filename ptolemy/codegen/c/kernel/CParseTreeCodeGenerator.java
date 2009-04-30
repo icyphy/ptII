@@ -1,4 +1,5 @@
-/* A visitor for parse trees of the expression language.
+/* A visitor for parse trees of the expression language
+ * that generates C code.
 
  Copyright (c) 2006-2009 The Regents of the University of California
  All rights reserved.
@@ -28,7 +29,6 @@
 package ptolemy.codegen.c.kernel;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,7 +81,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
 
 
-////ParseTreeEvaluator
+////CParseTreeCodeGenerator
 
 /**
  This class evaluates a parse tree given a reference to its root node.
@@ -94,8 +94,6 @@ import ptolemy.util.StringUtilities;
  <ul>
  <li> It is a copy of ParseTreeCodeGenerator from data/expr and thus
  has lots of code for evaluating expressions, which we don't need
- <li> It is not properly converting types: We need to add logic to
- convert types.
  <li> The .tcl test has known failures involving nulls
  <li> It does not evaluate constants.
  </ul>
@@ -1742,11 +1740,6 @@ ParseTreeCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** A static list of the primitive types supported by the code generator. */
-    //private static final List _primitiveTypes = Arrays.asList(new String[] {
-    //        "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-    //        "Pointer" });
 
     /** The scope for evaluation. */
     private ParserScope _scope = null;

@@ -36,7 +36,6 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -100,7 +99,7 @@ public class FSMActor extends CCodeGeneratorHelper {
             for (int channel = 0; !input.isOutput() &&
             channel < input.getWidth(); channel++) {
 
-                code.append("$get(" + input.getName()
+                code.append("$get(" + generateSimpleName(input)
                         + ", " + channel + ")" + _eol);
             }
         }
@@ -228,7 +227,7 @@ public class FSMActor extends CCodeGeneratorHelper {
             List defaultTransitions = new LinkedList();
             while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
-                if (transition.getName().equals("default")) {
+                if (generateSimpleName(transition).equals("default")) {
                     defaultTransitions.add(transition);
                 } else {
                     reOrderedTransitions.add(transition);
@@ -322,7 +321,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 StringBuffer containerReference = new StringBuffer();
 
                                 containerReference.append("$ref("
-                                        + destination.getName());
+                                        + generateSimpleName(destination));
 
                                 if (((IOPort) destination).isMultiport()) {
                                     containerReference.append("#" + channel);
@@ -362,7 +361,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                     StringBuffer containerReference = new StringBuffer();
 
                                     containerReference.append("$ref("
-                                            + destination.getName());
+                                            + generateSimpleName(destination));
 
                                     if (((IOPort) destination).isMultiport()) {
                                         containerReference.append("#" + i);
@@ -376,7 +375,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                                     .toString())
                                                     + " = ");
 
-                                    sendCode.append("$send(" + destination.getName() + ", " + i + ")" + _eol);
+                                    sendCode.append("$send(" + generateSimpleName(destination) + ", " + i + ")" + _eol);
                                 }
                             }
                         }
@@ -607,7 +606,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 boolean found = false;
                 int channelNumber = 0;
                 // try input port name only
-                if (name.equals(inputPort.getName())) {
+                if (name.equals(generateSimpleName(inputPort))) {
                     found = true;
                     code.append(generateName(inputPort));
                     if (inputPort.isMultiport()) {
@@ -616,7 +615,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 } else {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         // try the format: inputPortName_channelNumber
-                        if (name.equals(inputPort.getName() + "_" + i)) {
+                        if (name.equals(generateSimpleName(inputPort) + "_" + i)) {
                             found = true;
                             channelNumber = i;
                             code.append(generateName(inputPort));
@@ -647,7 +646,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 // try the format: inputPortNameArray
                 found = false;
                 channelNumber = 0;
-                if (name.equals(inputPort.getName() + "Array")) {
+                if (name.equals(generateSimpleName(inputPort) + "Array")) {
                     found = true;
                     code.append(generateName(inputPort));
                     if (inputPort.isMultiport()) {
@@ -656,8 +655,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 } else {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         // try the format: inputPortName_channelNumberArray
-                        if (name
-                                .equals(inputPort.getName() + "_" + i + "Array")) {
+                        if (name.equals(generateSimpleName(inputPort) + "_" + i + "Array")) {
                             found = true;
                             channelNumber = i;
                             code.append(generateName(inputPort));

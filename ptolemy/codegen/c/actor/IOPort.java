@@ -349,7 +349,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                     ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
 
             if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector._DEBUG) {
-                code.append("printf(\"" + port.getContainer().getName() + "[" + sourceRank + "] sending msg <" +
+                code.append("printf(\"" + generateSimpleName(port.getContainer()) + "[" + sourceRank + "] sending msg <" +
                         sinkRank + ", %d> for " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getBufferLabel(port, channelNumber) +
                         "\\n\", " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
             }

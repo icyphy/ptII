@@ -237,7 +237,7 @@ public class CCodeGenerator extends CodeGenerator {
                     .iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                mainEntryCode.append(", jobjectArray " + inputPort.getName());
+                mainEntryCode.append(", jobjectArray " + CodeGeneratorHelper.generateSimpleName(inputPort));
             }
 
             mainEntryCode.append("){" + _eol);
@@ -668,7 +668,7 @@ public class CCodeGenerator extends CodeGenerator {
                 code.append(_INDENT1
                         + generateVariableName(variable)
                         + " = "
-                        + containerHelper.getParameterValue(variable.getName(),
+                        + containerHelper.getParameterValue(CodeGeneratorHelper.generateSimpleName(variable),
                                 variable.getContainer()) + ";" + _eol);
             }
         }

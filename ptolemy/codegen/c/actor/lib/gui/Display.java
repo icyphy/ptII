@@ -77,7 +77,7 @@ public class Display extends CCodeGeneratorHelper {
         if (title.trim().length() > 0) {
             args.add(title);
         } else {
-            args.add(actor.getName());
+            args.add(generateSimpleName(actor));
         }
 
         args.add(Integer.valueOf(0));

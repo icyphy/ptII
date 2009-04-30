@@ -513,7 +513,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         //  Generate variable initialization for referenced parameters.
         if (!_referencedParameters.isEmpty()) {
             code.append(_eol
-                    + _codeGenerator.comment(1, getComponent().getName()
+                    + _codeGenerator.comment(1, generateSimpleName(getComponent())
                             + "'s parameter initialization"));
 
             Iterator parameters = _referencedParameters.iterator();
@@ -527,7 +527,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                                 + _codeGenerator
                                 .generateVariableName(parameter)
                                 + " = "
-                                + getParameterValue(parameter.getName(),
+                                + getParameterValue(generateSimpleName(parameter),
                                         getComponent()) + ";" + _eol);
                     }
                 } catch (Throwable throwable) {
@@ -1083,7 +1083,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
             // The channel is specified as $ref(port#channelNumber).
-            if (inputPort.getName().equals(refName)) {
+            if (generateSimpleName(inputPort).equals(refName)) {
                 return inputPort;
             }
         }
@@ -1094,7 +1094,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
 
             // The channel is specified as $ref(port#channelNumber).
-            if (outputPort.getName().equals(refName)) {
+            if (generateSimpleName(outputPort).equals(refName)) {
                 return outputPort;
             }
         }
@@ -1632,6 +1632,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return name.replaceAll("\\$", "Dollar");
     }
 
+    /** Generate sanitized name for the given named object. Remove all
+     *  underscores to avoid conflicts with systems functions.
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The sanitized name.
+     */
+    public static String generateSimpleName(NamedObj namedObj) {
+        String name = StringUtilities.sanitizeName(namedObj.getName());
+        return name.replaceAll("\\$", "Dollar");
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1762,7 +1772,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 // The channel of this output port doesn't have any sink.
                 result.append(generateName(getComponent()));
                 result.append("_");
-                result.append(port.getName());
+                result.append(generateSimpleName(port));
                 return result.toString();
             }
 
@@ -2034,7 +2044,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
          * @return The string representation of this channel.
          */
         public String toString() {
-            return port.getName() + "_" + channelNumber;
+            return generateSimpleName(port) + "_" + channelNumber;
         }
 
         /** The port that contains this channel.
@@ -2325,12 +2335,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         // The references are associated with their own helper, so we need
         // to find the associated helper.
-        String sourcePortChannel = source.port.getName() + "#"
+        String sourcePortChannel = generateSimpleName(source.port) + "#"
         + source.channelNumber + ", " + offset;
         String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
-        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
+        String sinkPortChannel = generateSimpleName(sink.port) + "#" + sink.channelNumber
         + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
@@ -2864,7 +2874,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
             _codeStream.insert(0, _eol
                     + _codeGenerator.comment(shortBlockName
-                            + getComponent().getName()));
+                            + generateSimpleName(getComponent())));
         }
         return processCode(_codeStream.toString());
 
@@ -2970,7 +2980,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             if (attribute instanceof Variable) {
 
-                if (((Variable)attribute).getName().equals(refName)) {
+                if (generateSimpleName(((Variable)attribute)).equals(refName)) {
                     return (Variable) attribute;
                 }
             }
@@ -3037,7 +3047,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         if (parameters.size() == 2) {
-            dataToken = processCode("$ref(" + port.getName() + "#" + channel + ")");
+            dataToken = processCode("$ref(" + generateSimpleName(port) + "#" + channel + ")");
 
         } else if (parameters.size() == 3) {
             dataToken = parameters.get(2);

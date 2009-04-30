@@ -122,7 +122,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
             if (rate > 0) {
                 for (int i = 0; i < outputPort.getWidthInside(); i++) {
                     if (i < outputPort.getWidth()) {
-                        String name = outputPort.getName();
+                        String name = generateSimpleName(outputPort);
 
                         if (outputPort.isMultiport()) {
                             name = name + '#' + i;
@@ -201,7 +201,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 " is not an instance of TypedIOPort.");
             }
             Type type = ((TypedIOPort) inputPort).getType();
-            String portName = inputPort.getName();
+            String portName = generateSimpleName(inputPort);
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -294,7 +294,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         } else {
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
-                    String name = inputPort.getName();
+                    String name = generateSimpleName(inputPort);
 
                     if (inputPort.isMultiport()) {
                         name = name + '#' + i;
@@ -360,7 +360,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                                 targetCpp) + ";" + _eol);
             }
 
-            String portName = outputPort.getName();
+            String portName = generateSimpleName(outputPort);
             String tokensToThisPort = "tokensTo" + portName;
 
             // FindBugs wants this instanceof check.
@@ -543,7 +543,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         } else {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
-                    String name = outputPort.getName();
+                    String name = generateSimpleName(outputPort);
 
                     if (outputPort.isMultiport()) {
                         name = name + '#' + i;
@@ -772,7 +772,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
         if (tempCode.length() > 0) {
             code.append("\n"
-                    + _codeGenerator.comment(container.getName()
+                    + _codeGenerator.comment(generateSimpleName(container)
                             + "'s offset variables"));
             code.append(tempCode);
         }
@@ -858,7 +858,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
             }
             if (tempCode2.length() > 0) {
                 code.append("\n"
-                        + _codeGenerator.comment(actor.getName()
+                        + _codeGenerator.comment(generateSimpleName((NamedObj) actor)
                                 + "'s offset variables"));
                 code.append(tempCode2);
             }

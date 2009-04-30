@@ -503,7 +503,7 @@ public class PNDirector extends Director {
     
         for (int i = 0; i < inputPort.getWidth(); i++) {
             if (i < inputPort.getWidthInside()) {
-                String name = inputPort.getName();
+                String name = generateSimpleName(inputPort);
     
                 if (inputPort.isMultiport()) {
                     name = name + '#' + i;
@@ -1247,7 +1247,7 @@ public class PNDirector extends Director {
 
                                     if (_DEBUG) {
                                         code.append("printf(\""
-                                                + actor.getName()
+                                                + generateSimpleName((NamedObj) actor)
                                                 + "["
                                                     + sinkRank
                                                     + "] receiving msg <"
@@ -1396,7 +1396,7 @@ public class PNDirector extends Director {
                 }
 
                 if (_DEBUG) {
-                    code.append("printf(\"Fire " + actor.getName() + "\\n\");"
+                    code.append("printf(\"Fire " + generateSimpleName((NamedObj) actor) + "\\n\");"
                             + _eol);
                 }
 
@@ -1409,7 +1409,7 @@ public class PNDirector extends Director {
                 code.append(helper.generateFireCode());
 
                 if (_DEBUG) {
-                    code.append("printf(\"Finished firing " + actor.getName()
+                    code.append("printf(\"Finished firing " + generateSimpleName((NamedObj) actor)
                             + "\\n\");" + _eol);
                 }
 

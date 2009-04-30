@@ -266,7 +266,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                 if (addComma) {
                     mainEntryCode.append(", ");
                 }
-                mainEntryCode.append("Object[]" + inputPort.getName());
+                mainEntryCode.append("Object[]" + CodeGeneratorHelper.generateSimpleName(inputPort));
                 addComma = true;
             }
 
@@ -657,7 +657,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                 code.append(_INDENT1
                         + generateVariableName(variable)
                         + " = "
-                        + containerHelper.getParameterValue(variable.getName(),
+                        + containerHelper.getParameterValue(CodeGeneratorHelper.generateSimpleName(variable),
                                 variable.getContainer()) + ";" + _eol);
             }
         }

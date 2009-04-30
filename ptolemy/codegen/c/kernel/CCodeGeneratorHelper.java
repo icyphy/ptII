@@ -474,12 +474,12 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         // The references are associated with their own helper, so we need
         // to find the associated helper.
-        String sourcePortChannel = source.port.getName() + "#"
+        String sourcePortChannel = generateSimpleName(source.port) + "#"
         + source.channelNumber + ", " + offset;
         String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
-        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
+        String sinkPortChannel = generateSimpleName(sink.port) + "#" + sink.channelNumber
         + ", " + offset;
 
         // For composite actor, generate a variable corresponding to

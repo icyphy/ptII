@@ -59,7 +59,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
 
         // FIXME: deal with the last comma later.
         for (Variable parameter : parameters) {
-            args.set(0, parameter.getName());
+            args.set(0, generateSimpleName(parameter));
             parameterCode.append(_generateBlockCode("parameterBlock", args) + ", ");
         }
 
@@ -72,7 +72,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
 
         // FIXME: deal with the last comma later.
         for (IOPort port : ports) {
-            args2.set(0, port.getName());
+            args2.set(0, generateSimpleName(port));
 
             // Assume we are not dealing with in-out ports.
             args2.set(1, port.isInput()? "InPort" : "OutPort");

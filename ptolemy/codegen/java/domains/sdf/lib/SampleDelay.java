@@ -73,7 +73,7 @@ public class SampleDelay extends JavaCodeGeneratorHelper {
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
         _codeStream.append(_eol + _codeGenerator.comment("initialize "
-                        + getComponent().getName()));
+                        + generateSimpleName(getComponent())));
 
         ArrayList args = new ArrayList();
         args.add("");

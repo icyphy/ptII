@@ -1471,9 +1471,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (code.length() > 0) {
             code.insert(0, _eol
                     + comment("Generate shared code for "
-                            + getContainer().getName()));
+                            + CodeGeneratorHelper.generateSimpleName(getContainer())));
             code.append(comment("Finished generating shared code for "
-                    + getContainer().getName()));
+                    + CodeGeneratorHelper.generateSimpleName(getContainer())));
         }
 
         return code.toString();

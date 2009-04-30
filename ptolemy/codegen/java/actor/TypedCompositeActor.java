@@ -123,7 +123,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment(2,
                         "Fire Composite "
-                        + getComponent().getName()));
+                        + generateSimpleName(getComponent())));
 
         code.append(super._generateFireCode());
 
@@ -145,13 +145,13 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
                         .generateVariableName(portParameter)));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
-                tempCode.append(getReference(inputPort.getName()));
+                tempCode.append(getReference(generateSimpleName(inputPort)));
                 tempCode.append(";" + _eol);
             }
         }
         if (tempCode.length() > 0) {
-            code.append(CodeStream.indent(_codeGenerator.comment("Update "
-                    + getComponent().getName() + "'s port parameters")));
+            code.append(_codeGenerator.comment("Update "
+                    + generateSimpleName(getComponent()) + "'s port parameters"));
             code.append(tempCode);
         }
 
@@ -229,7 +229,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
             String code = actorHelper.resetInputPortsOffset();
             if (code.length() > 0) {
                 initializeCode.append(_eol
-                        + _codeGenerator.comment(1, actor.getName()
+                        + _codeGenerator.comment(generateSimpleName(actor)
                                 + "'s input offset initialization"));
                 initializeCode.append(code);
             }
@@ -240,7 +240,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         if (code.length() > 0) {
             initializeCode.append(_eol
                     + _codeGenerator.comment(
-                            getComponent().getName()
+                            generateSimpleName(getComponent())
                                     + "'s output offset initialization"));
             initializeCode.append(code);
         }

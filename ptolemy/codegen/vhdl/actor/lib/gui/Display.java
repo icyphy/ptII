@@ -83,7 +83,7 @@ public class Display extends VHDLCodeGeneratorHelper {
 
         args.add(Integer.valueOf(high));
         args.add(Integer.valueOf(low));
-        args.add(actor.getName());
+        args.add(generateSimpleName(actor));
 
         String signed = (precision.isSigned()) ? "SIGNED_TYPE"
                 : "UNSIGNED_TYPE";

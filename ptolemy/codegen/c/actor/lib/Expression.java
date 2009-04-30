@@ -237,7 +237,7 @@ public class Expression extends CCodeGeneratorHelper {
                 }
 
                 for (int i = 0; i < _actor.inputPortList().size(); i++) {
-                    if (((IOPort) _actor.inputPortList().get(i)).getName()
+                    if ((generateSimpleName((IOPort) _actor.inputPortList().get(i)))
                             .equals(name)) {
                         return new ObjectToken("$ref(" + name + ")");
                     }

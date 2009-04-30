@@ -334,7 +334,7 @@ public class PNDirector extends Director {
 
         for (int i = 0; i < inputPort.getWidth(); i++) {
             if (i < inputPort.getWidthInside()) {
-                String name = inputPort.getName();
+                String name = generateSimpleName(inputPort);
 
                 if (inputPort.isMultiport()) {
                     name = name + '#' + i;

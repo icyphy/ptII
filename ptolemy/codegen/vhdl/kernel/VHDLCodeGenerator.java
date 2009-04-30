@@ -40,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
@@ -113,7 +114,8 @@ public class VHDLCodeGenerator extends CodeGenerator {
      *   or write-to-file throw any exception.
      */
     public int generateCode(StringBuffer code) throws KernelException {
-        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+        _sanitizedModelName = StringUtilities.sanitizeName(
+                CodeGeneratorHelper.generateSimpleName(_model));
 
         for (_generateFile = 0; _generateFile < 2; _generateFile++) {
             _signals.clear();
@@ -211,7 +213,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
             result.append("    SIGNAL ");
 
             result
-                    .append(helper.getReference(port.getName() + "#" + 0)
+                    .append(helper.getReference(CodeGeneratorHelper.generateSimpleName(port) + "#" + 0)
                             + " : ");
 
             result.append(helper._generateVHDLType(port) + ";\n");
@@ -314,8 +316,8 @@ public class VHDLCodeGenerator extends CodeGenerator {
             TypedIOPort port = (TypedIOPort) gateways.next();
             VHDLCodeGeneratorHelper helper = _getHelper(port.getContainer());
 
-            String signal = helper.getReference(port.getName() + "#" + 0);
-            String portName = helper.getReference(port.getName() + "#" + 0)
+            String signal = helper.getReference(CodeGeneratorHelper.generateSimpleName(port) + "#" + 0);
+            String portName = helper.getReference(CodeGeneratorHelper.generateSimpleName(port) + "#" + 0)
                     + "_port";
 
             boolean isOutput = helper.doGenerate();
@@ -420,7 +422,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
                         boolean isOutput = helper.doGenerate();
 
                         result.append(";" + _eol + "        "
-                                + helper.getReference(port.getName() + "#" + 0)
+                                + helper.getReference(CodeGeneratorHelper.generateSimpleName(port) + "#" + 0)
                                 + "_port : ");
 
                         result.append((isOutput) ? "OUT " : "IN ");
@@ -481,7 +483,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
      */
     protected void _writeTopLevel() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+        _sanitizedModelName = StringUtilities.sanitizeName(CodeGeneratorHelper.generateSimpleName(_model));
 
         code.append("library ieee;" + _eol);
         code.append("use ieee.std_logic_1164.all;" + _eol);
@@ -502,7 +504,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
             VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
 
-            String signal = helper.getReference(gateway.getName() + "#" + 0);
+            String signal = helper.getReference(CodeGeneratorHelper.generateSimpleName(gateway) + "#" + 0);
 
             if (helper.isSynthesizable()) {
 
@@ -531,7 +533,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
             VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
 
-            String signal = helper.getReference(gateway.getName() + "#" + 0);
+            String signal = helper.getReference(CodeGeneratorHelper.generateSimpleName(gateway) + "#" + 0);
 
             if (helper.isSynthesizable()) {
 
@@ -555,7 +557,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
             TypedIOPort gateway = (TypedIOPort) gateways.next();
             VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
 
-            String signal = helper.getReference(gateway.getName() + "#" + 0)
+            String signal = helper.getReference(CodeGeneratorHelper.generateSimpleName(gateway) + "#" + 0)
                     + "_signal";
 
             code.append(_eol + "    SIGNAL " + signal + " : ");
@@ -578,7 +580,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
             VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
 
-            String signal = helper.getReference(gateway.getName() + "#" + 0);
+            String signal = helper.getReference(CodeGeneratorHelper.generateSimpleName(gateway) + "#" + 0);
 
             code.append("        " + signal + " => " + signal + "_signal,"
                     + _eol);
@@ -598,7 +600,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
             VHDLCodeGeneratorHelper helper = _getHelper(gateway.getContainer());
 
-            String signal = helper.getReference(gateway.getName() + "#" + 0);
+            String signal = helper.getReference(CodeGeneratorHelper.generateSimpleName(gateway) + "#" + 0);
 
             code.append("        " + signal + " => " + signal + "_signal,"
                     + _eol);

@@ -118,7 +118,7 @@ public class SRDirector extends StaticSchedulingDirector {
                         " is not an instance of TypedIOPort.");
             }
             Type type = ((TypedIOPort) inputPort).getType();
-            String portName = inputPort.getName();
+            String portName = generateSimpleName(inputPort);
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -211,7 +211,7 @@ public class SRDirector extends StaticSchedulingDirector {
         } else {
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
-                    String name = inputPort.getName();
+                    String name = generateSimpleName(inputPort);
 
                     if (inputPort.isMultiport()) {
                         name = name + '#' + i;
@@ -275,7 +275,7 @@ public class SRDirector extends StaticSchedulingDirector {
                                 targetCpp) + ";" + _eol);
             }
 
-            String portName = outputPort.getName();
+            String portName = generateSimpleName(outputPort);
             String tokensToThisPort = "tokensTo" + portName;
 
             // FindBugs wants this instanceof check.
@@ -458,7 +458,7 @@ public class SRDirector extends StaticSchedulingDirector {
         } else {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
-                    String name = outputPort.getName();
+                    String name = generateSimpleName(outputPort);
 
                     if (outputPort.isMultiport()) {
                         name = name + '#' + i;

@@ -1,4 +1,4 @@
-/* Code generator helper for typed composite actor.
+/* Code generator helper for ParameterPort.
 
  Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -29,7 +29,15 @@ package ptolemy.codegen.c.actor.parameters;
 
 import ptolemy.codegen.c.actor.TypedIOPort;
 
+/**
+A codegen helper class for ParameterPort.
 
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.2
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+*/
 public class ParameterPort extends TypedIOPort {
 
     /** Construct the code generator helper associated
