@@ -24,7 +24,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-package ptolemy.codegen.c.kernel.type.parameterizedtemplates;
+package ptolemy.codegen.c.kernel.type.parameterizedTemplates;
 
 import java.io.BufferedReader;
 import java.io.File;
