@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.DebugEvent;
@@ -216,13 +217,40 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** Set the configuration.  This is used by some of the controllers
      *  when opening files or URLs.
+     *  The configuration is checked for a "_getDocumentationActionDocPreference",
+     *  which, if present, is an integer that is passed to
+     *  {@link ptolemy.vergil.basic.GetDocumentationAction#GetDocumentationAction(int)}.
+     *  This attribute is used to select the Kepler-specific
+     *  KeplerDocumentationAttribute.
      *  @param configuration The configuration.
      *  @see #getConfiguration()
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
 
-        _getDocumentationAction.setConfiguration(configuration);
+        if (configuration != null && _getDocumentationAction == null) {
+            int docPreference = 0;
+            String parameterName = "_getDocumentationActionDocPreference";
+            try {
+                Parameter getDocumentationActionDocPreference = (Parameter) configuration
+                    .getAttribute(parameterName, Parameter.class);
+                if (getDocumentationActionDocPreference != null) {
+                    // If you want KeplerDocumentationAttribute, set
+                    // _getDocumentationActionDocPreference to 1.
+                    docPreference = Integer.parseInt(
+                            getDocumentationActionDocPreference.getExpression());
+                }
+            } catch (Exception ex) {
+                    System.err.println("Warning, failed to parse "
+                            + parameterName);
+                    ex.printStackTrace();
+            }
+             _getDocumentationAction = new GetDocumentationAction(docPreference);
+        }
+        if (_getDocumentationAction != null) {
+            _getDocumentationAction.setConfiguration(configuration);
+        }
+
 
         if ((_configuration != null) && (_menuFactory != null)) {
             // NOTE: The following requires that the configuration be
@@ -403,7 +431,55 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
-        _menuFactory = new SchematicContextMenuFactory(this);
+        // Start Kepler code.
+        List configsList = Configuration.configurations();
+        Configuration config = _configuration;
+        if (config == null) {
+            // Is this really necessary?
+            for (Iterator it = configsList.iterator(); it.hasNext();) {
+                config = (Configuration) it.next();
+                if (config != null) {
+                    break;
+                }
+            }
+        }
+
+        // If a MenuFactory has been defined in the configuration, use this
+        // one; otherwise, use the default Ptolemy one:
+        if (config != null && _contextMenuFactoryCreator == null) {
+            _contextMenuFactoryCreator = (ContextMenuFactoryCreator) config
+                    .getAttribute("canvasContextMenuFactory");
+        }
+
+        // NOTE: by passing "this" to the menu factory, we are making it
+        // handle right-click menus for the canvas (only) - not the actors or
+        // relations; these are controlled by AttributeController and
+        // RelationController, respectively - MB - 2/14/06
+        if (_contextMenuFactoryCreator != null) {
+            try {
+                _menuFactory = (PtolemyMenuFactory) _contextMenuFactoryCreator
+                        .createContextMenuFactory(this);
+                // this is only done here, not for both MenuFactories, because
+                // SchematicContextMenuFactory already does this in its
+                // constructor:
+                // (Save _configureMenuFactory for use in sub classes)
+                _configureMenuFactory = new MenuActionFactory(_configureAction);
+                _menuFactory.addMenuItemFactory(_configureMenuFactory);
+            } catch (Exception ex) {
+                // do nothing - will default to ptii right-click menus
+                // System.out.println("Unable to use the alternative right-click menu "
+                // + "handler that was specified in the "
+                // + "configuration; defaulting to ptii handler. "
+                // + "Exception was: " + ex);
+            }
+        }
+        // if the above has failed in any way, _menuFactory will still be null,
+        // in which case we should default to ptii context menus
+        if (_menuFactory == null) {
+            _menuFactory = new SchematicContextMenuFactory(this);
+        }
+        // End Kepler code.
+
         _menuCreator = new MenuCreator(_menuFactory);
         _menuCreator.setMouseFilter(new PopupMouseFilter());
 
@@ -468,6 +544,13 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     // The configuration.
     private Configuration _configuration;
+
+    /**
+     * A configurable object that allows a different MenuFactory to be specified
+     * instead of the default ptII one. The MenuFactory constructs the
+     * right-click context menus
+     */
+    private static ContextMenuFactoryCreator _contextMenuFactoryCreator;
 
     // The get documentation action.
     private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
