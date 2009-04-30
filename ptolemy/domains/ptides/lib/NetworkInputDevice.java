@@ -1,4 +1,5 @@
-/*
+/* NetworkInputDevice that simulates a hardware device that reads data from the network.
+
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
@@ -49,27 +50,31 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-////NetworkReceiver
+////NetworkInputDevice
 
 /** 
-*  Note this actor (or some other subclass of this class) should
-*  be directly connected to a network input port in a PtidesBasicDirector.
-*  
-*  Unlike SensorReceiver for example, this actor is necessarily needed for
-*  both simulation and code generation purposes.
-*  
-*  This actor assumes the incoming token is a RecordToken, and includes a 
-*  token value as well as a timestamp associated with the token value. Thus 
-*  this actor parses the RecordToken and sends the output token with the
-*  timestamp equal to the timestamp stored in the RecordToken. 
-*  
-*  In other words, we assume the RecordToken has these two labels: timestamp,
-*  tokenValue. 
-*   
-*  @author jiazou, matic
-*  @version $Id$
-*  @since Ptolemy II 7.1
-*/
+ *  <p>
+ *  Note this actor (or some other subclass of this class) should
+ *  be directly connected to a network input port in a PtidesBasicDirector.
+ *  <\p>
+ *  <p>
+ *  Unlike SensorReceiver for example, this actor is necessarily needed for
+ *  both simulation and code generation purposes.
+ *  <\p>
+ *  <p>
+ *  This actor assumes the incoming token is a RecordToken, and includes a 
+ *  token value as well as a timestamp associated with the token value. Thus 
+ *  this actor parses the RecordToken and sends the output token with the
+ *  timestamp equal to the timestamp stored in the RecordToken. 
+ *  In other words, we assume the RecordToken has these three labels: timestamp,
+ *  microstep, and payload.
+ *   
+ *  @author Jia Zou, Slobodan Matic
+ *  @version $Id$
+ *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Yellow (jiazou)
+ *  @Pt.AcceptedRating 
+ */
 public class NetworkInputDevice extends InputDevice {
     public NetworkInputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -138,6 +143,10 @@ public class NetworkInputDevice extends InputDevice {
             
             int recordMicrostep = ((IntToken)(record.get(microstep))).intValue(); 
             
+            // The NetworkInputDevice parses the incoming token from
+            // the network, which is a 3 element RecordToken, and
+            // produces an event of the token value equal to the payload,
+            // and tag equal to the tag as stored in the RecordToken.
             Time lastModelTime = ptidesDirector.getModelTime();
             int lastMicrostep = ptidesDirector.getMicrostep();
             ptidesDirector.setTag(recordTimeStamp, recordMicrostep);
