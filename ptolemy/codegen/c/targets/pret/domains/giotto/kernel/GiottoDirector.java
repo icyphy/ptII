@@ -486,10 +486,56 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                    
                             super.generateTransferInputsCode(inputPort, code) ;  
                             super.generateTransferOutputsCode(inputPort, code) ; 
+                            code.append(_eol+"//just did the transfer in and out of this composite actor with a call to super methods"+_eol);
                       // else do nothing
                     }
                }else if((dir.getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector") ||dir.getClassName()=="ptolemy.domains.sdf.kernel.SDFDirector"){
+                   code.append("//second if"+_eol);
+                   
+                   if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor"))
+                   {
+                       code.append("//transfer inputs in"+_eol);
+                       CodeGeneratorHelper myHelper;
+                       String actorTransferCode = " ";
+                       
+                       
+                       while(inputPorts.hasNext())
+                       {
+                               IOPort sourcePort = (IOPort)inputPorts.next();
+                            // FIXME: figure out the channel number for the sourcePort.
+                               // if you need to transfer inputs inside
+                              String channelOffset [] = {"0","0"};
+                              int i =sourcePort.getWidth();
+                              myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
+                              if(i > 1)
+                              {
+                                  //I don't think this is correct
+                                  for(int j = 0; j< i; j++)
+                                  {
+                                   
+                                      actorTransferCode += "//multiport stuff here";
+                                  }
+                              }else{
+                                channelOffset[0] = "0";
+                                //code.append(_eol+"in else"+_eol);
+                                sinkReference = this.getReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                                srcReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                                ArrayList args = new ArrayList();    
+                                args.add(sinkReference);
+                                args.add(srcReference);
+                                actorTransferCode += _generateBlockCode("updatePort", args);     
+                              }
+                       }
+                       code.append(_eol+actorTransferCode+_eol);
+                       code.append("//display name: "+actor.getDisplayName()+_eol);
+                       code.append(_getActorName(actor)+"_EmbeddedActor()"+_eol);
+                       code.append("//jni actor"+_eol);
+                       code.append("//transfer outputs out"+_eol);
+                
+                   }
+                   else{
                    code.append(actorHelper.generateFireCode());
+                   }
                }
                 else
                 {
@@ -497,6 +543,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 }
                     
             } else{
+                code.append("//in final else");
                code.append(actorHelper.generateFireCode());
             }   
            
