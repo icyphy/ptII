@@ -191,53 +191,14 @@ Token Array_print(Token thisToken, ...) {
 /**/
 
 /***Array_toString***/
-
-// Array_toString: Return a string token with a string representation
-// of the specified array.
-Token Array_toString(Token thisToken, ...) {
-        int i;
-        int currentSize, allocatedSize;
-        char* string;
-        Token elementString;
-
-        allocatedSize = 256;
-        string = (char*) malloc(allocatedSize);
-        string[0] = '{';
-        string[1] = '\0';
-
-        // Space for '{', '}', and '\0' characters.
-        currentSize = 3;
-
-        for (i = 0; i < thisToken.payload.Array->size; i++) {
-
-                // Calculate the require storage size.
-                elementString = functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
-                currentSize += strlen(elementString.payload.String);
-                if (i != 0) {
-                        currentSize += 2;
-                }
-
-                // Re-allocate storage.
-                if (currentSize > allocatedSize) {
-                        allocatedSize *= 2;
-                        string = (char*) realloc(string, allocatedSize);
-                }
-
-                // Concat the element strings and separators.
-                if (i != 0) {
-                        strcat(string, ", ");
-                }
-                strcat(string, elementString.payload.String);
-                free(elementString.payload.String);
-        }
-
-        strcat(string, "}");
-        Token result = $new(String(string));
-        // String_new() calls strdup(), so we free here
-        // FIXME: If we free here, then the SequenceArrayToString.xml test crashes?
-        //free(string);
-        return result;
-}
+	// Array_toString: Return a string token with a string representation
+	// of the specified array.
+	Token Array_toString(Token thisToken, ...) {
+		return $new(String($toString_Array(thisToken));
+		// String_new() calls strdup(), so we free here
+		// FIXME: If we free here, then the SequenceArrayToString.xml test crashes?
+		//free(string);
+	}
 /**/
 
 /***Array_add***/

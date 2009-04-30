@@ -51,10 +51,11 @@ Token String_print(Token thisToken, ...) {
 
 /***String_toString***/
 Token String_toString(Token thisToken, ...) {
-    // Guarrantee to return a new string.
-    char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
-    sprintf(result, "\"%s\"", thisToken.payload.String);
-    return $new(String(result));
+	return thisToken;
+//    // Guarrantee to return a new string.
+//    char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
+//    sprintf(result, "\"%s\"", thisToken.payload.String);
+//    return $new(String(result));
 }
 /**/
 

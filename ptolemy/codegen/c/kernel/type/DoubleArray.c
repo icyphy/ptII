@@ -190,44 +190,7 @@ Token DoubleArray_print(Token thisToken, ...) {
 // DoubleArray_toString: Return a string token with a string representation
 // of the specified array.
 Token DoubleArray_toString(Token thisToken, ...) {
-	int i;
-    int currentSize, allocatedSize;
-    char* string;
-    char* elementString;
-    allocatedSize = 256;
-    string = (char*) malloc(allocatedSize);
-    string[0] = '{';
-    string[1] = '\0';
-
-    // Space for '{', '}', and '\0' characters.
-    currentSize = 3;
-
-    //printf("%d\n", thisToken.payload.DoubleArray->size);
-    for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-		// Calculate the require storage size.
-
-    	// double temp = DoubleArray_get(thisToken, i);
-        elementString = $toString_Double(DoubleArray_get(thisToken, i));
-        currentSize += strlen(elementString);
-		if (i != 0) {
-			currentSize += 2;
-		}
-
-		// Re-allocate storage.
-		if (currentSize > allocatedSize) {
-            allocatedSize *= 2;
-            string = (char*) realloc(string, allocatedSize);
-        }
-
-		// Concat the element strings and separators.
-		if (i != 0) {
-            strcat(string, ", ");
-        }
-        strcat(string, elementString);
-    }
-
-    strcat(string, "}");
-    return $new(String(string));
+	return $new(String($toString_DoubleArray(thisToken)));
 }
 /**/
 
