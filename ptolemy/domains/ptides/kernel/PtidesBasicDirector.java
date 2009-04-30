@@ -109,30 +109,6 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-
-    /**
-     * Return the default dependency between input and output ports which for
-     * the Ptides domain is a RealDependency.
-     *
-     * @return The default dependency which describes a delay of 0.0 between
-     *         ports.
-     */
-    public Dependency defaultDependency() {
-        return RealDependency.OTIMES_IDENTITY;
-    }
-
-
-    /**
-     * Return a real dependency representing a model-time delay of the
-     * specified amount.
-     *
-     * @param delay
-     *            A non-negative delay.
-     * @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return RealDependency.valueOf(delay);
-    }
     
     /** Get the current microstep.
      *  @return microstep of the current time.
@@ -140,7 +116,7 @@ public class PtidesBasicDirector extends DEDirector {
     public int getMicrostep() {
         return _microstep;
     }
-    
+
     /** Advance the current model tag to that of the earliest event in
      *  the event queue, and fire all actors that have requested or
      *  are triggered to be fired at the current tag. If
@@ -410,6 +386,7 @@ public class PtidesBasicDirector extends DEDirector {
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
         realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
+        _actorLastConsumedTag = new HashMap<Actor, Tag>();
         _physicalTimeExecutionStarted = null;
         
         // _calculateModelTimeOffsets();
@@ -708,6 +685,12 @@ public class PtidesBasicDirector extends DEDirector {
             // not safe to process, wait until some physical time.
             return null;
         }
+        
+        // Every time safeToProcess analysis passes, and
+        // a new actor is chosen to be start processing, we update _actorLastConsumedTag
+        // to store the tag of the last event that was consumed by this actor. This helps us to
+        // track if safeToProcess() somehow failed to produce the correct results.
+        _trackLastTagConsumedByActor(eventFromQueue);
 
         Actor actorToFire = super._getNextActorToFire();
 
@@ -890,6 +873,38 @@ public class PtidesBasicDirector extends DEDirector {
             Actor container = (Actor) getContainer();
             ((TypedCompositeActor)container).requestChange(request);
         }
+    }
+    
+    /** This method keeps track of the last event an actor decides to process. This method
+     *  is called immediately after _safeToProcess, thus it serves as a check to see if the
+     *  processing of this event has violated DE semantics. If it has, then an exception is
+     *  thrown, if it has not, then the current tag is saved for checks to see if future
+     *  events are processed in timestamp order.
+     *  @param event The event that has just been determined to be safe to process.
+     *  
+     *  FIXME: this implementation is actually too conservative, in that it may result in false
+     *  negatives. This method assumes each actor should process events in timestamp order,
+     *  but in PTIDES we only need each equivalence class to consume events in timetamp
+     *  order. Thus this method is correct if the actor's input ports all reside within
+     *  the same equivalence class.
+     *  @throws IllegalActionException 
+     */
+    protected void _trackLastTagConsumedByActor(DEEvent event) throws IllegalActionException {
+        Actor actor = event.actor();
+        Tag tag = new Tag(event.timeStamp(), event.microstep());
+        Tag prevTag = _actorLastConsumedTag.get(actor);
+        if (prevTag != null) {
+            if (tag.compareTo(prevTag) <= 0) {
+                throw new IllegalActionException("Safe to process return the wrong " +
+                		"answer earlier. At actor: " + actor.getName() +
+                		", the tag of the previous processed event is: timestamp = " +
+                		prevTag.timestamp + ", microstep = " + prevTag.microstep +
+                		". The tag of the current event is: timestamp = " +
+                                tag.timestamp + ", microstep = " + tag.microstep + ". ");
+            }
+        }
+        // The check was correct, now we replace the previous tag with the current tag.
+        _actorLastConsumedTag.put(actor, tag);
     }
     
     /** For all events in the sensorEventQueue, transfer input events that are ready.
@@ -1254,10 +1269,26 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
 
+    /** Each actor keeps track of the tag of the last event that was consumed when this
+     *  actor fired. This helps to identify cases where safe-to-process analysis failed
+     *  unexpectedly. 
+     */
+    private HashMap<Actor, Tag> _actorLastConsumedTag;
 
     /** The list of currently executing actors and their remaining execution time
      */
     private Stack<DoubleTimedEvent> _currentlyExecutingStack;
+
+    /** Last executing actor
+     *  Keeps track of the last actor with non-zero executing time that was executing
+     *  This helps to clear the highlighting of that actor when executing stops.
+     */
+    private Actor _lastExecutingActor;
+
+    /** The physical time at which the currently executing actor, if any,
+     *  last resumed execution.
+     */
+    private Time _physicalTimeExecutionStarted;
 
     /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
      */
@@ -1268,20 +1299,9 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private PriorityQueue realTimeOutputEventQueue;
 
-    /** The physical time at which the currently executing actor, if any,
-     *  last resumed execution.
-     */
-    private Time _physicalTimeExecutionStarted;
-
     /** Zero time.
      */
     private Time _zero;
-
-    /** Last executing actor
-     *  Keeps track of the last actor with non-zero executing time that was executing
-     *  This helps to clear the highlighting of that actor when executing stops.
-     */
-    private Actor _lastExecutingActor;
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
@@ -1333,6 +1353,35 @@ public class PtidesBasicDirector extends DEDirector {
         
         public int compareTo(Object other) {
             return deliveryTime.compareTo(((RealTimeEvent)other).deliveryTime);
+        }
+    }
+    
+    /** Holds a timestamp microstep pair
+     */
+    public class Tag implements Comparable{
+        public Time timestamp;
+        public int microstep;
+        
+        public Tag(Time timestamp, int microstep) {
+            this.timestamp = timestamp;
+            this.microstep = microstep;
+        }
+        
+        public int compareTo(Object other) {
+            Tag tag2 = (Tag) other;
+            if (timestamp.compareTo(tag2.timestamp) == 1) {
+                return 1;
+            } else if (timestamp.compareTo(tag2.timestamp) == -1) {
+                return -1;
+            } else {
+                if (microstep > tag2.microstep) {
+                    return 1;
+                } else if (microstep < tag2.microstep) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
         }
     }
 }
