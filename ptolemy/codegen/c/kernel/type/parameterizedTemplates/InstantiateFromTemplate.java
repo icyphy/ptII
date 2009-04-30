@@ -24,7 +24,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-package ptolemy.codegen.c.kernel.type.parameterizedTemplates;
+package ptolemy.codegen.c.kernel.type.parameterizedtemplates;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,17 +33,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+A utility class for creating specialized Array types.
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.2
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+*/
 public class InstantiateFromTemplate {
 
-    static HashMap<String, String> replaceMap = new HashMap<String, String>();
 
-    /** NOTE: META SUBSTITUTION SYMBOLS
-     * $Type: Int, Char, Array, etc.
-     * $type_q: %d, %s, etc.
-     * $type: int, char, etc.
-     * $print_size: 12(int), 22(long), 22(double), 6(boolean)
+    /**
+     * 
      */
-
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(new File(args[0])));
 
@@ -98,4 +102,14 @@ public class InstantiateFromTemplate {
         writer.write(codeString);
         writer.close();
     }
+
+    /** 
+     * 
+     * NOTE: META SUBSTITUTION SYMBOLS
+     * $Type: Int, Char, Array, etc.
+     * $type_q: %d, %s, etc.
+     * $type: int, char, etc.
+     * $print_size: 12(int), 22(long), 22(double), 6(boolean)
+     */
+    private static HashMap<String, String> replaceMap = new HashMap<String, String>();
 }

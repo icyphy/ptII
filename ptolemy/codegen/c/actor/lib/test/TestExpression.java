@@ -47,5 +47,8 @@ public class TestExpression extends Expression {
         variableScope = new Expression.VariableScope(actor);
     }
 
+    /**
+     * The variable scope for the expression.
+     */
     public Expression.VariableScope variableScope;
 }

@@ -37,17 +37,31 @@ import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.CodeStream.Signature;
 import ptolemy.util.FileUtilities;
 
+/**
+A utility class for alphabetizing code blocks in a code template file.
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.2
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+*/
 public class AlphabetizeOperation {
 
     /**
+     * Alphabetize code block (template) files under
+     * $CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic/.
+     * Parse code blocks from each file, sort and write them
+     * back in-place.
      * @param args Not used.
      */
     public static void main(String[] args) {
-        // for every file in type/polymorphic/
         try {
             File directory = new File(FileUtilities.nameToURL(
                     "$CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic",
                     null, null).getFile());
+            
+            // Iterate through every file in type/polymorphic/
             for (File file : directory.listFiles()) {
                 String filename = file.getPath();
                 CodeStream stream = new CodeStream(filename, null);
