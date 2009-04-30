@@ -28,6 +28,8 @@
 package ptolemy.codegen.c.targets.pret.domains.fsm.kernel;
 
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -82,8 +84,9 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
         //        .booleanValue();
 
         int depth = 1;
-
-        Iterator states = controller.entityList().iterator();
+       
+        //Iterator states = controller.entityList().iterator();
+        Iterator states = controller.deepEntityList().iterator();
         int stateCount = 0;
         depth++;
 
@@ -96,18 +99,28 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
 
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
-
-            if (actors != null) {
+            Set<Actor> actorsSet= new HashSet();;
+            if(actors!= null)
+            {
                 for (int i = 0; i < actors.length; i++) {
-                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
-
-                    code.append("void "+_getActorName(actors[i])+"(){");
-
+                    actorsSet.add(actors[i]);
+                }
+            }
+          
+            if (actors != null) {
+                //for (int i = 0; i < actors.length; i++) {
+                Iterator actorIterator = actorsSet.iterator();
+                Actor actors2;
+                while(actorIterator.hasNext()){
+                    actors2 = (Actor)actorIterator.next();
+                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors2);
+                    code.append("void "+_getActorName(actors2)+"(){");
                     code.append(actorHelper.generateFireCode());
                     code.append(actorHelper.generateTypeConvertFireCode());
                     code.append(_eol+"}"+_eol);
                 }}
         }
+        
         return code.toString();
     }
 
@@ -124,13 +137,20 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
 
     public String generatePreinitializeCode()throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
+       code.append(super.generatePreinitializeCode());
+       code.append(_eol+"//before call to generateActorCode"+_eol);
         code.append(_generateActorCode());
+        code.append(_eol+"//after call to generateActorCode"+_eol);
 
         return code.toString();
     }
-
-
+    
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    throws IllegalActionException {
+        System.out.println("//generate transferOutputsCode inside OpenRTOS Giotto director called.");
+        code.append(_eol+"//generate transferOutputsCode inside pret FSM  director called."+_eol);
+        super.generateTransferOutputsCode(outputPort,code);
+        
+    }
 
 }
