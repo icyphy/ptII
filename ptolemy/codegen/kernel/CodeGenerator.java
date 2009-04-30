@@ -633,9 +633,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (result == null) {
             if (ptType instanceof ArrayType) {
 
+                Type elementType = ((ArrayType) ptType).getElementType();
                 // This change breaks $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/colt/test/auto/BinomialSelectorTest.xml
-                if (isPrimitive(((ArrayType) ptType).getElementType())) {
-                    result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                if (isPrimitive(elementType)) {
+                    result = codeGenType(elementType) + "Array";
                 } else {
                     result = "Array";
                 }

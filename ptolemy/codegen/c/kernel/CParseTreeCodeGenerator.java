@@ -311,8 +311,8 @@ ParseTreeCodeGenerator {
             }
         }
 
-
-        if (elementType instanceof ArrayType) {
+        if (elementType instanceof ArrayType || elementType instanceof MatrixType) {
+            // If elementType is a composite type. 
             _childCode = "$new(" + "Array(" + result + "))";
         } else {
             _childCode = "$new(" + _generator.codeGenType(elementType) + "Array(" + result + "))";
