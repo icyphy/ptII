@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Modal7" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 46, 841, 571}, maximized=false}">
     </property>
@@ -35,6 +35,12 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{315, 25}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that upon entering a mode with a delay that&#10;is just expiring, the output from the delay is not&#10;produced. This is because the first execution of the&#10;destination mode refinement occurs at superdense&#10;index 1, not 0, so the delay time has passed.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 220.0]">
         </property>
     </property>
     <entity name="original" class="ptolemy.domains.modal.modal.ModalModel">
@@ -75,7 +81,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={215, 375, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -108,7 +114,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 185.0}">
                 </property>
             </entity>
             <entity name="noDelay" class="ptolemy.domains.modal.kernel.State">
@@ -263,11 +269,11 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
         <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 245.0}">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 3.0, 3.0, 5.0, 5.0, 7.0, 7.0, 9.0, 9.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 3.0, 5.0, 7.0, 9.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -292,24 +298,28 @@
         <vertex name="vertex1" value="160.0, 245.0">
         </vertex>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{400.0, 160.0}">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{290.0, 160.0}">
+        </vertex>
+    </relation>
     <link port="original.input" relation="relation3"/>
-    <link port="original.output" relation="relation"/>
+    <link port="original.output" relation="relation5"/>
     <link port="original.trigger" relation="relation2"/>
     <link port="Clock.output" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation6"/>
-    <link port="CurrentTime.output" relation="relation6"/>
-    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation5"/>
     <link port="Clock2.output" relation="relation3"/>
 </entity>
