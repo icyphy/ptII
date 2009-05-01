@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConstraintCheck_Parameter_Scope_MultipleNestedHierarchy" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel_20080331">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 148, 840, 720}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 0, 840, 731}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 613]">
     </property>
@@ -30,11 +30,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 85}">
         </property>
-        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+        <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
         </property>
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
         </property>
-        <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
         </property>
     </property>
     <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
@@ -46,7 +46,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 80.0]">
         </property>
-        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.ConstraintCheck_Parameter_Scope_MultipleNestedHierarchy.CompositeActor.CompositeActor.P_nested} 10.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:false:null:null:P_nested.&#13;&#10;]&#10;  in .ConstraintCheck_Parameter_Scope_MultipleNestedHierarchy.LogicalAND_Forward">
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:false:null:null:P_nested.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.ConstraintCheck_Parameter_Scope_MultipleNestedHierarchy.CompositeActor.CompositeActor.P_nested} 10.&#10;]&#10;  in .ConstraintCheck_Parameter_Scope_MultipleNestedHierarchy.LogicalAND_Forward">
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -70,11 +70,11 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 85}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
             </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
             </property>
         </property>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -98,11 +98,11 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 115.0]">
                 </property>
-                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
                 </property>
                 <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
                 </property>
-                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                 </property>
             </property>
             <property name="P_top" class="ptolemy.data.expr.Parameter" value="P_topLevel">
@@ -123,11 +123,11 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 80.0]">
                 </property>
-                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
                 </property>
                 <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
                 </property>
-                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
                 </property>
             </property>
         </entity>

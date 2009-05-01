@@ -26,6 +26,7 @@
  */
 package ptolemy.data.properties;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -137,6 +138,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      */
     public void checkErrors() throws PropertyResolutionException {
         List errors = _sharedUtilities.removeErrors();
+        Collections.sort(errors);
 
         if (!errors.isEmpty()) {
             String errorMessage = errors.toString();
@@ -635,8 +637,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         boolean userDecision = true;
 
         // Only test the invoked solver.
-        boolean doTest = isTesting() && _isInvoked;
-        boolean doUpdate = isResolve();
+        boolean testing = isTesting() && _isInvoked;
+        boolean updating = isResolve();
 
         _addStatistics();
 
@@ -654,10 +656,10 @@ public abstract class PropertySolver extends PropertySolverBase {
             // Get the value resolved by the solver.
             Property property = getProperty(namedObj);
 
-            if (doTest) { // Regression testing.
+            if (testing) { // Regression testing.
                 _regressionTest(namedObj, property);
 
-            } else if (doUpdate) {
+            } else if (updating) {
                 Property previous = getPreviousProperty(namedObj);
 
                 if (!_isInvoked && !hasDecided) {
@@ -831,9 +833,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-        if ((previousProperty == null && property != null)
-                || (previousProperty != null && !previousProperty
-                        .equals(property))) {
+        if ((previousProperty == null && property != null) || 
+            (previousProperty != null && !previousProperty.equals(property))) {
 
             addErrors(_eol + "Property \"" + getUseCaseName()
                     + "\" resolution failed for " + namedObj.getFullName()
