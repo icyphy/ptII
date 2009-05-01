@@ -32,12 +32,12 @@
 #  ptII/adm/bin/ptIInightly-mail
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
-MAJOR_VERSION = 	7.2
-MINOR_VERSION =		devel
+MAJOR_VERSION = 	8.0
+MINOR_VERSION =		beta
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	7_2_devel
+WINDOWS_VERSION =	8_0_beta
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -75,13 +75,13 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII7.2.devel PTIIADM=/tmp/cxh/ptII7.2.devel/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta PTIIADM=/tmp/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -160,47 +160,47 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 release_newton_all:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII/adm/gen-7.2/test/ptII$(VERSION)
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII/adm/gen-8.0/test/ptII$(VERSION)
 
 release_newton_setup:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar setup
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar setup
 
 release_newton_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.2.devel/adm/gen-7.0/test/ptII$(VERSION)
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII8.0.beta/adm/gen-7.0/test/ptII$(VERSION)
 
 ####
 release_fortytwo:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
 
 release_fortytwo_update_ftp:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
 
 
 release_fortytwo_setup:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
 
 release_fortytwo_remote4_test:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
 
 ####
 release_sisyphus:
-	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
 
 release_sisyphus_setup:
-	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar setup
+	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar setup
 
 release_sisyphus_remote4_test:
 	make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar remote4_test
 
 ####
 release_windows:
-	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
 ####
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
@@ -1430,7 +1430,7 @@ remote1distjsall_1:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
