@@ -127,6 +127,16 @@ adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 </pre>
 
+<li> Check for missing makefiles:
+<pre>
+cat /tmp/j | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $1 "/makefile"}' > /tmp/doit
+sh /tmp/doit | grep "No such"
+</pre>
+
+<pre>
+cat /tmp/j | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/p
+cd doc; make echo > /tmp/d
+comm -23 /tmp/p /tmp/d | egrep -v "(\.apps\.|\.demo|\.test$)"
 <li> Add trailing newlines to files with
 <code>$PTII/adm/bin/addtrailingnl</code>
 <pre>

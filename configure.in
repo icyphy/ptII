@@ -866,7 +866,7 @@ else
 	PTBSH_MLC_DIR=mlc
 	PTBSH_RUN_DIR=run
 	# PTBSH_PACKAGES is used in ptII/doc/makefile
-	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util org.mlc.swing.example org.mlc.swing.layout"
+	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util org.mlc.swing.example org.mlc.swing.layout ptolemy.actor.gui.run"
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	        <classpathentry kind=\"lib\" path=\"$PTBSH_JAR\"/> "
     else
@@ -1983,7 +1983,7 @@ changequote([, ])dnl
 	# $PTII/ptolemy/actor/lib/makefile if jython was found
 	PTJYTHON_DIR=python
 	# PTJYTHON_PACKAGES is used in ptII/doc/makefile
-	PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+	PTJYTHON_PACKAGES="ptolemy.actor.lib.python ptolemy.actor.gui.python"
     fi
 
     if test "$PTJYTHON_DIR" = ""; then
@@ -1993,7 +1993,7 @@ changequote([, ])dnl
 	    # FIXME: This is ugly, but we set to python instead of jython
  	    # $PTII/ptolemy/actor/lib/makefile if jython was found
 	    PTJYTHON_DIR=python
-   	    PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+	    PTJYTHON_PACKAGES="ptolemy.actor.lib.python ptolemy.actor.gui.python"
 	else     
 	    if test -f "$PTII/lib/jython.jar"; then
 	       JYTHON_DIR="$PTII/lib"
@@ -2001,7 +2001,7 @@ changequote([, ])dnl
 	       # FIXME: This is ugly, but we set to python instead of jython
 	       # $PTII/ptolemy/actor/lib/makefile if jython was found
 	       PTJYTHON_DIR=python
-   	       PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+	       PTJYTHON_PACKAGES="ptolemy.actor.lib.python ptolemy.actor.gui.python"
             else 
                AC_MSG_WARN([Failed to find 
     $PTII/lib/jython.jar and
@@ -3061,7 +3061,7 @@ else
 	PT_MSG_RESULT([$ANTLR_DIR])
 	PTPTALON_DIR=ptalon
 	# PTALON_PACKAGES is used in $PTII/doc/makefile
-	PTPTALON_PACKAGES="ptolemy.actor.ptalon ptolemy.actor.ptalon.lib"
+	PTPTALON_PACKAGES="ptolemy.actor.ptalon ptolemy.actor.ptalon.lib ptolemy.actor.ptalon.gt"
     else  
         AC_MSG_WARN([Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     If it is not present, you will not be able to use the 

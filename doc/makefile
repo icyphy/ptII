@@ -314,6 +314,14 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.data.expr \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.domains.fsm.kernel \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.kernel \
+	ptolemy.data.properties.lattice.dimensionSystem \
+	ptolemy.data.properties.lattice.dimensionSystem.actor \
+	ptolemy.data.properties.lattice.dimensionSystem.actor.lib \
+	ptolemy.data.properties.lattice.dimensionSystem.actor.lib.logic \
+	ptolemy.data.properties.lattice.dimensionSystem.data.expr \
+	ptolemy.data.properties.lattice.dimensionSystem.domains.continuous.lib \
+	ptolemy.data.properties.lattice.logicalAND.domains.continuous.lib \
+	ptolemy.data.properties.lattice.logicalAND.domains.modal.kernel \
 	ptolemy.data.properties.lattice.exampleSetLattice \
 	ptolemy.data.properties.lattice.exampleSetLattice.actor \
 	ptolemy.data.properties.lattice.exampleSetLattice.actor.lib \
@@ -394,7 +402,9 @@ EXPERIMENTALPACKAGES =
 
 GRAPHTRANSFORMATIONPACKAGES = \
 	ptolemy.actor.gt \
+	ptolemy.actor.gt.controller \
 	ptolemy.actor.gt.data \
+	ptolemy.actor.gt.gui \
 	ptolemy.actor.gt.ingredients.criteria \
 	ptolemy.actor.gt.ingredients.operations \
 	ptolemy.actor.gt.util \
@@ -409,6 +419,11 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.lib.comm \
 	ptolemy.actor.lib.conversions \
 	ptolemy.actor.lib.gui \
+	ptolemy.actor.gui.exec \
+	ptolemy.actor.gui.jnlp \
+	ptolemy.actor.gui.properties \
+	ptolemy.actor.gui.ptjacl \
+	ptolemy.actor.lib.embeddedJava \
 	ptolemy.actor.lib.image \
 	ptolemy.actor.lib.io \
 	ptolemy.actor.lib.logic \
@@ -427,6 +442,9 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.fsm.kernel \
 	ptolemy.domains.fsm.kernel.ia \
 	ptolemy.domains.fsm.modal \
+	ptolemy.domains.modal.kernel \
+	ptolemy.domains.modal.kernel.ia \
+	ptolemy.domains.modal.modal \
 	ptolemy.domains.sdf.kernel \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
@@ -434,7 +452,9 @@ HYVISUALPACKAGES = \
 	ptolemy.matlab \
 	ptolemy.media.javasound \
 	ptolemy.util \
-	ptolemy.vergil.fsm.modal
+	ptolemy.vergil.fsm.modal \
+	ptolemy.vergil.modal.modal
+
 
 # All the HyVisual generated documentation
 HYVISUAL_DOCS = \
@@ -449,7 +469,9 @@ HYVISUAL_DOCS = \
 PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
+	ptolemy.domains.ptides.lib.targets.luminary \
 	ptolemy.domains.ptides.platform
+
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
@@ -457,6 +479,7 @@ PTINYPACKAGES = \
 	ptolemy.domains.csp.kernel \
 	ptolemy.domains.csp.lib \
 	ptolemy.domains.pn.kernel \
+	ptolemy.domains.pn.kernel.event \
 	ptolemy.domains.pn.lib
 
 # Packages for the SUPERB classes
@@ -566,6 +589,7 @@ ALLPACKAGES = \
 	ptolemy.actor.lib.hoc \
 	ptolemy.actor.lib.jni \
 	ptolemy.actor.lib.net \
+	ptolemy.actor.lib.video \
 	ptolemy.actor.lib.vhdl \
 	ptolemy.actor.sched \
 	ptolemy.actor.util \
@@ -591,6 +615,10 @@ ALLPACKAGES = \
 	ptolemy.codegen.c.domains.sdf.kernel \
 	ptolemy.codegen.c.domains.sdf.lib \
 	ptolemy.codegen.c.kernel \
+	ptolemy.codegen.c.targets.luminary.domains.ptides.lib \
+	ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary \
+	ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel \
+	ptolemy.codegen.c.targets.pret.domains.fsm.kernel \
 	ptolemy.codegen.gui \
 	ptolemy.codegen.java.kernel \
 	ptolemy.codegen.java.actor \
@@ -616,16 +644,23 @@ ALLPACKAGES = \
 	ptolemy.domains.ddf.lib \
 	ptolemy.domains.dt.kernel \
 	ptolemy.domains.fsm.kernel.fmv \
+	ptolemy.domains.giotto.cgc \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.hdf.kernel \
+	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.psdf.kernel \
+	ptolemy.domains.properties \
+	ptolemy.domains.properties.kernel \
+	ptolemy.domains.ptera.kernel \
+	ptolemy.domains.ptera.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
 	ptolemy.domains.space \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
 	ptolemy.domains.sr.lib.gui \
+	ptolemy.domains.tdl.kernel \
 	ptolemy.domains.tm.kernel \
 	ptolemy.domains.tm.lib \
 	ptolemy.data \
@@ -634,6 +669,10 @@ ALLPACKAGES = \
 	ptolemy.data.unit \
 	ptolemy.graph \
 	ptolemy.graph.analysis \
+	ptolemy.graph.analysis.analyzer \
+	ptolemy.graph.analysis.strategy \
+	ptolemy.graph.mapping \
+	ptolemy.graph.sched \
 	ptolemy.gui \
 	ptolemy.math \
 	ptolemy.media \
@@ -651,11 +690,21 @@ ALLPACKAGES = \
 	ptolemy.vergil.fsm \
 	ptolemy.vergil.fsm.fmv \
 	ptolemy.vergil.fsm.ia \
+	ptolemy.vergil.modal \
+	ptolemy.vergil.modal.fmv \
+	ptolemy.vergil.modal.ia \
 	ptolemy.vergil.kernel \
 	ptolemy.vergil.kernel.attributes \
+	ptolemy.vergil.properties \
+	ptolemy.vergil.ptera \
+	ptolemy.vergil.tdl \
 	ptolemy.vergil.toolbox \
 	ptolemy.vergil.tree \
 	ptolemy.vergil.unit \
+	ptolemy.verification.gui \
+	ptolemy.verification.kernel \
+	ptolemy.verification.kernel.maude \
+	ptolemy.verification.lib \
 	util.testsuite
 
 # All the Vergil "full"  generated documentation
@@ -929,6 +978,9 @@ chkallpackages:
 # Try "make chkpackagehtml | $PTII/adm/bin/mkpackagehtml"
 chkpackagehtml:
 	@(cd ..; $(PTII)/adm/bin/chkpackagehtml `echo "$(ALLPACKAGES)" | sed 's/\*.java//g'`)
+
+echo:
+	@echo "$(ALLPACKAGES)" | awk '{for(i=1;i<=NF;i++) {print $$i}}' | sort
 
 # PtDoc, the XML format
 PTDOCPACKAGES = $(ALLPACKAGES)
