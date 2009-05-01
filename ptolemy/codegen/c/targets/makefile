@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/targets
 
-DIRS =		arduino iRobot luminary
+DIRS =		arduino iRobot luminary mpi openRTOS posix pret win32
 
 # Root of the Java directory
 ROOT =		../../../..
