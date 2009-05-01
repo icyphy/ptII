@@ -148,7 +148,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
          *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
-         *  @param execShelltableau The tableau responsible for this frame.
+         *  @param execShellTableau The tableau responsible for this frame.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.

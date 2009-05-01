@@ -726,7 +726,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** Get the last chosen transition.
      *  @return The last chosen transition.
-     *  @see #setLastChosenTransition(Transtion)
+     *  @see #setLastChosenTransition(Transition)
      */
     public Transition getLastChosenTransition() {
         return _lastChosenTransition;
