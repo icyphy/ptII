@@ -235,11 +235,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     /**
      * This method is similar to the getReference method however it it taylored 
      * for use by a driver method.
-     * @param port, the port whose information is desired
+     * @param port the port whose information is desired
      * @param channelAndOffset
      * @param forComposite
      * @param isWrite
-     * @param helper, codegerator helper associated with this port
+     * @param helper codegerator helper associated with this port
      * @return string containing the port information
      */
        public String driverGetReference(TypedIOPort port, String[] channelAndOffset,
