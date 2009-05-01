@@ -60,6 +60,7 @@ import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.expr.UtilityFunctions;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
@@ -299,7 +300,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     signed = "signed" + File.separator;
                     sawSignedOnce = true;
                 }
-                if (signed == "" && sawSignedOnce) {
+                if (signed.equals("") && sawSignedOnce) {
                     // We saw something in the signed directory, but this file
                     // is not there, so we sign it.
                     try {
@@ -387,12 +388,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         try {
             WindowPropertiesAttribute windowProperties = (WindowPropertiesAttribute) _model
                     .getAttribute("_windowProperties");
-            ArrayToken boundsToken = (ArrayToken) ((RecordToken) windowProperties
-                    .getToken()).get("bounds");
-
-            appletWidth = ((IntToken) boundsToken.getElement(2)).intValue();
-            appletHeight = ((IntToken) boundsToken.getElement(3)).intValue();
-        } catch (Exception ex) {
+            if (windowProperties != null) {
+                ArrayToken boundsToken = (ArrayToken) ((RecordToken) windowProperties
+                        .getToken()).get("bounds");
+                appletWidth = ((IntToken) boundsToken.getElement(2)).intValue();
+                appletHeight = ((IntToken) boundsToken.getElement(3)).intValue();
+            }
+        } catch (IllegalActionException ex) {
             System.out.println("Warning: Failed to get applet width "
                     + "and height, using defaults: " + ex.getMessage());
         }
@@ -406,7 +408,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             vergilWidth = vergilSizeToken.getElementAt(0, 0);
             vergilHeight = vergilSizeToken.getElementAt(0, 1);
-        } catch (Exception ex) {
+        } catch (IllegalActionException ex) {
             System.out.println("Warning: Failed to get vergil width "
                     + "and height, using defaults: " + ex.getMessage());
         }
@@ -910,15 +912,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Return the file size as a JNLP file attribute
      */
     private String _jarFileLengthAttribute(String fileName) throws IOException {
-        try {
-            File file = new File(fileName);
-            //System.out.println("AppletWriter: " + fileName + " " + file.length());
-            return "\n             size=\"" + file.length() + "\"";
-        } catch (Exception ex) {
-            System.out.println("Warning, could not find size of \"" + fileName
-                               + "\" : " + ex.getMessage());
-        }
-        return "";
+        File file = new File(fileName);
+        System.out.println("AppletWriter: " + fileName + " " + file.length());
+        return "\n             size=\"" + file.length() + "\"";
     }
 
     // find jar necessary jar files and optionally copy jar files into
