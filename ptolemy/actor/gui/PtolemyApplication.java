@@ -72,7 +72,7 @@ public class PtolemyApplication extends MoMLApplication {
             new PtolemyApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
-            System.exit(0);
+            System.exit(1);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
