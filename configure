@@ -5236,7 +5236,7 @@ echo "${ECHO_T}$PTII/lib/bsh-2.0b4.jar" >&6; }; fi
 	PTBSH_MLC_DIR=mlc
 	PTBSH_RUN_DIR=run
 	# PTBSH_PACKAGES is used in ptII/doc/makefile
-	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util org.mlc.swing.example org.mlc.swing.layout"
+	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util org.mlc.swing.example org.mlc.swing.layout ptolemy.actor.gui.run"
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	        <classpathentry kind=\"lib\" path=\"$PTBSH_JAR\"/> "
     else
@@ -7561,7 +7561,7 @@ echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
 	# $PTII/ptolemy/actor/lib/makefile if jython was found
 	PTJYTHON_DIR=python
 	# PTJYTHON_PACKAGES is used in ptII/doc/makefile
-	PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+	PTJYTHON_PACKAGES="ptolemy.actor.lib.python ptolemy.actor.gui.python"
     fi
 
     if test "$PTJYTHON_DIR" = ""; then
@@ -7573,7 +7573,7 @@ echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
 	    # FIXME: This is ugly, but we set to python instead of jython
  	    # $PTII/ptolemy/actor/lib/makefile if jython was found
 	    PTJYTHON_DIR=python
-   	    PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+	    PTJYTHON_PACKAGES="ptolemy.actor.lib.python ptolemy.actor.gui.python"
 	else
 	    if test -f "$PTII/lib/jython.jar"; then
 	       JYTHON_DIR="$PTII/lib"
@@ -7583,7 +7583,7 @@ echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
 	       # FIXME: This is ugly, but we set to python instead of jython
 	       # $PTII/ptolemy/actor/lib/makefile if jython was found
 	       PTJYTHON_DIR=python
-   	       PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+	       PTJYTHON_PACKAGES="ptolemy.actor.lib.python ptolemy.actor.gui.python"
             else
                { echo "$as_me:$LINENO: WARNING: Failed to find
     $PTII/lib/jython.jar and
@@ -9250,7 +9250,7 @@ echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $ANTLR_DIR" >&5
 echo "${ECHO_T}$ANTLR_DIR" >&6; }; fi
 	PTPTALON_DIR=ptalon
 	# PTALON_PACKAGES is used in $PTII/doc/makefile
-	PTPTALON_PACKAGES="ptolemy.actor.ptalon ptolemy.actor.ptalon.lib"
+	PTPTALON_PACKAGES="ptolemy.actor.ptalon ptolemy.actor.ptalon.lib ptolemy.actor.ptalon.gt"
     else
         { echo "$as_me:$LINENO: WARNING: Failed to find PTII/ptolemy/actor/ptalon/antlr/antlr.jar
     If it is not present, you will not be able to use the
