@@ -176,7 +176,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public void executionError(Manager manager, Throwable throwable) {
         _sawThrowable = throwable;
         _executionFinishedOrError = true;
         throw new RuntimeException("Execution error "
