@@ -157,10 +157,14 @@ public class SDFDirector extends StaticSchedulingDirector {
         _intFlag = false;
         _doubleFlag = false;
         _booleanFlag = false;
+  
+        // Commented out the following code because
+        // generateFireFunctionCode() should be called by
+        // the CodeGenerator.
         
-        //if not inline do this
-        if(!_isTopDirector())
-            code.append(generateFireFunctionCode());
+        // if not inline do this.
+        // if(!_isTopDirector())
+        // code.append(generateFireFunctionCode());
             
         
 
@@ -963,20 +967,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
-    
-    private boolean _isTopDirector() {
-        Director director = ((TypedCompositeActor)
-             _director.getContainer()).getExecutiveDirector();
- 
-        if (director == null) { // true for the top most director
-            
-         return true;  
-        }
-                      
-    return false;
- }  
-   
+    ////                         private methods                        ////   
 
     /** Pad the buffer for the channel of the given port with the given
      *  channel number to a power of two.  Return the new buffer size.
