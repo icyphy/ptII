@@ -103,25 +103,31 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
+
         _manager.addExecutionListener(this);
-        _manager.execute();
+        _activeCount++;
 
-        // PtExecuteApplication uses _activeCount to determine when
-        // the models are done.  We can't do that here because
-        // executeError() might be called from a different thread.
-        // PtExecuteApplication handles this by deferring the change
-        // to the Swing event thread.  We don't have a Swing event thread,
-        // so we are stuck with a busy loop.
-        while (!_executionFinishedOrError) {
-            Thread.yield();
-        }
+        _manager.startRun();
 
-        // FIXME: Sleep so that if we have an error, we can notice that
-        // _sawThrowable was set.  The tests in pn/test require this.
-        Thread.sleep(100);
+        Thread waitThread = new Thread() {
+                public void run() {
+                    waitForFinish();
+                    if (_sawThrowable != null) {
+                        throw new RuntimeException("Execution failed", _sawThrowable);
+                    }
+                }
+            };
+
+        // Note that we start the thread here, which could
+        // be risky when we subclass, since the thread will be
+        // started before the subclass constructor finishes (FindBugs)
+        waitThread.start();
+        waitThread.join();
+
         if (_sawThrowable != null) {
             throw _sawThrowable;
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -176,11 +182,13 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
-    public void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         _sawThrowable = throwable;
         _executionFinishedOrError = true;
-        throw new RuntimeException("Execution error "
-                + Thread.currentThread().getName(), throwable);
+        _activeCount--;
+        if (_activeCount == 0) {
+            notifyAll();
+        }
     }
 
     /** Report that the current execution has finished and
@@ -190,8 +198,12 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  In this class, we set a flag indicating that execution has finished.
      *  @param manager The manager controlling the execution.
      */
-    public void executionFinished(Manager manager) {
+    public synchronized void executionFinished(Manager manager) {
+        _activeCount--;
         _executionFinishedOrError = true;
+        if (_activeCount == 0) {
+            notifyAll();
+        }
     }
 
     /** Report that the manager has changed state.
@@ -223,13 +235,29 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _manager.execute();
     }
 
+    /** Wait for all executing runs to finish, then return.
+     */
+    public synchronized void waitForFinish() {
+        while (_activeCount > 0) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                break;
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The count of currently executing runs. */
+    protected volatile int _activeCount = 0;
+
     /** The manager of this model. */
     protected Manager _manager = null;
 
     /** The exception seen by executionError(). */
-    protected Throwable _sawThrowable = null;
+    protected volatile Throwable _sawThrowable = null;
 
     /** A flag that indicates if the execution has finished or thrown
      *  an error.  The code busy waits until executionFinished() or
@@ -238,5 +266,5 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  this variable is true and _sawThrowable is non-null then
      *  executionError() was called.
      */
-    protected boolean _executionFinishedOrError = false;
+    protected volatile boolean _executionFinishedOrError = false;
 }
