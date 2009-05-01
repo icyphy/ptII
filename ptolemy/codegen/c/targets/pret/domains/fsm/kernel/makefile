@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen domains
+# Makefile for Ptolemy Classic style Codegen fsm kernel
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California
+# @Copyright (c) 2009 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/targets/pret/domains
+ME =		ptolemy/codegen/c/targets/pret/domains/fsm/kernel
 
-DIRS =		fsm giotto
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,19 +45,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	fsm/fsm.jar \
-	giotto/giotto.jar
+PTPACKAGE = 	kernel
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	FSMDirector.java 
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -66,7 +59,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	giotto
+MISC_FILES =	
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
