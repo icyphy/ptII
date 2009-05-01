@@ -173,21 +173,25 @@ test CParseTreeCodeGenerator-16.1 {visitFunctionApplicationNode} {
     parseTreeTraceTest {(function(x:double) x*5.0) (10.0)}
 } {} {Why does this have null 10.0}
 
-test CParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
-    parseTreeTraceTest {map(function(x:int) x+3, {0, 2, 3})}
-} {{Entering node ptolemy.data.expr.ASTPtFunctionApplicationNode
-  Entering node ptolemy.data.expr.ASTPtFunctionDefinitionNode
-  Node ptolemy.data.expr.ASTPtFunctionDefinitionNode evaluated to (function(x:int) (x+3))
-  Entering node ptolemy.data.expr.ASTPtArrayConstructNode
-    Entering node ptolemy.data.expr.ASTPtLeafNode
-    Node ptolemy.data.expr.ASTPtLeafNode evaluated to 0
-    Entering node ptolemy.data.expr.ASTPtLeafNode
-    Node ptolemy.data.expr.ASTPtLeafNode evaluated to 2
-    Entering node ptolemy.data.expr.ASTPtLeafNode
-    Node ptolemy.data.expr.ASTPtLeafNode evaluated to 3
-  Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {0, 2, 3}
-Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {0, 2, 3}
-} {$new(IntArray(3, 3, 0, 2, 3))}}
+# I've commented this out. The expected test result 
+# "$new(IntArray(3, 3, 0, 2, 3))" is not correct, and the 
+# CParseTreeCodeGenerator doesn't currently support map(). -- Jackie
+#
+# test CParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
+#    parseTreeTraceTest {map(function(x:int) x+3, {0, 2, 3})}
+# } {{Entering node ptolemy.data.expr.ASTPtFunctionApplicationNode
+#  Entering node ptolemy.data.expr.ASTPtFunctionDefinitionNode
+#  Node ptolemy.data.expr.ASTPtFunctionDefinitionNode evaluated to (function(x:int) (x+3))
+#  Entering node ptolemy.data.expr.ASTPtArrayConstructNode
+#    Entering node ptolemy.data.expr.ASTPtLeafNode
+#    Node ptolemy.data.expr.ASTPtLeafNode evaluated to 0
+#    Entering node ptolemy.data.expr.ASTPtLeafNode
+#    Node ptolemy.data.expr.ASTPtLeafNode evaluated to 2
+#    Entering node ptolemy.data.expr.ASTPtLeafNode
+#    Node ptolemy.data.expr.ASTPtLeafNode evaluated to 3
+#  Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {0, 2, 3}
+# Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {0, 2, 3}
+# } {$new(IntArray(3, 3, 0, 2, 3))}}
 
 
 test CParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {
