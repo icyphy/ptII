@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Codegen C Targets OpenRTOS Domains
+# Makefile for Java Ptolemy Codegen C Targets OpenRTOS Domains Fsm Kernel
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
-# $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
+# $Id$
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/c/targets/openRTOS/domains
+ME =        ptolemy/codegen/c/targets/openRTOS/domains/fsm/kernel
 
-DIRS =      fsm giotto pn
+DIRS =      
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+ROOT =      ../../../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,18 +43,16 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     domains
+PTPACKAGE =     kernel
 
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS = \
-	fsm/fsm.jar \
-	giotto/giotto.jar \
-	pn/pn.jar
+PTCLASSALLJARS =
 
-JSRCS =
+JSRCS = \
+	FSMDirector.java
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
