@@ -210,7 +210,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
-        if(port.isOutput()&& forComposite == false){
+        Actor actor = (Actor)port.getContainer();
+        Director director = actor.getDirector();
+        System.out.println("Getting reference for port " + port.getFullName() + "of actor " + actor.getFullName() + " of director " + director.getFullName());
+        if(port.isOutput()&& forComposite == false && !director.getFullName().contains("SDF")){
            if(channelAndOffset[0] == ""){
                channelAndOffset[0] = "0";
            }
@@ -775,6 +778,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                         if (port.isOutput()) {
                             sp = port;
                            }
+                        System.out.println("In a non-modal CompositeActor, port: " + port.getFullName());
                         
                     }
                    
@@ -794,7 +798,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                        }else{
                          channelOffset[0] = "0";
                          //code.append(_eol+"in else"+_eol);
-                         srcReference = this.driverGetReference((TypedIOPort)sp,channelOffset,true,true,myHelper);
+                         srcReference = this.getReference((TypedIOPort)sp,channelOffset,true,true,myHelper);
                          sinkReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
                          String temp = _typeConversion(sp,sourcePort);
                        
