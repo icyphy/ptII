@@ -44,7 +44,7 @@ public interface SinkNodeAnalyzer extends GraphAnalyzer {
     ////                         public methods                    ////
 
     /** Return the sink nodes in the graph under analysis.
-     *  Each element of the list is a {@link Node}.
+     *  Each element of the list is a {@link ptolemy.graph.Node}.
      *
      *  @return The sink nodes.
      */

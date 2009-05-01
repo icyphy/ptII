@@ -136,7 +136,7 @@ public class TDLTask extends TypedCompositeActor {
 
         /**
          * Return the list of ports of the modal model that this task reads from.
-         * @param rrefinementInputPorts Inputports of the refinement which is
+         * @param refinementInputPorts Inputports of the refinement which is
          * the container of this task.
          * @param moduleInputPorts Inputports of the module that contains this task.
          * @return List of modal ports.

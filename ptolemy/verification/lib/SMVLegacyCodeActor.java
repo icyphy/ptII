@@ -54,7 +54,7 @@ import ptolemy.kernel.util.StringAttribute;
  *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher
  *         Brooks
- * @version
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red (patrickj)

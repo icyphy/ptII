@@ -44,7 +44,7 @@ public interface SourceNodeAnalyzer extends GraphAnalyzer {
     ////                         public methods                    ////
 
     /** Return the source nodes in the graph under analysis.
-     *  Each element of the list is a {@link Node}.
+     *  Each element of the list is a {@link ptolemy.graph.Node}.
      *
      *  @return Return the source nodes.
      */

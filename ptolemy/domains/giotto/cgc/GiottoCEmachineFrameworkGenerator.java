@@ -493,7 +493,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  In Giotto, the situation that one port has several inputs
      *  is illegal. From the output ports, it is easy to trace
      *  to get receivers for output delivery.
-     *  @return The output code.
+     *  @param model The model
      */
     protected void _outputInitializationCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -674,8 +674,9 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     /** Generate implementation code for the drivers.
      *  The order of ports in model has effect
      *  on the order of driver input parameters
-     *  @return The drivers code.
-     *
+     *  @param model The model.
+     *  @exception IllegalActionException If there is a problem
+     *  generating the input drivers or output drivers code.
      */
     protected void _driversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -686,9 +687,9 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     /** Generate code which will copy the output local
      *  data to the global data. This has to generate
      *  one function for each data type present.
-     * @param model
-     * @return The generated copy functions
-     * @exception IllegalActionException
+     * @param model The model
+     * @exception IllegalActionException If there is a problem
+     * generating the drivers implementation code.
      */
     protected void _outputDriversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -819,7 +820,9 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     }
 
     /** Generate code for the task.
-     *  @return The task code.
+     *  @param model The model.
+     *  @exception IllegalActionException If there is a problem
+     *  generating the task code.
      */
     protected void _taskCodeSkeleton(TypedCompositeActor model)
             throws IllegalActionException {
