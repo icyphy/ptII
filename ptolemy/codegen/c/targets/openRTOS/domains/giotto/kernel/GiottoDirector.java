@@ -793,7 +793,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
              if(actor instanceof CompositeActor&&!(actor.getDirector().getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector")) {
                  System.out.println("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
                 code.append("//this is where I should move stuff to my output ports as a composite actor"+_eol); 
-                  //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
+                if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor"))
+                {
+                    code.append(_eol+"//EmbeddedCActor"+_eol);
+                    
+                }
+               
+                //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
                  List<IOPort> myOutputs = actor.outputPortList();
                  System.out.println("I have "+myOutputs.size()+" port(s) to send info to");
                  Iterator myItr = myOutputs.iterator();
@@ -862,75 +868,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
            // code.append(_eol+"//about to call generateFireCode on the actorHelper");
            code.append(_eol+actorHelper.generateFireCode());
              System.out.println("after calling the generateFireCode on composite actor");
-             /*if(actor instanceof CompositeActor&&(actor.getDirector().getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector")){
-             //transfer outputs to modal model out
-                // I think you may be able to limit it to just teh first port, the modal model controller out. 
-                code.append("//this is where I should move stuff to my output ports as a composite actor"+_eol); 
-                   //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
-                  List<IOPort> myOutputs = actor.outputPortList();
-                  System.out.println("I have "+myOutputs.size()+" port(s) to send info to");
-                  Iterator myItr = myOutputs.iterator();
-                  IOPort port;
-                  CodeGeneratorHelper myHelper;
-                  String srcReference;
-                  String sinkReference;
-                  int i = 0; //sink index counter
-                  int j = 0; // src index counter
-                  while(myItr.hasNext())
-                  {
-                      port = (IOPort)myItr.next();
-                      List connectToMe = port.insideSourcePortList();//port.insidePortList();//port.deepInsidePortList();   and port.insidePortList() lists adder plus , as well as adder output
-                    
-                     //code.append("port: "+port.getFullName()+" has source(s)"+_eol);
-                
-                      Iterator tome= connectToMe.iterator();
-                      while(tome.hasNext())
-                      {
-                          IOPort tempp = (IOPort)tome.next();
-                                                 
-                          // port is sink
-                          //tempp is source
-                          
-                         // System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
-                          String channelOffset [] = {"0","0"};
-                        
-                            System.out.println("the sender port is named "+tempp.getFullName()+" and the reciever is "+port.getFullName());
-                            myHelper = (CodeGeneratorHelper)this._getHelper(tempp.getContainer());
-                           // temp+= _generateTypeConvertFireCode(false)+_eol;
-                          channelOffset[0] = Integer.valueOf(i).toString();
-                          System.out.println("channel offset is "+channelOffset[0]);
-                          srcReference = this.getReference((TypedIOPort)tempp,channelOffset,false,true,myHelper);
-                          System.out.println("after first call to getReference");
-                                                
-                          myHelper = (CodeGeneratorHelper)_getHelper(actor);
-                          channelOffset[0] = Integer.valueOf(j).toString();
-                          System.out.println("channel offset is "+channelOffset[0]);
-                          sinkReference = this.getReference((TypedIOPort)port,channelOffset,false,true,myHelper);
-                          System.out.println("after second call to getReference");
-                          j++;
-                            
-                           // temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
-                          System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+tempp.getDisplayName());
-                          System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
-               
-                          ArrayList args = new ArrayList();    
-                          args.add(sinkReference);
-                          args.add(srcReference);
-                             
-                          code.append(_generateBlockCode("updatePort", args)+_eol);
-                          
-                          
-                      }
-                      i++;  // not sure if this is the correct place to increment i
-                      
-                  
-
-                  }
-                  code.append(_eol+"//done with the transfer out for this composite actor"+_eol);
-                System.out.println("done with the transfer out for this composite actor");
-                             
-             //end transfer modal model outputs out    
-             }*/
+        
         
             code.append("}" + _eol);
              
