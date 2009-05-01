@@ -116,6 +116,9 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
             Thread.yield();
         }
 
+        // FIXME: Sleep so that if we have an error, we can notice that
+        // _sawThrowable was set.  The tests in pn/test require this.
+        Thread.sleep(100);
         if (_sawThrowable != null) {
             throw _sawThrowable;
         }
@@ -173,9 +176,9 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
-    public void executionError(Manager manager, Throwable throwable) {
-        _executionFinishedOrError = true;
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         _sawThrowable = throwable;
+        _executionFinishedOrError = true;
         throw new RuntimeException("Execution error "
                 + Thread.currentThread().getName(), throwable);
     }
@@ -209,6 +212,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();
+            System.exit(1);
         }
     }
 
