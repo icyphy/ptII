@@ -235,7 +235,7 @@ public class PNDirector extends Director {
     /**
      * Return the generated header label for the specified port channel. 
      * @param port The specified port.
-     * @param channel The specified channel number.
+     * @param i The specified channel number.
      * @return The generated header label for the specified port channel.
      */
     public static String generatePortHeader(IOPort port, int i) {
@@ -299,7 +299,6 @@ public class PNDirector extends Director {
 
     /**
      * Generate the transfer output code for the specified port.
-     * @return The generated transfer output code.
      * @param port The specified port.
      * @param code The given buffer to generate code to.
      * @exception IllegalActionException Not thrown here.
@@ -400,12 +399,12 @@ public class PNDirector extends Director {
      * port channel. This returns the value of  
      * "initialQueueCapacity" parameter of the PNDirector
      * @param port The specified port.
-     * @param channel The specified channel number.
+     * @param channelNumber The specified channel number.
      * @exception IllegalActionException If an error occurs
      *  when getting the value from the parameter.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
+	throws IllegalActionException {
         IntToken sizeToken = (IntToken) ((ptolemy.domains.pn.kernel.PNDirector) _director).initialQueueCapacity
         .getToken();
 
