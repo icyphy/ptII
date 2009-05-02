@@ -106,11 +106,12 @@ test composition-2.0 {Liberal links should work if you have a single SDF directo
 
     set r1 [java::new ptolemy.actor.TypedIORelation $toplevel r1]
     
-    # This will throw a level crossing link exception
+    # This used to throw a level crossing link exception, but doesn't
+    # anymore, as of 4/26/09.
     catch {$scaleInput link $r1} errMsg
 
-    # This works
-    $scaleInput liberalLink $r1
+    # This works, but is now redundant.
+    # $scaleInput liberalLink $r1
 
 
     set rampOutput [java::field [java::cast ptolemy.actor.lib.Source $ramp2] \
@@ -134,7 +135,6 @@ test composition-2.0 {Liberal links should work if you have a single SDF directo
     _testSetToken $iterations [java::new {ptolemy.data.IntToken int} 6]
 
     $manager run
-    list [enumToTokenValues [$recorder2 getRecord 0]] $errMsg
-} {{0 2 4 6 8 10} {ptolemy.kernel.util.IllegalActionException: Link crosses levels of the hierarchy
-  in .Toplevel.Composite2.InnerScale2.input and .Toplevel.r1}}
+    list [enumToTokenValues [$recorder2 getRecord 0]]
+} {{0 2 4 6 8 10}}
 
