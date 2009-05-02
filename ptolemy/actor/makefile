@@ -96,6 +96,7 @@ JSRCS = \
 	RelationWidthInference.java \
 	StateReceiver.java \
 	StreamExecutionListener.java \
+	SuperdenseTimeDirector.java \
 	TimedActor.java \
 	TimedDirector.java \
 	TokenGotEvent.java \
