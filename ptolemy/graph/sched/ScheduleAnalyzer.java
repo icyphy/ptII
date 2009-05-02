@@ -35,7 +35,7 @@ import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
 /**
  An interface for all the scheduling strategies on graphs.
  <p>
- @see ptolemy.graph.analysis.analyzer.GraphAnalyzer;
+ @see ptolemy.graph.analysis.analyzer.GraphAnalyzer
  @since Ptolemy II 4.0
  @Pt.ProposedRating red (shahrooz)
  @Pt.AcceptedRating red (ssb)
