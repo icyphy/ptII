@@ -904,63 +904,63 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     $container connect $output $input edge0
     $container description
 } {ptolemy.actor.TypedCompositeActor {.} attributes {
-	{ptolemy.kernel.util.SingletonConfigurableAttribute {.._iconDescription} attributes {
-	}}
+    {ptolemy.kernel.util.SingletonConfigurableAttribute {.._iconDescription} attributes {
+    }}
 } ports {
 } classes {
 } entities {
-	{ptolemy.actor.TypedAtomicActor {..source} attributes {
-		{ptolemy.kernel.util.SingletonConfigurableAttribute {..source._iconDescription} attributes {
-		}}
-	} ports {
-		{ptolemy.actor.TypedIOPort {..source.output} attributes {
-		} links {
-			{ptolemy.actor.TypedIORelation {..edge0} attributes {
-				{ptolemy.data.expr.Parameter {..edge0.Auto} -1}
-				{ptolemy.data.expr.Parameter {..edge0.width} -1}
-			} configuration {width 1}}
-		} insidelinks {
-		} configuration {output opaque {width 1}} receivers {
-		} remotereceivers {
-			{
-			}
-		} type {declared unknown resolved unknown}}
-	}}
-	{ptolemy.actor.TypedAtomicActor {..dest} attributes {
-		{ptolemy.kernel.util.SingletonConfigurableAttribute {..dest._iconDescription} attributes {
-		}}
-	} ports {
-		{ptolemy.actor.TypedIOPort {..dest.input} attributes {
-		} links {
-			{ptolemy.actor.TypedIORelation {..edge0} attributes {
-				{ptolemy.data.expr.Parameter {..edge0.Auto} -1}
-				{ptolemy.data.expr.Parameter {..edge0.width} -1}
-			} configuration {width 1}}
-		} insidelinks {
-		} configuration {input opaque {width 1}} receivers {
-			{
-			}
-		} remotereceivers {
-		} type {declared unknown resolved unknown}}
-	}}
+    {ptolemy.actor.TypedAtomicActor {..source} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {..source._iconDescription} attributes {
+        }}
+    } ports {
+        {ptolemy.actor.TypedIOPort {..source.output} attributes {
+        } links {
+            {ptolemy.actor.TypedIORelation {..edge0} attributes {
+                {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
+                {ptolemy.data.expr.Parameter {..edge0.width} -1}
+            } configuration {width 1}}
+        } insidelinks {
+        } configuration {output opaque {width 1}} receivers {
+        } remotereceivers {
+            {
+            }
+        } type {declared unknown resolved unknown}}
+    }}
+    {ptolemy.actor.TypedAtomicActor {..dest} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {..dest._iconDescription} attributes {
+        }}
+    } ports {
+        {ptolemy.actor.TypedIOPort {..dest.input} attributes {
+        } links {
+            {ptolemy.actor.TypedIORelation {..edge0} attributes {
+                {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
+                {ptolemy.data.expr.Parameter {..edge0.width} -1}
+            } configuration {width 1}}
+        } insidelinks {
+        } configuration {input opaque {width 1}} receivers {
+            {
+            }
+        } remotereceivers {
+        } type {declared unknown resolved unknown}}
+    }}
 } relations {
-	{ptolemy.actor.TypedIORelation {..edge0} attributes {
-		{ptolemy.data.expr.Parameter {..edge0.Auto} -1}
-		{ptolemy.data.expr.Parameter {..edge0.width} -1}
-	} links {
-		{ptolemy.actor.TypedIOPort {..source.output} attributes {
-		} configuration {output opaque {width 1}} receivers {
-		} remotereceivers {
-			{
-			}
-		} type {declared unknown resolved unknown}}
-		{ptolemy.actor.TypedIOPort {..dest.input} attributes {
-		} configuration {input opaque {width 1}} receivers {
-			{
-			}
-		} remotereceivers {
-		} type {declared unknown resolved unknown}}
-	} configuration {width 1}}
+    {ptolemy.actor.TypedIORelation {..edge0} attributes {
+        {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
+        {ptolemy.data.expr.Parameter {..edge0.width} -1}
+    } links {
+        {ptolemy.actor.TypedIOPort {..source.output} attributes {
+        } configuration {output opaque {width 1}} receivers {
+        } remotereceivers {
+            {
+            }
+        } type {declared unknown resolved unknown}}
+        {ptolemy.actor.TypedIOPort {..dest.input} attributes {
+        } configuration {input opaque {width 1}} receivers {
+            {
+            }
+        } remotereceivers {
+        } type {declared unknown resolved unknown}}
+    } configuration {width 1}}
 }}
 
 
