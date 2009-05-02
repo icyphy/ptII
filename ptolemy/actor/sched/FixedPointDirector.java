@@ -36,6 +36,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -117,7 +118,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (eal)
  */
-public class FixedPointDirector extends StaticSchedulingDirector {
+public class FixedPointDirector extends StaticSchedulingDirector
+        implements SuperdenseTimeDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -183,7 +185,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  prefire() method until the elapsed real real time matches
      *  the current time. If the <i>period</i> parameter has value
      *  0.0 (the default), then changing this parameter to true
-     *  has no effect.
+     *  has no effect. Note that in this base class, there is
+     *  no <i>period</i> parameter and time is never advanced,
+     *  so this will have no effect. It has effect in derived
+     *  classes.
      */
     public Parameter synchronizeToRealTime;
 
@@ -356,8 +361,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     }
 
     /** Call postfire() on all contained actors that were fired in the current
-     *  iteration.  If <i>synchronizeToRealTime</i> is true, then
-     *  wait for real time elapse to match or exceed model time. Return false if the model
+     *  iteration.  Return false if the model
      *  has finished executing, either by reaching the iteration limit, or if
      *  no actors in the model return true in postfire(), or if stop has
      *  been requested, or if no actors fired at all in the last iteration.
@@ -372,7 +376,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         if (_debugging) {
             _debug("FixedPointDirector: Called postfire().");
         }
-        _synchronizeToRealTime();
 
         boolean needMoreIterations = true;
         int numberOfActors = getScheduler().getSchedule().size();
@@ -419,6 +422,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // because prefire() can be invoked multiple times in an iteration
         // (particularly if this is inside another FixedPointDirector).
         _resetAllReceivers();
+        
+        // In this base class, the superdense time index is the only advancement
+        // of time, and it advances on every iteration. Derived classes must set
+        // it to zero in their postfire method if they advance time.
+        _index++;
 
         // Check whether the current execution has reached its iteration limit.
         _currentIteration++;
@@ -430,6 +438,18 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
 
         return super.postfire() && needMoreIterations;
+    }
+    
+    /** Return true if the director is ready to fire. 
+     *  If <i>synchronizeToRealTime</i> is true, then
+     *  wait for real time elapse to match or exceed model time.
+     *  The return whatever the base class returns.
+     *  @return True.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _synchronizeToRealTime();
+        return super.prefire();
     }
 
     /** Return an array of suggested directors to be used with
