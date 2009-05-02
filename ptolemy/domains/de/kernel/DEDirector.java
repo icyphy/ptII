@@ -36,6 +36,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
@@ -211,7 +212,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
-public class DEDirector extends Director implements TimedDirector {
+public class DEDirector extends Director implements SuperdenseTimeDirector, TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -904,6 +905,14 @@ public class DEDirector extends Director implements TimedDirector {
     public final double getStopTime() {
         // This method is final for performance reason.
         return getModelStopTime().getDoubleValue();
+    }
+
+    /** Return a superdense time index for the current time,
+     *  where the index is equal to the microstep.
+     *  @return A superdense time index.
+     */
+    public int getIndex() {
+        return _microstep;
     }
 
     /** Initialize all the contained actors by invoke the initialize() method
