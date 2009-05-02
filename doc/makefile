@@ -1185,7 +1185,7 @@ doccheck/index.html:
 		"$(JAVADOC)" \
 			$(JDOCCHECKFLAGS) \
 			$(JDOCCHECKDOCLET) \
-			-d doc/doccheck $(ALLPACKAGES) )
+			-d doc/doccheck `echo $(ALLPACKAGES)| awk '{for(i=1;i<NF;i++) print $$i}' | sort` )
 
 #############
 # FindBugs : http://findbugs.sourceforge.net
