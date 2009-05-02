@@ -42,11 +42,13 @@ import ptolemy.actor.InvariantViolationException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;
@@ -158,7 +160,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  */
 public class FSMDirector extends Director implements
-        ExplicitChangeContext, QuasiTransparentDirector {
+        ExplicitChangeContext, QuasiTransparentDirector, SuperdenseTimeDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -549,6 +551,20 @@ public class FSMDirector extends Director implements
      */
     public ParseTreeEvaluator getParseTreeEvaluator() {
         return new ParseTreeEvaluator();
+    }
+
+    /** Return a superdense time index for the current time.
+     *  This method delegates to the executive director, if there is
+     *  one that implements SuperdenseTimeDirector, and returns current time with index
+     *  0 otherwise.
+     *  @return A superdense time index.
+     */
+    public int getIndex() {
+        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        if (executiveDirector instanceof SuperdenseTimeDirector) {
+            return ((SuperdenseTimeDirector)executiveDirector).getIndex();
+        }
+        return 0;
     }
 
     /** Return true if the model errors are handled. Otherwise, return false
