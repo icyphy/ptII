@@ -77,7 +77,7 @@ test ActorRecursion-1.2 {cover _exportMoML in a model} {
 } {<entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion">
     <property name="recursionActor" class="ptolemy.data.expr.StringParameter" value="Prime_Number_Filter">
     </property>
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 55.0]">
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 225.0]">
     </property>
     <port name="in" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
