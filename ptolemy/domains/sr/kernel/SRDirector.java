@@ -30,9 +30,9 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
  This ensures that the director does not get ahead of real time. However,
  of course, this does not ensure that the director keeps up with real time.
 
- @author Paul Whitaker, Contributor: Ivan Jeukens, Edward A. Lee, Haiyang Zheng
+ @author Paul Whitaker, Edward A. Lee, Contributor: Ivan Jeukens, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Green (pwhitake)
@@ -235,80 +235,99 @@ public class SRDirector extends FixedPointDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _realStartTime = System.currentTimeMillis();
+        _nextFiringTime = getModelTime();
     }
 
-    /** Invoke super.prefire() and then synchronize to real time, if appropriate.
+    /** Invoke super.prefire(), which will synchronize to real time, if appropriate.
+     *  Then if the <i>period</i> parameter is zero, return whatever the superclass
+     *  returns. Otherwise, return true only if the current time of the enclosing
+     *  director (if there is one) matches a multiple of the period. If the
+     *  current time of the enclosing director exceeds the time at which we
+     *  next expected to be invoked, then adjust that time to the least multiple
+     *  of the period that either matches or exceeds the time of the enclosing
+     *  director.
      *  @exception IllegalActionException If port methods throw it.
      *  @return true If all of the input ports of the container of this
      *  director have enough tokens.
      */
     public boolean prefire() throws IllegalActionException {
-        // Set current time based on the enclosing model.
-        boolean result = super.prefire();
-
+        // If the superdense time index is zero
+        // then either this is the first iteration, or
+        // it was set to zero in the last call to postfire().
+        // In the latter case, we expect to be invoked at
+        // the previous time plus the non-zero period.
+        // If the enclosing time does not match or exceed
+        // that (the latter could occur if we have been
+        // dormant in a modal model), then return false.
+        // If the enclosing time exceeds the local current
+        // time, then we must have been dormant. We need to
+        // catch up.
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
-                .getToken()).booleanValue();
-
-        if ((periodValue > 0.0) && synchronizeValue) {
-            int depth = 0;
-            try {
-                synchronized (this) {
-                    while (true) {
-                        long elapsedTime = System.currentTimeMillis()
-                                - _realStartTime;
-
-                        // NOTE: We assume that the elapsed time can be
-                        // safely cast to a double.  This means that
-                        // the SDF domain has an upper limit on running
-                        // time of Double.MAX_VALUE milliseconds.
-                        double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                        double currentTime = getModelTime().getDoubleValue();
-
-                        if (currentTime <= elapsedTimeInSeconds) {
-                            break;
+        if (periodValue > 0.0) {
+            Actor container = (Actor) getContainer();
+            Director executiveDirector = container.getExecutiveDirector();
+            if (executiveDirector != null) {
+                // Not at the top level.
+                Time enclosingTime = executiveDirector.getModelTime();
+                int comparison = _nextFiringTime.compareTo(enclosingTime);
+                if (comparison == 0) {
+                    // The enclosing time matches the time we expect to fire.
+                    // If the enclosing director supports superdense time, then
+                    // make sure we are at index zero before agreeing to fire.
+                    if (executiveDirector instanceof SuperdenseTimeDirector) {
+                        int index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                        if (index == 0) {
+                            return super.prefire();                            
                         }
-
-                        long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
-
-                        if (_debugging) {
-                            _debug("Waiting for real time to pass: " + timeToWait);
-                        }
-
-                        try {
-                            // NOTE: The built-in Java wait() method
-                            // does not release the
-                            // locks on the workspace, which would block
-                            // UI interactions and may cause deadlocks.
-                            // SOLUTION: explicitly release read permissions.
-                            if (timeToWait > 0) {
-                                // Bug fix from J. S. Senecal:
-                                //
-                                //  The problem was that sometimes, the
-                                //  method Object.wait(timeout) was called
-                                //  with timeout = 0. According to java
-                                //  documentation:
-                                //
-                                // " If timeout is zero, however, then
-                                // real time is not taken into
-                                // consideration and the thread simply
-                                // waits until notified."
-                                depth = _workspace.releaseReadPermission();
-                                wait(timeToWait);
-                            }
-                        } catch (InterruptedException ex) {
-                            // Continue executing.
-                        }
+                        // If the index is not zero, do not agree to fire, but request
+                        // a refiring at the next multiple of the period.
+                        _nextFiringTime = _nextFiringTime.add(periodValue);
+                        _fireContainerAt(_nextFiringTime);
+                        return false;
                     }
-                }
-            } finally {
-                if (depth > 0) {
-                    _workspace.reacquireReadPermission(depth);
+                } else if (comparison > 0) {
+                    // Enclosing time has not yet reached our expected firing time.
+                    // No need to call fireAt(), since presumably we already
+                    // did that in postfire().
+                    return false;
+                } else {
+                    // Enclosing time has exceeded our expected firing time.
+                    // We must have been dormant in a modal model.
+                    // Catch up.
+                    while (_nextFiringTime.compareTo(enclosingTime) < 0) {
+                        _nextFiringTime = _nextFiringTime.add(periodValue);
+                    }
+                    if (_nextFiringTime.compareTo(enclosingTime) == 0) {
+                        // The caught up time matches a multiple of the period.
+                        // If the enclosing director supports superdense time, then
+                        // make sure we are at index zero before agreeing to fire.
+                        if (executiveDirector instanceof SuperdenseTimeDirector) {
+                            int index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                            if (index == 0) {
+                                return super.prefire();                            
+                            }
+                            // If the index is not zero, do not agree to fire, but request
+                            // a refiring at the next multiple of the period.
+                            _nextFiringTime = _nextFiringTime.add(periodValue);
+                            _fireContainerAt(_nextFiringTime);
+                            return false;
+                        }
+                        // If the enclosing director does not support superdense time,
+                        // then agree to fire.
+                        return super.prefire();
+                    } else {
+                        // NOTE: The following throws an exception if the time
+                        // requested cannot be honored by the enclosed director
+                        // Presumably, if the user set the period, he or she wanted
+                        // that behavior.
+                        _fireContainerAt(_nextFiringTime);
+                        return false;
+                    }
                 }
             }
         }
-        return result;
+        // If period is zero, then just return the superclass result.
+        return super.prefire();
     }
 
     /** Call postfire() on all contained actors that were fired on the last
@@ -329,12 +348,14 @@ public class SRDirector extends FixedPointDirector {
      *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
+        // The super.postfire() method increments the superdense time index.
         boolean result = super.postfire();
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         if (periodValue > 0.0) {
             Actor container = (Actor) getContainer();
             Director executiveDirector = container.getExecutiveDirector();
             Time currentTime = getModelTime();
+            _nextFiringTime = currentTime.add(periodValue);
 
             if (executiveDirector != null) {
                 // Not at the top level.
@@ -342,11 +363,14 @@ public class SRDirector extends FixedPointDirector {
                 // requested cannot be honored by the enclosed director
                 // Presumably, if the user set the period, he or she wanted
                 // that behavior.
-                _fireContainerAt(currentTime.add(periodValue));
+                _fireContainerAt(_nextFiringTime);
             } else {
-                // At the top level.
-                setModelTime(currentTime.add(periodValue));
+                // Increment time to the next cycle.
+                _currentTime = _nextFiringTime;
             }
+            // Set the index to zero because the next firing will occur at
+            // a strictly greater time.
+            _index = 0;
         }
         return result;
     }
@@ -368,6 +392,6 @@ public class SRDirector extends FixedPointDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The real time at which the model begins executing. */
-    private long _realStartTime = 0L;
+    /** The expected next firing time. */
+    private Time _nextFiringTime;
 }
