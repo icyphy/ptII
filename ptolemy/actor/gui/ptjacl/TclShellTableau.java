@@ -50,7 +50,7 @@ import tcl.lang.TclException;
 
 /**
  A tableau that provides a Tcl Shell for interacting with Ptjacl,
- a 100% Java implementation of Tcl
+ a 100% Java implementation of Tcl.
 
  @author Christopher Hylands and Edward A. Lee
  @version $Id$
@@ -80,7 +80,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
         try {
             //
             _tclInterp.setVar("panelShell", ReflectObject.newInstance(
-                    _tclInterp, ShellTextArea.class, frame._shellTextArea), 0);
+                    _tclInterp, ShellTextArea.class, frame.shellTextArea), 0);
             _tclInterp.eval("proc puts {s} {" + "global panelShell; "
                     + "$panelShell appendJTextArea $s\\n}");
 
@@ -152,12 +152,15 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-            _shellTextArea = new ShellTextArea();
-            _shellTextArea.setInterpreter(tclShellTableau);
-            _shellTextArea.mainPrompt = "% ";
-            component.add(_shellTextArea);
+            shellTextArea = new ShellTextArea();
+            shellTextArea.setInterpreter(tclShellTableau);
+            shellTextArea.mainPrompt = "% ";
+            component.add(shellTextArea);
             getContentPane().add(component, BorderLayout.CENTER);
         }
+
+        /** The text area in which data is written. */
+        public ShellTextArea shellTextArea;
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
@@ -172,10 +175,9 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
             }
         }
 
-        public ShellTextArea _shellTextArea;
     }
 
-    /** A factory that creates a control panel to display a Tcl Shell
+    /** A factory that creates a control panel to display a Tcl Shell.
      */
     public static class Factory extends TableauFactory {
         /** Create a factory with the given name and container.

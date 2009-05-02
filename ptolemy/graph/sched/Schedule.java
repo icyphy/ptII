@@ -848,9 +848,13 @@ public class Schedule extends ScheduleElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // The list of schedule elements contained by this schedule.
+    ////                         protected variables               ////
+
+    /** The list of schedule elements contained by this schedule. */
     protected List _schedule;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The list of Firings for this schedule.
     //private List _firingList;

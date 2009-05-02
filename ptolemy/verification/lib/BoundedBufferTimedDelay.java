@@ -1,5 +1,4 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
+/*    A bounded buffer with a timed delay.
 Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
@@ -36,8 +35,28 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//////////////////////////////////////////////////////////////////////////
+//// BoundedBufferTimedDelay
+
+/**
+   A bounded buffer with a timed delay.
+
+   @author Patrick Cheng
+   @version $Id$
+   @since Ptolemy II 7.2
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
+*/
 public class BoundedBufferTimedDelay extends TimedDelay {
 
+    /** Construct an actor with the specified container and name.
+     *  @param container The composite entity to contain this one.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public BoundedBufferTimedDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

@@ -148,10 +148,10 @@ public class Firing extends ScheduleElement {
      *  If setFiringElement() was never called, then throw an exception.
      *
      *  @return The actor associated with this Firing.
+     *  @see #setFiringElement(Object)
      */
-
-    // FIXME: the exception is never thrown in the original version
     public Object getFiringElement() {
+        // FIXME: the exception is never thrown in the original version
         return _firingElement;
     }
 
@@ -161,6 +161,7 @@ public class Firing extends ScheduleElement {
      *  then the reference will overwritten.
      *
      *  @param firingElement The firing element to associate with this firing.
+     *  @see #getFiringElement()
      */
     public void setFiringElement(Object firingElement) {
         if (this.firingElementClass() != null) {

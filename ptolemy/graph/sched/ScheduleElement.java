@@ -132,6 +132,7 @@ public abstract class ScheduleElement {
      *  then a value of one is returned.
      *
      *  @return The iteration count for this schedule.
+     *  @see #setIterationCount(int)
      */
     public int getIterationCount() {
         return _iterationCount;
@@ -139,6 +140,7 @@ public abstract class ScheduleElement {
 
     /** Return the parent schedule element of this schedule element.
      *  @return Return the parent schedule element of this schedule element.
+     *  @see #setParent(ScheduleElement)
      */
     public ScheduleElement getParent() {
         return _parent;
@@ -150,6 +152,7 @@ public abstract class ScheduleElement {
      *  value of one will be used.
      *
      *  @param count The iteration count for this schedule.
+     *  @see #getIterationCount()
      */
     public void setIterationCount(int count) {
         _incrementVersion();
@@ -165,6 +168,7 @@ public abstract class ScheduleElement {
      *
      *  @param parent The parent schedule element of this schedule
      *   element.
+     *  @see #getParent()
      */
     public void setParent(ScheduleElement parent) {
         _parent = parent;

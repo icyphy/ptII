@@ -158,7 +158,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
         }
     }
 
-    /** A factory that creates a control panel to display a Tcl Shell
+    /** A factory that creates a control panel to display a Python shell.
      */
     public static class Factory extends TableauFactory {
         /** Create a factory with the given name and container.

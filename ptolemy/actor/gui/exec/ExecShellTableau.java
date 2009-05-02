@@ -51,8 +51,7 @@ import ptolemy.util.StringUtilities;
 //// ExecShellTableau
 
 /**
- A tableau that provides a Exec Shell for interacting with Ptjacl,
- a 100% Java implementation of Exec
+ A tableau that provides a Exec Shell for interacting with the Bash shell.
 
  @author Christopher Hylands and Edward A. Lee
  @version $Id$
@@ -75,8 +74,8 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
     public ExecShellTableau(ExecShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _frame = new ExecShellFrame(this);
-        setFrame(_frame);
+        frame = new ExecShellFrame(this);
+        setFrame(frame);
 
         try {
             _interpreter = Runtime.getRuntime().exec("bash -i");
@@ -112,22 +111,25 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
     /** Append the text message to text area.
      *  The output automatically gets a trailing newline appended.
+     *  @param text The test to be appended.
      */
-    public void stderr( /*final*/
-    String text) {
-        _frame._shellTextArea.appendJTextArea(text + "\n");
+    public void stderr( /*final*/ String text) {
+        frame.shellTextArea.appendJTextArea(text + "\n");
     }
 
     /** Append the text message to the text area.
      *  The output automatically gets a trailing newline appended.
+     *  @param text The test to be appended.
      */
     public void stdout(final String text) {
-        _frame._shellTextArea.appendJTextArea(text + "\n");
+        frame.shellTextArea.appendJTextArea(text + "\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    public ExecShellFrame _frame;
+
+    /** The frame in which text is written. */
+    public ExecShellFrame frame;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -160,10 +162,10 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-            _shellTextArea = new ShellTextArea();
-            _shellTextArea.setInterpreter(execShellTableau);
-            _shellTextArea.mainPrompt = "% ";
-            component.add(_shellTextArea);
+            shellTextArea = new ShellTextArea();
+            shellTextArea.setInterpreter(execShellTableau);
+            shellTextArea.mainPrompt = "% ";
+            component.add(shellTextArea);
             getContentPane().add(component, BorderLayout.CENTER);
         }
 
@@ -180,10 +182,10 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             }
         }
 
-        public ShellTextArea _shellTextArea;
+        public ShellTextArea shellTextArea;
     }
 
-    /** A factory that creates a control panel to display a Exec Shell
+    /** A factory that creates a control panel to display a Exec Shell.
      */
     public static class Factory extends TableauFactory {
         /** Create a factory with the given name and container.
