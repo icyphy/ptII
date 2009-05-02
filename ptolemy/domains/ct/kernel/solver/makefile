@@ -44,7 +44,6 @@ DIRS = 		test #demo #doc
 
 # Used to build jar files
 PTPACKAGE = 	solver
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

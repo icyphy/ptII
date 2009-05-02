@@ -57,7 +57,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	tutorial
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 JSRCS = \

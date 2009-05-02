@@ -44,7 +44,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	type
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \

@@ -45,7 +45,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	Router
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = QueueControl.java

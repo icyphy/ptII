@@ -44,7 +44,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	tm
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR

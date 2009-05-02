@@ -45,7 +45,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	jxta
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.

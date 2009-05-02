@@ -59,7 +59,6 @@ CLASSPATH = .$(CLASSPATHSEPARATOR)$(ANTLR_DIR)/antlr.jar$(CLASSPATHSEPARATOR)$(P
 # Used to build jar files
 PTPACKAGE = 	doc
 PTVERSION =	7.1
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Files in this directory (but not the subdirectories) that should go

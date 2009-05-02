@@ -46,7 +46,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ast
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Don't use GNU make extensions here

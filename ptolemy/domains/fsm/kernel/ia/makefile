@@ -45,7 +45,6 @@ CLASSPATH =	$(ROOT)
 
 # Used to build zip files
 PTPACKAGE = 	ia
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \

@@ -44,7 +44,6 @@ DIRS = 		event test
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR

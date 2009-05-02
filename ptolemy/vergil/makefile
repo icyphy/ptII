@@ -45,7 +45,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	vergil
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR

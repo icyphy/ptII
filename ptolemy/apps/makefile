@@ -55,7 +55,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Files or directories that are present, but that 'make checkjunk'

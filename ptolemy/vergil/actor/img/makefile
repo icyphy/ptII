@@ -43,7 +43,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	img
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 

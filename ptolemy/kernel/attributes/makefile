@@ -47,7 +47,6 @@ JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
 PTPACKAGE = 	attributes
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

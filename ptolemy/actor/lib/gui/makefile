@@ -47,7 +47,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	gui
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.

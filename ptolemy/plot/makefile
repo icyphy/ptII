@@ -48,7 +48,6 @@ PTPACKAGE = 	plot
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm, doc/download/index.htm
 PTVERSION =	5.7.1.devel
-PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR

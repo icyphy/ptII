@@ -45,7 +45,6 @@ CLASSPATH =	$(ROOT)
 
 # Used to build zip files
 PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR

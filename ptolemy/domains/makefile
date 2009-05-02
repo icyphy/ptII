@@ -86,6 +86,7 @@ PTAUXALLJARS = \
 		modal/modal.jar \
 		petrinet/petrinet.jar \
 		properties/properties.jar \
+		ptera/ptera.jar \
 		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
 		tm/tm.jar \
@@ -106,7 +107,6 @@ PTCLASSALLJARS = \
 		ct/ct.jar \
 		de/de.jar \
 		ddf/ddf.jar \
-		ptera/ptera.jar \
 		fsm/fsm.jar \
 		hdf/hdf.jar \
 		pn/pn.jar \
@@ -154,6 +154,8 @@ DEMOJARS = \
 	modal/doc/doc.jar \
 	pn/demo/demo.jar \
 	pn/doc/doc.jar \
+	ptera/demo/demo.jar \
+	ptera/doc/doc.jar \
 	rendezvous/demo/demo.jar \
 	rendezvous/doc/doc.jar \
 	sdf/demo/demo.jar \

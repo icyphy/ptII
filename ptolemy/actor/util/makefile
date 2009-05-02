@@ -54,7 +54,6 @@ DIRS = 		test
 
 # Used to build jar files
 PTPACKAGE = 	util
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 

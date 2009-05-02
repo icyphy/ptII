@@ -5,7 +5,6 @@ CLASSPATH = $(ROOT)
 CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 PTPACKAGE = ptolemy
-PTDIST = $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = $(PTPACKAGE).jar
 JSRCS = \
     ./actor/lib/Accumulator.java \

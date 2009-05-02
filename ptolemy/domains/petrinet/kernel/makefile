@@ -45,7 +45,6 @@ CLASSPATH =	../../../..
 
 # Used to build zip files
 PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \

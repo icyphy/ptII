@@ -44,7 +44,6 @@ CLASSPATH =	$(ROOT)
 
 # Used to build zip files
 PTPACKAGE = 	TrafficLight
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = 

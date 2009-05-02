@@ -48,7 +48,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	visualsense
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =

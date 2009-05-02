@@ -42,7 +42,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

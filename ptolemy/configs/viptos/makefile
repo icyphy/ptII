@@ -48,7 +48,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	viptos
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =

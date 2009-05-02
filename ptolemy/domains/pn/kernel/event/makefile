@@ -44,7 +44,6 @@ DIRS = 		test #doc
 
 # Used to build jar files
 PTPACKAGE = 	event
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =	PNProcessEvent.java \
