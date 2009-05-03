@@ -1382,7 +1382,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
-	$(REMOTE1PTIIDIST)/ptolemy/configs \ 
+	$(REMOTE1PTIIDIST)/ptolemy/configs \
 	$(REMOTE1PTIIDIST)/adm
 
 # Directories we run make in before running make in the NONJSALLDIRS
