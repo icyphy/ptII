@@ -1,4 +1,5 @@
-/*
+/* SensorInputDevice simulates a hardware device that senses data from the environment.
+
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
@@ -35,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-////SensorReceiver
+////SensorInputDevice
 
 /** 
  *  Note this actor (or some other subclass of EnvironmentReceiver) should
@@ -51,6 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
  *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Yellow (jiazou)
+ *  @Pt.AcceptedRating 
  */
 public class SensorInputDevice extends InputDevice {
     

@@ -1,4 +1,4 @@
-/*
+/* ActuatorOutputDevice simulates a hardware device that sends actuation data to the environment.
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-////ActuatorTransmitter
+////ActuatorOutputDevice
 
 /** 
  *  Note this actor (or some other subclass of EnvironmentTransmitter) should
@@ -51,6 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
  *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Yellow (jiazou)
+ *  @Pt.AcceptedRating 
  */
 public class ActuatorOutputDevice extends OutputDevice {
     

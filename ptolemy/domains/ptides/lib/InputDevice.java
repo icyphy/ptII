@@ -1,4 +1,5 @@
-/*
+/* Abstract base class for peripheral devices that reads input data from the environment.
+
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
@@ -34,12 +35,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// EnvironmentReceiver
+////InputDevice
 
 /** Base class for environment receivers.
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
  *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Yellow (jiazou)
+ *  @Pt.AcceptedRating 
  */
 public abstract class InputDevice extends TypedAtomicActor {
 

@@ -1,4 +1,4 @@
-/* NetworkInputDevice that simulates a hardware device that reads data from the network.
+/* NetworkInputDevice simulates a hardware device that reads data from the network.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.

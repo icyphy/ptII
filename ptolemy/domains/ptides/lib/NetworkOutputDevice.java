@@ -1,4 +1,5 @@
-/*
+/* NetworkInputDevice simulates a hardware device that sends data to the network.
+
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-////NetworkTransmitter
+////NetworkOutputDevice
 
 /** 
  *  Note this actor (or some other subclass of this class) should
@@ -62,6 +63,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
  *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Yellow (jiazou)
+ *  @Pt.AcceptedRating 
 */
 public class NetworkOutputDevice extends OutputDevice {
     public NetworkOutputDevice(CompositeEntity container, String name)
