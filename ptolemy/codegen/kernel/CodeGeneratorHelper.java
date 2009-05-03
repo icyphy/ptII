@@ -1252,6 +1252,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String processCode(String code) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
+        
+        boolean processAgain = false;
+        
         int currentPos = _getMacroStartIndex(code, 0);
 
         if (currentPos < 0) {
@@ -1297,31 +1300,36 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             String macro = code.substring(currentPos + 1, openParenIndex);
             macro = macro.trim();
 
-            //if (!_codeGenerator.getMacros().contains(macro)) {
-            //    result.append(subcode.substring(0, 1));
-            //    result.append(processCode(subcode.substring(1)));
-            //} else {
             String name = code.substring(openParenIndex + 1, closeParenIndex);
 
             name = processCode(name.trim());
 
-            //List arguments = parseArgumentList(name);
-
             try {
-                result.append(_replaceMacro(macro, name));
+                String replaceString = _replaceMacro(macro, name);
+
+                // If the replaceString contains '$' sign,
+                // then we have to re-process the whole code string.
+                if (_getMacroStartIndex(replaceString, 0) >= 0) {
+                    processAgain = true;
+                }
+                result.append(replaceString);
+                
+                
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to replace the parameter \"" + name
                         + "\" in the macro \"" + macro
                         + "\".\nInitial code was:\n" + code);
             }
+            result.append(code.substring(closeParenIndex + 1, nextPos));
 
-            String string = code.substring(closeParenIndex + 1, nextPos);
-            result.append(string);
-            //}
             currentPos = nextPos;
         }
 
+        if (processAgain) {
+            return processCode(result.toString());
+        } 
+        
         return result.toString();
     }
 
@@ -2912,7 +2920,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         do {
             position = code.indexOf("$", position + 1);
-
         } while (position > 0 && code.charAt(position - 1) == '\\');
 
         return position;
