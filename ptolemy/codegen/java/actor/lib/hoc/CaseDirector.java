@@ -105,7 +105,10 @@ public class CaseDirector extends Director {
             refinementCount++;
             CompositeActor refinement = (CompositeActor) refinements.next();
             CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
-            String refinementName = generateSimpleName(refinement);
+
+            // FIXME: the refinement name may contain '$' signs.
+            String refinementName = refinement.getName();
+
             if (!refinementName.equals("default")) {
                 if (useIf) {
                     // Noop

@@ -79,7 +79,7 @@ public class CaseDirector extends Director {
                 || container.control.getType() == BaseType.INT) {
             // We have a boolean or integer, so we can use a C switch.
             useSwitch = true;
-            code.append(_eol + _INDENT2 + "switch("
+            code.append(_eol + "switch("
                     + _codeGenerator.generateVariableName(container.control)
                     + ") {" + _eol);
         }
@@ -95,29 +95,39 @@ public class CaseDirector extends Director {
             boolean fireRefinement = true;
             refinementCount++;
             CompositeActor refinement = (CompositeActor) refinements.next();
-            CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
-            String refinementName = generateSimpleName(refinement);
+            CodeGeneratorHelper refinementHelper = 
+                (CodeGeneratorHelper) _getHelper(refinement);
+            
+            // FIXME: the refinement name may contain '$' signs.
+            String refinementName = refinement.getName();
+            
             if (!refinementName.equals("default")) {
                 if (useSwitch) {
-                    code.append(_INDENT2 + "case " + refinementName + ":");
+                    code.append("case " + refinementName + ":");
                 } else {
                     if (refinementCount == 1) {
-                        // Add String to the list of _newTypesUsed.
-                        refinementHelper.addNewTypeUsed("String");
-                        code.append(_INDENT2 + "if (!strcmp(");
+                        code.append("if (!strcmp(");
                     } else {
-                        code.append(_INDENT2 + "} else if (!strcmp(");
+                        code.append("} else if (!strcmp(");
                     }
-                    code.append(_codeGenerator
-                            .generateVariableName(container.control)
-                            + ".payload.String, "
-                            + "\""
-                            + refinementName
-                            + "\")) {" + _eol);
+                    
+                    String controlVariable = 
+                        _codeGenerator.generateVariableName(container.control);
+                    
+                    String controlType = 
+                        codeGenType(container.control.getType());
+                    
+                    if (!controlType.equals("String")) {
+                        controlVariable = 
+                            "$convert_" + controlType + "_String(" +
+                            controlVariable + ")";
+                    }
+                    code.append(controlVariable + ", \""
+                        + refinementName + "\")) {" + _eol);
                 }
             } else {
                 if (useSwitch) {
-                    code.append(_INDENT2 + "default: ");
+                    code.append("default: ");
                 } else {
                     defaultRefinement = refinement;
                     // Skip Firing the default refinement for now,
@@ -128,23 +138,23 @@ public class CaseDirector extends Director {
 
             // Fire the refinement
             if (fireRefinement) {
-                    code.append(refinementHelper.generateFireCode());
+                code.append(refinementHelper.generateFireCode());
             }
             fireRefinement = true;
 
             if (useSwitch) {
-                code.append(_INDENT2 + "break;" + _eol + _eol);
+                code.append("break;" + _eol + _eol);
             }
         }
 
         if (defaultRefinement != null) {
-            code.append(_INDENT2 + "} else {" + _eol);
+            code.append("} else {" + _eol);
             CodeGeneratorHelper defaultHelper =
                 (CodeGeneratorHelper) _getHelper(defaultRefinement);
             code.append(defaultHelper.generateFireCode());
         }
 
-        code.append(_INDENT2 + "}" + _eol);
+        code.append("}" + _eol);
 
         return code.toString();
     }
