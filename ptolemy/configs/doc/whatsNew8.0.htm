@@ -36,7 +36,7 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 
 <!-- a little space -->
 <p> &nbsp;
-<h3><a name="modelTransformation">Model Transformation</h3>
+<h3><a name="modelTransformation">Model Transformation</a></h3>
 
 <p>The model transformation facility provides a framework for the
 analysis and transformation of actor models using model transformation
@@ -115,7 +115,7 @@ reusing design patterns by incorporating them into new models.
 
 <!-- a little space -->
 <p> &nbsp;
-<h3><a name="pteraDomain">Ptera (Ptolemy Event Relationship Actor) Domain</h3>
+<h3><a name="pteraDomain">Ptera (Ptolemy Event Relationship Actor) Domain</a></h3>
 
 <p>The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model of computation. A model in Ptera is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
 at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
@@ -173,15 +173,19 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 </ul>
 
-<h2><a name="libraries">New and Enhanced Actor Libraries</a>
+<h2><a name="libraries">New and Enhanced Actor Libraries</a></h2>
 
 <!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII8.0.beta/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
-
+<ul>
 <li><i>New Continuous Time (CT) actors</i>:
 <ul>
 </ul>
 
 <li><i>New Synchronous Dataflow (SDF) actors</i>:
+<ul>
+</ul>
+
+<li><i>New Code Generation Actors</i>:
 <ul>
 </ul>
 
@@ -199,9 +203,6 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
   controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 </ul>
 
-<li><i>New Code Generation Actors</i>:
-<ul>
-</ul>
 
 <h2><a name="bugs">Bug fixes</a></h2>
 
