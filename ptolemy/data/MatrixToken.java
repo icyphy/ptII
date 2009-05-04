@@ -1396,6 +1396,38 @@ public abstract class MatrixToken extends Token {
 
         return result;
     }
+    
+    /** Return an ArrayToken containing the all the values of this
+     *  matrix token.  The type of the tokens in the array is consistent
+     *  with the type of this token.
+     *
+     *  @return An ArrayToken containing the elements of this matrix in
+     *  column-scanned order.
+     */
+    public ArrayToken toArrayColumnMajor() {
+        int rowCount = getRowCount();
+        int columnCount = getColumnCount();
+        Token[] output = new Token[rowCount * columnCount];
+
+        for (int i = 0, n = 0; i < columnCount; i++) {
+            for (int j = 0; j < rowCount; j++) {
+                output[n++] = getElementAsToken(j, i);
+            }
+        }
+
+        ArrayToken result;
+
+        try {
+            result = new ArrayToken(output);
+        } catch (IllegalActionException illegalAction) {
+            // Cannot happen, since the elements of MatrixToken always
+            // have the same type.
+            throw new InternalErrorException("MatrixToken.toArray: Cannot "
+                    + "construct ArrayToken. " + illegalAction.getMessage());
+        }
+
+        return result;
+    }
 
     /** Return the (exact) return type of the toArray function above.  If the
      *  argument is a matrix type, then return an array type of its
