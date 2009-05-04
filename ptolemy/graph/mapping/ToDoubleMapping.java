@@ -42,6 +42,7 @@ public interface ToDoubleMapping extends Mapping {
 
     /** Return the double value associated with the given object.
      *
+     *  @param The given object.
      *  @return Return the double value associated with the given object.
      */
     public double toDouble(Object object);

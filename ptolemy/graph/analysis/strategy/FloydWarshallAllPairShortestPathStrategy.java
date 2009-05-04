@@ -65,6 +65,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *  Floyd-Warshall strategy.
      *
      *  @param graph The given graph.
+     *  @param edgeLengths  The edge lengths.
      */
     public FloydWarshallAllPairShortestPathStrategy(Graph graph,
             ToDoubleMapping edgeLengths) {

@@ -101,6 +101,8 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
     /** The result of the most recent cached computation of the analysis,
      *  as determined by {@link #_compute()}, and without
      *  conversion by {@link #_convertResult(Object)}.
+     *  @return The result of the most recent cached computation.
+     *  @see #setCachedResult(CachedStrategy)
      */
     public Object getCachedResult() {
         return _cachedResult;
@@ -139,7 +141,8 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
 
     /** Set the cached value of this analyzer to the cached value of another
      *  analyzer.
-     *
+     *  @param cacher The other analyzer.
+     *  @see #getCachedResult()
      */
     public void setCachedResult(CachedStrategy cacher) {
         _cachedResult = cacher.getCachedResult();
@@ -162,6 +165,8 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
      *  used, for example, to facilitate incremental analyses.
      *  This method just returns null, and will typically be overridden
      *  in each derived class to perform the appropriate graph analysis.
+     *  @return The results of the graph analysis.  In this base class,
+     *  null is returned.
      */
     protected Object _compute() {
         return null;

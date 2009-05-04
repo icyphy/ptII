@@ -41,6 +41,7 @@ import ptolemy.graph.Graph;
  */
 abstract public class FloydWarshallStrategy extends CachedStrategy {
     /** Construct an FloydWarshallStrategy.
+     *  @param graph The given graph.
      */
     public FloydWarshallStrategy(Graph graph) {
         super(graph);
@@ -73,6 +74,12 @@ abstract public class FloydWarshallStrategy extends CachedStrategy {
 
     /** Derived classed need to override the _floydWarshallComputation method
      *  of this class to provide the correct functionality.
+     *  @param k The counting parameter of the first loop of the Floyd-Warshall
+     *  computation.
+     *  @param i The counting parameter of the second loop of the Floyd-Warshall
+     *  computation.
+     *  @param j The counting parameter of the third and last loop of the
+     *  Floyd-Warshall computation.
      */
     protected void _floydWarshallComputation(int k, int i, int j) {
     }

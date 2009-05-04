@@ -1,5 +1,5 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
+/* A bounded buffer with nondeterministic dealy.
+
 Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
@@ -32,6 +32,18 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//////////////////////////////////////////////////////////////////////////
+//// BoundedBufferNondeterministicDelay
+
+/**
+   A bounded buffer with nondeterministic delay.
+
+   @author Patrick Cheng
+   @version $Id$
+   @since Ptolemy II 7.2
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
+*/
 public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay {
 
     /** Construct an actor with the specified container and name.

@@ -47,6 +47,7 @@ public class ToIntMapMapping extends MapMapping implements ToIntMapping {
      *  of this mapping will be reflected in the mapping. The Map modifications
      *  must follow the restriction that all added values to the Map
      *  must be instances of Integer.
+     *  @param map The given map.
      */
     public ToIntMapMapping(Map map) {
         super(map);

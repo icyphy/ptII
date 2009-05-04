@@ -86,6 +86,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
     /** Return the single source-node (start node) of this analyzer.
      *
      *  @return Return the starting node of this analyzer.
+     *  @see #setStartNode(Node)
      */
     public Node getStartNode() {
         return _startNode;
@@ -97,6 +98,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  The result includes the starting and the ending nodes.
      *
      *  @param endNode The ending node of the path.
+     *  @return The longest path.
      */
     public List path(Node endNode) {
         int[] predecessors = predecessors();
@@ -131,6 +133,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  and can be changed using {@link #setStartNode}.
      *
      *  @param endNode The ending node of the path.
+     *  @param The length of the longest path.
      */
     public double pathLength(Node endNode) {
         double[] distance = distance();
@@ -141,6 +144,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  given node.
      *
      *  @param startNode The given node.
+     *  @see #getStartNode()
      */
     public void setStartNode(Node startNode) {
         _startNode = startNode;

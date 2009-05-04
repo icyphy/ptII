@@ -1743,6 +1743,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Get the port for the specified identifier, which may be of
      *  form portName, portName_isPresent, portName_i, portName_i_isPresent,
      *  etc.
+     *  @param identifier The specified identifier.
+     *  @return The port that corresponds with teh specified identifier.
      *  @exception IllegalActionException If getting the width of the port fails.
      */
     protected Port _getPortForIdentifier(String identifier) throws IllegalActionException {

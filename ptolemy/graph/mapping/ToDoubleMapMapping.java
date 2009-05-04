@@ -47,6 +47,7 @@ public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
      *  of this mapping will be reflected in the mapping. The Map modifications
      *  must follow the restriction that all added values to the Map
      *  must be instances of Double.
+     *  @param map The given map.
      */
     public ToDoubleMapMapping(Map map) {
         super(map);

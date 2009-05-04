@@ -44,6 +44,7 @@ public abstract class MapMapping implements Mapping {
     /** Construct a MapMapping from a given Map.
      *  Modifications to the argument Map after construction
      *  of this mapping will be reflected in the Mapping.
+     *  @param map The given map.
      */
     public MapMapping(Map map) {
         _map = map;
@@ -95,6 +96,6 @@ public abstract class MapMapping implements Mapping {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The Map that this Mapping is based on.
+    /** The Map on which this Mapping is based. */
     protected Map _map;
 }
