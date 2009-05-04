@@ -64,15 +64,17 @@ test TypedIORelation-1.1 {Construct Relations} {
     catch {$p1 link $r1} msg2
 
     set r2 [java::new ptolemy.actor.TypedIORelation $e0 R1]
-    $p1 link $r2
-    $p2 link $r2
+	catch {$p1 link $r2} msg3
+	catch {$p2 link $r2} msg4
 
     list [$r0 getFullName] [$r1 getFullName] [$r2 getFullName] \
 	    $msg1 \
-	    $msg2
-} {. . ..R1 {ptolemy.kernel.util.IllegalActionException: Link crosses levels of the hierarchy
-  in .<Unnamed Object>.E1.P1 and .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Link crosses levels of the hierarchy
-  in .<Unnamed Object>.E1.P1 and .<Unnamed Object>}}
+	    $msg2 \
+		$msg3 \
+		$msg4
+} {. . ..R1 {} {ptolemy.kernel.util.IllegalActionException: Attempt to link more than one relation to a single port.
+  in .<Unnamed Object>.E1.P1 and .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Attempt to link more than one relation to a single port.
+  in .<Unnamed Object>.E1.P1 and .<Unnamed Object>.R1} {}}
 
 test TypedIORelation-1.2 {Attempt to set erroneous container} {
     set e0 [java::new ptolemy.actor.CompositeActor]
