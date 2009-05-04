@@ -69,14 +69,16 @@ public class MultiplyDivide extends AtomicActor {
         ptolemy.actor.lib.MultiplyDivide actor = 
             (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
-//        if (actor.multiply.getWidth() != 1 || actor.divide.getWidth() != 1) {
-//            throw new IllegalActionException(actor, "The property analysis " +
-//            		"currently supports only binary division (e.g. exactly 1 " +
-//            		"connection to the multiply port and 1 connection " +
-//            		"to the divide port.");
-//        }
+        if (actor.multiply.getWidth() != 1 || actor.divide.getWidth() != 1) {
+            throw new IllegalActionException(actor, "The property analysis " +
+            		"currently supports only binary division (e.g. exactly 1 " +
+            		"connection to the multiply port and 1 connection " +
+            		"to the divide port.");
+        }
         
         setAtLeast(actor.output, new FunctionTerm(actor.multiply, actor.divide));
+        setAtLeast(actor.multiply, new MultiplyFunctionTerm(actor.output, actor.divide));
+        setAtLeast(actor.divide, new DivideFunctionTerm(actor.output, actor.multiply));
         
         return super.constraintList();
     }
@@ -134,10 +136,17 @@ public class MultiplyDivide extends AtomicActor {
             if (divideProperty == unitless) {
                 return multiplyProperty;
             }
+
+            if (multiplyProperty == unitless) {
+                return divideProperty;
+            }
             
             if (multiplyProperty == unknown || divideProperty == unknown) {
                 return unknown;
             } 
+            if (multiplyProperty == divideProperty) {
+                return unitless;
+            }
             return _lattice.getElement("TOP");
         }
 
@@ -152,6 +161,171 @@ public class MultiplyDivide extends AtomicActor {
             return new InequalityTerm[] {
                 getPropertyTerm(_multiply),
                 getPropertyTerm(_divide)
+            };
+        }
+    }
+    
+    
+    // This class implements a monotonic function of the input port
+    // type. The result of the function is the same as the input type
+    // if is not Complex; otherwise, the result is Double.
+    private class MultiplyFunctionTerm extends MonotonicFunction {
+
+        TypedIOPort _output;
+        TypedIOPort _divide;
+        
+        public MultiplyFunctionTerm(TypedIOPort output, TypedIOPort divide) {
+            _output = output;
+            _divide = divide;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
+
+        /** Return the function result.
+         *  @return A Property.
+         * @exception IllegalActionException
+         */
+        public Object getValue() throws IllegalActionException {
+            
+            Property outputProperty = (Property) getSolver().getProperty(_output);
+            Property divideProperty = (Property) getSolver().getProperty(_divide);
+
+            Property time = _lattice.getElement("TIME");
+            Property position = _lattice.getElement("POSITION");
+            Property speed = _lattice.getElement("SPEED");
+            Property acceleration = _lattice.getElement("ACCELERATION");
+            Property unitless = _lattice.getElement("UNITLESS");
+            Property unknown = _lattice.getElement("UNKNOWN");
+            
+            if (outputProperty == acceleration && divideProperty == time) {
+                return speed;
+            }
+
+            if (outputProperty == speed && divideProperty == time) {
+                return position;
+            }
+
+            if (outputProperty == time && divideProperty == speed) {
+                return position;
+            }
+
+            if (outputProperty == time && divideProperty == acceleration) {
+                return speed;
+            }
+
+            if (divideProperty == unitless) {
+                return outputProperty;
+            }
+
+            if (outputProperty == unitless) {
+                return divideProperty;
+            }
+            
+            if (outputProperty == unknown || divideProperty == unknown) {
+                return unknown;
+            } 
+            
+            if (outputProperty == divideProperty) {
+                return unitless;
+            }
+            
+            return _lattice.getElement("TOP");
+        }
+
+        public boolean isEffective() {
+            return true;
+        }
+
+        public void setEffective(boolean isEffective) {
+        }
+
+        protected InequalityTerm[] _getDependentTerms() {
+            return new InequalityTerm[] {
+                getPropertyTerm(_output),
+                getPropertyTerm(_divide)
+            };
+        }
+    }
+
+    // This class implements a monotonic function of the input port
+    // type. The result of the function is the same as the input type
+    // if is not Complex; otherwise, the result is Double.
+    private class DivideFunctionTerm extends MonotonicFunction {
+
+        TypedIOPort _output;
+        TypedIOPort _multiply;
+        
+        public DivideFunctionTerm(TypedIOPort output, TypedIOPort multiply) {
+            _output = output;
+            _multiply = multiply;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
+
+        /** Return the function result.
+         *  @return A Property.
+         * @exception IllegalActionException
+         */
+        public Object getValue() throws IllegalActionException {
+            
+            Property outputProperty = (Property) getSolver().getProperty(_output);
+            Property multiplyProperty = (Property) getSolver().getProperty(_multiply);
+
+            Property time = _lattice.getElement("TIME");
+            Property position = _lattice.getElement("POSITION");
+            Property speed = _lattice.getElement("SPEED");
+            Property acceleration = _lattice.getElement("ACCELERATION");
+            Property unitless = _lattice.getElement("UNITLESS");
+            Property unknown = _lattice.getElement("UNKNOWN");
+            
+            if (outputProperty == acceleration && multiplyProperty == speed) {
+                return time;
+            }
+
+            if (outputProperty == speed && multiplyProperty == position) {
+                return time;
+            }
+
+            if (outputProperty == time && multiplyProperty == position) {
+                return speed;
+            }
+
+            if (outputProperty == time && multiplyProperty == speed) {
+                return acceleration;
+            }
+
+            if (multiplyProperty == unitless) {
+                return outputProperty;
+            }
+
+            if (outputProperty == unitless) {
+                return multiplyProperty;
+            }
+            
+            if (outputProperty == unknown || multiplyProperty == unknown) {
+                return unknown;
+            } 
+            
+            if (outputProperty == multiplyProperty) {
+                return unitless;
+            }
+            
+            return _lattice.getElement("TOP");
+        }
+
+        public boolean isEffective() {
+            return true;
+        }
+
+        public void setEffective(boolean isEffective) {
+        }
+
+        protected InequalityTerm[] _getDependentTerms() {
+            return new InequalityTerm[] {
+                getPropertyTerm(_output),
+                getPropertyTerm(_multiply)
             };
         }
     }
