@@ -52,7 +52,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	lib/lib.jar
 
-JSRCS =
+JSRCS = \
+	AtomicActor.java
+	
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

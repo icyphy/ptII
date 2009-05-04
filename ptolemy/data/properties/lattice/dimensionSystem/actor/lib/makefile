@@ -53,8 +53,13 @@ PTCLASSALLJARS = \
 	logic/logic.jar
 
 JSRCS = \
+	Const.java \
+	CurrentTime.java \
 	Expression.java \
-	MultiplyDivide.java
+	MultiplyDivide.java \
+	Scale.java \
+	Source.java
+	
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
