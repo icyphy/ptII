@@ -146,7 +146,7 @@ extends PropertyConstraintHelper {
     }
 
     public void setSameAsByDefault(Object term1, Object term2) {
-        setAtLeast(term1, term2);
+        setSameAs(term1, term2);
 
         if (term1 != null && term2 != null) {
             _solver.incrementStats("# of default constraints", 2);
