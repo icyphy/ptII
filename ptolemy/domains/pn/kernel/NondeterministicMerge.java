@@ -27,19 +27,24 @@
  */
 package ptolemy.domains.pn.kernel;
 
+import java.io.Writer;
 import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -255,15 +260,15 @@ public class NondeterministicMerge extends TypedCompositeActor {
                         director.notifyAll();
                     }
                 }
-//            } else {
-//                try {
-//                    //Actor localActor = new ChannelActor(i, this);
-//
-//                    // NOTE: Probably don't want this overhead.
-//                    // ((NamedObj)localActor).addDebugListener(this);
-//                } catch (KernelException e) {
-//                    throw new InternalErrorException(e);
-//                }
+            } else {
+                try {
+                    Actor localActor = new ChannelActor(i, this);
+
+                    // NOTE: Probably don't want this overhead.
+                    // ((NamedObj)localActor).addDebugListener(this);
+                } catch (KernelException e) {
+                    throw new InternalErrorException(e);
+                }
             }
         }
     }
@@ -272,97 +277,97 @@ public class NondeterministicMerge extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-//    /** Actor to handle an input channel. It has no ports. It uses the
-//     *  ports of the container.
-//     */
-//    private class ChannelActor extends TypedAtomicActor {
-//        /** Construct an actor in the specified container with the specified
-//         *  name. The index is set to 0.  This method is used by t
-//         *  shallow code generator, which requires a (container, name)
-//         *  constructor.
-//         *  @param container The container.
-//         *  @param name The name.
-//         *  @exception NameDuplicationException If an actor
-//         *   with an identical name already exists in the container.
-//         *  @exception IllegalActionException If the actor cannot be contained
-//         *   by the proposed container.
-//         */
-//        public ChannelActor(NondeterministicMerge container, String name)
-//                throws IllegalActionException, NameDuplicationException {
-//            super(container, name);
-//            _channelIndex = 0;
-//            _channelValue = new IntToken(_channelIndex);
-//        }
-//
-//        public ChannelActor(int index, NondeterministicMerge container)
-//                throws IllegalActionException, NameDuplicationException {
-//            super(container, "ChannelActor" + index);
-//            _channelIndex = index;
-//            _channelValue = new IntToken(_channelIndex);
-//        }
-//
-//        // Override the base class to not export anything.
-//        public void exportMoML(Writer output, int depth, String name) {
-//        }
-//
-//        public void fire() throws IllegalActionException {
-//            // If there is no connection, do nothing.
-//            if (input.getWidth() > _channelIndex) {
-//                // NOTE: Reading from the input port of the host actor.
-//                if (!NondeterministicMerge.this._stopRequested
-//                        && input.hasToken(_channelIndex)) {
-//                    if (_debugging) {
-//                        NondeterministicMerge.this
-//                                ._debug("Waiting for input from channel "
-//                                        + _channelIndex);
-//                    }
-//
-//                    // NOTE: Writing to the port of the host actor.
-//                    Token result = input.get(_channelIndex);
-//
-//                    // We require that the send to the two output ports be
-//                    // atomic so that the channel port gets tokens
-//                    // in the same order as the output port.
-//                    // We synchronize on the director because the send()
-//                    // may call wait() on the director of the container,
-//                    // so synchronizing on anything else could cause deadlock.
-//                    synchronized (((NondeterministicMerge) getContainer())
-//                            .getExecutiveDirector()) {
-//                        output.send(0, result);
-//                        channel.send(0, _channelValue);
-//                    }
-//
-//                    if (_debugging) {
-//                        NondeterministicMerge.this._debug("Sent " + result
-//                                + " from channel " + _channelIndex
-//                                + " to the output.");
-//                    }
-//                }
-//            } else {
-//                // Input channel is no longer connected.
-//                // We don't want to spin lock here, so we
-//                // wait.
-//                // NOTE: synchronizing is neither allowed
-//                // nor necessary here. See workspace().wait(Object).
-//                // synchronized (this) {
-//                    try {
-//                        workspace().wait(this);
-//                    } catch (InterruptedException ex) {
-//                        // Ignore and continue executing.
-//                    }
-//                // }
-//            }
-//        }
-//
-//        // Override to return the manager associate with the host.
-//        public Manager getManager() {
-//            return NondeterministicMerge.this.getManager();
-//        }
-//
-//        private int _channelIndex;
-//
-//        private IntToken _channelValue;
-//    }
+    /** Actor to handle an input channel. It has no ports. It uses the
+     *  ports of the container.
+     */
+    private class ChannelActor extends TypedAtomicActor {
+        /** Construct an actor in the specified container with the specified
+         *  name. The index is set to 0.  This method is used by t
+         *  shallow code generator, which requires a (container, name)
+         *  constructor.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception NameDuplicationException If an actor
+         *   with an identical name already exists in the container.
+         *  @exception IllegalActionException If the actor cannot be contained
+         *   by the proposed container.
+         */
+        public ChannelActor(NondeterministicMerge container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            _channelIndex = 0;
+            _channelValue = new IntToken(_channelIndex);
+        }
+
+        public ChannelActor(int index, NondeterministicMerge container)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, "ChannelActor" + index);
+            _channelIndex = index;
+            _channelValue = new IntToken(_channelIndex);
+        }
+
+        // Override the base class to not export anything.
+        public void exportMoML(Writer output, int depth, String name) {
+        }
+
+        public void fire() throws IllegalActionException {
+            // If there is no connection, do nothing.
+            if (input.getWidth() > _channelIndex) {
+                // NOTE: Reading from the input port of the host actor.
+                if (!NondeterministicMerge.this._stopRequested
+                        && input.hasToken(_channelIndex)) {
+                    if (_debugging) {
+                        NondeterministicMerge.this
+                                ._debug("Waiting for input from channel "
+                                        + _channelIndex);
+                    }
+
+                    // NOTE: Writing to the port of the host actor.
+                    Token result = input.get(_channelIndex);
+
+                    // We require that the send to the two output ports be
+                    // atomic so that the channel port gets tokens
+                    // in the same order as the output port.
+                    // We synchronize on the director because the send()
+                    // may call wait() on the director of the container,
+                    // so synchronizing on anything else could cause deadlock.
+                    synchronized (((NondeterministicMerge) getContainer())
+                            .getExecutiveDirector()) {
+                        output.send(0, result);
+                        channel.send(0, _channelValue);
+                    }
+
+                    if (_debugging) {
+                        NondeterministicMerge.this._debug("Sent " + result
+                                + " from channel " + _channelIndex
+                                + " to the output.");
+                    }
+                }
+            } else {
+                // Input channel is no longer connected.
+                // We don't want to spin lock here, so we
+                // wait.
+                // NOTE: synchronizing is neither allowed
+                // nor necessary here. See workspace().wait(Object).
+                // synchronized (this) {
+                    try {
+                        workspace().wait(this);
+                    } catch (InterruptedException ex) {
+                        // Ignore and continue executing.
+                    }
+                // }
+            }
+        }
+
+        // Override to return the manager associate with the host.
+        public Manager getManager() {
+            return NondeterministicMerge.this.getManager();
+        }
+
+        private int _channelIndex;
+
+        private IntToken _channelValue;
+    }
 
     /** Variant of the PNDirector for the NondeterministicMerge actor.
      */
