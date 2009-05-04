@@ -406,8 +406,15 @@ public class Manager extends NamedObj implements Runnable {
                     _setState(IDLE);
                 }
 
-                if (completedSuccessfully) {
-                    _notifyListenersOfCompletion();
+                if (completedSuccessfully && initialThrowable == null) {
+                    // The Exit.tcl test needs this because otherwise
+                    // we throw an exception in wrapup(), but
+                    // notifyListenersOfSuccessfulCompletion() was
+                    // called which causes MoMLSimpleApplication to
+                    // exit before MoMLSimpleApplication was notified
+                    // of the exception.
+
+                    _notifyListenersOfSuccessfulCompletion();
                 }
 
                 // Wrapup may throw an exception, so put the following
@@ -439,7 +446,7 @@ public class Manager extends NamedObj implements Runnable {
                         }
                         if (exceptionHandled) {
                             initialThrowable = null;
-                            _notifyListenersOfCompletion();
+                            _notifyListenersOfSuccessfulCompletion();
                         }
                     }
                 }
@@ -756,7 +763,7 @@ public class Manager extends NamedObj implements Runnable {
                             + throwable);
 
                     if (_executionListeners == null) {
-                        System.err.println(errorMessage);
+                        System.err.println("No executionListeners? Error message was: " + errorMessage);
                         throwable.printStackTrace();
                     } else {
                         ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
@@ -1374,9 +1381,17 @@ public class Manager extends NamedObj implements Runnable {
         _container = compositeActor;
     }
 
-    /** Notify listeners that execution has completed successfully.
+    /** Notify listeners that execution has completed.
+     *  @deprecated Incomplete name, use
+     *  {@link _notifyListenersOfSuccessfulCompletion}
      */
     protected synchronized void _notifyListenersOfCompletion() {
+        _notifyListenersOfSuccessfulCompletion();
+    }
+
+    /** Notify listeners that execution has completed successfully.
+     */
+    protected synchronized void _notifyListenersOfSuccessfulCompletion() {
         if (_debugging) {
             _debug("-- Manager completed execution with " + _iterationCount
                     + " iterations");
