@@ -2,6 +2,12 @@
 #define convert_Array_Array(a) a
 /**/
 
+/*** convert_Array_String() ***/
+char* convert_Array_String(Token a) {
+	return $toString_Array(a);
+}
+/**/
+
 /*** convert_Boolean_Array() ***/
 Token convert_Boolean_Array(boolean a) {
   return $new(Array(1, 1, $new(Boolean(a)), TYPE_Boolean));
