@@ -71,6 +71,7 @@ public class Integrator extends PropertyConstraintHelper {
 
         // TODO: write a monotonic function.
         setAtLeast(actor.state, new FunctionTerm(actor.derivative));
+        setSameAs(actor.state, actor.initialState);
 
         return super.constraintList();
     }
