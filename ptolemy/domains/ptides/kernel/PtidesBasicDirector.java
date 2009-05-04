@@ -143,7 +143,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("========= DE director fires at " + getModelTime()
+            _debug("========= PtidesBasicDirector fires at " + getModelTime()
                     + "  with microstep as " + _microstep);
         }
 
@@ -371,7 +371,7 @@ public class PtidesBasicDirector extends DEDirector {
         _stopFireRequested = false;
 
         if (_debugging) {
-            _debug("DE director fired!");
+            _debug("PtidesBasicDirector fired!");
         }
     }
 
@@ -386,7 +386,7 @@ public class PtidesBasicDirector extends DEDirector {
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
         realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
-        _actorLastConsumedTag = new HashMap<Actor, Tag>();
+        _LastConsumedTag = new HashMap<NamedObj, Tag>();
         _physicalTimeExecutionStarted = null;
         
         // _calculateModelTimeOffsets();
@@ -890,21 +890,36 @@ public class PtidesBasicDirector extends DEDirector {
      *  @throws IllegalActionException 
      */
     protected void _trackLastTagConsumedByActor(DEEvent event) throws IllegalActionException {
-        Actor actor = event.actor();
+        NamedObj obj = event.ioPort();
+        if (obj == null) {
+            obj= (NamedObj) event.actor();
+        }
+        
         Tag tag = new Tag(event.timeStamp(), event.microstep());
-        Tag prevTag = _actorLastConsumedTag.get(actor);
+        Tag prevTag = _LastConsumedTag.get(obj);
         if (prevTag != null) {
             if (tag.compareTo(prevTag) <= 0) {
-                throw new IllegalActionException("Safe to process return the wrong " +
-                		"answer earlier. At actor: " + actor.getName() +
-                		", the tag of the previous processed event is: timestamp = " +
-                		prevTag.timestamp + ", microstep = " + prevTag.microstep +
-                		". The tag of the current event is: timestamp = " +
-                                tag.timestamp + ", microstep = " + tag.microstep + ". ");
+                if (obj instanceof Actor) {
+                    throw new IllegalActionException("Safe to process return the wrong " +
+                            "answer earlier. At Actor: " + obj.getName() +
+                            ", the tag of the previous processed event is: timestamp = " +
+                            prevTag.timestamp + ", microstep = " + prevTag.microstep +
+                            ". The tag of the current event is: timestamp = " +
+                            tag.timestamp + ", microstep = " + tag.microstep + ". ");
+                } else {
+                    throw new IllegalActionException("Safe to process return the wrong " +
+                            "answer earlier. At Actor: " + 
+                            ((IOPort) obj).getContainer().getName() + ", Port " 
+                            + obj.getName() +
+                            ", the tag of the previous processed event is: timestamp = " +
+                            prevTag.timestamp + ", microstep = " + prevTag.microstep +
+                            ". The tag of the current event is: timestamp = " +
+                            tag.timestamp + ", microstep = " + tag.microstep + ". ");
+                }
             }
         }
         // The check was correct, now we replace the previous tag with the current tag.
-        _actorLastConsumedTag.put(actor, tag);
+        _LastConsumedTag.put(obj, tag);
     }
     
     /** For all events in the sensorEventQueue, transfer input events that are ready.
@@ -1273,7 +1288,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  actor fired. This helps to identify cases where safe-to-process analysis failed
      *  unexpectedly. 
      */
-    private HashMap<Actor, Tag> _actorLastConsumedTag;
+    private HashMap<NamedObj, Tag> _LastConsumedTag;
 
     /** The list of currently executing actors and their remaining execution time
      */
