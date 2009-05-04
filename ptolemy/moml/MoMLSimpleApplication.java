@@ -37,6 +37,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication
@@ -123,7 +124,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // started before the subclass constructor finishes (FindBugs)
         waitThread.start();
         waitThread.join();
-
         if (_sawThrowable != null) {
             throw _sawThrowable;
         }
@@ -186,7 +186,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _sawThrowable = throwable;
         _executionFinishedOrError = true;
         _activeCount--;
-        if (_activeCount == 0) {
+        if (_activeCount <= 0) {
             notifyAll();
         }
     }
@@ -201,7 +201,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     public synchronized void executionFinished(Manager manager) {
         _activeCount--;
         _executionFinishedOrError = true;
-        if (_activeCount == 0) {
+        if (_activeCount <= 0) {
             notifyAll();
         }
     }
@@ -224,7 +224,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
     }
 
