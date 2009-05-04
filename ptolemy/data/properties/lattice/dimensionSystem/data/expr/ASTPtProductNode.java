@@ -98,7 +98,7 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
 
             int numChildren = node.jjtGetNumChildren();
 
-            if (numChildren != 2 && tokenList.size() != 1 && 
+            if (numChildren != 2 || tokenList.size() != 1 || 
                     ((Token) tokenList.get(0)).kind != PtParserConstants.MULTIPLY) {
                 throw new IllegalActionException(ASTPtProductNode.this.getSolver(), 
                         "The property analysis " +
