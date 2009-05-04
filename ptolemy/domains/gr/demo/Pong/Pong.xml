@@ -27,10 +27,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1020, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1022, 738}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -182,7 +182,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
     </property>
     <entity name="Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 155.0}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -798,7 +798,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="Pong Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 155.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 742}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1032, 746}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
         </property>
@@ -1083,11 +1083,11 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 319.5}">
                 </property>
-                <property name="x_initialPosition" class="ptolemy.data.expr.Parameter" value="-4.9988938982282E-5">
+                <property name="x_initialPosition" class="ptolemy.data.expr.Parameter" value="-4.9910605892594E-5">
                 </property>
                 <property name="y_initialPosition" class="ptolemy.data.expr.Parameter" value="9.0">
                 </property>
-                <property name="x_initialVelocity" class="ptolemy.data.expr.Parameter" value="4.1231068380273">
+                <property name="x_initialVelocity" class="ptolemy.data.expr.Parameter" value="4.1231068361275">
                 </property>
                 <property name="y_initialVelocity" class="ptolemy.data.expr.Parameter" value="-5.0">
                 </property>
@@ -1884,6 +1884,14 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </property>
         </entity>
+        <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 10.0]">
+            </property>
+        </entity>
+        <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 140.0]">
+            </property>
+        </entity>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -1891,14 +1899,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
@@ -1928,9 +1928,25 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <vertex name="vertex1" value="{525.0, 370.0}">
             </vertex>
         </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
         <link port="LeftArrow" relation="relation11"/>
         <link port="RightArrow" relation="relation9"/>
-        <link port="x_position" relation="relation8"/>
+        <link port="x_position" relation="relation6"/>
         <link port="y_position" relation="relation7"/>
         <link port="PaddlePosition" relation="relation3"/>
         <link port="GameOver" relation="relation"/>
@@ -1939,14 +1955,18 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <link port="Game Model.paddle_x_pos" relation="relation10"/>
         <link port="Game Model.game_over" relation="relation"/>
         <link port="Scale.input" relation="relation4"/>
-        <link port="Scale.output" relation="relation7"/>
+        <link port="Scale.output" relation="relation8"/>
         <link port="Paddle Position.LeftArrow" relation="relation11"/>
         <link port="Paddle Position.RightArrow" relation="relation9"/>
         <link port="Paddle Position.PaddlePosition" relation="relation10"/>
         <link port="Scale3.input" relation="relation10"/>
         <link port="Scale3.output" relation="relation3"/>
         <link port="Scale2.input" relation="relation5"/>
-        <link port="Scale2.output" relation="relation8"/>
+        <link port="Scale2.output" relation="relation2"/>
+        <link port="PeriodicSampler.input" relation="relation2"/>
+        <link port="PeriodicSampler.output" relation="relation6"/>
+        <link port="PeriodicSampler2.input" relation="relation8"/>
+        <link port="PeriodicSampler2.output" relation="relation7"/>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 295}">
