@@ -53,8 +53,7 @@ abstract public class FloydWarshallStrategy extends CachedStrategy {
      *  floyd-warshall like analysis on a given graph.
      *  Derived classed need to override the (@link #_floydWarshallComputation}
      *  method of this class to provide the correct functionality.
-     *
-     *  @param graph The given graph.
+     *  @return The analysis results.
      */
     protected Object _compute() {
         int n = graph().nodeCount();

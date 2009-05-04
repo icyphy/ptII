@@ -39,6 +39,10 @@ public interface ToIntMapping extends Mapping {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the int value associated with the given object */
+    /** Return the int value associated with the given object.
+     *  @param object The given object.
+     *  @return The int value that is associated with given object under
+     *  this mapping.
+     */
     public int toInt(Object object);
 }

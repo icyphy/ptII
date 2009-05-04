@@ -67,7 +67,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *
      * @param graph The given graph.
      * @param edgeProfits The profits associated with the edges of the graph.
-     * @param edgeProfits The costs associated with the edges of the graph.
+     * @param edgeCosts The costs associated with the edges of the graph.
      */
     public ParhiMaximumProfitToCostRatioStrategy(Graph graph,
             ToDoubleMapping edgeProfits, ToIntMapping edgeCosts) {
@@ -111,7 +111,6 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *  in order to have a maximum profit to cost ratio.  In addition the given
      *  object should be the same graph associated with this analyzer.
      *
-     *  @param graph The given graph.
      *  @return True if the graph is a directed and cyclic graph.
      */
     public boolean valid() {

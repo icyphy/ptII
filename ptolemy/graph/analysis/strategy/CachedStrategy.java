@@ -180,6 +180,8 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
      *  see {@link #SelfLoopStrategy#_result()}). This consideration is
      *  important for incremental analyzers that use the cached value
      *  across successive invocations of the analyzer.
+     *  @param result The cached result to be converted.
+     *  @return The form suitable for access via {@link #_result()}.
      */
     protected Object _convertResult(Object result) {
         return result;

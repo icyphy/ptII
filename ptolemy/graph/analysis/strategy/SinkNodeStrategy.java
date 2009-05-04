@@ -85,7 +85,6 @@ public class SinkNodeStrategy extends CachedStrategy implements
     /** Check compatibility of the class of graph. The given graph
      *  must be an instance of DirectedGraph.
      *
-     *  @param graph The given graph.
      *  @return True if the given graph is of class DirectedGraph.
      */
     public boolean valid() {
