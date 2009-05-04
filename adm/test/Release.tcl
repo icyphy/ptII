@@ -32,18 +32,18 @@
 
 # Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
+# Get rid of any previous lists of .java files etc.
+exec make clean
+
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
 test release-1.1 {Check for missing makefiles} {
-    exec make missingMakefiles
+    exec make --silent missingMakefiles
 } {./config/makefile
 ./doc/coding/templates/makefile
-./jni/test/jni/meaningOfLife/makefile
-./jni/test/jni/testDeux/makefile
-./jni/test/jni/testTrois/makefile
 ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/math/makefile
@@ -62,15 +62,15 @@ test release-1.1 {Check for missing makefiles} {
 ./ptolemy/plot/servlet/makefile}
 
 test release-2.1 {Check for directories that have java files, but are not in doc/makefile} {
-    exec make missingDocPackages
-} {.
-config
+    exec make --silent missingDocPackages
+} {config
 contrib.actor.lib.example
 diva.util.java2d.svg
 doc.coding.templates
 doc.tutorial
 jni.launcher
 jni.test.jni.meaningOfLife
+jni.test.jni.Streaming
 jni.test.jni.testDeux
 jni.test.jni.testTrois
 ptolemy.actor.corba
@@ -81,29 +81,22 @@ ptolemy.actor.lib.javasound.test.pitchshift
 ptolemy.actor.lib.jxta
 ptolemy.actor.lib.tutorial
 ptolemy.backtrack.automatic.ptolemy.math
-ptolemy.backtrack.eclipse.ast
-ptolemy.backtrack.eclipse.ast.transform
-ptolemy.backtrack.eclipse.plugin
-ptolemy.backtrack.eclipse.plugin.actions
 ptolemy.backtrack.eclipse.plugin.actions.codestyle
 ptolemy.backtrack.eclipse.plugin.compatibility
 ptolemy.backtrack.eclipse.plugin.console
 ptolemy.backtrack.eclipse.plugin.dialogs
-ptolemy.backtrack.eclipse.plugin.editor
-ptolemy.backtrack.eclipse.plugin.preferences
-ptolemy.backtrack.eclipse.plugin.util
 ptolemy.backtrack.eclipse.plugin.widgets
 ptolemy.backtrack.test.array1
+ptolemy.backtrack.test.ptolemy.backtrack.test.array1
+ptolemy.backtrack.test.ptolemy.backtrack.test.random1
+ptolemy.backtrack.test.ptolemy.backtrack.test.test1
+ptolemy.backtrack.test.ptolemy.backtrack.test.test2
 ptolemy.backtrack.test.random1
 ptolemy.backtrack.test.test1
 ptolemy.backtrack.test.test2
 ptolemy.backtrack.util.java.util
 ptolemy.caltrop.ddi.util
 ptolemy.chic
-ptolemy.codegen.c.targets.luminary.domains.ptides.lib
-ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary
-ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel
-ptolemy.codegen.c.targets.pret.domains.fsm.kernel
 ptolemy.component
 ptolemy.component.data
 ptolemy.component.data.type
