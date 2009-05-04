@@ -262,7 +262,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 }
             } else {
                 try {
-                    Actor localActor = new ChannelActor(i, this);
+                    /*Actor localActor =*/ new ChannelActor(i, this);
 
                     // NOTE: Probably don't want this overhead.
                     // ((NamedObj)localActor).addDebugListener(this);
