@@ -51,6 +51,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyFailedRegressionTestException;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.PropertyResolutionException;
@@ -264,6 +265,19 @@ public class PropertyConstraintSolver extends PropertySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Return the property value associated with the specified object.
+     * @param object The specified object.
+     * @return The property of the specified object.
+     */
+    public Property getProperty(Object object) {
+        try {
+            return (Property) getPropertyTerm(object).getValue();
+        } catch (IllegalActionException ex) {
+            return null;
+        }
+    }
+    
     /**
      * Return the property term from the given object.
      * @param object The given object.
