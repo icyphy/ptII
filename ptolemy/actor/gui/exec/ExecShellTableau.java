@@ -169,6 +169,13 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             getContentPane().add(component, BorderLayout.CENTER);
         }
 
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public variables                  ////
+
+        /** The text area tableau used for input and output. */
+        public ShellTextArea shellTextArea;
+
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
         protected void _help() {
@@ -181,8 +188,6 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                 _about();
             }
         }
-
-        public ShellTextArea shellTextArea;
     }
 
     /** A factory that creates a control panel to display a Exec Shell.

@@ -58,6 +58,10 @@ package ptolemy.actor.gui.jnlp;
  @Pt.AcceptedRating Red (cxh)
  */
 public class PtinySandboxApplication extends MenuApplication {
+    /** Main method that sets user.dir as necessary and calls
+     *  MenuApplication.main().
+     *  @param args Arguments to be passed on to MenuApplication.main()
+     */
     public static void main(final String[] args) {
         // Since we are running in a sandbox, we do not set the
         // securityManager to null

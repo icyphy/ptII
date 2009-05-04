@@ -159,7 +159,10 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
             getContentPane().add(component, BorderLayout.CENTER);
         }
 
-        /** The text area in which data is written. */
+        ///////////////////////////////////////////////////////////////////
+        ////                         public variables                  ////
+
+        /** The text area tableau used for input and output. */
         public ShellTextArea shellTextArea;
 
         ///////////////////////////////////////////////////////////////////
@@ -174,7 +177,6 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
                 _about();
             }
         }
-
     }
 
     /** A factory that creates a control panel to display a Tcl Shell.

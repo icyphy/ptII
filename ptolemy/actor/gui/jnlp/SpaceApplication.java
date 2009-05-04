@@ -57,7 +57,7 @@ package ptolemy.actor.gui.jnlp;
  */
 public class SpaceApplication extends MenuApplication {
     /** Main method that sets user.dir as necessary and calls
-     *  MenuApplication.main()
+     *  MenuApplication.main().
      *  @param args Arguments to be passed on to MenuApplication.main()
      */
     public static void main(final String[] args) {
