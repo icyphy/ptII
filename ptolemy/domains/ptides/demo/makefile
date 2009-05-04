@@ -32,7 +32,7 @@
 ME =		ptolemy/domains/ptides/demo
 
 DIRS =		ManyPlatforms OnePlatform PtidesBasicOnePlatform PtidesBasicTwoPlatformsNetworkSensorEvents \
-		PtidesTDL TDLModuleInPtides ThreePlatforms TriggeredSensors TwoPlatforms
+		PtidesSimulator PtidesTDL TDLModuleInPtides ThreePlatforms TriggeredSensors TwoPlatforms
 
 # Root of the Java directory
 ROOT =		../../../..
