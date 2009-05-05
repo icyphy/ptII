@@ -3857,14 +3857,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         Throwable staticThrowable = ((ExceptionInInitializerError) error)
                                 .getCause();
 
+                        String causeDescription = "";
+                        if (staticThrowable == null) {
+                            // The SerialComm actor may have a null cause
+                            causeDescription = KernelException.stackTraceToString(error);
+                        } else {
+                            causeDescription = KernelException.stackTraceToString(staticThrowable);
+                        }
                         // I think we should report the cause and a stack
                         // trace for all the exceptions thrown here,
                         // but it sure makes the output ugly.
                         // Instead, I just debug from here -cxh
                         errorMessage.append("ExceptionInInitializerError: "
                                 + "Caused by:\n "
-                                + KernelException
-                                        .stackTraceToString(staticThrowable));
+                                + causeDescription);
                     } else {
                         // If there is a class format error in the
                         // code generator, then we may end up obscuring
@@ -3898,7 +3904,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
 
                     try {
-                        reference = _attemptToFindMoMLClass(className, source);
+                        reference = _attemptToFindMoMLClass(className, source);  
                     } catch (XmlException ex2) {
                         throw new Exception("-- " + errorMessage.toString()
                                 + className + ": XmlException:\n"
