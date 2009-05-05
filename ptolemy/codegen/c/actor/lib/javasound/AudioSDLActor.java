@@ -68,6 +68,7 @@ public class AudioSDLActor extends CCodeGeneratorHelper {
         Set files = super.getHeaderFiles();
 
         _codeGenerator.addInclude("-I/usr/local/include/SDL");
+        _codeGenerator.addInclude("-I/usr/include/SDL");
 
         if (StringUtilities.getProperty("os.name").equals("SunOS")) {
             _codeGenerator.addLibrary(" -Wl,-Bstatic -D_REENTRANT "
@@ -75,7 +76,8 @@ public class AudioSDLActor extends CCodeGeneratorHelper {
                     + "-lpthread -lposix4 -lm -L/usr/openwin/lib "
                     + "-R/usr/openwin/lib -lX11 -lXext");
         } else {
-            _codeGenerator.addLibrary("-L/usr/local/lib -lsdl");
+	    // Use -L/usr/lib -lSDL for linux
+            _codeGenerator.addLibrary("-L/usr/local/lib -L/usr/lib -lSDL");
         }
 
         files.add("<stdio.h>");
