@@ -1369,7 +1369,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/ \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/exampleSetLattice \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalAND \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalORBackward \
+	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalOrBackward \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/token/firstValueToken \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/properties/kernel \
