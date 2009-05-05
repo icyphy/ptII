@@ -353,6 +353,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/x10/x10.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	ptolemy/actor/ptalon/gt/gt.jar \
+	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	vendors/misc/x10/tjx10p-13/lib/x10.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
@@ -364,6 +365,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/distributed/distributed.jar \
 	ptolemy/distributed/demo/demo.jar \
+	ptolemy/data/properties/properties.jar \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
@@ -390,9 +392,13 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/verification/verification.jar \
-	ptolemy/vergil/erg/erg.jar \
+	ptolemy/domains/ptera/ptera.jar \
+	ptolemy/domains/ptera/demo/demo.jar \
+	ptolemy/domains/ptera/doc/doc.jar \
+	ptolemy/vergil/ptera/ptera.jar \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
+	ptolemy/vergil/properties/properties.jar \
 	ptolemy/vergil/tdl/tdl.jar \
 	$(PTDATABASE_JNLP_JARS) \
 	$(RUN_JARS) \
