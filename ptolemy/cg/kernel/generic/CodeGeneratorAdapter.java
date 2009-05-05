@@ -144,13 +144,6 @@ public class CodeGeneratorAdapter extends NamedObj {
     public String generateInitializeCode() throws IllegalActionException {
         return _strategy.generateInitializeCode();
     }
-    
-    public String generateIterationCode(String countExpression)
-        throws IllegalActionException {
-     // FIXME: This is to be used in future re-structuring.
-        return _strategy.generateIterationCode(countExpression);
-        
-    }
 
     /** Generate mode transition code. The mode transition code
      *  generated in this method is executed after each global
@@ -176,6 +169,10 @@ public class CodeGeneratorAdapter extends NamedObj {
         return _strategy.generatePostfireCode();
     }
 
+    /** Generate the prefire code of the associated composite actor.
+    *  @return The prefire code of the associated composite actor.
+    *  @exception IllegalActionException If illegal macro names are found.
+    */    
     public String generatePrefireCode() throws IllegalActionException {
         // FIXME: This is to be used in future re-structuring.
         return _strategy.generatePrefireCode();

@@ -108,8 +108,6 @@ import ptolemy.util.StringUtilities;
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ParseTreeCodeGenerator {
 
-    GenericCodeGenerator _generator;
-
     public CParseTreeCodeGenerator(GenericCodeGenerator generator) {
         _generator = generator;
     }
@@ -1739,6 +1737,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The code generator. */
+    private GenericCodeGenerator _generator;
+    
     /** A static list of the primitive types supported by the code generator. */
     //private static final List _primitiveTypes = Arrays.asList(new String[] {
     //        "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",

@@ -310,12 +310,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return _generateBlockByName(_defaultBlocks[1]);
     }
 
-    public String generateIterationCode(String countExpression)
-        throws IllegalActionException {
-    // FIXME: This is to be used in future re-structuring.
-    return "";
-    }
-
     /** Generate mode transition code. The mode transition code
      *  generated in this method is executed after each global
      *  iteration, e.g., in HDF model.  Do nothing in this base class.
@@ -348,6 +342,11 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return processCode(code.toString());
     }
 
+    /** Generate the prefire code of the associated composite actor.
+    *
+    *  @return The prefire code of the associated composite actor.
+    *  @exception IllegalActionException If illegal macro names are found.
+    */
     public String generatePrefireCode() throws IllegalActionException {
         // FIXME: This is to be used in future re-structuring.
         StringBuffer code = new StringBuffer();
@@ -450,6 +449,9 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return (NamedObj) _object;
     }
 
+    /** Return the director.
+     *  @return The director.
+     */
     public ptolemy.actor.Director getDirector() {
         ptolemy.actor.Director director =
             ((Actor) _object).getExecutiveDirector();
@@ -461,6 +463,10 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return director;
     }
 
+    /** Return the director adapter.
+     *  @return The director adapter.
+     *  @exception IllegalActionException If the director adapter class cannot be found.
+     */
     public Director getDirectorAdapter() throws IllegalActionException {
         return (Director) _getAdapter(getDirector());
     }
