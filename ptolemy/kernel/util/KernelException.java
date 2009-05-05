@@ -413,7 +413,9 @@ public class KernelException extends Exception {
     public static String stackTraceToString(Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
-        throwable.printStackTrace(printWriter);
+        if (throwable != null) {
+            throwable.printStackTrace(printWriter);
+        }
         return stringWriter.toString();
     }
 
