@@ -192,7 +192,7 @@ public class HDFDirector extends SDFDirector {
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
         if (!inline) {
-            code.append("int i;" + _eol);
+            code.append("int $actorSymbol(i);" + _eol);
         }
         code.append("switch ("
                 + containerHelper
@@ -266,7 +266,7 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < " + count + " ; i++) {"
+                        code.append("for ($actorSymbol(i) = 0; $actorSymbol(i) < " + count + " ; $actorSymbol(i)++) {"
                                 + _eol);
                     }
 
@@ -308,7 +308,7 @@ public class HDFDirector extends SDFDirector {
         code.append(containerHelper.processCode("$actorSymbol(fired) = 1;"
                 + _eol));
 
-        return code.toString();
+        return processCode(code.toString());
     }
 
     /** Generate the initialize code for the associated HDF director. Generate
@@ -583,7 +583,7 @@ public class HDFDirector extends SDFDirector {
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
 
-                    String name = inputPort.getName();
+                    String name = generateSimpleName(inputPort);
                     if (inputPort.isMultiport()) {
                         name = name + '#' + i;
                     }
@@ -658,7 +658,7 @@ public class HDFDirector extends SDFDirector {
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
-                    String name = outputPort.getName();
+                    String name = generateSimpleName(outputPort);
                     if (outputPort.isMultiport()) {
                         name = name + '#' + i;
                     }
