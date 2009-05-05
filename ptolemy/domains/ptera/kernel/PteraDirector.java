@@ -1294,7 +1294,7 @@ public class PteraDirector extends Director implements TimedDirector,
     private boolean _delegateFireAt = false;
 
     /** Whether an ending event is processed in the current firing.
-     *  @see Event#isEndingEvent
+     *  @see ptolemy.domains.ptera.kernel.Event#isEndingEvent()
      */
     private boolean _ending;
 
