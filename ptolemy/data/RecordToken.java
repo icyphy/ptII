@@ -66,6 +66,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     /** Construct a RecordToken with no fields.
      */
     public RecordToken() {
+    	_initializeStorage();
         String[] labels = new String[0];
         Token[] values = new Token[0];
         try {
@@ -88,6 +89,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     public RecordToken(String[] labels, Token[] values)
             throws IllegalActionException {
+    	_initializeStorage();
         _initialize(labels, values);
     }
 
@@ -97,6 +99,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  contain a parsable record.
      */
     public RecordToken(String init) throws IllegalActionException {
+    	_initializeStorage();
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
 
@@ -131,6 +134,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  values.
      */
     public RecordToken(Map fieldMap) throws IllegalActionException {
+    	_initializeStorage();
         Iterator fields = fieldMap.entrySet().iterator();
         while (fields.hasNext()) {
             Map.Entry entry = (Map.Entry) fields.next();
@@ -690,6 +694,15 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         return new RecordToken(newLabels, newValues);
     }
+    
+    /**
+     * Subclasses of RecordToken may choose a different Map implementation
+     * TreeMap is used in the base class to provide naturally-ordered labels
+     * This may not be desired in some applications.
+     */
+    protected void _initializeStorage() {
+    	_fields = new TreeMap();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -722,5 +735,5 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private Map _fields = new TreeMap();
+    protected Map _fields = null;
 }
