@@ -138,6 +138,9 @@ public class Event extends State {
         isFinalEvent = new Parameter(this, "isFinalEvent");
         isFinalEvent.setTypeEquals(BaseType.BOOLEAN);
         isFinalEvent.setExpression("false");
+        isEndingEvent = new Parameter(this, "isEndingEvent");
+        isEndingEvent.setTypeEquals(BaseType.BOOLEAN);
+        isEndingEvent.setExpression("false");
 
         parameters = new ParametersAttribute(this, "parameters");
 
@@ -312,7 +315,7 @@ public class Event extends State {
      *  automatically scheduled at model time 0 in the Ptera director's event
      *  queue.
      *
-     *  @return true if this event is a final event, or false otherwise.
+     *  @return true if this event is an initial event, or false otherwise.
      *  @exception IllegalActionException If the expression of the
      *   isInitialEvent parameter cannot be parsed or cannot be evaluated, or if
      *   the result of evaluation violates type constraints, or if the result of
@@ -320,6 +323,24 @@ public class Event extends State {
      */
     public boolean isInitialEvent() throws IllegalActionException {
         return ((BooleanToken) isInitialEvent.getToken()).booleanValue();
+    }
+    
+    /** Return whether this event is an ending event. When an ending event in a
+     *  submodel is processed, the outgoing scheduling relations from the event
+     *  that the submodel is associated with should be evaluated.
+     *  <p>
+     *  The difference between an ending event and a final event is that the
+     *  latter also clears the submodel's local event queue, whereas the former
+     *  doesn't. It just triggers the outgoing scheduling relations.
+     *
+     *  @return true if this event is an ending event, or false otherwise.
+     *  @exception IllegalActionException If the expression of the
+     *   isEndingEvent parameter cannot be parsed or cannot be evaluated, or if
+     *   the result of evaluation violates type constraints, or if the result of
+     *   evaluation is null and there are variables that depend on this one.
+     */
+    public boolean isEndingEvent() throws IllegalActionException {
+        return ((BooleanToken) isEndingEvent.getToken()).booleanValue();
     }
 
     /** Continue the processing of this event with the given arguments from the
@@ -554,4 +575,14 @@ public class Event extends State {
     /** Version of _parserScope.
      */
     private long _parserScopeVersion = -1;
+    
+    /** A Boolean parameter that determines whether the event is the ending of a
+     *  submodel, which means the outgoing scheduling relations from the event
+     *  that the submodel is associated with should be evaluated. The difference
+     *  between an ending event and a final event is that the latter also clears
+     *  the submodel's local event queue, whereas the former doesn't. It just
+     *  triggers the outgoing scheduling relations.
+     * 
+     */
+    public Parameter isEndingEvent;
 }

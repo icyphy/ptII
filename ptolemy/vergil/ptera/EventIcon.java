@@ -131,6 +131,9 @@ public class EventIcon extends StateIcon {
             if (event.isFinalEvent()) {
                 return _FINAL_COLOR;
             }
+            if (event.isEndingEvent()) {
+                return _ENDING_COLOR;
+            }
         } catch (Throwable t) {
             // Ignore and return the default.
         }
@@ -201,6 +204,8 @@ public class EventIcon extends StateIcon {
     private static final Color _FINAL_COLOR = new Color(255, 64, 64);
 
     private static final Color _INITIAL_COLOR = new Color(64, 255, 64);
+    
+    private static final Color _ENDING_COLOR = new Color(255, 64, 64);
 
     private static final double _MIN_HEIGHT = 20.0;
 }

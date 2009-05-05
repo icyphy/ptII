@@ -263,6 +263,8 @@ public class PteraDirector extends Director implements TimedDirector,
      *  event.
      */
     public void fire() throws IllegalActionException {
+        _ending = false;
+
         if (!_isInController()) {
             PteraModalModel modalModel = (PteraModalModel) getContainer();
             List<?> controllers = modalModel.entityList(PteraController.class);
@@ -296,6 +298,9 @@ public class PteraDirector extends Director implements TimedDirector,
             // Fire the refinements of all input events.
             for (TypedActor refinement : _initializedRefinements) {
                 _fireActor(refinement, null);
+                if (_ending) {
+                    return;
+                }
             }
 
             Set<TimedEvent> timedEvents = new LinkedHashSet<TimedEvent>();
@@ -316,6 +321,9 @@ public class PteraDirector extends Director implements TimedDirector,
                 if (!event.canceled && event.contents instanceof Event) {
                     firedEvents.add(event);
                     _fire(event);
+                    if (_ending) {
+                        return;
+                    }
                 }
             }
         }
@@ -341,6 +349,9 @@ public class PteraDirector extends Director implements TimedDirector,
                     }
 
                     _fire(timedEvent);
+                    if (_ending) {
+                        return;
+                    }
                 }
             }
         }
@@ -493,6 +504,8 @@ public class PteraDirector extends Director implements TimedDirector,
         if (container instanceof ModalModel) {
             ((ModalModel) container).getController().initialize();
         }
+
+        _ending = false;
     }
 
     /** Initialize the given actor, unless it is a RefinementActor (which will
@@ -1009,6 +1022,10 @@ public class PteraDirector extends Director implements TimedDirector,
                     }
                 } else {
                     event.scheduleEvents();
+
+                    if (!_ending && event.isEndingEvent()) {
+                        _ending = true;
+                    }
                 }
             }
 
@@ -1043,8 +1060,17 @@ public class PteraDirector extends Director implements TimedDirector,
             }
 
             actor.fire();
-            if (!actor.postfire()) {
-                _initializedRefinements.remove(actor);
+            boolean postfire = actor.postfire();
+            boolean ending = false;
+            if (postfire && actor instanceof PteraController) {
+                PteraDirector director = (PteraDirector) ((PteraController)
+                        actor).getDirector();
+                ending = director._ending;
+            }
+            if (!postfire || ending) {
+                if (!postfire) {
+                    _initializedRefinements.remove(actor);
+                }
                 Event event = (Event) ((RefinementActor) actor)
                         .getRefinedState();
                 if (event != null) {
@@ -1052,12 +1078,16 @@ public class PteraDirector extends Director implements TimedDirector,
                     controller.event(new EventDebugEvent(controller, event,
                             true));
 
-                    if (event.isFinalEvent()) {
+                    if (!postfire && event.isFinalEvent()) {
                         for (TimedEvent eventToCancel : _eventQueue) {
                             eventToCancel.canceled = true;
                         }
                     } else {
                         event.scheduleEvents();
+
+                        if (!_ending && event.isEndingEvent()) {
+                            _ending = true;
+                        }
                     }
                 }
             }
@@ -1262,6 +1292,11 @@ public class PteraDirector extends Director implements TimedDirector,
     /** Whether fireAt() invocations should be delegated to the director at the
         higher level. */
     private boolean _delegateFireAt = false;
+
+    /** Whether an ending event is processed in the current firing.
+     *  @see Event#isEndingEvent
+     */
+    private boolean _ending;
 
     /** The event queue. */
     private List<TimedEvent> _eventQueue = new LinkedList<TimedEvent>();
