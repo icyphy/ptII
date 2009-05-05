@@ -72,7 +72,7 @@ public class ToIntMapMapping extends MapMapping implements ToIntMapping {
      *  this mapping. For efficiency, no error checking is performed
      *  on the argument, and consequently, a runtime exception may result as
      *  noted below. To perform argument validity checking before mapping an
-     *  object, use {@link ptolemy.graph.Mapping#inDomain(Object)}.
+     *  object, use {@link ptolemy.graph.mapping.Mapping#inDomain(Object)}.
      *  @param object The given object.
      *  @return The int value that is associated with given object under
      *  this mapping.
