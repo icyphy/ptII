@@ -1383,7 +1383,7 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Notify listeners that execution has completed.
      *  @deprecated Incomplete name, use
-     *  {@link _notifyListenersOfSuccessfulCompletion}
+     *  {@link #_notifyListenersOfSuccessfulCompletion()}
      */
     protected synchronized void _notifyListenersOfCompletion() {
         _notifyListenersOfSuccessfulCompletion();
