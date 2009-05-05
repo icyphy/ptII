@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Array" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -93,11 +93,11 @@
         </property>
     </property>
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 430.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 430.0">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="270.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="280.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="39.0">
         </property>
@@ -131,7 +131,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 435.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 420.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -155,7 +155,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="random, ascending, descending">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {4, 480, 508, 281}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 480, 500, 277}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 233]">
         </property>
@@ -175,13 +175,13 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="99.0"/>
-<yRange min="0.01831613455307557" max="0.9925140708489868"/>
+<yRange min="0.0014234211981495326" max="0.9998059819797708"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Maximum Value" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.992514070849">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.9998059819798">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -196,7 +196,7 @@
         </property>
     </entity>
     <entity name="Minimum Value" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0183161345531">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0014234211981">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -217,7 +217,7 @@
         </property>
     </entity>
     <entity name="Minimum Index" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="73">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="44">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -253,7 +253,7 @@
         </property>
     </entity>
     <entity name="Average Value" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4927836398292">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4990646290028">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -272,7 +272,7 @@
         </property>
     </entity>
     <entity name="Minimum Value2" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0183161345531">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0014234211981">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -299,7 +299,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="random, ascending, descending">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {513, 479, 508, 281}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={513, 479, 500, 277}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 233]">
         </property>
@@ -319,7 +319,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="9.0"/>
-<yRange min="0.01831613455307557" max="0.08989334233777335"/>
+<yRange min="0.0014234211981495326" max="0.08678357641324441"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
