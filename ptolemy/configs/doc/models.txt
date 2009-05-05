@@ -110,6 +110,7 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/Case/Case.xml
 $CLASSPATH/ptolemy/data/unit/demo/Units/Units.xml
 $CLASSPATH/ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.xml
 $CLASSPATH/ptolemy/domains/ct/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml
+$CLASSPATH/ptolemy/domains/gr/demo/Pong/Pong.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Switch/Switch.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Pendulum3D/Pendulum3D.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml
