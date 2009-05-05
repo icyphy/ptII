@@ -2,24 +2,24 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BrockAckerman" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 225.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 731, 624}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 726, 615}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[516, 506]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 505]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.0, 253.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.5, 252.5}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the well-known Brock-Ackerman anomaly.&#10;The two composite actors ActorA and ActorB implement exactly the same&#10;(nondeterministic) input/output relation. That is, given any two input&#10;sequences at the two input ports, the possible output sequences from each&#10;actor are the same.  However, when wired as shown into two feedback loops,&#10;the two actors do not behave the same way.  In particular, the upper&#10;feedback loop has more possible outputs than the bottom one.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the well-known Brock-Ackerman anomaly.&#10;The two composite actors ActorA and ActorB implement exactly &#10;the same (nondeterministic) input/output relation. That is, given&#10;any two input sequences at the two input ports, the possible&#10;output sequences from each actor are the same.  However, when&#10;wired as shown into two feedback loops, the two actors do not&#10;behave the same way.  In particular, the upper feedback loop has&#10;more possible outputs than the bottom one.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
         </property>
@@ -37,6 +37,7 @@
         </property>
         <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
             <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+                <display name="Show parameters"/>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 30.0]">
             </property>
@@ -651,7 +652,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={730, 0, 170, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={730, 22, 162, 226}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[162, 182]">
         </property>
@@ -672,6 +673,7 @@
         </property>
         <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
             <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+                <display name="Show parameters"/>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 50.0}">
             </property>
@@ -1234,7 +1236,7 @@
         </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={730, 239, 170, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={730, 239, 162, 226}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[162, 182]">
         </property>
