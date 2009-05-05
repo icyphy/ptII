@@ -662,14 +662,27 @@ public class SerialComm extends TypedAtomicActor {
                             (Class[]) null);
                     initialize.invoke(driver, (Object[]) null);
                 } catch (Throwable throwable3) {
-                    ExceptionInInitializerError error = new ExceptionInInitializerError(
-                            "Failed to "
+                    try {
+                        Class driverClass = Class
+                            .forName("gnu.io.CommDriver");
+                        Object driver = driverClass.newInstance();
+                        Method initialize = driverClass.getMethod("initialize",
+                                (Class[]) null);
+                        initialize.invoke(driver, (Object[]) null);
+                    } catch (Throwable throwable4) {
+                        ExceptionInInitializerError error = new ExceptionInInitializerError(
+                                "Failed to "
                                     + "instantiate com.sun.comm.XXXDriver, tried "
-                                    + "Win32, Linux and Solaris for XXX"
+                                    + "Win32, Linux and Solaris for XXX and gnu.io.CommDriver"
                                     + throwable + "\n" + throwable2 + "\n"
-                                    + throwable3);
-                    error.initCause(throwable);
-                    throw error;
+                                    + throwable3 + "\n" + throwable4);
+                        try {
+                            error.initCause(throwable);
+                        } catch (Throwable throwable5) {
+                            // ignore
+                        }
+                        throw error;
+                    }
                 }
             }
         }
