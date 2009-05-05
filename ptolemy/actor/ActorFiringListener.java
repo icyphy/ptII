@@ -1,4 +1,4 @@
-/* A listener for TokenGotEvents from an IOPort.
+/* A listener for FiringEvents from an Actor.
 
  Copyright (c) 2006-2008 The Regents of the University of California.
  All rights reserved.
