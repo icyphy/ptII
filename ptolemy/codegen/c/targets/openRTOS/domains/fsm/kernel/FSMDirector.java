@@ -1,4 +1,4 @@
-/* Code generator helper class associated with the GiottoDirector class.
+/* Code generator helper class associated with the FSMDirector class.
 
  Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
 ////FSMDirector
 
 /**
- Code generator helper associated with the PRET GiottoDirector class. This class
+ Code generator helper associated with the PRET FSMDirector class. This class
  is also associated with a code generator.
 
  @author  Shanna-Shaye Forbes,Ben Lickly
@@ -60,9 +60,9 @@ import ptolemy.kernel.util.NamedObj;
 public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirector {
 
     /** Construct the code generator helper associated with the given
-     *  GiottoDirector.
-     *  @param giottoDirector The associated
-     *  ptolemy.domains.giotto.kernel.GiottoDirector
+     *  FSMDirector.
+     *  @param FSMDirector The associated
+     *  ptolemy.domains.FSM.kernel.FSMDirector
      */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector fsmDirector) {
         super(fsmDirector);
@@ -147,7 +147,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
     
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
     throws IllegalActionException {
-        System.out.println("//generate transferOutputsCode inside OpenRTOS Giotto director called.");
+        System.out.println("//generate transferOutputsCode inside OpenRTOS FSM director called.");
         code.append(_eol+"//generate transferOutputsCode inside OPENRTOS FSM  director called."+_eol);
         super.generateTransferOutputsCode(outputPort,code);
         
