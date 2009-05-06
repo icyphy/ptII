@@ -4,7 +4,7 @@
 <entity name="PtidesBasicTwoPlatformsEventDifferByMicrostep" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={216, 185, 1023, 679}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={216, 185, 1023, 669}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 562]">
     </property>
@@ -18,6 +18,12 @@
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test currently fails because CompositeActor3 received two events from&#10;CompositeActo2, and they are given the same timestamp, so PTIDES thinks&#10;safe to process have been violated. It's not clear to me what the right&#10;behaviro is...">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 30.0]">
         </property>
     </property>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">

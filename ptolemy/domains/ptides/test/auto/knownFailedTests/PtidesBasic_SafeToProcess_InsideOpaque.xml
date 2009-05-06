@@ -22,6 +22,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test fails because PTIDES does not support &#10;opaque actors inside of PtideBasicDirector.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 30.0}">
+        </property>
+    </property>
     <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 180.0]">
         </property>
