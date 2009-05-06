@@ -59,7 +59,7 @@ test CodeGenerator-3.1 {Call main and generate code in the current directory } {
 } {1 1}
 
 #####
-test CodeGenerator-4.1 {Call main and copy a file to the codeDirectory} {
+test CodeGenerator-4.1 {Call main and copy two files to the codeDirectory because RampNecessaryFiles.c has a fileDependencies block} {
     set codeDirectory [java::call ptolemy.util.StringUtilities getProperty user.home]
     set necessaryFile1 [file join $codeDirectory codegen necessaryFile1]
     set necessaryFile2 [file join $codeDirectory codegen necessaryFile2]

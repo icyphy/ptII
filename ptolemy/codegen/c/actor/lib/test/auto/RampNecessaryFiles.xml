@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The RampNecessaryFiles actors have a necessaryFiles&#10;parameter that lists a file that should&#10;be copied to the codeDirectory when&#10;code is generated.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The RampNecessaryFiles.c file has a fileDependencies block that lists two files that should&#10;be copied to the codeDirectory when&#10;code is generated.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 295}">
         </property>
