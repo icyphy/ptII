@@ -94,12 +94,12 @@ $(JAVAFILENAMES): $(ROOT)/$(PTIITXTFILES)
 	@egrep "\.java$$" $(TXTFILENAMES) > $(JAVAFILENAMES)
 
 missingMakefiles: $(JAVAFILENAMES)
-	@(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | grep "No such") | awk '{print substr($$2, 1, length($$2) - 1) }' | egrep -v "(ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni)"
+	@(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | grep "No such") | awk '{print substr($$2, 1, length($$2) - 1) }' | egrep -v "(Entering directory|Leaving directory|/jsoriginal/|ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni)"
 
 missingDocPackages: $(JAVAFILENAMES)
 	@cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/missingDocPackages.p
 	@(cd $(ROOT)/doc; $(MAKE) echo > /tmp/missingDocPackages.d)
-	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | egrep -v "(\.apps\.|\.demo|\.test$$|vendors\.|jsoriginal)"
+	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|vendors\.|/jsoriginal/)"
 
 KRUFT = \
 	$(JAVAFILENAMES) \
