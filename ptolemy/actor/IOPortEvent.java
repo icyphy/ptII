@@ -172,36 +172,54 @@ public class IOPortEvent implements DebugEvent {
      */
     public String toString() {
         StringBuilder buffer = new StringBuilder("The port " + _port);
-        if (_event == SEND) {
-            buffer.append(" sent ");
+        if (_event == SEND_BEGIN) {
+            buffer.append(" began sending ");
         } else if (_event == GET_BEGIN) {
-            buffer.append(" began reading  ");
+            buffer.append(" began reading ");
         } else if (_event == GET_END) {
             buffer.append(" read ");
+        } else if (_event == SEND_END) {
+            buffer.append(" wrote " );
         }
         if (_vectorLength != SINGLETOKEN) {
             buffer.append(_vectorLength);
-            buffer.append(" tokens ");
+            if (_vectorLength == 1) {
+                buffer.append(" token");
+            } else {
+                buffer.append(" tokens");
+            }
+        } else if (_token == null) {
+            buffer.append("a token");
         } else {
             buffer.append(_token.toString());
         }
         if (_channel != ALLCHANNELS) {
-            buffer.append(" to channel " + _channel + ".");
+            buffer.append(" on channel " + _channel + ".");
         } else {
-            buffer.append(" to all channels");
+            buffer.append(" on all channels");
         }
 
         return buffer.toString();
     }
 
-    /** An event corresponding with a token being sent. */
+    // FIXME change to typesafe enum.
+
+    /** An event corresponding with a token being sent. 
+     *  @deprecated Use SEND_BEGIN or SEND_END instead.
+     */
     public final static int SEND = 1;
+
+    /** An event corresponding with the beginning of a token being sent. */ 
+    public final static int SEND_BEGIN = 1;
 
     /** An event corresponding with the beginning of a token being received. */
     public final static int GET_BEGIN = 2;
 
-    /** An event corresponding with the end of a token being received. */
+    /** An event corresponding with the ending of a token being received. */
     public final static int GET_END = 3;
+    
+    /** An evernt correspoding with the ending of a token being sent. */ 
+    public final static int SEND_END = 4;
 
     /** The token was broadcast on all channels. */
     public final static int ALLCHANNELS = -1;
