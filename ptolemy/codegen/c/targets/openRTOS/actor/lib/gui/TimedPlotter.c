@@ -5,7 +5,6 @@ static int $actorSymbol(xvalue);
 
 /***initBlock***/
 $actorSymbol(xvalue) = 0;
-//printf("init code should go here");
 {
      int mlc,i;
      mlc = 0;
