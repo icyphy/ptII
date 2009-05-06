@@ -1242,6 +1242,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/modal/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/lib \
@@ -1278,6 +1279,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/ia \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/modal/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/modal/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/modal/kernel/ia \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/psdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
@@ -1290,6 +1294,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/colt \
@@ -1356,8 +1362,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/cgc \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/modal \	
+	$(REMOTE1PTIIDIST)/ptolemy/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ptides \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr \
