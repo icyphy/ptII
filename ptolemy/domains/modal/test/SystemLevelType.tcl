@@ -40,6 +40,10 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test SystemLevelType-1.0 {Read in the demos in ../demo/SystemLevelType/*.xml} {
     set parser [java::new ptolemy.moml.MoMLParser]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    $parser addMoMLFilter $filter
     set models [glob ../demo/SystemLevelType/*.xml ../demo/SystemLevelType/fmv/*.xml]
     foreach model $models {
 	$parser parseFile $model

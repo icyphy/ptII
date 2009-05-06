@@ -375,6 +375,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.NameIcon", null);
 
+	// Needed modal/demo/SystemLevelTypes/*.xml
+        _graphicalClasses.put("ptolemy.vergil.modal.StateIcon", null);
+
         // Exclude DependencyHighlighter
         _graphicalClasses.put("ptolemy.actor.gui.DependencyHighlighter", null);
     }
