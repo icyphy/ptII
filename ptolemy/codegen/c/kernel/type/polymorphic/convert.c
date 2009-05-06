@@ -8,6 +8,12 @@ char* convert_Array_String(Token a) {
 }
 /**/
 
+/*** convert_Array_Token() ***/
+Token convert_Array_Token(Token a) {
+	return a;
+}
+/**/
+
 /*** convert_Boolean_Array() ***/
 Token convert_Boolean_Array(boolean a) {
   return $new(Array(1, 1, $new(Boolean(a)), TYPE_Boolean));
@@ -70,6 +76,12 @@ Token convert_DoubleArray_StringArray(Token token) {
 }
 /**/
 
+/*** convert_DoubleArray_Token() ***/
+Token convert_DoubleArray_Token(Token a) {
+	return a;
+}
+/**/
+
 /*** convert_Double_Array() ***/
 Token convert_Double_Array(double a) {
   return $new(Array(1, 1, $new(Double(a)), TYPE_Double));
@@ -128,13 +140,13 @@ Token convert_IntArray_Array(Token token) {
 
 /*** convert_IntArray_DoubleArray() ***/
 Token convert_IntArray_DoubleArray(Token token) {
-        int i;
-        int length = token.payload.IntArray->size;
-        Token result = $new(DoubleArray(length, 0));
-        for (i = 0; i < length; i++) {
-                DoubleArray_set(result, i, (double) IntArray_get(token, i));
-        }
-        return result;
+	int i;
+	int length = token.payload.IntArray->size;
+	Token result = $new(DoubleArray(length, 0));
+	for (i = 0; i < length; i++) {
+		DoubleArray_set(result, i, (double) IntArray_get(token, i));
+	}
+	return result;
 }
 /**/
 

@@ -1,5 +1,5 @@
 /*** zero_Array() ***/
-Token zero_Array(a) {
+Token zero_Array(Token a) {
 	return $Array_zero(a);
 }
 /**/
@@ -17,8 +17,8 @@ double zero_Double() {
 /**/
 
 /*** zero_DoubleArray() ***/
-Token zero_DoubleArray() {
-	$DoubleArray_zero(a);
+Token zero_DoubleArray(Token a) {
+	return $DoubleArray_zero(a);
 }
 /**/
 
@@ -29,7 +29,7 @@ int zero_Int() {
 /**/
 
 /*** zero_IntArray() ***/
-Token zero_IntArray() {
+Token zero_IntArray(Token a) {
 	return $IntArray_zero(a);
 }
 /**/
@@ -47,8 +47,8 @@ char* zero_String() {
 /**/
 
 /*** zero_Token() ***/
-Token zero_Token(a) {
-	$tokenFunc(a::zero());
+Token zero_Token(Token a) {
+	return $tokenFunc(a::zero());
 }
 /**/
 
