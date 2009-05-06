@@ -269,7 +269,7 @@ string StringArray_sum(Token token) {
 	int i;
 
 	if (token.payload.StringArray->size <= 0) {
-		return StringArray_zero(token);
+		return $zero_String(token);
 	} else {
 		result = StringArray_get(token, 0);
 	}

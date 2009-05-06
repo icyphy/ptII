@@ -422,13 +422,12 @@ Token DoubleArray_clone(Token thisToken, ...) {
 
 
 /***DoubleArray_sum***/
-// FIXME: WHAT DOES THIS FUNCTION DO?
 double DoubleArray_sum(Token token) {
 	double result;
 	int i;
 
 	if (token.payload.DoubleArray->size <= 0) {
-		return DoubleArray_zero(token);
+		return 0.0;
 	} else {
 		result = DoubleArray_get(token, 0);
 	}

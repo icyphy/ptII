@@ -28,6 +28,7 @@
  */
 package ptolemy.codegen.c.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -553,20 +554,39 @@ ParseTreeCodeGenerator {
             return;
         }
 
-        result += functionName + "(";
 
+        ArrayList<Type> argumentTypes = new ArrayList<Type>();
         for (int i = 0; i < argCount; i++) {
             if (i != 0) {
                 result += ", ";
             }
             _evaluateChild(node, i + 1);
 
-            result += _specializeArgument(functionName, i,
-                    ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(),
-                    _childCode);
+            Type argumentType = ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
+            result += _specializeArgument(functionName, i, argumentType, _childCode);
+            
+            argumentTypes.add(argumentType);
         }
         
-        _childCode = result + ")";
+        functionName = _specializeFunctionCall(functionName, argumentTypes);
+        
+        _childCode = functionName + "(" + result + ")";
+    }
+
+    private String _specializeFunctionCall(
+            String functionName, List<Type> argumentTypes) {
+        if (functionName.equals("sum")) {
+            assert (argumentTypes.size() == 1);
+                
+            return "$" + _generator.codeGenType(argumentTypes.get(0)) + "_sum";
+        } 
+        
+        if (functionName.equals("repeat")) {
+            assert (argumentTypes.size() == 2);
+            
+            return "$" + _generator.codeGenType(argumentTypes.get(1)) + "Array_repeat";
+        }
+        return functionName;
     }
 
     /** Define a function, where the children specify the argument types
@@ -1728,13 +1748,6 @@ ParseTreeCodeGenerator {
     private String _specializeArgument(String function,
             int argumentIndex, Type argumentType, String argumentCode) {
 
-        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
-            if (_generator.isPrimitive(argumentType)) {
-                return "$new(" +
-                _generator.codeGenType(argumentType)
-                + "(" + argumentCode + "))";
-            }
-        }
         return argumentCode;
     }
 
@@ -1757,8 +1770,6 @@ ParseTreeCodeGenerator {
 
     static {
         cFunctionMap.put("roundToInt", "(int)");
-        cFunctionMap.put("repeat", "$arrayRepeat");
-        cFunctionMap.put("sum", "$arraySum");
     }
 
 

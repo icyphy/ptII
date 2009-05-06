@@ -445,8 +445,8 @@ Token Array_clone(Token token, ...) {
 /**/
 
 
-/***arraySum***/
-Token arraySum(Token token) {
+/***Array_sum***/
+Token Array_sum(Token token) {
 	Token result;
 	int i;
 	if (token.payload.Array->size <= 0) {
@@ -462,8 +462,8 @@ Token arraySum(Token token) {
 }
 /**/
 
-/***arrayRepeat***/
-Token arrayRepeat(int number, Token value) {
+/***Array_repeat***/
+Token Array_repeat(int number, Token value) {
 	Token result = $new(Array(number, 0));
 	int i;
 

@@ -196,7 +196,6 @@ Token IntArray_toString(Token thisToken, ...) {
 
 
 /***IntArray_add***/
-int $add_Int_Int(int a1, int a2);
 
 // IntArray_add: Add an array to another array.
 // Assume the given otherToken is array type.
@@ -237,7 +236,6 @@ Token IntArray_add(Token thisToken, ...) {
 
 
 /***IntArray_subtract***/
-int $subtract_Int_Int(int a1, int a2);
 
 // IntArray_subtract: Subtract the second argument array
 // from the first argument array.
@@ -281,7 +279,6 @@ Token IntArray_subtract(Token thisToken, ...) {
 
 
 /***IntArray_multiply***/
-int $multiply_Int_Int(int a1, int a2);
 
 // IntArray_multiply: Multiply an array by another array.
 // Multiplication is element-wise.
@@ -323,8 +320,6 @@ Token IntArray_multiply(Token thisToken, ...) {
 
 
 /***IntArray_divide***/
-int $divide_Int_Int(int a1, int a2);
-
 // IntArray_divide: Divide the elements of the first array
 // by the elements of the second array.
 // Assume the given otherToken is array type.
