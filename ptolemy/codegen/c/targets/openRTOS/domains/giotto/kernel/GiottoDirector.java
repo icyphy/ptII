@@ -871,6 +871,20 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                         } // while(tome.hasNext())
                         i++;  // not sure if this is the correct place to increment i
                     }//end while(myItr.hasNext())
+                    
+                    //transfer input values to embedded actor inputs
+                    myItr = myInputs.iterator();
+                    String outerInput;
+                    String innerInput;
+                    while(myItr.hasNext())
+                    {
+                        IOPort thisport = (IOPort)myItr.next();
+                        outerInput = _getPortName(thisport);
+                        innerInput = outerInput.replace("_input","_EmbeddedActor_input");
+                     code.append(_eol+innerInput+" = "+outerInput";"+_eol);   
+                        
+                    }
+                    // now call the method name
                     code.append(_getActorName(actor)+"_EmbeddedActor();"+_eol);
                     //for now assume that there are no outputs to transfer out
                     // end if jni actor
@@ -1369,6 +1383,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
          return portFullName;
      }
+     
+          
 
      /**
       * Generate the thread function name for a given actor.
