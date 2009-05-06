@@ -63,6 +63,7 @@ import ptolemy.vergil.properties.ModelAttributeController;
  */
 public class ModelAttribute extends Attribute implements Configurable {
 
+
     public ModelAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -135,6 +136,8 @@ public class ModelAttribute extends Attribute implements Configurable {
         return _model;
     }
 
+    // FIXME: This class uses classes from vergil, which means the backend 
+    // and the gui are too tighly intertwined.
     public TransformationAttributeEditorFactory editorFactory;
 
     protected void _exportMoMLContents(Writer output, int depth)
@@ -185,6 +188,8 @@ public class ModelAttribute extends Attribute implements Configurable {
         _model = (CompositeEntity) _configurer.getEntity("Model");
 
         //new ModelAttributeIcon(this, "_icon");
+	// FIXME: This class uses classes from vergil, which means the backend 
+	// and the gui are too tighly intertwined.
         new ModelAttributeController.Factory(this,
                 "_controllerFactory");
         //editorFactory = new TransformationAttributeEditorFactory(this, "editorFactory");

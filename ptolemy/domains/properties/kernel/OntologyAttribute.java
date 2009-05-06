@@ -89,6 +89,8 @@ public class OntologyAttribute extends ModelAttribute {
             }
 
             if (entity.getAttribute("_tableauFactory") == null) {
+		// FIXME: This class uses classes from vergil, which means the backend 
+		// and the gui are too tighly intertwined.
                 TextEditorTableauFactory factory =
                     new TextEditorTableauFactory(entity, "_tableauFactory");
                 factory.attributeName.setExpression(RULES);
