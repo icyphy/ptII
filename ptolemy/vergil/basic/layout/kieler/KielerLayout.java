@@ -1,5 +1,7 @@
 package ptolemy.vergil.basic.layout.kieler;
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
@@ -11,23 +13,30 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
+
+import javax.swing.SwingConstants;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-//import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.graph.GraphInvalidStateException;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.IOPortController;
+import ptolemy.vergil.actor.PortTerminal;
 import ptolemy.vergil.kernel.attributes.TextAttribute;
 import de.cau.cs.kieler.core.KielerException;
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
@@ -43,8 +52,13 @@ import de.cau.cs.kieler.kiml.layout.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.layout.options.LayoutDirection;
 import de.cau.cs.kieler.kiml.layout.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.layout.options.PortConstraints;
+import de.cau.cs.kieler.kiml.layout.util.BoxLayoutProvider;
 import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
 import de.cau.cs.kieler.klodd.hierarchical.HierarchicalDataflowLayoutProvider;
+import diva.canvas.CanvasComponent;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.TransformContext;
 import diva.graph.GraphModel;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.graph.layout.LayoutTarget;
@@ -158,7 +172,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 */
 	private StringBuffer _momlChangeRequest;
 
-	private boolean _debug = false;
+	private boolean _debug = true;
 
 	/**
 	 * Constructor taking a LayoutTarget for specifying some methods for layout
@@ -204,32 +218,40 @@ public class KielerLayout extends AbstractGlobalLayout {
 	@Override
 	public void layout(Object composite) {
 		// create a Kieler Graph
-		KNode kgraph = createGraph(composite);
+		KNode hierarchicalLayoutNode = KimlLayoutUtil.createInitializedNode();
+		KNode boxLayoutNode = KimlLayoutUtil.createInitializedNode();
+		hierarchicalLayoutNode.setParent(boxLayoutNode);
+		LayoutOptions.setLayoutDirection(KimlLayoutUtil
+				.getShapeLayout(hierarchicalLayoutNode), LayoutDirection.HORIZONTAL);
 
-		// create the layout provider which contains the actual layout algorithm
-		HierarchicalDataflowLayoutProvider dataflowLayoutProvider = new HierarchicalDataflowLayoutProvider();
+		createGraph(composite, hierarchicalLayoutNode, boxLayoutNode);
+
+		// create the layout providers which contains the actual layout algorithm
+		HierarchicalDataflowLayoutProvider hierarchicalLayoutProvider = new HierarchicalDataflowLayoutProvider();
+		BoxLayoutProvider boxLayoutProvider = new BoxLayoutProvider();
 
 		// create a progress monitor
 		IKielerProgressMonitor progressMonitor = new BasicProgressMonitor();
 
 		try {
 			// perform layout on the created graph
-			dataflowLayoutProvider.doLayout(kgraph, progressMonitor);
+			hierarchicalLayoutProvider.doLayout(hierarchicalLayoutNode, progressMonitor.subTask(10));
+			boxLayoutProvider.doLayout(boxLayoutNode, progressMonitor.subTask(10));
 
 			// write to XML file for debugging layout
 			// writing to file requires XMI resource factory
 			if(_debug ) 
-				writeToFile(kgraph);
+				writeToFile(boxLayoutNode);
 
 			// apply layout to ptolemy model
-			applyLayout(kgraph);
+			applyLayout(boxLayoutNode);
 		} catch (KielerException e) {
 			throw new GraphInvalidStateException(e,
 					"KIELER runtime exception: " + e.getMessage());
 		}
 
 		// print some status information
-		printStatus(kgraph, progressMonitor);
+		printStatus(boxLayoutNode, progressMonitor);
 
 	}
 
@@ -251,10 +273,12 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 * @param composite
 	 *            the GraphModel composite object to retrieve the model
 	 *            information from
+	 * @param boxLayoutNode 
+	 * @param hierarchicalLayoutNode 
 	 * @return a composite KNode Kieler node object, that will contain the
 	 *         corresponding graph structure
 	 */
-	private KNode createGraph(Object composite) {
+	private void createGraph(Object composite, KNode hierarchicalLayoutNode, KNode boxLayoutNode) {
 		_ptolemy2KielerNodes = new HashMap<Object, KNode>();
 		_kieler2ptolemyDivaNodes = new HashMap<KNode, Object>();
 		_kieler2ptolemyEntityNodes = new HashMap<KNode, NamedObj>();
@@ -266,24 +290,6 @@ public class KielerLayout extends AbstractGlobalLayout {
 		_relations2EdgesVertices = new HashMap<Relation, List<Object>>();
 		_ptolemyDivaEdge2ptolemySourcePort = new HashMap<Object, Object>();
 
-		// create graph in KIELER API
-		KNode kgraph = KimlLayoutUtil.createInitializedNode();
-
-		// set some global layout options
-		LayoutOptions.setLayouterName(KimlLayoutUtil.getShapeLayout(kgraph),
-				"Block Layout");
-
-		// The graph will layout all unconnected nodes with a specialized Block
-		// Layouter
-		// the actual connected components will get layouted within a subnode in
-		// the graph
-
-		KNode kGraphLayoutNode = KimlLayoutUtil.createInitializedNode();
-		kGraphLayoutNode.setParent(kgraph);
-		LayoutOptions.setLayoutDirection(KimlLayoutUtil
-				.getShapeLayout(kGraphLayoutNode), LayoutDirection.HORIZONTAL);
-		LayoutOptions.setLayouterName(KimlLayoutUtil
-				.getShapeLayout(kGraphLayoutNode), "KLoDD Hierarchical");
 
 		// traverse ptolemy graph
 		LayoutTarget target = this.getLayoutTarget();
@@ -326,9 +332,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 					// store node in the correct composite node depending on
 					// whether it has connections or not
 					if (hasConnections((NamedObj) semanticNode))
-						knode.setParent(kGraphLayoutNode);
+						knode.setParent(hierarchicalLayoutNode);
 					else
-						knode.setParent(kgraph);
+						knode.setParent(boxLayoutNode);
 
 					// store node for later applying layout back
 					_ptolemy2KielerNodes.put(node, knode);
@@ -337,13 +343,11 @@ public class KielerLayout extends AbstractGlobalLayout {
 							(NamedObj) semanticNode);
 
 					// handle ports
-					if (semanticNode instanceof Actor) {
+					if (semanticNode instanceof Actor && semanticNode instanceof Entity) {
 						Actor actor = (Actor) semanticNode;
+						Entity entity = (Entity) semanticNode;
 						List<Port> inputs = actor.inputPortList();
 						List<Port> outputs = actor.outputPortList();
-
-						createKPorts(knode, inputs, KPortType.INPUT);
-						createKPorts(knode, outputs, KPortType.OUTPUT);
 
 						// get outgoing edges
 						for (Port outputPort : outputs) {
@@ -359,6 +363,27 @@ public class KielerLayout extends AbstractGlobalLayout {
 								System.out.println("Edge: " + relation);
 							}
 						}
+						
+//						// get incoming edges
+//						for (Port inputPort : inputs) {
+//							List<Relation> relations = inputPort
+//									.linkedRelationList();
+//							// store all linked relations in global map for later
+//							for (Relation relation : relations) {
+//								if (!_relations2EdgesVertices
+//										.containsKey(relation)) {
+//									ArrayList list = new ArrayList();
+//									_relations2EdgesVertices
+//											.put(relation, list);
+//								}
+//								System.out.println("Edge: " + relation);
+//							}
+//						}
+						
+						// create ports
+						double[] location = this.getLocation(entity);
+						createKPorts(knode, location, inputs, KPortType.INPUT);
+						createKPorts(knode, location, outputs, KPortType.OUTPUT);
 					}
 				}
 
@@ -377,7 +402,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 					// regard a relation vertex as a Kieler KNode
 					KNode kVertexNode = createKNodeForVertex((Vertex) node);
 					// add it to the graph
-					kVertexNode.setParent(kGraphLayoutNode);
+					kVertexNode.setParent(hierarchicalLayoutNode);
 					// store it in the maps
 					_ptolemy2KielerNodes.put(node, kVertexNode);
 					_kieler2ptolemyDivaNodes.put(kVertexNode, node);
@@ -456,7 +481,6 @@ public class KielerLayout extends AbstractGlobalLayout {
 				_kieler2PtolemyDivaEdges.put(kedge, divaEdge);
 			}
 		}
-		return kgraph;
 	}
 
 	private KPort getSource(Object divaEdge, ActorGraphModel aGraph, Object ignoreNode) {
@@ -630,6 +654,8 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 * 
 	 * @param knode
 	 *            the KNode to create Kieler ports for
+	 * @param referenceLocation 
+	 * @param node 
 	 * @param ports
 	 *            the Ptolemy ports counterparts for which to create Kieler
 	 *            ports
@@ -639,20 +665,62 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 *            get rejected if its regarded as incorrect (e.g. an edge should
 	 *            have a outgoing source and an incoming target port).
 	 */
-	private void createKPorts(KNode knode, List<Port> ports, KPortType portType) {
+	private void createKPorts(KNode knode, double[] referenceLocation, List<Port> ports, KPortType portType) {
 		for (Iterator iterator2 = ports.iterator(); iterator2.hasNext();) {
 			Port port = (Port) iterator2.next();
+			
+//			// handle multiports for inputs
+//			if(portType.equals(KPortType.INPUT)){
+//				List relations = port.linkedRelationList();
+//				
+//			}
+			
+			// create a new Kieler port
 			KPort kport = KimlLayoutUtil.createInitializedPort();
 			KShapeLayout kportlayout = KimlLayoutUtil.getShapeLayout(kport);
-			// FIXME: set port positions
+			// init port layout 
 			kportlayout.setXpos(0);
 			kportlayout.setYpos(0);
 			kportlayout.setHeight(5);
 			kportlayout.setWidth(5);
+			// add port to node and set type and options
 			knode.getPorts().add(kport);
 			kport.setType(portType);
 			LayoutOptions.setPortConstraints(kportlayout,
 					PortConstraints.FIXED_POS);
+			// try to set actual layout (size and position)
+			Object portObject = this.getLayoutTarget().getVisualObject(port);
+			if(portObject instanceof PortTerminal){
+				// get visual Diva figure of port
+				PortTerminal portFigure = (PortTerminal)portObject;
+				// get bounds of the port figure 
+				// (= relative to center of actor symbol here given by referenceLocation)
+				Rectangle2D portBounds = portFigure.getBounds();
+				// get the parent Diva figure which is the whole composite consisting of
+				// the actor icon and its name which might be arbitrary large
+				CanvasComponent parent = portFigure.getParent();
+				if(parent instanceof CompositeFigure && referenceLocation.length == 2){
+					CompositeFigure parentFigure = (CompositeFigure)parent;
+					
+					// port bounds are given in some specific transform context
+					// to get the absolute port boundscall the corresponding transform
+					TransformContext context = portFigure.getTransformContext();
+					AffineTransform portTransform = context.getTransform();
+					Point2D.Double portLocation = new Point2D.Double(portBounds.getMinX(), portBounds.getMinY());
+					Point2D.Double transformedLocation = new Point2D.Double();
+					portTransform.transform(portLocation, transformedLocation);
+					// calculate coordinates relative to the Kieler nodes top left from absolutes
+					double x = transformedLocation.getX() - parentFigure.getBounds().getMinX(); 
+					double y = transformedLocation.getY() - parentFigure.getBounds().getMinY();
+					kportlayout.setXpos((float)x);
+					kportlayout.setYpos((float)y);
+					kportlayout.setWidth((float)portBounds.getWidth());
+					kportlayout.setHeight((float)portBounds.getHeight());
+				}
+				// transform koordinates to kieler coordinate system
+				//ptolemy2KNode(knodelayout, kportlayout);
+			}
+			
 			_ptolemy2KielerPorts.put(port, kport);
 			_kieler2PtolemyPorts.put(kport, port);
 		}
@@ -675,7 +743,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 *            apply to the Ptolemy model
 	 */
 	private void applyLayout(KNode kgraph) {
-		System.out.println("GRAPH:\n" + toString(kgraph));
+		//System.out.println("GRAPH:\n" + toString(kgraph));
 		_momlChangeRequest = new StringBuffer();
 		GraphModel graph = this.getLayoutTarget().getGraphModel();
 		if (graph instanceof ActorGraphModel) {
@@ -686,20 +754,18 @@ public class KielerLayout extends AbstractGlobalLayout {
 				NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
 
 				// transform koordinate systems
-				// but not if the item is a text documentation, because this
-				// behaves different in Ptolemy. strange.
-				if (!(namedObj instanceof TextAttribute))
-					// transform coordinate systems
-					kNode2Ptolemy(absoluteLayout);
+				kNode2Ptolemy(absoluteLayout, knode);
 
+				
 				if (namedObj instanceof Relation) {
 					Vertex vertex = (Vertex) _kieler2ptolemyDivaNodes
 							.get(knode);
 					setLocation(vertex, (Relation) namedObj, absoluteLayout
 							.getXpos(), absoluteLayout.getYpos());
-				} else
+				} else{
 					setLocation(namedObj, absoluteLayout.getXpos(),
 							absoluteLayout.getYpos());
+				}
 
 			}
 			// route edges
@@ -871,9 +937,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 		ResourceSet resourceSet = new ResourceSetImpl();
 
 		// Register the default resource factory -- only needed for stand-alone!
-//		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-//				.put(Resource.Factory.Registry.DEFAULT_EXTENSION,
-//						new XMIResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+				.put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+						new XMIResourceFactoryImpl());
 
 		try {
 			// Get the URI of the model file.
@@ -899,15 +965,33 @@ public class KielerLayout extends AbstractGlobalLayout {
 	 * @param kshapeLayout
 	 *            LAyout of KNode kieler graphical node that contains bounds
 	 *            with location and size
+	 * @param referenceNode 
 	 * @return KPoint in Ptolemy coordinate system
 	 */
-	private void kNode2Ptolemy(KShapeLayout kshapeLayout) {
-		kshapeLayout
-				.setXpos((float) (kshapeLayout.getXpos() + 0.5 * kshapeLayout
-						.getWidth()));
-		kshapeLayout
-				.setYpos((float) (kshapeLayout.getYpos() + 0.5 * kshapeLayout
-						.getHeight()));
+	private void kNode2Ptolemy(KShapeLayout kshapeLayout, KNode referenceNode) {
+		
+		NamedObj namedObj = _kieler2ptolemyEntityNodes.get(referenceNode);
+		Object divaNode = _kieler2ptolemyDivaNodes.get(referenceNode);
+		
+		double[] location = this.getLocation(namedObj);
+		
+		if(namedObj != null && divaNode != null){
+			Rectangle2D divaBounds = this.getLayoutTarget().getBounds(divaNode);
+			double offsetX = 0, offsetY = 0;
+			
+			// check if we got a valid location inside the diva bounds
+			// if not we might have something that has no location attribute 
+			// (e.g. a relation vertex) where we don't need any offset
+			if(location.length == 2 && divaBounds.contains(location[0], location[1])){
+				offsetX = location[0] - divaBounds.getMinX();
+				offsetY = location[1] - divaBounds.getMinY();
+			}
+			
+			kshapeLayout
+					.setXpos((float) (kshapeLayout.getXpos() + offsetX));
+			kshapeLayout
+					.setYpos((float) (kshapeLayout.getYpos() + offsetY));
+		}
 	}
 
 	/**
@@ -1166,18 +1250,18 @@ public class KielerLayout extends AbstractGlobalLayout {
 		// add dummy ports
 		KPort kinputport = KimlLayoutUtil.createInitializedPort();
 		KShapeLayout portLayout = KimlLayoutUtil.getShapeLayout(knode);
-		portLayout.setHeight(1);
-		portLayout.setWidth(1);
-		portLayout.setXpos(1);
-		portLayout.setYpos(1);
+		portLayout.setHeight(0);
+		portLayout.setWidth(0);
+		portLayout.setXpos(0);
+		portLayout.setYpos(0);
 		kinputport.setType(KPortType.INPUT);
 		kinputport.setNode(knode);
 		KPort koutputport = KimlLayoutUtil.createInitializedPort();
 		portLayout = KimlLayoutUtil.getShapeLayout(knode);
-		portLayout.setHeight(1);
-		portLayout.setWidth(1);
-		portLayout.setXpos(1);
-		portLayout.setYpos(1);
+		portLayout.setHeight(0);
+		portLayout.setWidth(0);
+		portLayout.setXpos(0);
+		portLayout.setYpos(0);
 		koutputport.setType(KPortType.OUTPUT);
 		koutputport.setNode(knode);
 		return knode;
@@ -1220,5 +1304,14 @@ public class KielerLayout extends AbstractGlobalLayout {
 			buffer.append(+level + " " + toString(node, level + 1));
 		}
 		return buffer.toString();
+	}
+	
+	private double[] getLocation(NamedObj namedObj){
+		Attribute locationAttribute = namedObj.getAttribute("_location");
+		double[] location = {0,0};
+		if(locationAttribute != null && locationAttribute instanceof Location){
+			location = ((Location)locationAttribute).getLocation();
+		}
+		return location;
 	}
 }
