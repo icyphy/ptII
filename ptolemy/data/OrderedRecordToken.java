@@ -1,6 +1,6 @@
-/* A token that contains a set of label/token pairs - maintaing the original order.
+/* A token that contains a set of label/token pairs - maintaining the original order.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,21 +48,41 @@ import ptolemy.kernel.util.IllegalActionException;
  This implementation maintains the order of the entries as they were added
 
  @author Ben Leinfelder
- @version $Id: RecordToken.java 53042 2009-04-10 20:31:21Z cxh $
- @Pt.ProposedRating Yellow (leinfelder)
- @Pt.AcceptedRating 
+ @version $Id:  $
+ @Pt.ProposedRating yellow (leinfelder)
+ @Pt.AcceptedRating red (leinfelder)
  */
 public class OrderedRecordToken extends RecordToken {
 	
+	/**
+	 * Default constructor
+	 * @see RecordToken
+	 */
 	public OrderedRecordToken() {
 		super();
 	}
+	/**
+	 * @see RecordToken
+	 * @param fieldMap
+	 * @throws IllegalActionException
+	 */
 	public OrderedRecordToken(Map fieldMap) throws IllegalActionException {
 		super(fieldMap);
 	}
+	/**
+	 * @see RecordToken
+	 * @param init
+	 * @throws IllegalActionException
+	 */
 	public OrderedRecordToken(String init) throws IllegalActionException {
 		super(init);
 	}
+	/**
+	 * @see RecordToken
+	 * @param labels
+	 * @param values
+	 * @throws IllegalActionException
+	 */
 	public OrderedRecordToken(String[] labels, Token[] values) throws IllegalActionException {
 		super(labels, values);
 	}
