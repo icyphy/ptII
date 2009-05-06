@@ -741,6 +741,7 @@ public class PtidesNoPhysicalTimeDirector extends DEDirector {
 //        }
 
 //        Actor actorToFire = super._getNextActorToFire();
+        ((DEListEventQueue)_eventQueue).take(_peekingIndex);
         Actor actorToFire = eventFromQueue.actor();
         _peekingIndex = 0;
 
