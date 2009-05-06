@@ -2,20 +2,20 @@
 $type $actorSymbol(result);
 /**/
 
-/***initProduct($type1, $type2)***/
-$actorSymbol(result) = $convert_$type1_$type2($ref(multiply#0));
+/***initProduct($multiplyType, $outputType)***/
+$actorSymbol(result) = $convert_$multiplyType_$outputType($ref(multiply#0));
 /**/
 
 /***divideOnlyInitProduct($divideType)***/
 $actorSymbol(result) = $divide_one_$divideType($ref(divide#0));
 /**/
 
-/***multiplyBlock($channel, $type1, $type2)***/
-$actorSymbol(result) = $multiply_$type1_$type2($actorSymbol(result), $ref(multiply#$channel));
+/***multiplyBlock($channel, $outputType, $multiplyType)***/
+$actorSymbol(result) = $multiply_$outputType_$multiplyType($actorSymbol(result), $ref(multiply#$channel));
 /**/
 
-/***divideBlock($channel, $type1, $type2)***/
-$actorSymbol(result) = $divide_$type1_$type2($actorSymbol(result), $ref(divide#$channel));
+/***divideBlock($channel, $outputType, $divideType)***/
+$actorSymbol(result) = $divide_$outputType_$divideType($actorSymbol(result), $ref(divide#$channel));
 /**/
 
 /***outputBlock***/
