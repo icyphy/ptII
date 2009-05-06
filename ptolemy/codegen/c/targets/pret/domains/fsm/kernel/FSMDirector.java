@@ -28,9 +28,8 @@
 package ptolemy.codegen.c.targets.pret.domains.fsm.kernel;
 
 import java.util.Iterator;
-import java.util.Set;
 import java.util.HashSet;
-
+import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -68,35 +67,57 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
         super(fsmDirector);
     }
 
-    // FIXME: Having this code here breaks the test cases under
-    // $PTII/codegen/c/domains/fsm/test/. This code is probably
-    // specific to a target (e.g. OpenRTOS or PRET), so it should
-    // be moved into an subclass which overrides this method. The
-    // subclass should be put under the target-specific packages.    
-   public String _generateActorCode() throws IllegalActionException{
+    /** Generates the preInitialization code for the director.
+     * @return string containing the preinitializaton code
+     * */
+    public String generatePreinitializeCode()throws IllegalActionException{
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        code.append(_eol+"//before call to generateActorCode"+_eol);
+        code.append(_generateActorCode());
+        code.append(_eol+"//after call to generateActorCode"+_eol);
+
+        return code.toString();
+    }
+    /**Generates the code to transfer outputs from a port to it's receiver
+     * @param outputPort - the port generating output
+     * @param code - StringBuffer the generated code should appended to.
+     * */
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    throws IllegalActionException {
+        System.out.println("//generate transferOutputsCode inside OpenRTOS FSM director called.");
+        code.append(_eol+"//generate transferOutputsCode inside pret FSM  director called."+_eol);
+        super.generateTransferOutputsCode(outputPort,code);
+
+    }
+
+    /**Generate code for all the actors associated with the given FSMDirector
+     *@return String containing the actor code.
+     */    
+    private String _generateActorCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
         .getController();
         //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-
+    
         //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
         //        .booleanValue();
-
+    
         int depth = 1;
-       
+    
         //Iterator states = controller.entityList().iterator();
         Iterator states = controller.deepEntityList().iterator();
         int stateCount = 0;
         depth++;
-
+    
         while (states.hasNext()) {
             // code.append(_getIndentPrefix(depth));
             //code.append("case " + stateCount + ":" + _eol);
             stateCount++;
-
+    
             depth++;
-
+    
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
             Set<Actor> actorsSet= new HashSet();;
@@ -106,7 +127,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                     actorsSet.add(actors[i]);
                 }
             }
-          
+    
             if (actors != null) {
                 //for (int i = 0; i < actors.length; i++) {
                 Iterator actorIterator = actorsSet.iterator();
@@ -120,37 +141,20 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                     code.append(_eol+"}"+_eol);
                 }}
         }
-        
+    
         return code.toString();
     }
 
-
+    /** Generates the name of an actor
+     * @param actor - The actor whose name is to be determined
+     * @return string with the actors full name
+     * */
     private String _getActorName(Actor actor) {
         String actorFullName = actor.getFullName();
         actorFullName = actorFullName.substring(1,actorFullName.length());
         actorFullName = actorFullName.replace('.', '_');
         actorFullName = actorFullName.replace(' ', '_');
         return actorFullName;
-    }
-
-
-
-    public String generatePreinitializeCode()throws IllegalActionException{
-        StringBuffer code = new StringBuffer();
-       code.append(super.generatePreinitializeCode());
-       code.append(_eol+"//before call to generateActorCode"+_eol);
-        code.append(_generateActorCode());
-        code.append(_eol+"//after call to generateActorCode"+_eol);
-
-        return code.toString();
-    }
-    
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-    throws IllegalActionException {
-        System.out.println("//generate transferOutputsCode inside OpenRTOS FSM director called.");
-        code.append(_eol+"//generate transferOutputsCode inside pret FSM  director called."+_eol);
-        super.generateTransferOutputsCode(outputPort,code);
-        
     }
 
 }
