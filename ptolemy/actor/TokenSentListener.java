@@ -45,6 +45,7 @@ package ptolemy.actor;
  @author Oscar Barney
  @version $Id$
  @since Ptolemy II 5.2
+ @deprecated Use IOPortEventListener instead.
  @Pt.ProposedRating Red (barney)
  @Pt.AcceptedRating
  @see IOPort

@@ -43,6 +43,7 @@ import ptolemy.data.Token;
  @author  Oscar Barney
  @version $Id$
  @since Ptolemy II 5.2
+ @deprecated Use IOPortEvent instead.
  @Pt.ProposedRating Red (barney)
  @Pt.AcceptedRating Red (barney)
  */
