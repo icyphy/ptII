@@ -1,6 +1,6 @@
 /* Send and receive bytes via the serial port.
 
- Copyright (c) 2001-2007 The Regents of the University of California.
+ Copyright (c) 2001-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -62,16 +62,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  Send and receive bytes via the serial port.  The serial port and
  baud rate are specified by parameters.
  <p>
- This actor requires that the Java comm API be installed.
- The comm API comes from http://java.sun.com/products/javacomm/
- To install the comm API on a Windows machine:
- <ul>
- <li> place the win32com.dll in $JDK\jre\bin directory.
- <li> make sure the win32com.dll is executable.
- <li> Place the comm.jar in $JDK\jre\lib\ext.
- <li> Place the javax.comm.properties in $JDK\jre\lib .
- </ul>
- where $JDK is the location of your Java development kit.
+ This actor requires that the RXTX serial port API be installed
+ from
+ <a href="http://rxtx.qbang.org/wiki/index.php/Download">http://rxtx.qbang.org/wiki/index.php/Download</a>.
 
  <p>This actor can be used in most domains, but the parameters must
  be chosen carefully to match the domain semantics.  This actor sets
@@ -629,64 +622,6 @@ public class SerialComm extends TypedAtomicActor {
     // but either the director has not yet fired this actor, or it has
     // been fired but fire() has not completed.  Could be in wait().
     private boolean _directorFiredAtAlready;
-
-    // Required for accessing the serial port.
-    // Somehow the .initialize() call must do something crucial.
-    // Removing this code makes things fail.  Specifically,
-    // it makes the 'try' block in fire() have an exception whose
-    // message is the word "null".
-    static {
-        // Try different platforms.
-        try {
-
-            //new com.sun.comm.Win32Driver().initialize();
-
-            Class driverClass = Class.forName("com.sun.comm.Win32Driver");
-            Object driver = driverClass.newInstance();
-            Method initialize = driverClass.getMethod("initialize",
-                    (Class[]) null);
-            initialize.invoke(driver, (Object[]) null);
-        } catch (Throwable throwable) {
-            try {
-                Class driverClass = Class.forName("com.sun.comm.LinuxDriver");
-                Object driver = driverClass.newInstance();
-                Method initialize = driverClass.getMethod("initialize",
-                        (Class[]) null);
-                initialize.invoke(driver, (Object[]) null);
-            } catch (Throwable throwable2) {
-                try {
-                    Class driverClass = Class
-                            .forName("com.sun.comm.SolarisDriver");
-                    Object driver = driverClass.newInstance();
-                    Method initialize = driverClass.getMethod("initialize",
-                            (Class[]) null);
-                    initialize.invoke(driver, (Object[]) null);
-                } catch (Throwable throwable3) {
-                    try {
-                        Class driverClass = Class
-                            .forName("gnu.io.CommDriver");
-                        Object driver = driverClass.newInstance();
-                        Method initialize = driverClass.getMethod("initialize",
-                                (Class[]) null);
-                        initialize.invoke(driver, (Object[]) null);
-                    } catch (Throwable throwable4) {
-                        ExceptionInInitializerError error = new ExceptionInInitializerError(
-                                "Failed to "
-                                    + "instantiate com.sun.comm.XXXDriver, tried "
-                                    + "Win32, Linux and Solaris for XXX and gnu.io.CommDriver"
-                                    + throwable + "\n" + throwable2 + "\n"
-                                    + throwable3 + "\n" + throwable4);
-                        try {
-                            error.initCause(throwable);
-                        } catch (Throwable throwable5) {
-                            // ignore
-                        }
-                        throw error;
-                    }
-                }
-            }
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

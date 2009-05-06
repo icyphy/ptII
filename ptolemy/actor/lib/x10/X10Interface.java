@@ -60,23 +60,10 @@ import x10.Controller;
  For instructions concerning the physical setup of these devices, refer to
  their respective manuals.
  <p>
- This actor requires that the Java comm API be installed.
-<a href="http://java.sun.com/products/javacomm/" target="_top">http://java.sun.com/products/javacomm/</a>
+ This actor requires that the RXTX serial port API be installed
+ from
+ <a href="http://rxtx.qbang.org/wiki/index.php/Download">http://rxtx.qbang.org/wiki/index.php/Download</a>.
 
- <p>Unfortunately, Sun has stopped supporting serial ports under Windows.
- However, as of 1/2008, you could find a download at
-
-<a href="https://sdlc2d.sun.com/ECom/EComActionServlet;jsessionid=58601B73C542B5E2097C6668FADF7AE4" target="_top"><code>https://sdlc2d.sun.com/ECom/EComActionServlet;jsessionid=58601B73C542B5E2097C6668FADF7AE4</code></a>
-
-
- To install the comm API on a Windows machine:
- <ul>
- <li> place the win32com.dll in $JDK\jre\bin directory.
- <li> make sure the win32com.dll is executable.
- <li> Place the comm.jar in $JDK\jre\lib\ext.
- <li> Place the javax.comm.properties in $JDK\jre\lib .
- </ul>
- where $JDK is the location of your Java development kit.
  <p>
  If the <i>x10Interface</i> or <i>serialPortName</i> parameters are changed
  after preinitialize() is called, the changes will not take effect until
