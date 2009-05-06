@@ -124,7 +124,7 @@ public class NonStrictTest extends Sink {
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
         requireAllCorrectValues = new SharedParameter(this,
-                "requireAllCorrectValues", getClass(), "false");
+                "requireAllCorrectValues", getClass(), "true");
         requireAllCorrectValues.setTypeEquals(BaseType.BOOLEAN);
 
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
@@ -151,10 +151,9 @@ public class NonStrictTest extends Sink {
     /** If true, and the number of tokens seen in wrapup() is not
      *  equal to or greater than the number of elements in the
      *  <i>correctValues</i> array, then throw an exception.  The
-     *  default value is currently false, though this may change.  It
-     *  is a shared parameter, meaning that changing it for any one
-     *  instance in a model will change it for all instances in the
-     *  model.
+     *  default value is true. This parameter is a shared parameter,
+     *  meaning that changing it for any one instance in a model will
+     *  change it for all instances in the model.
      */
     public Parameter requireAllCorrectValues;
 
