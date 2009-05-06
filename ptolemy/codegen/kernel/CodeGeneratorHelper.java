@@ -334,6 +334,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         code.append(_generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
+
+        try {
+            copyFilesToCodeDirectory(getComponent(), _codeGenerator);
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+            "Problem copying files from the necessaryFiles parameter.");
+        }
+
         return processCode(code.toString());
     }
 
