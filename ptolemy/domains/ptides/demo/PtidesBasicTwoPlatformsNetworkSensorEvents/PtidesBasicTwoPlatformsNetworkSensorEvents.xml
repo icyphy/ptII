@@ -13,19 +13,19 @@
         </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-12">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={331, 126, 838, 467}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 271, 815, 507}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[623, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{227.0, 181.203125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Platform" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 180.0}">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -163,11 +163,11 @@
             </property>
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 140.0}">
         </property>
     </entity>
     <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 225.0}">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -282,7 +282,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 225.0}">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -290,7 +290,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 180.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -310,7 +310,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 232]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 260.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -321,23 +321,23 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-        </property>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
-        <vertex name="vertex" value="[195.0, 180.0]">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+        <vertex name="vertex" value="{205.0, 190.0}">
         </vertex>
     </relation>
     <link port="Platform.sensor" relation="relation"/>
-    <link port="Platform.actuator" relation="relation4"/>
-    <link port="Platform.networkIn" relation="relation3"/>
+    <link port="Platform.actuator" relation="relation3"/>
+    <link port="Platform.networkIn" relation="relation4"/>
     <link port="Clock.output" relation="relation"/>
     <link port="Platform2.sensor" relation="relation2"/>
-    <link port="Platform2.networkOut" relation="relation3"/>
+    <link port="Platform2.networkOut" relation="relation4"/>
     <link port="Clock2.output" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
-    <link port="Display.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="Display.input" relation="relation4"/>
 </entity>

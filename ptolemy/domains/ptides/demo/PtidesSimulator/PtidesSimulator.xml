@@ -4,14 +4,6 @@
 <entity name="PtidesSimulator" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 101, 1032, 775}, maximized=false}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 329.0}">
-    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="25">
         </property>
@@ -19,11 +11,19 @@
         </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-12">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 40.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 50.0}">
         </property>
     </property>
-    <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 345.0]">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 271, 1014, 672}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 565]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.5, 282.5}">
+    </property>
+    <entity name="Platform" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{640.0, 355.0}">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -320,7 +320,7 @@
         <link port="ActuatorOutputDevice.output" relation="relation5"/>
     </entity>
     <entity name="Network Model" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 485.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 495.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={325, 533, 815, 517}, maximized=false}">
         </property>
@@ -360,7 +360,7 @@
         <link port="out" relation="relation"/>
     </entity>
     <entity name="Plant Model" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 255.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={566, 30, 833, 507}, maximized=false}">
         </property>
@@ -697,8 +697,8 @@
         <link port="LevelCrossingDetector2.output" relation="relation8"/>
         <link port="LevelCrossingDetector2.trigger" relation="relation3"/>
     </entity>
-    <entity name="Platform" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 355.0}">
+    <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 365.0}">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -993,12 +993,12 @@
         <link port="ActuatorOutputDevice.input" relation="relation8"/>
         <link port="ActuatorOutputDevice.output" relation="relation5"/>
     </entity>
-    <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={767, 624, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 175.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1013,12 +1013,12 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 398, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 175.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1038,7 +1038,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 170.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1053,12 +1053,12 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={595, 282, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{730.0, 190.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1073,68 +1073,68 @@
 </plot>?>
         </configure>
     </entity>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[675.0, 515.0]">
-        </vertex>
-    </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[90.0, 525.0]">
+        <vertex name="vertex1" value="{685.0, 525.0}">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{100.0, 535.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <vertex name="vertex1" value="{255.0, 245.0}">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{685.0, 265.0}">
+        </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[245.0, 235.0]">
+        <vertex name="vertex1" value="{460.0, 245.0}">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[675.0, 255.0]">
+        <vertex name="vertex1" value="{100.0, 265.0}">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[450.0, 235.0]">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[90.0, 255.0]">
-        </vertex>
-    </relation>
-    <link port="Platform2.sensor" relation="relation4"/>
-    <link port="Platform2.actuator" relation="relation"/>
-    <link port="Platform2.networkIn" relation="relation2"/>
-    <link port="Platform2.networkOut" relation="relation16"/>
-    <link port="Network Model.in" relation="relation16"/>
-    <link port="Network Model.in" relation="relation5"/>
-    <link port="Network Model.out" relation="relation18"/>
+    <link port="Platform.sensor" relation="relation7"/>
+    <link port="Platform.actuator" relation="relation6"/>
+    <link port="Platform.networkIn" relation="relation3"/>
+    <link port="Platform.networkOut" relation="relation"/>
+    <link port="Network Model.in" relation="relation"/>
+    <link port="Network Model.in" relation="relation4"/>
     <link port="Network Model.out" relation="relation2"/>
-    <link port="Plant Model.in" relation="relation7"/>
-    <link port="Plant Model.out" relation="relation4"/>
-    <link port="Plant Model.in2" relation="relation"/>
-    <link port="Plant Model.out2" relation="relation3"/>
-    <link port="Platform.sensor" relation="relation3"/>
-    <link port="Platform.actuator" relation="relation7"/>
-    <link port="Platform.networkIn" relation="relation18"/>
-    <link port="Platform.networkOut" relation="relation5"/>
-    <link port="TimedPlotter4.input" relation="relation3"/>
-    <link port="TimedPlotter.input" relation="relation7"/>
-    <link port="TimedPlotter3.input" relation="relation4"/>
-    <link port="TimedPlotter2.input" relation="relation"/>
+    <link port="Network Model.out" relation="relation3"/>
+    <link port="Plant Model.in" relation="relation5"/>
+    <link port="Plant Model.out" relation="relation7"/>
+    <link port="Plant Model.in2" relation="relation6"/>
+    <link port="Plant Model.out2" relation="relation8"/>
+    <link port="Platform2.sensor" relation="relation8"/>
+    <link port="Platform2.actuator" relation="relation5"/>
+    <link port="Platform2.networkIn" relation="relation2"/>
+    <link port="Platform2.networkOut" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation8"/>
+    <link port="TimedPlotter2.input" relation="relation5"/>
+    <link port="TimedPlotter3.input" relation="relation7"/>
+    <link port="TimedPlotter4.input" relation="relation6"/>
 </entity>
