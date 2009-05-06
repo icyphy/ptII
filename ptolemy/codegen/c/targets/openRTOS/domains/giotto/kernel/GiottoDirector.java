@@ -881,7 +881,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                         IOPort thisport = (IOPort)myItr.next();
                         outerInput = _getPortName(thisport);
                         innerInput = outerInput.replace("_input","_EmbeddedActor_input");
-                     code.append(_eol+innerInput+" = "+outerInput";"+_eol);   
+			code.append(_eol + innerInput + " = " + outerInput + ";" + _eol);   
                         
                     }
                     // now call the method name
