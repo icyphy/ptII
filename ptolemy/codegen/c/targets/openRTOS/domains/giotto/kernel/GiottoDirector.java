@@ -935,7 +935,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
                     code.append(_eol+actorHelper.generateFireCode());
                     System.out.println("after calling the generateFireCode on composite actor");
-                }// end if not fsm
+                // end if not fsm
+                }else{
+                    code.append(_eol+"// in the else"+_eol);
+                    code.append(_eol+actorHelper.generateFireCode());   
+                    
+                }
                 //end composite actor
             }else{
                 System.out.println("not composite actor");
