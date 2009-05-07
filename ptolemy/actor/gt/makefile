@@ -139,7 +139,6 @@ MISC_FILES =	controller data gui ingredients test util
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	'Configurer$$ContainmentExtender.class' \
 	'Constraint$$1$$1$$1.class' \
 	'Constraint$$1$$1.class' \
 	'Constraint$$1.class' \
@@ -161,7 +160,6 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$ParameterIterator.class' \
 	'GraphTransformer$$CreateObjectChangeRequest.class' \
-	'IterativeParameter$$1.class' \
 	'IterativeParameter$$ConstraintViolationException.class' \
 	'IterativeParameter$$Mode$$1.class' \
 	'IterativeParameter$$Mode$$2.class' \
@@ -171,7 +169,6 @@ OPTIONAL_FILES = \
 	'ModelExecutor$$Wrapper.class' \
 	'ModelExecutor$$WrapperPort.class' \
 	'TransformationMode$$1.class' \
-	'TransformationMode$$2.class' \
 	'TransformationMode$$Mode$$1.class' \
 	'TransformationMode$$Mode$$2.class' \
 	'TransformationMode$$Mode$$3.class' \

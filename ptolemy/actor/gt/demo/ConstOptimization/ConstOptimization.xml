@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ConstOptimization" class="ptolemy.actor.gt.controller.ComplexTransformation">
+<entity name="ConstOptimization" class="ptolemy.actor.gt.controller.ModelBasedTransformation">
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
         </property>
@@ -274,7 +274,7 @@
                 </entity>
             </configure>
         </entity>
-        <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+        <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 220.0]">

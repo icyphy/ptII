@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -40,6 +40,7 @@ import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -56,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class SetTableau extends TableauControllerEvent {
+public class SetTableau extends Event {
 
     /**
      *  @param container
@@ -67,6 +68,8 @@ public class SetTableau extends TableauControllerEvent {
     public SetTableau(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        referredTableau = new StringParameter(this, "referredTableau");
 
         alwaysOnTop = new Parameter(this, "alwaysOnTop");
         alwaysOnTop.setTypeAtMost(BaseType.BOOLEAN);
@@ -105,7 +108,7 @@ public class SetTableau extends TableauControllerEvent {
     public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        Tableau tableau = _getTableau();
+        Tableau tableau = EventUtils.getTableau(this, referredTableau, null);
         JFrame frame = tableau.getFrame();
 
         boolean isAlwaysOnTop = ((BooleanToken) alwaysOnTop.getToken())
@@ -201,6 +204,8 @@ public class SetTableau extends TableauControllerEvent {
 
     public Parameter focused;
 
+    public StringParameter referredTableau;
+
     public Parameter resizable;
 
     public Parameter screenLocation;
@@ -229,9 +234,5 @@ public class SetTableau extends TableauControllerEvent {
                 return "normal";
             }
         }
-    }
-
-    protected TableauParameter _getDefaultTableau() {
-        return null;
     }
 }

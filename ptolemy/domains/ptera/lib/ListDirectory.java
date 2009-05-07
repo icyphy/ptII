@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
 import java.io.File;
 
@@ -37,6 +37,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -56,7 +57,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ListDirectory extends GTEvent {
+public class ListDirectory extends Event {
 
     public ListDirectory(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

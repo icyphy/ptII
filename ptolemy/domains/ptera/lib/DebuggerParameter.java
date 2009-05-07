@@ -25,14 +25,14 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
 import java.util.LinkedList;
 
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.gt.GTEntityUtils;
+import ptolemy.actor.gt.controller.GTEvent;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
@@ -42,6 +42,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.kernel.Event;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
@@ -87,7 +89,7 @@ public class DebuggerParameter extends TableauParameter
      */
     public void event(DebugEvent event) {
         NamedObj container = getContainer();
-        message(((GTDebugEvent) event).toString(container));
+        message(((PteraDebugEvent) event).toString(container));
     }
 
     public void initialize() throws IllegalActionException {
@@ -144,7 +146,7 @@ public class DebuggerParameter extends TableauParameter
     public Parameter rowsDisplayed;
 
     private Tableau _createTableau() throws IllegalActionException {
-        Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
+        Effigy effigy = EventUtils.findToplevelEffigy(this);
         TextEffigy textEffigy;
         try {
             textEffigy = TextEffigy.newTextEffigy(effigy, "");
@@ -184,8 +186,8 @@ public class DebuggerParameter extends TableauParameter
             while (!controllers.isEmpty()) {
                 PteraController controller = controllers.removeFirst();
                 for (Object entity : controller.deepEntityList()) {
-                    if (entity instanceof GTEvent) {
-                        GTEvent event = (GTEvent) entity;
+                    if (entity instanceof Event) {
+                        Event event = (Event) entity;
                         if (register) {
                             event.addDebugListener(this);
                         } else {
@@ -198,7 +200,8 @@ public class DebuggerParameter extends TableauParameter
                         if (refinements != null) {
                             for (TypedActor refinement : refinements) {
                                 if (refinement instanceof PteraController) {
-                                    controllers.add((PteraController) refinement);
+                                    controllers.add(
+                                            (PteraController) refinement);
                                 }
                             }
                         }

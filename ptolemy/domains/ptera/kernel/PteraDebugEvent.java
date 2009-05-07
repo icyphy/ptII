@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 2008 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,15 +25,12 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.kernel;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// Test
+//// PteraDebugEvent
 
 /**
 
@@ -44,13 +41,27 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Test extends GTEvent {
+public class PteraDebugEvent implements ptolemy.kernel.util.DebugEvent {
 
-    public Test(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-
-        isInitialEvent.setVisibility(Settable.NONE);
-        isFinalEvent.setVisibility(Settable.NONE);
+    public PteraDebugEvent(Event source, String message) {
+        _source = source;
+        _message = message;
     }
+
+    public NamedObj getSource() {
+        return _source;
+    }
+
+    public String toString() {
+        return _source.getName() + ": " + _message;
+    }
+
+    public String toString(NamedObj sourceParent) {
+        return _source.getName(sourceParent) + ": " + _message;
+    }
+
+    private String _message;
+
+    private Event _source;
+
 }

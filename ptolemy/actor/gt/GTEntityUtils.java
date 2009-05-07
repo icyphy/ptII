@@ -42,9 +42,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.data.expr.ContainmentExtender;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -52,7 +49,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.ConfigurableAttribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -113,36 +109,6 @@ public class GTEntityUtils {
                 }
             }
         }
-    }
-
-    /** Find the effigy associated with the top level of the object, and if not
-     *  found but the top level has a ContainmentExtender attribute, use that
-     *  attribute to find the containment extender of the top level and continue
-     *  the search.
-     *
-     *  @param object The object.
-     *  @return The effigy, or null if not found.
-     *  @exception IllegalActionException If attributes cannot be retrieved, or
-     *   the container that an attribute points to is invalid.
-     */
-    public static Effigy findToplevelEffigy(NamedObj object)
-            throws IllegalActionException {
-        NamedObj toplevel;
-        do {
-            toplevel = object.toplevel();
-            Effigy effigy = Configuration.findEffigy(toplevel);
-            if (effigy != null) {
-                return effigy;
-            }
-            ContainmentExtender extender = (ContainmentExtender)
-                    toplevel.getAttribute("_containmentExtender",
-                            ContainmentExtender.class);
-            object = toplevel;
-            if (extender != null) {
-                object = extender.getExtendedContainer();
-            }
-        } while (toplevel != object);
-        return null;
     }
 
     /** Update the appearance (icons and ports) of the entity with the change in

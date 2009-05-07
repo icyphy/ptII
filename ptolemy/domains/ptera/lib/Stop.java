@@ -25,11 +25,12 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
 import ptolemy.actor.Manager;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,7 +49,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Stop extends GTEvent {
+public class Stop extends Event {
 
     /**
      *  @param container

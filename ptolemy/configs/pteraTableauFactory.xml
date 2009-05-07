@@ -7,7 +7,6 @@
       <configure>
         <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity">
           <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
-          <input source="ptolemy/configs/basicUtilities.xml"/>
           <input source="ptolemy/domains/ptera/lib/pteraLibrary.xml"/>
         </entity>
       </configure>

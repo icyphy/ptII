@@ -31,6 +31,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,7 +84,7 @@ public class InitModel extends GTEvent {
             modelParameter.setModel(_getInitialModel());
         }
 
-        _debug(new GTDebugEvent(this, "Model initialized."));
+        _debug(new PteraDebugEvent(this, "Model initialized."));
 
         return data;
     }

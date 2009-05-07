@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 2008-2009 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,12 +25,12 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.kernel;
 
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.gt.controller.GTEvent;
 
 //////////////////////////////////////////////////////////////////////////
-//// DebugEvent
+//// PteraErrorEvent
 
 /**
 
@@ -41,27 +41,13 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTDebugEvent implements ptolemy.kernel.util.DebugEvent {
+public class PteraErrorEvent extends PteraDebugEvent {
 
-    public GTDebugEvent(GTEvent source, String message) {
-        _source = source;
-        _message = message;
-    }
-
-    public NamedObj getSource() {
-        return _source;
+    public PteraErrorEvent(GTEvent source, String message) {
+        super(source, message);
     }
 
     public String toString() {
-        return _source.getName() + ": " + _message;
+        return "!!! " + super.toString() + " !!!";
     }
-
-    public String toString(NamedObj sourceParent) {
-        return _source.getName(sourceParent) + ": " + _message;
-    }
-
-    private String _message;
-
-    private GTEvent _source;
-
 }

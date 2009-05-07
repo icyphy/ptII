@@ -31,6 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptera.kernel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -833,13 +835,22 @@ public class PteraDirector extends Director implements TimedDirector,
             _currentTime = modalModel.getDirector().getModelTime();
 
             Iterator<?> entities = controller.deepEntityList().iterator();
+            List<Event> initialEvents = new LinkedList<Event>();
             while (entities.hasNext()) {
                 Event event = (Event) entities.next();
                 if (event.isInitialEvent()) {
-                    TimedEvent newEvent = new TimedEvent(_currentTime, event,
-                            null, null, 0, false);
-                    _addEvent(newEvent);
+                    initialEvents.add(event);
                 }
+            }
+            Collections.sort(initialEvents, new Comparator<Event>() {
+                public int compare(Event event1, Event event2) {
+                    return event1.getName().compareTo(event2.getName());
+                }
+            });
+            for (Event event : initialEvents) {
+                TimedEvent newEvent = new TimedEvent(_currentTime, event, null,
+                        null, 0, false);
+                _addEvent(newEvent, false);
             }
             if (getController().getRefinedState() != null) {
                 _requestFiring();
@@ -847,7 +858,7 @@ public class PteraDirector extends Director implements TimedDirector,
         } else {
             TimedEvent newEvent = new TimedEvent(_currentTime, controller,
                     null, null, 0, false);
-            _addEvent(newEvent);
+            _addEvent(newEvent, false);
             _initializedRefinements.add(controller);
             if (_isEmbedded()) {
                 _requestFiring();
@@ -874,16 +885,18 @@ public class PteraDirector extends Director implements TimedDirector,
      *
      *  @param eventQueue The event queue.
      *  @param event The event.
+     *  @param enableLifo Whether the LIFO option can be enabled in the model.
      *  @exception IllegalActionException If the LIFO parameter of this director
      *   cannot be retrieved.
      */
-    private void _addEvent(List<TimedEvent> eventQueue, TimedEvent event)
-            throws IllegalActionException {
+    private void _addEvent(List<TimedEvent> eventQueue, TimedEvent event,
+            boolean enableLifo) throws IllegalActionException {
         ListIterator<TimedEvent> iterator = eventQueue.listIterator();
         Object contents = event.contents;
         Time time1 = event.timeStamp;
         int priority1 = event.priority;
-        boolean lifo = ((BooleanToken) LIFO.getToken()).booleanValue();
+        boolean lifo = enableLifo && ((BooleanToken) LIFO.getToken())
+                .booleanValue();
         int position = 0;
         while (true) {
             if (iterator.hasNext()) {
@@ -918,11 +931,13 @@ public class PteraDirector extends Director implements TimedDirector,
      *  an actor as its contents, add the event to the refinement queue as well.
      *
      *  @param event The event.
+     *  @param enableLifo Whether the LIFO option can be enabled in the model.
      *  @exception IllegalActionException If the LIFO parameter of this director
      *   cannot be retrieved.
      */
-    private void _addEvent(TimedEvent event) throws IllegalActionException {
-        _addEvent(_eventQueue, event);
+    private void _addEvent(TimedEvent event, boolean enableLifo)
+            throws IllegalActionException {
+        _addEvent(_eventQueue, event, enableLifo);
     }
 
     /** Clear the state of this Ptera director and the Ptera directors of the
@@ -1133,7 +1148,7 @@ public class PteraDirector extends Director implements TimedDirector,
             topTime = _eventQueue.get(0).timeStamp;
         }
 
-        _addEvent(timedEvent);
+        _addEvent(timedEvent, true);
 
         if (triggers != null) {
             for (NamedObj trigger : triggers) {

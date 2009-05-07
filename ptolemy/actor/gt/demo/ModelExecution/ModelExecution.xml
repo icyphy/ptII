@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ModelExecution" class="ptolemy.actor.gt.controller.ComplexTransformation">
+<entity name="ModelExecution" class="ptolemy.actor.gt.controller.ModelBasedTransformation">
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
         </property>

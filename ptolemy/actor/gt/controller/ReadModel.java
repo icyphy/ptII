@@ -31,6 +31,8 @@ import java.net.URL;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.domains.ptera.kernel.PteraErrorEvent;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -83,9 +85,9 @@ public class ReadModel extends GTEvent {
         URL url = modelFile.asURL();
         try {
             model = (CompositeEntity) _parser.parse(url, url);
-            _debug(new GTDebugEvent(this, "Read file " + url));
+            _debug(new PteraDebugEvent(this, "Read file " + url));
         } catch (Exception e) {
-            _debug(new GTErrorEvent(this, "Unable to read file " + url));
+            _debug(new PteraErrorEvent(this, "Unable to read file " + url));
             throw new IllegalActionException(this, e, "Unable to parse the " +
                     "model from file \"" + modelFile.stringValue().trim() +
                     "\" as a CompositeEntity.");

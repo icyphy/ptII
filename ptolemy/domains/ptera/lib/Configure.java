@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -49,6 +49,7 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.data.ArrayToken;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.IllegalActionException;
@@ -70,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Configure extends InitializableGTEvent {
+public class Configure extends Event {
 
     /**
      *  @param container

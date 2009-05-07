@@ -31,6 +31,7 @@ import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,7 +63,7 @@ public class InputModel extends GTEvent {
         BooleanToken inputPortPresent = (BooleanToken) scope.get(
                 _INPUT_PORT_NAME + "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            _debug(new GTDebugEvent(this, "Input model received at " +
+            _debug(new PteraDebugEvent(this, "Input model received at " +
                     _INPUT_PORT_NAME + "."));
 
             ActorToken modelToken = (ActorToken) scope.get(_INPUT_PORT_NAME);

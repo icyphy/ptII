@@ -712,7 +712,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[171.74906482356494, 43.84765625000003]">
                         </property>
                     </entity>
-                    <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+                    <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[171.74906482356494, 133.84765625000003]">
@@ -1051,7 +1051,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[173.1684937407362, 47.84765625]">
                         </property>
                     </entity>
-                    <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+                    <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[173.1684937407362, 137.84765624999997]">
@@ -1949,7 +1949,7 @@
                             </entity>
                         </configure>
                     </entity>
-                    <entity name="ReportError" class="ptolemy.actor.gt.controller.Report">
+                    <entity name="ReportError" class="ptolemy.domains.ptera.lib.Report">
                         <property name="parameters" class="ptolemy.domains.ptera.kernel.ParametersAttribute" value="(text : string)">
                         </property>
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="$(text)">
@@ -1961,7 +1961,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 170.0]">
                         </property>
                     </entity>
-                    <entity name="ReportOK" class="ptolemy.actor.gt.controller.Report">
+                    <entity name="ReportOK" class="ptolemy.domains.ptera.lib.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="The model is consistent.">
                         </property>
                         <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="message">

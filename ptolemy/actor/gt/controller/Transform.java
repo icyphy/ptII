@@ -45,6 +45,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.kernel.ConfigurableEntity;
 import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.ptera.kernel.PteraErrorEvent;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -135,7 +137,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
             throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        _debug(new GTDebugEvent(this, "Start transformation."));
+        _debug(new PteraDebugEvent(this, "Start transformation."));
 
         long start = System.currentTimeMillis();
 
@@ -155,12 +157,12 @@ public class Transform extends GTEvent implements ConfigurableEntity,
                 model, initializeObjects ? this : null,
                 ((BooleanToken) defer.getToken()).booleanValue());
             if (isMatched) {
-                _debug(new GTDebugEvent(this, "Match found."));
+                _debug(new PteraDebugEvent(this, "Match found."));
             } else {
-                _debug(new GTDebugEvent(this, "Match not found."));
+                _debug(new PteraDebugEvent(this, "Match not found."));
             }
         } catch (Throwable t) {
-            _debug(new GTErrorEvent(this, t.getMessage()));
+            _debug(new PteraErrorEvent(this, t.getMessage()));
             throw new IllegalActionException(this, t, "Error occurred in the " +
                     "transformation in " + getFullName() + ".");
         }
@@ -169,10 +171,10 @@ public class Transform extends GTEvent implements ConfigurableEntity,
 
         long elapsed = System.currentTimeMillis() - start;
         if (data == null) {
-            _debug(new GTDebugEvent(this, "Finish transformation (" +
+            _debug(new PteraDebugEvent(this, "Finish transformation (" +
                     (double) elapsed / 1000 + " sec)."));
         } else {
-            _debug(new GTDebugEvent(this, "Request refire (" +
+            _debug(new PteraDebugEvent(this, "Request refire (" +
                     (double) elapsed / 1000 + " sec)."));
         }
 

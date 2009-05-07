@@ -54,6 +54,7 @@ import ptolemy.data.IntMatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.lib.EventUtils;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -150,7 +151,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                                 "Unable to reparse model.");
                     }
 
-                    Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
+                    Effigy effigy = EventUtils.findToplevelEffigy(this);
                     if (effigy == null) {
                         // The effigy may be null if the model is closed.
                         return;

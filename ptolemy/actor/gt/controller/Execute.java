@@ -32,10 +32,12 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.ArrayToken;
+import ptolemy.domains.ptera.kernel.PteraErrorEvent;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
+import ptolemy.domains.ptera.lib.EventUtils;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -81,12 +83,11 @@ public class Execute extends GTEvent {
         NamedObj toplevel = getModelParameter().getModel().toplevel();
         if (toplevel instanceof CompositeActor) {
             try {
-                _debug(new GTDebugEvent(this, "Prepare to execute model."));
+                _debug(new PteraDebugEvent(this, "Prepare to execute model."));
 
                 CompositeActor actor = (CompositeActor) toplevel;
                 if (_effigy == null || _effigy.getContainer() == null) {
-                    Effigy parentEffigy = GTEntityUtils.findToplevelEffigy(
-                            this);
+                    Effigy parentEffigy = EventUtils.findToplevelEffigy(this);
                     try {
                         _effigy = new PtolemyEffigy(parentEffigy,
                                 parentEffigy.uniqueName("_executeEffigy"));
@@ -103,9 +104,9 @@ public class Execute extends GTEvent {
                 }
                 actor.setManager(manager);
                 try {
-                    _debug(new GTDebugEvent(this, "Start model execution."));
+                    _debug(new PteraDebugEvent(this, "Start model execution."));
                     manager.execute();
-                    _debug(new GTDebugEvent(this, "Model execution finished."));
+                    _debug(new PteraDebugEvent(this, "Model execution finished."));
                 } finally {
                     synchronized(_managers) {
                         _managers.remove(manager);
@@ -114,7 +115,7 @@ public class Execute extends GTEvent {
                     actor.setManager(oldManager);
                 }
             } catch (KernelException e) {
-                _debug(new GTErrorEvent(this, "Error occurred while " +
+                _debug(new PteraErrorEvent(this, "Error occurred while " +
                         "executing model."));
                 throw new IllegalActionException(this, e, "Unable to execute " +
                         "model.");
@@ -122,7 +123,7 @@ public class Execute extends GTEvent {
                 _effigy.setModel(null);
             }
         } else {
-            _debug(new GTErrorEvent(this, "Unable to execute a model that is " +
+            _debug(new PteraErrorEvent(this, "Unable to execute a model that is " +
                     "not a CompositeActor."));
             throw new IllegalActionException("Unable to execute a model that " +
                     "is not a CompositeActor.");

@@ -79,7 +79,7 @@
                             </entity>
                         </configure>
                     </entity>
-                    <entity name="Report" class="ptolemy.actor.gt.controller.Report">
+                    <entity name="Report" class="ptolemy.domains.ptera.lib.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="There is a &quot;count&quot; parameter in your model. If you apply this pattern, that parameter will be overwritten. Continue?">
                         </property>
                         <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="yes or no">
@@ -89,7 +89,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 145.0}">
                         </property>
                     </entity>
-                    <entity name="Exception" class="ptolemy.actor.gt.controller.Report">
+                    <entity name="Exception" class="ptolemy.domains.ptera.lib.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="User operation cancelled.">
                         </property>
                         <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="runtime exception">
@@ -255,7 +255,7 @@
                             </entity>
                         </configure>
                     </entity>
-                    <entity name="Configure" class="ptolemy.actor.gt.controller.Configure">
+                    <entity name="Configure" class="ptolemy.domains.ptera.lib.Configure">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 125.0}">

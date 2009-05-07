@@ -25,12 +25,11 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
 import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 
-import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
@@ -42,6 +41,7 @@ import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,7 +62,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Report extends TableauControllerEvent {
+public class Report extends Event {
 
     /**
      *  @param container
@@ -73,6 +73,8 @@ public class Report extends TableauControllerEvent {
     public Report(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        referredTableau = new StringParameter(this, "referredTableau");
 
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setTypeEquals(BaseType.INT);
@@ -86,7 +88,7 @@ public class Report extends TableauControllerEvent {
         message.setExpression("Report from " + getName() + ".");
 
         mode = new ChoiceParameter(this, "mode", Mode.class);
-        mode.setExpression(Mode.TABLEAU.toString());
+        mode.setExpression(Mode.MESSAGE.toString());
 
         response = new Parameter(this, "response");
         response.setExpression("true");
@@ -127,17 +129,18 @@ public class Report extends TableauControllerEvent {
         case EXCEPTION:
             throw new RuntimeException(text);
         case TABLEAU:
-            Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
+            Effigy effigy = EventUtils.findToplevelEffigy(this);
             if (effigy == null) {
                 // The effigy may be null if the model is closed.
                 return data;
             }
 
-            Tableau tableau = _getTableau();
+            Tableau tableau = EventUtils.getTableau(this, referredTableau,
+                    this.tableau);
             if (tableau != null &&
                     !(tableau.getFrame() instanceof TextEditor)) {
-                _setTableau(null);
-                _closeTableau(tableau);
+                EventUtils.setTableau(this, referredTableau, this.tableau, null);
+                EventUtils.closeTableau(tableau);
                 tableau = null;
             }
 
@@ -178,7 +181,8 @@ public class Report extends TableauControllerEvent {
                         .intValue());
                 tableau.setFrame(frame);
                 frame.setTableau(tableau);
-                _setTableau(tableau);
+                EventUtils.setTableau(this, referredTableau, this.tableau,
+                        tableau);
                 frame.pack();
                 frame.setVisible(true);
                 if (previousText != null) {
@@ -243,6 +247,8 @@ public class Report extends TableauControllerEvent {
 
     public ChoiceParameter mode;
 
+    public StringParameter referredTableau;
+
     public Parameter response;
 
     /** The vertical size of the display, in rows. This contains an integer, and
@@ -282,10 +288,6 @@ public class Report extends TableauControllerEvent {
                 return "yes or no";
             }
         }
-    }
-
-    protected TableauParameter _getDefaultTableau() {
-        return tableau;
     }
 
     private static final MessageHandler _MESSAGE_HANDLER =

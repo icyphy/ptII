@@ -30,6 +30,7 @@ package ptolemy.actor.gt.controller;
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -64,7 +65,7 @@ public class OutputModel extends GTEvent {
         destination.broadcastClear();
         destination.broadcast(new ActorToken(entity));
 
-        _debug(new GTDebugEvent(this, "Output model sent to " +
+        _debug(new PteraDebugEvent(this, "Output model sent to " +
                 _OUTPUT_PORT_NAME + "."));
 
         return data;

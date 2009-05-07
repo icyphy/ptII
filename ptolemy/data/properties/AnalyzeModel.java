@@ -27,9 +27,9 @@
 */
 package ptolemy.data.properties;
 
-import ptolemy.actor.gt.controller.GTDebugEvent;
 import ptolemy.actor.gt.controller.GTEvent;
 import ptolemy.data.ArrayToken;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -65,7 +65,7 @@ public class AnalyzeModel extends GTEvent {
             throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        _debug(new GTDebugEvent(this, "Start analysis."));
+        _debug(new PteraDebugEvent(this, "Start analysis."));
 
         long start = System.currentTimeMillis();
 
@@ -77,10 +77,10 @@ public class AnalyzeModel extends GTEvent {
 
         long elapsed = System.currentTimeMillis() - start;
         if (data == null) {
-            _debug(new GTDebugEvent(this, "Finish analysis (" +
+            _debug(new PteraDebugEvent(this, "Finish analysis (" +
                     (double) elapsed / 1000 + " sec)."));
         } else {
-            _debug(new GTDebugEvent(this, "Request refire (" +
+            _debug(new PteraDebugEvent(this, "Request refire (" +
                     (double) elapsed / 1000 + " sec)."));
         }
 

@@ -48,17 +48,36 @@ PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	Configure.java \
+	DebuggerParameter.java \
 	EventQueueDebugger.java \
-	SynchronizeToRealtime.java
+	EventUtils.java \
+	ListDirectory.java \
+	ReceiveInput.java \
+	Report.java \
+	SetTableau.java \
+	Sleep.java \
+	Stop.java \
+	SynchronizeToRealtime.java \
+	TableauParameter.java \
+	Test.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ConfigureIcon.xml \
+	ListDirectoryIcon.xml \
 	ListenToInput.xml \
 	ListenToStop.xml \
 	ParallelTasks.xml \
+	ReceiveInputIcon.xml \
 	RepeatForCount.xml \
+	ReportIcon.xml \
 	SendOutput.xml \
+	SetTableauIcon.xml \
 	SingleQueueMultipleServers.xml \
 	SingleQueueMultipleServersTE.xml \
+	SleepIcon.xml \
+	StopIcon.xml \
+	TestIcon.xml \
 	TrafficLight.xml \
 	pteraLibrary.xml
 
@@ -70,7 +89,23 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'Configure$$Listener.class' \
+	'Configure$$Query.class' \
+	'EventUtils$$1.class' \
+	'ReceiveInput$$InputListener.class' \
+	'Report$$Mode$$1.class' \
+	'Report$$Mode$$2.class' \
+	'Report$$Mode$$3.class' \
+	'Report$$Mode$$4.class' \
+	'Report$$Mode$$5.class' \
+	'Report$$Mode$$6.class' \
+	'Report$$Mode.class' \
+	'SetTableau$$TableauState$$1.class' \
+	'SetTableau$$TableauState$$2.class' \
+	'SetTableau$$TableauState$$3.class' \
+	'SetTableau$$TableauState.class' \
+	'TableauParameter$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

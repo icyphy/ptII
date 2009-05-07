@@ -55,32 +55,17 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = \
 	Clone.java \
-	Configure.java \
-	DebuggerParameter.java \
 	DesignPatternImporter.java \
 	Execute.java \
-	GTDebugEvent.java \
-	GTErrorEvent.java \
 	GTEvent.java \
-	InitializableGTEvent.java \
 	InitModel.java \
 	InitModelWithContainer.java \
 	InputModel.java \
-	ListDirectory.java \
 	Match.java \
 	ModelIOPort.java \
 	ModelParameter.java \
 	OutputModel.java \
 	ReadModel.java \
-	ReceiveInput.java \
-	RefinementSuggestion.java \
-	Report.java \
-	SetTableau.java \
-	Sleep.java \
-	Stop.java \
-	TableauControllerEvent.java \
-	TableauParameter.java \
-	Test.java \
 	Transform.java \
 	TransformationAttribute.java \
 	View.java \
@@ -88,8 +73,6 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	CloneIcon.xml \
-	ComplexTransformation.xml \
-	ConfigureIcon.xml \
 	DesignPatternTransformer.xml \
 	EmbeddedTransformationController.xml \
 	EmbeddedTransformationControllerWithPorts.xml \
@@ -99,18 +82,12 @@ OTHER_FILES_TO_BE_JARED = \
 	InitModelIcon.xml \
 	InitModelWithContainerIcon.xml \
 	InputModelIcon.xml \
-	ListDirectoryIcon.xml \
 	MatchIcon.xml \
+	ModelBasedTransformation.xml \
 	ModelUpdater.xml \
 	ModelUpdaterIcon.xml \
 	OutputModelIcon.xml \
 	ReadModelIcon.xml \
-	ReceiveInputIcon.xml \
-	ReportIcon.xml \
-	SetTableauIcon.xml \
-	SleepIcon.xml \
-	StopIcon.xml \
-	TestIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml \
 	TransformationControllerIcon.xml \
@@ -126,26 +103,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Configure$$Listener.class' \
-	'Configure$$Query.class' \
 	'DesignPatternImporter$$1.class' \
 	'DesignPatternImporter$$MoMLContentFilter.class' \
-	'ReceiveInput$$InputListener.class' \
-	'Report$$1.class' \
-	'Report$$Mode$$1.class' \
-	'Report$$Mode$$2.class' \
-	'Report$$Mode$$3.class' \
-	'Report$$Mode$$4.class' \
-	'Report$$Mode$$5.class' \
-	'Report$$Mode$$6.class' \
-	'Report$$Mode.class' \
-	'SetTableau$$1.class' \
-	'SetTableau$$TableauState$$1.class' \
-	'SetTableau$$TableauState$$2.class' \
-	'SetTableau$$TableauState$$3.class' \
-	'SetTableau$$TableauState.class' \
-	'TableauControllerEvent$$1.class' \
-	'TableauParameter$$1.class' \
 	'Transform$$EmbeddedConfigurer.class' \
 	'TransformationAttribute$$1$$1.class' \
 	'TransformationAttribute$$1.class' \

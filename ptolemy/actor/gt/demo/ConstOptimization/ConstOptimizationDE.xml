@@ -259,7 +259,7 @@
                     </entity>
 </configure>
             </entity>
-            <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+            <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 180.0]">

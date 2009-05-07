@@ -57,14 +57,13 @@ public class GTEvent extends Event {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        refinementExtender = new RefinementExtender(this, "refinementExtender");
+        refinementExtender = new RefinementExtender(this,
+                uniqueName("refinementExtender"));
         refinementExtender.description.setExpression(
                 "Embedded Transformation Controller");
         refinementExtender.setPersistent(false);
+        refinementExtender.moveToFirst();
         _setRefinementExtender();
-
-        refinementSuggestion = new RefinementSuggestion(this,
-                "refinementSuggestion");
 
         Parameter allowRefinement = new Parameter(this, "_allowRefinement");
         allowRefinement.setTypeEquals(BaseType.BOOLEAN);
@@ -106,8 +105,6 @@ public class GTEvent extends Event {
     }
 
     public RefinementExtender refinementExtender;
-
-    public RefinementSuggestion refinementSuggestion;
 
     private void _setRefinementExtender() {
         NamedObj container = getContainer();

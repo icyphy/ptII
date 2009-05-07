@@ -34,7 +34,6 @@ import java.net.URI;
 
 import javax.swing.JFrame;
 
-import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -45,7 +44,10 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.lib.EventUtils;
+import ptolemy.domains.ptera.lib.TableauParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -67,11 +69,13 @@ import ptolemy.vergil.gt.GTFrameTools;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class View extends TableauControllerEvent {
+public class View extends GTEvent {
 
     public View(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        referredTableau = new StringParameter(this, "referredTableau");
 
         title = new Parameter(this, "title");
         title.setStringMode(true);
@@ -97,7 +101,7 @@ public class View extends TableauControllerEvent {
     public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
+        Effigy effigy = EventUtils.findToplevelEffigy(this);
         if (effigy == null) {
             // The effigy may be null if the model is closed.
             return data;
@@ -125,11 +129,13 @@ public class View extends TableauControllerEvent {
 
             boolean reopen = ((BooleanToken) reopenWindow.getToken())
                     .booleanValue();
-            Tableau tableau = _getTableau();
+            Tableau tableau = EventUtils.getTableau(this, referredTableau,
+                    this.tableau);
             if (tableau != null &&
                     !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
-                _setTableau(null);
-                _closeTableau(tableau);
+                EventUtils.setTableau(this, referredTableau, this.tableau,
+                        null);
+                EventUtils.closeTableau(tableau);
                 tableau = null;
             }
 
@@ -143,11 +149,12 @@ public class View extends TableauControllerEvent {
             }
             if (openNewWindow) {
                 if (tableau != null) {
-                    _closeTableau(tableau);
+                    EventUtils.closeTableau(tableau);
                 }
                 Configuration configuration = (Configuration) effigy.toplevel();
                 tableau = configuration.openInstance(entity, effigy);
-                _setTableau(tableau);
+                EventUtils.setTableau(this, referredTableau, this.tableau,
+                        tableau);
                 // Set uri to null so that we don't accidentally overwrite the
                 // original file by pressing Ctrl-S.
                 ((Effigy) tableau.getContainer()).uri.setURI(null);
@@ -211,6 +218,8 @@ public class View extends TableauControllerEvent {
         return data;
     }
 
+    public StringParameter referredTableau;
+
     public Parameter reopenWindow;
 
     public Parameter screenLocation;
@@ -220,8 +229,4 @@ public class View extends TableauControllerEvent {
     public TableauParameter tableau;
 
     public Parameter title;
-
-    protected TableauParameter _getDefaultTableau() {
-        return tableau;
-    }
 }

@@ -380,7 +380,7 @@
                             </entity>
                         </configure>
                     </entity>
-                    <entity name="Configure" class="ptolemy.actor.gt.controller.Configure">
+                    <entity name="Configure" class="ptolemy.domains.ptera.lib.Configure">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
@@ -534,7 +534,7 @@
                             </entity>
                         </configure>
                     </entity>
-                    <entity name="Report" class="ptolemy.actor.gt.controller.Report">
+                    <entity name="Report" class="ptolemy.domains.ptera.lib.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="Your model contains entities with name collisions. Automatic renaming can be performed. Continue?">
                         </property>
                         <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="yes or no">
@@ -588,7 +588,7 @@
                             </entity>
                         </configure>
                     </entity>
-                    <entity name="Exception" class="ptolemy.actor.gt.controller.Report">
+                    <entity name="Exception" class="ptolemy.domains.ptera.lib.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="User operation cancelled.">
                         </property>
                         <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="runtime exception">

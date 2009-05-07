@@ -696,7 +696,7 @@ ModelUpdate component and is not adaptive.</text></svg></configure>
                     </entity>
                 </configure>
             </entity>
-            <entity name="TooSlow?" class="ptolemy.actor.gt.controller.Test">
+            <entity name="TooSlow?" class="ptolemy.domains.ptera.lib.Test">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
@@ -842,7 +842,7 @@ ModelUpdate component and is not adaptive.</text></svg></configure>
                     </entity>
                 </configure>
             </entity>
-            <entity name="TooFast?" class="ptolemy.actor.gt.controller.Test">
+            <entity name="TooFast?" class="ptolemy.domains.ptera.lib.Test">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">

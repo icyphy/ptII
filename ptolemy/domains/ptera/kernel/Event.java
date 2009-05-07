@@ -31,8 +31,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptera.kernel;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -45,6 +47,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.modal.RefinementExtender;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -101,7 +104,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Event extends State {
+public class Event extends State implements Initializable {
 
     /** Construct an event with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -122,6 +125,13 @@ public class Event extends State {
     public Event(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        RefinementExtender refinementExtender = new RefinementExtender(this,
+                uniqueName("refinementExtender"));
+        refinementExtender.description.setExpression("Ptera Refinement");
+        refinementExtender.setPersistent(false);
+        refinementExtender.className.setExpression("ptolemy.domains.ptera" +
+                ".kernel.PteraController");
 
         refinementName.setVisibility(Settable.NONE);
 
@@ -150,6 +160,20 @@ public class Event extends State {
         variable.setPersistent(false);
 
         parameters.setExpression("()");
+    }
+
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), initialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     */
+    public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);
     }
 
     /** React to a change in an attribute. If the changed attribute is
@@ -263,6 +287,7 @@ public class Event extends State {
      */
     public RefiringData fire(ArrayToken arguments)
             throws IllegalActionException {
+        _debug(new PteraDebugEvent(this, "Fire."));
         List<String> names = parameters.getParameterNames();
         int paramCount = names == null ? 0 : names.size();
         int argCount = arguments == null ? 0 : arguments.length();
@@ -298,6 +323,41 @@ public class Event extends State {
         }
     }
 
+    /** Begin execution of the actor.  This is invoked exactly once
+     *  after the preinitialization phase.  Since type resolution is done
+     *  in the preinitialization phase, along with topology changes that
+     *  may be requested by higher-order function actors, an actor
+     *  can produce output data and schedule events in the initialize()
+     *  method.
+     *
+     *  @exception IllegalActionException If execution is not permitted.
+     */
+    public void initialize() throws IllegalActionException {
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();
+            }
+        }
+    }
+
+    /** Return whether this event is an ending event. When an ending event in a
+     *  submodel is processed, the outgoing scheduling relations from the event
+     *  that the submodel is associated with should be evaluated.
+     *  <p>
+     *  The difference between an ending event and a final event is that the
+     *  latter also clears the submodel's local event queue, whereas the former
+     *  doesn't. It just triggers the outgoing scheduling relations.
+     *
+     *  @return true if this event is an ending event, or false otherwise.
+     *  @exception IllegalActionException If the expression of the
+     *   isEndingEvent parameter cannot be parsed or cannot be evaluated, or if
+     *   the result of evaluation violates type constraints, or if the result of
+     *   evaluation is null and there are variables that depend on this one.
+     */
+    public boolean isEndingEvent() throws IllegalActionException {
+        return ((BooleanToken) isEndingEvent.getToken()).booleanValue();
+    }
+
     /** Return whether this event is a final event, so that its execution causes
      *  the event queue of the Ptera director to be cleared.
      *
@@ -324,23 +384,21 @@ public class Event extends State {
     public boolean isInitialEvent() throws IllegalActionException {
         return ((BooleanToken) isInitialEvent.getToken()).booleanValue();
     }
-    
-    /** Return whether this event is an ending event. When an ending event in a
-     *  submodel is processed, the outgoing scheduling relations from the event
-     *  that the submodel is associated with should be evaluated.
-     *  <p>
-     *  The difference between an ending event and a final event is that the
-     *  latter also clears the submodel's local event queue, whereas the former
-     *  doesn't. It just triggers the outgoing scheduling relations.
+
+    /** This method should be invoked exactly once per execution
+     *  of a model, before any of these other methods are invoked.
+     *  For actors, this is invoked prior to type resolution and
+     *  may trigger changes in the topology, changes in the
+     *  type constraints.
      *
-     *  @return true if this event is an ending event, or false otherwise.
-     *  @exception IllegalActionException If the expression of the
-     *   isEndingEvent parameter cannot be parsed or cannot be evaluated, or if
-     *   the result of evaluation violates type constraints, or if the result of
-     *   evaluation is null and there are variables that depend on this one.
+     *  @exception IllegalActionException If initializing is not permitted.
      */
-    public boolean isEndingEvent() throws IllegalActionException {
-        return ((BooleanToken) isEndingEvent.getToken()).booleanValue();
+    public void preinitialize() throws IllegalActionException {
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();
+            }
+        }
     }
 
     /** Continue the processing of this event with the given arguments from the
@@ -363,7 +421,25 @@ public class Event extends State {
      */
     public RefiringData refire(ArrayToken arguments, RefiringData data)
             throws IllegalActionException {
+        _debug(new PteraDebugEvent(this, "Refire."));
         return null;
+    }
+
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), initialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     */
+    public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
+            }
+        }
     }
 
     /** Schedule the next events by evaluating all scheduling relations from
@@ -399,13 +475,89 @@ public class Event extends State {
         }
     }
 
+    /** Specify the container, adding the entity to the list
+     *  of entities in the container.  If the container already contains
+     *  an entity with the same name, then throw an exception and do not make
+     *  any changes.  Similarly, if the container is not in the same
+     *  workspace as this entity, throw an exception.  If this entity is
+     *  a class element and the proposed container does not match
+     *  the current container, then also throw an exception.
+     *  If the entity is already contained by the container, do nothing.
+     *  If this entity already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the directory of the workspace, if it is present.
+     *  If the argument is null, then unlink the ports of the entity
+     *  from any relations and remove it from its container.
+     *  It is not added to the workspace directory, so this could result in
+     *  this entity being garbage collected.
+     *  Derived classes may further constrain the container
+     *  to subclasses of CompositeEntity by overriding the protected
+     *  method _checkContainer(). This method validates all
+     *  deeply contained instances of Settable, since they may no longer
+     *  be valid in the new context.  This method is write-synchronized
+     *  to the workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     *  @see #getContainer()
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        CompositeEntity oldContainer = (CompositeEntity) getContainer();
+        if (oldContainer instanceof Initializable) {
+            ((Initializable) oldContainer).removeInitializable(this);
+        }
+        super.setContainer(container);
+        if (container instanceof Initializable) {
+            ((Initializable) container).addInitializable(this);
+        }
+    }
+
     /** Request that the event cease execution altogether.
      */
     public void stop() {
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// RefiringData
+
+    /** This method is invoked exactly once per execution
+     *  of an application.  None of the other action methods should be
+     *  be invoked after it.  It finalizes an execution, typically closing
+     *  files, displaying final results, etc.  When this method is called,
+     *  no further execution should occur.
+     *
+     *  @exception IllegalActionException If wrapup is not permitted.
+     */
+    public void wrapup() throws IllegalActionException {
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.wrapup();
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    //// EventParameter
+
     /** The actions for this event. */
     public ActionsAttribute actions;
+
+    /** A Boolean parameter that determines whether the event is the ending of a
+     *  submodel, which means the outgoing scheduling relations from the event
+     *  that the submodel is associated with should be evaluated. The difference
+     *  between an ending event and a final event is that the latter also clears
+     *  the submodel's local event queue, whereas the former doesn't. It just
+     *  triggers the outgoing scheduling relations.
+     *
+     */
+    public Parameter isEndingEvent;
 
     /** A Boolean parameter to specify whether this event is a final event. */
     public Parameter isFinalEvent;
@@ -453,9 +605,6 @@ public class Event extends State {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    //// RefiringData
-
     /**
      A data structure to store the model time advance for the refire() method to
      be called. This data structure is returned by fire() and refire().
@@ -487,9 +636,6 @@ public class Event extends State {
         /** The time advance. */
         private double _timeAdvance;
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    //// EventParameter
 
     /** Return the parser scope used to evaluate the actions and values
      *  associated with scheduling relations. The parser scope can evaluate
@@ -568,6 +714,11 @@ public class Event extends State {
         }
     }
 
+    /** List of objects whose (pre)initialize() and wrapup() methods
+     *  should be slaved to these.
+     */
+    private transient List<Initializable> _initializables;
+
     /** The parser scope used to execute actions and evaluate arguments.
      */
     private VariableScope _parserScope;
@@ -575,14 +726,4 @@ public class Event extends State {
     /** Version of _parserScope.
      */
     private long _parserScopeVersion = -1;
-    
-    /** A Boolean parameter that determines whether the event is the ending of a
-     *  submodel, which means the outgoing scheduling relations from the event
-     *  that the submodel is associated with should be evaluated. The difference
-     *  between an ending event and a final event is that the latter also clears
-     *  the submodel's local event queue, whereas the former doesn't. It just
-     *  triggers the outgoing scheduling relations.
-     * 
-     */
-    public Parameter isEndingEvent;
 }

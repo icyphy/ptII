@@ -239,7 +239,7 @@
                     </entity>
 </configure>
             </entity>
-            <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+            <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
                 <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="X = X + 1 &gt;= Columns ? 0 : X + 1;&#10;  Y = X == 0 ? Y + 1 : Y">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1178,7 +1178,7 @@
                     </entity>
 </configure>
             </entity>
-            <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+            <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
                 <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Count = Count + 1">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2627,7 +2627,7 @@
                     </entity>
 </configure>
             </entity>
-            <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+            <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[369.89245063347323, 144.00878395432434]">

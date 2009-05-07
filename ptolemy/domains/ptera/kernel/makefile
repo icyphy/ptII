@@ -49,20 +49,22 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	ActionsAttribute.java \
-	PteraController.java \
-	PteraDirector.java \
-	PteraModalModel.java \
 	Event.java \
 	EventDebugEvent.java \
 	EventQueueDebugListener.java \
 	ParametersAttribute.java \
+	PteraController.java \
+	PteraDebugEvent.java \
+	PteraDirector.java \
+	PteraErrorEvent.java \
+	PteraModalModel.java \
 	SchedulingRelation.java \
 	TimeAdvanceEvent.java \
 	VariableScope.java
 
 OTHER_FILES_TO_BE_JARED = \
-	PteraModalModelIcon.xml \
-	EventIcon.xml
+	EventIcon.xml \
+	PteraModalModelIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -73,9 +75,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'PteraDirector$$TimedEvent.class' \
 	'Event$$EventParameter.class' \
 	'Event$$RefiringData.class' \
+	'PteraDirector$$1.class' \
+	'PteraDirector$$TimedEvent.class' \
 	'SchedulingRelation$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

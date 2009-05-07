@@ -25,10 +25,16 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
+
+import ptolemy.domains.ptera.kernel.Event;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// GTErrorEvent
+//// Test
 
 /**
 
@@ -39,13 +45,13 @@ package ptolemy.actor.gt.controller;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTErrorEvent extends GTDebugEvent {
+public class Test extends Event {
 
-    public GTErrorEvent(GTEvent source, String message) {
-        super(source, message);
-    }
+    public Test(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-    public String toString() {
-        return "!!! " + super.toString() + " !!!";
+        isInitialEvent.setVisibility(Settable.NONE);
+        isFinalEvent.setVisibility(Settable.NONE);
     }
 }

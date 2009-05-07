@@ -33,6 +33,8 @@ import java.io.Writer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.ptera.kernel.PteraErrorEvent;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -80,9 +82,9 @@ public class WriteModel extends GTEvent {
             }
             model.exportMoML(writer, 0, modelName);
             writer.close();
-            _debug(new GTDebugEvent(this, "Write file " + modelFile.asURL()));
+            _debug(new PteraDebugEvent(this, "Write file " + modelFile.asURL()));
         } catch (IOException e) {
-            _debug(new GTErrorEvent(this, "Unable to write file " +
+            _debug(new PteraErrorEvent(this, "Unable to write file " +
                     modelFile.asURL()));
             throw new IllegalActionException(this, e, "Unable to output " +
                     "to file \"" + modelFile.stringValue().trim() + "\".");

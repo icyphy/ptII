@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -49,6 +49,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.domains.ptera.kernel.TimeAdvanceEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -68,8 +69,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ReceiveInput extends TableauControllerEvent
-        implements TimeAdvanceEvent {
+public class ReceiveInput extends Event implements TimeAdvanceEvent {
 
     /**
      *  @param container
@@ -80,6 +80,8 @@ public class ReceiveInput extends TableauControllerEvent
     public ReceiveInput(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        referredTableau = new StringParameter(this, "referredTableau");
 
         timeAdvance = new Parameter(this, "timeAdvance");
         timeAdvance.setTypeEquals(BaseType.DOUBLE);
@@ -150,7 +152,7 @@ public class ReceiveInput extends TableauControllerEvent
             }
         }
 
-        Tableau tableau = _getTableau();
+        Tableau tableau = EventUtils.getTableau(this, referredTableau, null);
         JFrame frame = tableau.getFrame();
 
         InputListener listener = new InputListener(
@@ -234,11 +236,9 @@ public class ReceiveInput extends TableauControllerEvent
 
     public Parameter receiveMousePress;
 
-    public Parameter timeAdvance;
+    public StringParameter referredTableau;
 
-    protected TableauParameter _getDefaultTableau() {
-        return null;
-    }
+    public Parameter timeAdvance;
 
     private void _addListener(Component component, InputListener listener) {
         if (listener._receiveKeyPress) {

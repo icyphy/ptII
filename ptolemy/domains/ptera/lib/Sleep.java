@@ -25,15 +25,19 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.domains.ptera.lib;
 
-import ptolemy.domains.ptera.kernel.PteraController;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptera.kernel.Event;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// RefinementSuggestion
+//// Sleep
 
 /**
 
@@ -44,26 +48,40 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RefinementSuggestion extends
-        ptolemy.domains.fsm.modal.RefinementSuggestion {
+public class Sleep extends Event {
 
-    public RefinementSuggestion(NamedObj container, String name)
+    /**
+     *  @param container
+     *  @param name
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
+     */
+    public Sleep(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setPersistent(false);
+
+        sleepTime = new Parameter(this, "sleepTime");
+        sleepTime.setExpression("0L");
+        sleepTime.setTypeEquals(BaseType.LONG);
     }
 
-    public String getRefinementClass(NamedObj dropObject) {
-        NamedObj container = getContainer().getContainer();
-        if (container instanceof PteraController) {
-            PteraController controller = (PteraController) container;
-            if (controller.getPort("modelInput") != null &&
-                    controller.getPort("modelOutput") != null) {
-                return "ptolemy.actor.gt.controller." +
-                        "EmbeddedTransformationControllerWithPorts";
-            }
+    public RefiringData fire(ArrayToken arguments)
+            throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
+
+        try {
+            long sleepTimeValue = ((LongToken) sleepTime.getToken())
+                    .longValue();
+            Thread.sleep(sleepTimeValue);
+        } catch (InterruptedException e) {
+            // Ignore...
         }
-        return "ptolemy.actor.gt.controller." +
-                "EmbeddedTransformationController";
+
+        return data;
     }
+
+    /** The sleep time in milliseconds. This has type long and default
+     *  "0L".
+     */
+    public Parameter sleepTime;
 }
