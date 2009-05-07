@@ -56,6 +56,7 @@ JSRCS = \
 	PtidesEmbeddedDirector.java \
 	PtidesNoPhysicalTimeDirector.java \
 	PtidesPlatformReceiver.java \
+	PtidesPreemptiveEDFDirector.java \
 	PtidesReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
