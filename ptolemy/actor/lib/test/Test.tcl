@@ -230,7 +230,7 @@ test Test-1.5 {Export} {
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
