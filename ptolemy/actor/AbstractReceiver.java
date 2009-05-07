@@ -300,13 +300,8 @@ public abstract class AbstractReceiver implements Receiver {
                     "Not enough tokens supplied.");
         }
 
-        // Put a single token at a time for each receiver instead of
-        // putting the entire array. In the latter case, we may block
-        // on a receiver while other receiver(s) starve.
-        for(int i = 0; i < numberOfTokens; i++) {
-            for (int j = 0; j < receivers.length; j++ ) {
-                receivers[j].put(tokens[i]);
-            }
+       for (int j = 0; j < receivers.length; j++ ) {
+           receivers[j].putArray(tokens, numberOfTokens);
         }
     }
 
