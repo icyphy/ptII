@@ -864,8 +864,10 @@ public class PtidesBasicDirector extends DEDirector {
                 "<property name=\"_icon\" class=\"ptolemy.vergil.icon.EditorIcon\">" +
                 moml +
                 "</property>";
-            if (clearFirst) {
-                completeMoML = "<group><deleteProperty name=\"_icon\"/>"
+            if (clearFirst && getAttribute("_icon") != null) {
+                // If we are running under MoMLSimpleApplication, then the _icon might not
+                // be present, so check before trying to delete it.
+                completeMoML = "<group><!-- PtidesBasicDirector --><deleteProperty name=\"_icon\"/>"
                         + completeMoML
                         + "</group>";
             }
