@@ -34,15 +34,15 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 25, 1033, 716}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1032, 714}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 596]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9359556227937">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.748764498235">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.7694256756756, 213.2305743243243}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.7694256756756, 213.2305743243242}">
     </property>
     <property name="LogicalAND_OR_Value_CS" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_OR_Value_CS">
         <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
@@ -61,9 +61,11 @@
         </property>
     </property>
     <property name="LogicalOR_Backward_CS" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalOR_Backward_CS">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, -10.0]">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
-        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.output}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.input}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.Expression.output}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.Expression.in}.&#10;]&#10;  in .ManualAnnotation_DependentSolver.LogicalOR_Backward_CS">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, -10.0}">
+        </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.Expression.in}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.Expression.output}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.input}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.CompositeActor.output}.&#10;]&#10;  in .ManualAnnotation_DependentSolver.LogicalOR_Backward_CS">
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
@@ -267,9 +269,9 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
@@ -277,9 +279,9 @@
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(2+in)">
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -294,9 +296,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="&quot;I can set this to any value i want.&quot;">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
@@ -305,9 +307,9 @@
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
@@ -321,9 +323,9 @@
             <property name="multiport"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
@@ -333,9 +335,9 @@
             <property name="multiport"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
@@ -344,9 +346,9 @@
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="3">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
@@ -359,9 +361,9 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
             </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="{&quot;a&quot;, &quot;b&quot;}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
@@ -370,18 +372,18 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 210.0]">
             </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-            </property>
             <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
             <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(2+in)">
-                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-                </property>
                 <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+                </property>
+                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
                 </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -396,9 +398,9 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-                </property>
                 <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="2">
+                </property>
+                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
                 </property>
                 <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
                 </property>
@@ -407,9 +409,9 @@
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
-                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
-                </property>
                 <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+                </property>
+                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
                 </property>
                 <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
                 </property>
