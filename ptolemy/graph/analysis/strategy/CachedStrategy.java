@@ -181,8 +181,7 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
      *  one may wish to override this method to copy the cached
      *  value (or convert it to some other form) before returning it.
      *  Then changes made by the client to the returned value will
-     *  not affect the cached value in the analysis (as an example,
-     *  see {@link ptolemy.graph.analysis.strategy.SelfLoopStrategy._result()}).
+     *  not affect the cached value in the analysis.
      *  This consideration is important for incremental analyzers that
      *  use the cached value across successive invocations of the
      *  analyzer.
