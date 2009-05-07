@@ -55,6 +55,6 @@ public class Unknown extends LatticeProperty {
     }
 
     public boolean isAcceptableSolution() {
-        return false;
+        return true;
     }
 }
