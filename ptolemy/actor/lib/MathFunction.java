@@ -30,6 +30,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -295,7 +296,8 @@ public class MathFunction extends TypedAtomicActor {
                 inArray1 = firstOperand.get(0, count);
 
                 for (int i = 0; i < count; i++) {
-                    double input1 = ((DoubleToken) (inArray1[i])).doubleValue();
+                    // Input could be an Integer, see test/auto/Differential.xml
+                    double input1 = ((ScalarToken) (inArray1[i])).doubleValue();
                     _resultArray[i] = new DoubleToken(_doFunction(input1, 0));
                 }
 
