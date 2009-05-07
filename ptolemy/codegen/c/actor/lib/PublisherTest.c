@@ -53,13 +53,13 @@ $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
-                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
+                - IntArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel))
         > $ref(tolerance)) {
     printf("\nPublisherTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %f of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(tolerance),
-            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Int);
+            IntArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel));
     exit(-1);
 }
 /**/
@@ -95,13 +95,13 @@ $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
-                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
+                - DoubleArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel))
         > $ref(tolerance)) {
     printf("\nPublisherTest $actorSymbol($channel) fails in iteration %d.\n Value was: %g. Should have been within %f of: %g\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(tolerance),
-            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input));
+            DoubleArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel));
     exit(-1);
 }
 /**/
