@@ -31,6 +31,7 @@ import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -132,7 +133,7 @@ public class DoubleToMatrix extends SDFConverter {
             Token[] row = input.get(0, _columns);
 
             for (int j = 0; j < _columns; j++) {
-                result[i][j] = ((DoubleToken) row[j]).doubleValue();
+                result[i][j] = ((ScalarToken) row[j]).doubleValue();
             }
         }
 
