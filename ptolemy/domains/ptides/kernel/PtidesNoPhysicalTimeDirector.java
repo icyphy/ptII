@@ -1,4 +1,4 @@
-/* Basic Ptides director that uses DE and delivers correct but not necessarily optimal execution.
+/* Ptides director that does not check against physical time for safe to process.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -30,42 +30,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Stack;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
-import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoTokenException;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.DefaultCausalityInterface;
-import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DECQEventQueue;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
 /** 
  *  This director has a local notion time, decoupled from that of the
@@ -73,15 +49,19 @@ import ptolemy.vergil.kernel.attributes.VisibleAttribute;
  *  represents physical time, whereas this time represents model
  *  time in the Ptides model.
  *  Assume the incoming event always has higher priority, so preemption always occurs.
+ *  This director implements distributed discrete event simulation as described in
+ *  Chandy and Misra, but without the need for null messages (because physical time is
+ *  simulated and can be arbitrarily advanced). This director uses DEListEventQueue too
+ *  allow access to all events in the event queue in sorted order.
  *
- *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
+ *  @author Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Yellow (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  *
  */
-public class PtidesNoPhysicalTimeDirector extends DEDirector {
+public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
 
     /** Construct a director with the specified container and name.
      *  @param container The container
@@ -92,289 +72,11 @@ public class PtidesNoPhysicalTimeDirector extends DEDirector {
     public PtidesNoPhysicalTimeDirector(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        animateExecution = new Parameter(this, "animateExecution");
-        animateExecution.setExpression("false");
-        animateExecution.setTypeEquals(BaseType.BOOLEAN);
-
-        _zero = new Time(this);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
-
-    /** If true, then modify the icon for this director to indicate
-     *  the state of execution. This is a boolean that defaults to false.
-     */
-    public Parameter animateExecution;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
-    /** Get the current microstep.
-     *  @return microstep of the current time.
-     */
-    public int getMicrostep() {
-        return _microstep;
-    }
-
-    /** Advance the current model tag to that of the earliest event in
-     *  the event queue, and fire all actors that have requested or
-     *  are triggered to be fired at the current tag. If
-     *  <i>synchronizeToRealTime</i> is true, then before firing, wait
-     *  until real time matches or exceeds the timestamp of the
-     *  event. Note that the default unit for time is seconds.
-     *  <p>
-     *  Each actor is fired repeatedly (prefire(), fire()),
-     *  until either it has no more input tokens, or its prefire() method
-     *  returns false. Note that if the actor fails to consume its
-     *  inputs, then this can result in an infinite loop.
-     *  Each actor that is fired is then postfired once at the
-     *  conclusion of the iteration.
-     *  </p><p>
-     *  If there are no events in the event queue, then the behavior
-     *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
-     *  false, then this thread will stall until events become
-     *  available in the event queue. Otherwise, time will advance to
-     *  the stop time and the execution will halt.</p>
-     *
-     *  @exception IllegalActionException If the firing actor throws it, or
-     *   event queue is not ready, or an event is missed, or time is set
-     *   backwards.
-     */
-    public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("========= PtidesBasicDirector fires at " + getModelTime()
-                    + "  with microstep as " + _microstep);
-        }
-
-        // NOTE: This fire method does not call super.fire()
-        // because this method is very different from that of the super class.
-        // A BIG while loop that handles all events with the same tag.
-        while (true) {
-            // Find the next actor to be fired.
-            Actor actorToFire = _getNextActorToFire();
-
-            // Check whether the actor to be fired is null.
-            // -- If the actor to be fired is null,
-            // There are two conditions that the actor to be fired
-            // can be null.
-            if (actorToFire == null) {
-                if (_isTopLevel()) {
-                    // Case 1:
-                    // If this director is an executive director at
-                    // the top level, a null actor means that there are
-                    // no events in the event queue.
-                    if (_debugging) {
-                        _debug("No more events in the event queue.");
-                    }
-
-                    // Setting the following variable to true makes the
-                    // postfire method return false.
-                    // Do not do this if _stopFireRequested is true,
-                    // since there may in fact be actors to fire, but
-                    // their firing has been deferred.
-                    if (!_stopFireRequested) {
-                        _noMoreActorsToFire = true;
-                    }
-                } else {
-                    // Case 2:
-                    // If this director belongs to an opaque composite model,
-                    // which is not at the top level, the director may be
-                    // invoked by an update of an external parameter port.
-                    // Therefore, no actors contained by the composite model
-                    // need to be fired.
-                    // NOTE: There may still be events in the event queue
-                    // of this director that are scheduled for future firings.
-                    if (_debugging) {
-                        _debug("No actor requests to be fired "
-                                + "at the current tag.");
-                    }
-                }
-                // Nothing more needs to be done in the current iteration.
-                // Simply return.
-                // Since we are now actually stopping the firing, we can set this false.
-                _stopFireRequested = false;
-                return;
-            }
-
-            // -- If the actor to be fired is not null.
-            // If the actor to be fired is the container of this director,
-            // the next event to be processed is in an inside receiver of
-            // an output port of the container. In this case, this method
-            // simply returns, and gives the outside domain a chance to react
-            // to that event.
-            // NOTE: Topological sort always assigns the composite actor the
-            // lowest priority. This guarantees that all the inside actors
-            // have fired (reacted to their triggers) before the composite
-            // actor fires.
-            if (actorToFire == getContainer()) {
-                // Since we are now actually stopping the firing, we can set this false.
-                _stopFireRequested = false;
-                return;
-            }
-
-            if (_debugging) {
-                _debug("****** Actor to fire: " + actorToFire.getFullName());
-            }
-
-            // Keep firing the actor to be fired until there are no more input
-            // tokens available in any of its input ports with the same tag, or its prefire()
-            // method returns false.
-            boolean refire;
-
-            do {
-                refire = false;
-
-                // NOTE: There are enough tests here against the
-                // _debugging variable that it makes sense to split
-                // into two duplicate versions.
-                if (_debugging) {
-                    // Debugging. Report everything.
-                    // If the actor to be fired is not contained by the container,
-                    // it may just be deleted. Put this actor to the
-                    // list of disabled actors.
-                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
-                        _debug("Actor no longer under the control of this director. Disabling actor.");
-                        _disableActor(actorToFire);
-                        break;
-                    }
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.BEFORE_PREFIRE));
-
-                    if (!actorToFire.prefire()) {
-                        _debug("*** Prefire returned false.");
-                        break;
-                    }
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.AFTER_PREFIRE));
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.BEFORE_FIRE));
-                    actorToFire.fire();
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.AFTER_FIRE));
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.BEFORE_POSTFIRE));
-
-                    if (!actorToFire.postfire()) {
-                        _debug("*** Postfire returned false:",
-                                ((Nameable) actorToFire).getName());
-
-                        // This actor requests not to be fired again.
-                        _disableActor(actorToFire);
-                        break;
-                    }
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.AFTER_POSTFIRE));
-                } else {
-                    // No debugging.
-                    // If the actor to be fired is not contained by the container,
-                    // it may just be deleted. Put this actor to the
-                    // list of disabled actors.
-                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
-                        _disableActor(actorToFire);
-                        break;
-                    }
-
-                    if (!actorToFire.prefire()) {
-                        break;
-                    }
-
-                    actorToFire.fire();
-
-                    // NOTE: It is the fact that we postfire actors now that makes
-                    // this director not comply with the actor abstract semantics.
-                    // However, it's quite a redesign to make it comply, and the
-                    // semantics would not be backward compatible. It really needs
-                    // to be a new director to comply.
-                    if (!actorToFire.postfire()) {
-                        // This actor requests not to be fired again.
-                        _disableActor(actorToFire);
-                        break;
-                    }
-                }
-
-                // Check all the input ports of the actor to see whether there
-                // are more input tokens to be processed.
-                // FIXME: This particular situation can only occur if either the
-                // actor failed to consume a token, or multiple
-                // events with the same destination were queued with the same tag.
-                // In theory, both are errors. One possible fix for the latter
-                // case would be to requeue the token with a larger microstep.
-                // A possible fix for the former (if we can detect it) would
-                // be to throw an exception. This would be far better than
-                // going into an infinite loop. 
-                Iterator<?> inputPorts = actorToFire.inputPortList().iterator();
-
-                while (inputPorts.hasNext() && !refire) {
-                    IOPort port = (IOPort) inputPorts.next();
-
-                    // iterate all the channels of the current input port.
-                    for (int i = 0; i < port.getWidth(); i++) {
-                        if (port.hasToken(i)) {
-                            refire = true;
-
-                            // Found a channel that has input data,
-                            // jump out of the for loop.
-                            break;
-                        }
-                    }
-                }
-            } while (refire); // close the do {...} while () loop
-            // NOTE: On the above, it would be nice to be able to
-            // check _stopFireRequested, but this doesn't actually work.
-            // In particular, firing an actor may trigger a call to stopFire(),
-            // for example if the actor makes a change request, as for example
-            // an FSM actor will do.  This will prevent subsequent firings,
-            // incorrectly.
-
-            // The following code enforces that a firing of a
-            // DE director only handles events with the same tag.
-            // If the earliest event in the event queue is in the future,
-            // this code terminates the current iteration.
-            // This code is applied on both embedded and top-level directors.
-            synchronized (_eventQueue) {
-                if (!_eventQueue.isEmpty()) {
-                    DEEvent next = _eventQueue.get();
-
-                    if ((next.timeStamp().compareTo(getModelTime()) != 0)) {
-                        // If the next event is in the future time,
-                        // jump out of the big while loop and
-                        // proceed to postfire().
-                        // NOTE: we reset the microstep to 0 because it is
-                        // the contract that if the event queue has some events
-                        // at a time point, the first event must have the
-                        // microstep as 0. See the
-                        // _enqueueEvent(Actor actor, Time time) method.
-                        _microstep = 0;
-                        break;
-                    } else if (next.microstep() != _microstep) {
-                        // If the next event is has a different microstep,
-                        // jump out of the big while loop and
-                        // proceed to postfire().
-                        break;
-                    } else {
-                        // The next event has the same tag as the current tag,
-                        // indicating that at least one actor is going to be
-                        // fired at the current iteration.
-                        // Continue the current iteration.
-                    }
-                }
-            }
-        } // Close the BIG while loop.
-
-        // Since we are now actually stopping the firing, we can set this false.
-        _stopFireRequested = false;
-
-        if (_debugging) {
-            _debug("PtidesBasicDirector fired!");
-        }
-    }
 
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
@@ -384,154 +86,19 @@ public class PtidesNoPhysicalTimeDirector extends DEDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
-        _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
-        _realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
-        _LastConsumedTag = new HashMap<NamedObj, Tag>();
-        _physicalTimeExecutionStarted = null;
+
         _eventAtPort = new HashMap<IOPort, PriorityQueue>();
-        
-        // _calculateModelTimeOffsets();
 
-        NamedObj container = getContainer();
-        if (!(container instanceof Actor)) {
-            throw new IllegalActionException(this,
-                    "No container, or container is not an Actor.");
-        }
-        Director executiveDirector = ((Actor)container).getExecutiveDirector();
-        if (executiveDirector == null) {
-            throw new IllegalActionException(this,
-                    "The PtidesBasicDirector can only be used within an enclosing director.");
-        }
-        executiveDirector.fireAtCurrentTime((Actor)container);
-
-        _setIcon(_getIdleIcon(), true);
     }
 
-    /** Return false if there are no more actors to be fired at the current
-     *  time, or the stop() method has been called.
-     *  @return True If this director will be fired again.
-     *  @exception IllegalActionException If stopWhenQueueIsEmpty parameter
-     *   does not contain a valid token, or refiring can not be requested.
-     */
-    public boolean postfire() throws IllegalActionException {
-        // Do not call super.postfire() because that requests a
-        // refiring at the next event time on the event queue.
-
-        Boolean result = !_stopRequested;
-        if (getModelTime().compareTo(getModelStopTime()) >= 0) {
-            // If there is a still event on the event queue with time stamp
-            // equal to the stop time, we want to process that event before
-            // we declare that we are done.
-            if (!_eventQueue.get().timeStamp().equals(getModelStopTime())) {
-                result = false;
-            }
-        }
-        return result;
-    }
-
-    /** Override the base class to not set model time to that of the
-     *  enclosing director. This method always returns true, deferring the
-     *  decision about whether to fire an actor to the fire() method.
-     *  @return True.
-     */
-    public boolean prefire() throws IllegalActionException {
-        // Do not invoke the superclass prefire() because that
-        // sets model time to match the enclosing director's time.
-        if (_debugging) {
-            _debug("Prefiring: Current time is: " + getModelTime());
-        }
-        return true;
-    }
-    
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         // Initialize an event queue.
         _eventQueue = new DEListEventQueue();
-        _peekingIndex = 0;
-    }
-    
-    /** This method allows the microstep to be set to some value.
-     *  This method should be used with extreme caution. This method should
-     *  only be used when events from outside of the platform arrive, and
-     *  by coincidence the current model time is equal to the model time
-     *  of the event. In which case the microstep should be set to 0.
-     *  @throws IllegalActionException
-     */
-    public void setMicrostep(int microstep) throws IllegalActionException {
-        _microstep = microstep;
     }
 
-    /** Set a new value to the current time of the model, where
-     *  the new time _can_ be smaller than the current model time,
-     *  because PTIDES allow events to be processed out of timestamp order.
-     *
-     *  @exception IllegalActionException If the new time is less than
-     *   the current time returned by getCurrentTime().
-     *  @param newTime The new current simulation time.
-     *  @see #getModelTime()
-     */
-    public void setModelTime(Time newTime) throws IllegalActionException {
-        int comparisonResult = _currentTime.compareTo(newTime);
-
-        if (comparisonResult > 0) {
-            if (_debugging) {
-                _debug("==== Set current time backwards from " + getModelTime() + " to: " + newTime);
-            }
-        } else if (comparisonResult < 0) {
-            if (_debugging) {
-                _debug("==== Set current time to: " + newTime);
-            }
-        } else {
-            // the new time is equal to the current time, do nothing.
-        }
-        _currentTime = newTime;
-    }
-    
-    /** Set the timestamp and microstep of the current time.
-     */
-    public void setTag(Time timestamp, int microstep) throws IllegalActionException {
-        setModelTime(timestamp);
-        setMicrostep(microstep);
-    }
-
-    /** Override the base class to reset the icon idle if animation
-     *  is turned on.
-     *  @exception IllegalActionException If the wrapup() method of
-     *  one of the associated actors throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _setIcon(_getIdleIcon(), false);
-        if (_lastExecutingActor != null) {
-            _clearHighlight(_lastExecutingActor);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
-
-    /** Zero time.
-     */
-    protected Time _zero;
-    
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-
-    /** Clear any highlights on the specified actor.
-     *  @param actor The actor to clear.
-     *  @exception IllegalActionException If the animateExecution
-     *   parameter cannot be evaluated.
-     */
-    protected void _clearHighlight(Actor actor) throws IllegalActionException {
-        if (((BooleanToken)animateExecution.getToken()).booleanValue()) {
-            String completeMoML =
-                "<deleteProperty name=\"_highlightColor\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, (NamedObj)actor, completeMoML);
-            Actor container = (Actor) getContainer();
-            ((TypedCompositeActor)container).requestChange(request);
-        }
-    }
 
     /** Enqueue event and keep track of what event is at which input port
      *  @param ioPort The port the event resides.
@@ -546,312 +113,63 @@ public class PtidesNoPhysicalTimeDirector extends DEDirector {
         events.add(new Tag(getModelTime(), _microstep));
         _eventAtPort.put(ioPort, events);
     }
-
-    /** Return a MoML string describing the icon appearance for a Ptides
-     *  director that is currently executing the specified actor.
-     *  The returned MoML can include a sequence of instances of VisibleAttribute
-     *  or its subclasses. In this base class, this returns a rectangle like
-     *  the usual director green rectangle used by default for directors,
-     *  but filled with red instead of green.
-     *  @see VisibleAttribute
-     *  @return A MoML string.
-     *  @exception IllegalActionException If the animateExecution parameter cannot
-     *   be evaluated.
-     */
-    protected String _getExecutingIcon(Actor actorExecuting) throws IllegalActionException {
-        _highlightActor(actorExecuting, "{0.0, 0.0, 1.0, 1.0}");
-        return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">" +
-                "    <property name=\"height\" value=\"30\"/>" +
-                "    <property name=\"fillColor\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>" +
-                "  </property>";
-    }
-
-    /** Return a MoML string describing the icon appearance for an idle
-     *  director. This can include a sequence of instances of VisibleAttribute
-     *  or its subclasses. In this base class, this returns a rectangle like
-     *  the usual director green rectangle used by default for directors.
-     *  @see VisibleAttribute
-     *  @return A MoML string.
-     */
-    protected String _getIdleIcon() {
-        return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">" +
-                "    <property name=\"height\" value=\"30\"/>" +
-                "    <property name=\"fillColor\" value=\"{0.0, 1.0, 0.0, 1.0}\"/>" +
-                "  </property>";
-    }
-
-    /** Return the actor to fire in this iteration, or null if no actor
-     *  should be fired.
-     *  In this base class, this method first checks whether the top event from
-     *  the event queue is destined for an actuator. If it is, then we check
-     *  if physical time has reached the timestamp of the actuation event. If it
-     *  has, then we fire the actuator. If it has not, then we take the actuator
-     *  event from the event queue and put it onto the _realTimeEventQueue, and
-     *  call fireAt() of the executive director. We then check if a real-time event
-     *  should be processed by looking at the top event of the
-     *  _realTimeEventQueue. If there is on that should be fired, that
-     *  actor is returned for firing. If not, we go on and considers two
-     *  cases, depending whether there is an actor currently executing,
-     *  as follows:
+    
+    /** Return all the events in the event queue that are of the same tag as the event
+     *  passed in.
      *  <p>
-     *  <b>Case 1</b>: If there is no actor currently
-     *  executing, then this method checks the event queue and returns
-     *  null if it is empty. If it is not empty, it checks the destination actor of the
-     *  earliest event on the event queue, and if it has a non-zero execution
-     *  time, then it pushes it onto the currently executing stack and
-     *  returns null. Otherwise, if the execution time of the actor is
-     *  zero, it sets the current model time to the time stamp of
-     *  that earliest event and returns that actor.
-     *  <p>
-     *  <b>Case 2</b>: If there is an actor currently executing, then this
-     *  method checks whether it has a remaining execution time of zero.
-     *  If it does, then it returns the currently executing actor.
-     *  If it does not, then it checks whether
-     *  the earliest event on the event queue should
-     *  preempt it (by invoking _preemptExecutingActor()),
-     *  and if so, checks the destination actor of that event
-     *  and removes the event from the event queue. If that destination
-     *  actor has an execution time of zero, then it sets the current
-     *  model time to the time stamp of that event, and returns that actor.
-     *  Else if the destination actor has an execution time of bigger than
-     *  zero, then it calls fireAt()
-     *  on the enclosing director passing it the time it expects the currently
-     *  executing actor to finish executing, and returns null.
-     *  If there is no
-     *  event on the event queue or that event should not preempt the
-     *  currently executing actor, then it calls fireAt()
-     *  on the enclosing director passing it the time it expects the currently
-     *  executing actor to finish executing, and returns null.
-     *  @return The next actor to be fired, which can be null.
-     *  @exception IllegalActionException If event queue is not ready, or
-     *  an event is missed, or time is set backwards, or if the enclosing
-     *  director does not respect the fireAt call.
-     *  @see #_preemptExecutingActor()
+     *  Notice these events should _NOT_ be taken out of the event queue.
+     *  @return List of events of the same tag.
+     *  @throws IllegalActionException
      */
-    protected Actor _getNextActorToFire() throws IllegalActionException {
-        // FIXME: This method changes persistent state, yet it is called in fire().
-        // This means that this director cannot be used inside a director that
-        // does a fixed point iteration, which includes (currently), Continuous
-        // and CT and SR, but in the future may also include DE.
-        Time physicalTime = _getPhysicalTime();
-        Actor container = (Actor) getContainer();
-        Director executiveDirector = container.getExecutiveDirector();
-
-        if (!_currentlyExecutingStack.isEmpty()) {
-            // Case 2: We are currently executing an actor.
-            DoubleTimedEvent currentEvent = (DoubleTimedEvent)_currentlyExecutingStack.peek();
-            // First check whether its remaining execution time is zero.
-            Time remainingExecutionTime = currentEvent.remainingExecutionTime;
-            Time finishTime = _physicalTimeExecutionStarted.add(remainingExecutionTime);
-            int comparison = finishTime.compareTo(physicalTime);
-            if (comparison < 0) {
-                // NOTE: This should not happen, so if it does, throw an exception.
-                throw new IllegalActionException(this,
-                        (NamedObj)currentEvent.contents,
-                        "Physical time passed the finish time of the currently executing actor");
-            } else if (comparison == 0) {
-                // Currently executing actor finishes now, so we want to return it.
-                // First set current model time.
-                setTag(currentEvent.timeStamp, currentEvent.microstep);
-                _currentlyExecutingStack.pop();
-                // If there is now something on _currentlyExecutingStack,
-                // then we are resuming its execution now.
-                _physicalTimeExecutionStarted = physicalTime;
-
-                if (_debugging) {
-                    _debug("Actor "
-                            + ((NamedObj)currentEvent.contents).getName(getContainer())
-                            + " finishes executing at physical time "
-                            + physicalTime);
-                }
-
-                // Animate, if appropriate.
-                _setIcon(_getIdleIcon(), false);
-                _clearHighlight((Actor)currentEvent.contents);
-                _lastExecutingActor = null;
-
-                // Request a refiring so we can process the next event
-                // on the event queue at the current physical time.
-                executiveDirector.fireAtCurrentTime((Actor)container);
-
-                return (Actor) currentEvent.contents;
+    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
+        if (event != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
+            throw new IllegalActionException("The event to get is not the event pointed " +
+            		"to by peeking index.");
+        }
+        List<DEEvent> eventList = new ArrayList<DEEvent>();
+        eventList.add(event);
+        for (int i = _peekingIndex; i < _eventQueue.size(); i++) {
+            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(i+1);
+            if (nextEvent.compareTo(event) == 0) {
+                eventList.add(nextEvent);
             } else {
-                // Currently executing actor needs more execution time.
-                // Decide whether to preempt it.
-                if (_eventQueue.isEmpty() || !_preemptExecutingActor()) {
-                    // Either the event queue is empty or the
-                    // currently executing actor does not get preempted
-                    // and it has remaining execution time. We should just
-                    // return because we previously called fireAt() with
-                    // the expected completion time, so we will be fired
-                    // again at that time. There is no need to change
-                    // the remaining execution time on the stack nor
-                    // the _physicalTimeExecutionStarted value because
-                    // those will be checked when we are refired.
-                    return null;
-                }
+                break;
             }
         }
-        // If we get here, then we want to execute the actor destination
-        // of the earliest event on the event queue, either because there
-        // is no currently executing actor or the currently executing actor
-        // got preempted.
-        if (_eventQueue.isEmpty()) {
-            // Nothing to fire.
-
-            // Animate if appropriate.
-            _setIcon(_getIdleIcon(), false);
-
-            return null;
+        return eventList;
+    }
+    
+    /** Return the actor associated with this event. This method takes
+     *  all events of the same tag destined for the same actor from the event 
+     *  queue, and return the actor associated with it.
+     */
+    protected Actor _getNextActorToFireForThisEvent(List<DEEvent> events) throws IllegalActionException {
+        if (events.get(0) != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
+            throw new IllegalActionException("The event to get is not the event pointed " +
+                        "to by peeking index.");
         }
-
-        DEEvent eventFromQueue = ((DEListEventQueue)_eventQueue).get(_peekingIndex);
-        Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
-        int microstepOfEventFromQueue = eventFromQueue.microstep();
-
-        if (!_safeToProcess(eventFromQueue)) {
-            if (_peekingIndex < _eventQueue.size()) {
-                _peekingIndex++;
-                executiveDirector.fireAtCurrentTime((Actor)container);
-            } else {
-                _peekingIndex = 0;
-            }
-            // not safe to process, wait until some physical time.
-            return null;
+        // Assume the event queue orders by Tag and depth so all these events should be 
+        // next to each other.
+        for (int i = 0; i < events.size(); i++) {
+            ((DEListEventQueue)_eventQueue).take(_peekingIndex + i);
         }
-        
-        // Every time safeToProcess analysis passes, and
-        // a new actor is chosen to be start processing, we update _actorLastConsumedTag
-        // to store the tag of the last event that was consumed by this actor. This helps us to
-        // track if safeToProcess() somehow failed to produce the correct results.
-        _trackLastTagConsumedByActor(eventFromQueue);
-        
-//        // in super._getNextActorToFire(), the top event from the event queue is removed,
-//        // thus we need to remove it from _eventAtPort too.
-//        IOPort port = eventFromQueue.ioPort();
-//        if (port != null) {
-//            PriorityQueue<Tag> events = _eventAtPort.get(port);
-//            // since super._getNextActorToFire() removes the smallest event from the queue,
-//            // it also has to be the smallest event at the current port.
-//            Tag tag = events.remove();
-//            if (tag.compareTo(new Tag(timeStampOfEventFromQueue, microstepOfEventFromQueue)) != 0) {
-//                throw new IllegalActionException("took out the wrong tag");
-//            }
-//            _eventAtPort.put(port, events);
-//        }
-
-//        Actor actorToFire = super._getNextActorToFire();
-        ((DEListEventQueue)_eventQueue).take(_peekingIndex);
-        Actor actorToFire = eventFromQueue.actor();
+        return events.get(0).actor();
+    }
+    
+    /** Return the next event we want to process, which is the event of smallest tag
+     *  that is safe to process.
+     */
+    protected DEEvent _getNextSafeEvent() throws IllegalActionException {
         _peekingIndex = 0;
-
-        Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
-
-        if (executionTime.compareTo(_zero) == 0) {
-            // If execution time is zero, return the actor.
-            // It will be fired now.
-            setTag(timeStampOfEventFromQueue, microstepOfEventFromQueue);
-
-            // Request a refiring so we can process the next event
-            // on the event queue at the current physical time.
-            executiveDirector.fireAtCurrentTime((Actor)container);
-
-            return actorToFire;
-        } else {
-            // Execution time is not zero. Push the execution onto
-            // the stack, call fireAt() on the enclosing director,
-            // and return null.
-
-            Time expectedCompletionTime = physicalTime.add(executionTime);
-            Time fireAtTime = executiveDirector.fireAt(container, expectedCompletionTime);
-
-            if (!fireAtTime.equals(expectedCompletionTime)) {
-                throw new IllegalActionException(actorToFire, executiveDirector,
-                        "Ptides director requires refiring at time "
-                        + expectedCompletionTime
-                        + ", but the enclosing director replied that it will refire at time "
-                        + fireAtTime);
+        while (_peekingIndex < _eventQueue.size()) {
+            DEEvent eventFromQueue = ((DEListEventQueue)_eventQueue).get(_peekingIndex);
+            if (_safeToProcess(eventFromQueue)) {
+                return eventFromQueue;
+            } else {
+                _peekingIndex++;
             }
-
-            // If we are preempting a current execution, then
-            // update information on the preempted event.
-            if (!_currentlyExecutingStack.isEmpty()) {
-                // We are preempting a current execution.
-                DoubleTimedEvent currentlyExecutingEvent = _currentlyExecutingStack.peek();
-                Time elapsedTime = physicalTime.subtract(_physicalTimeExecutionStarted);
-                currentlyExecutingEvent.remainingExecutionTime
-                        = currentlyExecutingEvent.remainingExecutionTime.subtract(elapsedTime);
-                if (currentlyExecutingEvent.remainingExecutionTime.compareTo(_zero) < 0) {
-                    // This should not occur.
-                    throw new IllegalActionException(this, (NamedObj)currentlyExecutingEvent.contents,
-                            "Remaining execution is negative!");
-                }
-                if (_debugging) {
-                    _debug("Preempting actor "
-                            + ((NamedObj)currentlyExecutingEvent.contents).getName((NamedObj)container)
-                            + " at physical time "
-                            + physicalTime
-                            + ", which has remaining execution time "
-                            + currentlyExecutingEvent.remainingExecutionTime);
-                }
-            }
-            _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue, microstepOfEventFromQueue, actorToFire, executionTime));
-            _physicalTimeExecutionStarted = physicalTime;
-
-            // Animate if appropriate.
-            _setIcon(_getExecutingIcon(actorToFire), false);
-            _lastExecutingActor = actorToFire;
-
-            return null;
         }
-    }
-
-    /** Return the model time of the enclosing director, which is our model
-     *  of physical time.
-     *  @return Physical time.
-     */
-    protected Time _getPhysicalTime() {
-        Actor container = (Actor) getContainer();
-        Director director = container.getExecutiveDirector();
-        return director.getModelTime();
-    }
-
-    /** Highlight the specified actor with the specified color.
-     *  @param actor The actor to highlight.
-     *  @param color The color, given as a string description in
-     *   the form "{red, green, blue, alpha}", where each of these
-     *   is a number between 0.0 and 1.0.
-     *  @exception IllegalActionException If the animateExecution
-     *   parameter cannot be evaluated.
-     */
-    protected void _highlightActor(Actor actor, String color) throws IllegalActionException {
-        if (((BooleanToken)animateExecution.getToken()).booleanValue()) {
-            String completeMoML =
-                "<property name=\"_highlightColor\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
-                color +
-                "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, (NamedObj)actor, completeMoML);
-            Actor container = (Actor) getContainer();
-            ((TypedCompositeActor)container).requestChange(request);
-        }
-    }
-
-    /** Return false to get the superclass DE director to behave exactly
-     *  as if it is executing at the top level.
-     *  @return False.
-     */
-    protected boolean _isEmbedded() {
-        return false;
-    }
-
-    /** Return whether we want to preempt the currently executing actor
-     *  and instead execute the earliest event on the event queue.
-     *  This base class returns false, indicating that the currently
-     *  executing actor is never preempted.
-     *  @return False.
-     */
-    protected boolean _preemptExecutingActor() {
-        return false;
+        return null;
     }
 
     /** For the interested event, we check to see if all ports at the same actor
@@ -922,448 +240,16 @@ public class PtidesNoPhysicalTimeDirector extends DEDirector {
         return result;
     }
 
-    /** Set the icon for this director if the <i>animateExecution</i>
-     *  parameter is set to true.
-     *  @param moml A MoML string describing the contents of the icon.
-     *  @param clearFirst If true, remove the previous icon before creating a
-     *   new one.
-     *  @exception IllegalActionException If the <i>animateExecution</i> parameter
-     *   cannot be evaluated.
-     */
-    protected void _setIcon(String moml, boolean clearFirst) throws IllegalActionException {
-        if (((BooleanToken)animateExecution.getToken()).booleanValue()) {
-            String completeMoML =
-                "<property name=\"_icon\" class=\"ptolemy.vergil.icon.EditorIcon\">" +
-                moml +
-                "</property>";
-            if (clearFirst) {
-                completeMoML = "<group><deleteProperty name=\"_icon\"/>"
-                        + completeMoML
-                        + "</group>";
-            }
-            MoMLChangeRequest request = new MoMLChangeRequest(this, this, completeMoML);
-            Actor container = (Actor) getContainer();
-            ((TypedCompositeActor)container).requestChange(request);
-        }
-    }
-    
-    /** This method keeps track of the last event an actor decides to process. This method
-     *  is called immediately after _safeToProcess, thus it serves as a check to see if the
-     *  processing of this event has violated DE semantics. If it has, then an exception is
-     *  thrown, if it has not, then the current tag is saved for checks to see if future
-     *  events are processed in timestamp order.
-     *  @param event The event that has just been determined to be safe to process.
-     *  
-     *  FIXME: this implementation actually only provides the necessary check, but the check 
-     *  is not sufficient. This method assumes each port should consume events in timestamp 
-     *  order, but in PTIDES we need each equivalence class to consume events in timetamp
-     *  order. Thus this method could be made correct by including equivalence ports in
-     *  RealDependency.
-     *  FIXME: Also, the current check does not work if inside PtidesBasicDirector we have
-     *  other opaque composite actors (transparent ones are fine), as indicated in the test:
-     *  PtidesBasic_SafeToProcess_InsideOpaque and PtidesBasic_SafeToProcess_InsideTransparent.
-     *  @throws IllegalActionException 
-     */
-    protected void _trackLastTagConsumedByActor(DEEvent event) throws IllegalActionException {
-        NamedObj obj = event.ioPort();
-        if (obj == null) {
-            obj= (NamedObj) event.actor();
-        }
-        
-        Tag tag = new Tag(event.timeStamp(), event.microstep());
-        Tag prevTag = _LastConsumedTag.get(obj);
-        if (prevTag != null) {
-            if (tag.compareTo(prevTag) <= 0) {
-                if (obj instanceof Actor) {
-                    throw new IllegalActionException("Safe to process return the wrong " +
-                            "answer earlier. At Actor: " + obj.getName() +
-                            ", the tag of the previous processed event is: timestamp = " +
-                            prevTag.timestamp + ", microstep = " + prevTag.microstep +
-                            ". The tag of the current event is: timestamp = " +
-                            tag.timestamp + ", microstep = " + tag.microstep + ". ");
-                } else {
-                    throw new IllegalActionException("Safe to process return the wrong " +
-                            "answer earlier. At Actor: " + 
-                            ((IOPort) obj).getContainer().getName() + ", Port " 
-                            + obj.getName() +
-                            ", the tag of the previous processed event is: timestamp = " +
-                            prevTag.timestamp + ", microstep = " + prevTag.microstep +
-                            ". The tag of the current event is: timestamp = " +
-                            tag.timestamp + ", microstep = " + tag.microstep + ". ");
-                }
-            }
-        }
-        // The check was correct, now we replace the previous tag with the current tag.
-        _LastConsumedTag.put(obj, tag);
-    }
-    
-    /** For all events in the sensorEventQueue, transfer input events that are ready.
-     *  For all events that are currently sitting at the input port, if the realTimeDelay
-     *  is 0.0, then transfer them into the platform, otherwise move them into the 
-     *  sensorEventQueue and call fireAt() of the executive director.
-     *  In either case, if the input port is a networkPort, we make sure the timestamp of
-     *  the data token transmitted is set to the timestamp of the local event associated 
-     *  with this token.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if at least one data token is transferred.
-     */
-    protected boolean _transferInputs(IOPort port) throws IllegalActionException {
-
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port is not an opaque"
-                            + "input port.");
-        }
-        
-        boolean result = false;
-        Time physicalTime = _getPhysicalTime();
-        // First transfer all tokens that are already in the event queue for the sensor.
-        // Notice this is done NOT for the specific port
-        // in question. Instead, we do it for ALL events that can be transferred out of
-        // this platform.
-        // FIXME: there is _NO_ guarantee from the priorityQueue that these events are sent out
-        // in the order they arrive at the actuator. We can only be sure that they are sent
-        // in the order of the timestamps, but for two events of the same timestamp at an
-        // actuator, there's no guarantee on the order of events sent to the outside.
-        while (true) {
-            if (_realTimeOutputEventQueue.isEmpty()) {
-                break;
-            }
-
-            RealTimeEvent realTimeEvent = (RealTimeEvent)_realTimeOutputEventQueue.peek();
-            int compare = realTimeEvent.deliveryTime.compareTo(physicalTime);
-            
-            if (compare > 0) {
-                break;
-            } else if (compare == 0) {
-                Parameter parameter = (Parameter)((NamedObj) realTimeEvent.port).getAttribute("realTimeDelay");
-                double realTimeDelay = 0.0;
-                if (parameter != null) {
-                    realTimeDelay = ((DoubleToken)parameter.getToken()).doubleValue();
-                } else {
-                    // this shouldn't happen.
-                    throw new IllegalActionException("real time delay should not be 0.0");
-                }
-                
-                Time lastModelTime = _currentTime;
-                if (_isNetworkPort(realTimeEvent.port)) {
-                    // If the token is transferred from a network port, then there is no need to
-                    // set the proper timestamp associated with the token. This is because we rely
-                    // on the fact every network input port is directly connected to a networkInputDevice,
-                    // which will set the correct timestamp associated with the token.
-                    _realTimeOutputEventQueue.poll();
-                    realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
-                } else {                
-                    int lastMicrostep = _microstep;
-                    // Since the event comes from a sensor, and we assume no sensor
-                    // will produce two events of the same timestamp, the microstep
-                    // of the new event is set to 0.
-                    setTag(realTimeEvent.deliveryTime.subtract(realTimeDelay), 0);
-                    _realTimeOutputEventQueue.poll();
-                    realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
-                    setTag(lastModelTime, lastMicrostep);
-                }
-                if (_debugging) {
-                    _debug(getName(), "transferring input from "
-                            + realTimeEvent.port.getName());
-                }
-                result = true;
-                
-            } else {
-                // FIXME: we should probably do something else here.
-                throw new IllegalArgumentException("missed transferring at the sensor. " +
-                		"Should transfer input at time = "
-                        + realTimeEvent.deliveryTime + ", and current physical time = " + physicalTime);
-            }
-        }
-
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("realTimeDelay");
-        // realTimeDelay is default to 0.0;
-        double realTimeDelay = 0.0;
-        if (parameter != null) {
-            realTimeDelay = ((DoubleToken)parameter.getToken()).doubleValue();
-        }
-        if (realTimeDelay == 0.0) {
-            Time lastModelTime = _currentTime;
-            if (_isNetworkPort(port)) {
-                // If the token is transferred from a network port, then there is no need to
-                // set the proper timestamp associated with the token. This is because we rely
-                // on the fact every network input port is directly connected to a networkReceiver,
-                // which will set the correct timestamp associated with the token.
-                super._transferInputs(port);
-            } else {
-                setTag(physicalTime, 0);
-                result = result || super._transferInputs(port);
-                setTag(lastModelTime, 0);
-            }
-        } else {
-            for (int i = 0; i < port.getWidth(); i++) {
-                try {
-                    if (i < port.getWidthInside()) {
-                        if (port.hasToken(i)) {
-                            Token t = port.get(i);
-                            Time waitUntilTime = physicalTime.add(realTimeDelay);
-                            RealTimeEvent realTimeEvent = new RealTimeEvent(port, i, t, waitUntilTime);
-                            _realTimeOutputEventQueue.add(realTimeEvent);
-                            result = true;
-                            
-                            // wait until physical time to transfer the token into the platform
-                            Actor container = (Actor) getContainer();
-                            container.getExecutiveDirector().fireAt((Actor)container, waitUntilTime);
-                        }
-                    }
-                } catch (NoTokenException ex) {
-                    // this shouldn't happen.
-                    throw new InternalErrorException(this, ex, null);
-                }
-            }
-        }
-        return result;
-    }
-    
-    /** Overwrite the _transferOutputs() function.
-     *  First, for tokens that are stored in the actuator event queue and
-     *  send them to the outside of the platform if physical time has arrived.
-     *  The second step is to check if this port is a networkedOutput port, if it is, transfer
-     *  data tokens immediately to the outside by calling super._transferOutputs(port).
-     *  Finally, we check for current model time, if the current model time is equal to the physical
-     *  time, we can send the tokens to the outside. Else if current model time has exceeded
-     *  the physical time, and we still have tokens to transfer, then we have missed the deadline.
-     *  Else if current model time has not arrived at the physical time, then we put the token along
-     *  with the port and channel into the actuator event queue, and call fireAt of the executive
-     *  director so we could send it at a later physical time.
-     */
-    protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                            + "is not an opaque input port.");
-        }
-        
-        // first check for current time, and transfer any tokens that are already ready to output.
-        boolean result = false;
-        Time physicalTime = _getPhysicalTime();
-        int compare = 0;
-        // Notice this is done NOT for the specific port
-        // in question. Instead, we do it for ALL events that can be transferred out of
-        // this platform.
-        // FIXME: there is _NO_ guarantee from the priorityQueue that these events are sent out
-        // in the order they arrive at the actuator. We can only be sure that they are sent
-        // in the order of the timestamps, but for two events of the same timestamp at an
-        // actuator, there's no guarantee on the order of events sent to the outside.
-        while (true) {
-            if (_realTimeInputEventQueue.isEmpty()) {
-                break;
-            }
-            RealTimeEvent tokenEvent = (RealTimeEvent)_realTimeInputEventQueue.peek();
-            compare = tokenEvent.deliveryTime.compareTo(physicalTime);
-            
-            if (compare > 0) {
-                break;
-            } else if (compare == 0) {
-                if (_isNetworkPort(tokenEvent.port)) {
-                    throw new IllegalActionException("transferring network event from the"
-                            + "actuator event queue");
-                }
-                _realTimeInputEventQueue.poll();
-                tokenEvent.port.send(tokenEvent.channel, tokenEvent.token);
-                if (_debugging) {
-                    _debug(getName(), "transferring output "
-                            + tokenEvent.token
-                            + " from "
-                            + tokenEvent.port.getName());
-                }
-                result = true;
-            } else if (compare < 0) {
-                // FIXME: we should probably do something else here.
-                throw new IllegalArgumentException("missed deadline at the actuator. Deadline = "
-                        + tokenEvent.deliveryTime + ", and current physical time = " + physicalTime);
-            }
-        }
-        
-        if (_isNetworkPort(port)) {
-            // if we transferred once to the network output, then return true,
-            // and go through this once again.
-            while (true) {
-                if (!super._transferOutputs(port)) {
-                    break;
-                }
-            }
-            // do not need to update the result, because this loop ensures
-            // we have transmitted all network output events, so no need
-            // to enter here again.
-        }
-        
-        compare = _currentTime.compareTo(physicalTime);
-        // if physical time has reached the timestamp of the last event, transmit data to the output
-        // now. Notice this does not guarantee tokens are transmitted, simply because there might
-        // not be any tokens to transmit.
-        if (compare == 0){
-            result = result || super._transferOutputs(port);
-        } else if (compare < 0) {
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                if (port.hasTokenInside(i)) {
-                    // FIXME: we should probably do something else here.
-                    throw new IllegalArgumentException("missed deadline at the actuator. Deadline = "
-                            + _currentTime + ", and current physical time = " + physicalTime);
-                }
-            }
-        } else {
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                try {
-                    if (port.hasTokenInside(i)) {
-                        Token t = port.getInside(i);
-                        RealTimeEvent tokenEvent = new RealTimeEvent(port, i, t, _currentTime);
-                        _realTimeInputEventQueue.add(tokenEvent);
-                        // wait until physical time to transfer the output to the actuator
-                        Actor container = (Actor) getContainer();
-                        container.getExecutiveDirector().fireAt((Actor)container, _currentTime);
-                    }
-                } catch (NoTokenException ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
-                }
-            }
-        }
-        
-        return result;
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
-    
-    /** check if the port is a networkPort
-     *  this method is default to return false, i.e., an output port to the outside of the
-     *  platform is by default an actuator port.
-     * @throws IllegalActionException 
-     */
-    private boolean _isNetworkPort(IOPort port) throws IllegalActionException {
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("networkPort");
-        if (parameter != null) {
-            return ((BooleanToken)parameter.getToken()).booleanValue();
-        }
-        return false;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
-
-    /** Each actor keeps track of the tag of the last event that was consumed when this
-     *  actor fired. This helps to identify cases where safe-to-process analysis failed
-     *  unexpectedly. 
-     */
-    private HashMap<NamedObj, Tag> _LastConsumedTag;
-
-    /** The list of currently executing actors and their remaining execution time
-     */
-    private Stack<DoubleTimedEvent> _currentlyExecutingStack;
-
-    /** Last executing actor
-     *  Keeps track of the last actor with non-zero executing time that was executing
-     *  This helps to clear the highlighting of that actor when executing stops.
-     */
-    private Actor _lastExecutingActor;
-
-    /** The physical time at which the currently executing actor, if any,
-     *  last resumed execution.
-     */
-    private Time _physicalTimeExecutionStarted;
-
-    /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
-     */
-    private PriorityQueue _realTimeInputEventQueue;
-    
-    /** a sorted queue of RealTimeEvents that stores events when they arrive at the input of
-     *  the platform, but are not yet visible to the platform (because of real time delay d_o)
-     */
-    private PriorityQueue _realTimeOutputEventQueue;
     
     private HashMap<IOPort, PriorityQueue> _eventAtPort;
-    
+
+    /** Index that indicates the index of the top event in the event queue that
+     *  we want to process at this interation. Notice this index is reset to 0
+     *  each iteration within _getNextSafeEvent().
+     *  @see _getNextSafeEvent();
+     */
     private int _peekingIndex;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
-
-    /** A TimedEvent extended with an additional field to represent
-     *  the remaining execution time (in physical time) for processing
-     *  the event.
-     */
-    public class DoubleTimedEvent extends TimedEvent {
-
-        /** Construct a new event with the specified time stamp,
-         *  destination actor, and execution time.
-         * @param timeStamp The time stamp.
-         * @param actor The destination actor.
-         * @param executionTime The execution time of the actor.
-         */
-        public DoubleTimedEvent(Time timeStamp, int microstep, Object actor, Time executionTime) {
-            super(timeStamp, actor);
-            this.microstep = microstep;
-            remainingExecutionTime = executionTime;
-        }
-
-        public Time remainingExecutionTime;
-        
-        public int microstep;
-
-        public String toString() {
-            return super.toString() + ", microstep = " + microstep
-                    + "remainingExecutionTime = " + remainingExecutionTime;
-        }
-    }
-    
-    /** A structure that holds a token with the port and channel it's connected to,
-     *  as well as the timestamp associated with this token.
-     *  This object is used to hold sensor and actuation events.
-     */
-    public class RealTimeEvent implements Comparable {
-        public IOPort port;
-        public int channel;
-        public Token token;
-        public Time deliveryTime;
-        
-        public RealTimeEvent(IOPort port, int channel, Token token, Time timestamp) {
-            this.port = port;
-            this.channel = channel;
-            this.token = token;
-            this.deliveryTime = timestamp;
-        }
-        
-        public int compareTo(Object other) {
-            return deliveryTime.compareTo(((RealTimeEvent)other).deliveryTime);
-        }
-    }
-    
-    /** Holds a timestamp microstep pair
-     */
-    public class Tag implements Comparable{
-        public Time timestamp;
-        public int microstep;
-        
-        public Tag(Time timestamp, int microstep) {
-            this.timestamp = timestamp;
-            this.microstep = microstep;
-        }
-        
-        public int compareTo(Object other) {
-            Tag tag2 = (Tag) other;
-            if (timestamp.compareTo(tag2.timestamp) == 1) {
-                return 1;
-            } else if (timestamp.compareTo(tag2.timestamp) == -1) {
-                return -1;
-            } else {
-                if (microstep > tag2.microstep) {
-                    return 1;
-                } else if (microstep < tag2.microstep) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        }
-    }
 }
