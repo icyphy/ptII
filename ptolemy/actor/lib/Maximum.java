@@ -83,6 +83,7 @@ public class Maximum extends TypedAtomicActor {
         maximumValue.setMultiport(true);
         maximumValue.setTypeAtMost(BaseType.SCALAR);
         maximumValue.setTypeAtLeast(input);
+        maximumValue.setDefaultWidth(1);
 
         channelNumber = new TypedIOPort(this, "channelNumber", false, true);
 
@@ -94,6 +95,7 @@ public class Maximum extends TypedAtomicActor {
          */
         channelNumber.setMultiport(true);
         channelNumber.setTypeEquals(BaseType.INT);
+        channelNumber.setDefaultWidth(1);
     }
 
     ///////////////////////////////////////////////////////////////////

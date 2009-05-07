@@ -136,6 +136,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (neuendor)
  */
 public class IOPort extends ComponentPort {
+
     /** Construct an IOPort with no container and no name that is
      *  neither an input nor an output.
      */
@@ -480,7 +481,7 @@ public class IOPort extends ComponentPort {
 
         newObject._widthEqualToParameter = new HashSet<Parameter>();
         newObject._widthEqualToPort = new HashSet<IOPort>();
-
+        newObject._defaultWidth = -1;
 
         return newObject;
     }
@@ -1031,6 +1032,15 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         return getModelTime(channelIndex).getDoubleValue();
     }
+    
+    /** Get the default width. In case there is no unique solution for a relation
+     *  connected to this port the default width will be used.
+     *  @return The default width.
+     */ 
+    public int getDefaultWidth() {
+        return _defaultWidth; 
+    }
+    
 
     /** Get a token from the specified inside channel of this port.
      *  This method is usually called on the output port of a
@@ -2916,6 +2926,16 @@ public class IOPort extends ComponentPort {
 
         super.setContainer(container);
     }
+    
+    /** Set the default width. In case there is no unique solution for a relation
+     *  connected to this port the default width will be used.
+     *  If the default width is not set, the value will be -1
+     *  which corresponds to no default width.
+     *  @param defaultWidth The default width.
+     */ 
+    public void setDefaultWidth(int defaultWidth) {
+        _defaultWidth = defaultWidth; 
+    }
 
     /** If the argument is true, make the port an input port.
      *  If the argument is false, make the port not an input port.
@@ -4362,7 +4382,12 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
+    /** The default width. In case there is no unique solution for a relation
+     *  connected to this port the default width will be used.
+     */
+    private int _defaultWidth = -1;
+    
     /** To avoid creating this repeatedly, we use a single version. */
     private static final Receiver[][] _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
 

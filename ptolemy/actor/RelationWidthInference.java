@@ -133,6 +133,7 @@ public class RelationWidthInference {
                 Set<ComponentRelation> relationList = _topLevel.deepRelationSet();
                 Set<IORelation> workingRelationSet = new HashSet<IORelation>();
                 Set<IOPort> workingPortSet = new HashSet<IOPort>();
+                Set<IOPort> workingDefaultPortSet = new HashSet<IOPort>();
                 HashSet<IORelation> unspecifiedSet = new HashSet<IORelation>();
                 HashSet<IOPort> portsToCheckConsistency = new HashSet<IOPort>();
                 HashSet<IOPort> portsThatCanBeIngnoredForConsistencyCheck = new HashSet<IOPort>();
@@ -180,6 +181,9 @@ public class RelationWidthInference {
                                                 if (port.hasWidthConstraints()) {
                                                     workingPortSet.add(port);
                                                 }
+                                                if (port.getDefaultWidth() >= 0) {
+                                                    workingDefaultPortSet.add(port);
+                                                }
                                             }
                                         }
                                     }
@@ -203,7 +207,7 @@ public class RelationWidthInference {
                 boolean continueInference = true;
 
                 while (continueInference && !unspecifiedSet.isEmpty() &&
-                        (!workingPortSet.isEmpty() || !workingRelationList.isEmpty())) {
+                        (!workingPortSet.isEmpty() || !workingRelationList.isEmpty() || !workingDefaultPortSet.isEmpty())) {
 
                     while (!workingRelationList.isEmpty() && !unspecifiedSet.isEmpty()) {
 
@@ -255,6 +259,8 @@ public class RelationWidthInference {
                             workingRelationList.addAll(updatedRelations);
                         }
                     }
+                    
+                    // Use the width constraints on ports to infer the widths.
                     if (!workingPortSet.isEmpty() && !unspecifiedSet.isEmpty()) {
                         continueInference = false;
                         LinkedList<IOPort> workingPortList = new LinkedList<IOPort>(workingPortSet);
@@ -273,6 +279,23 @@ public class RelationWidthInference {
                                 for (IORelation updatedRelation : updatedRelations) {
                                     portsToCheckConsistency.addAll(updatedRelation.linkedPortList(port));
                                 }
+                            }
+                            workingRelationList.addAll(updatedRelations);
+                        }
+                    }
+                    
+                    
+                    // If we can't infer any widths anymore (workingRelationList.isEmpty())
+                    // we will look whether there are ports that have a default width.
+                    if (!workingDefaultPortSet.isEmpty() && workingRelationList.isEmpty()) {
+                        LinkedList<IOPort> workingDefaultPortList = new LinkedList<IOPort>(workingDefaultPortSet);
+                        for (IOPort port : workingDefaultPortList) {
+                            List<IORelation> updatedRelations = _updateRelationsFromDefaultWidth(port);
+                            if (!updatedRelations.isEmpty()) {
+                                workingDefaultPortSet.remove(port);
+                                continueInference = true;
+                                    // We found new information, so we can try to infer
+                                    // new relations.
                             }
                             workingRelationList.addAll(updatedRelations);
                         }
@@ -421,7 +444,6 @@ public class RelationWidthInference {
          }
      }
 
-
     /**
      * Infer the width for the relations connected to the port. If the width can be
      * inferred, update the width and return the relations for which the width has been
@@ -525,7 +547,47 @@ public class RelationWidthInference {
         }
         return result;
     }
+    
+    
+    /** Infer the width for the relations connected to the port (which should have a default width).
+     *  If the width can be inferred, update the width and return the relations for which the width
+     *  has been updated.
+     *  @param  port The port for whose connected relations the width should be inferred.
+     *  @return The relations for which the width has been updated.
+     *  @exception IllegalActionException If the expression for the width cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
+     */
+    static private List<IORelation> _updateRelationsFromDefaultWidth(IOPort port) throws IllegalActionException {
+        List<IORelation> result = new LinkedList<IORelation>();
 
+        Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.linkedRelationList());
+                //port.linkedRelationList() returns the outside relations
+
+        int outsideUnspecifiedWidthsSize = outsideUnspecifiedWidths.size();
+
+        NamedObj namedObject = port.getContainer();
+        if (namedObject == null) {
+            assert false; // not expected
+            return result;
+        }
+        assert outsideUnspecifiedWidthsSize >= 0;
+        if (outsideUnspecifiedWidthsSize > 0) {
+            int difference = port.getDefaultWidth();
+            assert difference >= 0;
+            int unspecifiedWidthsSize = outsideUnspecifiedWidths.size();
+            if (unspecifiedWidthsSize == 1 || unspecifiedWidthsSize == difference || difference == 0) {
+                int width = difference / unspecifiedWidthsSize;
+                assert width >= 0;
+                for (IORelation relation : outsideUnspecifiedWidths) {
+                    relation._setInferredWidth(width);
+                    result.add(relation);
+                }
+            }
+        }
+        return result;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

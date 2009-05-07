@@ -81,9 +81,9 @@ public class Minimum extends TypedAtomicActor {
          * models, so we leave it as is.
          */
         minimumValue.setMultiport(true);
-
         minimumValue.setTypeAtMost(BaseType.SCALAR);
         minimumValue.setTypeAtLeast(input);
+        minimumValue.setDefaultWidth(1);
 
         channelNumber = new TypedIOPort(this, "channelNumber", false, true);
 
@@ -95,6 +95,7 @@ public class Minimum extends TypedAtomicActor {
          */
         channelNumber.setMultiport(true);
         channelNumber.setTypeEquals(BaseType.INT);
+        channelNumber.setDefaultWidth(1);
     }
 
     ///////////////////////////////////////////////////////////////////
