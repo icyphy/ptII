@@ -48,11 +48,13 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	DEListEventQueue.java \
 	PtidesActorProperties.java \
 	PtidesActorReceiver.java \
 	PtidesBasicDirector.java \
 	PtidesDirector.java \
 	PtidesEmbeddedDirector.java \
+	PtidesNoPhysicalTimeDirector.java \
 	PtidesPlatformReceiver.java \
 	PtidesReceiver.java
 
@@ -69,10 +71,15 @@ OPTIONAL_FILES = \
 	'PtidesBasicDirector$$DoubleTimedEvent.class' \
 	'PtidesReceiver$$Event.class' \
 	'PtidesReceiver$$TimeComparator.class' \
-	'PtidesBasicDirector$$DoubleTimedEvent.class'
+	'PtidesBasicDirector$$DoubleTimedEvent.class' \
+	'PtidesBasicDirector$$RealTimeEvent.class' \
+	'PtidesBasicDirector$$Tag.class' \
+	'PtidesNoPhysicalTimeDirector$$DoubleTimedEvent.class' \
+	'PtidesNoPhysicalTimeDirector$$RealTimeEvent.class' \
+	'PtidesNoPhysicalTimeDirector$$Tag.class' \
+	'PtidesNoPhysicalTimeDirector.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

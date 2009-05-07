@@ -44,27 +44,24 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	targets
+PTCLASSJAR =
 
-JSRCS = \
-	ActuatorOutputDevice.java \
-	InputDevice.java \
-	NetworkInputDevice.java \
-	NetworkOutputDevice.java \
-	OutputDevice.java \
-	ScheduleListener.java \
-	SchedulePlotter.java \
-	SensorInputDevice.java
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	luminary/luminary.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	ptidesentities.xml
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+JSRCS =
+
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	luminary
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
