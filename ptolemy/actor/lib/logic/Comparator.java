@@ -31,6 +31,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -152,7 +153,7 @@ public class Comparator extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == tolerance) {
-            _tolerance = ((DoubleToken) tolerance.getToken()).doubleValue();
+            _tolerance = ((ScalarToken) tolerance.getToken()).doubleValue();
         } else if (attribute == comparison) {
             String comparisonName = comparison.getExpression().trim();
 
@@ -183,8 +184,8 @@ public class Comparator extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         BooleanToken result = BooleanToken.FALSE;
-        double leftIn = ((DoubleToken) (left.get(0))).doubleValue();
-        double rightIn = ((DoubleToken) (right.get(0))).doubleValue();
+        double leftIn = ((ScalarToken) (left.get(0))).doubleValue();
+        double rightIn = ((ScalarToken) (right.get(0))).doubleValue();
 
         switch (_comparison) {
         case _GT:
