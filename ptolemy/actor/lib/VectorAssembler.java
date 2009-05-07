@@ -31,6 +31,7 @@ package ptolemy.actor.lib;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -112,13 +113,13 @@ public class VectorAssembler extends Transformer {
             data = new double[size][1];
 
             for (int i = 0; i < size; i++) {
-                data[i][0] = ((DoubleToken) input.get(i)).doubleValue();
+                data[i][0] = ((ScalarToken) input.get(i)).doubleValue();
             }
         } else {
             data = new double[1][size];
 
             for (int i = 0; i < size; i++) {
-                data[0][i] = ((DoubleToken) input.get(i)).doubleValue();
+                data[0][i] = ((ScalarToken) input.get(i)).doubleValue();
             }
         }
 
