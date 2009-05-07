@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +45,6 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DefaultCausalityInterface;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -55,7 +55,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -65,8 +64,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
-/** FIXME
- *
+/** 
  *  This director has a local notion time, decoupled from that of the
  *  enclosing director. The enclosing director's time
  *  represents physical time, whereas this time represents model
@@ -384,8 +382,8 @@ public class PtidesBasicDirector extends DEDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
-        realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
-        realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
+        _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
+        _realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
         _LastConsumedTag = new HashMap<NamedObj, Tag>();
         _physicalTimeExecutionStarted = null;
         
@@ -422,7 +420,7 @@ public class PtidesBasicDirector extends DEDirector {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before
             // we declare that we are done.
-            if (!getEventQueue().get().timeStamp().equals(getModelStopTime())) {
+            if (!_eventQueue.get().timeStamp().equals(getModelStopTime())) {
                 result = false;
             }
         }
@@ -501,6 +499,17 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
+
+    /** The list of currently executing actors and their remaining execution time
+     */
+    protected Stack<DoubleTimedEvent> _currentlyExecutingStack;
+    
+    /** Zero time.
+     */
+    protected Time _zero;
+    
+    ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
     /** Clear any highlights on the specified actor.
@@ -517,7 +526,27 @@ public class PtidesBasicDirector extends DEDirector {
             ((TypedCompositeActor)container).requestChange(request);
         }
     }
-
+    
+    protected List<DEEvent> _TakeAllSameTagEventsFromQueue() throws IllegalActionException {
+        List<DEEvent> eventList = new ArrayList<DEEvent>();
+        eventList.add(_eventQueue.take());
+        while (!_eventQueue.isEmpty()) {
+            if (_eventQueue.get().compareTo(eventList.get(0)) == 0) {
+                eventList.add(_eventQueue.take());
+            } else {
+                break;
+            }
+        }
+        // FIXME: this is extremely inefficient. We need to take out all events
+        // from the event queue of the same tag, but we could not do it without removing
+        // the events from the queue, so after finishing, we need to put them all back.
+        for (DEEvent event : eventList) {
+            _eventQueue.put(event);
+        }
+        return eventList;
+    }
+    
+    
     /** Return a MoML string describing the icon appearance for a Ptides
      *  director that is currently executing the specified actor.
      *  The returned MoML can include a sequence of instances of VisibleAttribute
@@ -607,24 +636,23 @@ public class PtidesBasicDirector extends DEDirector {
         Time physicalTime = _getPhysicalTime();
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
-        DEEventQueue eventQueue = getEventQueue();
 
         if (!_currentlyExecutingStack.isEmpty()) {
             // Case 2: We are currently executing an actor.
-            DoubleTimedEvent currentEvent = (DoubleTimedEvent)_currentlyExecutingStack.peek();
+            DoubleTimedEvent currentEventList = (DoubleTimedEvent)_currentlyExecutingStack.peek();
             // First check whether its remaining execution time is zero.
-            Time remainingExecutionTime = currentEvent.remainingExecutionTime;
+            Time remainingExecutionTime = currentEventList.remainingExecutionTime;
             Time finishTime = _physicalTimeExecutionStarted.add(remainingExecutionTime);
             int comparison = finishTime.compareTo(physicalTime);
             if (comparison < 0) {
                 // NOTE: This should not happen, so if it does, throw an exception.
                 throw new IllegalActionException(this,
-                        (NamedObj)currentEvent.contents,
+                        _getActorFromEventList((List<DEEvent>)currentEventList.contents),
                         "Physical time passed the finish time of the currently executing actor");
             } else if (comparison == 0) {
                 // Currently executing actor finishes now, so we want to return it.
                 // First set current model time.
-                setTag(currentEvent.timeStamp, currentEvent.microstep);
+                setTag(currentEventList.timeStamp, currentEventList.microstep);
                 _currentlyExecutingStack.pop();
                 // If there is now something on _currentlyExecutingStack,
                 // then we are resuming its execution now.
@@ -632,25 +660,36 @@ public class PtidesBasicDirector extends DEDirector {
 
                 if (_debugging) {
                     _debug("Actor "
-                            + ((NamedObj)currentEvent.contents).getName(getContainer())
+                            + _getActorFromEventList((List<DEEvent>)currentEventList.contents)
+                            .getName(getContainer())
                             + " finishes executing at physical time "
                             + physicalTime);
                 }
 
                 // Animate, if appropriate.
                 _setIcon(_getIdleIcon(), false);
-                _clearHighlight((Actor)currentEvent.contents);
+                _clearHighlight(_getActorFromEventList((List<DEEvent>)currentEventList.contents));
                 _lastExecutingActor = null;
 
                 // Request a refiring so we can process the next event
                 // on the event queue at the current physical time.
                 executiveDirector.fireAtCurrentTime((Actor)container);
 
-                return (Actor) currentEvent.contents;
+                return _getActorFromEventList((List<DEEvent>)currentEventList.contents);
             } else {
+                Time nextEventOnStackFireTime = _currentlyExecutingStack.peek().remainingExecutionTime;
+                Time expectedCompletionTime = nextEventOnStackFireTime.add(_physicalTimeExecutionStarted); 
+                Time fireAtTime = executiveDirector.fireAt(container, expectedCompletionTime);
+                if (!fireAtTime.equals(expectedCompletionTime)) {
+                    throw new IllegalActionException(executiveDirector,
+                            "Ptides director requires refiring at time "
+                            + expectedCompletionTime
+                            + ", but the enclosing director replied that it will refire at time "
+                            + fireAtTime);
+                }
                 // Currently executing actor needs more execution time.
                 // Decide whether to preempt it.
-                if (eventQueue.isEmpty() || !_preemptExecutingActor()) {
+                if (_eventQueue.isEmpty() || !_preemptExecutingActor()) {
                     // Either the event queue is empty or the
                     // currently executing actor does not get preempted
                     // and it has remaining execution time. We should just
@@ -668,7 +707,7 @@ public class PtidesBasicDirector extends DEDirector {
         // of the earliest event on the event queue, either because there
         // is no currently executing actor or the currently executing actor
         // got preempted.
-        if (eventQueue.isEmpty()) {
+        if (_eventQueue.isEmpty()) {
             // Nothing to fire.
 
             // Animate if appropriate.
@@ -677,7 +716,7 @@ public class PtidesBasicDirector extends DEDirector {
             return null;
         }
 
-        DEEvent eventFromQueue = getEventQueue().get();
+        DEEvent eventFromQueue = _eventQueue.get();
         Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
         int microstepOfEventFromQueue = eventFromQueue.microstep();
 
@@ -692,6 +731,9 @@ public class PtidesBasicDirector extends DEDirector {
         // track if safeToProcess() somehow failed to produce the correct results.
         _trackLastTagConsumedByActor(eventFromQueue);
 
+        List<DEEvent> executingEvents = _TakeAllSameTagEventsFromQueue();
+//        Actor actorToFire = executingEvents.get(0).actor();
+        
         Actor actorToFire = super._getNextActorToFire();
 
         Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
@@ -723,29 +765,34 @@ public class PtidesBasicDirector extends DEDirector {
             }
 
             // If we are preempting a current execution, then
-            // update information on the preempted event.
+            // update information of the preempted event.
             if (!_currentlyExecutingStack.isEmpty()) {
                 // We are preempting a current execution.
-                DoubleTimedEvent currentlyExecutingEvent = _currentlyExecutingStack.peek();
+                DoubleTimedEvent currentEventList = _currentlyExecutingStack.peek();
                 // FIXME: Perhaps execution time should be a Time rather than a double?
                 Time elapsedTime = physicalTime.subtract(_physicalTimeExecutionStarted);
-                currentlyExecutingEvent.remainingExecutionTime
-                        = currentlyExecutingEvent.remainingExecutionTime.subtract(elapsedTime);
-                if (currentlyExecutingEvent.remainingExecutionTime.compareTo(_zero) < 0) {
+                currentEventList.remainingExecutionTime
+                        = currentEventList.remainingExecutionTime.subtract(elapsedTime);
+                if (currentEventList.remainingExecutionTime.compareTo(_zero) < 0) {
                     // This should not occur.
-                    throw new IllegalActionException(this, (NamedObj)currentlyExecutingEvent.contents,
+                    throw new IllegalActionException(this, 
+                            _getActorFromEventList((List<DEEvent>)currentEventList.contents),
                             "Remaining execution is negative!");
                 }
                 if (_debugging) {
                     _debug("Preempting actor "
-                            + ((NamedObj)currentlyExecutingEvent.contents).getName((NamedObj)container)
+                            + _getActorFromEventList((List<DEEvent>)currentEventList.contents)
+                            .getName((NamedObj)container)
                             + " at physical time "
                             + physicalTime
                             + ", which has remaining execution time "
-                            + currentlyExecutingEvent.remainingExecutionTime);
+                            + currentEventList.remainingExecutionTime);
                 }
             }
-            _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue, microstepOfEventFromQueue, actorToFire, executionTime));
+//            List eventList = new ArrayList();
+//            eventList.add(eventFromQueue);
+            _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue, 
+                    microstepOfEventFromQueue, executingEvents, executionTime));
             _physicalTimeExecutionStarted = physicalTime;
 
             // Animate if appropriate.
@@ -799,8 +846,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  This base class returns false, indicating that the currently
      *  executing actor is never preempted.
      *  @return False.
+     * @throws IllegalActionException 
      */
-    protected boolean _preemptExecutingActor() {
+    protected boolean _preemptExecutingActor() throws IllegalActionException {
         return false;
     }
 
@@ -956,11 +1004,11 @@ public class PtidesBasicDirector extends DEDirector {
         // in the order of the timestamps, but for two events of the same timestamp at an
         // actuator, there's no guarantee on the order of events sent to the outside.
         while (true) {
-            if (realTimeOutputEventQueue.isEmpty()) {
+            if (_realTimeOutputEventQueue.isEmpty()) {
                 break;
             }
 
-            RealTimeEvent realTimeEvent = (RealTimeEvent)realTimeOutputEventQueue.peek();
+            RealTimeEvent realTimeEvent = (RealTimeEvent)_realTimeOutputEventQueue.peek();
             int compare = realTimeEvent.deliveryTime.compareTo(physicalTime);
             
             if (compare > 0) {
@@ -982,7 +1030,7 @@ public class PtidesBasicDirector extends DEDirector {
                     // set the proper timestamp associated with the token. This is because we rely
                     // on the fact every network input port is directly connected to a networkInputDevice,
                     // which will set the correct timestamp associated with the token.
-                    realTimeOutputEventQueue.poll();
+                    _realTimeOutputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
                 } else {                
                     int lastMicrostep = _microstep;
@@ -990,7 +1038,7 @@ public class PtidesBasicDirector extends DEDirector {
                     // will produce two events of the same timestamp, the microstep
                     // of the new event is set to 0.
                     setTag(realTimeEvent.deliveryTime.subtract(realTimeDelay), 0);
-                    realTimeOutputEventQueue.poll();
+                    _realTimeOutputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
                     setTag(lastModelTime, lastMicrostep);
                 }
@@ -1035,7 +1083,7 @@ public class PtidesBasicDirector extends DEDirector {
                             Token t = port.get(i);
                             Time waitUntilTime = physicalTime.add(realTimeDelay);
                             RealTimeEvent realTimeEvent = new RealTimeEvent(port, i, t, waitUntilTime);
-                            realTimeOutputEventQueue.add(realTimeEvent);
+                            _realTimeOutputEventQueue.add(realTimeEvent);
                             result = true;
                             
                             // wait until physical time to transfer the token into the platform
@@ -1083,10 +1131,10 @@ public class PtidesBasicDirector extends DEDirector {
         // in the order of the timestamps, but for two events of the same timestamp at an
         // actuator, there's no guarantee on the order of events sent to the outside.
         while (true) {
-            if (realTimeInputEventQueue.isEmpty()) {
+            if (_realTimeInputEventQueue.isEmpty()) {
                 break;
             }
-            RealTimeEvent tokenEvent = (RealTimeEvent)realTimeInputEventQueue.peek();
+            RealTimeEvent tokenEvent = (RealTimeEvent)_realTimeInputEventQueue.peek();
             compare = tokenEvent.deliveryTime.compareTo(physicalTime);
             
             if (compare > 0) {
@@ -1096,7 +1144,7 @@ public class PtidesBasicDirector extends DEDirector {
                     throw new IllegalActionException("transferring network event from the"
                             + "actuator event queue");
                 }
-                realTimeInputEventQueue.poll();
+                _realTimeInputEventQueue.poll();
                 tokenEvent.port.send(tokenEvent.channel, tokenEvent.token);
                 if (_debugging) {
                     _debug(getName(), "transferring output "
@@ -1135,7 +1183,8 @@ public class PtidesBasicDirector extends DEDirector {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 if (port.hasTokenInside(i)) {
                     // FIXME: we should probably do something else here.
-                    throw new IllegalArgumentException("missed deadline at the actuator. Deadline = "
+                    throw new IllegalArgumentException("missed deadline at the actuator at port: " +
+                            port.getName() + ". Deadline = "
                             + _currentTime + ", and current physical time = " + physicalTime);
                 }
             }
@@ -1145,7 +1194,7 @@ public class PtidesBasicDirector extends DEDirector {
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
                         RealTimeEvent tokenEvent = new RealTimeEvent(port, i, t, _currentTime);
-                        realTimeInputEventQueue.add(tokenEvent);
+                        _realTimeInputEventQueue.add(tokenEvent);
                         // wait until physical time to transfer the output to the actuator
                         Actor container = (Actor) getContainer();
                         container.getExecutiveDirector().fireAt((Actor)container, _currentTime);
@@ -1243,6 +1292,10 @@ public class PtidesBasicDirector extends DEDirector {
         return true;
     }
     
+    private Actor _getActorFromEventList(List<DEEvent> currentEventList) {
+        return currentEventList.get(0).actor();
+    }
+    
     /** Returns the minDelay parameter
      *  @param port
      *  @return minDelay parameter
@@ -1292,10 +1345,6 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private HashMap<NamedObj, Tag> _LastConsumedTag;
 
-    /** The list of currently executing actors and their remaining execution time
-     */
-    private Stack<DoubleTimedEvent> _currentlyExecutingStack;
-
     /** Last executing actor
      *  Keeps track of the last actor with non-zero executing time that was executing
      *  This helps to clear the highlighting of that actor when executing stops.
@@ -1309,16 +1358,12 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
      */
-    private PriorityQueue realTimeInputEventQueue;
+    private PriorityQueue _realTimeInputEventQueue;
     
     /** a sorted queue of RealTimeEvents that stores events when they arrive at the input of
      *  the platform, but are not yet visible to the platform (because of real time delay d_o)
      */
-    private PriorityQueue realTimeOutputEventQueue;
-
-    /** Zero time.
-     */
-    private Time _zero;
+    private PriorityQueue _realTimeOutputEventQueue;
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
@@ -1332,11 +1377,12 @@ public class PtidesBasicDirector extends DEDirector {
         /** Construct a new event with the specified time stamp,
          *  destination actor, and execution time.
          * @param timeStamp The time stamp.
+         * @param microstep The microstep.
          * @param actor The destination actor.
          * @param executionTime The execution time of the actor.
          */
-        public DoubleTimedEvent(Time timeStamp, int microstep, Object actor, Time executionTime) {
-            super(timeStamp, actor);
+        public DoubleTimedEvent(Time timeStamp, int microstep, Object executingEvents, Time executionTime) {
+            super(timeStamp, executingEvents);
             this.microstep = microstep;
             remainingExecutionTime = executionTime;
         }
@@ -1344,10 +1390,12 @@ public class PtidesBasicDirector extends DEDirector {
         public Time remainingExecutionTime;
         
         public int microstep;
+        
+        public IOPort port;
 
         public String toString() {
             return super.toString() + ", microstep = " + microstep
-                    + "remainingExecutionTime = " + remainingExecutionTime;
+                    + ", remainingExecutionTime = " + remainingExecutionTime;
         }
     }
     
