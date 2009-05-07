@@ -527,9 +527,20 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
     
-    protected List<DEEvent> _TakeAllSameTagEventsFromQueue() throws IllegalActionException {
+    /** Return all the events in the event queue that are of the same tag as the event
+     *  passed in.
+     *  <p>
+     *  Notice these events should _NOT_ be taken out of the event queue.
+     *  @return List of events of the same tag.
+     *  @throws IllegalActionException
+     */
+    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
         List<DEEvent> eventList = new ArrayList<DEEvent>();
         eventList.add(_eventQueue.take());
+        if (event != eventList.get(0)) {
+            throw new IllegalActionException("The event to get is not the top event from the queue. " +
+                    "Probably need to overwrite this method");
+        }
         while (!_eventQueue.isEmpty()) {
             if (_eventQueue.get().compareTo(eventList.get(0)) == 0) {
                 eventList.add(_eventQueue.take());
@@ -540,12 +551,11 @@ public class PtidesBasicDirector extends DEDirector {
         // FIXME: this is extremely inefficient. We need to take out all events
         // from the event queue of the same tag, but we could not do it without removing
         // the events from the queue, so after finishing, we need to put them all back.
-        for (DEEvent event : eventList) {
-            _eventQueue.put(event);
+        for (DEEvent smallestEvent : eventList) {
+            _eventQueue.put(smallestEvent);
         }
         return eventList;
     }
-    
     
     /** Return a MoML string describing the icon appearance for a Ptides
      *  director that is currently executing the specified actor.
@@ -703,6 +713,7 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
         }
+        
         // If we get here, then we want to execute the actor destination
         // of the earliest event on the event queue, either because there
         // is no currently executing actor or the currently executing actor
@@ -716,25 +727,25 @@ public class PtidesBasicDirector extends DEDirector {
             return null;
         }
 
-        DEEvent eventFromQueue = _eventQueue.get();
+        DEEvent eventFromQueue = _getNextSafeEvent();
+        if (eventFromQueue == null) {
+            // no event is there to process.
+            return null;
+        }
+        //            DEEvent eventFromQueue = _eventQueue.get();
         Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
         int microstepOfEventFromQueue = eventFromQueue.microstep();
 
-        if (!_safeToProcess(eventFromQueue)) {
-            // not safe to process, wait until some physical time.
-            return null;
-        }
-        
         // Every time safeToProcess analysis passes, and
         // a new actor is chosen to be start processing, we update _actorLastConsumedTag
         // to store the tag of the last event that was consumed by this actor. This helps us to
         // track if safeToProcess() somehow failed to produce the correct results.
         _trackLastTagConsumedByActor(eventFromQueue);
 
-        List<DEEvent> executingEvents = _TakeAllSameTagEventsFromQueue();
-//        Actor actorToFire = executingEvents.get(0).actor();
-        
-        Actor actorToFire = super._getNextActorToFire();
+        List<DEEvent> eventsToProcess = _getAllSameTagEventsFromQueue(eventFromQueue);
+        //        Actor actorToFire = executingEvents.get(0).actor();
+
+        Actor actorToFire = _getNextActorToFireForThisEvent(eventsToProcess);
 
         Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
 
@@ -772,7 +783,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // FIXME: Perhaps execution time should be a Time rather than a double?
                 Time elapsedTime = physicalTime.subtract(_physicalTimeExecutionStarted);
                 currentEventList.remainingExecutionTime
-                        = currentEventList.remainingExecutionTime.subtract(elapsedTime);
+                = currentEventList.remainingExecutionTime.subtract(elapsedTime);
                 if (currentEventList.remainingExecutionTime.compareTo(_zero) < 0) {
                     // This should not occur.
                     throw new IllegalActionException(this, 
@@ -789,16 +800,60 @@ public class PtidesBasicDirector extends DEDirector {
                             + currentEventList.remainingExecutionTime);
                 }
             }
-//            List eventList = new ArrayList();
-//            eventList.add(eventFromQueue);
+            //            List eventList = new ArrayList();
+            //            eventList.add(eventFromQueue);
             _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue, 
-                    microstepOfEventFromQueue, executingEvents, executionTime));
+                    microstepOfEventFromQueue, eventsToProcess, executionTime));
             _physicalTimeExecutionStarted = physicalTime;
 
             // Animate if appropriate.
             _setIcon(_getExecutingIcon(actorToFire), false);
             _lastExecutingActor = actorToFire;
 
+            return null;
+        }
+    }
+    
+    /** Return the actor associated with this event. This method should take
+     *  all events of the same tag destined for the same actor from the event 
+     *  queue, and return the actor associated with it.
+     *  <p>
+     *  In this baseline implementation, super._getNextActorToFire() is called.
+     *  @param event One event from the list of events that are destined for the
+     *  same actor and of the same tag.
+     *  @return Actor assocaited with the event.
+     *  @throws IllegalActionException 
+     */
+    protected Actor _getNextActorToFireForThisEvent(List<DEEvent> events) throws IllegalActionException {
+        if (events.get(0) != _eventQueue.get()) {
+            throw new IllegalActionException("The event passed in is not the top event" +
+            		"in the event queue, Probably need to overwrite this method.");
+        }
+        return super._getNextActorToFire();
+    }
+    
+    /** Return the next event we want to process. Notice this event returned must
+     *  be safe to process. Any overwriting method must ensure this is true (by
+     *  calling some version of _safeToProcess(). 
+     *  <p>
+     *  Notice if there are multiple
+     *  events in the queue that are safe to process, this function can choose to
+     *  return any one of these events, it can also choose to return null depending
+     *  on the implementation.
+     *  <P>
+     *  Also notice this method should _NOT_ take the event from the event queue.  
+     *  <p>
+     *  In this baseline implementation, we only check if
+     *  the event at the top of the queue is safe to process. If it is not, then
+     *  we return null. Otherwise we return the top event.  
+     *  @return Next safe event.
+     *  @throws IllegalActionException 
+     */
+    protected DEEvent _getNextSafeEvent() throws IllegalActionException {
+        DEEvent eventFromQueue = _eventQueue.get();
+        if (_safeToProcess(eventFromQueue)) {
+            return eventFromQueue;
+        } else {
             return null;
         }
     }
@@ -867,7 +922,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException
      *  @see #_setTimedInterrupt(Time)
      */
-    protected boolean _safeToProcess(DEEvent event) {
+    protected boolean _safeToProcess(DEEvent event) throws IllegalActionException {
         IOPort port = event.ioPort();
         if (port != null) {
             try {
