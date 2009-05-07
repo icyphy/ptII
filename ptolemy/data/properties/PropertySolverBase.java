@@ -486,7 +486,11 @@ public abstract class PropertySolverBase extends Attribute {
             solver.reset();
         }
         getSharedUtilities().resetAll();
-        PropertyLattice.resetAll();
+        
+        // Don't clear the lattices; otherwise, we'll have multiple
+        // copies of a lattice element when we recreate a lattice.
+        // This causes regression testing to fail.
+        //PropertyLattice.resetAll();
     }
 
     /**
