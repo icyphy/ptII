@@ -596,44 +596,6 @@ ALLPACKAGES = \
 	ptolemy.caltrop.actors \
 	ptolemy.caltrop.ddi \
 	ptolemy.caltrop.util \
-	ptolemy.codegen.c.actor \
-	ptolemy.codegen.c.actor.lib \
-	ptolemy.codegen.c.actor.lib.comm \
-	ptolemy.codegen.c.actor.lib.conversions \
-	ptolemy.codegen.c.actor.lib.gui \
-	ptolemy.codegen.c.actor.lib.hoc \
-	ptolemy.codegen.c.actor.lib.io \
-	ptolemy.codegen.c.actor.lib.javasound \
-	ptolemy.codegen.c.actor.lib.jni \
-	ptolemy.codegen.c.actor.lib.logic \
-	ptolemy.codegen.c.actor.lib.string \
-	ptolemy.codegen.c.actor.sched \
-	ptolemy.codegen.c.domains.fsm.kernel \
-	ptolemy.codegen.c.domains.fsm.modal \
-	ptolemy.codegen.c.domains.hdf.kernel \
-	ptolemy.codegen.c.domains.sdf.kernel \
-	ptolemy.codegen.c.domains.sdf.lib \
-	ptolemy.codegen.c.kernel \
-	ptolemy.codegen.c.targets.luminary.domains.ptides.lib \
-	ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary \
-	ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel \
-	ptolemy.codegen.c.targets.pret.domains.fsm.kernel \
-	ptolemy.codegen.gui \
-	ptolemy.codegen.java.kernel \
-	ptolemy.codegen.java.actor \
-	ptolemy.codegen.java.actor.parameters \
-	ptolemy.codegen.java.domains.sdf.kernel \
-	ptolemy.codegen.java.domains.sdf.lib \
-	ptolemy.codegen.java.actor.lib.colt \
-	ptolemy.codegen.java.actor.lib.conversions \
-	ptolemy.codegen.java.actor.lib.hoc \
-	ptolemy.codegen.java.actor.lib.logic \
-	ptolemy.codegen.java.actor.lib.string \
-	ptolemy.codegen.java.actor.lib \
-	ptolemy.codegen.kernel \
-	ptolemy.codegen.kernel.userMacro \
-	ptolemy.codegen.vhdl.actor.lib.vhdl \
-	ptolemy.codegen.vhdl.kernel \
 	ptolemy.domains.ci.kernel \
 	ptolemy.domains.ci.lib \
 	ptolemy.domains.curriculum \
@@ -655,7 +617,6 @@ ALLPACKAGES = \
 	ptolemy.domains.ptera.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
-	ptolemy.domains.space \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
 	ptolemy.domains.sr.lib.gui \
