@@ -29,6 +29,7 @@ package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.ComplexToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -126,7 +127,7 @@ public class FFT extends SDFTransformer {
         Token[] inTokenArray = input.get(0, _transformSize);
 
         for (int i = 0; i < _transformSize; i++) {
-            _inComplexArray[i] = ((ComplexToken) inTokenArray[i])
+            _inComplexArray[i] = ((ScalarToken) inTokenArray[i])
                     .complexValue();
         }
 

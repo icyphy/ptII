@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -201,7 +202,7 @@ public class TrigFunction extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            double in = ((DoubleToken) input.get(0)).doubleValue();
+            double in = ((ScalarToken) input.get(0)).doubleValue();
             output.send(0, new DoubleToken(_doFunction(in)));
         }
     }
@@ -235,7 +236,7 @@ public class TrigFunction extends Transformer {
             Token[] inArray = input.get(0, count);
 
             for (int i = 0; i < count; i++) {
-                double inputValue = ((DoubleToken) (inArray[i])).doubleValue();
+                double inputValue = ((ScalarToken) (inArray[i])).doubleValue();
                 _resultArray[i] = new DoubleToken(_doFunction(inputValue));
             }
 
