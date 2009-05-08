@@ -33,10 +33,10 @@ import java.util.Comparator;
 import ptolemy.actor.util.Time;
 
 /**
- * Describes a TDL action. Used in the TDLActionsGraph.
+ * A TDL action. Used in the TDLActionsGraph.
  * @author Patricia Derler
-@version $Id$
-@since Ptolemy II 7.1
+ * @version $Id$
+ * @since Ptolemy II 7.1
  *
  */
 public class TDLAction {
@@ -90,6 +90,9 @@ public class TDLAction {
      */
     public static final int EXECUTETASK = 6;
 
+    /**
+     * The action after a task is output.
+     */
     public static final int AFTERTASKOUTPUTS = 7;
 
     /**
@@ -134,6 +137,13 @@ public class TDLAction {
         return 31 + time.hashCode() +  actionType + object.hashCode();
     }
 
+    /**
+     * Return true if two actions are the same.
+     * @param action The action to compare against this action
+     * @param modePeriod The mode period.
+     * @return true if the times are equal (==), the TDL actions are
+     * equal (==) and the action times are equal (==).
+     */
     public boolean sameActionAs(TDLAction action, Time modePeriod) {
         long time1 = this.time.getLongValue() % modePeriod.getLongValue();
         long time2 = action.time.getLongValue() % modePeriod.getLongValue();
@@ -143,10 +153,7 @@ public class TDLAction {
     }
 
     /**
-     * This class compares two TDL actions.
-     * @author Patricia Derler
-@version $Id$
-@since Ptolemy II 7.1
+     * A class that compares two TDL actions.
      */
     public static class TDLActionComparator implements Comparator  {
 
@@ -170,10 +177,5 @@ public class TDLAction {
             else
                 return tdlEvent1.object.toString().compareTo(tdlEvent2.object.toString());
         }
-
-
     }
-
-
-
 }
