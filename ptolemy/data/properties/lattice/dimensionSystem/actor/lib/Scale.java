@@ -128,10 +128,6 @@ public class Scale extends AtomicActor {
             if (inputProperty == top || factorProperty == top) {
                 return top;
             }
-
-            if (factorProperty == inputProperty) {
-                return unitless;
-            }
                 
             if (factorProperty == unitless) {
                 return inputProperty;
@@ -195,7 +191,7 @@ public class Scale extends AtomicActor {
             }
 
             if ((outputProperty == position && factorProperty == time) || 
-                (outputProperty == position && factorProperty == unitless)) {
+                (outputProperty == speed && factorProperty == unitless)) {
                 return speed;
             }
 

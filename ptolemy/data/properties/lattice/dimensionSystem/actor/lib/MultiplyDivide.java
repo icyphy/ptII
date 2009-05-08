@@ -136,11 +136,7 @@ public class MultiplyDivide extends AtomicActor {
             if (divideProperty == unitless) {
                 return multiplyProperty;
             }
-
-            if (multiplyProperty == unitless) {
-                return divideProperty;
-            }
-            
+          
             if (multiplyProperty == unknown || divideProperty == unknown) {
                 return unknown;
             } 
