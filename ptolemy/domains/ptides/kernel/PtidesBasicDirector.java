@@ -404,6 +404,10 @@ public class PtidesBasicDirector extends DEDirector {
         _setIcon(_getIdleIcon(), true);
     }
     
+    /** Uses the preinitilize() method in the super class.
+     *  However we use the DEListEventQueue instead of the calendar queue because we need
+     *  to access to not just the first event in the event queue.
+     */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         // Initialize an event queue.
