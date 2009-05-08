@@ -28,8 +28,8 @@
 package ptolemy.domains.ptera.lib;
 
 import ptolemy.actor.Manager;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.CompositeEntity;
@@ -66,8 +66,7 @@ public class Stop extends Event {
         isFinalEvent.setPersistent(false);
     }
 
-    public RefiringData fire(ArrayToken arguments)
-    throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         PteraController controller = getController();
 
         Manager manager = controller.getManager();

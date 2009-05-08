@@ -29,10 +29,10 @@ package ptolemy.actor.gt.controller;
 
 import java.net.URL;
 
-import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.domains.ptera.kernel.PteraErrorEvent;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
+import ptolemy.domains.ptera.kernel.PteraErrorEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -72,7 +72,7 @@ public class ReadModel extends GTEvent {
         return newObject;
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         if (_parser == null) {

@@ -28,8 +28,8 @@
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
@@ -56,7 +56,7 @@ public class InputModel extends GTEvent {
         super(container, name);
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         ParserScope scope = _getParserScope();

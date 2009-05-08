@@ -34,9 +34,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.data.ArrayToken;
-import ptolemy.domains.ptera.kernel.PteraErrorEvent;
+import ptolemy.data.Token;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
+import ptolemy.domains.ptera.kernel.PteraErrorEvent;
 import ptolemy.domains.ptera.lib.EventUtils;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,7 +77,7 @@ public class Execute extends GTEvent {
         return newObject;
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         NamedObj toplevel = getModelParameter().getModel().toplevel();

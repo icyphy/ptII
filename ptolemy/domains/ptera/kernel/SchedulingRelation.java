@@ -39,9 +39,11 @@ import java.util.List;
 import ptolemy.actor.parameters.Priority;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
+import ptolemy.data.expr.ASTPtRecordConstructNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
@@ -212,25 +214,28 @@ public class SchedulingRelation extends Transition {
         return relation;
     }
 
-    /** Evaluate the parse tree of the arguments and return an ArrayToken that
-     *  contains the values of those arguments in the given parser scope.
+    /** Evaluate the parse tree of the arguments and return an ArrayToken or
+     *  RecordToken that contains the values of those arguments in the given
+     *  parser scope.
      *
      *  @param scope The parser scope in which the arguments are evaluated.
-     *  @return The ArrayToken containing the values of those arguments.
+     *  @return The token containing the values of those arguments, which must
+     *   be of type {@link ArrayToken} or {@link RecordToken}.
      *  @exception IllegalActionException If the evaluation is unsuccessful.
      */
-    public ArrayToken getArguments(ParserScope scope)
+    public Token getArguments(ParserScope scope)
     throws IllegalActionException {
         if (_argumentsTreeVersion != _workspace.getVersion()) {
             _parseArguments();
         }
         Token token = _parseTreeEvaluator.evaluateParseTree(_argumentsTree,
                 scope);
-        if (token == null || !(token instanceof ArrayToken)) {
+        if (token == null || !(token instanceof ArrayToken ||
+                token instanceof RecordToken)) {
             throw new IllegalActionException(this, "Unable to evaluate " +
                     "arguments \"" + arguments.getExpression() + "\".");
         }
-        return (ArrayToken) token;
+        return token;
     }
 
     /** Evaluate the delay parameter in the given parse scope and return its
@@ -387,9 +392,9 @@ public class SchedulingRelation extends Transition {
     }
 
     /** The attribute for arguments. Its value must be evaluated to an
-        ArrayToken, though this evaluation is performed only when this
-        scheduling relation is to be considered by the starting event but not
-        when this attribute is set by the designer. */
+        ArrayToken or RecordToken, though this evaluation is performed only when
+        this scheduling relation is to be considered by the starting event but
+        not when this attribute is set by the designer. */
     public StringAttribute arguments;
 
     /** A Boolean-valued parameter that defines whether this scheduling relation
@@ -430,14 +435,15 @@ public class SchedulingRelation extends Transition {
      *   arguments.
      */
     private void _parseArguments() throws IllegalActionException {
-        try {
-            _argumentsTree = (ASTPtArrayConstructNode) new PtParser()
-                    .generateParseTree(arguments.getExpression());
-            _argumentsTreeVersion = _workspace.getVersion();
-        } catch (ClassCastException e) {
+        _argumentsTree = new PtParser().generateParseTree(
+                arguments.getExpression());
+        _argumentsTreeVersion = _workspace.getVersion();
+        if (!(_argumentsTree == null ||
+                _argumentsTree instanceof ASTPtArrayConstructNode ||
+                _argumentsTree instanceof ASTPtRecordConstructNode)) {
             throw new IllegalActionException(this, "The arguments for a " +
-                    "scheduling edge must be in an array in the form of " +
-                    "{...}.");
+                    "scheduling edge must be in an array or a record in the " +
+                    "form of {...}.");
         }
     }
 
@@ -456,7 +462,7 @@ public class SchedulingRelation extends Transition {
     };
 
     /** The parse tree of arguments. */
-    private ASTPtArrayConstructNode _argumentsTree;
+    private ASTPtRootNode _argumentsTree;
 
     /** Version of _argumentsTree. */
     private long _argumentsTreeVersion = -1;

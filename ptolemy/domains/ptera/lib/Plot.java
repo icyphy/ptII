@@ -31,18 +31,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.List;
 
 import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.actor.util.Time;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.fsm.kernel.ConfigurableEntity;
 import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -74,37 +74,7 @@ public class Plot extends Event implements ConfigurableEntity {
         super(container, name);
 
         _initializePlotter();
-        parameters.setExpression("(value : double)");
-    }
-
-    /** React to a change in an attribute. If the changed attribute is
-     *  the <code>parameters</code> attribute, update the parser scope for the
-     *  actions so that the parameters' names can be referred to in those
-     *  actions. If it is <code>monitoredVariables</code>, register this event
-     *  as a value listener of all the monitored variables. If the changed
-     *  attribute is <code>isInitialState</code>, do nothing. This is because
-     *  the Ptera controller need not be updated with this attribute is set. If
-     *  the changed attribute is among the other attributes, then the superclass
-     *  is called.
-     *
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If thrown by the superclass
-     *   attributeChanged() method, or the parser scope cannot be updated.
-     */
-    public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
-        super.attributeChanged(attribute);
-
-        if (attribute == parameters) {
-            int index = parameters.getParameterNames().indexOf("value");
-            if (index >= 0) {
-                if (BaseType.DOUBLE.isCompatible(parameters.getParameterTypes()[index])) {
-                    return;
-                }
-            }
-            throw new IllegalActionException(this, "The event must have a " +
-                    "parameter with name \"value\" and type \"double\".");
-        }
+        parameters.setExpression("(y : double)");
     }
 
     /** Clone the state into the specified workspace. This calls the
@@ -162,21 +132,12 @@ public class Plot extends Event implements ConfigurableEntity {
      *   their types do not match, the actions cannot be executed, or any
      *   expression (such as guards and arguments to the next events) cannot be
      *   evaluated.
-     *  @see #refire(ArrayToken, RefiringData)
+     *  @see #refire(Token, RefiringData)
      */
-    public RefiringData fire(ArrayToken arguments)
-            throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
-
-        int index = parameters.getParameterNames().indexOf("value");
-        if (index < 0) {
-            throw new IllegalActionException(this,
-                    "No parameter with name \"value\" is found.");
-        }
-
-        _value = DoubleToken.convert(arguments.getElement(index));
+        /*_value = DoubleToken.convert(arguments.getElement(index));*/
         _plotter.iterate(1);
-
         return data;
     }
 
@@ -250,12 +211,20 @@ public class Plot extends Event implements ConfigurableEntity {
         new DEDirector(_configurer, "DEDirector");
         _plotter = new TimedPlotter(_configurer, "Plotter") {
             public boolean postfire() throws IllegalActionException {
-                DoubleToken currentToken = _value;
-                double currentValue = currentToken.doubleValue();
+                List<String> names = Plot.this.parameters.getParameterNames();
                 Time modelTime = getController().getDirector().getModelTime();
-                ((ptolemy.plot.Plot) plot).addPoint(0,
-                        modelTime.getDoubleValue(), currentValue, true);
-
+                int i = 0;
+                ptolemy.plot.Plot plotPlot = (ptolemy.plot.Plot) plot;
+                for (String name : names) {
+                    Variable variable = (Variable) Plot.this.getAttribute(name);
+                    Token token = variable.getToken();
+                    if (token != null) {
+                        DoubleToken value = DoubleToken.convert(token);
+                        plotPlot.addPoint(i, modelTime.getDoubleValue(),
+                                value.doubleValue(), true);
+                    }
+                    i++;
+                }
                 return super.postfire();
             }
 
@@ -268,7 +237,5 @@ public class Plot extends Event implements ConfigurableEntity {
     private Configurer _configurer;
 
     private TimedPlotter _plotter;
-
-    private DoubleToken _value;
 
 }

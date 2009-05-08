@@ -30,7 +30,7 @@ package ptolemy.domains.ptera.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
-import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.DebugListener;
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,20 +53,22 @@ public interface EventQueueDebugListener extends DebugListener {
      *  @param position The position at which the actor is inserted.
      *  @param time The time at which the actor is scheduled to fire.
      *  @param actor The actor.
-     *  @param arguments Arguments to the actor, or null.
+     *  @param arguments Arguments to the actor, which must be either an
+     *   ArrayToken or a RecordToken, or null.
      */
     public void insertActor(int position, Time time, Actor actor,
-            ArrayToken arguments);
+            Token arguments);
 
     /** Invoked when an event is inserted into the event queue.
      *
      *  @param position The position at which the event is inserted.
      *  @param time The time at which the event is scheduled to fire.
      *  @param event The event.
-     *  @param arguments Arguments to the event, or null.
+     *  @param arguments Arguments to the event, which must be either an
+     *   ArrayToken or a RecordToken, or null.
      */
     public void insertEvent(int position, Time time, Event event,
-            ArrayToken arguments);
+            Token arguments);
 
     /** Invoked when an event or actor is removed from the event queue.
      *

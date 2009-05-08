@@ -34,9 +34,9 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
 import ptolemy.actor.gui.TextEffigy;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -100,8 +100,7 @@ public class Report extends Event {
         tableau.setVisibility(Settable.EXPERT);
     }
 
-    public RefiringData fire(ArrayToken arguments)
-        throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         Mode choice = (Mode) mode.getChosenValue();

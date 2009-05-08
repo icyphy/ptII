@@ -30,8 +30,8 @@ package ptolemy.domains.ptera.lib;
 import java.io.File;
 
 import ptolemy.actor.gt.util.RecursiveFileFilter;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -97,7 +97,7 @@ public class ListDirectory extends Event {
         variable.setPersistent(false);
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         File[] listedFiles = RecursiveFileFilter.listFiles(directory.asFile(),
                 ((BooleanToken) recursive.getToken()).booleanValue(),
                 ((BooleanToken) includeFiles.getToken()).booleanValue(),

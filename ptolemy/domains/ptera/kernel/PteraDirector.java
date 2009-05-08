@@ -52,8 +52,8 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
@@ -394,7 +394,8 @@ public class PteraDirector extends Director implements TimedDirector,
      *
      *  @param event The event scheduled to be processed.
      *  @param time The scheduled time.
-     *  @param arguments The arguments to the event.
+     *  @param arguments The arguments to the event, which must be either an
+     *   ArrayToken or a RecordToken.
      *  @param triggers A list of ports and variables that triggers the event
      *   before its scheduled time is reached.
      *  @param priority The priority of the event (0 for default)
@@ -405,7 +406,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *   director does not support fireAt() precisely (it does not agree to
      *   refire this Ptera model at the requested time)
      */
-    public void fireAt(Event event, Time time, ArrayToken arguments,
+    public void fireAt(Event event, Time time, Token arguments,
             List<NamedObj> triggers, int priority, boolean reset)
             throws IllegalActionException {
         _fireAt(event, time, arguments, triggers, null, priority, reset);
@@ -762,14 +763,15 @@ public class PteraDirector extends Director implements TimedDirector,
          *
          *  @param time The model time at which the actor or event is scheduled.
          *  @param object The actor or event.
-         *  @param arguments Arguments to the event.
+         *  @param arguments Arguments to the event, which must be either an
+         *   ArrayToken or a RecordToken.
          *  @param data The refiring data for the next refire() invocation of
          *   the event that causes this method to be called, or null if none.
          *  @param priority The priority of the event (0 for default)
          *  @param reset Whether the refinement of the scheduled event should be
          *   reinitialized when the event is processed.
          */
-        public TimedEvent(Time time, Object object, ArrayToken arguments,
+        public TimedEvent(Time time, Object object, Token arguments,
                 RefiringData data, int priority, boolean reset) {
             super(time, object);
             this.arguments = arguments;
@@ -801,7 +803,7 @@ public class PteraDirector extends Director implements TimedDirector,
         }
 
         /** Arguments to the event. */
-        public ArrayToken arguments;
+        public Token arguments;
 
         /** Whether this event has been canceled. */
         public boolean canceled;
@@ -1117,7 +1119,8 @@ public class PteraDirector extends Director implements TimedDirector,
      *
      *  @param object The actor or the event.
      *  @param time The time.
-     *  @param arguments Arguments to the event.
+     *  @param arguments Arguments to the event, which must be either an
+     *   ArrayToken or a RecordToken.
      *  @param triggers A list of ports and variables that triggers the event
      *   before its scheduled time is reached.
      *  @param data The refiring data for the next refire() invocation of the
@@ -1130,7 +1133,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *   does not support fireAt() precisely (it does not agree to refire
      *   this Ptera model at the requested time).
      */
-    private void _fireAt(Object object, Time time, ArrayToken arguments,
+    private void _fireAt(Object object, Time time, Token arguments,
             List<NamedObj> triggers, RefiringData data, int priority,
             boolean reset) throws IllegalActionException {
         if (time.compareTo(getModelTime()) < 0) {
@@ -1227,12 +1230,12 @@ public class PteraDirector extends Director implements TimedDirector,
      *  @param time The time at which the event/actor is scheduled. Null if
      *   isInserted is false.
      *  @param contents The event or actor. Null if isInserted is false.
-     *  @param arguments Arguments to the event or actor. Null if isInserted is
-     *   false.
+     *  @param arguments Arguments to the event or actor, which must be either an
+     *   ArrayToken or a RecordToken. Null if isInserted is false.
      */
     private void _notifyEventQueueDebugListeners(boolean isInsert,
             boolean isCancelled, int position, Time time, Object contents,
-            ArrayToken arguments) {
+            Token arguments) {
         List<DebugListener> listeners = _debugListeners;
         if (listeners == null) {
             return;

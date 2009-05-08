@@ -27,8 +27,8 @@
 */
 package ptolemy.domains.ptera.lib;
 
-import ptolemy.data.ArrayToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptera.kernel.Event;
@@ -65,8 +65,7 @@ public class Sleep extends Event {
         sleepTime.setTypeEquals(BaseType.LONG);
     }
 
-    public RefiringData fire(ArrayToken arguments)
-            throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         try {

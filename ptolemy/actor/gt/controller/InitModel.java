@@ -28,8 +28,8 @@
 package ptolemy.actor.gt.controller;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
@@ -76,7 +76,7 @@ public class InitModel extends GTEvent {
         }
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         ModelParameter modelParameter = getModelParameter();

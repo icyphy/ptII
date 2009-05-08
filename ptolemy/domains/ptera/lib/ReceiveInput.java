@@ -43,9 +43,9 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 
 import ptolemy.actor.gui.Tableau;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -128,7 +128,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
         return newObject;
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         super.fire(arguments);
 
         Pattern keyPattern;
@@ -177,7 +177,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
         return timeAdvance.getExpression();
     }
 
-    public RefiringData refire(ArrayToken arguments, RefiringData data)
+    public RefiringData refire(Token arguments, RefiringData data)
             throws IllegalActionException {
         InputListener listener = (InputListener) data;
 

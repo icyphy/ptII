@@ -39,6 +39,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.Parameter;
@@ -275,7 +276,8 @@ public class Event extends State implements Initializable {
      *  this event, and their types must match. The actions of this event are
      *  executed.
      *
-     *  @param arguments The arguments used to process this event.
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
      *  @return A refiring data structure that contains a non-negative double
      *   number if refire() should be called after that amount of model time, or
      *   null if refire() need not be called.
@@ -283,26 +285,41 @@ public class Event extends State implements Initializable {
      *   their types do not match, the actions cannot be executed, or any
      *   expression (such as guards and arguments to the next events) cannot be
      *   evaluated.
-     *  @see #refire(ArrayToken, RefiringData)
+     *  @see #refire(Token, RefiringData)
      */
-    public RefiringData fire(ArrayToken arguments)
-            throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         _debug(new PteraDebugEvent(this, "Fire."));
         List<String> names = parameters.getParameterNames();
-        int paramCount = names == null ? 0 : names.size();
-        int argCount = arguments == null ? 0 : arguments.length();
-        if (paramCount > argCount) {
-            throw new IllegalActionException(this, "The number of arguments to "
-                    + "this event must be greater than or equal to the number "
-                    + "of declared parameters, which is " + paramCount + ".");
-        }
-
-        if (paramCount > 0) {
+        Type[] types = parameters.getParameterTypes();
+        if (arguments instanceof ArrayToken) {
+            ArrayToken array = (ArrayToken) arguments;
             int i = 0;
             for (String name : names) {
-                ((Variable) getAttribute(name)).setToken(arguments.getElement(
-                        i++));
+                Variable variable = (Variable) getAttribute(name);
+                if (i < array.length()) {
+                    Token token = array.getElement(i);
+                    variable.setToken(types[i].convert(token));
+                } else {
+                    variable.setToken((Token) null);
+                }
+                i++;
             }
+        } else if (arguments instanceof RecordToken) {
+            RecordToken record = (RecordToken) arguments;
+            int i = 0;
+            for (String name : names) {
+                Variable variable = (Variable) getAttribute(name);
+                Token token = record.get(name);
+                if (token == null) {
+                    variable.setToken((Token) null);
+                } else {
+                    variable.setToken(types[i].convert(token));
+                }
+                i++;
+            }
+        } else if (arguments != null) {
+            throw new IllegalActionException(this, "Cannot handle arguments " +
+                    "of type " + arguments.getType() + ".");
         }
 
         actions.execute();
@@ -407,7 +424,8 @@ public class Event extends State implements Initializable {
      *  this event, and their types must match. The actions of this event are
      *  executed.
      *
-     *  @param arguments The arguments used to process this event.
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
      *  @param data The refiring data structure returned by the previous fire()
      *   or refire().
      *  @return A refiring data structure that contains a non-negative double
@@ -417,9 +435,9 @@ public class Event extends State implements Initializable {
      *   their types do not match, the actions cannot be executed, or any
      *   expression (such as guards and arguments to the next events) cannot be
      *   evaluated.
-     *  @see #fire(ArrayToken)
+     *  @see #fire(Token)
      */
-    public RefiringData refire(ArrayToken arguments, RefiringData data)
+    public RefiringData refire(Token arguments, RefiringData data)
             throws IllegalActionException {
         _debug(new PteraDebugEvent(this, "Refire."));
         return null;
@@ -444,9 +462,9 @@ public class Event extends State implements Initializable {
 
     /** Schedule the next events by evaluating all scheduling relations from
      *  this event. This method uses the argument values passed to this event by
-     *  the previous invocation to {@link #fire(ArrayToken)}. If {@link
-     *  #fire(ArrayToken)} has never been called, it uses a default scope in
-     *  which no argument value has been given.
+     *  the previous invocation to {@link #fire(Token)}. If {@link #fire(Token)}
+     *  has never been called, it uses a default scope in which no argument
+     *  value has been given.
      *  <p>
      *  This method searches for all the events that are scheduled or
      *  cancelled by this event. For each scheduling relation from this event,
@@ -707,7 +725,7 @@ public class Event extends State implements Initializable {
                         .intValue();
                 boolean reset = ((BooleanToken) relation.reset.getToken())
                         .booleanValue();
-                ArrayToken edgeArguments = relation.getArguments(scope);
+                Token edgeArguments = relation.getArguments(scope);
                 director.fireAt(nextEvent, director.getModelTime().add(delay),
                         edgeArguments, relation.getTriggers(), priority, reset);
             }

@@ -48,7 +48,7 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
@@ -128,10 +128,9 @@ public class Configure extends Event {
      *   their types do not match, the actions cannot be executed, or any
      *   expression (such as guards and arguments to the next events) cannot be
      *   evaluated.
-     *  @see #refire(ArrayToken, RefiringData)
+     *  @see #refire(Token, RefiringData)
      */
-    public RefiringData fire(ArrayToken arguments)
-            throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         _executeChangeRequests();

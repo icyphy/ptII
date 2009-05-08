@@ -28,7 +28,7 @@
 package ptolemy.data.properties;
 
 import ptolemy.actor.gt.controller.GTEvent;
-import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -61,8 +61,7 @@ public class AnalyzeModel extends GTEvent {
         _analyzerWrapper = new AnalyzerAttribute(this, "_analyzerWrapper");
     }
 
-    public RefiringData fire(ArrayToken arguments)
-            throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         _debug(new PteraDebugEvent(this, "Start analysis."));

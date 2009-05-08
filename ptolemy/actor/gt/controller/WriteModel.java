@@ -30,11 +30,11 @@ package ptolemy.actor.gt.controller;
 import java.io.IOException;
 import java.io.Writer;
 
-import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.ptera.kernel.PteraErrorEvent;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
+import ptolemy.domains.ptera.kernel.PteraErrorEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -66,7 +66,7 @@ public class WriteModel extends GTEvent {
         modelFile = new FileParameter(this, "modelFile");
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         CompositeEntity model = getModelParameter().getModel();

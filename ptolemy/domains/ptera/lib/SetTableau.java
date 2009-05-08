@@ -33,9 +33,9 @@ import java.awt.Point;
 import javax.swing.JFrame;
 
 import ptolemy.actor.gui.Tableau;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -105,7 +105,7 @@ public class SetTableau extends Event {
         visible.setToken(BooleanToken.TRUE);
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         Tableau tableau = EventUtils.getTableau(this, referredTableau, null);

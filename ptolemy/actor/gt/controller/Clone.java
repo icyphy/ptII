@@ -27,8 +27,8 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -65,7 +65,7 @@ public class Clone extends GTEvent {
         useMoml.setToken(BooleanToken.FALSE);
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         ModelParameter modelParameter = getModelParameter();

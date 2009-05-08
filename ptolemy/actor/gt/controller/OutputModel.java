@@ -28,10 +28,10 @@
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
-import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.domains.fsm.modal.RefinementPort;
-import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.domains.ptera.kernel.PteraController;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -55,7 +55,7 @@ public class OutputModel extends GTEvent {
         super(container, name);
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         CompositeEntity entity = getModelParameter().getModel();
