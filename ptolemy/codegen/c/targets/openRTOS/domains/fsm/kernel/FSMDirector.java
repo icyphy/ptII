@@ -27,17 +27,15 @@
  */
 package ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel;
 
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor;
-import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.Entity;

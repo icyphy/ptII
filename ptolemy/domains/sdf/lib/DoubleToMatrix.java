@@ -28,7 +28,6 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.ScalarToken;

@@ -31,7 +31,6 @@ import java.util.List;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 

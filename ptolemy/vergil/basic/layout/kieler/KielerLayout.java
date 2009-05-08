@@ -13,9 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
-
-import javax.swing.SwingConstants;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -35,9 +32,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.PortTerminal;
-import ptolemy.vergil.kernel.attributes.TextAttribute;
 import de.cau.cs.kieler.core.KielerException;
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
 import de.cau.cs.kieler.core.alg.IKielerProgressMonitor;
@@ -57,7 +52,6 @@ import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
 import de.cau.cs.kieler.klodd.hierarchical.HierarchicalDataflowLayoutProvider;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
 import diva.canvas.TransformContext;
 import diva.graph.GraphModel;
 import diva.graph.layout.AbstractGlobalLayout;

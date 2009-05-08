@@ -30,7 +30,6 @@ package ptolemy.actor.lib.logic;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

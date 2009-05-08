@@ -37,7 +37,6 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;

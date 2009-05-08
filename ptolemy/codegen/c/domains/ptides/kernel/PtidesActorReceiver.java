@@ -1,11 +1,11 @@
 package ptolemy.codegen.c.domains.ptides.kernel;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.data.type.Type;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class PtidesActorReceiver extends ptolemy.codegen.c.actor.Receiver {

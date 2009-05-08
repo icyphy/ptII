@@ -48,7 +48,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;

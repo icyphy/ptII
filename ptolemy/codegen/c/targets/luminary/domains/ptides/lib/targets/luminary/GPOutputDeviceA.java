@@ -27,8 +27,6 @@
  */
 package ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary;
 
-import java.util.ArrayList;
-import java.util.List;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
