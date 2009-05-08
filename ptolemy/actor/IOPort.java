@@ -1036,6 +1036,7 @@ public class IOPort extends ComponentPort {
     /** Get the default width. In case there is no unique solution for a relation
      *  connected to this port the default width will be used.
      *  @return The default width.
+     *  @see #setDefaultWidth(int)
      */ 
     public int getDefaultWidth() {
         return _defaultWidth; 
@@ -2932,6 +2933,7 @@ public class IOPort extends ComponentPort {
      *  If the default width is not set, the value will be -1
      *  which corresponds to no default width.
      *  @param defaultWidth The default width.
+     *  @see #getDefaultWidth()
      */ 
     public void setDefaultWidth(int defaultWidth) {
         _defaultWidth = defaultWidth; 
