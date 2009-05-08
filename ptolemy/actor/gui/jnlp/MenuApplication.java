@@ -85,7 +85,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
  */
 public class MenuApplication {
-    /* Main method that sets user.dir as necessary.
+    /** Main method that sets user.dir as necessary.
      * @param args Arguments to be passed on to VergilApplication.main()
      */
     public static void main(final String[] args) {
