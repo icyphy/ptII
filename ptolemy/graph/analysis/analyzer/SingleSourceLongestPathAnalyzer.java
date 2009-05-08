@@ -54,6 +54,7 @@ public interface SingleSourceLongestPathAnalyzer extends GraphAnalyzer {
     /** Return the start node of this analyzer.
      *
      *  @return Return the start node of this analyzer.
+     *  @see #setStartNode(Node)
      */
     public Node getStartNode();
 
@@ -61,6 +62,7 @@ public interface SingleSourceLongestPathAnalyzer extends GraphAnalyzer {
      *  form of an ordered list.
      *
      *  @param endNode The ending node of the path.
+     *  @return The longest path from startNode to endNode.
      */
     public List path(Node endNode);
 
@@ -69,12 +71,14 @@ public interface SingleSourceLongestPathAnalyzer extends GraphAnalyzer {
      *  set using {@link #setStartNode}.
      *
      *  @param endNode The ending node of the path.
+     *  @return The length of the longest path.
      */
     public double pathLength(Node endNode);
 
     /** Set the single source node of this analyzer to the given node.
      *
      *  @param startNode The given node.
+     *  @see #getStartNode()
      */
     public void setStartNode(Node startNode);
 }
