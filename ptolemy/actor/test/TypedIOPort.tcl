@@ -215,3 +215,56 @@ test TypedIOPort-5.0 {test Listeners } {
 
     $listener getMessage
 } {./unknown/double}
+
+######################################################################
+####
+#
+test TypedIOPort-9.1.0.2 {test that AbstractReceiver.putArrayToAll() calls convert} {
+    # Note that vector length of 1 is used here. The generic
+    # director uses a mailbox receiver, which can only hold
+    # a single token, so larger vector lengths cannot be used
+    # here. Domains that support vectorized get() and send()
+    # should contain the tests for vector length > 1.
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    # sending entity
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1 false true]
+    set tInt [[java::new ptolemy.data.IntToken] getType]
+    $p1 setTypeEquals $tInt
+
+    # receiving entity
+    set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2 true false]
+    set tString [[java::new ptolemy.data.StringToken] getType]
+    $p2 setTypeEquals $tString
+
+    # connection
+    # Can't use this because it uses a plain relation.
+    # set r1 [$e0 connect $p1 $p2 R1]
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 R1]
+    $p1 link $r1
+    $p2 link $r1
+    
+    # Call preinitialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director preinitialize
+
+    # token to send
+    set token [java::new ptolemy.data.IntToken 1]
+    set token2 [java::new ptolemy.data.IntToken 42]
+
+    # token array to send.
+    set tokenArray [java::new {ptolemy.data.Token[]} {1}]
+    $tokenArray set 0 $token
+
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $p1 {send int ptolemy.data.Token[] int} 0 $tokenArray 1
+    set received [$p2 get 0 1]
+    jdkPrintArray $received
+} {{"1"}}
+
+
