@@ -90,13 +90,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         _eventAtPort = new HashMap<IOPort, PriorityQueue>();
 
     }
-
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Initialize an event queue.
-        _eventQueue = new DEListEventQueue();
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
@@ -128,9 +122,9 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         }
         List<DEEvent> eventList = new ArrayList<DEEvent>();
         eventList.add(event);
-        for (int i = _peekingIndex; i < _eventQueue.size(); i++) {
+        for (int i = _peekingIndex; (i + 1) < _eventQueue.size(); i++) {
             DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(i+1);
-            if (nextEvent.compareTo(event) == 0) {
+            if (nextEvent.hasTheSameTagAs(event) && (nextEvent.actor() == event.actor())) {
                 eventList.add(nextEvent);
             } else {
                 break;
@@ -143,14 +137,14 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  all events of the same tag destined for the same actor from the event 
      *  queue, and return the actor associated with it.
      */
-    protected Actor _getNextActorToFireForThisEvent(List<DEEvent> events) throws IllegalActionException {
+    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
         if (events.get(0) != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
             throw new IllegalActionException("The event to get is not the event pointed " +
                         "to by peeking index.");
         }
         // Assume the event queue orders by Tag and depth so all these events should be 
         // next to each other.
-        for (int i = 0; i < events.size(); i++) {
+        for (int i = 0; (_peekingIndex + i) < events.size(); i++) {
             ((DEListEventQueue)_eventQueue).take(_peekingIndex + i);
         }
         return events.get(0).actor();

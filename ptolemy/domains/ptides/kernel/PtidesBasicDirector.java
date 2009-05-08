@@ -403,6 +403,12 @@ public class PtidesBasicDirector extends DEDirector {
 
         _setIcon(_getIdleIcon(), true);
     }
+    
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        // Initialize an event queue.
+        _eventQueue = new DEListEventQueue();
+    }
 
     /** Return false if there are no more actors to be fired or the stop()
      *  method has been called.
@@ -542,7 +548,8 @@ public class PtidesBasicDirector extends DEDirector {
                     "Probably need to overwrite this method");
         }
         while (!_eventQueue.isEmpty()) {
-            if (_eventQueue.get().compareTo(eventList.get(0)) == 0) {
+            DEEvent nextEvent = _eventQueue.get();
+            if (nextEvent.hasTheSameTagAs(event) && nextEvent.actor() == event.actor()) {
                 eventList.add(_eventQueue.take());
             } else {
                 break;
@@ -745,7 +752,7 @@ public class PtidesBasicDirector extends DEDirector {
         List<DEEvent> eventsToProcess = _getAllSameTagEventsFromQueue(eventFromQueue);
         //        Actor actorToFire = executingEvents.get(0).actor();
 
-        Actor actorToFire = _getNextActorToFireForThisEvent(eventsToProcess);
+        Actor actorToFire = _getNextActorToFireForTheseEvents(eventsToProcess);
 
         Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
 
@@ -821,13 +828,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  In this baseline implementation, super._getNextActorToFire() is called.
      *  @param event One event from the list of events that are destined for the
      *  same actor and of the same tag.
-     *  @return Actor assocaited with the event.
+     *  @return Actor associated with the event.
      *  @throws IllegalActionException 
      */
-    protected Actor _getNextActorToFireForThisEvent(List<DEEvent> events) throws IllegalActionException {
-        if (events.get(0) != _eventQueue.get()) {
-            throw new IllegalActionException("The event passed in is not the top event" +
-            		"in the event queue, Probably need to overwrite this method.");
+    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
+        DEEvent eventInList = events.get(0);
+        DEEvent eventInQueue = _eventQueue.get();
+        if (!(eventInList.hasTheSameTagAs(eventInQueue) &&  (eventInQueue.actor() == eventInList.actor()))){
+            throw new IllegalActionException("The event passed in is not the top event " +
+            		"in the event queue, Probably need to overwrite this method. ");
         }
         return super._getNextActorToFire();
     }
