@@ -53,6 +53,7 @@ JSRCS = \
 	EventQueueDebugger.java \
 	EventUtils.java \
 	ListDirectory.java \
+	Plot.java \
 	ReceiveInput.java \
 	Report.java \
 	SetTableau.java \
@@ -68,6 +69,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ListenToInput.xml \
 	ListenToStop.xml \
 	ParallelTasks.xml \
+	PlotIcon.xml \
 	ReceiveInputIcon.xml \
 	RepeatForCount.xml \
 	ReportIcon.xml \
@@ -93,6 +95,7 @@ OPTIONAL_FILES = \
 	'Configure$$Listener.class' \
 	'Configure$$Query.class' \
 	'EventUtils$$1.class' \
+	'Plot$$1.class' \
 	'ReceiveInput$$InputListener.class' \
 	'Report$$Mode$$1.class' \
 	'Report$$Mode$$2.class' \

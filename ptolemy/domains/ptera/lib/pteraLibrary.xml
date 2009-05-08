@@ -128,6 +128,8 @@
   <entity name="UserInteraction" class="ptolemy.moml.EntityLibrary">
     <entity name="Configure" class="ptolemy.domains.ptera.lib.Configure">
     </entity>
+    <entity name="Plot" class="ptolemy.domains.ptera.lib.Plot">
+    </entity>
     <entity name="ReceiveInput" class="ptolemy.domains.ptera.lib.ReceiveInput">
     </entity>
     <entity name="Report" class="ptolemy.domains.ptera.lib.Report">

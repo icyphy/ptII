@@ -32,7 +32,6 @@ import java.util.LinkedList;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.gt.controller.GTEvent;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
@@ -43,8 +42,8 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptera.kernel.Event;
-import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.domains.ptera.kernel.PteraController;
+import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;

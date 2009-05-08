@@ -1,4 +1,4 @@
-/*
+/* An event to display a dialog for the user to input parameter values.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
 //// Configure
 
 /**
-
+ An event to display a dialog for the user to input parameter values.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -73,11 +73,21 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Configure extends Event {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public Configure(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -89,6 +99,15 @@ public class Configure extends Event {
         }
     }
 
+    /** Clone the state into the specified workspace. This calls the
+     *  base class and then sets the attribute and port public members
+     *  to refer to the attributes and ports of the new state.
+     *
+     *  @param workspace The workspace for the new event.
+     *  @return A new event.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Configure newObject = (Configure) super.clone(workspace);
         newObject._ignoredParameters = new HashSet<String>(_ignoredParameters);
@@ -96,6 +115,21 @@ public class Configure extends Event {
         return newObject;
     }
 
+    /** Process this event with the given arguments. The number of arguments
+     *  provided must be equal to the number of formal parameters defined for
+     *  this event, and their types must match. The actions of this event are
+     *  executed.
+     *
+     *  @param arguments The arguments used to process this event.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If the number of the arguments or
+     *   their types do not match, the actions cannot be executed, or any
+     *   expression (such as guards and arguments to the next events) cannot be
+     *   evaluated.
+     *  @see #refire(ArrayToken, RefiringData)
+     */
     public RefiringData fire(ArrayToken arguments)
             throws IllegalActionException {
         RefiringData data = super.fire(arguments);
@@ -167,6 +201,15 @@ public class Configure extends Event {
         return data;
     }
 
+    /** Begin execution of the actor.  This is invoked exactly once
+     *  after the preinitialization phase.  Since type resolution is done
+     *  in the preinitialization phase, along with topology changes that
+     *  may be requested by higher-order function actors, an actor
+     *  can produce output data and schedule events in the initialize()
+     *  method.
+     *
+     *  @exception IllegalActionException If execution is not permitted.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         List<Settable> parameters = attributeList(Settable.class);
@@ -178,6 +221,14 @@ public class Configure extends Event {
         }
     }
 
+    /** This method is invoked exactly once per execution
+     *  of an application.  None of the other action methods should be
+     *  be invoked after it.  It finalizes an execution, typically closing
+     *  files, displaying final results, etc.  When this method is called,
+     *  no further execution should occur.
+     *
+     *  @exception IllegalActionException If wrapup is not permitted.
+     */
     public void wrapup() throws IllegalActionException {
         for (Map.Entry<Settable, String> entry : _oldValues.entrySet()) {
             entry.getKey().setExpression(entry.getValue());
@@ -186,6 +237,9 @@ public class Configure extends Event {
         super.wrapup();
     }
 
+    /** Execute all the change requests on the parameters used to receive user
+     *  inputs.
+     */
     private void _executeChangeRequests() {
         List<Settable> parameters = attributeList(Settable.class);
         for (Settable parameter : parameters) {
@@ -195,18 +249,45 @@ public class Configure extends Event {
         }
     }
 
+    /** Return true if the parameter is visible in the displayed dialog for user
+     *  inputs.
+     *
+     *  @param settable The parameter.
+     *  @return true if the parameter is visible; false otherwise.
+     */
     private boolean _isVisible(Settable settable) {
         return !_ignoredParameters.contains(settable.getName()) &&
                 Configurer.isVisible(this, settable);
     }
 
+    /** Set of the names of parameters that should not be listed in the dialog
+     *  for user input.
+     */
     private Set<String> _ignoredParameters = new HashSet<String>();
 
+    /** Old values of the parameters to receive user input.
+     */
     private Map<Settable, String> _oldValues = new HashMap<Settable, String>();
 
+    //////////////////////////////////////////////////////////////////////////
+    //// Listener
+
+    /**
+     Listener for key input and property change.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class Listener extends KeyAdapter
             implements PropertyChangeListener {
 
+        /** React to a key being pressed in the dialog.
+         *
+         *  @param event The key event.
+         */
         public void keyPressed(KeyEvent event) {
             if (event.getKeyCode() == KeyEvent.VK_ENTER) {
                 event.consume();
@@ -215,6 +296,10 @@ public class Configure extends Event {
             }
         }
 
+        /** React to property change.
+         *
+         *  @param event The property change event.
+         */
         public void propertyChange(PropertyChangeEvent event) {
             String property = event.getPropertyName();
             if (_dialog.isVisible() && event.getSource() instanceof JOptionPane
@@ -235,17 +320,40 @@ public class Configure extends Event {
             }
         }
 
+        /** Construct a listener for the dialog.
+         *
+         *  @param dialog The dialog.
+         */
         Listener(JDialog dialog) {
             _dialog = dialog;
         }
 
+        /** Whether the action to close the dialog is commit (or cancel
+         *  otherwise).
+         */
         private boolean _commit = false;
 
+        /** The dialog.
+         */
         private JDialog _dialog;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// Query
+
+    /**
+     The query to receive user input.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class Query extends PtolemyQuery {
 
+        /** Construct a query.
+         */
         public Query() {
             super(null);
 
@@ -269,6 +377,8 @@ public class Configure extends Event {
             }
         }
 
+        /** Cancel the changes.
+         */
         public void cancel() {
             for (Map.Entry<String, String> entry : _oldValues.entrySet()) {
                 set(entry.getKey(), entry.getValue());
@@ -276,10 +386,19 @@ public class Configure extends Event {
             }
         }
 
+        /** React to change of a property.
+         *
+         *  @param name The name of the entry that has changed.
+         */
         public void changed(String name) {
             // Do not update the variables until the commit action is taken.
         }
 
+        /** Commit the changes.
+         *
+         *  @exception IllegalActionException If the value of some parameters\
+         *   cannot be set.
+         */
         public void commit() throws IllegalActionException {
             Set<String> names = _attributes.keySet();
             for (String name : names) {
@@ -288,10 +407,18 @@ public class Configure extends Event {
             }
         }
 
+        /** Return whether the dialog has any input entry.
+         *
+         *  @return true if the dialog has input entry.
+         */
         public boolean hasEntries() {
             return _hasEntries;
         }
 
+        /** Add a key listener to listen to the key presses in the dialog.
+         *
+         *  @param listener The key listener.
+         */
         private void _addKeyListener(KeyListener listener) {
             for (Object entry : _entries.values()) {
                 if (entry instanceof Component) {
@@ -300,8 +427,12 @@ public class Configure extends Event {
             }
         }
 
+        /** Whether the dialog has any input entry.
+         */
         private boolean _hasEntries;
 
+        /** Old values of the parameters in the query.
+         */
         private Map<String, String> _oldValues = new HashMap<String, String>();
     }
 }

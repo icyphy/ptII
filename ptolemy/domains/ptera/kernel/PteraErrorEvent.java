@@ -1,4 +1,4 @@
-/*
+/* A debug event for reporting errors in the execution of Ptera models.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -27,13 +27,12 @@
 */
 package ptolemy.domains.ptera.kernel;
 
-import ptolemy.actor.gt.controller.GTEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// PteraErrorEvent
 
 /**
-
+ A debug event for reporting errors in the execution of Ptera models.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -43,10 +42,19 @@ import ptolemy.actor.gt.controller.GTEvent;
  */
 public class PteraErrorEvent extends PteraDebugEvent {
 
-    public PteraErrorEvent(GTEvent source, String message) {
+    /** Construct a debug event with the source and a message.
+     *
+     *  @param source The source of the debug event.
+     *  @param message The message.
+     */
+    public PteraErrorEvent(Event source, String message) {
         super(source, message);
     }
 
+    /** Return the message.
+     *
+     *  @return The message.
+     */
     public String toString() {
         return "!!! " + super.toString() + " !!!";
     }
