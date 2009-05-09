@@ -1,4 +1,4 @@
-/*
+/* A parameter that represents a debugger for event debugging.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -55,7 +55,10 @@ import ptolemy.kernel.util.NamedObj;
 //// DebuggerParameter
 
 /**
-
+ A parameter that represents a debugger for event debugging. It receives
+ debugging messages from the events at the current level of the model hierarchy,
+ and also the levels below if the {@link #hierarchical} parameter is set to
+ true.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -66,6 +69,21 @@ import ptolemy.kernel.util.NamedObj;
 public class DebuggerParameter extends TableauParameter
         implements DebugListener {
 
+    /** Construct a parameter with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This parameter will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  The object is not added to the list of objects in the workspace
+     *  unless the container is null.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
+     */
     public DebuggerParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -91,6 +109,15 @@ public class DebuggerParameter extends TableauParameter
         message(((PteraDebugEvent) event).toString(container));
     }
 
+    /** Begin execution of the actor.  This is invoked exactly once
+     *  after the preinitialization phase.  Since type resolution is done
+     *  in the preinitialization phase, along with topology changes that
+     *  may be requested by higher-order function actors, an actor
+     *  can produce output data and schedule events in the initialize()
+     *  method.
+     *
+     *  @exception IllegalActionException If execution is not permitted.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _registerDebugListener(true);
@@ -127,6 +154,14 @@ public class DebuggerParameter extends TableauParameter
         }
     }
 
+    /** This method is invoked exactly once per execution
+     *  of an application.  None of the other action methods should be
+     *  be invoked after it.  It finalizes an execution, typically closing
+     *  files, displaying final results, etc.  When this method is called,
+     *  no further execution should occur.
+     *
+     *  @exception IllegalActionException If wrapup is not permitted.
+     */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _registerDebugListener(false);
@@ -137,6 +172,9 @@ public class DebuggerParameter extends TableauParameter
      */
     public Parameter columnsDisplayed;
 
+    /** Whether debugging messages from lower levels of the model hierarchy
+     *  should be displayed.
+     */
     public Parameter hierarchical;
 
     /** The vertical size of the display, in rows. This contains an integer, and
@@ -144,6 +182,12 @@ public class DebuggerParameter extends TableauParameter
      */
     public Parameter rowsDisplayed;
 
+    /** Create a tableau for displaying the debugging messages received from the
+     *  events.
+     *
+     *  @return The tableau.
+     *  @exception IllegalActionException If a text effigy cannot be created.
+     */
     private Tableau _createTableau() throws IllegalActionException {
         Effigy effigy = EventUtils.findToplevelEffigy(this);
         TextEffigy textEffigy;
@@ -173,8 +217,14 @@ public class DebuggerParameter extends TableauParameter
         return tableau;
     }
 
+    /** Register or unregister this object as a debug listener for the events.
+     *
+     *  @param register Whether the operation is registering.
+     *  @exception IllegalActionException If the refinements of an event cannot
+     *   be obtained.
+     */
     private void _registerDebugListener(boolean register)
-    throws IllegalActionException {
+            throws IllegalActionException {
         NamedObj container = getContainer();
         boolean hierarchical = ((BooleanToken) this.hierarchical.getToken())
                 .booleanValue();

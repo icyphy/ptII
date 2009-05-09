@@ -55,6 +55,10 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class EventUtils {
 
+    /** Close the given tableau when the Java GUI thread is not busy.
+     * 
+     *  @param tableau The tableau to be closed.
+     */
     public static void closeTableau(final Tableau tableau) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
