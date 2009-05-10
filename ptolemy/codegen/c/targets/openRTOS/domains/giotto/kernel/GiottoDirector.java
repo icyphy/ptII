@@ -36,11 +36,20 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+//import ptolemy.codegen.actor.Director;
 import ptolemy.actor.Director;
+import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.LimitedFiringSource;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector;
+import ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector;
+import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -84,6 +93,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         System.out.println("GiottoDirector constructor in OpenRTOS target called");
 
     }
+    
+ 
 
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
@@ -380,6 +391,16 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public String generatePreinitializeCode() throws IllegalActionException {
+        double myPeriod = _getPeriod();
+        double myWCET = _getWCET();
+        System.out.println("My period is :"+myPeriod+" and my WCET is :"+myWCET);
+        
+        if(myWCET > myPeriod)
+        {
+            throw new IllegalActionException("Unable to Schedule: Period of "+myPeriod+"(s) and WCET of "+myWCET+"(s)");
+            
+        }
+       
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
         // Declare the thread handles.
         System.out.println("generatePreinitializeCode from openRTOS giotto director called here");
@@ -877,7 +898,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                         IOPort thisport = (IOPort)myItr.next();
                         outerInput = _getPortName(thisport);
                         innerInput = outerInput.replace("_input","_EmbeddedActor_input");
-			code.append(_eol + innerInput + " = " + outerInput + ";" + _eol);   
+                     code.append(_eol+innerInput+" = "+outerInput+";"+_eol);   
                         
                     }
                     // now call the method name
@@ -1365,6 +1386,32 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
          actorFullName = actorFullName.replace(' ', '_');
          return actorFullName;
      }
+     
+     /**
+      * Generates  a set of the different frequencies seen by 
+      * this Giotto Director 
+      * @return a Hashset of integers containing the frequencies seen 
+      * by the Giotto director
+      * @throws IllegalActionException
+      */
+     private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
+         HashSet frequencies= new HashSet();
+         int i = 0;
+         for (Actor actor : (List<Actor>) 
+                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+
+             int attributueValue =_getFrequency(actor);
+             i++;
+             frequencies.add(attributueValue);
+
+             //come back and figure out how to keep a list of all 
+             //the actors at each of the frequencies so you can call the right
+             //methods from the threads
+             // frequencies.add(_getFrequency(actor));
+         }
+
+         return frequencies;
+     }
      /**
       * Generates a string representation of the port's name
       * @param port
@@ -1394,31 +1441,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
          + "_ThreadFunction";
      }
 
-     /**
-      * Generates  a set of the different frequencies seen by 
-      * this Giotto Director 
-      * @return a Hashset of integers containing the frequencies seen 
-      * by the Giotto director
-      * @throws IllegalActionException
-      */
-     private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
-         HashSet frequencies= new HashSet();
-         int i = 0;
-         for (Actor actor : (List<Actor>) 
-                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-
-             int attributueValue =_getFrequency(actor);
-             i++;
-             frequencies.add(attributueValue);
-
-             //come back and figure out how to keep a list of all 
-             //the actors at each of the frequencies so you can call the right
-             //methods from the threads
-             // frequencies.add(_getFrequency(actor));
-         }
-
-         return frequencies;
-     }
+     
      /**
       * Determines the frequeny of the actor passed in as a parameter
       * @param actor
@@ -1442,7 +1465,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
       * @throws IllegalActionException
       */
      private double _getPeriod() throws IllegalActionException {
-         Director director = ((TypedCompositeActor)
+         ptolemy.actor.Director director = ((TypedCompositeActor)
                  _director.getContainer()).getExecutiveDirector();
 
          while (director != null &&
@@ -1498,7 +1521,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
       * @return
       */
      private boolean _isTopGiottoDirector() {
-         Director director = ((TypedCompositeActor)
+         ptolemy.actor.Director director = ((TypedCompositeActor)
                  _director.getContainer()).getExecutiveDirector();
 
          if (director == null) { // true for the top most director
@@ -1519,7 +1542,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
 
 
-         Director director = ((TypedCompositeActor)
+         ptolemy.actor.Director director = ((TypedCompositeActor)
                  _director.getContainer()).getExecutiveDirector();
 
          if(director != null &&
@@ -1605,6 +1628,72 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
              return "int";
          else 
              return ttype;
+     }
+     
+     public double _getWCET()throws IllegalActionException
+     {
+         double wcet=0;
+         double actorFrequency =0;
+         double actorWCET = 0;
+         int actorCount = 0;
+         for (Actor actor : (List<Actor>) 
+                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+             actorCount++;
+             Attribute frequency = ((Entity)actor).getAttribute("frequency");
+             ptolemy.actor.Director dd =actor.getDirector();
+             Attribute WCET = ((Entity)actor).getAttribute("WCET");
+
+             if(actor instanceof CompositeActor)
+             {
+                 System.out.println("Composite Actor, if it has a director I need to ask it for it's WCET");
+                 Director dir = actor.getDirector();
+                 ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(actor.getDirector());
+                 //if(dir == null)
+                 if(dir == null)
+                 {
+                     System.out.println("no director in composite actor ");
+                 }
+                 else
+                 {
+                     double dummyWCET = df._getWCET();//dir._getWCET();
+                     System.out.println("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
+                     wcet+= dummyWCET;
+                 }
+             }else{
+
+                 if (frequency == null) {
+                     actorFrequency = 1;
+                 } else {
+                     actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+                 }
+                 if (WCET == null) {
+                     actorWCET = 0.01;
+                 } else {
+                     actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+                 }
+
+                 wcet+= actorFrequency *actorWCET;
+             }
+         }
+         System.out.println("actor count is "+actorCount);
+        
+         // now determine the WCET of the scheduler
+         HashSet frequencies=_getAllFrequencies();
+         Object myFrequencies[]=frequencies.toArray();
+         int intFrequencies[]= new int[_getAllFrequencies().size()];
+         for(int l = 0; l < _getAllFrequencies().size(); l++)
+         {
+             intFrequencies[l] = (Integer)myFrequencies[l];
+
+         }
+
+         int myLCM = _lcm(intFrequencies);
+         double schedulerWCET = 0.01;  // this value needs to be calculated
+         
+         wcet+=schedulerWCET*myLCM;
+         
+         
+         return wcet;
      }
 
 }
