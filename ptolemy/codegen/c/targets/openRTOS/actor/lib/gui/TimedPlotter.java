@@ -57,8 +57,10 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
     }
     
     public String generateFireCode() throws IllegalActionException {
-        System.out.println("Timed Plotter generateFireCode called");
-        
+        if(_debugging)
+        {
+            _debug("Timed Plotter generateFireCode called");
+        }
          StringBuffer code = new StringBuffer();
         // code.append(super.generateFireCode());
          ptolemy.actor.lib.gui.TimedPlotter actor = (ptolemy.actor.lib.gui.TimedPlotter) getComponent();
