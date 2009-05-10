@@ -113,6 +113,7 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
             wcet+= actorFrequency *actorWCET;
         
         }
+        System.out.println("sdf director has wcet of "+wcet);
         return wcet;
         
     }
