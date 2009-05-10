@@ -77,7 +77,7 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
     }
-    
+
     public double _getWCET()throws IllegalActionException
     {
         double myWCET = 0.0;
@@ -92,13 +92,15 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
             actorCount++;
             Attribute frequency = ((Entity)actor).getAttribute("frequency");
             Attribute WCET = ((Entity)actor).getAttribute("WCET");
-            
+
             if(actor instanceof CompositeActor)
             {
-                System.out.println("Composite Actor in SDFDirector, if it has a director I need to ask it for it's WCET");
+                if(_debugging){
+                    _debug("Composite Actor in SDFDirector, if it has a director I need to ask it for it's WCET");
+                }
             }
             else{
-            
+
                 if (frequency == null) {
                     actorFrequency = 1;
                 } else {
@@ -111,11 +113,14 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
                 }
             }
             wcet+= actorFrequency *actorWCET;
-        
+
         }
-        System.out.println("sdf director has wcet of "+wcet);
+        if(_debugging)
+        {
+            _debug("sdf director has wcet of "+wcet);
+        }
         return wcet;
-        
+
     }
-   
+
 }
