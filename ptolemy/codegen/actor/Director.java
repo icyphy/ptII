@@ -696,9 +696,10 @@ public class Director extends CodeGeneratorHelper {
      * @throws IllegalActionException
      */ 
     public double _getWCET()throws IllegalActionException
-    {
-        //System.out.println("getWCET from Director in codegen Actor package called");
-        
+    {              
+        if (_debugging) {
+            _debug("getWCET from Director in codegen Actor package called");
+         } 
         double wcet=0;
         double actorFrequency =0;
         double actorWCET = 0;
@@ -726,7 +727,9 @@ public class Director extends CodeGeneratorHelper {
             }
             Attribute WCET = ((Entity)actor).getAttribute("WCET");
             
-            System.out.println(actor.getFullName());
+            if (_debugging) {
+                _debug(actor.getFullName());
+             } 
             
                 if (frequency == null) {
                     actorFrequency = 1;
@@ -745,7 +748,10 @@ public class Director extends CodeGeneratorHelper {
         
         }
         
-        //System.out.println("director "+this.getFullName()+" thinks the WCET is: "+wcet);
+        if (_debugging) {
+        _debug("director "+this.getFullName()+" thinks the WCET is: "+wcet);
+        }
+        
         return wcet;
         
     }
