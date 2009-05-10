@@ -27,15 +27,19 @@
  */
 package ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel;
 
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.actor.Director;
+//import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor;
+import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.Entity;
@@ -286,6 +290,51 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
         actorFullName = actorFullName.replace('.', '_');
         actorFullName = actorFullName.replace(' ', '_');
         return actorFullName;
+    }
+    
+    public double _getWCET()throws IllegalActionException
+    {
+        double myWCET = 3.0;
+        
+        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
+        int depth = 1;
+    
+        Iterator states = controller.deepEntityList().iterator();
+        int stateCount = 0;
+        depth++;
+        Director dir;
+        double largestWCET=0.0;
+    
+        while (states.hasNext()) {
+
+            stateCount++;
+
+            depth++;
+
+            State state = (State) states.next();
+            Actor[] actors = state.getRefinement();
+            Set<Actor> actorsSet= new HashSet();;
+            if(actors!= null)
+            {
+                for (int i = 0; i < actors.length; i++) {
+                    actorsSet.add(actors[i]);
+                }
+            }
+            for(Actor actor : actorsSet){
+                ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(actor.getDirector());
+                double localWCET = df._getWCET();
+                if(localWCET > largestWCET)
+                {
+                    largestWCET = localWCET;
+                }
+
+
+            }
+        }
+        
+        return largestWCET;
+        
     }
 
 
