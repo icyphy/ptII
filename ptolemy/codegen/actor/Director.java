@@ -36,6 +36,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
@@ -44,6 +45,9 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.ComponentCodeGenerator;
 import ptolemy.codegen.kernel.PortCodeGenerator;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -680,6 +684,70 @@ public class Director extends CodeGeneratorHelper {
 
     public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
         return "";
+    }
+    
+    /**
+     * Determines the WCET seen by this director.
+     * This probably isn't the best place for this,
+     * since there are target dependent things here, 
+     * however I'm not sure where else to put it.
+     * This should only be called by a Giotto director
+     * @return
+     * @throws IllegalActionException
+     */ 
+    public double _getWCET()throws IllegalActionException
+    {
+        System.out.println("getWCET from Director in codegen Actor package called");
+        
+        double wcet=0;
+        double actorFrequency =0;
+        double actorWCET = 0;
+        int actorCount = 0;
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) this._director.getContainer()).deepEntityList()) {
+            Attribute frequency = ((Entity)actor).getAttribute("frequency");
+            ptolemy.actor.Director dd =actor.getDirector();
+            if(dd.getClassName().contains("FSM"))
+            {
+                ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
+                return fsmDir._getWCET();
+                
+            }
+            if(dd.getClassName().contains("SDF"))
+            {
+                ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector sdfDir = new ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector((ptolemy.domains.sdf.kernel.SDFDirector)this._director);
+                return sdfDir._getWCET();
+            }
+            if(dd.getClassName().contains("Giotto"))
+            {
+                ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
+                return giottoDir._getWCET();
+                
+            }
+            Attribute WCET = ((Entity)actor).getAttribute("WCET");
+            
+            System.out.println(actor.getFullName());
+            
+                if (frequency == null) {
+                    actorFrequency = 1;
+                } else {
+                    actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+                }
+                if (WCET == null) {
+                    actorWCET = 0.01;
+                } else {
+                    actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+                }
+           
+            wcet+= actorFrequency *actorWCET;
+            
+        
+        
+        }
+        
+        System.out.println("director "+this.getFullName()+" thinks the WCET is: "+wcet);
+        return wcet;
+        
     }
 
 }
