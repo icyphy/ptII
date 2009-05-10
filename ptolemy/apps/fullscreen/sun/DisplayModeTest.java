@@ -1,3 +1,5 @@
+package ptolemy.apps.fullscreen.sun;
+
 /**
  * This test generates a table of all available display modes, enters
  * full-screen mode, if available, and allows you to change the display mode.

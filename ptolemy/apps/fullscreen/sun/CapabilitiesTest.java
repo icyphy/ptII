@@ -1,3 +1,5 @@
+package ptolemy.apps.fullscreen.sun;
+
 /**
  * This test shows the different buffer capabilities for each
  * GraphicsConfiguration on each GraphicsDevice.

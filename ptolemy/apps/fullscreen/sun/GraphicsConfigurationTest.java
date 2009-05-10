@@ -1,3 +1,5 @@
+package ptolemy.apps.fullscreen.sun;
+
 // Print information about all of the GraphicsConfigurations
 // for all of the devices.
 import java.awt.*;
