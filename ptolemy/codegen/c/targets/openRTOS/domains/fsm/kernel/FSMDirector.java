@@ -332,7 +332,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
 
             }
         }
-        
+        System.out.println("fsm director has wcet of "+largestWCET);
         return largestWCET;
         
     }
