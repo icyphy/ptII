@@ -90,7 +90,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
         super(giottoDirector);
-        System.out.println("GiottoDirector constructor in OpenRTOS target called");
+        //System.out.println("GiottoDirector constructor in OpenRTOS target called");
 
     }
     
@@ -120,7 +120,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     /// this is my second hack at this method. Hopefully hit generates what we expect kindof
     public String generateFireFunctionCode() throws IllegalActionException {
-        System.out.println("generateFireFunctionCode called from OpenRTOS giotto director***************");
+        //System.out.println("generateFireFunctionCode called from OpenRTOS giotto director***************");
         StringBuffer code = new StringBuffer(" ");//super.generateFireFunctionCode());
 
         return code.toString();
@@ -132,7 +132,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public Set getHeaderFiles()throws IllegalActionException{
-        System.out.println("generateheader files openRTOS giotto director called here");
+        //System.out.println("generateheader files openRTOS giotto director called here");
 
         HashSet files = new HashSet();
         files.add("<stdio.h>");
@@ -141,7 +141,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public String generateInitializeCode() throws IllegalActionException {
-        System.out.println("generateInitializeCode from openRTOS giotto director called here");
+        //System.out.println("generateInitializeCode from openRTOS giotto director called here");
 
         StringBuffer code = new StringBuffer();
         // to call the c codeblocks in *.c
@@ -223,7 +223,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
         code.append(super.generateInitializeCode());
 
-        System.out.println("about to return:"+_eol+processCode(code.toString()));
+       // System.out.println("about to return:"+_eol+processCode(code.toString()));
         return processCode(code.toString());   
 
     }
@@ -234,7 +234,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public String generateMainLoop() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        System.out.println("generate main loop from openRTOS giotto director called here");
+        //System.out.println("generate main loop from openRTOS giotto director called here");
 
         HashSet frequencies= new HashSet();
         int  attributueValue;
@@ -271,7 +271,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public String generateMyThreads()throws IllegalActionException{
-        System.out.println("generateMyThreads called");
+       // System.out.println("generateMyThreads called");
         StringBuffer code = new StringBuffer();
         ArrayList args1 = new ArrayList();
 
@@ -377,7 +377,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public String generatePostFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        System.out.println("generatePostFireCode from openRTOS giotto director called here");
+        //System.out.println("generatePostFireCode from openRTOS giotto director called here");
 
 
         for (Actor actor : (List<Actor>) 
@@ -403,7 +403,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
        
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
         // Declare the thread handles.
-        System.out.println("generatePreinitializeCode from openRTOS giotto director called here");
+        //System.out.println("generatePreinitializeCode from openRTOS giotto director called here");
 
 
         if(_isTopGiottoDirector())
@@ -516,7 +516,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      * @throws IllegalActionException
      */
     public String generateSchedulerThread(String period) throws IllegalActionException{
-        System.out.println("genereateSchedulerThread called");
+        //System.out.println("genereateSchedulerThread called");
         StringBuffer code = new StringBuffer();
         ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
         int outerActorFrequency = 1;
@@ -627,7 +627,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
     throws IllegalActionException {
-        System.out.println("//generate transferInputsCode inside OpenRTOS Giotto director called.");
+        //System.out.println("//generate transferInputsCode inside OpenRTOS Giotto director called.");
         code.append("//generate transferInputsCode inside OpenRTOS Giotto director called."+_eol);
         //super.generateTransferInputsCode(inputPort, code);
 
@@ -635,7 +635,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
     throws IllegalActionException {
-        System.out.println("//generate transferOutputsCode inside OpenRTOS Giotto director called.");
+        //System.out.println("//generate transferOutputsCode inside OpenRTOS Giotto director called.");
         code.append(_eol+"//generate transferOutputsCode inside OpenRTOS Giotto director called."+_eol);
         //super.generateTransferOutputsCode(outputPort, code);
 
@@ -706,7 +706,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     protected String _generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
         //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
-        System.out.println("generateFireCode from openRTOS giotto director called here");
+        //System.out.println("generateFireCode from openRTOS giotto director called here");
         code.append("//Beginning of generateFireCode inside OpenRTOS GiottoDirector***************");
         //code.append("scheduler()");
         if(!_isTopDirectorFSM()){
@@ -737,7 +737,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     protected String _generateInputVariableDeclaration()
     throws IllegalActionException {
-        System.out.println("_generateInputVariableDeclaration called form OpenRTOS Giotto Director");
+        //System.out.println("_generateInputVariableDeclaration called form OpenRTOS Giotto Director");
         boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
                 .getToken()).booleanValue();
 
@@ -781,7 +781,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     protected String _generateOutputVariableDeclaration()
     throws IllegalActionException {
-        System.out.println("_gneerateOutputVariableDeclaration called form OpenRTOS Giotto Director");
+        //System.out.println("_gneerateOutputVariableDeclaration called form OpenRTOS Giotto Director");
         StringBuffer code = new StringBuffer();
 
         Iterator outputPorts = ((Actor) getComponent()).outputPortList()
@@ -819,7 +819,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     private String _generateActorsCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generateActors Code has been called");
+        //System.out.println("generateActors Code has been called");
 
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
@@ -827,13 +827,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
             String actorFullName = _getActorName(actor);    
-            System.out.println("I have an actor named "+actorFullName+" going to generate fireCode for it now.");
+            //System.out.println("I have an actor named "+actorFullName+" going to generate fireCode for it now.");
 
             code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
                     + _eol);
 
             if(actor instanceof CompositeActor) {
-                System.out.println("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
+                //System.out.println("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
                 if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")){
                     code.append(_eol+"//EmbeddedCActor"+_eol);
                     List<IOPort> myInputs = actor.inputPortList();
@@ -861,24 +861,24 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                             //tempp is source
                             String channelOffset [] = {"0","0"};
 
-                            System.out.println("the sender port is named "+tempp.getFullName()+" and the reciever is "+port.getFullName());
+                            //System.out.println("the sender port is named "+tempp.getFullName()+" and the reciever is "+port.getFullName());
                             myHelper = (CodeGeneratorHelper)this._getHelper(tempp.getContainer());
                             // temp+= _generateTypeConvertFireCode(false)+_eol;
                             channelOffset[0] = Integer.valueOf(i).toString();
-                            System.out.println("channel offset is "+channelOffset[0]);
+                            //System.out.println("channel offset is "+channelOffset[0]);
                             srcReference = this.getDriverReference((TypedIOPort)tempp,channelOffset,false,true,myHelper);
-                            System.out.println("after first call to getReference");
+                            //System.out.println("after first call to getReference");
 
                             myHelper = (CodeGeneratorHelper)_getHelper(actor);
                             channelOffset[0] = Integer.valueOf(j).toString();
-                            System.out.println("channel offset is "+channelOffset[0]);
+                            //System.out.println("channel offset is "+channelOffset[0]);
                             sinkReference = this.getReference((TypedIOPort)port,channelOffset,false,true,myHelper);
-                            System.out.println("after second call to getReference");
+                            //System.out.println("after second call to getReference");
                             j++;
 
                             // temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
-                            System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+tempp.getDisplayName());
-                            System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+                            //System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+tempp.getDisplayName());
+                            //System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
 
                             ArrayList args = new ArrayList();    
                             args.add(sinkReference);
@@ -908,7 +908,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 } else if(!(actor.getDirector().getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector")){
                     //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
                     List<IOPort> myOutputs = actor.outputPortList();
-                    System.out.println("I have "+myOutputs.size()+" port(s) to send info to");
+                    //System.out.println("I have "+myOutputs.size()+" port(s) to send info to");
                     Iterator myItr = myOutputs.iterator();
                     IOPort port;
                     CodeGeneratorHelper myHelper;
@@ -934,24 +934,24 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                             // System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
                             String channelOffset [] = {"0","0"};
 
-                            System.out.println("the sender port is named "+tempp.getFullName()+" and the reciever is "+port.getFullName());
+                            //System.out.println("the sender port is named "+tempp.getFullName()+" and the reciever is "+port.getFullName());
                             myHelper = (CodeGeneratorHelper)this._getHelper(tempp.getContainer());
                             // temp+= _generateTypeConvertFireCode(false)+_eol;
                             channelOffset[0] = Integer.valueOf(i).toString();
-                            System.out.println("channel offset is "+channelOffset[0]);
+                            //System.out.println("channel offset is "+channelOffset[0]);
                             srcReference = this.getReference((TypedIOPort)tempp,channelOffset,false,true,myHelper);
-                            System.out.println("after first call to getReference");
+                            //System.out.println("after first call to getReference");
 
                             myHelper = (CodeGeneratorHelper)_getHelper(actor);
                             channelOffset[0] = Integer.valueOf(j).toString();
-                            System.out.println("channel offset is "+channelOffset[0]);
+                            //System.out.println("channel offset is "+channelOffset[0]);
                             sinkReference = this.getReference((TypedIOPort)port,channelOffset,false,true,myHelper);
-                            System.out.println("after second call to getReference");
+                            //System.out.println("after second call to getReference");
                             j++;
 
                             // temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
-                            System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+tempp.getDisplayName());
-                            System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+                            //System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+tempp.getDisplayName());
+                            //System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
 
                             ArrayList args = new ArrayList();    
                             args.add(sinkReference);
@@ -965,7 +965,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
 
                     code.append(_eol+actorHelper.generateFireCode());
-                    System.out.println("after calling the generateFireCode on composite actor");
+                 //   System.out.println("after calling the generateFireCode on composite actor");
                 // end if not fsm
                 }else{
                     code.append(_eol+"// in the else"+_eol);
@@ -974,7 +974,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 }
                 //end composite actor
             }else{
-                System.out.println("not composite actor");
+                //System.out.println("not composite actor");
                 code.append(_eol+"// in the else"+_eol);
                 code.append(_eol+actorHelper.generateFireCode());
 
@@ -983,7 +983,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append("}" + _eol);
         }  // end for every actor  
 
-        System.out.println("returning: "+_eol+code.toString());
+        //System.out.println("returning: "+_eol+code.toString());
         return code.toString();
 
     }
@@ -1025,14 +1025,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */ 
     String _generateDriverCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generateDriver Code has been called");
+        //System.out.println("generateDriver Code has been called");
 
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
 
 
             List inputPortList = actor.inputPortList();
-            System.out.println("this actor"+actor.getDisplayName()+" has "+inputPortList.size()+" input ports.");
+            //System.out.println("this actor"+actor.getDisplayName()+" has "+inputPortList.size()+" input ports.");
             Iterator inputPorts = inputPortList.iterator();
 
             String actorDriverCode = "";
@@ -1054,36 +1054,36 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 i = 0;  // this is a test to see if this is to be done here, if so remove the i++ from the end of the loop
                 j = 0;
                 TypedIOPort port = (TypedIOPort)inputPorts.next();
-                System.out.println("this port's name is "+port.getFullName());
+                //System.out.println("this port's name is "+port.getFullName());
                 Receiver[][] channelArray = port.getReceivers();
                 // port.
                 List<IOPort> cip = port.sourcePortList();
                 if(cip.size()>0)
                 {
-                    System.out.println("sourcePortList contains: ");
+                    //System.out.println("sourcePortList contains: ");
                     Iterator tome2 =cip.iterator();
                     while(tome2.hasNext()){
                         IOPort tempp = (IOPort)tome2.next();
-                        System.out.print(tempp.getFullName()+" ");  
+                      //  System.out.print(tempp.getFullName()+" ");  
 
                     }
-                    System.out.println(" ");
+                    //System.out.println(" ");
                 }
 
 
                 List<IOPort> connectedPorts = port.deepConnectedOutPortList();
                 List<IOPort> connectToMe = port.sourcePortList();//port.connectedPortList(); //connectedPortList();
-                System.out.println("connectToMe size is "+connectToMe.size());
+               // System.out.println("connectToMe size is "+connectToMe.size());
                 //System.out.println("before remove double connections");
 
                 Iterator tome= connectToMe.iterator();
-                System.out.println("currently connectToMe size is "+connectToMe.size());
+                //System.out.println("currently connectToMe size is "+connectToMe.size());
 
                 tome= connectToMe.iterator();
                 while(tome.hasNext())
                 {
                     IOPort tempp = (IOPort)tome.next();
-                    System.out.println("******I'm connected to I think: "+tempp.getFullName());  
+                   // System.out.println("******I'm connected to I think: "+tempp.getFullName());  
                 }
 
                 // Iterator cpIterator = connectedPorts.iterator();
@@ -1093,7 +1093,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     // FIXME: figure out the channel number for the sourcePort.
                     // if you need to transfer inputs inside
                     if(actor instanceof CompositeActor) {
-                        System.out.println("composite actor so doing stuff for that");
+                        //System.out.println("composite actor so doing stuff for that");
                         //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
                         //_generateTransferInputsCode(port, transferIn);
                         transferIn.append(("//should transfer input for this actor to from the outside to inside"+_eol));
@@ -1101,32 +1101,32 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
                     }
 
-                    System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
+                   // System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
                     String channelOffset [] = {"0","0"};
 
-                    System.out.println("the sender port is named "+sourcePort.getFullName()+" and the reciever is "+port.getFullName());
+                    //System.out.println("the sender port is named "+sourcePort.getFullName()+" and the reciever is "+port.getFullName());
                     myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
                     // temp+= _generateTypeConvertFireCode(false)+_eol;
                     channelOffset[0] = Integer.valueOf(i).toString();
-                    System.out.println("channel offset is "+channelOffset[0]);
+                    //System.out.println("channel offset is "+channelOffset[0]);
                     srcReference = this.getDriverReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
-                    System.out.println("after first call to getReference");
+                    //System.out.println("after first call to getReference");
 
                     myHelper = (CodeGeneratorHelper)_getHelper(actor);
                     channelOffset[0] = Integer.valueOf(j).toString();
-                    System.out.println("channel offset is "+channelOffset[0]);
+                    //System.out.println("channel offset is "+channelOffset[0]);
                     sinkReference = this.getReference((TypedIOPort)port,channelOffset,false,true,myHelper);
-                    System.out.println("after second call to getReference");
+                    //System.out.println("after second call to getReference");
                     j++;
 
                     //temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
-                    System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
-                    System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+                    //System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
+                    //System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
 
 
                     temp=_typeConversion(sourcePort,port);
-                    System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
-                    System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+                    //System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
+                    //System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
                     String src;
                     temp=_typeConversion(sourcePort,port);
                     if( temp .length()==0 )
@@ -1160,8 +1160,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 i++; // increment the ofset variable // not sure if this is correct since we're using iterators 
             } 
 
-            System.out.println("actorDriverCode is now:");
-            System.out.println(actorDriverCode);
+            //System.out.println("actorDriverCode is now:");
+            //System.out.println(actorDriverCode);
 
 
             ArrayList args = new ArrayList();  
@@ -1172,8 +1172,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append("}"+_eol);
         }
 
-        System.out.println("about to return :");
-        System.out.println(code.toString());
+       // System.out.println("about to return :");
+        //System.out.println(code.toString());
         return code.toString();
     }
 
@@ -1187,7 +1187,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      *  @return code that copies outputs to a port
      */ String _generateOutputDriverCode() throws IllegalActionException {
          StringBuffer code = new StringBuffer();
-         System.out.println("generateDriver Code has been called");
+         //System.out.println("generateDriver Code has been called");
          String sinkReference;
          String srcReference;
          String actorDriverCode=" ";
@@ -1237,8 +1237,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                  }
              }
 
-             System.out.println("actorDriverCode is now:");
-             System.out.println(actorDriverCode);
+             //System.out.println("actorDriverCode is now:");
+             //System.out.println(actorDriverCode);
 
 
              ArrayList args = new ArrayList();  
@@ -1247,8 +1247,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
              code.append(_generateBlockCode("driverCode", args));
          }
 
-         System.out.println("about to return :");
-         System.out.println(code.toString());
+         //System.out.println("about to return :");
+         //System.out.println(code.toString());
          return code.toString();
      }
 
@@ -1272,7 +1272,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      public String _generateTypeConvertFireCode(IOPort source,IOPort sink)
      throws IllegalActionException {
          StringBuffer code = new StringBuffer();
-         System.out.println("generateTypeConvertFireCode in OpenRTOS giotto director called");
+         //System.out.println("generateTypeConvertFireCode in OpenRTOS giotto director called");
          return code.toString();
      }
 
@@ -1283,7 +1283,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
       */
      private String _generatePortVariableDeclarations(Actor actor) throws IllegalActionException {
 
-         System.out.println("get Port Variable Declarations called");
+         //System.out.println("get Port Variable Declarations called");
          StringBuffer code = new StringBuffer();
 
          Iterator outputPorts = actor.outputPortList()
@@ -1312,7 +1312,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
              }
              else
              {
-                 System.out.println("didn't match if");
+                 //System.out.println("didn't match if");
              }
 
              // return "should define port here from CCodeGEneratorHelper";
@@ -1327,7 +1327,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
       * @throws IllegalActionException
       */
      private   ArrayList<String>[] _getActorFrequencyTable()throws IllegalActionException{
-         System.out.println("getActorFrequencyTable called");
+         //System.out.println("getActorFrequencyTable called");
 
          HashSet<Integer> allFrequncies = _getAllFrequencies();
          int frequencyCount= allFrequncies.size();
@@ -1342,7 +1342,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
              if( (Integer)theseFrequencies[it] > maxfrequency)
                  maxfrequency = (Integer)theseFrequencies[it];
-             System.out.println("fequency value: "+ theseFrequencies[it]); 
+             //System.out.println("fequency value: "+ theseFrequencies[it]); 
              it++;
          }
 
@@ -1354,12 +1354,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
          }
 
-         System.out.println("table has size "+actorNamesPerFrequency.length);
+         //System.out.println("table has size "+actorNamesPerFrequency.length);
          for (Actor actor : (List<Actor>) 
                  ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
 
              String temp = _getActorName(actor);
-             System.out.println("actor "+temp+" has frequency :"+_getFrequency(actor)+"frequency count is: "+frequencyCount);
+             //System.out.println("actor "+temp+" has frequency :"+_getFrequency(actor)+"frequency count is: "+frequencyCount);
              actorNamesPerFrequency[_getFrequency(actor)].add(temp);
 
          }    
@@ -1642,10 +1642,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
              Attribute frequency = ((Entity)actor).getAttribute("frequency");
              ptolemy.actor.Director dd =actor.getDirector();
              Attribute WCET = ((Entity)actor).getAttribute("WCET");
-
+             
              if(actor instanceof CompositeActor)
              {
-                 System.out.println("Composite Actor, if it has a director I need to ask it for it's WCET");
+                 //System.out.println("Composite Actor, if it has a director I need to ask it for it's WCET");
                  Director dir = actor.getDirector();
                  ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(actor.getDirector());
                  //if(dir == null)
@@ -1672,8 +1672,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                      actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
                  }
 
-                 wcet+= actorFrequency *actorWCET;
+                 wcet+= (actorFrequency * actorWCET);
              }
+             System.out.println("with actor "+actor.getFullName()+" wect thus far is "+wcet);
          }
          System.out.println("actor count is "+actorCount);
         
