@@ -1,3 +1,5 @@
+package ptolemy.apps.zaurus.demo.HelloPP;
+
 /* License
  *
  * Copyright 1994-2004 Sun Microsystems, Inc. All Rights Reserved.
