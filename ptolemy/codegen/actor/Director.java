@@ -697,7 +697,7 @@ public class Director extends CodeGeneratorHelper {
      */ 
     public double _getWCET()throws IllegalActionException
     {
-        System.out.println("getWCET from Director in codegen Actor package called");
+        //System.out.println("getWCET from Director in codegen Actor package called");
         
         double wcet=0;
         double actorFrequency =0;
@@ -745,7 +745,7 @@ public class Director extends CodeGeneratorHelper {
         
         }
         
-        System.out.println("director "+this.getFullName()+" thinks the WCET is: "+wcet);
+        //System.out.println("director "+this.getFullName()+" thinks the WCET is: "+wcet);
         return wcet;
         
     }
