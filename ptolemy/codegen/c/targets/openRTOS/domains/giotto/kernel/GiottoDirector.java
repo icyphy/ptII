@@ -80,7 +80,7 @@ import ptolemy.util.StringUtilities;
 public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
 
-    private static int _MAX_PRIORITY_LEVEL = 16;
+    private static int _MAX_PRIORITY_LEVEL = 254;
 
 
     /** Construct the code generator helper associated with the given
@@ -177,9 +177,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         // priority.
         if(_isTopGiottoDirector())
         {
-            args.set(2, _MAX_PRIORITY_LEVEL+1);
+            args.set(2,"tskIDLE_PRIORITY + (unsigned portCHAR)"+ _MAX_PRIORITY_LEVEL);
         }else{
-            args.set(2, _MAX_PRIORITY_LEVEL);  // non top level scheduler so give priority one lower than the highest priority scheduling thread
+            args.set(2, "tskIDLE_PRIORITY + (unsigned portCHAR)"+(_MAX_PRIORITY_LEVEL - _depthInGiottoHierarchy()));  // non top level scheduler so give priority one lower than the highest priority scheduling thread
         }
         code.append(_generateBlockCode("createTask", args));  //create the scheduler thread
 
@@ -195,7 +195,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // stack size.
             args.set(1, _getStackSize(_getActors(frequencyValue))); 
             // priority.
-            args.set(2, currentPriorityLevel); 
+            args.set(2, "tskIDLE_PRIORITY + (unsigned portCHAR)"+currentPriorityLevel); 
 
             code.append(_generateBlockCode("createTask", args)); // need to figure out how to pass the method names to fire as an argument
 
@@ -577,7 +577,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         {
         _debug("The LCM of my frequencies are "+ myLCM);
         }
-        code.append("portTickType xFrequency = (((" +period+"/"+myLCM+")/"+outerActorFrequency+")/portTICK_RATE_MS);"+_eol);
+        code.append("const portTickType xFrequency = (((" +period+"/"+myLCM+")/"+outerActorFrequency+")/portTICK_RATE_MS);"+_eol);
 
         if(_isTopGiottoDirector())
         {
@@ -1857,6 +1857,28 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
 
          return wcet;
+     }
+     
+     private int _depthInGiottoHierarchy()
+     {
+         int depth = 0;
+         ptolemy.actor.Director director = ((TypedCompositeActor)
+                 _director.getContainer()).getExecutiveDirector();
+
+         while (director != null ){
+             if(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)
+             {
+                 depth +=1;
+             }
+             director = ((TypedCompositeActor)
+                     director.getContainer()).getExecutiveDirector();
+
+         }
+         if(_debugging)
+         {
+         _debug("My depth in the Giotto hierarcy is : "+depth);
+         }
+         return depth; 
      }
 
 }
