@@ -1,0 +1,120 @@
+/* Code generator helper class associated with the GiottoDirector class.
+
+ Copyright (c) 2005-2006 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+package ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel;
+
+import java.util.*;
+
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+//import ptolemy.actor.Director;
+import ptolemy.codegen.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.LimitedFiringSource;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.ActorCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.kernel.PortCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
+import ptolemy.domains.giotto.kernel.GiottoReceiver;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
+
+
+
+////GiottoDirector
+
+/**
+ Code generator helper associated with the GiottoDirector class. This class
+ is also associated with a code generator.
+
+ @author Shanna-Shaye Forbes, Man-Kit Leung, Ben Lickly
+ @version $Id$
+ @since Ptolemy II 7.2
+ @Pt.ProposedRating Red (sssf)
+ @Pt.AcceptedRating Red (sssf)
+ */
+
+//at the moment I'm not sure exactly what should go in this specific implementation. It will be filled out as the semester progresses.
+public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirector {
+    public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
+        super(sdfDirector);
+    }
+    
+    public double _getWCET()throws IllegalActionException
+    {
+        double myWCET = 0.0;
+        // go through all my actors and get their WCET and multiply that by the firing count
+        // for now assume that each actor is fired once
+        double wcet=0;
+        double actorFrequency =0;
+        double actorWCET = 0;
+        int actorCount = 0;
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+            actorCount++;
+            Attribute frequency = ((Entity)actor).getAttribute("frequency");
+            Attribute WCET = ((Entity)actor).getAttribute("WCET");
+            
+            if(actor instanceof CompositeActor)
+            {
+                System.out.println("Composite Actor in SDFDirector, if it has a director I need to ask it for it's WCET");
+            }
+            else{
+            
+                if (frequency == null) {
+                    actorFrequency = 1;
+                } else {
+                    actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+                }
+                if (WCET == null) {
+                    actorWCET = 0.01;
+                } else {
+                    actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+                }
+            }
+            wcet+= actorFrequency *actorWCET;
+        
+        }
+        return wcet;
+        
+    }
+   
+}
