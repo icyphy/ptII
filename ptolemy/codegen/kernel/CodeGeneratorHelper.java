@@ -346,6 +346,25 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         return processCode(code.toString());
     }
+    
+    /** Generate The fire function code. This method is called when generating 
+     *  code for a Giotto director. Produce the fire code but do not transfer 
+     *  generate any type conversion code that sends this actors output to another 
+     *  actor's input. The typeConversion and moving from an output to an input 
+     *  should be taken care of in a driver method not the fire method.
+     *  This works under that assumption that _generateFireCode() also generates the code 
+     *  for postfire.
+     *  If later we generate postfire code in a different method please add that method
+     *  call to this method
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+      public String generateFireFunctionCode2() throws IllegalActionException
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(_generateFireCode());
+        return processCode(code.toString());
+    }
 
     /**
      * Generate the initialize code. In this base class, return empty
