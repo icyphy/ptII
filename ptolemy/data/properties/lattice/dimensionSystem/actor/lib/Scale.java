@@ -36,6 +36,7 @@ import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -75,6 +76,18 @@ public class Scale extends AtomicActor {
         
         return super.constraintList();
     }
+    
+    
+    // Added by Charles Shelton 05/11/09:
+    // The factor parameter for the Scale actor must be added to the list of
+    // propertyable attributes in order for its property to be resolved.
+    
+    protected List<Attribute> _getPropertyableAttributes() {
+        List<Attribute> result = super._getPropertyableAttributes();
+        result.add(((ptolemy.actor.lib.Scale) getComponent()).factor);
+        return result;
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -185,13 +198,11 @@ public class Scale extends AtomicActor {
             Property unknown = _lattice.getElement("UNKNOWN");
             Property top = _lattice.getElement("TOP");
             
-            if ((outputProperty == speed && factorProperty == time) ||
-                (outputProperty == acceleration && factorProperty == unitless)) {
+            if (outputProperty == speed && factorProperty == time) {
                 return acceleration;
             }
 
-            if ((outputProperty == position && factorProperty == time) || 
-                (outputProperty == speed && factorProperty == unitless)) {
+            if (outputProperty == position && factorProperty == time) {
                 return speed;
             }
 

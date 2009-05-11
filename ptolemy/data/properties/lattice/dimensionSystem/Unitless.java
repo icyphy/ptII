@@ -55,6 +55,6 @@ public class Unitless extends LatticeProperty {
     }
 
     public boolean isAcceptableSolution() {
-        return false;
+        return true;
     }
 }
