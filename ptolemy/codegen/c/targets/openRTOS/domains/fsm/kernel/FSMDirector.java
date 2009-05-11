@@ -172,10 +172,10 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                     CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors2);
                     if(actors2.getDirector().getFullName().contains("Giotto")== false)
                     {
-                        code.append("void "+_getActorName(actors2)+"(){");
-                        code.append(actorHelper.generateFireCode());  // this was there initially and it works with SDF
+                        //code.append("void "+_getActorName(actors2)+"(){");
+                        code.append(actorHelper.generateFireFunctionCode());  // this was there initially and it works with SDF
                         code.append(actorHelper.generateTypeConvertFireCode());
-                        code.append(_eol+"}"+_eol);
+                        //code.append(_eol+"}"+_eol);
                     }
                     else
                     {
