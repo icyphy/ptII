@@ -244,6 +244,7 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.targets.openRTOS.actor.lib.gui \
 	ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel \
 	ptolemy.codegen.c.targets.openRTOS.domains.pn.kernel \
+	ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel \
 	ptolemy.codegen.c.targets.posix \
 	ptolemy.codegen.c.targets.posix.actor.lib.io \
 	ptolemy.codegen.c.targets.pret \
