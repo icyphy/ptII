@@ -379,12 +379,14 @@ public class PteraDirector extends Director implements TimedDirector,
                 actor instanceof RefinementActor) {
             Event event = (Event) ((RefinementActor) actor).getRefinedState();
             if (event != null) {
-                event.getController().director._fireAt(actor, time, null, null,
-                        null, 0, false);
+                TimedEvent timedEvent = new TimedEvent(actor, time, null, null,
+                        false);
+                event.getController().director.fireAt(timedEvent, null);
                 return time;
             }
         }
-        _fireAt(actor, time, null, null, null, 0, false);
+        TimedEvent timedEvent = new TimedEvent(actor, time, null, null, false);
+        fireAt(timedEvent, null);
         return time;
     }
 
@@ -398,7 +400,6 @@ public class PteraDirector extends Director implements TimedDirector,
      *   ArrayToken or a RecordToken.
      *  @param triggers A list of ports and variables that triggers the event
      *   before its scheduled time is reached.
-     *  @param priority The priority of the event (0 for default)
      *  @param reset Whether the refinement of the scheduled event should be
      *   reinitialized when the event is processed.
      *  @exception IllegalActionException If the operation is not
@@ -407,9 +408,61 @@ public class PteraDirector extends Director implements TimedDirector,
      *   refire this Ptera model at the requested time)
      */
     public void fireAt(Event event, Time time, Token arguments,
-            List<NamedObj> triggers, int priority, boolean reset)
+            List<NamedObj> triggers, boolean reset)
             throws IllegalActionException {
-        _fireAt(event, time, arguments, triggers, null, priority, reset);
+        fireAt(new TimedEvent(event, time, arguments, null, reset), triggers);
+    }
+
+    /** Request to process an event at the given model time. This method puts
+     *  the event in the event queue in time-stamp order. The event will be
+     *  processed later when the model time reaches the scheduled time.
+     *
+     *  @param timedEvent The TimedEvent object to be scheduled.
+     *  @param triggers A list of ports and variables that triggers the event
+     *   before its scheduled time is reached.
+     *  @exception IllegalActionException If the operation is not
+     *   permissible (e.g. the given time is in the past), or if the executive
+     *   director does not support fireAt() precisely (it does not agree to
+     *   refire this Ptera model at the requested time)
+     */
+    public void fireAt(TimedEvent timedEvent, List<NamedObj> triggers)
+            throws IllegalActionException {
+        Time topTime = null;
+        if (!_eventQueue.isEmpty()) {
+            topTime = _eventQueue.get(0).timeStamp;
+        }
+
+        _addEvent(timedEvent, true);
+
+        if (triggers != null) {
+            for (NamedObj trigger : triggers) {
+                Set<TimedEvent> eventSet = null;
+                if (trigger instanceof Port) {
+                    Port port = (Port) trigger;
+                    eventSet = _eventsListeningToPorts.get(port);
+                    if (eventSet == null) {
+                        eventSet = new LinkedHashSet<TimedEvent>();
+                        _eventsListeningToPorts.put(port, eventSet);
+                    }
+                } else if (trigger instanceof Variable) {
+                    Variable variable = (Variable) trigger;
+                    eventSet = _eventsListeningToVariables.get(variable);
+                    if (eventSet == null) {
+                        eventSet = new LinkedHashSet<TimedEvent>();
+                        _eventsListeningToVariables.put(variable, eventSet);
+                        variable.addValueListener(this);
+                    }
+                }
+                if (eventSet != null) {
+                    eventSet.add(timedEvent);
+                }
+            }
+        }
+
+        if (_delegateFireAt && (topTime == null ||
+                topTime.compareTo(timedEvent.timeStamp) > 0)) {
+            _requestFiring();
+        }
     }
 
     /** Return the Ptera controller has the same container as this director. The
@@ -705,8 +758,10 @@ public class PteraDirector extends Director implements TimedDirector,
                     Event event = (Event) timedEvent.contents;
                     try {
                         cancel(event);
-                        fireAt(event, modelTime, timedEvent.arguments, null,
-                                timedEvent.priority, timedEvent.reset);
+                        TimedEvent timedEvent2 = new TimedEvent(event,
+                                modelTime, timedEvent.arguments, null,
+                                timedEvent.reset);
+                        fireAt(timedEvent2, null);
                     } catch (IllegalActionException e) {
                         // This shouldn't happen because this event does not
                         // have any refinement.
@@ -761,22 +816,20 @@ public class PteraDirector extends Director implements TimedDirector,
 
         /** Construct a TimedEvent.
          *
-         *  @param time The model time at which the actor or event is scheduled.
          *  @param object The actor or event.
+         *  @param time The model time at which the actor or event is scheduled.
          *  @param arguments Arguments to the event, which must be either an
          *   ArrayToken or a RecordToken.
          *  @param data The refiring data for the next refire() invocation of
          *   the event that causes this method to be called, or null if none.
-         *  @param priority The priority of the event (0 for default)
          *  @param reset Whether the refinement of the scheduled event should be
          *   reinitialized when the event is processed.
          */
-        public TimedEvent(Time time, Object object, Token arguments,
-                RefiringData data, int priority, boolean reset) {
+        public TimedEvent(Object object, Time time, Token arguments,
+                RefiringData data, boolean reset) {
             super(time, object);
             this.arguments = arguments;
             this.data = data;
-            this.priority = priority;
             this.reset = reset;
             this.canceled = false;
         }
@@ -812,10 +865,6 @@ public class PteraDirector extends Director implements TimedDirector,
             null if the scheduled firing is the first one. */
         public RefiringData data;
 
-        /** The priority of the scheduled event. (0 is the default for most
-         *  events.) */
-        public int priority;
-
         /** Whether the refinement of the scheduled event should be
          *  (re)initialized when the event is processed. */
         public boolean reset;
@@ -850,16 +899,16 @@ public class PteraDirector extends Director implements TimedDirector,
                 }
             });
             for (Event event : initialEvents) {
-                TimedEvent newEvent = new TimedEvent(_currentTime, event, null,
-                        null, 0, false);
+                TimedEvent newEvent = new TimedEvent(event, _currentTime, null,
+                        null, false);
                 _addEvent(newEvent, false);
             }
             if (getController().getRefinedState() != null) {
                 _requestFiring();
             }
         } else {
-            TimedEvent newEvent = new TimedEvent(_currentTime, controller,
-                    null, null, 0, false);
+            TimedEvent newEvent = new TimedEvent(controller, _currentTime, null,
+                    null, false);
             _addEvent(newEvent, false);
             _initializedRefinements.add(controller);
             if (_isEmbedded()) {
@@ -893,34 +942,36 @@ public class PteraDirector extends Director implements TimedDirector,
      */
     private void _addEvent(List<TimedEvent> eventQueue, TimedEvent event,
             boolean enableLifo) throws IllegalActionException {
+        if (event.timeStamp.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException(this,
+                    "Attempt to schedule an event in the past:"
+                            + " Current time is " + getModelTime()
+                            + " while event time is " + event.timeStamp);
+        }
+
         ListIterator<TimedEvent> iterator = eventQueue.listIterator();
         Object contents = event.contents;
-        Time time1 = event.timeStamp;
-        int priority1 = event.priority;
+        Time time = event.timeStamp;
         boolean lifo = enableLifo && ((BooleanToken) LIFO.getToken())
                 .booleanValue();
         int position = 0;
         while (true) {
             if (iterator.hasNext()) {
                 TimedEvent next = iterator.next();
-                Time time2 = next.timeStamp;
-                int timeCompare = time1.compareTo(time2);
-                int priority2 = next.priority;
-                if (timeCompare < 0 || timeCompare == 0 && (
-                        priority1 < priority2 ||
-                        priority1 == priority2 && lifo)) {
+                int timeCompare = time.compareTo(next.timeStamp);
+                if (timeCompare < 0 || timeCompare == 0 && lifo) {
                     iterator.previous();
                     iterator.add(event);
 
-                    _notifyEventQueueDebugListeners(true, false, position,
-                            time1, contents, event.arguments);
+                    _notifyEventQueueDebugListeners(true, false, position, time,
+                            contents, event.arguments);
 
                     break;
                 }
             } else {
                 iterator.add(event);
 
-                _notifyEventQueueDebugListeners(true, false, position, time1,
+                _notifyEventQueueDebugListeners(true, false, position, time,
                         contents, event.arguments);
 
                 break;
@@ -1003,11 +1054,13 @@ public class PteraDirector extends Director implements TimedDirector,
                 data = event.refire(timedEvent.arguments, timedEvent.data);
             }
             if (data != null) {
-                _fireAt(event, getModelTime().add(data.getTimeAdvance()),
-                        timedEvent.arguments, null, data, timedEvent.priority,
+                TimedEvent timedEvent2 = new TimedEvent(event,
+                        getModelTime().add(data.getTimeAdvance()),
+                        timedEvent.arguments, data,
                         // If it is a refiring, do not reinitialize the
                         // refinement.
                         false);
+                fireAt(timedEvent2, null);
             }
 
             boolean scheduled = false;
@@ -1111,76 +1164,6 @@ public class PteraDirector extends Director implements TimedDirector,
             return true;
         } else {
             return false;
-        }
-    }
-
-    /** Schedule an actor or an event at the given time with the given arguments
-     *  (for events only).
-     *
-     *  @param object The actor or the event.
-     *  @param time The time.
-     *  @param arguments Arguments to the event, which must be either an
-     *   ArrayToken or a RecordToken.
-     *  @param triggers A list of ports and variables that triggers the event
-     *   before its scheduled time is reached.
-     *  @param data The refiring data for the next refire() invocation of the
-     *   event that causes this method to be called, or null if none.
-     *  @param priority The priority of the event (0 for default)
-     *  @param reset Whether the refinement of the scheduled event should be
-     *   (re)initialized when the event is processed.
-     *  @exception IllegalActionException If the actor or event is to be
-     *   scheduled at a time in the past, or if the executive director
-     *   does not support fireAt() precisely (it does not agree to refire
-     *   this Ptera model at the requested time).
-     */
-    private void _fireAt(Object object, Time time, Token arguments,
-            List<NamedObj> triggers, RefiringData data, int priority,
-            boolean reset) throws IllegalActionException {
-        if (time.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this,
-                    "Attempt to schedule an event in the past:"
-                            + " Current time is " + getModelTime()
-                            + " while event time is " + time);
-        }
-
-        TimedEvent timedEvent = new TimedEvent(time, object, arguments, data,
-                priority, reset);
-
-        Time topTime = null;
-        if (!_eventQueue.isEmpty()) {
-            topTime = _eventQueue.get(0).timeStamp;
-        }
-
-        _addEvent(timedEvent, true);
-
-        if (triggers != null) {
-            for (NamedObj trigger : triggers) {
-                Set<TimedEvent> eventSet = null;
-                if (trigger instanceof Port) {
-                    Port port = (Port) trigger;
-                    eventSet = _eventsListeningToPorts.get(port);
-                    if (eventSet == null) {
-                        eventSet = new LinkedHashSet<TimedEvent>();
-                        _eventsListeningToPorts.put(port, eventSet);
-                    }
-                } else if (trigger instanceof Variable) {
-                    Variable variable = (Variable) trigger;
-                    eventSet = _eventsListeningToVariables.get(variable);
-                    if (eventSet == null) {
-                        eventSet = new LinkedHashSet<TimedEvent>();
-                        _eventsListeningToVariables.put(variable, eventSet);
-                        variable.addValueListener(this);
-                    }
-                }
-                if (eventSet != null) {
-                    eventSet.add(timedEvent);
-                }
-            }
-        }
-
-        if (_delegateFireAt && (topTime == null || topTime.compareTo(time)
-                > 0)) {
-            _requestFiring();
         }
     }
 

@@ -31,11 +31,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptera.kernel;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -47,8 +52,10 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.domains.dde.kernel.NullToken;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.modal.RefinementExtender;
+import ptolemy.domains.ptera.kernel.PteraDirector.TimedEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -300,7 +307,7 @@ public class Event extends State implements Initializable {
                     Token token = array.getElement(i);
                     variable.setToken(types[i].convert(token));
                 } else {
-                    variable.setToken((Token) null);
+                    variable.setToken(NullToken.NIL);
                 }
                 i++;
             }
@@ -311,7 +318,7 @@ public class Event extends State implements Initializable {
                 Variable variable = (Variable) getAttribute(name);
                 Token token = record.get(name);
                 if (token == null) {
-                    variable.setToken((Token) null);
+                    variable.setToken(NullToken.NIL);
                 } else {
                     variable.setToken(types[i].convert(token));
                 }
@@ -483,13 +490,87 @@ public class Event extends State implements Initializable {
      *   evaluated.
      */
     public void scheduleEvents() throws IllegalActionException {
-        for (SchedulingRelation relation :
-                (List<SchedulingRelation>) preemptiveTransitionList()) {
-            _scheduleEvent(relation);
+        PteraController controller = getController();
+        if (controller == null) {
+            throw new IllegalActionException(this, "To schedule events, the " +
+                    "container must be a PteraController.");
         }
-        for (SchedulingRelation relation :
-                (List<SchedulingRelation>) nonpreemptiveTransitionList()) {
-            _scheduleEvent(relation);
+        PteraDirector director = controller.director;
+
+        List<SchedulingRelation> relations =
+            new LinkedList<SchedulingRelation>();
+        relations.addAll(preemptiveTransitionList());
+        relations.addAll(nonpreemptiveTransitionList());
+
+        // Compute the scheduled times and priorities.
+        final boolean lifo = ((BooleanToken) director.LIFO.getToken())
+                .booleanValue();
+        ParserScope scope = _getParserScope();
+        Time modelTime = getController().director.getModelTime();
+
+        final HashMap<SchedulingRelation, Time> times =
+            new HashMap<SchedulingRelation, Time>();
+        final HashMap<SchedulingRelation, Integer> priorities =
+            new HashMap<SchedulingRelation, Integer>();
+        Iterator<SchedulingRelation> relationIterator = relations.iterator();
+        while (relationIterator.hasNext()) {
+            SchedulingRelation relation = relationIterator.next();
+            if (relation.isEnabled(scope)) {
+                Time time = modelTime.add(relation.getDelay(scope));
+                int priority = ((IntToken) relation.priority.getToken())
+                        .intValue();
+                times.put(relation, time);
+                priorities.put(relation, priority);
+            } else {
+                relationIterator.remove();
+            }
+        }
+
+        Collections.sort(relations, new Comparator<SchedulingRelation>() {
+            public int compare(SchedulingRelation relation1,
+                    SchedulingRelation relation2) {
+                Time time1 = times.get(relation1);
+                Time time2 = times.get(relation2);
+                int timeCompare = time1.compareTo(time2);
+                if (timeCompare != 0) {
+                    return timeCompare;
+                } else {
+                    int priority1 = priorities.get(relation1);
+                    int priority2 = priorities.get(relation2);
+                    int priorityCompare = priority1 < priority2 ? -1 :
+                        priority1 > priority2 ? 1 : 0;
+                    if (priorityCompare != 0) {
+                        return lifo ? -priorityCompare : priorityCompare;
+                    } else {
+                        String name1 = relation1.destinationState().getName();
+                        String name2 = relation2.destinationState().getName();
+                        int eventCompare = name1.compareTo(name2);
+                        if (eventCompare != 0) {
+                            return lifo ? -eventCompare : eventCompare;
+                        } else {
+                            name1 = relation1.getName();
+                            name2 = relation2.getName();
+                            int relationCompare = name1.compareTo(name2);
+                            return lifo ? -relationCompare : relationCompare;
+                        }
+                    }
+                }
+            }
+        });
+
+        for (SchedulingRelation relation : relations) {
+            Event nextEvent = (Event) relation.destinationState();
+            if (relation.isCanceling()) {
+                director.cancel(nextEvent);
+            } else {
+                boolean reset = ((BooleanToken) relation.reset.getToken())
+                        .booleanValue();
+                Token edgeArguments = relation.getArguments(scope);
+                Time time = times.get(relation);
+                TimedEvent timedEvent = new TimedEvent(nextEvent, time,
+                        edgeArguments, null, reset);
+                director.fireAt(timedEvent, relation.getTriggers());
+            }
         }
     }
 
@@ -697,39 +778,6 @@ public class Event extends State implements Initializable {
     protected boolean _isActiveRefinement(TypedActor refinement)
             throws IllegalActionException {
         return true;
-    }
-
-    /** Schedule the event that is pointed to by the given relation, if the
-     *  guard returns true.
-     *
-     *  @param relation The scheduling relation.
-     *  @exception IllegalActionException If the scheduling relation cannot be
-     *   evaluated.
-     */
-    protected void _scheduleEvent(SchedulingRelation relation)
-            throws IllegalActionException {
-        PteraController controller = getController();
-        if (controller == null) {
-            throw new IllegalActionException(this, "To schedule events, the " +
-                    "container must be a PteraController.");
-        }
-        PteraDirector director = controller.director;
-        ParserScope scope = _getParserScope();
-        if (relation.isEnabled(scope)) {
-            double delay = relation.getDelay(scope);
-            Event nextEvent = (Event) relation.destinationState();
-            if (relation.isCanceling()) {
-                director.cancel(nextEvent);
-            } else {
-                int priority = ((IntToken) relation.priority.getToken())
-                        .intValue();
-                boolean reset = ((BooleanToken) relation.reset.getToken())
-                        .booleanValue();
-                Token edgeArguments = relation.getArguments(scope);
-                director.fireAt(nextEvent, director.getModelTime().add(delay),
-                        edgeArguments, relation.getTriggers(), priority, reset);
-            }
-        }
     }
 
     /** List of objects whose (pre)initialize() and wrapup() methods
