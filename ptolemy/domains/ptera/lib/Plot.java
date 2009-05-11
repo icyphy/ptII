@@ -1,4 +1,4 @@
-/*
+/* An event to plot the received arguments as points in a timed plotter.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -53,21 +53,40 @@ import ptolemy.kernel.util.Workspace;
 //// Plot
 
 /**
-
+ An event to plot the received arguments as points in a timed plotter. It
+ implicitly contains a {@link TimedPlotter} in a {@link Configurer}, so that it
+ can reuse the function provided by the timed plotter and the timed plotter can
+ also be configured with the configuration for this event itself. This event can
+ receive 0 to more arguments. Each argument corresponds to a distinct data set
+ displayed in the plotter (usually in a unique color). When this event is fired,
+ for each arguments that can be converted into double tokens, it plots the
+ values of those arguments in the plotter with the current model time on the
+ x-axis.
 
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 8.0
+ @see TimedPlotter
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Plot extends Event implements ConfigurableEntity {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public Plot(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -170,6 +189,14 @@ public class Plot extends Event implements ConfigurableEntity {
         return _configurer;
     }
 
+    /** Write a MoML description of the contents of this object, which
+     *  in this class are the attributes plus the ports.  This method is called
+     *  by exportMoML().  Each description is indented according to the
+     *  specified depth and terminated with a newline character.
+     *  @param output The output to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -202,40 +229,51 @@ public class Plot extends Event implements ConfigurableEntity {
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
-    private void _initializePlotter() throws IllegalActionException,
-            NameDuplicationException {
-        _configurer = new Configurer(workspace());
-        _configurer.setName("Configurer");
-        _configurer.setConfiguredObject(this);
-        addInitializable(_configurer);
-        new DEDirector(_configurer, "DEDirector");
-        _plotter = new TimedPlotter(_configurer, "Plotter") {
-            public boolean postfire() throws IllegalActionException {
-                List<String> names = Plot.this.parameters.getParameterNames();
-                Time modelTime = getController().getDirector().getModelTime();
-                int i = 0;
-                ptolemy.plot.Plot plotPlot = (ptolemy.plot.Plot) plot;
-                for (String name : names) {
-                    Variable variable = (Variable) Plot.this.getAttribute(name);
-                    Token token = variable.getToken();
-                    if (token != null) {
-                        DoubleToken value = DoubleToken.convert(token);
-                        plotPlot.addPoint(i, modelTime.getDoubleValue(),
-                                value.doubleValue(), true);
+    /** Initialize the timed plotter in the configurer.
+     *
+     *  @exception IllegalActionException If the plotter cannot be initialized.
+     */
+    private void _initializePlotter() throws IllegalActionException {
+        try {
+            _configurer = new Configurer(workspace());
+            _configurer.setName("Configurer");
+            _configurer.setConfiguredObject(this);
+            addInitializable(_configurer);
+            new DEDirector(_configurer, "DEDirector");
+            _plotter = new TimedPlotter(_configurer, "Plotter") {
+                public boolean postfire() throws IllegalActionException {
+                    List<String> names = Plot.this.parameters.getParameterNames();
+                    Time modelTime = getController().getDirector().getModelTime();
+                    int i = 0;
+                    ptolemy.plot.Plot plotPlot = (ptolemy.plot.Plot) plot;
+                    for (String name : names) {
+                        Variable variable = (Variable) Plot.this.getAttribute(name);
+                        Token token = variable.getToken();
+                        if (token != null) {
+                            DoubleToken value = DoubleToken.convert(token);
+                            plotPlot.addPoint(i, modelTime.getDoubleValue(),
+                                    value.doubleValue(), true);
+                        }
+                        i++;
                     }
-                    i++;
+                    return super.postfire();
                 }
-                return super.postfire();
-            }
 
-            public NamedObj toplevel() {
-                return Plot.this.toplevel();
-            }
-        };
+                public NamedObj toplevel() {
+                    return Plot.this.toplevel();
+                }
+            };
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(this, e, "Unexpected exception.");
+        }
     }
 
+    /** The configurer to contain the timed plotter.
+     */
     private Configurer _configurer;
 
+    /** The timed plotter used to plot the data.
+     */
     private TimedPlotter _plotter;
 
 }

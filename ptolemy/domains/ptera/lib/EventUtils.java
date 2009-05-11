@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 public class EventUtils {
 
     /** Close the given tableau when the Java GUI thread is not busy.
-     * 
+     *
      *  @param tableau The tableau to be closed.
      */
     public static void closeTableau(final Tableau tableau) {
@@ -97,6 +97,16 @@ public class EventUtils {
         return null;
     }
 
+    /** Get the tableau to be used by the event that requires a tableau in its
+     *  actions.
+     *
+     *  @param event The event.
+     *  @param referredTableau The parameter that contains the name of the
+     *   TableauParameter to be used, if not empty.
+     *  @param defaultTableau The default TableauParameter to be used.
+     *  @return The tableau.
+     *  @exception IllegalActionException If the tableau cannot be retrieved.
+     */
     public static Tableau getTableau(Event event,
             StringParameter referredTableau, TableauParameter defaultTableau)
             throws IllegalActionException {
@@ -111,6 +121,17 @@ public class EventUtils {
         return tableau;
     }
 
+    /** Get the TableauParameter to be used by the event that requires a tableau
+     *  in its actions.
+     *
+     *  @param event The event.
+     *  @param referredTableau The parameter that contains the name of the
+     *   TableauParameter to be used, if not empty.
+     *  @param defaultTableau The default TableauParameter to be used.
+     *  @return The TableauParameter.
+     *  @exception IllegalActionException If the TableauParameter cannot be
+     *   found.
+     */
     public static TableauParameter getTableauParameter(Event event,
             StringParameter referredTableau, TableauParameter defaultTableau)
             throws IllegalActionException {
@@ -129,6 +150,17 @@ public class EventUtils {
         }
     }
 
+    /** Set the TableauParameter used by the event to represent the given
+     *  tableau.
+     *
+     *  @param event The event.
+     *  @param referredTableau The parameter that contains the name of the
+     *   TableauParameter to be used, if not empty.
+     *  @param defaultTableau The default TableauParameter to be used.
+     *  @param tableau The tableau to be set in the TableauParameter.
+     *  @exception IllegalActionException If the TableauParameter cannot be
+     *   found.
+     */
     public static void setTableau(Event event, StringParameter referredTableau,
             TableauParameter defaultTableau, Tableau tableau)
             throws IllegalActionException {
