@@ -425,14 +425,17 @@ public class PteraDirector extends Director implements TimedDirector,
      *   director does not support fireAt() precisely (it does not agree to
      *   refire this Ptera model at the requested time)
      */
-    public void fireAt(TimedEvent timedEvent, List<NamedObj> triggers)
-            throws IllegalActionException {
+    public synchronized void fireAt(TimedEvent timedEvent,
+            List<NamedObj> triggers) throws IllegalActionException {
+
+        _fireAtReceived = true;
+
         Time topTime = null;
         if (!_eventQueue.isEmpty()) {
             topTime = _eventQueue.get(0).timeStamp;
         }
 
-        _addEvent(timedEvent, true);
+        _addEvent(timedEvent);
 
         if (triggers != null) {
             for (NamedObj trigger : triggers) {
@@ -799,9 +802,6 @@ public class PteraDirector extends Director implements TimedDirector,
      */
     public StringAttribute controllerName;
 
-    //////////////////////////////////////////////////////////////////////////
-    //// TimedEvent
-
     /**
      The class to encapsulate information to be stored in an entry in the event
      queue.
@@ -870,6 +870,9 @@ public class PteraDirector extends Director implements TimedDirector,
         public boolean reset;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TimedEvent
+
     /** Insert initial events into the event queue, and request firing from the
      *  director at the higher level, if any.
      *
@@ -893,15 +896,19 @@ public class PteraDirector extends Director implements TimedDirector,
                     initialEvents.add(event);
                 }
             }
+            final boolean lifo = ((BooleanToken) LIFO.getToken())
+                    .booleanValue();
             Collections.sort(initialEvents, new Comparator<Event>() {
                 public int compare(Event event1, Event event2) {
-                    return event1.getName().compareTo(event2.getName());
+                    int eventCompare = event1.getName().compareTo(
+                            event2.getName());
+                    return lifo ? -eventCompare : eventCompare;
                 }
             });
             for (Event event : initialEvents) {
                 TimedEvent newEvent = new TimedEvent(event, _currentTime, null,
                         null, false);
-                _addEvent(newEvent, false);
+                _addEvent(newEvent);
             }
             if (getController().getRefinedState() != null) {
                 _requestFiring();
@@ -909,7 +916,7 @@ public class PteraDirector extends Director implements TimedDirector,
         } else {
             TimedEvent newEvent = new TimedEvent(controller, _currentTime, null,
                     null, false);
-            _addEvent(newEvent, false);
+            _addEvent(newEvent);
             _initializedRefinements.add(controller);
             if (_isEmbedded()) {
                 _requestFiring();
@@ -936,12 +943,11 @@ public class PteraDirector extends Director implements TimedDirector,
      *
      *  @param eventQueue The event queue.
      *  @param event The event.
-     *  @param enableLifo Whether the LIFO option can be enabled in the model.
      *  @exception IllegalActionException If the LIFO parameter of this director
      *   cannot be retrieved.
      */
-    private void _addEvent(List<TimedEvent> eventQueue, TimedEvent event,
-            boolean enableLifo) throws IllegalActionException {
+    private void _addEvent(List<TimedEvent> eventQueue, TimedEvent event)
+            throws IllegalActionException {
         if (event.timeStamp.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this,
                     "Attempt to schedule an event in the past:"
@@ -952,8 +958,7 @@ public class PteraDirector extends Director implements TimedDirector,
         ListIterator<TimedEvent> iterator = eventQueue.listIterator();
         Object contents = event.contents;
         Time time = event.timeStamp;
-        boolean lifo = enableLifo && ((BooleanToken) LIFO.getToken())
-                .booleanValue();
+        boolean lifo = ((BooleanToken) LIFO.getToken()).booleanValue();
         int position = 0;
         while (true) {
             if (iterator.hasNext()) {
@@ -984,13 +989,11 @@ public class PteraDirector extends Director implements TimedDirector,
      *  an actor as its contents, add the event to the refinement queue as well.
      *
      *  @param event The event.
-     *  @param enableLifo Whether the LIFO option can be enabled in the model.
      *  @exception IllegalActionException If the LIFO parameter of this director
      *   cannot be retrieved.
      */
-    private void _addEvent(TimedEvent event, boolean enableLifo)
-            throws IllegalActionException {
-        _addEvent(_eventQueue, event, enableLifo);
+    private void _addEvent(TimedEvent event) throws IllegalActionException {
+        _addEvent(_eventQueue, event);
     }
 
     /** Clear the state of this Ptera director and the Ptera directors of the
@@ -1071,12 +1074,8 @@ public class PteraDirector extends Director implements TimedDirector,
                         if (!event._isActiveRefinement(refinement)) {
                             continue;
                         }
-                        if (timedEvent.reset ||
-                                !_initializedRefinements.contains(refinement)) {
-                            refinement.initialize();
-                            _initializedRefinements.add(refinement);
-                        }
-                        _fireActor(refinement, null);
+                        _initializeAndFireRefinement(refinement,
+                                timedEvent.reset);
                         scheduled = true;
                     }
                 }
@@ -1189,6 +1188,29 @@ public class PteraDirector extends Director implements TimedDirector,
             }
 
             return false;
+        }
+    }
+
+    /** Initialize a refinement, usually invoked when the event that the
+     *  refinement is associated to is processed, and fire the refinement if it
+     *  does not produce a fireAt() request during initialization, such as a
+     *  dataflow refinement.
+     *
+     *  @param refinement The refinement to be initialized and fired.
+     *  @param reset Whether the scheduling relation has the reset property.
+     *  @exception IllegalActionException If thrown when the refinement is
+     *   initialized or fired.
+     */
+    private synchronized void _initializeAndFireRefinement(
+            TypedActor refinement, boolean reset)
+            throws IllegalActionException {
+        _fireAtReceived = false;
+        if (reset || !_initializedRefinements.contains(refinement)) {
+            refinement.initialize();
+            _initializedRefinements.add(refinement);
+        }
+        if (!_fireAtReceived) {
+            _fireActor(refinement, null);
         }
     }
 
@@ -1311,6 +1333,11 @@ public class PteraDirector extends Director implements TimedDirector,
         to it during an execution. */
     private Map<Variable, Set<TimedEvent>> _eventsListeningToVariables =
         new HashMap<Variable, Set<TimedEvent>>();
+
+    /** Whether fireAt() has been received from a refinement when that
+     *  refinement is initialized.
+     */
+    private boolean _fireAtReceived;
 
     /** The set of refinements that have been initialized and have not returned
      *  false in their directors' postfire(). */
