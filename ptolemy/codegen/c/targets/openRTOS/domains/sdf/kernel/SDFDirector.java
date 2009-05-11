@@ -77,7 +77,8 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
     }
-
+    
+    
     public double _getWCET()throws IllegalActionException
     {
         double myWCET = 0.0;
