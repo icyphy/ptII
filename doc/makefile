@@ -243,12 +243,14 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.targets.openRTOS.actor.lib \
 	ptolemy.codegen.c.targets.openRTOS.actor.lib.gui \
 	ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel \
+	ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel \
 	ptolemy.codegen.c.targets.openRTOS.domains.pn.kernel \
 	ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel \
 	ptolemy.codegen.c.targets.posix \
 	ptolemy.codegen.c.targets.posix.actor.lib.io \
 	ptolemy.codegen.c.targets.pret \
 	ptolemy.codegen.c.targets.pret.actor.lib.gui \
+	ptolemy.codegen.c.targets.pret.domains.fsm.kernel \
 	ptolemy.codegen.c.targets.pret.domains.giotto.kernel \
 	ptolemy.codegen.c.targets.win32 \
 	ptolemy.codegen.c.targets.win32.actor.lib.io \
@@ -467,11 +469,12 @@ HYVISUAL_DOCS = \
 
 # PTIDES packages
 PTIDES_PACKAGES = \
+	ptolemy.codegen.c.targets.luminary.domains.ptides.lib \
+	ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
 	ptolemy.domains.ptides.lib.targets.luminary \
 	ptolemy.domains.ptides.platform
-
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
