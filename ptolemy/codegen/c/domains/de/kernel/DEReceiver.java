@@ -7,6 +7,10 @@ import ptolemy.kernel.util.IllegalActionException;
 /** 
  * 
  *  @author Jia Zou, Man-Kit Leung, Isaac Liu
+ *  @version $Id$
+ *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Red (jiazou)
+ *  @Pt.AcceptedRating Red (jiazou)
  *
  */
 public class DEReceiver extends ptolemy.codegen.c.actor.Receiver {
