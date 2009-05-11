@@ -21,11 +21,8 @@ public class DEReceiver extends ptolemy.codegen.c.actor.Receiver {
     }
     
     public String generateCodeForHasToken(int channel) throws IllegalActionException{
-        StringBuffer code = new StringBuffer();
-        IOPort port = ((ptolemy.domains.de.kernel.DEReceiver)getObject()).getContainer();
-        code.append("Event_Head_" + port.getContainer().getName() + "_" + port.getName() 
-                            + "[" + channel + "] != NULL");
-        return code.toString();
+        IOPort port = getReceiver().getContainer();
+        return "Event_Head_" + generateName(port) + "[" + channel + "] != NULL";
     }
     
     public String generateCodeForPut(PartialResult token) throws IllegalActionException{
