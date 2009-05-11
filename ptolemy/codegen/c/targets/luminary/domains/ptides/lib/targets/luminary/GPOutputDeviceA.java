@@ -72,7 +72,7 @@ public class GPOutputDeviceA extends OutputDevice {
         }
         
         args.add(stringToken);
-        
+
         _codeStream.clear();
         _codeStream.appendCodeBlock("actuationBlock", args);
 
