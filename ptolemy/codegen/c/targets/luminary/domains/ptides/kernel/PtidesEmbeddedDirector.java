@@ -27,19 +27,22 @@
  */
 package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////
-////PtidesEmbeddedDirector
+//// PtidesEmbeddedDirector
 
 /**
  Code generator helper associated with the PtidesDirector class.
@@ -56,7 +59,7 @@ import ptolemy.kernel.util.IllegalActionException;
  Each task executes a given function which consists of the actor initialization,
  fire and wrapup code.
 
- @author Jia Zou
+ @author Jia Zou, Isaac Liu
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (jiazou)
@@ -150,10 +153,10 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         code.append(_codeGenerator
                 .comment("Initialization code of the PtidesDirector."));
 
+        code.append(super.generateInitializeCode());
         // Don't call super.generateInitializeCode() which
         // would generate the initialize code of the actors.
 
-        code.append(_codeStream.getCodeBlock("initHWBlock"));
         code.append(_codeStream.getCodeBlock("initPDBlock"));
 
         List args = new LinkedList();
@@ -188,11 +191,6 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        // We need this second StringBuffer in order to generate
-        // the task handle declarations separate from the queue handle
-        // declarations.
-        StringBuffer bufferCode = new StringBuffer();
-
         List args = new LinkedList();
         args.add(_generateDirectorHeader());
 
@@ -200,13 +198,10 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
                 _director.getContainer()).deepEntityList().size());
 
         code.append(super.generatePreinitializeCode());
-        code.append("void initPDBlock() {" + _eol);
-        code.append(_codeStream.getCodeBlock("initPDCodeBlock"));
-        code.append("}" + _eol);
 
         code.append(_codeStream.getCodeBlock("preinitPDBlock", args));
-
-        code.append(bufferCode);
+        
+        code.append(_codeStream.getCodeBlock("initPDCodeBlock"));
 
         return code.toString();
     }
@@ -277,26 +272,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         return 1;
     }
 
-    /**
-     * Get the files needed by the code generated from this helper class.
-     * The header files required are . Because of dependencies between
-     * these header files, they are included in the order specified.
-     * @return A set of strings that are header files needed by the code
-     *  generated from this helper class.
-     * @exception IllegalActionException Not thrown in this class.
-     */
-    public Set<String> getHeaderFiles() throws IllegalActionException {
-        Set<String> files = new LinkedHashSet<String>();
-        // FIXME: replace with header files for Luminary.
-        /*
-        files.add("\"FreeRTOS.h\"");
-        files.add("\"task.h\"");
-        files.add("\"queue.h\"");
-        files.add("\"lcd_message.h\"");
-        files.add("\"semphr.h\"");
-         */
-        return files;
-    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
