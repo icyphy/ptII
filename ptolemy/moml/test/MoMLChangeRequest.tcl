@@ -277,23 +277,27 @@ test MoMLChangeRequest-1.8 {Test property deletion of a RequireVersion attribute
     }]
     set change
     $manager requestChange $change
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
+    set moml [$toplevel exportMoML]
+    # The nightly build changes the build version, so we substitute
+    regsub {VersionAttribute" value="[^"]*"} $moml {VersionAttribute" value="PtVersionElided"} moml2
+    regsub {RequireVersion" value="[^"]*"} $moml2 {RequireVersion" value="PtVersionElided"} moml3
+    list $moml3
+} {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="PtVersionElided">
     </property>
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
     </property>
-    <property name="VersionAttribute" class="ptolemy.kernel.attributes.RequireVersion" value="8.0.beta">
+    <property name="VersionAttribute" class="ptolemy.kernel.attributes.RequireVersion" value="PtVersionElided">
     </property>
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
     </entity>
 </entity>
-}
+}}
 
 
 # FIXME:  delete links
