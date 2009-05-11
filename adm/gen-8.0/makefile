@@ -1264,6 +1264,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ptera/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ptera/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/gui \
@@ -1365,6 +1367,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptides \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ptera \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr \
