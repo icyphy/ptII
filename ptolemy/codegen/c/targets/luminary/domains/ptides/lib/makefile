@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/lib
 
-DIRS =      
+DIRS =      targets
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../../..
@@ -52,8 +52,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
-	ActuatorOutputDevice.java \
-	SensorInputDevice.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

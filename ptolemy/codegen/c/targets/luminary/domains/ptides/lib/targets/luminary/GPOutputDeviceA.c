@@ -1,4 +1,6 @@
-/*** preinitBlock($zero) ***/
+/***preinitBlock***/
+int $actorSymbol(result) = 0;
+//FIXME: This line does not appear for some reason...
 /**/
 
 /*** sharedBlock ***/
@@ -9,17 +11,14 @@
 //GPIOA_Transmitter initBlock
 /**/
 
-/*** fireBlock ***/
+/*** fireBlock($actuator) ***/
+Time currentPhysicalTime;
 
-Time currentTime;
-Tag *stampedTag = &(thisEvent->tag);
-fireActuatorCount++;
-
-getRealTime(&currentTime);
+getRealTime(&currentPhysicalTime);
  
 // Compare time with tagged time, if not safe to actuate, then add events
 // and wait until time to actuate. If safe to actuate, actuate now.
-if (timeCompare(&(stampedTag->timestamp), &currentTime) == MORE) {
+if (timeCompare(currentModelTime, currentPhysicalTime) == MORE) {
 	/* This can be used for debugging to determine when events are received 
 		by an actuator
 	if (thisActuator == ACTUATORS[0]) {
@@ -28,7 +27,7 @@ if (timeCompare(&(stampedTag->timestamp), &currentTime) == MORE) {
 	 	GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, GPIO_PIN_7);
 	}*/
 	
-	setActuationInterrupt(thisEvent);
+	setActuationInterrupt($actuator);
 
 	/*	This clears the GPIO pins after debugging information has been set
 		FIXME: This is extraneous. This can be removed.
@@ -57,5 +56,9 @@ else
 //sprintf(str,"actuatorfired %d",fireActuatorCount);
 //RIT128x96x4StringDraw(str, 0,60,15);
 #endif	   
+/**/
  
+/*** actuationBlock($pin) ***/
+$actorSymbol(result) ^= $actorSymbol(result);	//Toggle pin value
+GPIOPinWrite(GPIO_PORTA_BASE,GPIO_PIN_$pin,GPIO_PIN_$pin*$actorSymbol(result));
 /**/
