@@ -434,6 +434,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
         if(_isTopGiottoDirector())
         {
+            code.append("void Warn(char * data){" +
+                    _eol+
+                    "RIT128x96x4StringDraw(data,0,0,20);" +
+            	    _eol+
+            	    "}"
+            	    );
             code.append("//speed of the processor clock"+_eol);
             code.append(" unsigned long g_ulSystemClock;"+_eol);
             code.append("portTickType gxLastWakeTime;"+_eol);
@@ -578,7 +584,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         _debug("The LCM of my frequencies are "+ myLCM);
         }
         code.append("const portTickType xFrequency = (((" +period+"/"+myLCM+")/"+outerActorFrequency+")/portTICK_RATE_MS);"+_eol);
-
+        
+        int ss0;
+        for(int k = 0; k < _getAllFrequencies().size();k++){
+            ss0 = (Integer)myFrequencies[k];
+            code.append("  char warn"+ss0+" = 0;"+_eol);
+        }
+        
         if(_isTopGiottoDirector())
         {
             code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
@@ -589,6 +601,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append("xLastWakeTime = gxLastWakeTime;"+_eol);
         }
         code.append("schedTick = 0;"+_eol);
+        //create warning variables
+        
+        
+        
         //take all the inputs for the frequency threads so that they can't start until they've gotten the go ahead from the scheduler
         code.append("//take semaphores"+_eol);
         int ss;
@@ -645,9 +661,29 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             i = (Integer)myFrequencies[k];
             code.append("if( schedTick %"+(myLCM/i)+" == 0){"+_eol);
             //take the semaphore
-            code.append("if(xSemaphoreTake($actorSymbol()_frequency"+i+"done,portMAX_DELAY) ==  pdTRUE){}"+_eol);
+            code.append("if(xSemaphoreTake($actorSymbol()_frequency"+i+"done,(portTickType)0) ==  pdFALSE){" +
+                    _eol+
+                    "warn"+i+" = 1;"+
+                    _eol+ 
+                    "Warn(\""+i+"overrun\");" +
+                    _eol+
+            	     "}"+_eol);
+           
             code.append("}"+_eol);
         }
+        
+        for(int k = 0; k < _getAllFrequencies().size();k++){
+            i = (Integer)myFrequencies[k];
+            code.append("if( schedTick %"+(myLCM/i)+" == 0){"+_eol);
+            //take the semaphore
+            code.append("if(warn"+i+" == 1){"+_eol+
+                        "xSemaphoreTake($actorSymbol()_frequency"+i+"done,portMAX_DELAY); "+_eol+
+                        _eol+"warn"+i+" = 0;"+_eol
+                        +"}");// end if warn
+            
+            code.append("}"+_eol);  // end if sched tick
+        }
+        
 
 
 
