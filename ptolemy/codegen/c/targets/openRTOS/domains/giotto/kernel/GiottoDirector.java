@@ -721,6 +721,33 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
         return variableDeclarations.toString();
     }
+/**
+ * Determines how may Giotto directors are above this director.
+ *  * @return
+ */
+    private int _depthInGiottoHierarchy()
+     {
+         int depth = 0;
+         ptolemy.actor.Director director = ((TypedCompositeActor)
+                 _director.getContainer()).getExecutiveDirector();
+    
+         while (director != null ){
+             if(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)
+             {
+                 depth +=1;
+             }
+             director = ((TypedCompositeActor)
+                     director.getContainer()).getExecutiveDirector();
+    
+         }
+         if(_debugging)
+         {
+         _debug("My depth in the Giotto hierarcy is : "+depth);
+         }
+         return depth; 
+     }
+
+
 
     private String _generateVariableDeclarations(Actor actor) {
         // TODO Auto-generated method stub
@@ -879,10 +906,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             {
                 _debug("I have an actor named "+actorFullName+" going to generate fireCode for it now.");
             }
-            code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
-                    + _eol);
+            code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"+ _eol);
 
             if(actor instanceof CompositeActor) {
+                
                 if(_debugging)
                 {
                     _debug("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
@@ -1044,27 +1071,29 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     }// end while myItr.hasNext()
 
 
-                    code.append(_eol+actorHelper.generateFireCode());
+                    code.append(_eol+actorHelper.generateFireFunctionCode2());
                     //   System.out.println("after calling the generateFireCode on composite actor");
                     // end if not fsm
                 }else{
                     code.append(_eol+"// in the else"+_eol);
-                    code.append(_eol+actorHelper.generateFireCode());   
+                    code.append(_eol+actorHelper.generateFireFunctionCode2());
+                   
 
                 }
                 //end composite actor
+                
             }else{
                 if(_debugging)
                 {
                     _debug("not composite actor");
                 }
 
-                code.append(_eol+"// in the else"+_eol);
-                code.append(_eol+actorHelper.generateFireCode());
+                code.append(_eol+"// in the last else"+_eol);
+                code.append(_eol+actorHelper.generateFireFunctionCode2());
 
             }
-
             code.append("}" + _eol);
+            
         }  // end for every actor  
 
         if(_debugging)
@@ -1392,7 +1421,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
      private void _generateTransferOutputsCode(IOPort source,StringBuffer code) throws IllegalActionException
      {
-         super.generateTransferOutputsCode(source, code);
+         //super.generateTransferOutputsCode(source, code);
 
      }
 
@@ -1857,28 +1886,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
 
          return wcet;
-     }
-     
-     private int _depthInGiottoHierarchy()
-     {
-         int depth = 0;
-         ptolemy.actor.Director director = ((TypedCompositeActor)
-                 _director.getContainer()).getExecutiveDirector();
-
-         while (director != null ){
-             if(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)
-             {
-                 depth +=1;
-             }
-             director = ((TypedCompositeActor)
-                     director.getContainer()).getExecutiveDirector();
-
-         }
-         if(_debugging)
-         {
-         _debug("My depth in the Giotto hierarcy is : "+depth);
-         }
-         return depth; 
      }
 
 }
