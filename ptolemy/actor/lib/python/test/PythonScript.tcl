@@ -79,6 +79,8 @@ class Main :
     set test2 [java::new ptolemy.actor.lib.Test $e0 Test]
     set correctValues [getParameter $test2 correctValues]
     $correctValues setExpression {{0, 2, 4, 6, 8}}
+    #set requireAllCorrectValues [getParameter $test2 requireAllCorrectValues]
+    #$requireAllCorrectValues setExpression {false}
 
     #$ramp addDebugListener [java::new ptolemy.kernel.util.StreamListener]
 
@@ -98,6 +100,7 @@ class Main :
     [java::field [java::cast ptolemy.actor.lib.Sink $test2] input] \
 	link $r2
 
+    #puts [$e0 exportMoML]
     # Run it twice
     [$e0 getManager] execute
     [$e0 getManager] execute
@@ -180,6 +183,11 @@ class Main :
 	self.actor.stop()
     self.output.broadcast(t.add(t))}
 
+    # Since we stop after 3 firings, set correctValues to match.
+    # Note that stop merely calls AtomicActor.stop(), which
+    # sets _stopRequested, so the output is broadcast anyway.
+    $correctValues setExpression {{0, 2, 4}}
+
     $recorder reset
     [$e0 getManager] execute
     $recorder getMessages
@@ -220,6 +228,7 @@ class Main :
 	self.actor.terminate()
     self.output.broadcast(t.add(t))}
 
+    
     $recorder reset
     [$e0 getManager] execute
     $recorder getMessages
