@@ -101,8 +101,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generateInitializeCode from Ptolemy Domains Giotto called");
-
+        if(_debugging){
+        _debug("generateInitializeCode from Ptolemy Domains Giotto called");
+        }
         code.append(super.generateInitializeCode());
         code.append("// should have initialize code here"+_eol);
 
@@ -154,8 +155,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   or if there is a problem getting the buffer size of a port.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        System.out.println("generatePreInitializeCode from Ptolemy Domains Giotto called");
-
+        if(_debugging)
+        {
+            _debug("generatePreInitializeCode from Ptolemy Domains Giotto called");
+        }
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
@@ -177,8 +180,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
     throws IllegalActionException {
-        System.out.println("generateTransferInputsCode from Ptolemy Domains Giotto called");
-
+        if(_debugging)
+        {
+        _debug("generateTransferInputsCode from Ptolemy Domains Giotto called");
+        }
         code.append(CodeStream.indent(_codeGenerator.comment("GiottoDirector: "
                 + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
@@ -325,8 +330,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
     throws IllegalActionException {
-        System.out.println("generateTransferOutputsCode from Ptolemy Domains Giotto called");
-
+        if(_debugging)
+        {
+        _debug("generateTransferOutputsCode from Ptolemy Domains Giotto called");
+        }
         code.append(CodeStream.indent(_codeGenerator.comment("GiottoDirector: "
                 + "Transfer tokens to the outside.")));
 
