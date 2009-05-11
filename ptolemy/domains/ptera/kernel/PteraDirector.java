@@ -53,6 +53,7 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
@@ -906,8 +907,25 @@ public class PteraDirector extends Director implements TimedDirector,
                 }
             });
             for (Event event : initialEvents) {
-                TimedEvent newEvent = new TimedEvent(event, _currentTime, null,
-                        null, false);
+                Event refinedEvent = (Event) controller.getRefinedState();
+                RecordToken arguments = null;
+                if (refinedEvent != null) {
+                    List<String> names = event.parameters.getParameterNames();
+                    if (names.size() > 0) {
+                        String[] tokenNames = new String[names.size()];
+                        Token[] tokenValues = new Token[names.size()];
+                        int i = 0;
+                        for (String name : names) {
+                            tokenNames[i] = name;
+                            tokenValues[i] = ((Variable) refinedEvent
+                                    .getAttribute(name)).getToken();
+                            i++;
+                        }
+                        arguments = new RecordToken(tokenNames, tokenValues);
+                    }
+                }
+                TimedEvent newEvent = new TimedEvent(event, _currentTime,
+                        arguments, null, false);
                 _addEvent(newEvent);
             }
             if (getController().getRefinedState() != null) {

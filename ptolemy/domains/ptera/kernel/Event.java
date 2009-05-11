@@ -295,20 +295,20 @@ public class Event extends State implements Initializable {
      *  @see #refire(Token, RefiringData)
      */
     public RefiringData fire(Token arguments) throws IllegalActionException {
-        _debug(new PteraDebugEvent(this, "Fire."));
         List<String> names = parameters.getParameterNames();
         Type[] types = parameters.getParameterTypes();
+        Token[] tokens = new Token[names.size()];
         if (arguments instanceof ArrayToken) {
             ArrayToken array = (ArrayToken) arguments;
             int i = 0;
             for (String name : names) {
                 Variable variable = (Variable) getAttribute(name);
                 if (i < array.length()) {
-                    Token token = array.getElement(i);
-                    variable.setToken(types[i].convert(token));
+                    tokens[i] = types[i].convert(array.getElement(i));
                 } else {
-                    variable.setToken(NullToken.NIL);
+                    tokens[i] = NullToken.NIL;
                 }
+                variable.setToken(tokens[i]);
                 i++;
             }
         } else if (arguments instanceof RecordToken) {
@@ -316,12 +316,13 @@ public class Event extends State implements Initializable {
             int i = 0;
             for (String name : names) {
                 Variable variable = (Variable) getAttribute(name);
-                Token token = record.get(name);
-                if (token == null) {
-                    variable.setToken(NullToken.NIL);
+                tokens[i] = record.get(name);
+                if (tokens[i] == null) {
+                    tokens[i] = NullToken.NIL;
                 } else {
-                    variable.setToken(types[i].convert(token));
+                    tokens[i] = types[i].convert(tokens[i]);
                 }
+                variable.setToken(tokens[i]);
                 i++;
             }
         } else if (arguments != null) {
@@ -329,6 +330,25 @@ public class Event extends State implements Initializable {
                     "of type " + arguments.getType() + ".");
         }
 
+        StringBuffer buffer = new StringBuffer("Fire");
+        if (names.size() == 0) {
+            buffer.append(".");
+        } else {
+            int i = 0;
+            buffer.append(" (");
+            for (String name : names) {
+                buffer.append(name);
+                buffer.append("=");
+                buffer.append(tokens[i]);
+                i++;
+                if (i < names.size()) {
+                    buffer.append(", ");
+                }
+            }
+            buffer.append(").");
+        }
+        _debug(new PteraDebugEvent(this, buffer.toString()));
+        
         actions.execute();
 
         return null;
