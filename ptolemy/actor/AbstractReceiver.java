@@ -300,8 +300,19 @@ public abstract class AbstractReceiver implements Receiver {
                     "Not enough tokens supplied.");
         }
 
-       for (int j = 0; j < receivers.length; j++ ) {
-           receivers[j].putArray(tokens, numberOfTokens);
+        // Loop through the tokens on the outer loop and
+        // the receivers on the inner loop. See 
+        // pn/kernel/test/block.xml for a test case
+        // (Bug fix proposed by Daniel Crawl.)
+        for(int i = 0; i < numberOfTokens; i++) {
+            for (int j = 0; j < receivers.length; j++ ) {
+                IOPort container = receivers[j].getContainer();
+                if (container == null) {
+                    receivers[j].put(tokens[i]);
+                } else {                    
+                    receivers[j].put(container.convert(tokens[i]));
+                }
+            }
         }
     }
 
