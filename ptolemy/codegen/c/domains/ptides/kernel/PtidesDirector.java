@@ -69,8 +69,9 @@ public class PtidesDirector extends Director
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(CodeGeneratorHelper.generateName(_director
-                .getContainer()) + "();" + _eol);
+//        code.append(CodeGeneratorHelper.generateName(_director
+//                .getContainer()) + "();" + _eol);
+        code.append("while(true);" + _eol);
 
         return code.toString();
     }
