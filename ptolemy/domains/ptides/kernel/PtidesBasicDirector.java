@@ -43,9 +43,6 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.DefaultCausalityInterface;
-import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
@@ -760,7 +757,17 @@ public class PtidesBasicDirector extends DEDirector {
 
         Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
 
-        if (executionTime.compareTo(_zero) == 0) {
+        // If the events are pure events, then they should be processed immediately, instead
+        // of waiting for some execution time to pass.
+        // FIXME: this fix does not work.
+//        boolean processNow = false;
+//        for (DEEvent event : eventsToProcess) {
+//            if (event.ioPort() == null) {
+//                processNow = true;
+//            }
+//        }
+
+        if (executionTime.compareTo(_zero) == 0 ) { //|| processNow) {
             // If execution time is zero, return the actor.
             // It will be fired now.
             setTag(timeStampOfEventFromQueue, microstepOfEventFromQueue);
@@ -830,7 +837,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  queue, and return the actor associated with it.
      *  <p>
      *  In this baseline implementation, super._getNextActorToFire() is called.
-     *  @param event One event from the list of events that are destined for the
+     *  @param events list of events that are destined for the
      *  same actor and of the same tag.
      *  @return Actor associated with the event.
      *  @throws IllegalActionException 
@@ -1280,102 +1287,8 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
     
-    /** Causality analysis that happens at the initialization phase.
-     *  The goal is to annotate each port with a minDelay parameter,
-     *  which is the offset used for safe to process analysis.
-     *  
-     *  Start from each input port that is connected to the outside of the platform
-     *  (These input ports indicate sensors and network interfaces), and traverse
-     *  the graph until we reach the output port connected to the outside of
-     *  the platform (actuators). For each input port in between, first calcualte
-     *  the real time delay - model time delay from the sensor/network to the input
-     *  port. Then for each actor, calculate the minimum model time offset by
-     *  studying the real time delay - model time delay values at each of its input
-     *  ports. Finally annotate the offset as the minDelay.
-     *  @throws IllegalActionException 
-     */
-    private boolean _calculateModelTimeOffsets() throws IllegalActionException {
-        
-        // FIXME: If there are composite actors within the top level composite actor, 
-        // does this algorithm work? 
-        // initialize all port model delays to infinity.
-        HashMap portDelays = new HashMap<IOPort, Time>();
-        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
-            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
-                portDelays.put(inputPort, new Time(this, Double.MAX_VALUE));
-            }
-            for (TypedIOPort outputPort : (List<TypedIOPort>)(actor.outputPortList())) {
-                portDelays.put(outputPort, new Time(this, Double.MAX_VALUE));
-            }
-        }
-        
-        // Now start from each sensor (input port at the top level), traverse through all
-        // ports.
-        for (TypedIOPort startPort : (List<TypedIOPort>)(((TypedCompositeActor)getContainer()).portList())) {
-            if (startPort.isInput()) {
-                // Setup a local priority queue to store all reached ports
-                HashMap localPortDelays = new HashMap<IOPort, Time>(portDelays);
-                
-                PriorityQueue distQueue = new PriorityQueue<TimedEvent>();
-                Time timeDelay = new Time(this, -_getMinDelay(startPort));
-                distQueue.add(new TimedEvent(timeDelay, startPort));
-
-                // Dijkstra's algorithm to find all shortest time delays.
-                while (!distQueue.isEmpty()) {
-                    IOPort port = (IOPort)((TimedEvent)distQueue.remove()).contents;
-                    Time prevModelTime = (Time)localPortDelays.get(port);
-                    Actor actor = (Actor)port.getContainer();
-                    if (port.isInput() && port.isOutput()){
-                        throw new IllegalActionException("the causality anlysis cannot deal with" +
-                        		"port that are both input and output");
-                    }
-                    // we do not want to traverse to the outside of the platform.
-                    if (actor != getContainer()) {
-                        if (port.isInput()) {
-                            // FIXME: do we assumes all input ports are causally related to all output ports?
-                            for (IOPort outputPort : (List<IOPort>)((Actor)port.getContainer()).outputPortList()) {
-                                DefaultCausalityInterface causalityInterface = 
-                                    (DefaultCausalityInterface) (actor.getCausalityInterface());
-                                RealDependency minimumDelay = (RealDependency) causalityInterface
-                                    .getDependency(port, outputPort);
-                                Time modelTime = prevModelTime.add(minimumDelay.value());
-                                localPortDelays.put(outputPort, modelTime);
-                            }
-                        } else { // port is an output port
-                            for (IOPort sinkPort: (List<IOPort>)port.sinkPortList() ) {
-                                // need to make sure
-                                if (((Time)localPortDelays.get(sinkPort)).compareTo(prevModelTime) > 0) {
-                                    localPortDelays.put(sinkPort, prevModelTime);                                
-                                }
-                            }
-                        }
-                    } // else do nothing
-                }
-                portDelays = localPortDelays;
-            }
-        }
-        
-        // Each port should now have a delay associated with it. Now for each actor, go
-        // through all ports and annotate the minDelay parameter.
-        return true;
-    }
-    
     private Actor _getActorFromEventList(List<DEEvent> currentEventList) {
         return currentEventList.get(0).actor();
-    }
-    
-    /** Returns the minDelay parameter
-     *  @param port
-     *  @return minDelay parameter
-     *  @throws IllegalActionException
-     */
-    private double _getMinDelay(IOPort port) throws IllegalActionException {
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
-        if (parameter != null) {
-            return ((DoubleToken)parameter.getToken()).doubleValue();
-        } else {
-            return 0.0;
-        }
     }
     
     /** check if the port is a networkPort
@@ -1446,7 +1359,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  destination actor, and execution time.
          * @param timeStamp The time stamp.
          * @param microstep The microstep.
-         * @param actor The destination actor.
+         * @param executingEvents The events to execute.
          * @param executionTime The execution time of the actor.
          */
         public DoubleTimedEvent(Time timeStamp, int microstep, Object executingEvents, Time executionTime) {

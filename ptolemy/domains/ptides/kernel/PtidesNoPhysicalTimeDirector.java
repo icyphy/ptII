@@ -243,7 +243,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     /** Index that indicates the index of the top event in the event queue that
      *  we want to process at this interation. Notice this index is reset to 0
      *  each iteration within _getNextSafeEvent().
-     *  @see _getNextSafeEvent();
+     *  @see #_getNextSafeEvent()
      */
     private int _peekingIndex;
 }
