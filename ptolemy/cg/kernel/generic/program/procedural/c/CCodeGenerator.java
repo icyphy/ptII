@@ -912,7 +912,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     protected int _executeCommands() throws IllegalActionException {
 
-        List commands = new LinkedList();
+        List<String> commands = new LinkedList<String>();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             commands.add("make -f " + _sanitizedModelName + ".mk "
                     + compileTarget.stringValue());
@@ -1025,7 +1025,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer code = new StringBuffer();
 
         CodeGeneratorAdapter compositeActorAdapter = getAdapter(getContainer());
-        Set includingFiles = compositeActorAdapter.getHeaderFiles();
+        Set<String> includingFiles = compositeActorAdapter.getHeaderFiles();
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
@@ -1237,7 +1237,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     "Problem generating substitution map from " + _model);
         }
 
-        List templateList = new LinkedList();
+        List<String> templateList = new LinkedList<String>();
 
         // 1. Look for a .mk.in file with the same name as the model.
         URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
@@ -1248,20 +1248,26 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     uriString.lastIndexOf("/") + 1)
                     + _sanitizedModelName + ".mk.in");
         }
+        
+        String generatorDirectory = generatorPackageList.stringValue().replace('.', '/');
+        
+        if (getContainer().getContainer() != null) {
+            // We have a embedded code generator
+            templateList.add("ptolemy/cg/kernel/" + generatorDirectory
+                    + (_isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
+            
+        }
+        
         // 2. If the target parameter is set, look for a makefile.
 
-     // FIXME rodiers: don't access generatorPackageList directly!
-        String generatorDirectory = generatorPackageList.stringValue().replace('.',
-                '/');
-        // FIXME rodiers: this path is not correct anymore
+        // FIXME rodiers: don't access generatorPackageList directly!
+
+        // Look for generator specific make file
         templateList.add("ptolemy/cg/kernel/" + generatorDirectory
                 + "/makefile.in");
 
         // 3. Look for the generic C makefile.in
-        // Note this code is repeated in the catch below.
-        // FIXME rodiers: this path is not correct anymore
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
-                + (_isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
+        templateList.add("ptolemy/cg/kernel/generic/procedural/c/makefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
