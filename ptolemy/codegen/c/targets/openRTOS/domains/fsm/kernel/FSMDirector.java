@@ -332,8 +332,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
 
             }
         }
-        if(_debugging)
-        {
+        if(_debugging) {
             _debug("fsm director has wcet of "+largestWCET);
         }
         return largestWCET;
