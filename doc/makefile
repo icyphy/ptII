@@ -219,12 +219,15 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.actor.lib.tutorial \
 	ptolemy.codegen.c.actor.parameters \
 	ptolemy.codegen.c.actor.sched \
+	ptolemy.codegen.c.domains.de.kernel \
+	ptolemy.codegen.c.domains.de.lib \
 	ptolemy.codegen.c.domains.fsm.kernel \
 	ptolemy.codegen.c.domains.fsm.modal \
 	ptolemy.codegen.c.domains.giotto.kernel \
 	ptolemy.codegen.c.domains.hdf.kernel \
 	ptolemy.codegen.c.domains.pn.kernel \
 	ptolemy.codegen.c.domains.ptides.kernel \
+	ptolemy.codegen.c.domains.ptides.lib \
 	ptolemy.codegen.c.domains.sdf.kernel \
 	ptolemy.codegen.c.domains.sdf.lib \
 	ptolemy.codegen.c.domains.sr.kernel \
