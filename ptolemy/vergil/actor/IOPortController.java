@@ -141,7 +141,7 @@ public class IOPortController extends AttributeController {
      *  @param port The port.
      *  @return One of {-270, -180, -90, 0, 90, 180, 270}.
      */
-    protected static int _getCardinality(Port port) {
+    public static int getCardinality(Port port) {
         // Determine whether the port has an attribute that specifies
         // which side of the icon it should be on, and whether the
         // actor has an attribute that rotates the ports. If both
@@ -240,6 +240,44 @@ public class IOPortController extends AttributeController {
         return portRotation;
     }
 
+    /** Return the direction associated with the specified angle,
+     *  which is assumed to be one of {-270, -180, -90, 0, 90, 180, 270}.
+     *  @param portRotation The angle
+     *  @return One of SwingUtilities.NORTH, SwingUtilities.EAST,
+     *  SwingUtilities.SOUTH, or SwingUtilities.WEST.
+     */
+    public static int getDirection(int portRotation) {
+    	int direction;
+    	if (portRotation == 90 || portRotation == -270) {
+    		direction = SwingConstants.NORTH;
+    	} else if (portRotation == 180 || portRotation == -180) {
+    		direction = SwingConstants.EAST;
+    	} else if (portRotation == 270 || portRotation == -90) {
+    		direction = SwingConstants.SOUTH;
+    	} else {
+    		direction = SwingConstants.WEST;
+    	}
+    	return direction;
+    }
+    
+    /** Return one of {-270, -180, -90, 0, 90, 180, 270} specifying
+     *  the orientation of a port. This depends on whether the port
+     *  is an input, output, or both, whether the port has a parameter
+     *  named "_cardinal" that specifies a cardinality, and whether the
+     *  containing actor has a parameter named "_rotatePorts" that
+     *  specifies a rotation of the ports.  In addition, if the
+     *  containing actor has a parameter named "_flipPortsHorizonal"
+     *  or "_flipPortsVertical" with value true, then any ports that end up on the left
+     *  or right (top or bottom) will be reversed.
+     *  @deprecated Use public getCardinality() method instead
+     *  @param port The port.
+     *  @return One of {-270, -180, -90, 0, 90, 180, 270}.
+     *  @see ptolemy.vergil.actor.IOPortController#getCardinality(Port)
+     */
+    protected static int _getCardinality(Port port) {
+    	return getCardinality(port);
+    }
+
     /**
      * Get the class label of the component.
      * @return the class label of the component.
@@ -250,23 +288,16 @@ public class IOPortController extends AttributeController {
 
     /** Return the direction associated with the specified angle,
      *  which is assumed to be one of {-270, -180, -90, 0, 90, 180, 270}.
+     *  @deprecated Use public getDirection() method instead
      *  @param portRotation The angle
      *  @return One of SwingUtilities.NORTH, SwingUtilities.EAST,
      *  SwingUtilities.SOUTH, or SwingUtilities.WEST.
+     *  @see ptolemy.vergil.actor.IOPortController#getDirection(int)
      */
     protected static int _getDirection(int portRotation) {
-        int direction;
-        if (portRotation == 90 || portRotation == -270) {
-            direction = SwingConstants.NORTH;
-        } else if (portRotation == 180 || portRotation == -180) {
-            direction = SwingConstants.EAST;
-        } else if (portRotation == 270 || portRotation == -90) {
-            direction = SwingConstants.SOUTH;
-        } else {
-            direction = SwingConstants.WEST;
-        }
-        return direction;
+    	return getDirection(portRotation);
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
