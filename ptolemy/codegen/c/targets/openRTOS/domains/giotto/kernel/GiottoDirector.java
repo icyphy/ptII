@@ -331,7 +331,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append(generateSchedulerThread(periodString));
         if(_debugging)
         {
-        _debug("*************just generated the scheduling thread for director: $actorSymbol()_");
+            _debug("*************just generated the scheduling thread for director: $actorSymbol()_");
         }
         //}
 
@@ -437,9 +437,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append("void Warn(char * data){" +
                     _eol+
                     "RIT128x96x4StringDraw(data,0,0,20);" +
-            	    _eol+
-            	    "}"
-            	    );
+                    _eol+
+                    "}"
+            );
             code.append("//speed of the processor clock"+_eol);
             code.append(" unsigned long g_ulSystemClock;"+_eol);
             code.append("portTickType gxLastWakeTime;"+_eol);
@@ -581,16 +581,16 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         int myLCM = _lcm(intFrequencies);
         if(_debugging)
         {
-        _debug("The LCM of my frequencies are "+ myLCM);
+            _debug("The LCM of my frequencies are "+ myLCM);
         }
         code.append("const portTickType xFrequency = (((" +period+"/"+myLCM+")/"+outerActorFrequency+")/portTICK_RATE_MS);"+_eol);
-        
+
         int ss0;
         for(int k = 0; k < _getAllFrequencies().size();k++){
             ss0 = (Integer)myFrequencies[k];
             code.append("  char warn"+ss0+" = 0;"+_eol);
         }
-        
+
         if(_isTopGiottoDirector())
         {
             code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
@@ -602,9 +602,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
         code.append("schedTick = 0;"+_eol);
         //create warning variables
-        
-        
-        
+
+
+
         //take all the inputs for the frequency threads so that they can't start until they've gotten the go ahead from the scheduler
         code.append("//take semaphores"+_eol);
         int ss;
@@ -667,23 +667,23 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     _eol+ 
                     "Warn(\""+i+"overrun\");" +
                     _eol+
-            	     "}"+_eol);
-           
+                    "}"+_eol);
+
             code.append("}"+_eol);
         }
-        
+
         for(int k = 0; k < _getAllFrequencies().size();k++){
             i = (Integer)myFrequencies[k];
             code.append("if( schedTick %"+(myLCM/i)+" == 0){"+_eol);
             //take the semaphore
             code.append("if(warn"+i+" == 1){"+_eol+
-                        "xSemaphoreTake($actorSymbol()_frequency"+i+"done,portMAX_DELAY); "+_eol+
-                        _eol+"warn"+i+" = 0;"+_eol
-                        +"}");// end if warn
-            
+                    "xSemaphoreTake($actorSymbol()_frequency"+i+"done,portMAX_DELAY); "+_eol+
+                    _eol+"warn"+i+" = 0;"+_eol
+                    +"}");// end if warn
+
             code.append("}"+_eol);  // end if sched tick
         }
-        
+
 
 
 
@@ -757,31 +757,31 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
         return variableDeclarations.toString();
     }
-/**
- * Determines how may Giotto directors are above this director.
- *  * @return
- */
+    /**
+     * Determines how may Giotto directors are above this director.
+     *  * @return
+     */
     private int _depthInGiottoHierarchy()
-     {
-         int depth = 0;
-         ptolemy.actor.Director director = ((TypedCompositeActor)
-                 _director.getContainer()).getExecutiveDirector();
-    
-         while (director != null ){
-             if(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)
-             {
-                 depth +=1;
-             }
-             director = ((TypedCompositeActor)
-                     director.getContainer()).getExecutiveDirector();
-    
-         }
-         if(_debugging)
-         {
-         _debug("My depth in the Giotto hierarcy is : "+depth);
-         }
-         return depth; 
-     }
+    {
+        int depth = 0;
+        ptolemy.actor.Director director = ((TypedCompositeActor)
+                _director.getContainer()).getExecutiveDirector();
+
+        while (director != null ){
+            if(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)
+            {
+                depth +=1;
+            }
+            director = ((TypedCompositeActor)
+                    director.getContainer()).getExecutiveDirector();
+
+        }
+        if(_debugging)
+        {
+            _debug("My depth in the Giotto hierarcy is : "+depth);
+        }
+        return depth; 
+    }
 
 
 
@@ -945,7 +945,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"+ _eol);
 
             if(actor instanceof CompositeActor) {
-                
+
                 if(_debugging)
                 {
                     _debug("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
@@ -1113,11 +1113,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 }else{
                     code.append(_eol+"// in the else"+_eol);
                     code.append(_eol+actorHelper.generateFireFunctionCode2());
-                   
+
 
                 }
                 //end composite actor
-                
+
             }else{
                 if(_debugging)
                 {
@@ -1129,7 +1129,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
             }
             code.append("}" + _eol);
-            
+
         }  // end for every actor  
 
         if(_debugging)
@@ -1781,7 +1781,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
          if (count < 1) {
              throw new RuntimeException(
-                     "Length array passed to _lcm() is less than 1?");
+             "Length array passed to _lcm() is less than 1?");
          }
 
          int X = array[0];
