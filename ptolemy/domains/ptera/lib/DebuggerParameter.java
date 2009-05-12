@@ -39,11 +39,15 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
+import ptolemy.domains.ptera.kernel.PteraDirector;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
@@ -99,14 +103,67 @@ public class DebuggerParameter extends TableauParameter
         hierarchical = new Parameter(this, "hierarchical");
         hierarchical.setTypeEquals(BaseType.BOOLEAN);
         hierarchical.setExpression("true");
+
+        mode = new ChoiceParameter(this, "mode", Mode.class);
+        mode.setExpression(Mode.A_DISPLAY.toString());
+
+        log = new StringParameter(this, "log");
+        log.setPersistent(true);
+        Variable hint = new Variable(log, "_textHeightHint");
+        hint.setExpression("5");
+        hint.setPersistent(false);
     }
 
     /** React to the given event.
      *  @param event The event.
      */
     public void event(DebugEvent event) {
-        NamedObj container = getContainer();
-        message(((PteraDebugEvent) event).toString(container));
+        if (event instanceof PteraDebugEvent) {
+            NamedObj container = getContainer();
+            String message = ((PteraDebugEvent) event).toString(container);
+
+            Mode mode = (Mode) this.mode.getChosenValue();
+            switch (mode) {
+            case A_DISPLAY:
+                try {
+                    Tableau tableau =
+                        (Tableau) ((ObjectToken) getToken()).getValue();
+
+                    if (tableau == null) {
+                        tableau = _createTableau();
+                    }
+
+                    if (tableau != null) {
+                        if (!tableau.getFrame().isVisible()) {
+                            tableau.getFrame().setVisible(true);
+                        }
+                        TextEditor frame = (TextEditor) tableau.getFrame();
+                        frame.text.append(message + "\n");
+                        try {
+                            int lineOffset = frame.text.getLineStartOffset(
+                                    frame.text.getLineCount() - 1);
+                            frame.text.setCaretPosition(lineOffset);
+                        } catch (BadLocationException ex) {
+                            // Ignore ... worst case is that the scrollbar doesn't move.
+                        }
+                    }
+                } catch (Throwable e) {
+                    throw new InternalErrorException(this, e, "Unable to report " +
+                            "message \"" + message + "\".");
+                }
+                break;
+            case B_CHECK_LOG:
+                if (!message.equals(_lines[_lineNumber++])) {
+                    throw new RuntimeException(
+                            "Log does not match on line " +
+                            (_lineNumber - 1) + ".");
+                }
+                break;
+            case C_RECORD_LOG:
+                log.setExpression(log.getExpression() + message + "\n");
+                break;
+            }
+        }
     }
 
     /** Begin execution of the actor.  This is invoked exactly once
@@ -120,38 +177,12 @@ public class DebuggerParameter extends TableauParameter
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _registerDebugListener(true);
-    }
-
-    /** React to a debug message.
-     *  @param message The debug message.
-     */
-    public void message(String message) {
-        try {
-            Tableau tableau = (Tableau) ((ObjectToken) getToken()).getValue();
-
-            if (tableau == null) {
-                tableau = _createTableau();
-            }
-
-            if (tableau != null) {
-                if (!tableau.getFrame().isVisible()) {
-                    tableau.getFrame().setVisible(true);
-                }
-                TextEditor frame = (TextEditor) tableau.getFrame();
-                frame.text.append(message + "\n");
-                try {
-                    int lineOffset = frame.text.getLineStartOffset(frame.text
-                            .getLineCount() - 1);
-                    frame.text.setCaretPosition(lineOffset);
-                } catch (BadLocationException ex) {
-                    // Ignore ... worst case is that the scrollbar doesn't move.
-                }
-            }
-        } catch (Throwable e) {
-            throw new InternalErrorException(this, e, "Unable to report " +
-                    "message \"" + message + "\".");
+        _lineNumber = 0;
+        Mode mode = (Mode) this.mode.getChosenValue();
+        if (mode == Mode.B_CHECK_LOG) {
+            _lines = log.getExpression().split("\n", -1);
         }
+        _registerDebugListener(true);
     }
 
     /** This method is invoked exactly once per execution
@@ -165,6 +196,15 @@ public class DebuggerParameter extends TableauParameter
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _registerDebugListener(false);
+
+        Mode mode = (Mode) this.mode.getChosenValue();
+        if (mode == Mode.B_CHECK_LOG) {
+            if (_lineNumber + 1 != _lines.length ||
+                    !_lines[_lineNumber].equals("")) {
+                throw new RuntimeException("Log does not match on line " +
+                        (_lineNumber) + ".");
+            }
+        }
     }
 
     /** The horizontal size of the display, in columns. This contains
@@ -177,10 +217,56 @@ public class DebuggerParameter extends TableauParameter
      */
     public Parameter hierarchical;
 
+    /** The recorded messages.
+     */
+    public StringParameter log;
+
+    /** The mode of this debugger, which is either "check log", "display", or
+     *  "record log".
+     */
+    public ChoiceParameter mode;
+
     /** The vertical size of the display, in rows. This contains an integer, and
      *  defaults to 10.
      */
     public Parameter rowsDisplayed;
+
+    //////////////////////////////////////////////////////////////////////////
+    //// Mode
+
+    /**
+     The modes.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    public enum Mode {
+        /** The mode to display the messages in a tableau.
+         */
+        A_DISPLAY {
+            public String toString() {
+                return "display";
+            }
+        },
+        /** The mode to check whether the messages are identical to those in the
+         *  log.
+         */
+        B_CHECK_LOG {
+            public String toString() {
+                return "check log";
+            }
+        },
+        /** The mode to record the messages in the log.
+         */
+        C_RECORD_LOG {
+            public String toString() {
+                return "record log";
+            }
+        },
+    }
 
     /** Create a tableau for displaying the debugging messages received from the
      *  events.
@@ -234,18 +320,21 @@ public class DebuggerParameter extends TableauParameter
             controllers.add((PteraController) container);
             while (!controllers.isEmpty()) {
                 PteraController controller = controllers.removeFirst();
-                for (Object entity : controller.deepEntityList()) {
-                    if (entity instanceof Event) {
-                        Event event = (Event) entity;
-                        if (register) {
-                            event.addDebugListener(this);
-                        } else {
-                            event.removeDebugListener(this);
-                        }
-                        if (!hierarchical) {
-                            continue;
-                        }
-                        TypedActor[] refinements = event.getRefinement();
+                LinkedList<NamedObj> objects = new LinkedList<NamedObj>();
+                objects.addAll(controller.entityList(Event.class));
+                objects.addAll(controller.attributeList(PteraDirector.class));
+                for (NamedObj object : objects) {
+                    if (register) {
+                        object.addDebugListener(this);
+                    } else {
+                        object.removeDebugListener(this);
+                    }
+                    if (!hierarchical) {
+                        continue;
+                    }
+                    if (object instanceof Event) {
+                        TypedActor[] refinements =
+                            ((Event) object).getRefinement();
                         if (refinements != null) {
                             for (TypedActor refinement : refinements) {
                                 if (refinement instanceof PteraController) {
@@ -259,4 +348,12 @@ public class DebuggerParameter extends TableauParameter
             }
         }
     }
+
+    /** The current line number in the "check log" mode.
+     */
+    private int _lineNumber;
+
+    /** The lines of the recorded messages in the "check log" mode.
+     */
+    private String[] _lines;
 }

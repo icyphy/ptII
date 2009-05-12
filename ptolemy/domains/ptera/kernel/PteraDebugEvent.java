@@ -49,7 +49,7 @@ public class PteraDebugEvent implements DebugEvent {
      *  @param source The source of the debug event.
      *  @param message The message.
      */
-    public PteraDebugEvent(Event source, String message) {
+    public PteraDebugEvent(NamedObj source, String message) {
         _source = source;
         _message = message;
     }
@@ -87,6 +87,6 @@ public class PteraDebugEvent implements DebugEvent {
 
     /** The source.
      */
-    private Event _source;
+    private NamedObj _source;
 
 }

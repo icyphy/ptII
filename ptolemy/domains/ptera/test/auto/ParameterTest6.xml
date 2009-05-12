@@ -9,7 +9,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="P" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="P" class="ptolemy.data.expr.Parameter" value="8">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

@@ -11,7 +11,7 @@
         </property>
         <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="P" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="P" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -206,13 +206,6 @@
         <relation name="relation5" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-                <display name="condition"/>
-            </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-            </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.7266107288792034">
@@ -225,8 +218,6 @@
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>

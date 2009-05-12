@@ -9,7 +9,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="P" class="ptolemy.data.expr.Parameter" value="0L">
+        <property name="P" class="ptolemy.data.expr.Parameter" value="281474976710656L">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -149,13 +149,6 @@
         <relation name="relation3" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-                <display name="condition"/>
-            </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-            </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.7440987939854249">
@@ -168,8 +161,6 @@
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -185,13 +176,6 @@
         <relation name="relation4" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-                <display name="condition"/>
-            </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-            </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.9423227809921169">
@@ -204,8 +188,6 @@
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -224,10 +206,6 @@
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="P != 281474976710656L">
                 <display name="condition"/>
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-            </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5795193253849646">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.008760065685320353">
@@ -240,8 +218,6 @@
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -711,13 +687,6 @@
         <relation name="relation3" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-                <display name="condition"/>
-            </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-            </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.8024526755532224">
@@ -730,8 +699,6 @@
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>

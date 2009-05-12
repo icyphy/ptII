@@ -11,7 +11,7 @@
         </property>
         <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="P" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="P" class="ptolemy.data.expr.Parameter" value="{10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

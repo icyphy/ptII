@@ -266,6 +266,8 @@ public class PteraDirector extends Director implements TimedDirector,
      *  event.
      */
     public void fire() throws IllegalActionException {
+        _debug(new PteraDebugEvent(this, "Fire at " + getModelTime() + "."));
+        
         _ending = false;
 
         if (!_isInController()) {

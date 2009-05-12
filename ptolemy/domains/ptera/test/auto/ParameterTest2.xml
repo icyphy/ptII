@@ -9,7 +9,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="P" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="P" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -36,7 +36,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="Q" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="Q" class="ptolemy.data.expr.Parameter" value="nil">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
