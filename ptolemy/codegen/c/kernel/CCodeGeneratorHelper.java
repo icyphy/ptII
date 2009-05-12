@@ -41,6 +41,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -505,13 +506,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         String result = sourceRef;
 
-        String sourceCodeGenType = codeGenType(sourceType);
-        String sinkCodeGenType = codeGenType(sinkType);
+        result = _generateTypeConvertMethod(
+                result, codeGenType(sinkType), codeGenType(sourceType));
 
-        if (!sinkCodeGenType.equals(sourceCodeGenType)) {
-            result = "$convert_" + sourceCodeGenType + "_"
-            + sinkCodeGenType + "(" + result + ")";
-        }
         return sinkRef + " = " + result + ";" + _eol;
     }
 

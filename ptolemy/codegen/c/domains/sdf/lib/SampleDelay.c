@@ -1,10 +1,10 @@
 /*** initTokens($offset) ***/
-        $ref(output, $offset) = $val(initialOutputs, $offset);
-        $send(output, 0)
+	$ref(output, $offset) = $convert_$elementType(initialOutputs)_$cgType(output)($val(initialOutputs, $offset));
+	$send(output, 0)
 /**/
 
 /***fireBlock***/
-        $get(input, 0)
-        $ref(output) = $ref(input);
-        $send(output, 0)
+	$get(input, 0)
+	$ref(output) = $ref(input);
+	$send(output, 0)
 /**/

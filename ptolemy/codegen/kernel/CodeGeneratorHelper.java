@@ -64,6 +64,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -2656,34 +2657,40 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return getReference(parameter);
 
         } else if (macro.equals("targetType")) {
-
-            TypedIOPort port = getPort(parameter);
-            if (port != null) {
-                return targetType(port.getType());
+            Typeable typeable = _getTypeable(parameter); 
+            if (typeable != null) {
+                return targetType(typeable.getType());
             }
+            
+            throw new IllegalActionException(parameter
+                    + " is not a typeable object. The $targetType() " +
+                    		"macro takes in a Typeable object.");
 
-            Variable variable = _getVariable(parameter);
-            if (variable != null) {
-                return targetType(variable.getType());
+        } else if (macro.equals("elementType") || macro.equals("elementTargetType")) {
+            Typeable typeable = _getTypeable(parameter); 
+            if (typeable != null && typeable.getType() instanceof ArrayType) {
+
+                if (macro.equals("elementType")) {
+                    return codeGenType(((ArrayType) 
+                        typeable.getType()).getElementType());
+                } else {
+                    return targetType(((ArrayType) 
+                            typeable.getType()).getElementType());
+                }
             }
             throw new IllegalActionException(parameter
-                    + " is not a port. $type macro takes in a port.");
-
+                    + " is not of ArrayType. The $elementType() " +
+                    		"macro takes in a ArrayType object.");
+            
         } else if (macro.equals("type") || macro.equals("cgType")) {
 
             String type = "";
             if (macro.equals("type")) {
                 type = "TYPE_";
             }
-
-            TypedIOPort port = getPort(parameter);
-            if (port != null) {
-                return type + codeGenType(port.getType());
-            }
-
-            Variable variable = _getVariable(parameter);
-            if (variable != null) {
-                return type + codeGenType(variable.getType());
+            Typeable typeable = _getTypeable(parameter); 
+            if (typeable != null) {
+                return type + codeGenType(typeable.getType());
             }
             throw new IllegalActionException(parameter
                     + " is not a port. $type macro takes in a port.");
@@ -2984,6 +2991,24 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     private String _getRefType(Attribute attribute) {
         if (attribute instanceof Parameter) {
             return codeGenType(((Parameter) attribute).getType());
+        }
+        return null;
+    }
+
+    /**
+     * Return 
+     * @param objectName
+     * @return
+     */
+    private Typeable _getTypeable(String objectName) {
+        TypedIOPort port = getPort(objectName);
+        if (port != null) {
+            return port;
+        }
+
+        Variable variable = _getVariable(objectName);
+        if (variable != null) {
+            return variable;
         }
         return null;
     }
