@@ -111,6 +111,11 @@ ParseTreeCodeGenerator {
 
     CodeGenerator _generator;
 
+    /**
+     * Create a CParseTreeCodeGenerator that is used by
+     * the given code generator to generate code for expressions.
+     * @param generator The given C code generator.
+     */
     public CParseTreeCodeGenerator (CodeGenerator generator) {
         _generator = generator;
     }
