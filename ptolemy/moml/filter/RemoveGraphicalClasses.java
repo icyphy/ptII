@@ -269,7 +269,16 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.modal.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.vergil.ptera.PteraTableauFactory",
+        _graphicalClasses.put("ptolemy.vergil.ptera.PteraGraphTableau$Factory",
+                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put(
+                "ptolemy.vergil.gt.TransformationAttributeEditorFactory",
+                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.gt.MatchResultTableau$Factory",
+                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.gt.GTTableau$Factory",
+                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.gt.GTTableau$ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
 
         // 4/04 BooleanSwitch uses EditorIcon
@@ -315,6 +324,14 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.ptera.EventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ptera.OctagonEventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ptera.TestIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ptera.TimeAdvanceEventIcon",
+                null);
+
+        _graphicalClasses.put("ptolemy.vergil.gt.IterativeParameterIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.gt.StateMatcherIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.gt.TransformationAttributeIcon",
+                null);
+
         _graphicalClasses.put("ptolemy.vergil.ptera.TimeAdvanceEventIcon",
                 null);
 
