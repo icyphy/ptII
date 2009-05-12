@@ -431,9 +431,10 @@ void Timer1IntHandler(void) {
 
 /*** initPDBlock***/
 // the platform dependent initialization code goes here.
-GPIOConfig();
+initializeGPIO();
 initializeTimers();
 initializeInterrupts();
+initializeSystemClock();
 /**/
 
 /*** initPDCodeBlock ***/
@@ -447,12 +448,34 @@ void initializeTimers(void) {
         IntPrioritySet(INT_TIMER1A, 0x00);
         IntPrioritySet(INT_TIMER1B, 0x00);
 }
+void initializeSystemClock() {
+	SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
+	       SYSCTL_XTAL_8MHZ);
+
+	TIMER_ROLLOVER_CYCLES = SysCtlClockGet();
+	
+	SysTickPeriodSet(TIMER_ROLLOVER_CYCLES);  
+	SysTickEnable();
+	IntEnable(FAULT_SYSTICK);  //sys tick vector
+}
 void initializeInterrupts(void) {
     //FIXME;
 }
-void GPIOConfig(void){
-    //FIXME;
-}
+/**/
+
+/*** initializeGPInput($pad, $pin) ***/
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
+GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN); 
+GPIOPinTypeGPIOInput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+GPIOIntTypeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_RISING_EDGE);  // to set rising edge
+GPIOPinIntEnable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+/**/
+
+/*** initializeGPOutput($pad, $pin) ***/
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
+GPIOPadConfigSet(GPIO_PORT$pad_BASE,GPIO_PIN_$pin,GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD); 
+GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_OUT); 
+GPIOPinTypeGPIOOutput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 /**/
 
 /*** preinitPDBlock($director, $name) ***/

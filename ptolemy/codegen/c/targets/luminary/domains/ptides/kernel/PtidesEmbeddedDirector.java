@@ -27,8 +27,7 @@
  */
 package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
 
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -38,8 +37,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.data.IntToken;
+import ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice;
+import ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////
 //// PtidesEmbeddedDirector
@@ -159,11 +160,6 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
 
         code.append(_codeStream.getCodeBlock("initPDBlock"));
 
-        List args = new LinkedList();
-        args.add("");
-        args.add("");
-        args.add("");
-
         return code.toString();
     }
 
@@ -272,8 +268,21 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         return 1;
     }
 
-
-
+    /**
+     * Generate the shared code. This is the first generate method invoked out
+     * of all, so any initialization of variables of this helper should be done
+     * in this method. In this base class, return an empty set. Subclasses may
+     * generate code for variable declaration, defining constants, etc.
+     * @return An empty set in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        Set sharedCode = super.getSharedCode();
+        sharedCode.add(_generateInitializeHardwareCode());
+        return sharedCode;
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -320,6 +329,31 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         return code.toString()*/
         return "";
     }
+    
+    /** Generate the initialization code for any hardware component that is used.
+     *  @return code initialization code for hardware peripherals
+     *  @throws IllegalActionException
+     */
+    protected String _generateInitializeHardwareCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        code.append("void initializeGPIO() {" + _eol);
+        for (Actor actor : _sensors.keySet()) {
+            List args = new ArrayList();
+            args.add((((GPInputDevice)actor).pad).stringValue());
+            args.add(((IntToken)(((GPInputDevice)actor).pin).getToken()).toString());
+            code.append(processCode(_codeStream.getCodeBlock("initializeGPInput", args)));
+        }
+        for (Actor actor : _actuators.keySet()) {
+            List args = new ArrayList();
+            args.add((((GPOutputDevice)actor).pad).stringValue());
+            args.add(((IntToken)(((GPOutputDevice)actor).pin).getToken()).toString());
+            code.append(processCode(_codeStream.getCodeBlock("initializeGPOutput", args)));
+        }
+        code.append("}" + _eol);
+        return code.toString();
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
