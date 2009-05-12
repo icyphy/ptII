@@ -40,7 +40,7 @@ import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;

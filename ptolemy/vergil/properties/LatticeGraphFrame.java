@@ -43,8 +43,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.fsm.FSMGraphFrame;
-import ptolemy.vergil.fsm.FSMGraphModel;
+import ptolemy.vergil.modal.FSMGraphFrame;
+import ptolemy.vergil.modal.FSMGraphModel;
 import diva.graph.GraphPane;
 
 
