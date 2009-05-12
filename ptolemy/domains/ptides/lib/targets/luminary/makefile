@@ -48,8 +48,10 @@ PTPACKAGE = 	luminary
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	GPOutputDevice.java \
-	GPOutputDeviceA.java
+	GPInputDevice.java \
+	GPInputDeviceD.java \
+	GPOutputDevice.java
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
