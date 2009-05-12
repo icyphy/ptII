@@ -65,41 +65,44 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (blickly)
  */
 public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
-////////////////////////////////////////////////////////////////////////
+
     ////                         public methods                         ////
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        System.out.println("generateFireCode from pret giotto director called here");
-
+        if(_debugging)
+        {
+            _debug("generateFireCode from pret giotto director called here");
+        }
         return code.toString();
     }
     public String generateFireFunctionCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        System.out.println("generateFireFunctionCode from pret giotto director called here");
-
+        if(_debugging){
+            _debug("generateFireFunctionCode from pret giotto director called here");
+        }
         return code.toString();
     }
-   
-    
-   /** Generates the preinitialization code for the Giotto Director which includes
-    * generating driver code for all the actors as well as the firefunction code.
-    * None of the methods can be inlined in this implementation.
-    * @return String containing the preinitialization code.
-    */
-    
+
+
+    /** Generates the preinitialization code for the Giotto Director which includes
+     * generating driver code for all the actors as well as the firefunction code.
+     * None of the methods can be inlined in this implementation.
+     * @return String containing the preinitialization code.
+     */
+
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
-       
-       code.append(_eol+_generateInDriverCode());
+
+        code.append(_eol+_generateInDriverCode());
         code.append(_eol+_generateOutDriverCode());
         code.append(_generateActorsCode());
-                
+
         if(_isTopDirectorFSM()){
             code.append(_eol+"//################# fire code for Giotto stuff here"+_eol);
             code.append(_generateFireCode());
             code.append(_eol+"//end of generate fire code stuff for top director fsm"+_eol);
-            }
-               
+        }
+
         return processCode(code.toString());
     }
 
@@ -108,7 +111,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-
+        code.append("//generate main loop called for director "+_director.getFullName());
         Attribute iterations = _director.getAttribute("iterations");
         if (iterations == null) {
             code.append(_eol + "while (true) {" + _eol);
@@ -123,12 +126,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 // mode" with gcc-3.3.3
                 //code.append(_eol + "int iteration;" + _eol);
                 //code.append("for (iteration = 0; iteration < "
-                  //      + iterationCount + "; iteration ++) {" + _eol);
+                //      + iterationCount + "; iteration ++) {" + _eol);
                 //call the actor methods here....
             }
         }
 
-        
+
         code.append(_generateFireCode());
 
         // The code generated in generateModeTransitionCode() is executed
@@ -146,12 +149,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append(generatePostfireCode());
 
 
-       
+
         code.append("}" + _eol);
 
         return code.toString();
     }
-    
+
     /** Generate a variable declaration for the <i>period</i> parameter,
      *  if there is one.
      *  @return code The generated code.
@@ -167,23 +170,23 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             variableDeclarations.append(helperObject.generateVariableDeclaration());
-            
+
             List <TypedIOPort> actorPorts = actor.outputPortList();
             if(actorPorts.size()> 0)
             {
-             Iterator portItr = actorPorts.iterator();
-             TypedIOPort actorport;
-             String type;
-                 while(portItr.hasNext())
-                 {
-                     actorport = (TypedIOPort)portItr.next();
-                     //variableDeclarations.append(_eol+"//not composite actor so may need extra variable, later, make sure you check the type. It's default to static int at the moment"+_eol);
-                     type = targetType(actorport.getType());
-                     variableDeclarations.append("static "+type+" "+_getActorName(actor)+"_output;"+_eol);
-                 }
+                Iterator portItr = actorPorts.iterator();
+                TypedIOPort actorport;
+                String type;
+                while(portItr.hasNext())
+                {
+                    actorport = (TypedIOPort)portItr.next();
+                    //variableDeclarations.append(_eol+"//not composite actor so may need extra variable, later, make sure you check the type. It's default to static int at the moment"+_eol);
+                    type = targetType(actorport.getType());
+                    variableDeclarations.append("static "+type+" "+_getActorName(actor)+"_output;"+_eol);
+                }
             }
-             variableDeclarations.append(_generatePortVariableDeclarations(actor));
-         }
+            variableDeclarations.append(_generatePortVariableDeclarations(actor));
+        }
 
         return variableDeclarations.toString();
     }
@@ -197,7 +200,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         files.add("\"deadline.h\"");
         return files;
     }
-  
+
     /**
      * Returns a reference for this port.
      * @param port
@@ -212,16 +215,18 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     throws IllegalActionException {
         Actor actor = (Actor)port.getContainer();
         Director director = actor.getDirector();
-        System.out.println("Getting reference for port " + port.getFullName() + "of actor " + actor.getFullName() + " of director " + director.getFullName());
+        if(_debugging){
+            _debug("Getting reference for port " + port.getFullName() + "of actor " + actor.getFullName() + " of director " + director.getFullName());
+        }
         if(port.isOutput()&& forComposite == false && !director.getFullName().contains("SDF")){
-           if(channelAndOffset[0] == ""){
-               channelAndOffset[0] = "0";
-           }
-           return CodeGeneratorHelper.generateName(port);  
+            if(channelAndOffset[0] == ""){
+                channelAndOffset[0] = "0";
+            }
+            return CodeGeneratorHelper.generateName(port);  
         }else
             return super.getReference(port, channelAndOffset, forComposite, isWrite,helper);
     }
-    
+
     /** Construct the code generator helper associated with the given
      *  GiottoDirector.
      *  @param giottoDirector The associated
@@ -231,34 +236,36 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         super(giottoDirector);
 
     }
-    
+
     /**
-     * This method is similar to the getReference method however it it taylored 
+     * This method is similar to the getReference method however it it tailored 
      * for use by a driver method.
      * @param port the port whose information is desired
      * @param channelAndOffset
      * @param forComposite
      * @param isWrite
-     * @param helper codegerator helper associated with this port
+     * @param helper code generator helper associated with this port
      * @return string containing the port information
      */
-       public String driverGetReference(TypedIOPort port, String[] channelAndOffset,
+    public String driverGetReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
         Actor actor = (Actor)port.getContainer();
         Director director = actor.getDirector();
-        System.out.println("inDriverGetReference for actor"+actor.getFullName()+"the directors name is "+director.getFullName());
-      
+        if(_debugging)
+        {
+            _debug("inDriverGetReference for actor"+actor.getFullName()+"the directors name is "+director.getFullName());
+        }
         if(port.isOutput()||((port.isInput()&& (actor instanceof CompositeActor)&&(director != null)&&
-           (director.getFullName().contains("modal") == false)&&(director.getFullName().contains("_Director") == false))))
+                (director.getFullName().contains("modal") == false)&&(director.getFullName().contains("_Director") == false))))
         {//if it's an output or an input that's not a modal model(contains modal or _Director)
             return "*"+CodeGeneratorHelper.generateName(port)+"_PORT";  // will need to handle multiple channels later
         }else
-             return super.getReference(port, channelAndOffset, forComposite, isWrite,helper);
-    
-    
+            return super.getReference(port, channelAndOffset, forComposite, isWrite,helper);
+
+
     }
-       
+
     /**
      * 
      * @return String containing the fired code
@@ -266,12 +273,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */  
 
     protected String _generateFireCode() throws IllegalActionException {
+        if(_debugging){
+            _debug("_generateFireCode has been called");
+        }
         StringBuffer code = new StringBuffer();
         double period = _getPeriod();
-        int threadID = 0;
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-            //ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
+            ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
 
             // FIXME: generate deadline instruction w/ period
 
@@ -286,19 +295,19 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             int cycles = (int)(250000000 * period / _getFrequency(actor));
             String driverBound = CodeGeneratorHelper.generateName((NamedObj) actor) + "_OUTPUT_DRIVER_WCET";
             code.append("#ifdef THREAD_" + threadID + _eol
-                      + "#ifndef " + driverBound + _eol
-                      // #warning is non-standard, but useful.
-                      + "#warning \"" + driverBound + " was not defined.  Using default value of 1000.\"" + _eol
-                      + "#define " + driverBound + " 1000" + _eol
-                      + "#endif" + _eol);
+                    + "#ifndef " + driverBound + _eol
+                    // #warning is non-standard, but useful.
+                    + "#warning \"" + driverBound + " was not defined.  Using default value of 1000.\"" + _eol
+                    + "#define " + driverBound + " 1000" + _eol
+                    + "#endif" + _eol);
             // for
             String index = CodeGeneratorHelper.generateName((NamedObj) actor) + "_frequency";
             code.append("int " + index + ";" + _eol
-                      + "for (" + index + " = 0; " + index + " < "
-                      + _getFrequency(actor) + "; ++" + index + ") {" + _eol
-                      + "DEAD0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
-                      + _getActorName(actor)+"_driver_in();//read inputs from ports determinitically" + _eol);
-            
+                    + "for (" + index + " = 0; " + index + " < "
+                    + _getFrequency(actor) + "; ++" + index + ") {" + _eol
+                    + "DEAD0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
+                    + _getActorName(actor)+"_driver_in();//read inputs from ports deterministically" + _eol);
+
             code.append(_getActorName(actor)+"();"+_eol);
             code.append("DEAD0(" + driverBound  + "); // driver_wcet" + _eol);
 
@@ -309,10 +318,81 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
             code.append("#endif /* THREAD_" + threadID + "*/\n");
             threadID++;
+            if(actor instanceof CompositeActor)
+            {
+                //code.append(_eol+"//I'm a composite actor"+_eol);
+                if(actor.getDirector().getClassName().contains("Giotto"))
+                {
+
+                    for (Actor actor1 : (List<Actor>) 
+                            ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList()) 
+                    {
+                        code.append(_generateRecursiveFireCode(actor1));
+
+                    }
+
+                }
+            }
         }
         return code.toString();
     }
-    
+
+    private String _generateRecursiveFireCode(Actor actor)throws IllegalActionException
+    {
+        StringBuffer code= new StringBuffer();
+        double period = _getPeriod();
+        // FIXME: generate deadline instruction w/ period
+
+        // Note: Currently, the deadline instruction takes the number 
+        // of cycle as argument. In the future, this should be changed
+        // to use time unit, which is platform-independent. 
+        // So for now, we will assume the clock speed to be 250 Mhz. 
+        // Thus, in order to get a delay of t seconds (= period/frequency) 
+        // for each actor, we will need to wait for 
+        // period/frequency * 250,000,000 cycles/second.
+
+        int cycles = (int)(250000000 * period / _getFrequency(actor));
+        String driverBound = CodeGeneratorHelper.generateName((NamedObj) actor) + "_OUTPUT_DRIVER_WCET";
+        code.append("#ifdef THREAD_" + threadID + _eol
+                + "#ifndef " + driverBound + _eol
+                // #warning is non-standard, but useful.
+                + "#warning \"" + driverBound + " was not defined.  Using default value of 1000.\"" + _eol
+                + "#define " + driverBound + " 1000" + _eol
+                + "#endif" + _eol);
+        // for
+        String index = CodeGeneratorHelper.generateName((NamedObj) actor) + "_frequency";
+        code.append("int " + index + ";" + _eol
+                + "for (" + index + " = 0; " + index + " < "
+                + _getFrequency(actor) + "; ++" + index + ") {" + _eol
+                + "DEAD0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
+                + _getActorName(actor)+"_driver_in();//read inputs from ports deterministically" + _eol);
+
+        code.append(_getActorName(actor)+"();"+_eol);
+        code.append("DEAD0(" + driverBound  + "); // driver_wcet" + _eol);
+
+        // code.append(helper.generateFireCode());
+        //code.append(helper.generatePostfireCode());
+        code.append(_getActorName(actor)+"_driver_out(); // output values to ports deterministically"+_eol);
+        code.append("}" + _eol); // end of for loop
+
+        code.append("#endif /* THREAD_" + threadID + "*/\n");
+        threadID++;
+        if(actor instanceof CompositeActor)
+        {
+            code.append(_eol+"//I'm a composite actor"+_eol);
+            if(actor.getDirector().getClassName().contains("Giotto"))
+            {
+                for (Actor actor1 : (List<Actor>) 
+                        ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList()) 
+                {
+                    code.append(_generateRecursiveFireCode(actor1));
+
+                }
+            }
+        }
+        return code.toString();
+    }
+
     /**
      * This method creates port variables for the actor passed in as a parameter.
      * @param actor- Actor whose port variables need to be declared
@@ -322,7 +402,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     private String _generatePortVariableDeclarations(Actor actor) throws IllegalActionException {
 
-        //System.out.println("get Port Variable Declarations called");
         StringBuffer code = new StringBuffer();
         code.append("/*"+_getActorName(actor)+ "'s PORT variable declarations.*/"+_eol);
         if(actor instanceof CompositeActor) 
@@ -330,24 +409,24 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             Director myDir= actor.getExecutiveDirector();
             if(myDir != null)  // composite actor with a director so create PORTS for my inputs
             {
-             Iterator inputPorts= actor.inputPortList().iterator();
-             while(inputPorts.hasNext())
-             {
-                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next(); 
-                code.append("volatile " + targetType(inputPort.getType()) + " * "
-                         + generateName(inputPort)+"_PORT = ("+targetType(inputPort.getType()) + " * ) 0x"+Integer.toHexString(_getThenIncrementCurrentSharedMemoryAddress(inputPort)));
-                if (inputPort.isMultiport()) {
-                    code.append("[" + inputPort.getWidthInside() + "]");
+                Iterator inputPorts= actor.inputPortList().iterator();
+                while(inputPorts.hasNext())
+                {
+                    TypedIOPort inputPort = (TypedIOPort) inputPorts.next(); 
+                    code.append("volatile " + targetType(inputPort.getType()) + " * "
+                            + generateName(inputPort)+"_PORT = ("+targetType(inputPort.getType()) + " * ) 0x"+Integer.toHexString(_getThenIncrementCurrentSharedMemoryAddress(inputPort)));
+                    if (inputPort.isMultiport()) {
+                        code.append("[" + inputPort.getWidthInside() + "]");
+                    }
+
+                    int bufferSize = getBufferSize(inputPort);
+
+                    if (bufferSize > 1) {
+                        code.append("[" + bufferSize + "]");
+                    }
+                    code.append(";" + _eol);
                 }
 
-                int bufferSize = getBufferSize(inputPort);
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-             }
-                
             }
         }
 
@@ -380,15 +459,16 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             }
             else
             {
-                System.out.println("didn't match if");
+                if(_debugging)
+                    _debug("didn't match if");
             }
 
         }
-       
+
         return code.toString();
     }
 
-    
+
     /**
      * Determines the frequency of the actor. If no frequency is specified in the model
      * the default value is set to 1
@@ -413,7 +493,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     private double _getPeriod() throws IllegalActionException {
 
-         Director director = ((TypedCompositeActor)
+        Director director = ((TypedCompositeActor)
                 _director.getContainer()).getExecutiveDirector();
 
         while (director != null &&
@@ -455,11 +535,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         return actorFullName;
     }
 
-     /**
-      * Generates a name for a driver Method
-      * @param namedObj
-      * @return
-      */
+    /**
+     * Generates a name for a driver Method
+     * @param namedObj
+     * @return
+     */
     private static String _generateDriverName(NamedObj namedObj)
     {
         String name = StringUtilities.sanitizeName(namedObj.getFullName());
@@ -481,66 +561,69 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     private String _generateActorsCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generateActors Code has been called");
-
+        if(_debugging)
+        {
+            _debug("generateActors Code has been called");
+        }
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-           
+
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-           
+
             String actorFullName = _getActorName(actor);    
-           // System.out.println("I have an actor named "+actorFullName+" going to generate fireCode for it now.");
 
             code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
                     + _eol);
             String srcReference;
             String sinkReference;
-            
-          
+
+
             Iterator<IOPort> inputPorts;
             inputPorts = actor.inputPortList().iterator();
             Director dir = actor.getDirector();
             if(actor instanceof CompositeActor)
             {
-                     
+
                 if(dir == null){
                     while(inputPorts.hasNext())
                     {       
                         IOPort inputPort = inputPorts.next();
-                        System.out.println("composite actor so doing stuff for that");
-                   
-                            super.generateTransferInputsCode(inputPort, code) ;  
-                            super.generateTransferOutputsCode(inputPort, code) ; 
-                            code.append(_eol+"//just did the transfer in and out of this composite actor with a call to super methods"+_eol);
-                      // else do nothing
+                        if(_debugging)
+                        {
+                            _debug("composite actor so doing stuff for that");
+                        }
+                        super.generateTransferInputsCode(inputPort, code) ;  
+                        super.generateTransferOutputsCode(inputPort, code) ; 
+                        code.append(_eol+"//just did the transfer in and out of this composite actor with a call to super methods"+_eol);
+                        // else do nothing
                     }
-               }else if((dir.getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector") ||dir.getClassName()=="ptolemy.domains.sdf.kernel.SDFDirector"){
-                   code.append("//second if"+_eol);
-                   
-                   if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor"))
-                   {
-                       code.append("//transfer inputs in"+_eol);
-                       CodeGeneratorHelper myHelper;
-                       String actorTransferCode = " ";
-                       
-                       
-                       while(inputPorts.hasNext())
-                       {
-                               IOPort sourcePort = (IOPort)inputPorts.next();
+                }else if((dir.getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector") ||dir.getClassName()=="ptolemy.domains.sdf.kernel.SDFDirector"){
+                    code.append("//second if"+_eol);
+
+                    if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor"))
+                    {
+                        code.append("//transfer inputs in"+_eol);
+                        CodeGeneratorHelper myHelper;
+                        String actorTransferCode = " ";
+
+
+                        while(inputPorts.hasNext())
+                        {
+                            IOPort sourcePort = (IOPort)inputPorts.next();
                             // FIXME: figure out the channel number for the sourcePort.
-                               // if you need to transfer inputs inside
-                              String channelOffset [] = {"0","0"};
-                              int i =sourcePort.getWidth();
-                              myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
-                              if(i > 1)
-                              {
-                                  //I don't think this is correct
-                                  for(int j = 0; j< i; j++)
-                                  {
-                                   
-                                      actorTransferCode += "//multiport stuff here";
-                                  }
-                              }else{
+                            // if you need to transfer inputs inside
+                            String channelOffset [] = {"0","0"};
+                            int i =sourcePort.getWidth();
+                            myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
+                            if(i > 1)
+                            {
+                                //I don't think this is correct
+                                for(int j = 0; j< i; j++)
+                                {
+
+                                    actorTransferCode += "//multiport stuff here";
+                                }
+                            }else{
                                 channelOffset[0] = "0";
                                 //code.append(_eol+"in else"+_eol);
                                 sinkReference = this.getReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
@@ -549,52 +632,61 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                                 args.add(sinkReference);
                                 args.add(srcReference);
                                 actorTransferCode += _generateBlockCode("updatePort", args);     
-                              }
-                       }
-                       code.append(_eol+actorTransferCode+_eol);
-                       code.append("//display name: "+actor.getDisplayName()+_eol);
-                       code.append(_getActorName(actor)+"_EmbeddedActor();"+_eol);
-                       code.append("//jni actor"+_eol);
-                       code.append("//transfer outputs out"+_eol);
-                
-                   }
-                   else{
-                   code.append(actorHelper.generateFireCode());
-                   }
-               }
+                            }
+                        }
+                        code.append(_eol+actorTransferCode+_eol);
+                        code.append("//display name: "+actor.getDisplayName()+_eol);
+                        code.append(_getActorName(actor)+"_EmbeddedActor();"+_eol);
+                        code.append("//jni actor"+_eol);
+                        code.append("//transfer outputs out"+_eol);
+
+                    }
+                    else{
+                        code.append(_eol+"//not jni"+_eol);
+                        code.append(actorHelper.generateFireFunctionCode2());
+                    }
+                }
                 else
                 {
                     //do nothing
                 }
-                    
+
             } else{
-                code.append("//in final else");
-               code.append(actorHelper.generateFireCode());
+                code.append(_eol+"//in final else"+_eol);
+                String temp = actorHelper.generateFireFunctionCode2();
+                if(temp.length()==0)
+                {
+                    code.append(actorHelper.generateFireCode());
+                }
+                else
+                {
+                    code.append(temp);
+                }
             }   
-           
+
             code.append("}" + _eol);
 
         }
         return code.toString();
-  }
-    
+    }
+
     private boolean _isTopDirectorFSM()
     {
         boolean returnValue = false;
-        
-        
-        
+
+
+
         Director director = ((TypedCompositeActor) _director.getContainer()).getExecutiveDirector();
-    
+
         if(director != null &&
                 (director instanceof ptolemy.domains.fsm.kernel.FSMDirector)) {
-           returnValue = true;
-           }
-            
-        
+            returnValue = true;
+        }
+
+
         return returnValue;
-        
-        
+
+
     }
     /** Generate the content of a driver methods. For each actor update it's inputs to the 
      *  outputs stored in ports. The PORT allows double buffering, in this case the output
@@ -608,16 +700,20 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */ 
     public String _generateInDriverCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generateDriver Code has been called");
-        
+        if(_debugging)
+        {
+            _debug("generateDriver Code has been called");
+        }
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-    
-    
+
+
             List inputPortList = actor.inputPortList();
-            System.out.println("this actor"+actor.getDisplayName()+" has "+inputPortList.size()+" input ports.");
+            if(_debugging){
+                _debug("this actor"+actor.getDisplayName()+" has "+inputPortList.size()+" input ports.");
+            }
             Iterator inputPorts = inputPortList.iterator();
-    
+
             String actorDriverCode = "";
             String sinkReference = "";
             String srcReference = "";
@@ -631,102 +727,128 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             while (inputPorts.hasNext()) {
                 i = 0;  // this is a test to see if this is to be done here, if so remove the i++ from the end of the loop
                 j = 0;
-                 TypedIOPort port = (TypedIOPort)inputPorts.next();
-                 System.out.println("this port's name is "+port.getFullName());
-                 
+                TypedIOPort port = (TypedIOPort)inputPorts.next();
+                if(_debugging)
+                    _debug("this port's name is "+port.getFullName());
+
                 //List<IOPort> connectedPorts = port.deepConnectedOutPortList();
                 List<IOPort> connectToMe = port.sourcePortList();//port.connectedPortList(); //connectedPortList();
-                System.out.println("connectToMe size is "+connectToMe.size());
-                //System.out.println("before remove double connections");
-          
+                if(_debugging){
+                    _debug("connectToMe size is "+connectToMe.size());
+                }
+
                 Iterator tome= connectToMe.iterator();
-              System.out.println("currently connectToMe size is "+connectToMe.size());
-                
+                if(_debugging)
+                {
+                    _debug("currently connectToMe size is "+connectToMe.size());
+                }
                 tome= connectToMe.iterator();
                 while(tome.hasNext())
                 {
                     IOPort tempp = (IOPort)tome.next();
-                    System.out.println("******I'm connected to I think: "+tempp.getFullName());  
+                    if(_debugging)
+                    {
+                        _debug("******I'm connected to I think: "+tempp.getFullName());  
+                    }
                 }
-                 
+
                 // Iterator cpIterator = connectedPorts.iterator();
                 Iterator cpIterator = connectToMe.iterator();
-                 while(cpIterator.hasNext()){//&&(j <connectToMe.size()-1)){
-                   TypedIOPort sourcePort = (TypedIOPort)cpIterator.next();
-                // FIXME: figure out the channel number for the sourcePort.
-                   // if you need to transfer inputs inside
-                   if(actor instanceof CompositeActor) {
-                      System.out.println("composite actor so doing stuff for that");
-                       //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
-                       //_generateTransferInputsCode(port, transferIn);
-                       transferIn.append(("//should transfer input for this actor to from the outside to inside"+_eol));
-                       //generateTransferInputsCode(inputPort, code);
-                       
-                   }
-                
-                   System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
-                   String channelOffset [] = {"0","0"};
-                 
-                     System.out.println("the sender port is named "+sourcePort.getFullName()+" and the reciever is "+port.getFullName());
-                     myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
+                while(cpIterator.hasNext()){//&&(j <connectToMe.size()-1)){
+                    TypedIOPort sourcePort = (TypedIOPort)cpIterator.next();
+                    // FIXME: figure out the channel number for the sourcePort.
+                    // if you need to transfer inputs inside
+                    if(actor instanceof CompositeActor) {
+                        if(_debugging){
+                            _debug("composite actor so doing stuff for that");
+                        }
+                        //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
+                        //_generateTransferInputsCode(port, transferIn);
+                        transferIn.append(("//should transfer input for this actor to from the outside to inside"+_eol));
+                        //generateTransferInputsCode(inputPort, code);
+
+                    }
+                    if(_debugging)
+                    {                
+                        _debug(" j is "+j +"and size of connect to me is "+connectToMe.size());
+                    }
+                    String channelOffset [] = {"0","0"};
+                    if(_debugging)
+                    {
+                        _debug("the sender port is named "+sourcePort.getFullName()+" and the receiver is "+port.getFullName());
+                    }
+                    myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
                     // temp+= _generateTypeConvertFireCode(false)+_eol;
-                   channelOffset[0] = Integer.valueOf(i).toString();
-                   System.out.println("channel offset is "+channelOffset[0]);
-                     srcReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
-                     System.out.println("after first call to getReference");
-                      //                   
-                     myHelper = (CodeGeneratorHelper)_getHelper(actor);
-                     channelOffset[0] = Integer.valueOf(j).toString();
-                     System.out.println("channel offset is "+channelOffset[0]);
-                     sinkReference = this.driverGetReference((TypedIOPort)port,channelOffset,false,true,myHelper);
-                     System.out.println("after second call to getReference");
-                     j++;
-                     
-                     //temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;
-                     temp=_typeConversion(sourcePort,port);
-                     System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
-                     System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
-                     String src;
-                     temp=_typeConversion(sourcePort,port);
-                     if( temp .length()==0 )
-                         src = srcReference;
-                     else
-                         src= temp+"("+srcReference+")";
-                     
-                     actorDriverCode +=sinkReference+" = "+ src+";"+_eol;
-                     }                               
-             i++; // increment the ofset variable // not sure if this is correct since we're using iterators 
+                    channelOffset[0] = Integer.valueOf(i).toString();
+                    if(_debugging)
+                    {
+                        _debug("channel offset is "+channelOffset[0]);
+                    }
+                    srcReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                    if(_debugging)
+                    {
+                        _debug("after first call to getReference");
+                    }
+                    //                   
+                    myHelper = (CodeGeneratorHelper)_getHelper(actor);
+                    channelOffset[0] = Integer.valueOf(j).toString();
+                    if(_debugging)
+                        _debug("channel offset is "+channelOffset[0]);
+                    sinkReference = this.driverGetReference((TypedIOPort)port,channelOffset,false,true,myHelper);
+                    if(_debugging)
+                        _debug("after second call to getReference");
+                    j++;
+
+                    //temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;
+                    temp=_typeConversion(sourcePort,port);
+                    if(_debugging){
+                        _debug("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
+                        _debug("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+                    }
+                    String src;
+                    temp=_typeConversion(sourcePort,port);
+                    if( temp .length()==0 )
+                        src = srcReference;
+                    else
+                        src= temp+"("+srcReference+")";
+
+                    actorDriverCode +=sinkReference+" = "+ src+";"+_eol;
+                }                               
+                i++; // increment the ofset variable // not sure if this is correct since we're using iterators 
             } 
-            
-            System.out.println("actorDriverCode is now:");
-            System.out.println(actorDriverCode);
-            
-           
+            if(_debugging)
+            {
+                _debug("actorDriverCode is now:");
+                _debug(actorDriverCode);
+            }
+
+
             ArrayList args = new ArrayList();  
             args.add(_generateDriverName((NamedObj) actor)+"_in");
-           args.add(actorDriverCode);
+            args.add(actorDriverCode);
             code.append(_generateBlockCode("driverCode", args));
-            }
-        
-        //System.out.println("about to return :");
-        //System.out.println(code.toString());
+        }
+
+
         return code.toString();
     }
- 
-    
+
+
     public String _generateOutDriverCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generateDriver Code has been called");
+        if(_debugging)
+            _debug("generateDriver Code has been called");
+
         String sinkReference;
         String srcReference;
         String actorDriverCode=" ";
         CodeGeneratorHelper myHelper;
         Director dir;
-        
+
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-    
-    
+
+
             List outputPortList = actor.outputPortList();
             Iterator outputPorts = outputPortList.iterator();
             sinkReference= "";
@@ -734,40 +856,40 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             actorDriverCode ="";
             dir = actor.getDirector();
             code.append(_eol+"//My Director's name is: "+dir.getFullName()+_eol);
-               if(actor instanceof CompositeActor && (dir.getFullName().contains("modal")||dir.getFullName().contains("_Director")))
-               {
-                   code.append(_eol+"//should transfer from my outputs to my output ports"+_eol);
-                   actorDriverCode+=_eol+"//in first if"+_eol;
-                   while(outputPorts.hasNext())
-                   {
-                           IOPort sourcePort = (IOPort)outputPorts.next();
-                        // FIXME: figure out the channel number for the sourcePort.
-                           // if you need to transfer inputs inside
-                          String channelOffset [] = {"0","0"};
-                          int i =sourcePort.getWidth();
-                          myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
-                          if(i > 1)
-                          {
-                              //I don't think this is correct
-                              for(int j = 0; j< i; j++)
-                              {
-                               
-                               actorDriverCode += "//multiport stuff here";
-                              }
-                          }else{
-                            channelOffset[0] = "0";
-                            //code.append(_eol+"in else"+_eol);
-                            srcReference = this.getReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
-                            sinkReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
-                            ArrayList args = new ArrayList();    
-                            args.add(sinkReference);
-                            args.add(srcReference);
-                            actorDriverCode += _generateBlockCode("updatePort", args);     
-                          }
-                   }
-               }
+            if(actor instanceof CompositeActor && (dir.getFullName().contains("modal")||dir.getFullName().contains("_Director")))
+            {
+                code.append(_eol+"//should transfer from my outputs to my output ports"+_eol);
+                actorDriverCode+=_eol+"//in first if"+_eol;
+                while(outputPorts.hasNext())
+                {
+                    IOPort sourcePort = (IOPort)outputPorts.next();
+                    // FIXME: figure out the channel number for the sourcePort.
+                    // if you need to transfer inputs inside
+                    String channelOffset [] = {"0","0"};
+                    int i =sourcePort.getWidth();
+                    myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
+                    if(i > 1)
+                    {
+                        //I don't think this is correct
+                        for(int j = 0; j< i; j++)
+                        {
+
+                            actorDriverCode += "//multiport stuff here";
+                        }
+                    }else{
+                        channelOffset[0] = "0";
+                        //code.append(_eol+"in else"+_eol);
+                        srcReference = this.getReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                        sinkReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                        ArrayList args = new ArrayList();    
+                        args.add(sinkReference);
+                        args.add(srcReference);
+                        actorDriverCode += _generateBlockCode("updatePort", args);     
+                    }
+                }
+            }
             else if(actor instanceof CompositeActor&& dir!= null ){
-               code.append(_eol+"//in second if with director "+dir.getFullName()+_eol);
+                code.append(_eol+"//in second if with director "+dir.getFullName()+_eol);
                 while(outputPorts.hasNext())
                 {
                     TypedIOPort sourcePort = (TypedIOPort)outputPorts.next();
@@ -777,125 +899,127 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     {
                         if (port.isOutput()) {
                             sp = port;
-                           }
-                        System.out.println("In a non-modal CompositeActor, port: " + port.getFullName());
-                        
+                        }
+                        if(_debugging)
+                            _debug("In a non-modal CompositeActor, port: " + port.getFullName());
+
                     }
-                   
-                     // FIXME: this currently assumes that the actor on the inside of the composite actor only has one output port and that
-                     // port's output info needs to be moved over. I also haven't figure out how to support multiport at the moment
-                       String channelOffset [] = {"0","0"};
-                       int i =sourcePort.getWidth();
-                       myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
-                       if(i > 1)
-                       {
-                           //I don't think this is correct
-                           for(int j = 0; j< i; j++)
-                           {
-                            
+
+                    // FIXME: this currently assumes that the actor on the inside of the composite actor only has one output port and that
+                    // port's output info needs to be moved over. I also haven't figure out how to support multiport at the moment
+                    String channelOffset [] = {"0","0"};
+                    int i =sourcePort.getWidth();
+                    myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
+                    if(i > 1)
+                    {
+                        //I don't think this is correct
+                        for(int j = 0; j< i; j++)
+                        {
+
                             actorDriverCode += "//multiport stuff here";
-                           }
-                       }else{
-                         channelOffset[0] = "0";
-                         //code.append(_eol+"in else"+_eol);
-                         srcReference = this.getReference((TypedIOPort)sp,channelOffset,true,true,myHelper);
-                         sinkReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
-                         String temp = _typeConversion(sp,sourcePort);
-                       
-                         
+                        }
+                    }else{
+                        channelOffset[0] = "0";
+                        //code.append(_eol+"in else"+_eol);
+                        srcReference = this.getReference((TypedIOPort)sp,channelOffset,true,true,myHelper);
+                        sinkReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                        String temp = _typeConversion(sp,sourcePort);
+
+
                         String src;
-                         if( temp .length()==0 )
-                             src = srcReference;
-                         else
-                             src= temp+"("+srcReference+")";
-                         
-                         actorDriverCode +=sinkReference+" = "+ src+";"+_eol;
-                       }
+                        if( temp .length()==0 )
+                            src = srcReference;
+                        else
+                            src= temp+"("+srcReference+")";
+
+                        actorDriverCode +=sinkReference+" = "+ src+";"+_eol;
+                    }
                 }    
             }
             else{
-           while(outputPorts.hasNext())
-           {
-                   IOPort sourcePort = (IOPort)outputPorts.next();
-                // FIXME: figure out the channel number for the sourcePort.
-                   // if you need to transfer inputs inside
-                  String channelOffset [] = {"0","0"};
-                  int i =sourcePort.getWidth();
-                  myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
-                  if(i > 1)
-                  {
-                      //I don't think this is correct
-                      for(int j = 0; j< i; j++)
-                      {
-                       
-                       actorDriverCode += "//multiport stuff here";
-                      }
-                  }else{
-                    channelOffset[0] = "0";
-                    //code.append(_eol+"in else"+_eol);
-                    srcReference = this.getReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
-                    sinkReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
-                    ArrayList args = new ArrayList();    
-                    args.add(sinkReference);
-                    args.add(srcReference);
-                    code.append(_eol+"//in Last Else of outDriverCode"+_eol);
-                    actorDriverCode += _generateBlockCode("updatePort", args);     
-                  }
-           }
-            
-            System.out.println("actorDriverCode is now:");
-            System.out.println(actorDriverCode);
+                while(outputPorts.hasNext())
+                {
+                    IOPort sourcePort = (IOPort)outputPorts.next();
+                    // FIXME: figure out the channel number for the sourcePort.
+                    // if you need to transfer inputs inside
+                    String channelOffset [] = {"0","0"};
+                    int i =sourcePort.getWidth();
+                    myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
+                    if(i > 1)
+                    {
+                        //I don't think this is correct
+                        for(int j = 0; j< i; j++)
+                        {
+
+                            actorDriverCode += "//multiport stuff here";
+                        }
+                    }else{
+                        channelOffset[0] = "0";
+                        //code.append(_eol+"in else"+_eol);
+                        srcReference = this.getReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                        sinkReference = this.driverGetReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                        ArrayList args = new ArrayList();    
+                        args.add(sinkReference);
+                        args.add(srcReference);
+                        code.append(_eol+"//in Last Else of outDriverCode"+_eol);
+                        actorDriverCode += _generateBlockCode("updatePort", args);     
+                    }
+                }
+
+
             }
-           
+
             ArrayList args = new ArrayList();  
             args.add(_generateDriverName((NamedObj) actor)+"_out");
             args.add(actorDriverCode);
             code.append(_generateBlockCode("driverCode", args));
-            }
-        
-        //System.out.println("about to return :");
-        //System.out.println(code.toString());
+        }
+
+
         return code.toString();   
     }
-    
 
-     
-     /**
-      * This method simply overwrites the base class method and returns a blank string
-      * @exception IllegalActionException Not thrown in this base class.
-      */
-     public String _generateTypeConvertFireCode(IOPort source,IOPort sink)
-     throws IllegalActionException {
-         StringBuffer code = new StringBuffer();
-         System.out.println("generateTypeConvertFireCode in OpenRTOS giotto director called");
-              return code.toString();
-     }
-     
+
+
+    /**
+     * This method simply overwrites the base class method and returns a blank string
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String _generateTypeConvertFireCode(IOPort source,IOPort sink)
+    throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        if(_debugging)
+            _debug("generateTypeConvertFireCode in OpenRTOS giotto director called");
+
+        return code.toString();
+    }
+
     int _getThenIncrementCurrentSharedMemoryAddress(TypedIOPort port) throws IllegalActionException {
         String type = targetType(port.getType());
-       int portWidth = port.getWidth();
-       //System.out.println("portwidth is: "+portWidth);
-       int offset = 0 ;
-      if (type.equals("int")||type.equals("long")||type.equals("float")||type.equals("void *"))
-       {
-          offset = 32* portWidth;
-       }
-      else if(type.equals("long long")||type.equals("double"))
-      {
-          offset = 64* portWidth;
-      }
-      else if(type.equals("char"))
-      {
-          offset = 8* portWidth;
-      }
-      else if(type.equals("short"))
-      {
-          offset = 16* portWidth;
-      }
-      else
-      {
-          offset = 32 * portWidth;
-      }
+        int portWidth = port.getWidth();
+
+        int offset = 0 ;
+        if (type.equals("int")||type.equals("long")||type.equals("float")||type.equals("void *"))
+        {
+            offset = 32* portWidth;
+        }
+        else if(type.equals("long long")||type.equals("double"))
+        {
+            offset = 64* portWidth;
+        }
+        else if(type.equals("char"))
+        {
+            offset = 8* portWidth;
+        }
+        else if(type.equals("short"))
+        {
+            offset = 16* portWidth;
+        }
+        else
+        {
+            offset = 32 * portWidth;
+        }
         currentSharedMemoryAddress += offset;//32;  // currently assumes all requested types are ints
         if(currentSharedMemoryAddress >= 0x40000000) {
             throw new IllegalActionException("out of shared data space on PRET");
@@ -903,10 +1027,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         return currentSharedMemoryAddress-offset;//-32;
 
     }
-    
+
     private String _typeConversion(TypedIOPort source,TypedIOPort sink)
     {
-        
+
         String sourceType;
         String sinkType;
         sourceType = targetType(source.getType());
@@ -924,6 +1048,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
     }
     static private int currentSharedMemoryAddress = 0x3F800000;
+    private int threadID = 0;
 
 
 }
