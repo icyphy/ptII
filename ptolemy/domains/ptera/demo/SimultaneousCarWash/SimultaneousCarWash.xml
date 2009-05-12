@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SimultaneousCarWash" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2000.0">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 821, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 829, 514}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[606, 400]">
     </property>
@@ -147,7 +147,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={548, 343, 823, 514}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -227,7 +227,8 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6410759373772102">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -253,7 +254,8 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5758743398206495">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -279,7 +281,8 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.2771207176837293">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -309,7 +312,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="Queue" class="ptolemy.data.expr.Parameter" value="{227, 2}">
+            <property name="Queue" class="ptolemy.data.expr.Parameter" value="{241, 0}">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -325,7 +328,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 85.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 90.0]">
                 </property>
             </property>
             <property name="Servers" class="ptolemy.data.expr.Parameter" value="{0, 0}">
@@ -344,7 +347,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[339.17309188842773, 64.86478424072266]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[339.17309188842773, 69.86478424072266]">
                 </property>
             </property>
             <port name="serversInput" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -380,7 +383,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 185.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 190.0}">
                 </property>
             </entity>
             <entity name="Start" class="ptolemy.domains.ptera.kernel.Event">
@@ -392,7 +395,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[379.5640257195552, 191.3671145591096]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[379.5640257195552, 196.3671145591096]">
                 </property>
             </entity>
             <entity name="Leave" class="ptolemy.domains.ptera.kernel.Event">
@@ -404,7 +407,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 335.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 340.0]">
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.ptera.kernel.Event">
@@ -412,7 +415,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 </property>
                 <property name="isFinalEvent" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="parameters" class="ptolemy.domains.ptera.kernel.ParametersAttribute" value="()">
+                <property name="parameters" class="ptolemy.domains.ptera.kernel.ParametersAttribute" value="(i : int, initServers : int, initQueue : int)">
                 </property>
                 <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Servers(i) = initServers;&#10;  Queue(i) = initQueue">
                 </property>
@@ -420,20 +423,22 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[194.17309188842773, 74.86478424072266]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 60.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Servers(i) &gt; 0">
-<display name="condition"/>                </property>
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5897459625346124">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.11447432515125774">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -455,7 +460,8 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.510858573599481">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -473,13 +479,15 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Queue(i) &gt; 0">
-<display name="condition"/>                </property>
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4913806458780557">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7515006754491314">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -501,7 +509,8 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.3936743465852791">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -523,7 +532,8 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.543479100712386">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-<display name="initialize"/>                </property>
+                    <display name="initialize"/>
+                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -549,19 +559,19 @@ queue and are processed in their time stamp orders.</text></svg></configure>
             <link port="Init.outgoingPort" relation="relation5"/>
         </entity>
         <relation name="serversInputRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
         </relation>
         <relation name="queueInputRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
         </relation>
         <relation name="serversOutputRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
         </relation>
         <relation name="queueOutputRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
         </relation>
         <link port="serversInput" relation="serversInputRelation"/>
