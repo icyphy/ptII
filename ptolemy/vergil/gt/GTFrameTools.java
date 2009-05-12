@@ -51,10 +51,10 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorGraphFrame.ActorGraphPane;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
-import ptolemy.vergil.fsm.FSMGraphController;
-import ptolemy.vergil.fsm.FSMGraphFrame;
-import ptolemy.vergil.fsm.FSMGraphModel;
-import ptolemy.vergil.fsm.FSMGraphFrame.FSMGraphPane;
+import ptolemy.vergil.modal.FSMGraphController;
+import ptolemy.vergil.modal.FSMGraphFrame;
+import ptolemy.vergil.modal.FSMGraphModel;
+import ptolemy.vergil.modal.FSMGraphFrame.FSMGraphPane;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 

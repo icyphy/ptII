@@ -30,7 +30,7 @@ package ptolemy.actor.gt.controller;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.modal.RefinementExtender;
+import ptolemy.domains.modal.modal.RefinementExtender;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.CompositeEntity;

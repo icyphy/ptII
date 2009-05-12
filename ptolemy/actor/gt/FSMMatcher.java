@@ -36,7 +36,7 @@ import java.util.Set;
 
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
-import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

@@ -35,7 +35,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.domains.fsm.modal.ModalModel;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

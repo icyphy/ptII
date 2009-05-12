@@ -28,7 +28,7 @@
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

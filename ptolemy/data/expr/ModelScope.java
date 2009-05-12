@@ -299,6 +299,8 @@ public abstract class ModelScope implements ParserScope {
      */
     public static Variable getScopedVariable(Variable exclude,
             NamedObj container, String name) {
+        if (name.equals("MST"))
+            name = "MST";
         String insideName = name.replaceAll("::", ".");
 
         while (container != null) {

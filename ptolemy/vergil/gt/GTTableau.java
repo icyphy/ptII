@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import ptolemy.vergil.fsm.CaseGraphTableau;
+import ptolemy.vergil.modal.CaseGraphTableau;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTRuleGraphTableau

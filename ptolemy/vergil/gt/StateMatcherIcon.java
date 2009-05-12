@@ -39,7 +39,7 @@ import javax.swing.Icon;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.fsm.StateIcon;
+import ptolemy.vergil.modal.StateIcon;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;

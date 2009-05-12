@@ -47,7 +47,7 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;

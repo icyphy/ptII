@@ -1309,13 +1309,13 @@
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <port name="stable" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="stable" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
             <property name="Matched" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <port name="stable" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="stable" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 255.0]">

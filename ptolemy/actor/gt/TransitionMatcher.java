@@ -33,8 +33,8 @@ import java.util.Set;
 
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

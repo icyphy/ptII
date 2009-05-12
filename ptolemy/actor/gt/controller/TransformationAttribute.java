@@ -41,7 +41,7 @@ import ptolemy.actor.gt.GTAttribute;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.modal.kernel.Configurer;
 import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;

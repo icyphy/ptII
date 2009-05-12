@@ -519,19 +519,19 @@
     <entity name="CarController" class="ptolemy.domains.ptera.kernel.PteraModalModel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 235.0]">
         </property>
-        <port name="CarTrigger" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="CarTrigger" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="CarCount" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="CarCount" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="PedRequest" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="PedRequest" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="Light" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Light" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="OrthogonalRequest" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="OrthogonalRequest" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
@@ -566,29 +566,29 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{596.5, 461.0}">
             </property>
-            <port name="CarTrigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="CarTrigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 325.0]">
                 </property>
             </port>
-            <port name="CarCount" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="CarCount" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 325.0]">
                 </property>
             </port>
-            <port name="PedRequest" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="PedRequest" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 395.0]">
                 </property>
             </port>
-            <port name="Light" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Light" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 465.0]">
                 </property>
             </port>
-            <port name="OrthogonalRequest" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OrthogonalRequest" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 465.0]">
                 </property>
@@ -1203,18 +1203,18 @@
             </property>
         </property>
     </entity>
-    <entity name="CarStateMachine" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="CarStateMachine" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 200.0]">
         </property>
-        <port name="PedControl" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="PedControl" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="Light" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Light" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
                 <property name="designPatternFile" class="ptolemy.data.expr.FileParameter" value="CarStateMachine.xml">
                 </property>

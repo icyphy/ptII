@@ -168,22 +168,22 @@ UpdateMST event is processed.</text></svg></configure>
     <entity name="PteraSubmodel" class="ptolemy.domains.ptera.kernel.PteraModalModel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
         </property>
-        <port name="serversIn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="serversIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="queueIn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="queueIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="serversOut" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="serversOut" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="queueOut" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="queueOut" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
@@ -258,23 +258,23 @@ UpdateMST event is processed.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 65.0]">
                 </property>
             </property>
-            <port name="serversIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="serversIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 170.0]">
                 </property>
             </port>
-            <port name="queueIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="queueIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 220.0]">
                 </property>
             </port>
-            <port name="serversOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="serversOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 170.0]">
                 </property>
             </port>
-            <port name="queueOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="queueOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 220.0]">
@@ -534,7 +534,7 @@ UpdateMST event is processed.</text></svg></configure>
             <link port="Run.outgoingPort" relation="relation6"/>
             <link port="UpdateMST.incomingPort" relation="relation7"/>
         </entity>
-        <entity name="CheckMST" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="CheckMST" class="ptolemy.domains.modal.modal.ModalController">
             <property name="MeanServiceTime1" class="ptolemy.data.expr.Parameter" value="10.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -573,27 +573,27 @@ UpdateMST event is processed.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 95.0]">
                 </property>
             </property>
-            <port name="serversIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="serversIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 170.0]">
                 </property>
             </port>
-            <port name="queueIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="queueIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 220.0]">
                 </property>
             </port>
-            <port name="serversOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="serversOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 170.0]">
                 </property>
             </port>
-            <port name="queueOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="queueOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 220.0]">
                 </property>
             </port>
-            <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="Init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -601,24 +601,24 @@ UpdateMST event is processed.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[299.5, 61.89177594706416]">
                 </property>
             </entity>
-            <entity name="Slow" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="Slow" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[299.5, 161.89177594706416]">
                 </property>
             </entity>
-            <entity name="Fast" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="Fast" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 275.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="MST = MeanServiceTime1">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="MST = MeanServiceTime1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -633,12 +633,12 @@ UpdateMST event is processed.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Queue &gt; 20">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="MST = MeanServiceTime2">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="MST = MeanServiceTime2">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -653,12 +653,12 @@ UpdateMST event is processed.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Queue &lt; 10">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="MST = MeanServiceTime1">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="MST = MeanServiceTime1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>

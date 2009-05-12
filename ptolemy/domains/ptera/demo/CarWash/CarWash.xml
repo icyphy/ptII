@@ -148,16 +148,16 @@ is stable statistically.</text></svg></configure>
     <entity name="PteraModalModel" class="ptolemy.domains.ptera.kernel.PteraModalModel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
         </property>
-        <port name="serversInput" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="serversInput" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="queueInput" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="queueInput" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="serversOutput" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="serversOutput" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="queueOutput" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="queueOutput" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
@@ -211,23 +211,23 @@ is stable statistically.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <port name="serversInput" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="serversInput" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 175.0]">
                 </property>
             </port>
-            <port name="queueInput" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="queueInput" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
                 </property>
             </port>
-            <port name="serversOutput" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="serversOutput" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 130.0]">
                 </property>
             </port>
-            <port name="queueOutput" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="queueOutput" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 285.0]">

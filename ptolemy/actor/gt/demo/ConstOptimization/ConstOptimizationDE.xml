@@ -67,11 +67,11 @@
     <entity name="TransformationController" class="ptolemy.actor.gt.controller.TransformationController">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 195.0]">
         </property>
-        <port name="finished" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="finished" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
-            <port name="finished" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="finished" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 265.0]">

@@ -29,7 +29,7 @@ package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
 import ptolemy.data.Token;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.kernel.CompositeEntity;

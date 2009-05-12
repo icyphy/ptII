@@ -37,7 +37,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.operations.Operation;
-import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.modal.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

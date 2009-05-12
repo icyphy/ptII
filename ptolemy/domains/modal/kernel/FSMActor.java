@@ -880,21 +880,26 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // If there is a transition enabled in the initial state, then request a
         // refiring at the current time. The initial state may be transient.
-        List transitionList = _currentState.outgoingPort.linkedRelationList();
-        try {
-            List enabledTransitions = enabledTransitions(transitionList);
-            if (enabledTransitions.size() > 0) {
-                if (_debugging) {
-                    _debug("FSMActor requesting refiring by at "
-                            + getDirector().getModelTime());
+        //
+        // There is no current state when the FSMActor is in fact a Ptera
+        // controller. (tfeng 05/12/2009)
+        if (_currentState != null) {
+            List transitionList = _currentState.outgoingPort.linkedRelationList();
+            try {
+                List enabledTransitions = enabledTransitions(transitionList);
+                if (enabledTransitions.size() > 0) {
+                    if (_debugging) {
+                        _debug("FSMActor requesting refiring by at "
+                                + getDirector().getModelTime());
+                    }
+                    getDirector().fireAtCurrentTime(this);
                 }
-                getDirector().fireAtCurrentTime(this);
+            } catch (UndefinedConstantOrIdentifierException ex) {
+                // An identifier in a guard expression could not be evaluated.
+                // We interpret this to mean that we should not fire at time zero.
+                // An alternative would be to always request a firing at time zero.
+                // Would that be correct?
             }
-        } catch (UndefinedConstantOrIdentifierException ex) {
-            // An identifier in a guard expression could not be evaluated.
-            // We interpret this to mean that we should not fire at time zero.
-            // An alternative would be to always request a firing at time zero.
-            // Would that be correct?
         }
     }
 

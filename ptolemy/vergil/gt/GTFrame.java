@@ -55,7 +55,7 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
-import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;

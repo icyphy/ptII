@@ -32,8 +32,8 @@ import java.awt.BasicStroke;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.ptera.kernel.SchedulingRelation;
-import ptolemy.vergil.fsm.Arc;
-import ptolemy.vergil.fsm.TransitionController;
+import ptolemy.vergil.modal.Arc;
+import ptolemy.vergil.modal.TransitionController;
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
 import diva.canvas.connector.Connector;

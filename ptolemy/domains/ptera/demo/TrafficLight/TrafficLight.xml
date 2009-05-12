@@ -275,27 +275,27 @@ hierarchical Ptera modal model.</text></svg></configure>
     <entity name="TrafficLight" class="ptolemy.domains.ptera.kernel.PteraModalModel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{199.83323669433594, 145.00029754638672}">
         </property>
-        <port name="Cred" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Cred" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="Cgrn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Cgrn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="Cyel" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Cyel" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="Pred" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Pred" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="Pgrn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Pgrn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="OK" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="OK" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="Error" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Error" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -337,42 +337,42 @@ state, and wait for the trigger at the OK port.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 260.0]">
                 </property>
             </property>
-            <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 55.0]">
                 </property>
             </port>
-            <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 95.0]">
                 </property>
             </port>
-            <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 140.0]">
                 </property>
             </port>
-            <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pred" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 180.0]">
                 </property>
             </port>
-            <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pgrn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 220.0]">
                 </property>
             </port>
-            <port name="OK" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OK" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 120.0]">
                 </property>
             </port>
-            <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 160.0]">
                 </property>
@@ -704,37 +704,37 @@ The inputs are simply ignored.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 60.0]">
                 </property>
             </port>
-            <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 115.0]">
                 </property>
             </port>
-            <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 170.0]">
                 </property>
             </port>
-            <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pred" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 220.0]">
                 </property>
             </port>
-            <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pgrn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 275.0]">
                 </property>
             </port>
-            <port name="OK" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OK" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 100.0]">
                 </property>
             </port>
-            <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 235.0]">
                 </property>
@@ -946,37 +946,37 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 325.0]">
                 </property>
             </property>
-            <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 85.0]">
                 </property>
             </port>
-            <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 135.0]">
                 </property>
             </port>
-            <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 185.0]">
                 </property>
             </port>
-            <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pred" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 235.0]">
                 </property>
             </port>
-            <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pgrn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 285.0]">
                 </property>
             </port>
-            <port name="OK" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OK" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 140.0]">
                 </property>
             </port>
-            <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 240.0]">
                 </property>
@@ -1188,10 +1188,10 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
     <entity name="ErrorGenerator" class="ptolemy.domains.ptera.kernel.PteraModalModel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{69.83323669433594, 145.00029754638672}">
         </property>
-        <port name="OK" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="OK" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="Error" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Error" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
@@ -1218,13 +1218,13 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 35.0]">
                 </property>
             </property>
-            <port name="OK" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OK" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 160.0]">
                 </property>
             </port>
-            <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 240.0]">

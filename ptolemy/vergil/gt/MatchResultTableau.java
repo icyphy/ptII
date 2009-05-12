@@ -43,7 +43,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.fsm.CaseGraphTableau;
+import ptolemy.vergil.modal.CaseGraphTableau;
 import ptolemy.vergil.tree.TreeTableau;
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,7 +27,7 @@
 */
 package ptolemy.domains.ptera.kernel;
 
-import ptolemy.domains.fsm.kernel.StateEvent;
+import ptolemy.domains.modal.kernel.StateEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// EventDebugEvent

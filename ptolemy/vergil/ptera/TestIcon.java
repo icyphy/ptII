@@ -52,7 +52,7 @@ import diva.canvas.toolbox.LabelFigure;
 import diva.util.java2d.Polygon2D;
 
 //////////////////////////////////////////////////////////////////////////
-////TestIcon
+//// TestIcon
 
 /**
 

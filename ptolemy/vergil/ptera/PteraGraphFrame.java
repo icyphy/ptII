@@ -34,8 +34,8 @@ import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.fsm.FSMGraphFrame;
-import ptolemy.vergil.fsm.FSMGraphModel;
+import ptolemy.vergil.modal.FSMGraphFrame;
+import ptolemy.vergil.modal.FSMGraphModel;
 import diva.graph.GraphPane;
 
 /**

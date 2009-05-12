@@ -6,12 +6,12 @@
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 135}">
     </property>
-    <port name="modelInput" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="modelInput" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
         </property>
     </port>
-    <port name="modelOutput" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="modelOutput" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 200.0]">
         </property>

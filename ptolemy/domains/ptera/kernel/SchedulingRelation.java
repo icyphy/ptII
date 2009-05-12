@@ -53,7 +53,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

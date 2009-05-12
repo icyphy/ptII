@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
-import ptolemy.vergil.fsm.modal.HierarchicalStateController;
+import ptolemy.vergil.modal.modal.HierarchicalStateController;
 import diva.graph.GraphController;
 
 /**
