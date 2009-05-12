@@ -585,6 +585,7 @@ public class PNDirector extends Director {
      * director.
      * @param port The specified port.
      * @param channelNumber The specified channel number.
+     * @return The size of the generated buffer.
      * @exception IllegalActionException If an error occurs
      *  when getting the value from the parameter.
      */
