@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.gt;
+package ptolemy.vergil.ptera;
 
 import java.awt.Color;
 import java.awt.Font;

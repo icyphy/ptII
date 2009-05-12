@@ -59,6 +59,7 @@ JSRCS = \
 	EventIcon.java \
 	OctagonEventIcon.java \
 	SchedulingRelationController.java \
+	TestIcon.java \
 	TimeAdvanceEventIcon.java
 
 EXTRA_SRCS =    $(JSRCS)

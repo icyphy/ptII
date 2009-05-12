@@ -311,7 +311,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
+
         _graphicalClasses.put("ptolemy.vergil.ptera.EventIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ptera.OctagonEventIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ptera.TestIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ptera.TimeAdvanceEventIcon",
+                null);
+
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.DesignPatternIcon", null);
@@ -375,13 +381,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.NameIcon", null);
 
-	// Needed modal/demo/SystemLevelTypes/*.xml
+    // Needed modal/demo/SystemLevelTypes/*.xml
         _graphicalClasses.put("ptolemy.vergil.modal.StateIcon", null);
 
         // Exclude DependencyHighlighter
         _graphicalClasses.put("ptolemy.actor.gui.DependencyHighlighter", null);
 
-	// properties classes
+    // properties classes
         _graphicalClasses.put("ptolemy.vergil.properties.ModelAttributeController",
                 null);
         _graphicalClasses.put("ptolemy.domains.properties.kernel.ModelAttribute",
