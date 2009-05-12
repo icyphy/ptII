@@ -5,10 +5,16 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 30, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -16,28 +22,92 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="Audio" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205, 190}">
+    <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 240.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 239, 815, 518}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{146.1658775252525, 242.6091382575758}">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 75.0]">
+            </property>
         </property>
         <port name="songID" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 280.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 380.0]">
             </property>
         </port>
         <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;salsa&quot;, &quot;belly&quot;, &quot;modern&quot;}">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;salsa&quot;}">
             </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 210.0]">
             </property>
         </entity>
-        <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 190.0]">
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 225.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;.wav&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 275.0]">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;audio/&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 155.0]">
+            </property>
+        </entity>
+        <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="44100">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 150.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AudioReader.fileOrURL">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 225.0]">
             </property>
         </entity>
         <entity name="AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
-            <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
+            <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="44100">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
                     </property>
@@ -59,7 +129,7 @@
                     </property>
                 </property>
             </property>
-            <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="1">
+            <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="2">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
                     </property>
@@ -67,11 +137,102 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 190.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 225.0]">
             </property>
         </entity>
+        <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="audio/salsa.wav">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 225.0]">
+            </property>
+        </entity>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[70.0, 225.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[-45.0, 210.0]">
+            </vertex>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </relation>
+        <link port="songID" relation="relation8"/>
+        <link port="Sequence.output" relation="relation8"/>
+        <link port="AddSubtract.plus" relation="relation3"/>
+        <link port="AddSubtract.plus" relation="relation8"/>
+        <link port="AddSubtract.plus" relation="relation6"/>
+        <link port="AddSubtract.output" relation="relation4"/>
+        <link port="Const.output" relation="relation6"/>
+        <link port="Const2.output" relation="relation3"/>
+        <link port="Repeat.input" relation="relation7"/>
+        <link port="Repeat.output" relation="relation"/>
+        <link port="SetVariable.input" relation="relation4"/>
+        <link port="SetVariable.output" relation="relation7"/>
+        <link port="AudioPlayer.input" relation="relation2"/>
+        <link port="AudioReader.output" relation="relation2"/>
+        <link port="AudioReader.trigger" relation="relation"/>
+    </entity>
+    <entity name="Graphics" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 200.0}">
+        </property>
+        <property name="numberOfJoints" class="ptolemy.data.expr.Parameter" value="16">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 80.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 996, 776}, maximized=true}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 658]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.02288510101, 363.1704545454546}">
+        </property>
+        <port name="songName" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 185.0]">
+            </property>
+        </port>
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AudioReader.fileOrURL">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ExpressionReader.fileOrURL">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
@@ -79,54 +240,130 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 190.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 200.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="100">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 200.0]">
+            </property>
+        </entity>
+        <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
+            <property name="blockSize" class="ptolemy.data.expr.Parameter" value="numberOfJoints">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 190.0]">
+            </property>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;.txt&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-        </relation>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-85.0, 285.0}">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;positions/&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="positions/salsa.txt">
+            </property>
+            <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(double,3)">
+                </property>
+            </port>
+        </entity>
+        <entity name="Discard" class="ptolemy.actor.lib.Discard">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{665, 210}">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                </property>
+            </port>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
-            <vertex name="vertex1" value="[75.0, 225.0]">
-            </vertex>
         </relation>
-        <link port="songID" relation="relation4"/>
-        <link port="Sequence.output" relation="relation4"/>
-        <link port="AudioReader.output" relation="relation"/>
-        <link port="AudioReader.trigger" relation="relation2"/>
-        <link port="AudioPlayer.input" relation="relation"/>
-        <link port="SetVariable.input" relation="relation4"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="songName" relation="relation6"/>
+        <link port="SetVariable.input" relation="relation7"/>
         <link port="SetVariable.output" relation="relation2"/>
-    </entity>
-    <entity name="Graphics" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 190}">
-        </property>
-        <property name="GRODirector" class="ptolemy.domains.gro.kernel.GRODirector">
-            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-            </property>
-            <property name="iterationInterval" class="ptolemy.data.expr.Parameter" value="{0,100000000}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 60.0]">
-            </property>
-        </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-            </property>
-        </port>
+        <link port="Repeat.input" relation="relation2"/>
+        <link port="Repeat.output" relation="relation3"/>
+        <link port="Distributor.input" relation="relation4"/>
+        <link port="Distributor.output" relation="relation5"/>
+        <link port="AddSubtract.plus" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation6"/>
+        <link port="AddSubtract.plus" relation="relation8"/>
+        <link port="AddSubtract.output" relation="relation7"/>
+        <link port="Const.output" relation="relation8"/>
+        <link port="Const2.output" relation="relation"/>
+        <link port="ExpressionReader.output" relation="relation4"/>
+        <link port="ExpressionReader.trigger" relation="relation3"/>
+        <link port="Discard.input" relation="relation5"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <link port="Audio.songID" relation="relation"/>
-    <link port="Graphics.port" relation="relation"/>
+    <link port="Controller.songID" relation="relation"/>
+    <link port="Graphics.songName" relation="relation"/>
 </entity>
