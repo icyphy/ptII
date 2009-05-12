@@ -224,15 +224,17 @@ public class PtidesEmbeddedDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    protected String _generateActuatorActuationFuncArrayCode() {
+    protected String _generateActuatorActuationFuncArrayCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         if (_actuators.size() > 0) {
             code.append("static void (*actuatorActuations[" + _actuators.size() + "])() = {");
             Iterator it = _actuators.keySet().iterator();
-            code.append("Actuation_" + CodeGeneratorHelper.generateName((NamedObj) it.next()));
+            Actor actor = (Actor)it.next();
+            code.append("Actuation_" + CodeGeneratorHelper.generateName((NamedObj) actor));
             while (it.hasNext()) {
-                code.append(", Actuation_" + CodeGeneratorHelper.generateName((NamedObj) it.next()));
+                actor = (Actor)it.next();
+                code.append(", Actuation_" + CodeGeneratorHelper.generateName((NamedObj) actor));
             }       
             code.append("};" + _eol);
         }
@@ -240,12 +242,13 @@ public class PtidesEmbeddedDirector extends Director {
         return code.toString();
     }
     
-    protected String _generateActuatorActuationFuncProtoCode() {
+    protected String _generateActuatorActuationFuncProtoCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         for (Actor actor : (List<Actor>)((CompositeActor) _director.getContainer()).deepEntityList()) {
             if (actor instanceof OutputDevice) {
-                code.append("void Actuation_" + CodeGeneratorHelper.generateName((NamedObj) actor) + "(void);" + _eol);
+                code.append("void Actuation_" + CodeGeneratorHelper.generateName((NamedObj) actor)
+                        + "(void);" + _eol);
             }
         }
         
@@ -399,20 +402,21 @@ public class PtidesEmbeddedDirector extends Director {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
-            code.append("void " + CodeGeneratorHelper.generateName((NamedObj) actor) + "() " + "{" + _eol);
-            code.append(helper.generateFireCode());
             
-            // After each actor firing, the Event Head ptr needs to point to null
-            code.append(_generateClearEventHeadCode(actor));
-            code.append("}" + _eol);
+            CodeGeneratorHelper helper = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
             
             if (actor instanceof OutputDevice) {
-                code.append("void Actuation_" + CodeGeneratorHelper.generateName((NamedObj) actor) + "(void) {" + _eol);
+                code.append("void Actuation_" + CodeGeneratorHelper.generateName((NamedObj) actor) + "() {" + _eol);
                 code.append(((ptolemy.codegen.c.domains.ptides.lib.OutputDevice)helper)
                         .generateActuatorActuationFuncCode());
                 code.append("}" + _eol);
             }
+            code.append("void " + CodeGeneratorHelper.generateName((NamedObj) actor) + "() " + "{" + _eol);
+            code.append(helper.generateFireCode());
+
+            // After each actor firing, the Event Head ptr needs to point to null
+            code.append(_generateClearEventHeadCode(actor));
+            code.append("}" + _eol);
         }
         
         return code.toString();

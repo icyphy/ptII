@@ -513,12 +513,23 @@ void safeToProcess(Event* thisEvent, Time* safeTimestamp) {
 /*** initPIBlock ***/
 // the platform independent initialization code goes here.
 initializeEvents();
+initializeMemory();
 /**/
 
 /*** initPICodeBlock ***/
 // the platform independent initialization code goes here.
 void initializeEvents(void) {
     // no event initialization is needed here... for now.
+}
+void initializeMemory() {
+	int i;
+	locationCounter = 0;
+	secs = 0;
+						  
+	for(i =0; i< MAX_EVENTS; i++) {
+	    // event is "freed and can be returned by newEvent"
+		eventMemory[i].inUse = MAX_EVENTS + 1; 
+	}
 }
 /**/
 
