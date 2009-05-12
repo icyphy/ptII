@@ -33,12 +33,15 @@ import java.util.List;
 import ptolemy.codegen.c.domains.ptides.kernel.PtidesEmbeddedDirector;
 import ptolemy.codegen.c.domains.ptides.lib.OutputDevice;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDeviceA.
+ * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice.
  * @author Jia Zou, Isaac Liu, Jeff Jensen
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -46,13 +49,32 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating Red (jiazou)
  */
 
-public class GPOutputDeviceA extends OutputDevice {
+public class GPOutputDevice extends OutputDevice {
     /** Construct a helper with the given
      *  ptolemy.domains.ptides.lib.GPIOA_Transmitter actor.
-     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDeviceA actor.
+     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
+     *  @throws IllegalActionException 
+     * @throws NameDuplicationException 
      */
-    public GPOutputDeviceA(ptolemy.domains.ptides.lib.targets.luminary.GPOutputDeviceA actor) {
+    public GPOutputDevice(ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor) throws IllegalActionException, NameDuplicationException {
         super(actor);
+        
+        Parameter pinParameter = actor.pin;
+        StringParameter padParameter = actor.pad;
+        _pinID = null;
+        _padID = null;
+
+        if (pinParameter != null) {
+            _pinID = ((IntToken) pinParameter.getToken()).toString();
+        } else {
+            throw new IllegalActionException("does not know what pin this output device is associated to.");
+        }
+        if (padParameter != null) {
+            _padID = padParameter.stringValue();
+        } else {
+            throw new IllegalActionException("does not know what pin this output device is associated to.");
+        }
+        
     }
     
     ////////////////////////////////////////////////////////////////////
@@ -62,16 +84,8 @@ public class GPOutputDeviceA extends OutputDevice {
     public String generateActuatorActuationFuncCode() throws IllegalActionException {
         List args = new LinkedList();
         
-        ptolemy.domains.ptides.lib.targets.luminary.GPOutputDeviceA actor = (ptolemy.domains.ptides.lib.targets.luminary.GPOutputDeviceA) getComponent();
-        Parameter parameter = (Parameter)((NamedObj) actor).getAttribute("pin");
-        String stringToken = null;
-        if (parameter != null) {
-            stringToken = ((IntToken) parameter.getToken()).toString();
-        } else {
-            throw new IllegalActionException("does not know what pin this output device is associated to.");
-        }
-        
-        args.add(stringToken);
+        args.add(_padID);
+        args.add(_pinID);
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("actuationBlock", args);
@@ -93,7 +107,7 @@ public class GPOutputDeviceA extends OutputDevice {
 
         List args = new LinkedList();
         
-        ptolemy.domains.ptides.lib.targets.luminary.GPOutputDeviceA actor = (ptolemy.domains.ptides.lib.targets.luminary.GPOutputDeviceA) getComponent();
+        ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice) getComponent();
         PtidesEmbeddedDirector helper = (PtidesEmbeddedDirector)_getHelper(actor.getDirector());
 
         args.add((helper._actuators.get(actor)).toString());
@@ -103,4 +117,7 @@ public class GPOutputDeviceA extends OutputDevice {
 
         return processCode(_codeStream.toString());
     }
+    
+    private String _pinID;
+    private String _padID;
 }

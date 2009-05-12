@@ -58,7 +58,7 @@ else
 #endif	   
 /**/
  
-/*** actuationBlock($pin) ***/
+/*** actuationBlock($pad, $pin) ***/
 $actorSymbol(result) ^= $actorSymbol(result);	//Toggle pin value
-GPIOPinWrite(GPIO_PORTA_BASE,GPIO_PIN_$pin,GPIO_PIN_$pin*$actorSymbol(result));
+GPIOPinWrite(GPIO_PORT$pad_BASE,GPIO_PIN_$pin,GPIO_PIN_$pin*$actorSymbol(result));
 /**/
