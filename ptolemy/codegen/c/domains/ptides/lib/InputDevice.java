@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */
-public class InputDevice extends CCodeGeneratorHelper {
+public abstract class InputDevice extends CCodeGeneratorHelper {
 
     /**
      * Construct a SensorReceiver helper.

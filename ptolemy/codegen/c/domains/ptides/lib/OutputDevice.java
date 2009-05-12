@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @version $Id$
  @since Ptolemy II 7.1
  */
-public class OutputDevice extends CCodeGeneratorHelper {
+public abstract class OutputDevice extends CCodeGeneratorHelper {
 
     /**
      * Construct a ActorTransmitter helper.
@@ -66,5 +66,5 @@ public class OutputDevice extends CCodeGeneratorHelper {
     
     public String generateActuatorActuationFuncCode() throws IllegalActionException {
         return "";
-    }
+    }    
 }
