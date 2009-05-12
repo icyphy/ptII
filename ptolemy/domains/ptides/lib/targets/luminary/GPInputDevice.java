@@ -24,10 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.domains.ptides.lib.targets.luminary;
 
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ptides.lib.SensorInputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -41,9 +43,24 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author elgeeko
  *
  */
-public abstract class GPInputDevice extends SensorInputDevice {
+public class GPInputDevice extends SensorInputDevice {
     public GPInputDevice(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {        
         super(container, name);
+        pin = new Parameter(this, "pin");
+        //FIXME: GPIO A7 is an easy-to-use output, but should it be default?
+        pin.setExpression("7");
+        pad = new StringParameter(this, "pad");
+        pad.setExpression("A");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       parameters                          ////
+
+    /** Which pad (A-G) and pin (0-7) of GPIO to use
+     * FIXME: Verify user has set value between 0 and 7
+     */
+    public Parameter pin;
+
+    public StringParameter pad;
 }

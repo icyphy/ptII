@@ -28,22 +28,39 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.targets.luminary;
 
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * This is an abstract class for GPIO pins on the Luminary Micro.
+ * This is a class for GPIO pins on the Luminary Micro.
  * This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
  * 
  * @author elgeeko
  *
  */
-public abstract class GPOutputDevice extends ActuatorOutputDevice {
+public class GPOutputDevice extends ActuatorOutputDevice {
     public GPOutputDevice(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
+        pin = new Parameter(this, "pin");
+        //FIXME: GPIO A7 is an easy-to-use output, but should it be default?
+        pin.setExpression("7");
+        pad = new StringParameter(this, "pad");
+        pad.setExpression("A");
+}
+
+///////////////////////////////////////////////////////////////////
+////                       parameters                          ////
+
+    /** Which pad (A-G) and pin (0-7) of GPIO to use
+     * FIXME: Verify user has set value between 0 and 7
+     */
+    public Parameter pin;
+    
+    public StringParameter pad;
 }
