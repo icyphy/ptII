@@ -181,6 +181,8 @@ public class DebuggerParameter extends TableauParameter
         Mode mode = (Mode) this.mode.getChosenValue();
         if (mode == Mode.B_CHECK_LOG) {
             _lines = log.getExpression().split("\n", -1);
+        } else if (mode == Mode.C_RECORD_LOG) {
+            log.setExpression("");
         }
         _registerDebugListener(true);
     }
