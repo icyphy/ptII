@@ -86,8 +86,8 @@ RAMP_CLASS = $(ROOT)/ptolemy/codegen/c/actor/lib/Ramp.class
 
 $(RAMP_CLASS): 
 	if [ ! -f $(RAMP_CLASS) ]; then \
-	    echo "Building codegen/c classes so tests work"; \
-	    cd $(ROOT)/ptolemy/codegen/c; $(MAKE) fast; \
+	    echo "Building cg/c classes so tests work"; \
+	    cd $(ROOT)/ptolemy/cg/adapter; $(MAKE) fast; \
         fi
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
