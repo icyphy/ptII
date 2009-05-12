@@ -49,9 +49,9 @@ public class GPInputDevice extends SensorInputDevice {
         super(container, name);
         pin = new Parameter(this, "pin");
         //FIXME: GPIO A7 is an easy-to-use output, but should it be default?
-        pin.setExpression("7");
+        pin.setExpression("0");
         pad = new StringParameter(this, "pad");
-        pad.setExpression("A");
+        pad.setExpression("G");
     }
 
     ///////////////////////////////////////////////////////////////////

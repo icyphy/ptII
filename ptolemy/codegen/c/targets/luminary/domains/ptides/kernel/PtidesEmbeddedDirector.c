@@ -32,54 +32,9 @@ $super.FuncProtoBlock();
 /**/
 
 /*** FuncBlock ***/
-
-/* hack */
-
-//IntGPIOa and IntGPIOg needs to push currentModelTag onto stack.
-
-// This is the handler for INT_GPIOG. 
-// This ISR is used to restore the previous stack after processEvents()
-void IntGPIOg(void) {
-
-	GPIOPinIntClear(GPIO_PORTG_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 
-		| GPIO_PIN_6 | GPIO_PIN_7);
- 
-	#ifdef LCD_DEBUG
-	sprintf(str,"A");
-	RIT128x96x4StringDraw(str, 115,0,15);
-	#endif
-
-	// do not need to disable interrupts if all interrupts have the same priority
-	//disableInterrupts();
-    OnePlatform_CompositeActor_SensorInputDevice2();
-	// stack manipulation here instead of later.
-	addStack();   
-}
-
-void IntGPIOa(void) {
-
-	GPIOPinIntClear(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 
-		| GPIO_PIN_6 | GPIO_PIN_7);
-
-	#ifdef LCD_DEBUG
-	sprintf(str,"A");
-	RIT128x96x4StringDraw(str, 115,0,15);
-	#endif
-
-	// do not need to disable interrupts if all interrupts have the same priority
-	//disableInterrupts();
-    OnePlatform_CompositeActor_SensorInputDevice();
-	// stack manipulation here instead of later.
-	addStack();
-}
-void Actuation_OnePlatform_CompositeActor_ActuatorOutputDevice(void) {
-    //FIXME: add something.
-}
-
 void exit(int zero) {
 	die("program exit?");
 }
-/* end of hack */
 
 /* convert between cycles and time */
 unsigned long convertCyclesToNsecs(unsigned long cycles) {
@@ -160,7 +115,6 @@ void setTimedInterrupt(const Time* safeToProcessTime) {
     IntEnable(INT_TIMER0A);
 	IntEnable(INT_TIMER0B);
 	TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
-	//TimerIntEnable(TIMER0_BASE,TIMER_TIMB_TIMEOUT);
 
     // Enable the timers.
     //
@@ -170,20 +124,28 @@ void setTimedInterrupt(const Time* safeToProcessTime) {
 
 void Timer0IntHandler(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-        if (timerInterruptSecsLeft > 0) {
-                TimerLoadSet(TIMER0_BASE, TIMER_BOTH, TIMER_ROLLOVER_CYCLES);
-                timerInterruptSecsLeft--;
-                return;
-        }
+    if (timerInterruptSecsLeft > 0) {
+            TimerLoadSet(TIMER0_BASE, TIMER_BOTH, TIMER_ROLLOVER_CYCLES);
+            timerInterruptSecsLeft--;
+            return;
+    }
 
-        timeSet(MAX_TIME, &lastTimerInterruptTime);
-        TimerDisable(TIMER0_BASE, TIMER_BOTH);
-        IntDisable(INT_TIMER0A);
-        IntDisable(INT_TIMER0B);
-        TimerIntDisable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-        TimerIntDisable(TIMER0_BASE, TIMER_TIMB_TIMEOUT);
-        disableInterrupts();
-        addStack();
+    // need to push the currentModelTag onto the stack.
+    executingModelTag[numStackedModelTag].microstep = currentMicrostep;
+    timeSet(currentModelTime, &(executingModelTag[numStackedModelTag].timestamp));
+    numStackedModelTag++;
+    if (numStackedModelTag > MAX_EVENTS) {
+        die("MAX_EVENTS too small for numStackedModelTag");
+    }
+
+    // disable interrupts, then add stack to execute processEvents().
+    timeSet(MAX_TIME, &lastTimerInterruptTime);
+    TimerDisable(TIMER0_BASE, TIMER_BOTH);
+    IntDisable(INT_TIMER0A);
+    IntDisable(INT_TIMER0B);
+    TimerIntDisable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+    TimerIntDisable(TIMER0_BASE, TIMER_TIMB_TIMEOUT);
+    addStack();
 }
 
 /* systick handler */
@@ -431,10 +393,10 @@ void Timer1IntHandler(void) {
 
 /*** initPDBlock***/
 // the platform dependent initialization code goes here.
-initializeGPIO();
 initializeTimers();
-initializeInterrupts();
 initializeSystemClock();
+initializeGPIO();
+initializeInterrupts();
 /**/
 
 /*** initPDCodeBlock ***/
@@ -459,19 +421,23 @@ void initializeSystemClock() {
 	IntEnable(FAULT_SYSTICK);  //sys tick vector
 }
 void initializeInterrupts(void) {
-    //FIXME;
+    IntMasterEnable();
 }
 /**/
 
 /*** initializeGPInput($pad, $pin) ***/
+// initialization for GPInput$pad$pin
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
 GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN); 
 GPIOPinTypeGPIOInput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 GPIOIntTypeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_RISING_EDGE);  // to set rising edge
 GPIOPinIntEnable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+IntPrioritySet(INT_GPIO$pad, 0x00);
+IntEnable(INT_GPIO$pad);
 /**/
 
 /*** initializeGPOutput($pad, $pin) ***/
+// initialization for GPOutput$pad$pin
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
 GPIOPadConfigSet(GPIO_PORT$pad_BASE,GPIO_PIN_$pin,GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD); 
 GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_OUT); 

@@ -411,6 +411,13 @@ public class PtidesEmbeddedDirector extends Director {
                         .generateActuatorActuationFuncCode());
                 code.append("}" + _eol);
             }
+            
+            if (actor instanceof InputDevice) {
+                code.append("void Sensing_" + CodeGeneratorHelper.generateName((NamedObj) actor) + "() {" + _eol);
+                code.append(((ptolemy.codegen.c.domains.ptides.lib.InputDevice)helper)
+                        .generateSensorSensingFuncCode());
+                code.append("}" + _eol);
+            }
             code.append("void " + CodeGeneratorHelper.generateName((NamedObj) actor) + "() " + "{" + _eol);
             code.append(helper.generateFireCode());
 

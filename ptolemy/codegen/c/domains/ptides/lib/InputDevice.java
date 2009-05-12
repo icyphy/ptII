@@ -63,4 +63,8 @@ public abstract class InputDevice extends CCodeGeneratorHelper {
 
         return code.toString();
     }
+    
+    public String generateSensorSensingFuncCode() throws IllegalActionException {
+        return "";
+    }
 }

@@ -357,10 +357,4 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-//    /**
-//     * The set of referable channels that are associated
-//     * with a generated queue.
-//     */
-//    private HashSet<Channel> _queues = new HashSet<Channel>();
 }
