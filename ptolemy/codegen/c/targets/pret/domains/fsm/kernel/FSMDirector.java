@@ -81,7 +81,6 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
      * */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
     throws IllegalActionException {
-        System.out.println("//generate transferOutputsCode inside OpenRTOS FSM director called.");
         code.append(_eol+"//generate transferOutputsCode inside pret FSM  director called."+_eol);
         super.generateTransferOutputsCode(outputPort,code);
 
@@ -96,24 +95,24 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
         ptolemy.domains.fsm.kernel.FSMActor controller = director
         .getController();
         //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-    
+
         //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
         //        .booleanValue();
-    
+
         int depth = 1;
-    
+
         //Iterator states = controller.entityList().iterator();
         Iterator states = controller.deepEntityList().iterator();
         int stateCount = 0;
         depth++;
-    
+
         while (states.hasNext()) {
             // code.append(_getIndentPrefix(depth));
             //code.append("case " + stateCount + ":" + _eol);
             stateCount++;
-    
+
             depth++;
-    
+
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
             Set<Actor> actorsSet= new HashSet();;
@@ -123,7 +122,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                     actorsSet.add(actors[i]);
                 }
             }
-    
+
             if (actors != null) {
                 //for (int i = 0; i < actors.length; i++) {
                 Iterator actorIterator = actorsSet.iterator();
@@ -131,13 +130,14 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                 while(actorIterator.hasNext()){
                     actors2 = (Actor)actorIterator.next();
                     CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors2);
-                    code.append("void "+_getActorName(actors2)+"(){");
-                    code.append(actorHelper.generateFireCode());
+                    //code.append("void "+_getActorName(actors2)+"(){");
+                    //code.append(actorHelper.generateFireCode());
+                    code.append(actorHelper.generateFireFunctionCode());  
                     code.append(actorHelper.generateTypeConvertFireCode());
-                    code.append(_eol+"}"+_eol);
+                    //code.append(_eol+"}"+_eol);
                 }}
         }
-    
+
         return code.toString();
     }
 
