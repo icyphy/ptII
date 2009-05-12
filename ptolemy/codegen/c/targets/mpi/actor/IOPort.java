@@ -121,19 +121,18 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         }
     }
 
-    public String generatePreFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        if (_isPthread()) {
-            code.append("MPI_recv();" + _eol);
-        }
-        return code.toString();
-    }
-
-
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         if (_isPthread()) {
             code.append("MPI_send();" + _eol);
+        }
+        return code.toString();
+    }
+
+    public String generatePreFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        if (_isPthread()) {
+            code.append("MPI_recv();" + _eol);
         }
         return code.toString();
     }

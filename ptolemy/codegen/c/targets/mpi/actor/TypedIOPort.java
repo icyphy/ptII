@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.actor;
+package ptolemy.codegen.c.targets.mpi.actor;
 
 
 public class TypedIOPort extends IOPort {
