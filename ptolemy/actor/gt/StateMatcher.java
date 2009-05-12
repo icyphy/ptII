@@ -242,7 +242,9 @@ ValueListener {
     }
 
     public boolean match(NamedObj object) {
-        return object instanceof State;
+        return object instanceof State ||
+                object.getClass().getName().equals(
+                        "ptolemy.domains.fsm.kernel.State");
     }
 
     public Receiver newReceiver() throws IllegalActionException {

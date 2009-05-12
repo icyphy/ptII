@@ -165,7 +165,9 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *  @return Whether this GTEntity can match the given object.
      */
     public boolean match(NamedObj object) {
-        return object instanceof FSMActor;
+        return object instanceof FSMActor ||
+                object.getClass().getName().equals(
+                        "ptolemy.domains.fsm.kernel.FSMActor");
     }
 
     /** Create a new instance of Transition with the specified name in

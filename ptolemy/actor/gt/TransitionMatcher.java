@@ -133,7 +133,9 @@ ValueListener {
     }
 
     public boolean match(NamedObj object) {
-        return object instanceof Transition;
+        return object instanceof Transition ||
+                object.getClass().getName().equals(
+                        "ptolemy.domains.fsm.kernel.Transition");
     }
 
     public void updateAppearance(GTIngredientsAttribute attribute) {
