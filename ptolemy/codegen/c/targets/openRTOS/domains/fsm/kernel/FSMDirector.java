@@ -128,7 +128,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
     throws IllegalActionException {
         code.append(_eol+"//generate transferOutputsCode inside OPENRTOS FSM  director called."+_eol);
         super.generateTransferOutputsCode(outputPort,code);
-    
+
     }
 
     /**Generate code for all the actors associated with the given FSMDirector
@@ -140,19 +140,19 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
         ptolemy.domains.fsm.kernel.FSMActor controller = director
         .getController();
         int depth = 1;
-    
+
         //Iterator states = controller.entityList().iterator();
         Iterator states = controller.deepEntityList().iterator();
         int stateCount = 0;
         depth++;
-    
+
         while (states.hasNext()) {
             // code.append(_getIndentPrefix(depth));
             //code.append("case " + stateCount + ":" + _eol);
             stateCount++;
-    
+
             depth++;
-    
+
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
             Set<Actor> actorsSet= new HashSet();;
@@ -162,7 +162,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                     actorsSet.add(actors[i]);
                 }
             }
-    
+
             if (actors != null) {
                 //for (int i = 0; i < actors.length; i++) {
                 Iterator actorIterator = actorsSet.iterator();
@@ -180,12 +180,12 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                     else
                     {
                         code.append(_eol+"//modal model contains giotto director"+_eol); 
-    
+
                     }
                 }
             }
         }
-    
+
         return code.toString();
     }
 
@@ -197,40 +197,40 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
      */
     protected void _generateRefinementCode(StringBuffer code)
     throws IllegalActionException {
-    
+
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
         .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-    
+
         int depth = 1;
         code.append(_getIndentPrefix(depth));
         code.append("switch ("
                 + controllerHelper.processCode("$actorSymbol(currentState)")
                 + ") {" + _eol);
-    
+
         Iterator states = controller.entityList().iterator();
         int stateCount = 0;
         depth++;
-    
+
         while (states.hasNext()) {
             code.append(_getIndentPrefix(depth));
             code.append("case " + stateCount + ":" + _eol);
             stateCount++;
-    
+
             depth++;
-    
+
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
-    
+
             if (actors != null) {
                 for (int i = 0; i < actors.length; i++) {
                     CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
-    
+
                     // fire the actor
                     //code.append(actorHelper.generateFireCode());
                     code.append(_getActorName(actors[i])+"();"+_eol);
-    
+
                     // update buffer offset after firing each actor once
                     int[][] rates = actorHelper.getRates();
                     Iterator ports = ((Entity) actors[i]).portList().iterator();
@@ -266,15 +266,15 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                         }
                         portNumber++;
                     }
-    
+
                 }
             }
-    
+
             code.append(_getIndentPrefix(depth));
             code.append("break;" + _eol); //end of case statement
             depth--;
         }
-    
+
         depth--;
         code.append(_getIndentPrefix(depth));
         code.append("}" + _eol); //end of switch statement
@@ -291,21 +291,21 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
         actorFullName = actorFullName.replace(' ', '_');
         return actorFullName;
     }
-    
+
     public double _getWCET()throws IllegalActionException
     {
         double myWCET = 3.0;
-        
+
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
         int depth = 1;
-    
+
         Iterator states = controller.deepEntityList().iterator();
         int stateCount = 0;
         depth++;
         Director dir;
         double largestWCET=0.0;
-    
+
         while (states.hasNext()) {
 
             stateCount++;
@@ -334,10 +334,10 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
         }
         if(_debugging)
         {
-        _debug("fsm director has wcet of "+largestWCET);
+            _debug("fsm director has wcet of "+largestWCET);
         }
         return largestWCET;
-        
+
     }
 
 
