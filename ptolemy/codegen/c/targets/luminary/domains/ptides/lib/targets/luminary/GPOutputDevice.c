@@ -1,6 +1,5 @@
 /***preinitBlock***/
 int $actorSymbol(result) = 0;
-//FIXME: This line does not appear for some reason...
 /**/
 
 /*** sharedBlock ***/
