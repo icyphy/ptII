@@ -400,6 +400,7 @@ public class PNDirector extends Director {
      * "initialQueueCapacity" parameter of the PNDirector
      * @param port The specified port.
      * @param channelNumber The specified channel number.
+     * @return The size of the generated buffer.
      * @exception IllegalActionException If an error occurs
      *  when getting the value from the parameter.
      */
@@ -431,9 +432,7 @@ public class PNDirector extends Director {
     /**
      * Create offset variables for the channels of the given port. The offset
      * variables are generated unconditionally.
-     *
-     * @param port
-     *            The port whose offset variables are generated.
+     * @param port The port whose offset variables are generated.
      * @return Code that declares the read and write offset variables.
      * @exception IllegalActionException
      *                If getting the rate or reading parameters throws it.
