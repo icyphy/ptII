@@ -51,7 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	InputDevice.java \
-	OutpoutDevice.java \
+	OutputDevice.java \
 	SensorInputDevice.java
 
 OTHER_FILES_TO_BE_JARED =
