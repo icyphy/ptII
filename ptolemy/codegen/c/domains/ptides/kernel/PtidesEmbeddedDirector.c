@@ -362,12 +362,9 @@ void processEvents() {
 
     // restore the last executing stacked model tag.
     if (numStackedModelTag > 0) {
-        if (numStackedModelTag > MAX_EVENTS) {
-            die("MAX_EVENTS too small for numStackedModelTag");
-        }
+        numStackedModelTag--;
         currentMicrostep = executingModelTag[numStackedModelTag].microstep;
         timeSet(executingModelTag[numStackedModelTag].timestamp, &currentModelTime);
-        numStackedModelTag--;
     }
 	// This implies within the while loop, if all events cannot be processed, 
 	// we need to go through the entire event queue before another event can come in.
