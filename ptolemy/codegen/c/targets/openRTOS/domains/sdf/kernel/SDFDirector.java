@@ -96,7 +96,7 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
 
             if(actor instanceof CompositeActor)
             {
-                if(_debugging){
+                if(_debugging) {
                     _debug("Composite Actor in SDFDirector, if it has a director I need to ask it for it's WCET");
                 }
             }
@@ -116,8 +116,7 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
             wcet+= actorFrequency *actorWCET;
 
         }
-        if(_debugging)
-        {
+        if(_debugging) {
             _debug("sdf director has wcet of "+wcet);
         }
         return wcet;
