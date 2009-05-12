@@ -26,8 +26,7 @@
 
  */
 package ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary;
-
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.domains.ptides.lib.SensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -36,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author elgeeko
  */
 
-public class GPInputDeviceD extends ptolemy.codegen.c.targets.luminary.domains.ptides.lib.GPInputDevice {
+public class GPInputDeviceD extends SensorInputDevice {
     /** Construct a helper with the given
      *  ptolemy.domains.ptides.lib.GPInputDeviceD actor.
      *  @param actor The given ptolemy.domains.ptides.lib.GPInputDeviceD actor.
