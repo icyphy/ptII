@@ -41,7 +41,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 test release-1.1 {Check for missing makefiles} {
-    exec make --silent missingMakefiles
+    exec make --no-print-directory --silent missingMakefiles
 } {./config/makefile
 ./doc/coding/templates/makefile
 ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
@@ -62,7 +62,7 @@ test release-1.1 {Check for missing makefiles} {
 ./ptolemy/plot/servlet/makefile}
 
 test release-2.1 {Check for directories that have java files, but are not in doc/makefile} {
-    exec make --silent missingDocPackages
+    exec make --no-print-directory --silent missingDocPackages
 } {config
 contrib.actor.lib.example
 diva.util.java2d.svg
