@@ -1,0 +1,64 @@
+/***moduleName***/
+DELAY-ACTOR/**/
+
+/***className***/
+Delay/**/
+
+/***sharedBlock***/
+(tomod DELAY-ACTOR  is 
+  inc ACTOR .
+
+  class Delay | delay : VarId .
+    subclass Delay < Actor .
+
+  vars REST PORTS : Configuration .  vars O QUE : Oid .  vars PI PI' : PortId .
+  var E : Exp . var V TV : Value .  vars T : Time .
+  var VI : VarId . var AM : AssignMap . var MEM : Memory .
+  var UPDATED : Bool .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- set each status of ports to 'unknown'
+  eq initActor(Delay, 
+  	< O : Delay | delay : VI, variables : (VI |-> E ; AM) >) 
+   = initActor(Actor, 
+    < O : Delay | store : eval(VI, k(E)) >) .
+
+  --- Note: Delay actors generate events "later" and hence
+  --- do not generate output WHEN their ports are in unknown state
+  eq portFixPoints(UPDATED,
+     < O : Delay | 
+	status : enabled,
+	ports :  < PI : OutPort | status : unknown > PORTS 
+    > 
+    REST) 
+   = portFixPoints(true,
+     < O : Delay | ports : < PI : OutPort | status : absent > PORTS > REST) .
+
+  *** execute a step for delay operators ... : do NOT generate new output.
+  *** IF input, then generate new event, otherwise do nothing. 
+  --- Note that generated events are now just messages, which will be dilivered
+  --- to globalEventQueue actor.
+  eq executeStep(Delay, 
+    < O : Delay | 
+	ports : ( 
+	    < 'input : InPort | status : present, value : V >  
+	    < 'output : OutPort | > PORTS), 
+	delay : VI,
+	store : VI |-> TV ; MEM
+    >, 
+    REST)
+  = evt(event(O ! 'output, V), toTime(TV)) 
+    executeStep(Actor, < O : Delay | >, REST) .
+
+  --- Note: Delay could have many other InPorts as well as 'input
+  eq executeStep(Delay,
+    < O : Delay | 
+	ports : < 'input : InPort | status : absent >  PORTS
+    >, REST) 
+  = executeStep(Actor, < O : Delay | >, REST) .
+
+endtom)
+/**/

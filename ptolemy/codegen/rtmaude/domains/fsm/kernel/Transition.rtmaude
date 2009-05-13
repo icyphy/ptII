@@ -1,0 +1,5 @@
+/***termBlock($source, $target, $guard, $out, $set)***/
+('$source --> '$target {guard: ($guard) output: ($out) set: ($set)})/**/
+
+/***mapBlock($name, $exp)***/
+('$name |-> $exp)/**/

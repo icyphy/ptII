@@ -1,0 +1,59 @@
+/***moduleName***/
+TIMER/**/
+
+/***className***/
+Timer/**/
+
+/***sharedBlock***/
+(tomod TIMER is
+  inc ACTOR .
+
+  class Timer |
+        output-value : VarId .
+    subclass Timer < Actor .
+
+  vars REST PORTS : Configuration .  vars O : Oid .  vars PI PI' : PortId .
+  var VI : VarId . var E : Exp . vars V TV : Value . 
+  var AM : AssignMap . var MEM : Memory . var VM : ValueMap .  
+  var UPDATED : Bool .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- set each status of ports to 'unknown'
+  eq initActor(Timer, 
+    < O : Timer | 
+        output-value : VI, variables : (VI |-> E ; AM) >) 
+   = initActor(Actor, 
+   	< O : Timer | store : eval(VI, k(E)) >) .
+
+  eq portFixPoints(UPDATED,
+     < O : Timer |
+        status : enabled,
+        ports :  < PI : OutPort | status : unknown > PORTS
+    >
+    REST)
+   = portFixPoints(true,
+     < O : Timer |
+        ports : < PI : OutPort | status : absent > PORTS
+    >
+    REST) .
+
+  eq executeStep(Timer,
+    < O : Timer |
+        output-value : VI,
+        store : (VI |-> V ; MEM),
+        ports : < 'input : InPort | status : present, value : TV > PORTS
+    >,
+    REST)
+  = evt(event(O ! 'output, V), getTime(TV))
+    executeStep(Actor, < O : Timer | >, REST) .
+    
+  eq executeStep(Timer,
+    < O : Timer |
+        ports : < 'input : InPort | status : absent >  PORTS
+    >, REST)
+  = executeStep(Actor, < O : Timer | >, REST) .
+endtom)
+/**/

@@ -1,0 +1,69 @@
+/***moduleName***/
+VARIABLE-DELAY-ACTOR/**/
+
+/***className***/
+VariableDelay/**/
+
+/***sharedBlock***/
+(tomod VARIABLE-DELAY-ACTOR  is 
+  inc ACTOR .
+
+  class VariableDelay | delay : VarId .
+    subclass VariableDelay < Actor .	
+    
+    ---FIXME: hierarchical OO desigin of actors is required. 
+
+  vars REST PORTS : Configuration .  vars O QUE : Oid .  vars PI PI' : PortId .
+  var E : Exp . var V TV : Value .  var NV : NumberValue . vars T : Time .
+  var VI : VarId . var AM : AssignMap . var MEM : Memory .
+  var UPDATED : Bool . var PS : PortStatus .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- set each status of ports to 'unknown'
+  eq initActor(VariableDelay, 
+  	< O : VariableDelay | delay : VI, variables : (VI |-> E ; AM) >) 
+   = initActor(Actor, 
+    < O : VariableDelay | store : eval(VI, k(E)) >) .
+
+  --- Note: Delay actors generate events "later" and hence
+  --- do not generate output WHEN their ports are in unknown state
+  eq portFixPoints(UPDATED,
+     < O : VariableDelay | 
+	    status : enabled,
+	    ports :  < PI : OutPort | status : unknown > PORTS 
+     > 
+     REST) 
+   = portFixPoints(true,
+     < O : VariableDelay | 
+         ports : < PI : OutPort | status : absent > PORTS 
+     > REST) .
+
+  *** execute a step for variable delay operators
+  *** if 'delay port is present, it should be used instead of delay value.
+  *** (it will also updated at the top level as well. )
+
+  eq executeStep(VariableDelay, 
+    < O : VariableDelay | 
+	ports : ( 
+	    < 'input : InPort | status : present, value : V >
+	    < 'delay : InPort | status : PS, value : NV >
+	    < 'output : OutPort | > PORTS), 
+	delay : VI,
+	store : VI |-> TV ; MEM
+    >, 
+    REST)
+  = evt(event(O ! 'output, V), toTime(if PS == present then NV else TV fi)) 
+    executeStep(Actor, < O : VariableDelay | >, REST) .
+
+  --- Note: Delay could have many other InPorts as well as 'input
+  eq executeStep(VariableDelay,
+    < O : VariableDelay | 
+	ports : < 'input : InPort | status : absent >  PORTS
+    >, REST) 
+  = executeStep(Actor, < O : VariableDelay | >, REST) .
+
+endtom)
+/**/

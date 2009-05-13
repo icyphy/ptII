@@ -1,0 +1,54 @@
+/***moduleName***/
+TIMED-PLOTTER-ACTOR/**/
+
+/***className***/
+TimedPlotter/**/
+
+/***sharedBlock***/
+(tomod TIMED-PLOTTER-ACTOR is 
+  inc ACTOR-WITH-TIMER .
+
+  class TimedPlotter | 
+	event-history : EventHistory .
+    subclass TimedPlotter < TimeActor .
+
+  sort EventPair  EventHistory .
+  subsort EventPair < EventHistory .
+  op source:_time:_value:_ : EPortId Time Value -> EventPair .
+  op emptyHistory : -> EventHistory .
+  op _++_ : EventHistory EventHistory -> EventHistory [ctor assoc id: emptyHistory] .
+
+  var EH : EventHistory . var EP : EventPair .
+  var T : Time . var V : Value . var PS : PortStatus .
+  vars REST PORTS : Configuration .  vars O : Oid .  vars PI PI' : PortId .
+  var NZT : NzTime .
+  var UPDATED : Bool .
+  var EPI : EPortId . var CHS : ChannelSet .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- set each status of ports to 'unknown'
+  eq initActor(TimedPlotter, < O : TimedPlotter | >) 
+   = initActor(Actor, < O : TimedPlotter | >) .
+
+  eq executeStep(TimedPlotter, 
+    < O : TimedPlotter | 
+	current-time : T,
+	event-history : EH,
+	ports : 
+	    < PI : MultiInPort | channels : CHS > PORTS 
+    >, REST) 
+   = executeStep(Actor, 
+    < O : TimedPlotter | 
+	event-history : EH ++ genEventHistory(T, CHS)
+    >, REST) .
+
+    op genEventHistory : Time ChannelSet -> EventHistory .
+    eq genEventHistory(T, [EPI,present,V] ; CHS)
+     = (source: EPI time: T value: V) ++ genEventHistory(T, CHS) .
+    eq genEventHistory(T, CHS) = emptyHistory [owise] .
+endtom)
+
+/**/

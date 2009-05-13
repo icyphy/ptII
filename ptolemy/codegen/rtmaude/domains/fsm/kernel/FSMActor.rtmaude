@@ -1,0 +1,183 @@
+/***moduleName***/
+FSM-ACTOR/**/
+
+/***className***/
+FSM-Actor/**/
+
+/***checkModuleName***/
+CHECK-FSM-ACTOR/**/
+
+/***sharedBlock***/
+(tomod FSM-ACTOR is 
+  inc ACTOR .
+  pr PORTS .
+
+  class FSM-Actor | currState : Location, 
+                    initState : Location,
+                    transitions : TransitionSet .
+    subclass FSM-Actor < Actor .
+
+  --- Location is a name of a state
+  sort Location .
+  subsorts Qid < Location .
+
+  sort Transition TransitionSet .
+  subsort Transition < TransitionSet .
+  op _-->_`{_`} : Location  Location TransBody -> Transition [ctor] .
+  op emptyTransitionSet : -> TransitionSet [ctor] .
+  op _;_ : TransitionSet TransitionSet -> TransitionSet
+                               [ctor assoc comm id: emptyTransitionSet] .
+
+  --- The transition body has guard, output, and set.
+  sort TransBody .
+  op guard:_output:_set:_ : Exp AssignMap AssignMap -> TransBody [ctor] .
+
+----------------------
+
+  vars CF ACTS REST PORTS : Configuration .  vars O O' QUE : Oid .
+  vars PI PI' : PortId .  var PS : PortStatus .
+  vars L STATE STATE' STATE'' : Location .
+  var VM : ValueMap .  var AM OL AL VAL : AssignMap .
+  var MEM : Memory . var CP : Computation .
+  var VA : ValueAssignment .  var BODY : TransBody .
+  var VI : VarId . vars V : Value .  var VM : ValueMap .
+  var TRANSSET : TransitionSet .  vars E TG : Exp .
+  var UPDATED : Bool .
+  var FLAG : Bool .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- before fix-computation, refinement actors for current states
+  --- are enabled.
+  eq initActor(FSM-Actor, < O : FSM-Actor | >) 
+   = initActor(Actor, < O : FSM-Actor | >) .
+
+--- During fix-computation of FSM-actor, several informations,
+--- such as guard and next state, will be stored to the memory
+--- Such information will be written to the actor during executeStep
+
+  --- FIXME: more than 2 different transition between states
+  op @guard : Location Location -> VarId .  --- guard
+  op @next : Location -> MemoryItem .	    --- next state
+  op @out : PortId -> VarId .		    --- output(port) result
+  op @set : VarId -> VarId .		    --- set(variable) result
+
+  --- compute guards of transitions at the current state
+  ceq portFixPoints(UPDATED,
+    < O : FSM-Actor |
+	  status : enabled,
+	  ports : < PI : InPort | status : present > PORTS, 
+	  store : MEM,
+	  currState : STATE,
+	  transitions : (
+	    (STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET)
+    > REST) 
+   = portFixPoints(true,
+    < O : FSM-Actor | 
+	store : eval(@guard(STATE,STATE'), k(TG)) ; MEM
+    > REST)
+  if not @guard(STATE,STATE') in MEM .
+
+  --- Take and compute a transition whose guard condition is true
+  ---FIXME: Order conflict
+  ---        Down & Up of CompositeActor should be computed first
+  ---FIXME: no need to compute other guards
+  ---FIXME: only one transition should be possible
+  ---FIXME: if every guard expression is not reduced to value,
+  ---       it is ERROR and should be treated. (zero-time Delay)
+  ceq portFixPoints(UPDATED,
+    < O : FSM-Actor | 
+	  status : enabled,
+      ports : < PI : InPort | status : present > PORTS, 
+	  store : @guard(STATE,STATE') |-> # true ; MEM,
+	  currState : STATE,
+	  transitions : (
+	    (STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET)
+    > REST) 
+  =  portFixPoints(true,
+    < O : FSM-Actor | 
+	store : @next(STATE') ; evalOut(OL) ; evalSet(AL) ; MEM
+    > REST) 
+  if noNext(MEM) .
+
+  op noNext : Memory -> Bool .
+  eq noNext(@next(STATE) ; MEM) = false .
+  eq noNext(MEM) = true [owise] .
+
+  op evalOut : AssignMap -> Memory .
+  eq evalOut((VI |-> E) ; AM) = eval(@out(VI), k(E)) ; evalOut(AM) .
+  eq evalOut(emptyMap) = emptyMap .
+
+  op evalSet : AssignMap -> Memory .
+  eq evalSet((VI |-> E) ; AM) = eval(@set(VI), k(E)) ; evalOut(AM) .
+  eq evalSet(emptyMap) = emptyMap .
+
+  --- write output result of transition to ports
+  eq portFixPoints(UPDATED,
+    < O : FSM-Actor |
+	status : enabled,	
+	ports : 
+		< PI' : InPort | status : present > 
+	    < PI : OutPort | > PORTS,    ---FIXME: overwritten happen
+	store : @out(PI) |-> V ; MEM
+    > REST)
+   = portFixPoints(true,
+    < O : FSM-Actor |
+	ports : 
+		< PI' : InPort | >
+		< PI : OutPort | status : present, value : V > PORTS,
+	store : MEM
+    > REST) .
+
+  *** FSM-Actor does NOT generate events in our first version, only changes
+  *** the internal state/valuation as a result of applying one transition ...
+
+  --- computation result of states and variables is written
+  eq executeStep(FSM-Actor,
+    < O : FSM-Actor | 
+      status : enabled,
+      ports : < PI' : InPort | status : present > PORTS, 
+	  variables : VAL, 
+	  currState : STATE,
+	  store : MEM
+    >, REST)
+  =  executeStep(Actor,
+    < O : FSM-Actor | 
+	  variables : updateVars(VAL, MEM), 
+	  currState : updateState(STATE, MEM)
+    >, REST) .
+    
+  ceq executeStep(FSM-Actor,
+    < O : FSM-Actor | 
+      ports : PORTS
+    >, REST)
+   = executeStep(Actor,
+    < O : FSM-Actor | >, REST)
+   if noPresent(PORTS) .
+   
+  op noPresent : Configuration -> Bool .
+  eq noPresent(< PI : Port | status : present > PORTS) = false .
+  eq noPresent(PORTS) = true [owise] .
+
+  op updateVars : AssignMap Memory -> AssignMap .
+  eq updateVars((VI |-> E) ; AM, (@set(VI) |-> V) ; MEM)
+   = (VI |-> V) ; updateVars(AM, MEM) .
+  eq updateVars(AM, MEM) = AM [owise] .
+
+  op updateState : Location Memory -> Location .
+  eq updateState(STATE, @next(STATE') ; MEM) = STATE' .
+  eq updateState(STATE, MEM) = STATE [owise] .
+endtom)
+
+(tomod CHECK-FSM-ACTOR is
+  pr CHECK-COMPOSITE-ACTOR .
+  pr FSM-ACTOR .
+
+  var CF : Configuration .  var O : Oid .   var L : Location . 
+
+  op @_ : Location -> ActorPattern [ctor] .
+  eq {< O : FSM-Actor | currState : L > CF} |= O @ L = true .
+endtom)
+/**/

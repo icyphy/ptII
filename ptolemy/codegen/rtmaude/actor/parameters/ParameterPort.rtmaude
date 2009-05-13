@@ -1,0 +1,4 @@
+
+/***termBlock($port, $param)***/
+< '$port : PortParameter | value : # 0, status : absent, paramName : '$param >
+/**/
