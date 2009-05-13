@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabCT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 442]">
     </property>
@@ -32,7 +32,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 410.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 56, 896, 559}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 56, 894, 552}, maximized=false}">
     </property>
     <property name="Continuous-Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
@@ -154,14 +154,22 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[102.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="MatlabExpression.input" relation="relation4"/>
     <link port="CurrentTime.output" relation="relation"/>

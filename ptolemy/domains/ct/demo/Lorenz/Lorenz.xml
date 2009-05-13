@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Lorenz" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="Continuous-Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
@@ -38,29 +38,6 @@
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
-        </property>
-    </property>
-    <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 10.0">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a nonlinear feedback
-system that exhibits chaotic behavior.
-It is modeled in continuous time. The
-CT director uses a sophisticated
-ordinary differential equation solver
-to execute the model. This particular
-model is known as a Lorenz attractor.</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 426]">
@@ -143,6 +120,12 @@ model is known as a Lorenz attractor.</text>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{304.0, 213.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a nonlinear feedback&#10;system that exhibits chaotic behavior.&#10;It is modeled in continuous time. The&#10;CT director uses a sophisticated&#10;ordinary differential equation solver&#10;to execute the model. This particular&#10;model is known as a Lorenz attractor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 25.0]">
+        </property>
     </property>
     <entity name="Integrator 1" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">

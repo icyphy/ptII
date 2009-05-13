@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Transmission" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
@@ -44,57 +44,6 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[647, 474]">
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model represents an automobile transmission,
-a classic example of a hybrid system.
-
-The inputs to "car model" hybrid system are the current applied
-gear and the current throttle position.  In this model, the gear
-shift sequence is predetermined, and the throttle is applied
-constantly.  It is assumed that shifts from one gear to another
-occur instantaneously.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 5.0">
-        </property>
-    </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates the use of "function closures" to compact
-the states of the hybrid system.  Instead of having one mode for each gear,
-the model contains only one mode.  The reset actions of transitions set the
-efficiency function for the current gear.  The efficiency function determines
-the amount of the engine's power that is available to accelerate the vehicle.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 285.0">
-        </property>
-    </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -115,31 +64,31 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 430.0">
         </property>
     </property>
-    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">Look inside the "car model" actor
-to see how function closures are
-used to simplify the model.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 385.0">
-        </property>
-    </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.5, 237.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the &quot;car model&quot; actor&#10;to see how function closures are&#10;used to simplify the model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model represents an automobile transmission,&#10;a classic example of a hybrid system.&#10;&#10;The inputs to &quot;car model&quot; hybrid system are the current applied&#10;gear and the current throttle position.  In this model, the gear&#10;shift sequence is predetermined, and the throttle is applied&#10;constantly.  It is assumed that shifts from one gear to another&#10;occur instantaneously.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of &quot;function closures&quot; to compact&#10;the states of the hybrid system.  Instead of having one mode for each gear,&#10;the model contains only one mode.  The reset actions of transitions set the&#10;efficiency function for the current gear.  The efficiency function determines&#10;the amount of the engine's power that is available to accelerate the vehicle.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 295.0]">
+        </property>
     </property>
     <entity name="Plot position" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -188,62 +137,26 @@ used to simplify the model.</text></svg></configure>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">Look inside the inGear state
-to see how the function closure
-"efficiencyFunction" is applied.</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 121, 815, 521}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 25, 813, 516}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 405]">
-            </property>
-            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">Look inside the inGear state
-to see how the function closure
-"efficiencyFunction" is applied.</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
-                </property>
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 202.5}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the inGear state&#10;to see how the function closure&#10;&quot;efficiencyFunction&quot; is applied.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 130.0]">
+                </property>
             </property>
             <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -269,6 +182,8 @@ to see how the function closure
             </port>
             <entity name="inGear" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -387,52 +302,21 @@ to see how the function closure
                 <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
                 </property>
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The "efficiencyFunction" parameter is set each time this mode is entered to
-the efficiency function of a particular gear. The Expression actor (named
-"Compute Acceleration") applies the function to its other inputs (throttle
-and rpm).  The integrators model the inertia of the vehicle.</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 60.0">
-                </property>
-            </property>
-            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Convert velocity to revolutions per minute (rpm).</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 340.0">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 137, 815, 516}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 137, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The &quot;efficiencyFunction&quot; parameter is set each time this mode is entered to&#10;the efficiency function of a particular gear. The Expression actor (named&#10;&quot;Compute Acceleration&quot;) applies the function to its other inputs (throttle&#10;and rpm).  The integrators model the inertia of the vehicle.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 70.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Convert velocity to revolutions per minute (rpm).">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 355.0]">
+                </property>
             </property>
             <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Units" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
@@ -38,29 +38,6 @@
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 55.0">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Demonstration of a dynamically checked unit system:
-Simulation of RC decay for 1000 ohms in contact with 0.001 farad.
-The integrator has been set to an initial charge of 5.0 volts.
-The voltage and current are sampled every 0.2 seconds.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 25.0">
         </property>
     </property>
     <property name="ElectronicUnitBase" class="ptolemy.data.unit.UnitSystem">
@@ -138,205 +115,9 @@ The voltage and current are sampled every 0.2 seconds.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
     </property>
-    <property name="annotation17" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">These three actors together serve
-as a unit-handling integrator.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 415.0">
-        </property>
-    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[765, 633]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 8]">
-    </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">The gray box above contains a unit system.
-Double click to see the units that are defined.
-These units function exactly as variables
-in expressions. E.g., one volt is written
-"1 * volt".</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 145.0">
-        </property>
-    </property>
-    <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Signal with
-units of
-amperes.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 465.0">
-        </property>
-    </property>
-    <property name="2:1:annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Signal with units of volts.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 345.0">
-        </property>
-    </property>
-    <property name="3:1:annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Multiply by a number with units of
-1/farad = volt/(ampere*second)</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 545.0">
-        </property>
-    </property>
-    <property name="4:1:annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Signal with units of volt/second.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 560.0">
-        </property>
-    </property>
-    <property name="5:4:1:annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">unitless</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 360.0">
-        </property>
-    </property>
-    <property name="6:5:4:1:annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">unitless</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 505.0]">
-        </property>
-    </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:black">Note that unit terms are merely constants
-in the expression language, as defined by
-the ElectronicUnitBase box at the upper left.
-Multiplying or dividing by these unit
-constants results in compound units, or
-elimination of units.  The InUnitsOf actor
-below merely checks that the input has is
-of the correct unit category (current,
-voltage, etc.) and then divides by its argument.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 120.0">
-        </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 978, 743}, maximized=false}">
     </property>
@@ -363,6 +144,82 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.5, 316.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of a dynamically checked unit system:&#10;Simulation of RC decay for 1000 ohms in contact with 0.001 farad.&#10;The integrator has been set to an initial charge of 5.0 volts.&#10;The voltage and current are sampled every 0.2 seconds.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These three actors together serve&#10;as a unit-handling integrator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 430.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The gray box above contains a unit system.&#10;Double click to see the units that are defined.&#10;These units function exactly as variables&#10;in expressions. E.g., one volt is written&#10;&quot;1 * volt&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 150.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="unitless">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal with units of volts.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal with&#10;units of&#10;amperes.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 470.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal with units of volt/second.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 565.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="unitless">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 520.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Multiply by a number with units of&#10;1/farad = volt/(ampere*second)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 550.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that unit terms are merely constants&#10;in the expression language, as defined by&#10;the ElectronicUnitBase box at the upper left.&#10;Multiplying or dividing by these unit&#10;constants results in compound units, or&#10;elimination of units.  The InUnitsOf actor&#10;below merely checks that the input has is&#10;of the correct unit category (current,&#10;voltage, etc.) and then divides by its argument.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 120.0]">
+        </property>
     </property>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="volt">
