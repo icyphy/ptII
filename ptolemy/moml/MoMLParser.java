@@ -2918,6 +2918,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (newClass == null) {
                         // No classname. Use the newRelation() method.
                         newRelation = container.newRelation(relationName);
+                        
+                        // Mark the contents of the new entity as being derived objects.
+                        // If we wouldn't do this the default attributes would be saved.
+                        _markContentsDerived(newRelation, 0);
 
                         if ((_topObjectsCreated != null)
                                 && (container == _originalContext)) {
