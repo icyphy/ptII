@@ -131,7 +131,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 440.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
