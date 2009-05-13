@@ -300,21 +300,30 @@ public abstract class AbstractReceiver implements Receiver {
                     "Not enough tokens supplied.");
         }
 
+        // Cache the containers for each receiver to minimize
+        // the number of calls to getContainer.
+        // FIXME: What if the model mutates between
+        // when we check the receivers and when we do the 
+        // conversion?
+        IOPort[] containers = new IOPort[receivers.length];
+        for (int j = 0; j < receivers.length; j++) {
+            containers[j] = receivers[j].getContainer();
+        }
+        
         // Loop through the tokens on the outer loop and
-        // the receivers on the inner loop. See 
+        // the receivers on the inner loop. See
         // pn/kernel/test/block.xml for a test case
         // (Bug fix proposed by Daniel Crawl.)
         for(int i = 0; i < numberOfTokens; i++) {
             for (int j = 0; j < receivers.length; j++ ) {
-                IOPort container = receivers[j].getContainer();
-                if (container == null) {
+                if (containers[j] == null) {
                     receivers[j].put(tokens[i]);
-                } else {                    
-                    receivers[j].put(container.convert(tokens[i]));
+                } else {
+                    receivers[j].put(containers[j].convert(tokens[i]));
                 }
             }
         }
-    }
+    } 
 
     /** Put to all receivers in the specified array.
      *  Implementers will assume that all such receivers
