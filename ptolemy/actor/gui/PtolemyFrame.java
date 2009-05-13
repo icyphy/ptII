@@ -125,16 +125,6 @@ public abstract class PtolemyFrame extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the associated model or Ptolemy II object.
-     *  This can be a CompositeEntity or an EditorIcon, and possibly
-     *  other Ptolemy II objects.
-     *  @return The associated model or object.
-     *  @see #setModel(NamedObj)
-     */
-    public NamedObj getModel() {
-        return _model;
-    }
-
     /** Expand all the rows of the library.
      *  Expanding all the rows is useful for testing.
      *  In this baseclass, this method merely returns.
@@ -144,6 +134,49 @@ public abstract class PtolemyFrame extends TableauFrame {
     public void expandAllLibraryRows() {
         // This method is here so that HTMLAbout does not depend on
         // vergil BasicGraphFrame
+    }
+
+    /** Override the base class to check to see whether the effigy
+     *  is still the valid one for the associated model. If it is
+     *  not, create a new effigy for the model and associate the
+     *  tableau with that effigy.
+     *  @return The effigy for the model, or null if none exists.
+     */
+    public Effigy getEffigy() {
+        Effigy originalEffigy = super.getEffigy();
+        if (originalEffigy instanceof PtolemyEffigy) {
+            if (!getTableau().isMaster()) {
+                // The tableau is no longer the master, perhaps there
+                // was a deletion.  Hence, the original effigy should
+                // no longer be the associated effigy.
+                //
+                // This code is necessary to solve a problem with deleting an
+                // open composite actor, see:
+                // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4053
+                try {
+                    PtolemyEffigy newEffigy = new PtolemyEffigy(
+                            (CompositeEntity)originalEffigy.getContainer(),
+                            originalEffigy.getContainer().uniqueName(_model.getName()));
+                    newEffigy.setModel(_model);
+                    newEffigy.setModified(true);
+                    getTableau().setContainer(newEffigy);
+                    return newEffigy;
+                } catch (KernelException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+        }
+        return originalEffigy;
+    }
+
+    /** Get the associated model or Ptolemy II object.
+     *  This can be a CompositeEntity or an EditorIcon, and possibly
+     *  other Ptolemy II objects.
+     *  @return The associated model or object.
+     *  @see #setModel(NamedObj)
+     */
+    public NamedObj getModel() {
+        return _model;
     }
 
     /** Set the associated model.  This also sets an error handler for
