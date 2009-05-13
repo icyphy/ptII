@@ -687,16 +687,17 @@ public class Director extends CodeGeneratorHelper {
     }
     
     /**
-     * Determines the WCET seen by this director.
-     * This probably isn't the best place for this,
-     * since there are target dependent things here, 
-     * however I'm not sure where else to put it.
-     * This should only be called by a Giotto director
-     * @return
-     * @throws IllegalActionException
+     * Determines the worst case execution time (WCET) seen by this
+     * director. 
+     * @return The Worst Case Execution Time (WCET)
+     * @exception IllegalActionException If there is a problem determining
+     * the WCET.
      */ 
-    public double _getWCET()throws IllegalActionException
-    {              
+    public double _getWCET() throws IllegalActionException {              
+	// This probably isn't the best place for this, since
+	// there are target dependent things here, however I'm not sure
+	// where else to put it.  This should only be called by a Giotto
+	// director.
         if (_debugging) {
             _debug("getWCET from Director in codegen Actor package called");
          } 
@@ -707,20 +708,20 @@ public class Director extends CodeGeneratorHelper {
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) this._director.getContainer()).deepEntityList()) {
             Attribute frequency = ((Entity)actor).getAttribute("frequency");
-            ptolemy.actor.Director dd =actor.getDirector();
-            if(dd.getClassName().contains("FSM"))
-            {
+            ptolemy.actor.Director director = actor.getDirector();
+            if (director.getClassName().contains("FSM")) {
+		// FIXME: This means that codegen depends on the targets.
                 ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
                 return fsmDir._getWCET();
                 
             }
-            if(dd.getClassName().contains("SDF"))
-            {
+            if (director.getClassName().contains("SDF")) {
+		// FIXME: This means that codegen depends on the targets.
                 ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector sdfDir = new ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector((ptolemy.domains.sdf.kernel.SDFDirector)this._director);
                 return sdfDir._getWCET();
             }
-            if(dd.getClassName().contains("Giotto"))
-            {
+            if (director.getClassName().contains("Giotto")) {
+		// FIXME: This means that codegen depends on the targets.
                 ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
                 return giottoDir._getWCET();
                 
@@ -731,29 +732,24 @@ public class Director extends CodeGeneratorHelper {
                 _debug(actor.getFullName());
              } 
             
-                if (frequency == null) {
-                    actorFrequency = 1;
-                } else {
-                    actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
-                }
-                if (WCET == null) {
-                    actorWCET = 0.01;
-                } else {
-                    actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
-                }
+	    if (frequency == null) {
+		actorFrequency = 1;
+	    } else {
+		actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+	    }
+	    if (WCET == null) {
+		actorWCET = 0.01;
+	    } else {
+		actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+	    }
            
             wcet+= actorFrequency *actorWCET;
-            
-        
-        
         }
         
         if (_debugging) {
-        _debug("director "+this.getFullName()+" thinks the WCET is: "+wcet);
+	    _debug("director "+this.getFullName()+" thinks the WCET is: "+wcet);
         }
         
         return wcet;
-        
     }
-
 }
