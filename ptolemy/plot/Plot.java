@@ -1075,6 +1075,7 @@ public class Plot extends PlotBox {
         while (dataset >= _points.size()) {
             _points.add(new ArrayList<PlotPoint>());
             _bins.add(new ArrayList<Bin>());
+            _pointInBinOffset.add(0);
             _formats.add(new Format());
             _prevxpos.add(_INITIAL_PREVIOUS_VALUE);
             _prevypos.add(_INITIAL_PREVIOUS_VALUE);
@@ -2451,7 +2452,7 @@ public class Plot extends PlotBox {
         if (nbrOfBins == 0 || lastBin.xpos != xpos) {
             // Does not fall within last bin => add one bin
             // nbrOfBins += 1;
-            lastBin = new Bin(xpos);
+            lastBin = new Bin(xpos, dataset);
             bins.add(lastBin);
         }
         lastBin.addPoint(point, pointIndex, ypos);
@@ -2532,12 +2533,14 @@ public class Plot extends PlotBox {
         }
         _needBinRedraw = false;
 
-
-        _pointInBinOffset = 0;
         _bins.clear();
+        _pointInBinOffset.clear();
         int nbrOfDataSets = _points.size();
-        for (int i = 0; i < nbrOfDataSets; ++i)
+        for (int i = 0; i < nbrOfDataSets; ++i) {
             _bins.add(new ArrayList<Bin>());
+            _pointInBinOffset.add(0);
+        }
+            
 
         for (int dataset = 0; dataset < nbrOfDataSets; ++dataset) {
             ArrayList<PlotPoint> points = _points.get(dataset);
@@ -2807,7 +2810,7 @@ public class Plot extends PlotBox {
 
         if (nbrOfBins > 1) {
             Bin nextBin = bins.get(1);
-            nextBin.setNotConnectedWithPreviousBin(dataset);
+            nextBin.setNotConnectedWithPreviousBin();
         }
 
         if (nbrOfBins == 1) {
@@ -2830,7 +2833,7 @@ public class Plot extends PlotBox {
         }
         assert bin.firstPointIndex() >= 0;
 
-        _pointInBinOffset += (bin.afterLastPointIndex() - bin.firstPointIndex());
+        _pointInBinOffset.set(dataset, _pointInBinOffset.get(dataset) + bin.afterLastPointIndex() - bin.firstPointIndex());
             //FIXME? Warning: Could overflow for scopes with a really large history...
             //  (the points aren't kept in memory, since it is only here where it goes wrong.
             //  We could check for overflow and in this case reset the _pointInBinOffset to
@@ -3057,7 +3060,7 @@ public class Plot extends PlotBox {
      *  difference between the index of the point in the current point arraylist
      *  and the virtual one containing all points.
      */
-    private int _pointInBinOffset = 0;
+    private ArrayList<Integer> _pointInBinOffset = new ArrayList<Integer>();
 
     /** @serial Number of points to persist for. */
     private int _pointsPersistence = 0;
@@ -3113,7 +3116,8 @@ public class Plot extends PlotBox {
      * y position.
     */
     private class Bin {
-        Bin(long xPos) {
+        public Bin(long xPos, int dataset) {
+            _dataset = dataset;
             xpos = xPos;
         }
 
@@ -3122,8 +3126,8 @@ public class Plot extends PlotBox {
          *      and a certain ypos.
          * Precondition: The xpos of the point should be same as other points already within the bin
          */
-        void addPoint(PlotPoint point, int pointIndex, long ypos) {
-            int absolutePointIndex = pointIndex + _pointInBinOffset;
+        public void addPoint(PlotPoint point, int pointIndex, long ypos) {
+            int absolutePointIndex = pointIndex + _pointInBinOffset.get(_dataset);
             //The absolute point index is a index in the list of
             //  all points that once existed in the plot
 
@@ -3158,13 +3162,13 @@ public class Plot extends PlotBox {
          */
         public int afterLastPointIndex() {
             assert _firstPointIndex != -1;
-            return _afterLastPointIndex - _pointInBinOffset;
+            return _afterLastPointIndex - _pointInBinOffset.get(_dataset);
         }
 
         /**
          *  Return true in case there is one point that needs an error bar, otherwise false
          */
-        boolean errorBar() {
+        public boolean errorBar() {
             return _errorBar;
         }
 
@@ -3174,7 +3178,7 @@ public class Plot extends PlotBox {
          */
         public int firstPointIndex() {
             assert _firstPointIndex != -1;
-            return _firstPointIndex - _pointInBinOffset;
+            return _firstPointIndex - _pointInBinOffset.get(_dataset);
         }
 
         /**
@@ -3240,7 +3244,7 @@ public class Plot extends PlotBox {
          * This index is the index within the current points of the plot.
          */
         public int nextPointToPlot() {
-            return _firstPointIndex - _pointInBinOffset + _nextPointToPlot;
+            return _firstPointIndex - _pointInBinOffset.get(_dataset) + _nextPointToPlot;
         }
 
         /**
@@ -3266,15 +3270,17 @@ public class Plot extends PlotBox {
         /**
          * Disconnect this bin with the previous bin.
          */
-        void setNotConnectedWithPreviousBin(int dataset) {
+        public void setNotConnectedWithPreviousBin() {
             _needConnectionWithPreviousBin = false;
             _isConnectedWithPreviousBin = false;
-            _points.get(dataset).get(_firstPointIndex - _pointInBinOffset).connected = false;
+            _points.get(_dataset).get(_firstPointIndex - _pointInBinOffset.get(_dataset)).connected = false;
         }
 
         public final long xpos;
 
         private int _afterLastPointIndex = 0;
+
+        private int _dataset = 0;
 
         // _errorBar is true in case there is one point that needs an error bar, otherwise false
         private boolean _errorBar = false;
