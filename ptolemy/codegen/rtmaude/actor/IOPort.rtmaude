@@ -1,0 +1,8 @@
+
+/***termBlock($port, $type)***/
+< '$port : $type | value : # 0, status : absent >
+/**/
+
+/***multiBlock($port)***/
+< '$port : MultiInPort | channels : empty >
+/**/

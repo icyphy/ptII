@@ -1,0 +1,76 @@
+/***moduleName***/
+SET-VARIABLE/**/
+
+/***className***/
+SetVariable/**/
+
+/***sharedBlock***/
+(tomod SET-VARIABLE is 
+  inc COMPOSITE-ACTOR .    --- assuming composite actor
+
+  class SetVariable | variableName : VarId .
+    subclass SetVariable < Actor .
+
+  --- message to change a variables of the container.
+  msg setv : VarId Value -> Msg .
+
+  vars REST PORTS ACTS CF : Configuration .
+  vars O : Oid .  
+  var VI : VarId . var E : Exp . var V : Value . 
+  var VAL : AssignMap . var VM : ValueMap .
+  vars PI PI' : PortId . var PS : PortStatus .  var AC : Bool .
+  var UPDATED : Bool .
+
+---------------------------------------------------------------------
+--- Message
+---------------------------------------------------------------------
+
+---- set a variables of a parent actor by the 'setv' message
+  eq < O : CompositeActor | 
+	variables : ((VI |-> E) ; VAL),
+	innerActors : ACTS setv(VI, V) >
+   = < O : CompositeActor | 
+	variables : ((VI |-> V) ; VAL), 
+	innerActors : ACTS > .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  eq initActor(SetVariable, < O : SetVariable | >) 
+   = initActor(Actor, < O : SetVariable | >) .
+
+  --- The output port returns the same value to the input port
+  --- Assume that there are EXACTLY two ports.
+  ceq portFixPoints(UPDATED,
+     < O : SetVariable | 
+		status : enabled,
+		ports : 
+		    < PI : InPort | status : PS, value : V > 
+		    < PI' : OutPort | status : unknown > 
+     > REST)
+   = portFixPoints(true,
+     < O : SetVariable |
+     	ports : 
+			< PI : InPort | >
+			< PI' : OutPort | status : PS, value : V > 
+     > REST)
+   if PS =/= unknown .
+
+  --- generate a message to change a variables of the container.
+  eq executeStep(SetVariable,
+    < O : SetVariable | variableName : VI, 
+	ports : < PI : InPort | status : present, value : V > PORTS >, 
+    REST) 
+   = setv(VI, V)
+     executeStep(Actor, < O : SetVariable | >, REST) .
+
+  ceq executeStep(SetVariable, 
+    < O : SetVariable | 
+	status : enabled,
+	ports : < PI : InPort | status : PS > PORTS >, --- PS should be absent
+    REST)
+   = executeStep(Actor, < O : SetVariable | >, REST) 
+  if PS =/= present .
+endtom)
+/**/

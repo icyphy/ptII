@@ -1,0 +1,103 @@
+/***moduleName***/
+PULSE/**/
+
+/***className***/
+Pulse/**/
+
+/***sharedBlock***/
+(tomod PULSE is
+  inc ACTOR .
+
+  class Pulse |
+        indexes : VarId,
+        values : VarId,
+        current-index : Nat .
+    subclass Pulse < Actor .
+
+  vars REST PORTS : Configuration .  vars O : Oid .  
+  vars PI PI' : PortId .
+  var AM : AssignMap . var MEM : Memory .
+  var II IV : VarId .  var VI VV : Value . var EI EV : Exp .
+  var V V' : Value . var VL VL' : ValueList .
+  vars N : Nat . var UPDATED : Bool .
+  
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- set each status of ports to 'unknown'
+  eq initActor(Pulse, 
+    < O : Pulse | 
+	  indexes : II,
+	  values : IV,
+	  variables : (II |-> EI ; IV |-> EV ; AM)
+    >) 
+   = initActor(Actor, 
+    < O : Pulse | 
+      store : eval(II, k(EI)) ; eval(IV, k(EV))
+    >) .
+
+  eq portFixPoints(UPDATED,
+     < O : Pulse |
+        status : enabled,
+        ports :
+            < PI : InPort | status : absent >
+            < PI' : OutPort | status : unknown >
+            PORTS
+     > REST)
+   = portFixPoints(true,
+     < O : Pulse |
+        ports :
+            < PI : InPort | >
+            < PI' : OutPort | status : absent >
+            PORTS
+     > REST) .
+
+  eq portFixPoints(UPDATED,
+     < O : Pulse |
+        status : enabled,
+        indexes : II,
+        values : IV,
+        current-index : N,
+        store : (II |-> VI ; IV |-> VV ; MEM),
+        ports :
+            < PI : InPort | status : present >
+            < PI' : OutPort | status : unknown >
+            PORTS
+     > REST)
+   = portFixPoints(true,
+     < O : Pulse |
+        ports :
+            < PI : InPort | >
+            < PI' : OutPort | status : present, 
+                              value : cMap(VI, VV, N) >
+            PORTS
+     > REST) .
+     
+  op cMap : Value Value Nat -> Value .
+  eq cMap({V, VL}, {V', VL'}, N)
+   = if (V equals # N) == # true then V' 
+     else cMap({VL},{VL'},N) fi .
+  eq cMap({()}, {VL}, N) = # 0 .
+
+  eq executeStep(Pulse,
+    < O : Pulse |
+        current-index : N ,
+        ports : < PI : InPort | status : present > PORTS
+    > , REST)
+  = executeStep(Actor,
+    < O : Pulse |
+        current-index : s(N)
+    >, REST) .
+
+  eq executeStep(Pulse,
+    < O : Pulse |
+        ports : < PI : OutPort | status : absent >  PORTS
+    >, REST)
+  = executeStep(Actor, < O : Pulse | >, REST) .
+
+endtom)
+/**/
+
+/***mapName($index, $value)***/
+$index |-> $value/**/

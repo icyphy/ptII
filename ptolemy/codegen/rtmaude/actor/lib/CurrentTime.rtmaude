@@ -1,0 +1,60 @@
+/***moduleName***/
+CURRENT-TIME/**/
+
+/***className***/
+CurrentTime/**/
+
+/***sharedBlock***/
+(tomod CURRENT-TIME is
+  inc ACTOR-WITH-TIMER .
+
+  class CurrentTime .
+    subclass CurrentTime < TimeActor .
+
+  vars REST PORTS : Configuration .  vars O : Oid .  vars PI PI' : PortId .
+  var T : Time . var UPDATED : Bool .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- set each status of ports to 'unknown'
+  eq initActor(CurrentTime, < O : CurrentTime | >)
+   = initActor(Actor, < O : CurrentTime | >) .
+
+  eq portFixPoints(UPDATED,
+     < O : CurrentTime |
+        status : enabled,
+        current-time : T,
+        ports :
+            < PI : InPort | status : present >
+            < PI' : OutPort | status : unknown >
+            PORTS
+     > REST)
+   = portFixPoints(true,
+     < O : CurrentTime |
+        ports :
+            < PI : InPort | status : present >
+            < PI' : OutPort | status : present, value : # T >
+            PORTS > REST) .
+
+  eq portFixPoints(UPDATED,
+     < O : CurrentTime |
+        status : enabled,
+        ports :
+            < PI : InPort | status : absent >
+            < PI' : OutPort | status : unknown >
+            PORTS
+     > REST)
+   = portFixPoints(true,
+     < O : CurrentTime |
+        ports :
+            < PI : InPort | status : absent >
+            < PI' : OutPort | status : absent >
+            PORTS
+    > REST) .
+
+  eq executeStep(CurrentTime, < O : CurrentTime | >, REST)
+   = executeStep(Actor, < O : CurrentTime | >, REST) .
+endtom)
+/**/

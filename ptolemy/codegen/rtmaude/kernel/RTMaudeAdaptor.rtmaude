@@ -1,14 +1,54 @@
-/***fireBlock ($parameters, $ports)***/
-   < '$actorSymbol(name) : Clock |
-        innerVariables : ($parameters),        
-		ports: ($ports),        
+/***moduleName***/
+ACTOR-BASE/**/
 
-        store : emptyMap >
+/***checkModuleName***/
+MODELCHECK-BASE/**/
+
+/***sharedBlock***/
 /**/
 
-/***parameterBlock($parameter)***/
-	$parameter |-> $val($parameter)/**/
+/***eventBlock($name, $outport, $value, $time)***/
+evt(event('$name ! '$outport, $value), $time)
+/**/
 
+/***funcModuleName***/
+$actorSymbol(MODULE)/**/
 
-/***portBlock($port, $InOrOut, $status)***/
-	< $port : $InOrOut | value : #r(0), status : $status >/**/
+/***fireFuncBlock($module, $include, $modelop, $fire )***/
+(tomod $module is
+    including $include .
+    op #model : Oid -> Configuration .
+    eq $modelop = 
+$fire .
+endtom)
+/**/
+
+/***mainEntry($includes)***/
+(tomod INIT is
+    including DE-DYNAMICS .
+    including
+$includes .
+
+    *** an event messages should be already generated for each clock 
+    *** during the translation
+    --- For the fragment of Ptolemy we now are considering, 
+    --- the initial events are just created by the clocks:
+
+    op init : -> Configuration .
+    op global : -> Oid .
+
+    eq init 
+     = < global : EventQUEUE | queue : nil > /**/
+
+/***mainExit($includes, $commands)***/
+    .
+endtom)
+
+(tomod PTOLEMY-MODELCHECK is
+    including
+$includes .
+endtom)
+
+$commands
+q
+/**/

@@ -1,0 +1,29 @@
+/***moduleName***/
+ACTOR/**/
+
+/***checkModuleName***/
+CHECK-ACTOR/**/
+
+/***className***/
+Actor/**/
+
+/***shared0***/
+**************************************
+**************************************
+/**/
+
+/***termBlock***/
+#model('$actorSymbol(model))/**/
+
+/***fireBlock($name, $class, $attr_terms)***/
+< '$name : $class | 
+$attr_terms
+>/**/
+
+/***attrBlock($name, $value)***/
+$name : (
+$value)/**/
+
+/***statusBlock***/
+enabled
+/**/

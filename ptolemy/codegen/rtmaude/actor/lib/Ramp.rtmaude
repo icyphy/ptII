@@ -1,0 +1,81 @@
+/***moduleName***/
+RAMP/**/
+
+/***className***/
+Ramp/**/
+
+/***sharedBlock***/
+(tomod RAMP is 
+  inc ACTOR .
+
+  class Ramp | init : VarId, 
+               step : VarId,
+               count : Nat,
+	           output-value : Value .
+    subclass Ramp < Actor .
+
+  vars REST PORTS : Configuration .  vars O : Oid . vars PI PI' : PortId .
+  var AM : AssignMap . var MEM : Memory .
+  var II IS : VarId .  var V VI VS : Value . var EI ES : Exp .
+  var UPDATED : Bool . var N : Nat .
+  
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- set each status of ports to 'unknown'
+  eq initActor(Ramp, 
+    < O : Ramp | 
+      init : II,
+      step : IS,
+	  variables : (II |-> EI ; IS |-> ES ; AM)
+    >) 
+   = initActor(Actor, 
+    < O : Ramp | 
+      store : eval(II, k(EI)) ; eval(IS, k(ES))
+    >) .
+
+  eq portFixPoints(UPDATED,
+     < O : Ramp | 
+		status : enabled,
+		init : II,
+		step : IS,
+		store : II |-> VI ; IS |-> VS,
+		count : N,
+		output-value : V,
+		ports : 
+			< PI : InPort | status : present >  
+			< PI' : OutPort | status : unknown > PORTS 
+     > REST)
+   = portFixPoints(true,
+     < O : Ramp | 
+     	ports : 
+     		< PI : InPort | > PORTS
+     		< PI' : OutPort | status : present, 
+     			value : if N > 0 then V + VS else VI fi >
+     > REST) .
+
+  eq executeStep(Ramp,
+    < O : Ramp | 
+    	status : enabled,
+    	init : II,
+		step : IS,
+		store : II |-> VI ; IS |-> VS,
+		count : N,
+		output-value : V,
+		ports : < PI : OutPort | status : present >  PORTS
+	> , REST) 
+  = executeStep(Actor, 
+    < O : Ramp | 
+        count : s(N),
+        output-value : if N > 0 then V + VS else VI fi
+    >, REST) .
+
+  eq executeStep(Ramp, 
+    < O : Ramp | 
+	    ports : < PI : OutPort | status : absent >  PORTS
+    >, REST) 
+  = executeStep(Actor, < O : Ramp | >, REST) .
+
+endtom)
+/**/

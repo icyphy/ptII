@@ -1,0 +1,250 @@
+/***moduleName***/
+COMPOSITE-ACTOR/**/
+
+/***checkModuleName***/
+CHECK-COMPOSITE-ACTOR/**/
+
+/***className***/
+CompositeActor/**/
+
+/***sharedBlock***/
+(tomod COMPOSITE-ACTOR is 
+  inc ACTOR .
+  class CompositeActor | innerActors : Configuration .
+    subclass CompositeActor < Actor .
+
+  vars CF CF' CF'' ACTS REST PORTS PORTS' : Configuration .
+  var OBJ : Object .  vars QUE O O' : Oid .
+  var T : Time . var AC : Bool .
+  var V : Value .  var VM : ValueMap .
+  var MEM MEM' : Memory .
+  vars PI PI' : PortId . var EPIS EPIS' : EPortIdSet .
+  var AI : ActorID .
+  var PS : PortStatus .
+  vars EQ EQ1 EQ2 EQ3 : EventQueue .  var EVTS EVTS' : Events .
+  var UPDATED UPDATED' : Bool .
+  var VI CI : VarId . var K : K .
+  var VIL : VarIdList . var VL : ValueList .
+
+---------------------------------------------------------------------
+--- Message & Time
+---------------------------------------------------------------------
+
+--- Pass events to different level
+--- An event dilivery (to event-queue or to ports) is accomplished
+--- by related event message. In here, dilivering events to
+--- different level is defined
+
+  --- evt message (to top)
+  eq < O : CompositeActor | 
+	innerActors : ACTS evt(event(AI ! PI, V), T) 
+     >
+   = < O : CompositeActor | 
+	innerActors : ACTS 
+     >
+     evt(event((O . AI) ! PI, V), T)  .
+
+  --- active-evt message (from top)
+  eq active-evt(event((O . AI) ! PI, V))
+     < O : CompositeActor | 
+	status : enabled,
+	innerActors : ACTS 
+     >
+   = < O : CompositeActor | 
+	innerActors : active-evt(event(AI ! PI, V)) ACTS 
+     > .
+     
+  eq delta(< O : CompositeActor | innerActors : CF >, T)
+   = < O : CompositeActor | innerActors : delta(CF, T) > .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- children actors are also initialized for computational step
+  eq initActor(CompositeActor, 
+    < O : CompositeActor | 
+	innerActors : ACTS 
+    >)
+   = initActor(Actor, 
+    < O : CompositeActor | 
+	innerActors : initActors(ACTS)
+    >) .
+
+  --- In hierarchical model of actors, Fix-point computation of all levels 
+  ---  will be executed at the same time.
+  --- (Caution: Transparent case. when opaque case, it will be more
+  ---  complicate. But we assume that everything is DE, so no problem here)
+  --- This over-level fixpoint computation is accomplished by starting
+  --- and terminating portFixPoint at the same time for all level.
+
+ **** setting hierarchical model ****
+
+  --- if innerActors do not start portFixPoint, start it.
+  ceq portFixPoints(UPDATED,
+    < O : CompositeActor | 
+	status : enabled,
+	innerActors : ACTS 
+    > 
+    REST
+    )
+  =  portFixPoints(true,
+    < O : CompositeActor | 
+	innerActors : portFixPoints(true,ACTS) 
+    > 
+    REST)
+   if checkLower(ACTS) .
+
+  --- check that portFixPoints is started.
+  op checkLower : Configuration -> Bool [frozen (1)] .
+  eq checkLower(none) = false .
+  eq checkLower(portFixPoints(UPDATED,CF)) = false .
+  eq checkLower(CF) = true [owise] .
+
+ **** variable ****
+
+  --- In Ptolemy, scope of variable should contains ancestors' of
+  --- current actor. Also, children can share the same variables
+  --- of a parent.
+
+  --- variables defined at the parent actor, and its already computed.
+  ceq portFixPoints(UPDATED,
+    < O : CompositeActor |
+	store : VI |-> V ; MEM,
+	innerActors : portFixPoints(UPDATED',
+	    < O' : Actor |
+		status : enabled,
+		store : eval(CI, k(VI -> K)) ; MEM'
+	    >
+	    ACTS)
+    > REST)
+   = portFixPoints(true,
+    < O : CompositeActor |
+	innerActors : portFixPoints(true,
+	    < O' : Actor |
+		store : eval(CI, k(V -> K)) ; MEM'
+	    >
+	    ACTS)
+    > REST)
+  if not VI in MEM' .
+
+  --- If a variable is not in current actor and not already computed in
+  --- the parent actor, it will be computed at the parent
+  ceq portFixPoints(UPDATED,
+    < O : CompositeActor |
+	store : MEM,
+	innerActors : portFixPoints(UPDATED',
+	    < O' : Actor |
+		status : enabled,
+		store : eval(CI, k(VI -> K)) ; MEM'
+	    >
+	    ACTS)
+    > REST)
+   = portFixPoints(true,
+    < O : CompositeActor |
+	store : eval(VI, k(VI)) ; MEM,
+	innerActors : portFixPoints(true, < O' : Actor | > ACTS)
+    > REST)
+  if not VI in MEM' /\ not VI in MEM .
+
+ **** port ****
+
+  --- The value of ports can be dilivered among different levels
+  --- if connections exist.
+
+  --- Down (Inner Actor)
+  ceq portFixPoints(UPDATED,
+    < O : CompositeActor |
+	ports : < PI : InPort | status : PS, value : V > PORTS,
+	innerActors : portFixPoints(UPDATED',
+	    < O' : Actor | 
+		status : enabled,
+		ports : < PI' : InPort | status : unknown > PORTS' 
+	    >
+	    (((parent ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+	    ACTS)
+    > REST)
+   = portFixPoints(true,
+    < O : CompositeActor |
+	innerActors :  portFixPoints(true,
+	    < O' : Actor | 
+		ports : < PI' : InPort | status : PS, value : V > PORTS' 
+	    >
+	    (((parent ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+	    ACTS)
+    > REST)
+   if PS =/= unknown .
+
+  --- Up (Inner Actor)
+  ceq portFixPoints(UPDATED,
+    < O : CompositeActor |
+	ports : < PI : OutPort | status : unknown > PORTS,
+	innerActors : portFixPoints(UPDATED',
+	    < O' : Actor | 
+		ports : < PI' : OutPort | status : PS, value : V > PORTS' 
+	    >
+	    (((O' ! PI') ; EPIS') ==> ((parent ! PI) ; EPIS)) 
+	    ACTS)
+    > REST)
+   = portFixPoints(true,
+    < O : CompositeActor |
+	ports : < PI : OutPort | status : PS, value : V > PORTS,
+	innerActors : portFixPoints(true,
+	    < O' : Actor | >
+	    (((O' ! PI') ; EPIS') ==> ((parent ! PI) ; EPIS)) 
+	    ACTS)
+    > REST)
+   if PS =/= unknown .
+
+ **** final condition (redefined) ****
+
+  --- no computation is available in the
+  --- current level and there was no change at the children,
+  --- the flag is changed to false
+
+  --- if there is no change (from bottom)
+  ceq portFixPoints(true, CF) = portFixPoints(false, CF) 
+   if checkFix(CF) [owise] .
+
+  op checkFix : Configuration -> Bool [frozen (1)] .
+  eq checkFix(< O : CompositeActor | 
+	innerActors : portFixPoints(true, ACTS) > REST) = false .
+  eq checkFix(CF) = true [owise] .
+
+  --- terminate all portFixPoints (from top)
+  eq portFinalize(
+    < O : CompositeActor | innerActors : portFixPoints(UPDATED, ACTS) > REST) 
+   = portFinalize(
+    < O : CompositeActor | innerActors : portFinalize(ACTS) > REST) .
+
+------------------------
+
+  --- variables of inner actors cannot be accessed from
+  --- outside. Hence, updating those before doing parent actor
+  --- events sholud be also considered.
+  eq executeStep(CompositeActor,
+    < O : CompositeActor | 
+	status : enabled,
+	innerActors : ACTS 
+    >, 
+    REST)
+  =  executeStep(Actor, 
+    < O : CompositeActor | 
+	innerActors : executeStep(ACTS) 
+    >, 
+    REST) .
+endtom)
+
+(tomod CHECK-COMPOSITE-ACTOR is
+  pr COMPOSITE-ACTOR .
+  pr CHECK-ACTOR .
+
+  var CF ACTS : Configuration .  var O : Oid .  
+  var AI : ActorID .  var AP : ActorPattern .
+
+  eq {< O : CompositeActor | innerActors : ACTS > CF} |= (O . AI) AP
+   = {ACTS} |= AI AP .   --- accessing inner actor,, ?
+endtom)
+/**/
+
+

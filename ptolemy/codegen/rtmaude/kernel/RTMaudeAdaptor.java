@@ -1,101 +1,148 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
-
-Copyright (c) 2009 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
 package ptolemy.codegen.rtmaude.kernel;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.IOPort;
+import net.sf.saxon.type.Type;
+
+import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.Entity;
+import ptolemy.codegen.kernel.CodeStream;
+import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
+import ptolemy.codegen.rtmaude.data.expr.PropertyParameter;
+import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 public class RTMaudeAdaptor extends CodeGeneratorHelper {
-
+    
+    protected String defaultTermBlock = "termBlock";
+        
     public RTMaudeAdaptor(NamedObj component) {
         super(component);
+        _parseTreeCodeGenerator = getParseTreeCodeGenerator();
+    }
+    
+    public List<String> getBlockCodeList(String blockName, String ... args) 
+            throws IllegalActionException {
+        List<String> rl = new LinkedList();
+        rl.add(_generateBlockCode(blockName,args));
+        return rl;
+    }
+    
+    /**
+     * @param blockName
+     * @param args
+     * @return
+     * @throws IllegalActionException
+     */
+    protected String _generateBlockCode(String blockName, String ... args)
+            throws IllegalActionException {
+        return super._generateBlockCode(blockName, Arrays.asList(args));
+    }
+    
+    @Override
+    protected String _generateTypeConvertMethod(String ref, String castType,
+            String refType) throws IllegalActionException {
+        
+        //FIXME: too specific.
+        if (refType != null && refType.equals("String"))
+            return "# " + ref;
+        if (castType != null && castType.equals("time")) {
+            return "toTime(" + ref + ")";
+        }
+        else
+            return super._generateTypeConvertMethod(ref, castType, refType);
+    }
+    
+    @Override
+    public String generateFireCode() throws IllegalActionException {
+        String comment = _codeGenerator.comment("Fire " +
+                ((getComponent() instanceof CompositeActor) ? "Composite Actor: " : "") +
+                generateName(getComponent()));
+
+        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE)
+            return processCode(comment + 
+                    _generateFireCode() + generateTypeConvertFireCode());
+        else
+            return processCode(comment + generateTermCode());        
+    }
+    
+    @Override
+    public String generateFireFunctionCode() throws IllegalActionException {
+        return _generateBlockCode("fireFuncBlock",
+                _generateBlockCode("funcModuleName"),
+                _generateBlockCode("moduleName"),
+                generateTermCode(),
+                CodeStream.indent(1,_generateFireCode() + generateTypeConvertFireCode())
+                );
     }
 
-    // FIXME: the period value is required to be an integer. We have
-    // generate an integer even if the model has a double value.
-
-    protected String _generateFireCode() throws IllegalActionException {
-
-
-        StringBuffer code = new StringBuffer();
-        StringBuffer parameterCode = new StringBuffer();
-        StringBuffer portCode = new StringBuffer();
-
-        List<Variable> parameters = (List<Variable>) _getParameters();
-
-        ArrayList args = new ArrayList();
-        args.add("");
-
-        // FIXME: deal with the last comma later.
-        for (Variable parameter : parameters) {
-            args.set(0, generateSimpleName(parameter));
-            parameterCode.append(_generateBlockCode("parameterBlock", args) + ", ");
+    /**
+     * Generate a Real-time Maude term representation of given component.
+     * 
+     * @return the term representation of a component
+     * @throws IllegalActionException 
+     */
+    public String generateTermCode() throws IllegalActionException {
+        return _generateBlockCode(defaultTermBlock);    // term block
+    }
+    
+    public String generateEntryCode() throws IllegalActionException {
+        HashSet<String> inc_set;
+        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE)
+            inc_set = new HashSet(getBlockCodeList("moduleName"));
+        else
+            inc_set = new HashSet(getBlockCodeList("funcModuleName"));
+            
+        return _generateBlockCode("mainEntry",
+                CodeStream.indent(2, 
+                        new ListTerm<String>("ACTOR-BASE", " +" + _eol,
+                                inc_set).generateCode())
+            );
+    }
+    
+    public String generateExitCode() throws IllegalActionException {
+        HashSet<String> check_inc_set = new HashSet<String>();
+        StringBuffer commands = new StringBuffer();
+        ptolemy.data.Token bound = ((RTMaudeCodeGenerator)_codeGenerator).
+                            simulation_bound.getToken();
+        
+        check_inc_set.add("INIT");
+        check_inc_set.addAll(getBlockCodeList("checkModuleName"));
+        
+        
+        if ( bound != null ) {
+            if (bound.toString().equals("Infinity"))
+                commands.append("(rew {init} .)");
+            else
+                commands.append("(trew {init} in time <= " + 
+                        IntToken.convert(bound).toString() + " .)");
         }
 
-        List<IOPort> ports = (List<IOPort>) _getPorts();
-
-        ArrayList args2 = new ArrayList();
-        args2.add("");
-        args2.add("");
-        args2.add("");
-
-        // FIXME: deal with the last comma later.
-        for (IOPort port : ports) {
-            args2.set(0, generateSimpleName(port));
-
-            // Assume we are not dealing with in-out ports.
-            args2.set(1, port.isInput()? "InPort" : "OutPort");
-
-            args2.set(2, "absent");
-            portCode.append(_generateBlockCode("portBlock", args2) + ", ");
+        for (PropertyParameter p : (List<PropertyParameter>)
+                _codeGenerator.attributeList(PropertyParameter.class)) {
+            commands.append("(" + p.stringValue() + " .)" + _eol);
         }
-
-        ArrayList args3 = new ArrayList();
-        args3.add(parameterCode);
-        args3.add(portCode);
-        code.append(_generateBlockCode("fireBlock", args3));
-
-        return code.toString();
+        
+        return _generateBlockCode("mainExit", 
+                CodeStream.indent(2, 
+                        new ListTerm<String>("MODELCHECK-BASE", " +" + _eol, 
+                                check_inc_set).generateCode()),
+                commands.toString()
+        );
     }
-
-    protected List<IOPort> _getPorts() {
-        Entity actor = (Entity) getComponent();
-        return actor.portList();
-    }
-
-    protected List<Variable> _getParameters() {
-        // Note: subclass should override this method.
-        return new ArrayList();
+    
+    /** Return a new parse tree code generator to use with expressions.
+     *  @return the parse tree code generator to use with expressions.
+     */
+    public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
+        _parseTreeCodeGenerator = new RTMaudeParseTreeCodeGenerator(); //FIXME: _codeGenerator
+        return _parseTreeCodeGenerator;
     }
 }

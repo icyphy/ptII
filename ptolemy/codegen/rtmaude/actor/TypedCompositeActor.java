@@ -1,6 +1,6 @@
 /* Code generator helper for typed composite actor.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,6 +27,20 @@
  */
 package ptolemy.codegen.rtmaude.actor;
 
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.IORelation;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
+import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
@@ -34,18 +48,90 @@ package ptolemy.codegen.rtmaude.actor;
 /**
  Code generator helper for typed composite actor.
 
- @author Man-Kit Leung
- @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (zgang)
+ @author Kyungmin Bae
+ @version 
+ @since Ptolemy II 7.2
+ @Pt.ProposedRating Red (kquine)
  */
-public class TypedCompositeActor extends ptolemy.codegen.actor.TypedCompositeActor {
+public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
     /** Construct the code generator helper associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
      */
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
         super(component);
+    }
+    
+    @Override
+    public List<String> getBlockCodeList(String blockName, String ... args) 
+            throws IllegalActionException {
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor
+                .CompositeActor) getComponent()).getDirector());
+        
+        List self = super.getBlockCodeList(blockName, args);
+        self.addAll(directorHelper.getBlockCodeList(blockName, args));
+  
+        return self;
+    }
+
+    @Override
+    protected Map<String, String> _generateAttributeTerms()
+            throws IllegalActionException {
+        Map<String,String> atts = super._generateAttributeTerms();
+        ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();
+        
+        // code for the actor, which is Maude term for the actor.                
+        // "entityList" method is used instead of "deepEntityList", because
+        // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude 
+        String actorCode = 
+            new ListTerm<Actor>("none", _eol, c_actor.entityList(Actor.class)) {
+                public String item(Actor v) throws IllegalActionException {
+                    return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
+                }
+            }.generateCode();
+        
+        // code for connections (relations)
+        String connectionCode =
+            new ListTerm<IORelation>("none", _eol, c_actor.relationList()) {
+                public String item(IORelation v) throws IllegalActionException {
+                    return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
+                }
+            }.generateCode();
+        
+        atts.put("innerActors", actorCode + _eol + connectionCode);
+        
+        return atts;
+    }
+    
+    @Override
+    public String generateFireFunctionCode() throws IllegalActionException {
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor
+                .CompositeActor) getComponent()).getDirector());
+                
+        return super.generateFireFunctionCode() + 
+            _eol + directorHelper.generateFireFunctionCode();
+    }
+    
+    public Set getSharedCode() throws IllegalActionException {
+
+        // Use LinkedHashSet to give order to the shared code.
+        Set sharedCode = new LinkedHashSet();
+        sharedCode.addAll(super.getSharedCode());
+
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            sharedCode.addAll(helperObject.getSharedCode());
+        }
+
+        // Get shared code used by the director helper.
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+        sharedCode.addAll(directorHelper.getSharedCode());
+
+        return sharedCode;
     }
 }

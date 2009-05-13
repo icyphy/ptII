@@ -1,0 +1,23 @@
+/***sharedBlock***/
+(omod PORTS is 
+  pr IDENTIFIERS .
+  pr PtolemyValue .
+
+  class Port | status : PortStatus, value : Value .
+  class InPort .
+    subclass InPort < Port .
+  class OutPort .
+    subclass OutPort < Port .
+
+  sort PortStatus .
+  ops unknown present absent : -> PortStatus [ctor] .
+
+endom)
+/**/
+
+/***termBlock($sources, $targets)***/
+($sources ==> ($targets))/**/
+
+/***scopeBlock($actor_id, $name)***/
+($actor_id ! '$name)
+/**/
