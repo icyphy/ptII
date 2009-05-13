@@ -31,7 +31,7 @@ import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 

@@ -48,7 +48,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <port name="dataInput" class="ptolemy.domains.fsm.modal.RefinementPort">
+    <port name="dataInput" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
         </property>
@@ -58,7 +58,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 65.0]">
         </property>
@@ -66,7 +66,7 @@
     <entity name="Listen" class="ptolemy.domains.ptera.kernel.Event">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 160.0]">
         </property>
@@ -76,7 +76,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 255.0]">
         </property>

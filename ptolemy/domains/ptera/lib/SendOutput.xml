@@ -48,7 +48,7 @@
     </property>
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
     </property>
-    <port name="dataOutput" class="ptolemy.domains.fsm.modal.RefinementPort">
+    <port name="dataOutput" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 200.0]">
         </property>
@@ -60,7 +60,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
         </property>

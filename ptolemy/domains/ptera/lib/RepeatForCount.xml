@@ -344,7 +344,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[183.0736849308014, 113.97714162752925]">
         </property>
@@ -356,7 +356,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[248.0736849308014, 193.97714162752925]">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">

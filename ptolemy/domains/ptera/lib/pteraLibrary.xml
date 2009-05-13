@@ -138,6 +138,6 @@
     </entity>
   </entity>
   <entity name="Event" class="ptolemy.domains.ptera.kernel.Event">
-    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"/>
+    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"/>
   </entity>
 </group>

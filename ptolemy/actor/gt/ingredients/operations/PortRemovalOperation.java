@@ -32,7 +32,7 @@ import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.data.MatchResult;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;

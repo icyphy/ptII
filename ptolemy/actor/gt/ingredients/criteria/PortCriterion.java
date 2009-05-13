@@ -42,7 +42,7 @@ import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.type.Type;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;

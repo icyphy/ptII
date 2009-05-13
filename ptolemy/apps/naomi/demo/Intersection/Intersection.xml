@@ -2,42 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Intersection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">    This model simulates the car and pedestrian traffic at a 4-way
-intersection. The car lights function according to the dynamically
-changed green, red and yellow durations, until a pedestrian arrives
-at any pedestrian light and presses the request button. The Berkeley
-policy is to serve the pedestrian immediately. The Manhattan policy,
-on the contrary, completely ignores pedestrian requests.
-    This model features heterogeneous multi-modeling. Models of
-computation, such as DE (discrete-event), Ptera (Ptolemy event
-relationship actor), Wireless, SDF (synchronous dataflow) and FSM
-(finite state machine), are used at different levels of the model
-hierarchy for maximum design flexibility. Another highlight is the use
-of model transformation with Ptera controllers. Specifically,
-PeriodController is a component that changes the car and pedestrian
-arrival rates dynamically according to the intersection specification.
-    DurationController monitors the number of waiting cars and the
-                          number of waiting pedestrians, and increases or
-                          decreases the green durations if the two numbers
-                          become too far apart.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 155.0]">
-        </property>
-    </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1105, 669}, maximized=false}">
     </property>
@@ -130,24 +95,6 @@ arrival rates dynamically according to the intersection specification.
         <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 35.0]">
         </property>
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">4-Way Intersection</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 0.0]">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
@@ -161,7 +108,7 @@ arrival rates dynamically according to the intersection specification.
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 435.0]">
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -174,24 +121,6 @@ arrival rates dynamically according to the intersection specification.
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors:</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 480.0]">
         </property>
     </property>
     <property name="MaxCarQueueLength" class="ptolemy.data.expr.Parameter" value="max(Intersection.MaxCarWaitingNS, Intersection.MaxCarWaitingEW)">
@@ -212,7 +141,7 @@ arrival rates dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 470.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.maximum (Fri, Jan 09 2009 21:01:27.298 -0800) () (SOW TPM R9)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.maximum (Wed, May 13 2009 01:25:56.511 -0700) () (SOW TPM R9)">
         </property>
     </property>
     <property name="AvgCarQueueLength" class="ptolemy.data.expr.Parameter" value="(Intersection.AvgCarWaitingNS + Intersection.AvgCarWaitingEW) / 2">
@@ -233,7 +162,7 @@ arrival rates dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 490.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.average (Fri, Jan 09 2009 21:01:27.298 -0800) (cars) (SOW TPM R8)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.average (Wed, May 13 2009 01:25:56.511 -0700) (cars) (SOW TPM R8)">
         </property>
     </property>
     <property name="MaxCarWaitingTime" class="ptolemy.data.expr.Parameter" value="6.1832479851">
@@ -254,7 +183,7 @@ arrival rates dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 510.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.wait.time.maximum (Fri, Jan 09 2009 21:01:27.298 -0800) (minutes) (SOW TPM R10)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.wait.time.maximum (Wed, May 13 2009 01:25:56.511 -0700) (minutes) (SOW TPM R10)">
         </property>
     </property>
     <property name="MaxPedWaitingTime" class="ptolemy.data.expr.Parameter" value="3.6979432016">
@@ -275,26 +204,7 @@ arrival rates dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 530.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.pedestrian.wait.time.maximum (Fri, Jan 09 2009 21:01:27.298 -0800) (minutes) (SOW TPM R11)">
-        </property>
-    </property>
-    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Christopher Brooks, Thomas Huining Feng,
-Edward A. Lee</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 480.0]">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.pedestrian.wait.time.maximum (Wed, May 13 2009 01:25:56.511 -0700) (minutes) (SOW TPM R11)">
         </property>
     </property>
     <property name="carNSCrossTime" class="ptolemy.data.expr.Parameter" value="4.8438934802571172E-3">
@@ -316,7 +226,7 @@ Edward A. Lee</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 80.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="get:Conversions.NS.Cross.Time.Minutes (Fri, Jan 09 2009 21:01:27.298 -0800) () ()">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="get:Conversions.NS.Cross.Time.Minutes (Wed, May 13 2009 01:25:56.511 -0700) () ()">
         </property>
     </property>
     <property name="carEWCrossTime" class="ptolemy.data.expr.Parameter" value="4.8438934802571172E-3">
@@ -338,25 +248,47 @@ Edward A. Lee</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 100.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="get:Conversions.EW.Cross.Time.Minutes (Fri, Jan 09 2009 21:01:27.297 -0800) () ()">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="get:Conversions.EW.Cross.Time.Minutes (Wed, May 13 2009 01:25:56.511 -0700) () ()">
         </property>
     </property>
-    <property name="annotation5" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">(A demo of the LMATL Naomi project)</text></svg></configure>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="4-Way Intersection">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 5.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 520.0]">
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    This model simulates the car and pedestrian traffic at a 4-way&#10;intersection. The car lights function according to the dynamically&#10;changed green, red and yellow durations, until a pedestrian arrives&#10;at any pedestrian light and presses the request button. The Berkeley&#10;policy is to serve the pedestrian immediately. The Manhattan policy,&#10;on the contrary, completely ignores pedestrian requests.&#10;    This model features heterogeneous multi-modeling. Models of&#10;computation, such as DE (discrete-event), Ptera (Ptolemy event&#10;relationship actor), Wireless, SDF (synchronous dataflow) and FSM&#10;(finite state machine), are used at different levels of the model&#10;hierarchy for maximum design flexibility. Another highlight is the use&#10;of model transformation with Ptera controllers. Specifically,&#10;PeriodController is a component that changes the car and pedestrian&#10;arrival rates dynamically according to the intersection specification.&#10;    DurationController monitors the number of waiting cars and the&#10;                          number of waiting pedestrians, and increases or&#10;                          decreases the green durations if the two numbers&#10;                          become too far apart.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 160.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 485.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Thomas Huining Feng,&#10;Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 485.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(A demo of the LMATL Naomi project)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 525.0]">
         </property>
     </property>
     <entity name="Intersection" class="ptolemy.actor.TypedCompositeActor">

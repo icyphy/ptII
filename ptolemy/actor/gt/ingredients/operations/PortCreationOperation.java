@@ -38,7 +38,7 @@ import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;

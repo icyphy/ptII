@@ -478,7 +478,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *  This method is read-synchronized on the workspace.
      *
      *  This method is a duplication of {@link
-     *  ptolemy.domains.fsm.kernel.FSMDirector#getController()}. However, due to
+     *  ptolemy.domains.modal.kernel.FSMDirector#getController()}. However, due to
      *  the class hierarchy, there is no easy way to reuse the code.
      *
      *  @return The mode controller of this director.
