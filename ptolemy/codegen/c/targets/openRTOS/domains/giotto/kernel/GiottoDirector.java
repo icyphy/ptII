@@ -1,6 +1,6 @@
 /* Code generator helper class associated with the GiottoDirector class.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -536,7 +536,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     /**
      * 
      * @param period
-     * @return
+     * @return Code that creates the Scheduler thread.
      * @throws IllegalActionException
      */
     public String generateSchedulerThread(String period) throws IllegalActionException{
