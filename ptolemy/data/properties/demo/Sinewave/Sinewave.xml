@@ -49,7 +49,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 80.0]">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.03664981486767589">
@@ -65,7 +65,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0050283960368577955">
@@ -81,7 +81,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.024834597195704626">
@@ -97,7 +97,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.030736356885893688">
@@ -251,7 +251,7 @@
         </property>
         <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="propertyLattice" class="ptolemy.data.expr.StringParameter" value="Actor::Custom">
+        <property name="propertyLattice" class="ptolemy.data.expr.StringParameter" value="Attribute::Custom">
         </property>
         <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out &gt;= in">
         </property>
@@ -265,7 +265,7 @@
         </property>
         <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 505.0}">
         </property>
     </property>
     <property name="Custom::2" class="ptolemy.data.properties.AnnotationAttribute" value="Two.output = discrete">
