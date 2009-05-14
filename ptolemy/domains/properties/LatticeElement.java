@@ -30,7 +30,7 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

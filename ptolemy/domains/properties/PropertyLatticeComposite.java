@@ -33,7 +33,7 @@ import java.util.List;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
-import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
