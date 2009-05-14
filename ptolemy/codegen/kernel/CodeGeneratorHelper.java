@@ -2317,31 +2317,24 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /**
      * Generate expression that evaluates to a result of equivalent
      * value with the cast type.
-     * @param ref The given variable expression.
+     * @param expression The given variable expression.
      * @param castType The given cast type.
      * @param refType The given type of the variable.
      * @return The variable expression that evaluates to a result of
      *  equivalent value with the cast type.
      * @exception IllegalActionException
      */
-    protected String _generateTypeConvertMethod(String ref, String castType,
+    protected String _generateTypeConvertMethod(String expression, String castType,
             String refType) throws IllegalActionException {
 
         if (castType == null || refType == null || castType.equals(refType)) {
-            return ref;
+            return expression;
         }
 
-        if (isPrimitive(castType)) {
-            ref = refType + "to" + castType + "(" + ref + ")";
-        } else if (isPrimitive(refType)) {
-            ref = "$new(" + refType + "(" + ref + "))";
-        }
-
-        if (!castType.equals("Token") && !isPrimitive(castType)) {
-            ref = "$typeFunc(TYPE_" + castType + "::convert(" + ref + "))";
-        }
-
-        return processCode(ref);
+        expression = "$convert_" + refType + "_" + castType 
+        + "(" + expression + ")";
+        
+        return processCode(expression);
     }
 
     /**

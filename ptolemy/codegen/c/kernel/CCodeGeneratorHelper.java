@@ -41,7 +41,6 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -504,12 +503,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             }
         }
 
-        String result = sourceRef;
-
-        result = _generateTypeConvertMethod(
-                result, codeGenType(sinkType), codeGenType(sourceType));
-
-        return sinkRef + " = " + result + ";" + _eol;
+        sourceRef = _generateTypeConvertMethod(
+                sourceRef, codeGenType(sinkType), codeGenType(sourceType));
+        
+        return sinkRef + " = " + sourceRef + ";" + _eol;
     }
 
     /** Generate type convert variable declarations.
