@@ -565,16 +565,20 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-
+            System.out.println("actor name is "+actor.getFullName()+" with director "+actor.getDirector().getFullName());
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
          // generate methods with fire code for the actors inside a composite actor with an sdf director
-            if(actor instanceof CompositeActor)
+            code.append("//before appending fire code for the contents of the composite actor");
+           if(actor instanceof CompositeActor)
             {
-                if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")) {
+                
+                if(actor.getDirector().getFullName().contains("SDFDirector"))//&&(!actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")))
+                {
                     for (Actor actor1 : (List<Actor>) 
                             ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList())
                     {
+                        System.out.println("contained actors includes: "+actor1.getFullName());
                         CodeGeneratorHelper actor1Helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor1);
                         //code.append(actor1.getFullName()+"(void) {"+_eol);
                         code.append(actor1Helper.generateFireFunctionCode());
@@ -584,12 +588,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     
                 }
             }
-                                             
+             code.append("//after appending fire code for the contents of the composite actor");                                
             
-            String actorFullName = _getActorName(actor);    
-
-            code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
-                    + _eol);
+            String actorFullName = _getActorName(actor);
+            String methodSignature = _eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
+            + _eol;
+            
+            //code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
+              //      + _eol);
             String srcReference;
             String sinkReference;
 
@@ -597,10 +603,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             Iterator<IOPort> inputPorts;
             inputPorts = actor.inputPortList().iterator();
             Director dir = actor.getDirector();
+            
+            
             if(actor instanceof CompositeActor)
             {
 
                 if(dir == null){
+                   code.append(methodSignature);
                     while(inputPorts.hasNext())
                     {       
                         IOPort inputPort = inputPorts.next();
@@ -612,6 +621,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                         code.append(_eol+"//just did the transfer in and out of this composite actor with a call to super methods"+_eol);
                         // else do nothing
                     }
+                    code.append("}" + _eol);
                 }else if((dir.getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector") ||dir.getClassName()=="ptolemy.domains.sdf.kernel.SDFDirector"){
                    // code.append("//second if"+_eol);
 
@@ -649,16 +659,19 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                                 actorTransferCode += _generateBlockCode("updatePort", args);     
                             }
                         }
+                        code.append(methodSignature);
                         code.append(_eol+actorTransferCode+_eol);
                         //code.append("//display name: "+actor.getDisplayName()+_eol);
                         code.append(_getActorName(actor)+"_EmbeddedActor();"+_eol);
                         //code.append("//jni actor"+_eol);
                         //code.append("//transfer outputs out"+_eol);
+                        code.append("}" + _eol);
 
                     }
                     else{
-                        code.append(_eol+"//not jni"+_eol);
-                        code.append(actorHelper.generateFireFunctionCode2());
+                       // code.append(_eol+"//not jni"+_eol);
+                       // System.out.println("not jni actor name is"+actor.getFullName());
+                        //code.append(actorHelper.generateFireFunctionCode2());
                     }
                 }
                 else
@@ -667,6 +680,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 }
 
             } else{
+                code.append(methodSignature);
                 code.append(_eol+"//in final else"+_eol);
                 String temp = actorHelper.generateFireFunctionCode2();
                 if(temp.length()==0)
@@ -677,9 +691,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 {
                     code.append(temp);
                 }
+                code.append("}" + _eol);
             }   
 
-            code.append("}" + _eol);
+            //code.append("}" + _eol);
 
         }
         return code.toString();
