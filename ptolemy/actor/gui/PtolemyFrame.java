@@ -158,7 +158,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                             (CompositeEntity)originalEffigy.getContainer(),
                             originalEffigy.getContainer().uniqueName(_model.getName()));
                     newEffigy.setModel(_model);
-                    newEffigy.setModified(true);
+                    newEffigy.setModified(originalEffigy.isModified());
                     getTableau().setContainer(newEffigy);
                     return newEffigy;
                 } catch (KernelException e) {
