@@ -702,9 +702,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
                     }
                     else{
-                       // code.append(_eol+"//not jni"+_eol);
+                        code.append(methodSignature);
+                       code.append(_eol+"//not jni"+_eol);
                        // System.out.println("not jni actor name is"+actor.getFullName());
-                        //code.append(actorHelper.generateFireFunctionCode2());
+                        code.append(actorHelper.generateFireFunctionCode2());
+                        code.append("}" + _eol);
                     }
                 }
                 else
