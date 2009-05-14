@@ -33,7 +33,7 @@ ME =		ptolemy/configs
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		codegen doc dsp full gt hyvisual jni jxta \
+DIRS =		codegen doc dsp full hyvisual jni jxta \
 		layout luminary properties pn ptiny ptinyKepler \
 		space vhdl viptos visualsense test
 
@@ -114,7 +114,6 @@ PTCLASSALLJARS = \
 		doc/doc.jar \
 		dsp/dsp.jar \
 		full/full.jar \
-		gt/gt.jar \
 		hyvisual/hyvisual.jar \
 		jni/jni.jar \
 		jxta/jxta.jar \
