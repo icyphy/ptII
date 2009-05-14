@@ -571,9 +571,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
          // generate methods with fire code for the actors inside a composite actor with an sdf director
             if(actor instanceof CompositeActor)
             {
-                
-                if(actor.getDirector().getFullName().contains("SDF")&&(!actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")))
-                {
+                if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")) {
                     for (Actor actor1 : (List<Actor>) 
                             ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList())
                     {
