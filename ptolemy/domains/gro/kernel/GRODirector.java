@@ -48,6 +48,7 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -127,7 +128,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
      *   CompositeActor and the name collides with an entity in the container.
      */
     public GRODirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -172,6 +173,14 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
         GRODirector newObject = (GRODirector) (super.clone(workspace));
         return newObject;
+    }
+
+    /** Override the super class method. This method does nothing and
+     *  everything is postponed to the postfire() method. This assures
+     *  that inputs are stable.
+     */
+    public void fire() throws IllegalActionException {
+        // do nothing.
     }
 
     /** Schedule a firing of the given actor at the given time.
@@ -279,7 +288,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
         _startIteration = ((IntToken) ((ArrayToken) 
                 (iterationInterval.getToken())).getElement(0)).intValue();
-        
+
         _stopIteration = ((IntToken) ((ArrayToken) 
                 (iterationInterval.getToken())).getElement(1)).intValue();
 
@@ -323,7 +332,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         // GRDirector, so producing those outputs in postfire()
         // is OK.
         Iterator outports = ((Actor)getContainer())
-                .outputPortList().iterator();
+        .outputPortList().iterator();
         while (outports.hasNext() && !_stopRequested) {
             IOPort p = (IOPort) outports.next();
             transferOutputs(p);
@@ -383,7 +392,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             scheduler.getSchedule();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to compute schedule:");
+            "Failed to compute schedule:");
         }
     }
 
@@ -452,27 +461,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
      *  director returns false in its prefire().
      */
     private void _fire() throws IllegalActionException {
-
-        // FIXME: Look into JOGL to see if there is support
-        // for setting the frame display rate.
-        
-        // This is stalling the display.
-        long currentTime = System.currentTimeMillis();
-        int frameRate = ((IntToken) iterationTimeLowerBound.getToken())
-                .intValue();
-        long timeElapsed = currentTime - _lastIterationTime;
-        long timeRemaining = frameRate - timeElapsed;
-
-        if (timeRemaining > 0) {
-            try {
-                java.lang.Thread.sleep(timeRemaining);
-            } catch (InterruptedException e) {
-                // Ignored.
-            }
-        }
-
-        _lastIterationTime = currentTime;
-
+        super.fire();
     }
 
     /** Most of the constructor initialization is relegated to this method.
@@ -492,7 +481,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
             throw new InternalErrorException(this, ex,
-                    "Could not create Default scheduler.");
+            "Could not create Default scheduler.");
         }
 
         try {
@@ -504,7 +493,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             iterationTimeLowerBound.setTypeEquals(BaseType.INT);
         } catch (Throwable throwable) {
             throw new InternalErrorException(this, throwable,
-                    "Cannot create default iterations parameter.");
+            "Cannot create default iterations parameter.");
         }
 
         _reset();
@@ -529,27 +518,41 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
     private Director _insideDirector;
 
     private int _iteration = 0;
-    
+
     // FIXME; we need two extra parameter in the UI and increment
     // them appropriately.
     private int _startIteration = 0;
 
     private int _stopIteration = 0;
+    private double _viewLeft = -0.25;
+    private double _viewRight = 0.25;
+    private double _viewBottom = -0.25;
+    private double _viewTop = 0.25;
+    private double _viewNear = -1.0;
+    private double _viewFar = 1.0;
 
 
     public void display(GLAutoDrawable gLDrawable) {
         try {
             _gl = gLDrawable.getGL();
-            _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-            _gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+            _gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
             _gl.glLoadIdentity();
-            _gl.glTranslatef(0.0f, 0.0f, -5.0f);
-            
+
+            _gl.glLineWidth(4.0f);
+
+            _gl.glTranslatef(0.0f, 0.0f, -0.45f);
+            //_gl.glScalef(2f, 2f, 2f);
+            _gl.glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+
+            _gl.glTranslatef(0.0f, 0.0f, -3.0f);
+
             _gl.glPushMatrix();
 
-            fire();
-            
+            _fire();
+
             _gl.glPopMatrix();
+            _gl.glFlush();
+
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -558,41 +561,46 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
     public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void init(GLAutoDrawable gLDrawable) {
         _gl = gLDrawable.getGL();
-        _gl.glShadeModel(GL.GL_SMOOTH);
+        _gl.glEnable(GL.GL_BLEND);
+        _gl.glEnable(GL.GL_LINE_SMOOTH);
+        _gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+        _gl.glLineWidth((float) 2.0);
+        _gl.glPointSize((float) 2.0);
+
+        //        _gl.glShadeModel(GL.GL_SMOOTH);
         _gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        _gl.glClearDepth(1.0f);
-        _gl.glEnable(GL.GL_DEPTH_TEST);
-        _gl.glDepthFunc(GL.GL_LEQUAL);
-        _gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, 
-        GL.GL_NICEST);
+        _gl.glColor3f(1.0f, 1.0f, 1.0f);
+
+        _gl.glLoadIdentity();
         //gLDrawable.addKeyListener(this);
-    }
-    
-    public GL getGL() {
-         
-        return _gl;
-        //gLDrawable.addKeyListener(this);
-        
     }
 
-   
+    public GL getGL() {
+
+        return _gl;
+        //gLDrawable.addKeyListener(this);
+
+    }
+
+
     public void reshape(GLAutoDrawable gLDrawable, int x, 
-                int y, int width, int height) {
-                    final GL gl = gLDrawable.getGL();
-                    if(height <= 0) {
-                        height = 1;
-                    }
-                    final float h = (float)width / (float)height;
-                    gl.glMatrixMode(GL.GL_PROJECTION);
-                    gl.glLoadIdentity();
-                    glu.gluPerspective(50.0f, h, 1.0, 1000.0);
-                    gl.glMatrixMode(GL.GL_MODELVIEW);
-                    gl.glLoadIdentity();
-        
+            int y, int width, int height) {
+        final GL gl = gLDrawable.getGL();
+        if(height <= 0) {
+            height = 1;
+        }
+        final float h = (float)width / (float)height;
+        gl.glMatrixMode(GL.GL_PROJECTION);
+        gl.glLoadIdentity();
+        //gl.glOrtho(_viewLeft, _viewRight, _viewBottom, _viewTop, _viewNear, _viewFar);
+        glu.gluPerspective(0.0f, h, 1.0, 1000.0);
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
+
     }
 }
