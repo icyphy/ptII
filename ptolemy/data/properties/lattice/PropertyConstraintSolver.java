@@ -81,25 +81,6 @@ import ptolemy.util.FileUtilities;
  @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyConstraintSolver extends PropertySolver {
-    protected static final String _USER_DEFINED_LATTICE = "Actor::";
-
-    /**
-     *
-     */
-    public static enum ConstraintType {
-        SRC_GREATER,
-        SRC_EQUALS_GREATER,
-        SINK_GREATER,
-        SINK_EQUALS_GREATER,
-        SRC_EQUALS_MEET,
-        SINK_EQUALS_MEET,
-        EQUALS,
-        NOT_EQUALS,
-        NONE
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
 
     /**
      * @param container The given container.
@@ -161,6 +142,38 @@ public class PropertyConstraintSolver extends PropertySolver {
                 this, "_propertyConstraintSolverGUIFactory");
 
     }
+
+   ///////////////////////////////////////////////////////////////////
+   ////                     ports and parameters                  ////
+
+    /** The file parameter for the lattice description file.
+     */
+    public StringParameter propertyLattice;
+
+    /** Indicate whether to compute the least or greatest
+     *  fixed point solution.
+     */
+    public StringParameter solvingFixedPoint;
+
+    public StringParameter connectionConstraintType;
+
+    public StringParameter actorConstraintType;
+
+    public StringParameter compositeConnectionConstraintType;
+
+    public StringParameter expressionASTNodeConstraintType;
+
+    public StringParameter fsmConstraintType;
+
+    public Parameter logMode;
+
+    public FileParameter logDirectory;
+
+    public FileParameter trainedConstraintDirectory;
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
     public void addAnnotated(Object object) {
         _annotatedObjects.add(object);
@@ -421,7 +434,23 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    protected PropertyHelper _getHelper(Object component)
+
+    /**
+    *
+    */
+   public static enum ConstraintType {
+       SRC_GREATER,
+       SRC_EQUALS_GREATER,
+       SINK_GREATER,
+       SINK_EQUALS_GREATER,
+       SRC_EQUALS_MEET,
+       SINK_EQUALS_MEET,
+       EQUALS,
+       NOT_EQUALS,
+       NONE
+   }
+
+   protected PropertyHelper _getHelper(Object component)
     throws IllegalActionException {
         PropertyHelper helper = null;
         
@@ -1146,80 +1175,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    /** The file parameter for the lattice description file.
-     */
-    public StringParameter propertyLattice;
-
-//    /**
-//     * Return null if the associated component of the helper is not
-//     * a NamedObj (e.g. if it is a PtASTRootNode); Otherwise, return
-//     * an array of two ConstraintAttribute's that store the list of
-//     * constraints as String's.
-//     * @param helper
-//     * @return
-//     * @exception IllegalActionException
-//     * @exception NameDuplicationException
-//     */
-//    private ConstraintAttribute[] _getConstraintAttributes(
-//            PropertyConstraintHelper helper) throws IllegalActionException, NameDuplicationException {
-//
-//        Object object = helper.getComponent();
-//
-//        if (object instanceof NamedObj) {
-//            NamedObj namedObj = (NamedObj) object;
-//
-//            String attributeName[] = new String[2];
-//            ConstraintAttribute attribute[] = new ConstraintAttribute[2];
-//            attributeName[0] = getExtendedUseCaseName() + "::OwnConstraints";
-//            attributeName[1] = getExtendedUseCaseName() + "::SubHelperConstraints";
-//
-//            for (int i = 0; i < 2; i++) {
-//                attribute[i] = (ConstraintAttribute)
-//                namedObj.getAttribute(attributeName[i]);
-//
-//                if (attribute[i] == null) {
-//                    attribute[i] = new ConstraintAttribute(namedObj, attributeName[i]);
-//                }
-////              FIXME: Remove??
-//                TextStyle style = new TextStyle(((ConstraintAttribute)attribute[i]), "_style");
-//                style.height.setExpression("10");
-//                style.width.setExpression("60");
-//
-//            }
-//            return attribute;
-//        } else {
-//            // FIXME: This happens for ASTNodeHelper.
-//            return null;
-//        }
-//    }
-
-
-
-    /** Indicate whether to compute the least or greatest
-     *  fixed point solution.
-     */
-    public StringParameter solvingFixedPoint;
-
-    public StringParameter connectionConstraintType;
-
-
-    public StringParameter actorConstraintType;
-
-
-    public StringParameter compositeConnectionConstraintType;
-
-    public StringParameter expressionASTNodeConstraintType;
-
-
-    public StringParameter fsmConstraintType;
-
-    public Parameter logMode;
-
-    public FileParameter logDirectory;
-
-
-    public FileParameter trainedConstraintDirectory;
-
+    protected static final String _USER_DEFINED_LATTICE = "Attribute::";
 
     protected static final String INITIALIZE_SOLVER = "INITIALIZE_SOLVER";
 
