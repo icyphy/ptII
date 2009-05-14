@@ -141,6 +141,7 @@ of this model, including setting the initial state.
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+      <input source="ptolemy/configs/modalTableauFactory.xml"/>
       <input source="ptolemy/configs/fsmTableauFactory.xml"/>
 
       <property name="NCCompositeActor Editor"

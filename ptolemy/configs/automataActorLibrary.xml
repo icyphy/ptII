@@ -6,7 +6,10 @@
   <configure>
     <?moml
       <group>
-        <entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <entity name="FSMActor" class="ptolemy.domains.modal.kernel.FSMActor">
+          <input source="ptolemy/configs/modalLibrary.xml"/>
+        </entity>
+        <entity name="LegacyFSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
           <input source="ptolemy/configs/fsmLibrary.xml"/>
         </entity>
         <entity name="InterfaceAutomaton"

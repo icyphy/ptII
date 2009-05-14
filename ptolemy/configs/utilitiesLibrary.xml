@@ -22,4 +22,13 @@
       </group>
     ?>
   </configure>
+  <entity name="Classic" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+	<group>
+	<input source="ptolemy/configs/utilityFsmModalModal.xml"/>
+	</group>
+      ?>
+    </configure>
+  </entity>
 </entity>

@@ -34,7 +34,7 @@ ME =		ptolemy/configs
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
 DIRS =		codegen doc dsp full gt hyvisual jni jxta \
-		layout luminary modal properties pn ptiny ptinyKepler \
+		layout luminary properties pn ptiny ptinyKepler \
 		space vhdl viptos visualsense test
 
 # Root of the Java directory
@@ -81,6 +81,9 @@ OTHER_FILES_TO_BE_JARED = \
 	graphTableauFactory.xml \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
+	modalEffigyFactories.xml \
+	modalLibrary.xml \
+	modalTableauFactory.xml \
 	ptIIplanet.gif \
 	pteraEffigyFactory.xml \
 	pteraTableauFactory.xml \
@@ -117,7 +120,6 @@ PTCLASSALLJARS = \
 		jxta/jxta.jar \
 		layout/layout.jar \
 		luminary/luminary.jar \
-		modal/modal.jar \
 		pn/pn.jar \
 		properties/properties.jar \
 		ptiny/ptiny.jar \
