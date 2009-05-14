@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RijndaelEncryption" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 503]">
     </property>
@@ -29,7 +29,7 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of the rijndael encryption system, operating in ECB mode.&#10;This model makes heavy use of the class mechanism in Ptolemy II&#10;to describe components that are instantiated multiple times in the model.&#10;&#10;The algorithm is parameterized to run on 128 bits of data at a time.&#10;Executing the model displays two windows of data in hex format.&#10;One window shows 128 bits of encrypted data, while the other displays &#10;intermediate results in the encryption process after each 'round'.&#10;&#10;For more information about the algorithm, see:&#10;http://www.esat.kuleuven.ac.be/~rijmen/rijndael/index.html&#10;http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of the rijndael encryption system, operating in ECB mode.&#10;This model makes heavy use of the class mechanism in Ptolemy II&#10;to describe components that are instantiated multiple times in the model.&#10;&#10;The algorithm is parameterized to run on 128 bits of data at a time.&#10;Executing the model displays two windows of data in hex format.&#10;One window shows 128 bits of encrypted data, while the other displays &#10;intermediate results in the encryption process after each 'round'.&#10;&#10;For more information about the algorithm, see:&#10;http://en.wikipedia.org/wiki/Advanced_Encryption_Standard&#10;http://www.quadibloc.com/crypto/co040401.htm">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 25, 759, 613}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 25, 761, 610}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -450,7 +450,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, -100.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 51, 996, 684}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 51, 996, 674}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -3631,7 +3631,7 @@
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 54, 351, 241}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 54, 351, 234}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
             </property>
@@ -3994,7 +3994,7 @@
         <link port="SequenceToArray3.output" relation="relation13"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={632, 53, 334, 241}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={632, 53, 334, 234}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
