@@ -39,6 +39,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.codegen.c.actor.Receiver;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.DoubleToken;
@@ -660,8 +661,31 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                             }
                         }
                         code.append(methodSignature);
-                        code.append(_eol+actorTransferCode+_eol);
+                        
                         //code.append("//display name: "+actor.getDisplayName()+_eol);
+                        inputPorts = actor.inputPortList().iterator();
+                        String channelOffset [] = {"0","0"};
+                       // CodeGeneratorHelper myHelper;  
+                        ArrayList args = new ArrayList(); 
+                        while(inputPorts.hasNext())
+                        { 
+                            IOPort source = inputPorts.next();
+                            myHelper= (CodeGeneratorHelper)this._getHelper(source.getContainer());
+                            
+                            IOPort sink;
+                            Iterator<IOPort> sinkPorts = source.deepInsidePortList().iterator();
+                            while(sinkPorts.hasNext()){
+                                sink = sinkPorts.next();
+                                sinkReference= super.getReference((TypedIOPort)sink,channelOffset,false,true,myHelper);
+                                srcReference = super.getReference((TypedIOPort)source,channelOffset,false,true,myHelper);
+                                args.add(sinkReference);
+                                args.add(srcReference);
+                                actorTransferCode += _generateBlockCode("updatePort", args);    
+                            }
+                            
+                            
+                        }
+                        code.append(_eol+actorTransferCode+_eol);
                         code.append(_getActorName(actor)+"_EmbeddedActor();"+_eol);
                         //code.append("//jni actor"+_eol);
                         //code.append("//transfer outputs out"+_eol);
