@@ -5,7 +5,14 @@
 <group>
   <input source="ptolemy/configs/annotation.xml"/>
   
-  <entity name="element" class="ptolemy.domains.properties.LatticeElement">
-    <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
+  <entity name="Top" class="ptolemy.domains.properties.LatticeElement"/>
+
+  <entity name="Bottom" class="ptolemy.domains.properties.LatticeElement">
+    <property name="isAcceptableSolution" class="ptolemy.data.expr.Parameter" value="false"/>
   </entity>
+
+  <entity name="element" class="ptolemy.domains.properties.LatticeElement">
+    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}"/>
+  </entity>
+
 </group>
