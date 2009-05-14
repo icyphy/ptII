@@ -1099,30 +1099,31 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         int offset = 0 ;
         if (type.equals("int")||type.equals("long")||type.equals("float")||type.equals("void *"))
         {
-            offset = 32* portWidth;
+            offset = 4 * portWidth;
         }
         else if(type.equals("long long")||type.equals("double"))
         {
-            offset = 64* portWidth;
+            offset = 8 * portWidth;
         }
         else if(type.equals("char"))
         {
-            offset = 8* portWidth;
+            offset = 1 * portWidth;
         }
         else if(type.equals("short"))
         {
-            offset = 16* portWidth;
+            offset = 2 * portWidth;
         }
         else
         {
-            offset = 32 * portWidth;
+            offset = 8 * portWidth;
         }
-        currentSharedMemoryAddress += offset;//32;  // currently assumes all requested types are ints
-        if(currentSharedMemoryAddress >= 0x40000000) {
+        // Make sure memory address is aligned to offset
+        int currentSharedMemoryAddress = (nextSharedMemoryAddress / offset) * offset;
+        nextSharedMemoryAddress = currentSharedMemoryAddress + offset;
+        if(nextSharedMemoryAddress >= 0x40000000) {
             throw new IllegalActionException("out of shared data space on PRET");
         }
-        return currentSharedMemoryAddress-offset;//-32;
-
+        return currentSharedMemoryAddress;
     }
 
     private String _typeConversion(TypedIOPort source,TypedIOPort sink)
@@ -1144,7 +1145,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             return sourceType+"to"+sinkType;
         }
     }
-    static private int currentSharedMemoryAddress = 0x3F800000;
+    static private int nextSharedMemoryAddress = 0x3F800000;
     private int threadID = 0;
 
 
