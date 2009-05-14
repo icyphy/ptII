@@ -116,7 +116,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("jmp_buf " + jumpBuffer + ";" + _eol
                   + "register_jmpbuf(0,&" + jumpBuffer + ");" + _eol
                   + "if (setjmp(" + jumpBuffer + ")!=0) {" + _eol
-                  + "  puts(\"Timing failure!\n\");" + _eol
+                  + "  puts(\"Timing failure!\\n\");" + _eol
                   + "  END_SIMULATION;" + _eol
                   + "}" + _eol);
         //code.append("//generate main loop called for director "+_director.getFullName());
