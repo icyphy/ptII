@@ -704,28 +704,27 @@ public class Director extends CodeGeneratorHelper {
         double wcet=0;
         double actorFrequency =0;
         double actorWCET = 0;
-        int actorCount = 0;
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) this._director.getContainer()).deepEntityList()) {
             Attribute frequency = ((Entity)actor).getAttribute("frequency");
-            ptolemy.actor.Director director = actor.getDirector();
-            if (director.getClassName().contains("FSM")) {
-		// FIXME: This means that codegen depends on the targets.
-                ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
-                return fsmDir._getWCET();
-                
-            }
-            if (director.getClassName().contains("SDF")) {
-		// FIXME: This means that codegen depends on the targets.
-                ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector sdfDir = new ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector((ptolemy.domains.sdf.kernel.SDFDirector)this._director);
-                return sdfDir._getWCET();
-            }
-            if (director.getClassName().contains("Giotto")) {
-		// FIXME: This means that codegen depends on the targets.
-                ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
-                return giottoDir._getWCET();
-                
-            }
+//            ptolemy.actor.Director director = actor.getDirector();
+//            if (director.getClassName().contains("FSM")) {
+//		// FIXME: This means that codegen depends on the targets.
+//                ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
+//                return fsmDir._getWCET();
+//                
+//            }
+//            if (director.getClassName().contains("SDF")) {
+//		// FIXME: This means that codegen depends on the targets.
+//                ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector sdfDir = new ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector((ptolemy.domains.sdf.kernel.SDFDirector)this._director);
+//                return sdfDir._getWCET();
+//            }
+//            if (director.getClassName().contains("Giotto")) {
+//		// FIXME: This means that codegen depends on the targets.
+//                ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
+//                return giottoDir._getWCET();
+//                
+//            }
             Attribute WCET = ((Entity)actor).getAttribute("WCET");
             
             if (_debugging) {
