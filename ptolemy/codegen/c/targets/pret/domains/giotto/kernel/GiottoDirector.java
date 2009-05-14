@@ -111,17 +111,25 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        code.append(_eol);
+        String jumpBuffer = "__deadline_trying_jmpbuf__";
+        code.append("jmp_buf " + jumpBuffer + ";" + _eol
+                  + "register_jmpbuf(0,&" + jumpBuffer + ");" + _eol
+                  + "if (setjmp(" + jumpBuffer + ")!=0) {" + _eol
+                  + "  puts(\"Timing failure!\n\");" + _eol
+                  + "  END_SIMULATION;" + _eol
+                  + "}" + _eol);
         //code.append("//generate main loop called for director "+_director.getFullName());
         Attribute iterations = _director.getAttribute("iterations");
         if (iterations == null) {
-            code.append(_eol + "while (true) {" + _eol);
+            code.append("while (true) {" + _eol);
         } else {
             int iterationCount = ((IntToken) ((Variable) iterations).getToken())
             .intValue();
             if (iterationCount <= 0) {
-                code.append(_eol + "while (true) {" + _eol);
+                code.append("while (true) {" + _eol);
             } else {
-                code.append(_eol + "while(true){" + _eol);
+                code.append("while(true){" + _eol);
                 // Declare iteration outside of the loop to avoid
                 // mode" with gcc-3.3.3
                 //code.append(_eol + "int iteration;" + _eol);
@@ -198,6 +206,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public Set getHeaderFiles() throws IllegalActionException {
         HashSet files = new HashSet();
         files.add("\"deadline.h\"");
+        files.add("<setjmp.h>");
         return files;
     }
 
@@ -304,11 +313,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append("int " + index + ";" + _eol
                     + "for (" + index + " = 0; " + index + " < "
                     + _getFrequency(actor) + "; ++" + index + ") {" + _eol
-                    + "DEAD0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
+                    + "DEADBRANCH0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
                     + _getActorName(actor)+"_driver_in();//read inputs from ports deterministically" + _eol);
 
             code.append(_getActorName(actor)+"();"+_eol);
-            code.append("DEAD0(" + driverBound  + "); // driver_wcet" + _eol);
+            code.append("DEADBRANCH0(" + driverBound  + "); // driver_wcet" + _eol);
 
             // code.append(helper.generateFireCode());
             //code.append(helper.generatePostfireCode());
