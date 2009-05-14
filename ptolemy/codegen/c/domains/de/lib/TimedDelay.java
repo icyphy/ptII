@@ -28,10 +28,15 @@
  */
 package ptolemy.codegen.c.domains.de.lib;
 
+import java.util.LinkedList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.Const.
+ * A helper class for ptolemy.actor.lib.TimedDelay.
  *
  * @author Jia Zou
  * @version $Id$
@@ -41,10 +46,25 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  */
 public class TimedDelay extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Const helper.
+     * Constructor method for the TimedDelay helper.
      * @param actor the associated actor
      */
     public TimedDelay(ptolemy.domains.de.lib.TimedDelay actor) {
         super(actor);
+    }
+    
+    public String generateFireCode() throws IllegalActionException {
+        _codeStream.clear();
+        LinkedList args = new LinkedList();
+        Parameter delay =((ptolemy.domains.de.lib.TimedDelay)getComponent()).delay;
+        double value = ((DoubleToken) delay.getToken()).doubleValue();
+            
+        int intPart = (int)value;
+        int fracPart = (int)((value - (double)intPart)*1000000000.0);
+        args.add(Integer.toString(intPart));
+        args.add(Integer.toString(fracPart));
+
+        _codeStream.appendCodeBlock("fireBlock", args);
+        return processCode(_codeStream.toString());
     }
 }
