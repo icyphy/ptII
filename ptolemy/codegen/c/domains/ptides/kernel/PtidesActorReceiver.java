@@ -5,6 +5,7 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -31,21 +32,33 @@ public class PtidesActorReceiver extends ptolemy.codegen.c.actor.Receiver {
         Type sinkType = sinkPort.getType();
         
         // Getting deadline.
-        Parameter remainingDeadline = (Parameter)sinkPort.getAttribute("relativeDeadline");
-        String deadlineString = null;
-        if (remainingDeadline != null) {
-            deadlineString = remainingDeadline.toString();
+        Parameter relativeDeadline = (Parameter)sinkPort.getAttribute("relativeDeadline");
+        String deadlineSecsString = null;
+        String deadlineNsecsString = null;
+        if (relativeDeadline != null) {
+            double value = ((DoubleToken)relativeDeadline.getToken()).doubleValue();
+            int intPart = (int)value;
+            int fracPart = (int)((value - (double)intPart)*1000000000.0);
+            deadlineSecsString = Integer.toString(intPart);
+            deadlineNsecsString = Integer.toString(fracPart);
         } else {
-            deadlineString = new String("ZERO_TIME");
+            deadlineSecsString = new String("0");
+            deadlineNsecsString = new String("0");
         }
         
         // Getting offsetTime.
         Parameter offsetTime = (Parameter)sinkPort.getAttribute("minDelay");
-        String offsetString = null;
+        String offsetSecsString = null;
+        String offsetNsecsString = null;
         if (offsetTime != null) {
-            offsetString = offsetTime.toString();
+            double value = ((DoubleToken)offsetTime.getToken()).doubleValue();
+            int intPart = (int)value;
+            int fracPart = (int)((value - (double)intPart)*1000000000.0);
+            offsetSecsString = Integer.toString(intPart);
+            offsetNsecsString = Integer.toString(fracPart);
         } else {
-            offsetString = new String("ZERO_TIME");
+            offsetSecsString = new String("0");
+            offsetNsecsString = new String("0");
         }
         
         // FIXME: not sure whether we should check if we are putting into an input port or
@@ -59,8 +72,10 @@ public class PtidesActorReceiver extends ptolemy.codegen.c.actor.Receiver {
                 sinkPort.getChannelForReceiver(getReceiver()) + "]");
         args.add("");//timestamp
         args.add("");//microstep
-        args.add(deadlineString);//deadline
-        args.add(offsetString);//offsetTime
+        args.add(deadlineSecsString);//deadline
+        args.add(deadlineNsecsString);
+        args.add(offsetSecsString);//offsetTime
+        args.add(offsetNsecsString);
         return _generateBlockCode("createEvent", args);
     }
 

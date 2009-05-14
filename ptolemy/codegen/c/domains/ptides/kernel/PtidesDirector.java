@@ -71,8 +71,7 @@ public class PtidesDirector extends Director
 
 //        code.append(CodeGeneratorHelper.generateName(_director
 //                .getContainer()) + "();" + _eol);
-        code.append("while(true);" + _eol);
-
+        code.append("while(true) {}" + _eol);
         return code.toString();
     }
 

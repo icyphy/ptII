@@ -154,11 +154,8 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         code.append(_codeGenerator
                 .comment("Initialization code of the PtidesDirector."));
 
-        code.append(super.generateInitializeCode());
-        // Don't call super.generateInitializeCode() which
-        // would generate the initialize code of the actors.
-
         code.append(_codeStream.getCodeBlock("initPDBlock"));
+        code.append(super.generateInitializeCode());
 
         return code.toString();
     }
@@ -338,18 +335,19 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         StringBuffer code = new StringBuffer();
         
         code.append("void initializeGPIO() {" + _eol);
-        for (Actor actor : _sensors.keySet()) {
-            List args = new ArrayList();
-            args.add((((GPInputDevice)actor).pad).stringValue());
-            args.add(((IntToken)(((GPInputDevice)actor).pin).getToken()).toString());
-            code.append(processCode(_codeStream.getCodeBlock("initializeGPInput", args)));
-        }
         for (Actor actor : _actuators.keySet()) {
             List args = new ArrayList();
             args.add((((GPOutputDevice)actor).pad).stringValue());
             args.add(((IntToken)(((GPOutputDevice)actor).pin).getToken()).toString());
             code.append(processCode(_codeStream.getCodeBlock("initializeGPOutput", args)));
         }
+        for (Actor actor : _sensors.keySet()) {
+            List args = new ArrayList();
+            args.add((((GPInputDevice)actor).pad).stringValue());
+            args.add(((IntToken)(((GPInputDevice)actor).pin).getToken()).toString());
+            code.append(processCode(_codeStream.getCodeBlock("initializeGPInput", args)));
+        }
+        
         code.append("}" + _eol);
         return code.toString();
     }

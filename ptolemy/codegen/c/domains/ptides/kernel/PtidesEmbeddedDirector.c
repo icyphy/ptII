@@ -136,13 +136,10 @@ void addEvent(Event* newEvent) {
         if (compare_deadline == NULL) {
 			//RIT128x96x4StringDraw("ce==null",   12,90,15);
             break;
-		}
-
-        else if (timeCompare(newEvent->deadline, compare_deadline->deadline) <= 0) {
+		} else if (timeCompare(newEvent->deadline, compare_deadline->deadline) <= 0) {
 		    //RIT128x96x4StringDraw("opt2",   12,90,15);
             break;
-		}
-       else {
+		} else {
             if (compare_deadline != before_deadline) {
 				//RIT128x96x4StringDraw("inifaddedEvent",   10,90,15);
 				before_deadline = before_deadline->nextEvent;
@@ -216,13 +213,9 @@ void removeEvent(Event* thisEvent) {
 }
 
 Event* newEvent(void) {
-//RIT128x96x4StringDraw("bne",12,12,15);
-//RIT128x96x4StringDraw(itoa(locationCounter,10), 30,12,15);
-//printf("location counter is %d",locationCounter);
 	// counter counts the number of times we loop around the memory.
 	int counter = 0;
-	while(eventMemory[locationCounter].inUse != MAX_EVENTS+1)
-	{  
+	while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {  
 	   if (counter++ == MAX_EVENTS) {  // if you've run out of memory just stop
 			die("ran out of memory");
 	   }
@@ -294,8 +287,7 @@ void processEvents() {
     while (peekEvent(peekingIndex) != NULL) {
 		whilecount++;
 		#ifdef LCD_DEBUG
-		sprintf(str,"wc = %d", whilecount);
-    	RIT128x96x4StringDraw(str, 0,24,15);
+		debugMessageNumber("wc = ", whilecount);
 		#endif
 
         // If event queue is not empty.
@@ -305,8 +297,7 @@ void processEvents() {
 	        safeToProcess(event, &processTime);
 
 			#ifdef LCD_DEBUG
-			sprintf(str,"wc 3= %d", whilecount);
-    		RIT128x96x4StringDraw(str, 0,32,15);
+		    //debugMessageNumber("hpwc=", whilecount);
 			#endif
 			getRealTime(&physicalTime);
 
@@ -353,8 +344,7 @@ void processEvents() {
 			// This is the only place for us to break out of the while loop. The only other possibility
 			// is that we have looked all all events in the queue, and none of them are safe to process.
 			#ifdef LCD_DEBUG
-			sprintf(str,"end wh, %d", peekingIndex);
-			RIT128x96x4StringDraw(str, 0,40,15);
+		    debugMessageNumber("endwc=", peekingIndex);
 			#endif
 			break;
 		}//end EVENT_QUEUE_HEAD != NULL
@@ -372,12 +362,12 @@ void processEvents() {
 	// if all events are blocked because buffers are full
 	// if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex) 
 	#ifdef LCD_DEBUG
-	sprintf(str,"ret p.e.()");
-	RIT128x96x4StringDraw(str,   0,16,15);
+	//debugMessage("ret PE()");
 	#endif
 	
 	restoreStack();
-	while (TRUE) {};
+	while (TRUE) {
+    }
 }
 
 /* 
@@ -420,8 +410,8 @@ unsigned int higherPriority(Event* event) {
 		return TRUE;
 	} else if (timeCompare(executingDeadlines[numStackedDeadline], event->deadline) == LESS) {
 		#ifdef LCD_DEBUG
-		sprintf(str,"exDe=%d, %d", executingDeadlines[numStackedDeadline].secs, executingDeadlines[numStackedDeadline].nsecs);
-		RIT128x96x4StringDraw(str, 50,48,15);
+        debugMessageNumber("exDe secs=", executingDeadlines[numStackedDeadline].secs);
+        debugMessageNumber("exDe nsecs=", executingDeadlines[numStackedDeadline].nsecs); 
 		#endif
 		return FALSE;
 	} else {
@@ -509,8 +499,9 @@ void safeToProcess(Event* thisEvent, Time* safeTimestamp) {
 
 /*** initPIBlock ***/
 // the platform independent initialization code goes here.
-initializeEvents();
 initializeMemory();
+initializeEvents();
+initializePISystem();
 /**/
 
 /*** initPICodeBlock ***/
@@ -523,10 +514,13 @@ void initializeMemory() {
 	locationCounter = 0;
 	secs = 0;
 						  
-	for(i =0; i< MAX_EVENTS; i++) {
+	for(i = 0; i < MAX_EVENTS; i++) {
 	    // event is "freed and can be returned by newEvent"
 		eventMemory[i].inUse = MAX_EVENTS + 1; 
 	}
+}
+void initializePISystem() {
+    timeSet(MAX_TIME, &lastTimerInterruptTime);
 }
 /**/
 

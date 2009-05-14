@@ -24,14 +24,94 @@ void setTimedInterrupt(const Time*);
 void SysTickHandler(void);
 void Timer0IntHandler(void);
 void Timer1IntHandler(void);
-void __svc(0)  restoreStack();
-
-static char str[40];
+void __svc(0)  restoreStack(void);
 
 $super.FuncProtoBlock();
 /**/
 
 /*** FuncBlock ***/
+
+#ifdef LCD_DEBUG
+	//Unsigned long to ASCII; fixed maxiumum output string length of 32 characters
+	char *_ultoa(unsigned long value, char *string, unsigned int radix){
+		char digits[32];
+		char * const string0 = string;
+		long ii = 0;
+		long n;
+	  
+		do{
+			n = value % radix;
+			digits[ii++] = (n < 10 ? (char)n+'0' : (char)n-10+'a');
+			value /= radix;
+		} while(value != 0);
+		
+		while (ii > 0)
+			*string++ = digits[--ii];
+  		*string = 0;
+  		return string0;
+	}
+
+	//Safely print a debug message to the screen; receive arbitrary length string,
+	//and print sequential messages on the screen, where each message is written to
+	//a screen line, and subsequent messages are written to the next line (wraps to the top)
+	//
+	//Uses all screenlines from STARTLINE
+	#define DBG_STARTLINE 2
+	void debugMessage(char * szMsg){
+        int interruptDisabled = 0;
+		static unsigned int screenIndex = DBG_STARTLINE * 8;	//Screen line to write message (incremented by 8)
+		static unsigned int eventCount = 0;						//Event count (0x00 - 0xFF, incremented by 1)
+		static char screenBuffer[36] = {'\0'};
+		
+		const unsigned int eventCountRadix0 = eventCount >> 4;
+		const unsigned int eventCountRadix1 = eventCount & 0x0F;
+		register unsigned int index = 0;
+
+		screenBuffer[0] = eventCountRadix0 < 10 ? '0' + eventCountRadix0 : 'a' + eventCountRadix0 - 10;
+		screenBuffer[1] = eventCountRadix1 < 10 ? '0' + eventCountRadix1 : 'a' + eventCountRadix1 - 10;
+		screenBuffer[2] = ' ';
+		while(index < 32 && szMsg[index]){
+			screenBuffer[index+3] = szMsg[index];
+			index++;
+		}
+		screenBuffer[index+3] = '\0';
+	
+        interruptDisabled = IntMasterDisable();
+		RIT128x96x4StringDraw("                      ", 0, screenIndex, 15);
+        RIT128x96x4StringDraw(screenBuffer, 0, screenIndex, 15);
+        if (!interruptDisabled) {
+		    IntMasterEnable();
+        }
+		screenIndex = screenIndex < 88 ? screenIndex + 8 : DBG_STARTLINE * 8;
+		eventCount = (eventCount + 1) & 0xFF;
+	}
+
+	//Print a debug message, with a number appended at the end
+	void debugMessageNumber(char * szMsg, unsigned long num){
+		static char szNumberBuffer[32] = {'\0'};
+		static char szResult[32] = {'\0'};
+		register unsigned int index = 0;
+		register const char * ptrNum = &szNumberBuffer[0];
+
+		_ultoa(num, szNumberBuffer, 10);
+		while(index < 32 && szMsg[index]){
+			szResult[index] = szMsg[index];
+			index++;
+		}
+		while(index < 32 && *ptrNum){
+			szResult[index] = *ptrNum;
+			index++;
+			ptrNum++;
+		}
+		szResult[index] = '\0';
+
+		debugMessage(szResult);
+	}
+#else
+	#define debugMessage(x)
+	#define debugMessageNumber(x, y)
+#endif
+
 void exit(int zero) {
 	die("program exit?");
 }
@@ -62,11 +142,12 @@ unsigned long convertNsecsToCycles(unsigned long nsecs) {
 
 /* error printout */
 void die(char *mess) {
-        RIT128x96x4Init(2000000);
-        RIT128x96x4DisplayOn();
-        sprintf(str, mess);
-        RIT128x96x4StringDraw(str, 0,90,15);
-        return;
+    disableInterrupts();
+    RIT128x96x4Init(2000000);
+    RIT128x96x4DisplayOn();
+    RIT128x96x4StringDraw(mess, 0,90,15);
+    enableInterrupts();
+    return;
 }
 
 /* disable and enable interrupts */
@@ -125,9 +206,10 @@ void setTimedInterrupt(const Time* safeToProcessTime) {
 void Timer0IntHandler(void) {
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     if (timerInterruptSecsLeft > 0) {
-            TimerLoadSet(TIMER0_BASE, TIMER_BOTH, TIMER_ROLLOVER_CYCLES);
-            timerInterruptSecsLeft--;
-            return;
+        TimerLoadSet(TIMER0_BASE, TIMER_BOTH, TIMER_ROLLOVER_CYCLES);
+        TimerEnable(TIMER0_BASE, TIMER_BOTH);
+        timerInterruptSecsLeft--;
+        return;
     }
 
     // need to push the currentModelTag onto the stack.
@@ -150,7 +232,14 @@ void Timer0IntHandler(void) {
 
 /* systick handler */
 void SysTickHandler(void) {
-        secs++;
+    char buffer[40];
+    secs++;
+	#ifdef LCD_DEBUG
+    sprintf(buffer, "%d", secs);
+    disableInterrupts();
+	RIT128x96x4StringDraw(buffer,0,0,15);
+    enableInterrupts();
+	#endif
 }
 
 $super.FuncBlock();
@@ -175,8 +264,7 @@ void setActuationInterrupt(int actuatorToActuate) {
 	timeSet(currentModelTime, &actuationTime);
 
 	#ifdef LCD_DEBUG
-	sprintf(str,"set act int");
-	RIT128x96x4StringDraw(str,0,48,15);
+	debugMessage("set act int");
 	#endif
 
 	if (actuatorRunning < 0) {
@@ -190,10 +278,8 @@ void setActuationInterrupt(int actuatorToActuate) {
 		TimerConfigure(TIMER1_BASE, TIMER_CFG_B_ONE_SHOT);
 		
 	    #ifdef LCD_DEBUG
-		sprintf(str,"%d",actuationTime.secs);
-		RIT128x96x4StringDraw(str,   100,60,15);
-		sprintf(str,"%d",actuationTime.nsecs);
-		RIT128x96x4StringDraw(str,   0,60,15);
+	    //debugMessageNumber("Act sec : ", actuationTime.secs);
+	    //debugMessageNumber("Act nsec: ", actuationTime.nsecs);
 		#endif
 
 		IntEnable(INT_TIMER1A);
@@ -295,8 +381,7 @@ void Timer1IntHandler(void) {
 	Time physicalTime;
 		
 	#ifdef LCD_DEBUG
-	sprintf(str, "Act int: %d", actuatorRunning);
-	RIT128x96x4StringDraw(str, 20, 72, 15);
+    debugMessageNumber("Act int:", actuatorRunning);
 	#endif
 
     // Clear the timer interrupt.
@@ -306,17 +391,13 @@ void Timer1IntHandler(void) {
 	if (actuatorTimerInterruptSecsLeft > 0) {
 		actuatorTimerInterruptSecsLeft--;
 		// setup this timer to run once more
-		// FIXME: do I need to do enable or disable or something?
 		TimerLoadSet(TIMER1_BASE, TIMER_BOTH, TIMER_ROLLOVER_CYCLES);
+        TimerEnable(TIMER1_BASE, TIMER_BOTH);
 		return;
 	}
 
   	//GPIOPinWrite(GPIO_PORTB_BASE,GPIO_PIN_7,GPIO_PIN_7*out);
    	//GPIOPinWrite(GPIO_PORTA_BASE,GPIO_PIN_7,GPIO_PIN_7*out);
-	#ifdef LCD_DEBUG
-	sprintf(str, "Act:%d", actuatorRunning);
-	RIT128x96x4StringDraw(str, 80, 24, 15);
-	#endif
 
     // run the actuator actuation function to assert the output signal.
     actuatorActuations[actuatorRunning]();
@@ -325,8 +406,6 @@ void Timer1IntHandler(void) {
 	timeSet(MAX_TIME, &lastActuateTime);
 	for (i = 0; i < numActuators; i++) {
 		if (actuatorArrayCounts[i] > 0){
-//sprintf(str, "%d", actuatorTimerValues[i][actuatorArrayHeadPtrs[i]].secs);
-//RIT128x96x4StringDraw(str, 0, 80, 15);
 			if (timeCompare(actuatorTimerValues[i][actuatorArrayHeadPtrs[i]], lastActuateTime) == LESS) {
 				timeSet(actuatorTimerValues[i][actuatorArrayHeadPtrs[i]], &lastActuateTime);
 				actuatorRunning = i;
@@ -335,10 +414,8 @@ void Timer1IntHandler(void) {
 	}
 
 	#ifdef LCD_DEBUG
-	sprintf(str, "To Act:%d", lastActuateTime.secs);
-	RIT128x96x4StringDraw(str, 0, 88, 15);
-	sprintf(str, "To Act:%d", lastActuateTime.nsecs);
-	RIT128x96x4StringDraw(str, 0, 80, 15);
+    debugMessageNumber("To Act secs:", lastActuateTime.secs);
+    debugMessageNumber("To Act nsecs:", lastActuateTime.nsecs);
 	#endif
 
 	if (timeCompare(lastActuateTime, MAX_TIME) != EQUAL) {
@@ -384,7 +461,6 @@ void Timer1IntHandler(void) {
 		TimerDisable(TIMER1_BASE, TIMER_BOTH);
 	    IntDisable(INT_TIMER1A);
 		IntDisable(INT_TIMER1B);
-		//FIXME: is this correct?
 		TimerIntDisable(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
 		TimerIntDisable(TIMER1_BASE, TIMER_TIMB_TIMEOUT); 
 	}
@@ -394,7 +470,7 @@ void Timer1IntHandler(void) {
 /*** initPDBlock***/
 // the platform dependent initialization code goes here.
 initializeTimers();
-initializeSystemClock();
+initializePDSystem();
 initializeGPIO();
 initializeInterrupts();
 /**/
@@ -410,7 +486,8 @@ void initializeTimers(void) {
         IntPrioritySet(INT_TIMER1A, 0x00);
         IntPrioritySet(INT_TIMER1B, 0x00);
 }
-void initializeSystemClock() {
+void initializePDSystem() {
+    // system clock
 	SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
 	       SYSCTL_XTAL_8MHZ);
 
@@ -419,6 +496,14 @@ void initializeSystemClock() {
 	SysTickPeriodSet(TIMER_ROLLOVER_CYCLES);  
 	SysTickEnable();
 	IntEnable(FAULT_SYSTICK);  //sys tick vector
+    //LCD
+	RIT128x96x4Init(2000000);
+	RIT128x96x4StringDraw("PtidyOSv0.2",            36,  0, 15);
+	
+	#ifndef LCD_DEBUG
+	RIT128x96x4Disable();
+	RIT128x96x4DisplayOff();
+	#endif
 }
 void initializeInterrupts(void) {
     IntMasterEnable();
@@ -427,20 +512,34 @@ void initializeInterrupts(void) {
 
 /*** initializeGPInput($pad, $pin) ***/
 // initialization for GPInput$pad$pin
+// first disable GPIO
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
-GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN); 
+GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+IntDisable(INT_GPIO$pad);
+GPIOPinIntDisable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIO$pad);
+// then configure GPIO
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
+GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN);
 GPIOPinTypeGPIOInput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+IntPrioritySet(INT_GPIO$pad, 0x00);
 GPIOIntTypeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_RISING_EDGE);  // to set rising edge
 GPIOPinIntEnable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
-IntPrioritySet(INT_GPIO$pad, 0x00);
 IntEnable(INT_GPIO$pad);
 /**/
 
 /*** initializeGPOutput($pad, $pin) ***/
 // initialization for GPOutput$pad$pin
+// first disable GPIO
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
-GPIOPadConfigSet(GPIO_PORT$pad_BASE,GPIO_PIN_$pin,GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD); 
+GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+IntDisable(INT_GPIO$pad);
+GPIOPinIntDisable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIO$pad);
+// then configure GPIO
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
 GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_OUT); 
+GPIOPadConfigSet(GPIO_PORT$pad_BASE,GPIO_PIN_$pin,GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD); 
 GPIOPinTypeGPIOOutput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 /**/
 
