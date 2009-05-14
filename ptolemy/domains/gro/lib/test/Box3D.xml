@@ -9,19 +9,25 @@
         </property>
         <property name="iterationInterval" class="ptolemy.data.expr.Parameter" value="{0,100000000}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={381, 109, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 125, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{269.9305320945946, 155.0546875}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Yasemin Demir and Man-Kit Leung&#10;&#10;This simple graphics model renders two triangles&#10;in a 3D space. One of them is slightly tilted (rotated),&#10;while the other is moved sideway (translated).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 65.0]">
+        </property>
     </property>
     <entity name="ViewScreen3D" class="ptolemy.domains.gro.lib.ViewScreen3D">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
         </property>
         <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -30,14 +36,59 @@
             </property>
         </port>
     </entity>
-    <entity name="Square3D" class="ptolemy.domains.gro.lib.Square3D">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 180.0]">
+    <entity name="Translate" class="ptolemy.domains.gro.lib.Translate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
+        </property>
+        <port name="GLPipelineObjectOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Triangle3D2" class="ptolemy.domains.gro.lib.Triangle3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 280.0]">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Rotate" class="ptolemy.domains.gro.lib.Rotate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 200.0]">
         </property>
     </entity>
+    <entity name="Triangle3D" class="ptolemy.domains.gro.lib.Triangle3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 200.0]">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <link port="ViewScreen3D.GLPipelineObject" relation="relation2"/>
-    <link port="Square3D.GLPipelineObject" relation="relation2"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation"/>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation3"/>
+    <link port="Translate.GLPipelineObjectIn" relation="relation4"/>
+    <link port="Translate.GLPipelineObjectOut" relation="relation3"/>
+    <link port="Triangle3D2.GLPipelineObject" relation="relation4"/>
+    <link port="Rotate.GLPipelineObjectIn" relation="relation2"/>
+    <link port="Rotate.GLPipelineObjectOut" relation="relation"/>
+    <link port="Triangle3D.GLPipelineObject" relation="relation2"/>
 </entity>
