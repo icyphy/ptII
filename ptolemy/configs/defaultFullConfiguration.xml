@@ -41,7 +41,7 @@
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/pteraEffigyFactory.xml"/>
-    <input source="ptolemy/configs/gt/gtEffigyFactory.xml"/>
+    <input source="ptolemy/configs/gtEffigyFactory.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
@@ -53,7 +53,7 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <input source="ptolemy/configs/gt/gtTableauFactory.xml"/>
+    <input source="ptolemy/configs/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/pteraTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
     <input source="ptolemy/configs/fmvTableauFactory.xml"/>
@@ -127,7 +127,7 @@
             <input source="ptolemy/actor/lib/esoteric.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
         <!-- Graph transformation library -->
-            <input source="ptolemy/configs/gt/gtActorLibrary.xml"/>
+            <input source="ptolemy/configs/gtActorLibrary.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
             <input source="ptolemy/domains/gr/gr.xml"/>
             <input source="ptolemy/actor/lib/image/image.xml"/>
