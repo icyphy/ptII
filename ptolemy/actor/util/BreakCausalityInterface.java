@@ -96,7 +96,9 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
 
     /** Return a collection of the ports in this actor that are
      *  in the same equivalence class. This method
-     *  returns a collection containing only the specified port.
+     *  returns a collection containing only the specified port,
+     *  unless there is a PortParameter, in which case it returns
+     *  all the input ports.
      *  <p>
      *  If derived classes override this, they may also
      *  need to override {@link #getDependency(IOPort,IOPort)}
