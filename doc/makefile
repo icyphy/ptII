@@ -282,8 +282,16 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.kernel.userMacro \
 	ptolemy.codegen.rtmaude.actor \
 	ptolemy.codegen.rtmaude.actor.lib \
+	ptolemy.codegen.rtmaude.actor.lib.gui \
+	ptolemy.codegen.rtmaude.actor.parameters \
+	ptolemy.codegen.rtmaude.data.expr \
 	ptolemy.codegen.rtmaude.domains.de.kernel \
+	ptolemy.codegen.rtmaude.domains.de.lib \
+	ptolemy.codegen.rtmaude.domains.fsm.kernel \
+	ptolemy.codegen.rtmaude.domains.fsm.modal \
+	ptolemy.codegen.rtmaude.domains.sr.kernel \
 	ptolemy.codegen.rtmaude.kernel \
+	ptolemy.codegen.rtmaude.kernel.util \
 	ptolemy.codegen.util \
 	ptolemy.codegen.vhdl.actor \
 	ptolemy.codegen.vhdl.actor.lib \
