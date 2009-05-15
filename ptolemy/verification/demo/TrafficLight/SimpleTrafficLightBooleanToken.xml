@@ -14,9 +14,9 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 1054, 574}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 1054, 575}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 442]">
     </property>
@@ -236,6 +236,15 @@
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
     </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
+        <property name="target" class="ptolemy.data.expr.FileParameter" value="test.kripke">
+            <display name="Target File"/>
+        </property>
+        <property name="modelType" class="ptolemy.data.expr.ChoiceParameter" value="Kripke Structures (Acceptable by NuSMV under SR)">
+            <display name="Model Type"/>
+        </property>
+        <property name="formula" class="ptolemy.data.expr.StringParameter" value="! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
+            <display name="Temporal Formula"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
         </property>
     </property>

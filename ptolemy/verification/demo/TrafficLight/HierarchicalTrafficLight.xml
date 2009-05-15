@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalTrafficLight" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 6, 1032, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1408, 988}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 515]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1193, 855]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5416666666667, 241.6770833333333}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{598.5416666666667, 411.6770833333333}">
     </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 45.0]">
@@ -174,7 +174,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a typical design pattern where the &#10;top level is a SR model of the physical environment for a &#10;system under design. The next level down is a modal model &#10;fashioned after the statecharts model at the right. Open the &#10;TrafficLight actor to see how it is implemented.&#10;&#10;In order to simulate correct and errorous behavior, we use&#10;a Decision FSMActor to switch between normal and abnormal&#10;cases.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 220.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -204,7 +204,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There is a corresponding WirelessDeployment model&#10;that models the same traffic light control algorithms&#10;with wireless communication between the car light&#10;and the pedestrian light. Changes to the normal&#10;operation logic of either light here will be &#10;reflected automatically in the deployment model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 115.0]">
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
@@ -212,7 +212,16 @@
         </property>
     </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
+        <property name="target" class="ptolemy.data.expr.FileParameter" value="test.kripke">
+            <display name="Target File"/>
+        </property>
+        <property name="modelType" class="ptolemy.data.expr.ChoiceParameter" value="Kripke Structures (Acceptable by NuSMV under SR)">
+            <display name="Model Type"/>
+        </property>
+        <property name="formula" class="ptolemy.data.expr.StringParameter" value="!EF ( TrafficLight.CarLightNormal.state = Cgrn &amp; TrafficLight.PedestrianLightNormal.state = Pgreen)    ">
+            <display name="Temporal Formula"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 255.0}">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -220,7 +229,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Our design should make it impossible to have the car light and pedestrain&#10;light be green at the same time (this might lead to accidents). We can use&#10;Formal Model Converter to convert the Ptolemy II model into a Kripke structure&#10;and use model checking techniques to verify correctness.&#10;&#10;Specification (copy the formula below after double clicking the pink box):&#10;!EF ( TrafficLight.CarLightNormal.state = Cgrn &amp; TrafficLight.PedestrianLightNormal.state = Pgreen)    &#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Our design should make it impossible to have the car light and pedestrain&#10;light be green at the same time (this might lead to accidents). We can use&#10;Formal Model Converter to convert the Ptolemy II model into a model that&#10;can be fed into a model-checker to verify correctness.&#10;&#10;Using the Formal Model Converter with the model-checker NuSMV:&#10;&#10;- double click on the Formal Model Converter box&#10;- specify the Target File where the NuSMV model is to be stored&#10;- select Kripke Structures as Model Type&#10;- select CTL as Formula Type&#10;- select Text Only as Output Type&#10;- copy the following CTL formula in the Temporal Formula field:&#10;!EF ( TrafficLight.CarLightNormal.state = Cgrn &amp; TrafficLight.PedestrianLightNormal.state = Pgreen)    &#10;- click Convert: you should get a file with the Kripke model &#10;- run NuSMV on the file you just generated, e.g.:&#10;            /mypath/NuSMV myfile&#10;- you should get as output that the formula is true on this model&#10;- but in my version of NuSMV you don't: this is a limitation of NuSMV:&#10;it cannot handle the fact that MODULE Clock() has a single state and&#10;this state is assigned to. To correct this: remove the section ASSIGN&#10;from MODULE Clock(): that is, remove all text from &quot;ASSIGN&quot; to the first&#10;&quot;esac;&quot;. Then NuSMV manages to check the model and finds the property to hold.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
         </property>
@@ -311,6 +320,8 @@
             </property>
         </port>
         <entity name="ClockInit" class="ptolemy.domains.fsm.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 140.0]">
@@ -379,6 +390,8 @@
             </property>
         </port>
         <entity name="Normal" class="ptolemy.domains.fsm.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 125.0]">
@@ -544,7 +557,7 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="TrafficLight" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -566,7 +579,7 @@ implementations.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 62, 919, 643}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 267, 919, 659}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 526]">
             </property>
@@ -631,6 +644,8 @@ implementations.</text></svg></configure>
             </port>
             <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -751,6 +766,8 @@ pedestrian lights.</text></svg></configure>
                 </property>
             </port>
             <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 0.0]">
@@ -830,7 +847,7 @@ pedestrian lights.</text></svg></configure>
             <link port="YellowOff.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 10, 1015, 748}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 10, 1015, 764}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 631]">
             </property>
@@ -998,14 +1015,14 @@ pedestrian lights.</text></svg></configure>
         <link port="Cgrn" relation="CgrnRelation"/>
         <link port="Ok" relation="OkRelation"/>
         <link port="Error" relation="ErrorRelation"/>
-        <link port="_Controller.Sec" relation="SecRelation"/>
-        <link port="_Controller.Pred" relation="PredRelation"/>
-        <link port="_Controller.Pgrn" relation="PgrnRelation"/>
-        <link port="_Controller.Cred" relation="CredRelation"/>
-        <link port="_Controller.Cyel" relation="CyelRelation"/>
-        <link port="_Controller.Cgrn" relation="CgrnRelation"/>
-        <link port="_Controller.Ok" relation="OkRelation"/>
-        <link port="_Controller.Error" relation="ErrorRelation"/>
+        <link port="TrafficLight.Sec" relation="SecRelation"/>
+        <link port="TrafficLight.Pred" relation="PredRelation"/>
+        <link port="TrafficLight.Pgrn" relation="PgrnRelation"/>
+        <link port="TrafficLight.Cred" relation="CredRelation"/>
+        <link port="TrafficLight.Cyel" relation="CyelRelation"/>
+        <link port="TrafficLight.Cgrn" relation="CgrnRelation"/>
+        <link port="TrafficLight.Ok" relation="OkRelation"/>
+        <link port="TrafficLight.Error" relation="ErrorRelation"/>
         <link port="errorR.Sec" relation="SecRelation"/>
         <link port="errorR.Pred" relation="PredRelation"/>
         <link port="errorR.Pgrn" relation="PgrnRelation"/>

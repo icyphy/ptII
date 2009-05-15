@@ -14,9 +14,9 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 916, 551}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 169, 916, 552}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 419]">
     </property>
@@ -37,7 +37,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;Follow the detailed instructions in HierarchicalTrafficLight.xml&#10;but change the CTL formula to:&#10;! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
         </property>
@@ -236,6 +236,15 @@
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
     </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
+        <property name="target" class="ptolemy.data.expr.FileParameter" value="test.kripke">
+            <display name="Target File"/>
+        </property>
+        <property name="modelType" class="ptolemy.data.expr.ChoiceParameter" value="Kripke Structures (Acceptable by NuSMV under SR)">
+            <display name="Model Type"/>
+        </property>
+        <property name="formula" class="ptolemy.data.expr.StringParameter" value="! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
+            <display name="Temporal Formula"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
         </property>
     </property>
