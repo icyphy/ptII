@@ -40,6 +40,8 @@ import javax.media.opengl.glu.GLU;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -267,6 +269,13 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             throw new InternalErrorException(e);
         }
     }
+    /** Return a new receiver consistent with the GR domain.
+    *
+    *  @return A new GRReceiver.
+    */
+   public Receiver newReceiver() {
+       return new GRReceiver();
+   }
 
     /** Initialize all the actors associated with this director. Perform
      *  some internal initialization for this director.
@@ -401,6 +410,10 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         _reset();
     }
 
+    public PushMatrix pushMatrix;
+
+    public PopMatrix popMatrix;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -490,6 +503,14 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             "Cannot create default iterations parameter.");
         }
 
+        try {
+            pushMatrix = new PushMatrix(this);
+            popMatrix = new PopMatrix(this);
+        } catch (Throwable throwable) {
+            throw new InternalErrorException(this, throwable,
+            "Cannot create the internal pushMatrix and popMatrix actors.");
+        }
+
         _reset();
     }
 
@@ -518,12 +539,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
     private int _startIteration = 0;
 
     private int _stopIteration = 0;
-    private double _viewLeft = -0.25;
-    private double _viewRight = 0.25;
-    private double _viewBottom = -0.25;
-    private double _viewTop = 0.25;
-    private double _viewNear = -1.0;
-    private double _viewFar = 1.0;
 
 
     public void display(GLAutoDrawable gLDrawable) {
@@ -533,10 +548,9 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             _gl.glLoadIdentity();
 
             _gl.glBegin(GL.GL_LINES);
-            
-            
             _gl.glLineWidth(2);
 
+            // white color
             _gl.glColor3d(1.0, 1.0, 1.0); 
 
             // x-axis
@@ -550,7 +564,6 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             // z-axis
             _gl.glVertex3d(0, 0, 1); 
             _gl.glVertex3d(0, 0, -1); 
-
             _gl.glEnd( );
             
             
@@ -562,11 +575,8 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 //
             //_gl.glTranslatef(0.0f, 0.0f, -3.0f);
 
-            _gl.glPushMatrix();
-
             _fire();
 
-            _gl.glPopMatrix();
             _gl.glFlush();
 
         } catch (IllegalActionException e) {
@@ -619,4 +629,30 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
         gl.glLoadIdentity();
 
     }
+    
+    private class PopMatrix extends TypedAtomicActor {
+
+        public PopMatrix (GRODirector director) {
+            _director = director;
+        }
+        GRODirector _director;
+        
+        public void fire() throws IllegalActionException {
+            GL gl = _director.getGL();
+            gl.glPopMatrix();
+        }
+    }
+    
+    private class PushMatrix extends TypedAtomicActor {
+        public PushMatrix (GRODirector director) {
+            _director = director;
+        }
+        GRODirector _director;
+
+        public void fire() throws IllegalActionException {
+            GL gl = _director.getGL();
+            gl.glPushMatrix();
+        }
+    }
+    
 }

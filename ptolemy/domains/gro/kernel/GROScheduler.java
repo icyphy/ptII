@@ -251,9 +251,17 @@ public class GROScheduler extends Scheduler {
      */
     private void _constructDepthFirstSchedule(Schedule schedule, 
             DirectedAcyclicGraph dag, Object actorToAdd) {
+        GRODirector director = (GRODirector) getContainer();
         
         if (actorToAdd == null) {
             return;
+        }
+        
+
+        if (actorToAdd instanceof Transformation) {
+            Firing pushfiring = new Firing();
+            pushfiring.setActor(director.pushMatrix);
+            schedule.add(pushfiring);
         }
         
         Firing firing = new Firing();
@@ -262,6 +270,12 @@ public class GROScheduler extends Scheduler {
         
         for (Object node : dag.successors(dag.node(actorToAdd))) {
             _constructDepthFirstSchedule(schedule, dag, ((Node) node).getWeight());
+        }
+
+        if (actorToAdd instanceof Transformation) {
+            Firing popFiring = new Firing();
+            popFiring.setActor(director.popMatrix);
+            schedule.add(popFiring);
         }
     }
 

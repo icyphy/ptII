@@ -7,6 +7,7 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.gro.kernel.GROActor;
 import ptolemy.domains.gro.kernel.GRODirector;
 import ptolemy.kernel.CompositeEntity;
@@ -21,6 +22,7 @@ public class Line3D extends GROActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject", false, true);
+        GLPipelineObject.setTypeEquals(BaseType.OBJECT);
         
         width = new Parameter(this, "width");
         width.setExpression("2.0");

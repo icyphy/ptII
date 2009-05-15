@@ -8,6 +8,9 @@ import javax.media.opengl.GLCanvas;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.gro.kernel.GRODirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -26,9 +29,12 @@ public class ViewScreen3D extends TypedAtomicActor {
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
         GLPipelineObject.setInput(true);
         GLPipelineObject.setMultiport(true);
+        GLPipelineObject.setTypeEquals(BaseType.OBJECT);
 
+        showAxis = new Parameter(this, "showAxis");
+        showAxis.setTypeEquals(BaseType.BOOLEAN);
+        showAxis.setToken(BooleanToken.FALSE);
         
-
         //_lastTransform = new Transform3D();
         // TODO Auto-generated constructor stub
     }
@@ -41,8 +47,7 @@ public class ViewScreen3D extends TypedAtomicActor {
      */
     public TypedIOPort GLPipelineObject;
 
- 
-    
+    public Parameter showAxis;
     
     /** Fire this actor.*/
     
@@ -60,8 +65,9 @@ public class ViewScreen3D extends TypedAtomicActor {
         _canvas = new GLCanvas();
 
         _animator = new Animator(_canvas);
-        //_animator.setRunAsFastAsPossible(true);
+        _animator.setRunAsFastAsPossible(true);
         _animator.start();
+        
         _canvas.addGLEventListener((GRODirector)getDirector());
         
         _frame.add(_canvas);

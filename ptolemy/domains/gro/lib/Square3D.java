@@ -3,6 +3,7 @@ package ptolemy.domains.gro.lib;
 import javax.media.opengl.GL;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.gro.kernel.GROActor;
 import ptolemy.domains.gro.kernel.GRODirector;
 import ptolemy.kernel.CompositeEntity;
@@ -16,7 +17,7 @@ public class Square3D extends GROActor {
         super(container, name);
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
         GLPipelineObject.setOutput(true);
-        //GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
+        GLPipelineObject.setTypeEquals(BaseType.OBJECT);
 
         // TODO Auto-generated constructor stub
     }

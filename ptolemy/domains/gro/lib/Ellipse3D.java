@@ -3,6 +3,7 @@ package ptolemy.domains.gro.lib;
 import javax.media.opengl.GL;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.gro.kernel.GROActor;
 import ptolemy.domains.gro.kernel.GRODirector;
 import ptolemy.kernel.CompositeEntity;
@@ -15,6 +16,7 @@ public class Ellipse3D extends GROActor {
     public Ellipse3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        GLPipelineObject.setTypeEquals(BaseType.OBJECT);
         
     }
 public TypedIOPort GLPipelineObject;
