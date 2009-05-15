@@ -183,9 +183,12 @@ public abstract class PlotLive extends Plot implements Runnable {
     public synchronized void start() {
         _plotting = true;
         _paused = false;
-        _stopButton.setEnabled(true);
-        _startButton.setEnabled(false);
-
+        if (_stopButton != null) {
+            _stopButton.setEnabled(true);
+        }
+        if (_startButton != null) {
+            _startButton.setEnabled(false);
+        }
         if (_plotLiveThread == null) {
             _plotLiveThread = new Thread(this, "PlotLive Thread");
             _plotLiveThread.start();
