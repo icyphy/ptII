@@ -372,11 +372,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("int " + index + ";" + _eol
                 + "for (" + index + " = 0; " + index + " < "
                 + _getFrequency(actor) + "; ++" + index + ") {" + _eol
-                + "DEAD0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
+                + "DEADBRANCH0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
                 + _getActorName(actor)+"_driver_in();//read inputs from ports deterministically" + _eol);
 
         code.append(_getActorName(actor)+"();"+_eol);
-        code.append("DEAD0(" + driverBound  + "); // driver_wcet" + _eol);
+        code.append("DEADBRANCH0(" + driverBound  + "); // driver_wcet" + _eol);
 
         // code.append(helper.generateFireCode());
         //code.append(helper.generatePostfireCode());
