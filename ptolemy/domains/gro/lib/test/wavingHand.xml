@@ -1,0 +1,111 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="wavingHand" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="GRODirector" class="ptolemy.domains.gro.kernel.GRODirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="iterationInterval" class="ptolemy.data.expr.Parameter" value="{0,100000000}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 45.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={268, 312, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="ViewScreen3D" class="ptolemy.domains.gro.lib.ViewScreen3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 255.0}">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Line3D" class="ptolemy.domains.gro.lib.Line3D">
+        <property name="rgbColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+        </property>
+        <property name="lineStart" class="ptolemy.data.expr.Parameter" value="{0.0, 0.15, 0.0}">
+        </property>
+        <property name="lineEnd" class="ptolemy.data.expr.Parameter" value="{0.0, -0.2, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 160.0}">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Line3D2" class="ptolemy.domains.gro.lib.Line3D">
+        <property name="rgbColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+        </property>
+        <property name="lineStart" class="ptolemy.data.expr.Parameter" value="{0.0, -0.2, 0.0}">
+        </property>
+        <property name="lineEnd" class="ptolemy.data.expr.Parameter" value="{-0.1, -0.4, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 230.0]">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Line3D3" class="ptolemy.domains.gro.lib.Line3D">
+        <property name="rgbColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,1.0}">
+        </property>
+        <property name="lineStart" class="ptolemy.data.expr.Parameter" value="{0.0, -0.2, 0.0}">
+        </property>
+        <property name="lineEnd" class="ptolemy.data.expr.Parameter" value="{0.1, -0.4, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 310.0]">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Point3D" class="ptolemy.domains.gro.lib.Point3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 95.0]">
+        </property>
+        <port name="GLPipelineObject" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation"/>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation2"/>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation3"/>
+    <link port="ViewScreen3D.GLPipelineObject" relation="relation4"/>
+    <link port="Line3D.GLPipelineObject" relation="relation"/>
+    <link port="Line3D2.GLPipelineObject" relation="relation2"/>
+    <link port="Line3D3.GLPipelineObject" relation="relation3"/>
+    <link port="Point3D.GLPipelineObject" relation="relation4"/>
+</entity>
