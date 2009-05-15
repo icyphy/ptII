@@ -285,67 +285,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             _debug("_generateFireCode has been called");
         }
         StringBuffer code = new StringBuffer();
-        double period = _getPeriod();
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-            ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
-
-            // FIXME: generate deadline instruction w/ period
-
-            // Note: Currently, the deadline instruction takes the number 
-            // of cycle as argument. In the future, this should be changed
-            // to use time unit, which is platform-independent. 
-            // So for now, we will assume the clock speed to be 250 Mhz. 
-            // Thus, in order to get a delay of t seconds (= period/frequency) 
-            // for each actor, we will need to wait for 
-            // period/frequency * 250,000,000 cycles/second.
-
-            int cycles = (int)(250000000 * period / _getFrequency(actor));
-            String driverBound = CodeGeneratorHelper.generateName((NamedObj) actor) + "_OUTPUT_DRIVER_WCET";
-            code.append("#ifdef THREAD_" + threadID + _eol
-                    + "#ifndef " + driverBound + _eol
-                    // #warning is non-standard, but useful.
-                    + "#warning \"" + driverBound + " was not defined.  Using default value of 1000.\"" + _eol
-                    + "#define " + driverBound + " 1000" + _eol
-                    + "#endif" + _eol);
-            // for
-            String index = CodeGeneratorHelper.generateName((NamedObj) actor) + "_frequency";
-            code.append("int " + index + ";" + _eol
-                    + "for (" + index + " = 0; " + index + " < "
-                    + _getFrequency(actor) + "; ++" + index + ") {" + _eol
-                    + "DEADBRANCH0(" + cycles + "-" + driverBound  + "); // period - driver_wcet" + _eol
-                    + _getActorName(actor)+"_driver_in();//read inputs from ports deterministically" + _eol);
-
-            code.append(_getActorName(actor)+"();"+_eol);
-            code.append("DEADBRANCH0(" + driverBound  + "); // driver_wcet" + _eol);
-
-            // code.append(helper.generateFireCode());
-            //code.append(helper.generatePostfireCode());
-            code.append(_getActorName(actor)+"_driver_out(); // output values to ports deterministically"+_eol);
-            code.append("}" + _eol); // end of for loop
-
-            code.append("#endif /* THREAD_" + threadID + "*/\n");
-            threadID++;
-            if(actor instanceof CompositeActor)
-            {
-                //code.append(_eol+"//I'm a composite actor"+_eol);
-                if(actor.getDirector().getClassName().contains("Giotto"))
-                {
-
-                    for (Actor actor1 : (List<Actor>) 
-                            ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList()) 
-                    {
-                        code.append(_generateRecursiveFireCode(actor1));
-
-                    }
-
-                }
-            }
+            code.append(_generateRecursiveFireCode(actor));
         }
         return code.toString();
     }
 
-    private String _generateRecursiveFireCode(Actor actor)throws IllegalActionException
+    private String _generateRecursiveFireCode(Actor actor) throws IllegalActionException
     {
         StringBuffer code= new StringBuffer();
         double period = _getPeriod();
