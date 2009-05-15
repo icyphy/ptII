@@ -52,7 +52,14 @@ if {[info procs _testEnums] == "" } then {
 ####
 #
 test CUnit-1.1 {Run the CUnit tests} {
-    set result [exec make run]
+    # $makeArguments is set in ptolemy/util/test/testDefs.tcl
+    # Use "make $makeArguments" so that commands are not printed as they
+    # are executed
+    if {$makeArguments == {}} {
+	set results [exec make run]
+    } else {
+	set results [exec make $makeArguments run]
+    }
     puts $result
     # If this test fails, run "make run"
     string range $result [string last {--Run Summary} $result] end 
