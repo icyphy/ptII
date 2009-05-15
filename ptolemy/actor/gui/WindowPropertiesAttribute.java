@@ -28,8 +28,9 @@
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -57,7 +58,7 @@ import ptolemy.kernel.util.Settable;
  By default, this attribute has visibility NONE, so the user will not
  see it in parameter editing dialogs.
 
- @author Edward A. Lee
+ @author Edward A. Lee, Contributors: Jason E. Smith, Christopher Brooks
  @version $Id$
  @since Ptolemy II 2.1
  @Pt.ProposedRating Red (eal)
@@ -188,26 +189,67 @@ public class WindowPropertiesAttribute extends Parameter implements
             //System.out.println("x: " + x + "  y: " + y);
             //System.out.println("width: " + width + "  height: " + height);
 
-            // If x or y is less than 0 or greater than the width or
-            // height of the screen - 10, then offset them by 30 pixels so
-            // the user can drag the window.
             // FIXME: If we change the size, should we mark the model
             // as dirty so it gets saved?
-            // FIXME: will these changes cause problems with multiscreen
-            // monitors?
 
-            //CWB: changed behavior on 2008.03.06
-            //Now if any part of the window is off the screen, either the
-            //x or y position is set to 0.  This fixes several problems
-            //with workflows being positioned off of the screen when saved
-            //on a multi-head machine, then reopened on a single-head machine
-            x = (x < 0 ? 30 : x);
-            y = (y < 0 ? 30 : y);
+            // See ptolemy/actor/gui/test/MyFourCorners.xml for a test file
+            // that produces four plots in the four corners of a multi-screen window.
+            GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
+            
+            int widths[] = new int[graphicsDevices.length];
+            int heights[] = new int[graphicsDevices.length];
+            boolean widthsEqual = true;
+            boolean heightsEqual = true;
+            int maxWidth = 0;
+            int maxHeight = 0;
+            
+            for (int j = 0; j < graphicsDevices.length; j++) { 
+            	GraphicsDevice graphicsDevice = graphicsDevices[j];
+            	widths[j] = graphicsDevice.getDisplayMode().getWidth();
+            	heights[j] = graphicsDevice.getDisplayMode().getHeight();
+            }
+            for (int j = 0; j < graphicsDevices.length-1; j++) { 
+            	if (widths[j] != widths[j+1]) {
+            		widthsEqual = false;
+                }
+            	if (heights[j] != heights[j+1]) {
+            		heightsEqual = false;
+                }
+            }
+            if (widthsEqual && heightsEqual){
+            	//Nominal setup
+            	if (heights[0] > widths[0]){//Width is cumulative.
+            		for (int j = 0; j < graphicsDevices.length; j++) {
+            			maxWidth += widths[j];
+            		}
+            		maxHeight = heights[0];
+            	}
+            	else {//Height is cumulative.
+            		for (int j = 0; j < graphicsDevices.length; j++) {
+            			maxHeight += heights[j];
+            		}
+            		maxWidth = widths[0];
+            	}
+            } else {
+            	//Strange setup.
+            	maxWidth = widths[0];
+            	maxHeight = heights[0];
+            	for (int j = 0; j < graphicsDevices.length; j++) {
+            		maxWidth = maxWidth > widths[j] ? widths[j] : maxWidth;
+            		maxHeight = maxHeight > heights[j] ? heights[j] : maxHeight;
+            	}
+            }
 
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            x = (x + width > tk.getScreenSize().width ? 0 : x);
-            y = (y + height > tk.getScreenSize().height ? 0 : y);
+            x =  x < 0 ? 0 : x;
+            y =  y < 0 ? 0 : y+0;
 
+            width = width > maxWidth ? maxWidth : width;
+            height = height > maxHeight ? maxHeight : height;
+            
+            y = (y + height) > (maxHeight) ? (maxHeight-height) : y;
+            x = (x + width) > (maxWidth) ? (maxWidth-width) : x;
+            
             frame.setBounds(x, y, width, height);
 
             if (maximizedToken != null) {
