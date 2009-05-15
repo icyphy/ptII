@@ -167,9 +167,13 @@ public class PlotFormatter extends JPanel {
         _originalColor = plot.getColor();
         _narrowQuery.addCheckBox("color", "Use Color", _originalColor);
 
-        _originalLineStyles = ((Plot) plot).getLineStyles();
-        _narrowQuery.addCheckBox("lineStyles", "Use Line Styles",
-                _originalLineStyles);
+        if (plot instanceof Plot) {
+            // This method is also called by Histogram,
+            //  and Histogram does not have getLineStyles()
+            _originalLineStyles = ((Plot) plot).getLineStyles();
+            _narrowQuery.addCheckBox("lineStyles", "Use Line Styles",
+                    _originalLineStyles);
+        }
 
         // FIXME: setXLog() and setYLog() cause problems with
         // dropped data if they are toggled after data is read in.
@@ -290,13 +294,14 @@ public class PlotFormatter extends JPanel {
         _plot.read("YRange: " + _wideQuery.getStringValue("yrange"));
         _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
         _plot.setColor(_narrowQuery.getBooleanValue("color"));
-        ((Plot)_plot).setLineStyles(_narrowQuery.getBooleanValue("lineStyles"));
-
         // FIXME: log axis format temporarily disable, see above.
         // _plot.setXLog(_narrowQuery.getBooleanValue("xlog"));
         // _plot.setYLog(_narrowQuery.getBooleanValue("ylog"));
         if (_plot instanceof Plot) {
+            // This method is also called by Histogram,
+            //  and Histogram does not have lineStyles
             Plot cplot = (Plot) _plot;
+            cplot.setLineStyles(_narrowQuery.getBooleanValue("lineStyles"));
             cplot.setMarksStyle(_wideQuery.getStringValue("marks"));
             cplot.setImpulses(_narrowQuery.getBooleanValue("stems"));
             _setConnected(_narrowQuery.getBooleanValue("connected"));
