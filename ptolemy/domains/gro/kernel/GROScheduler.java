@@ -41,6 +41,7 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -223,9 +224,8 @@ public class GROScheduler extends Scheduler {
         }
 
         Schedule schedule = new Schedule();
-        for (int counter = 0; counter < actorCount; counter++) {
-            _constructDepthFirstSchedule(schedule, dag, (Actor) dag.top());
-        }
+
+        _constructDepthFirstSchedule(schedule, dag, (Actor) dag.bottom());
 
         if (_debugging) {
             _debug("Schedule is:");
@@ -260,8 +260,8 @@ public class GROScheduler extends Scheduler {
         firing.setActor((Actor) actorToAdd);
         schedule.add(firing);
         
-        for (Object actor : dag.successors(dag.node(actorToAdd))) {
-            _constructDepthFirstSchedule(schedule, dag, actor);
+        for (Object node : dag.successors(dag.node(actorToAdd))) {
+            _constructDepthFirstSchedule(schedule, dag, ((Node) node).getWeight());
         }
     }
 
