@@ -530,8 +530,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
            if(actor instanceof CompositeActor)
             {
                 
-                if(actor.getDirector().getFullName().contains("SDFDirector"))//&&(!actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")))
-                {
+                if(actor.getDirector() instanceof ptolemy.domains.sdf.kernel.SDFDirector) {
                     for (Actor actor1 : (List<Actor>) 
                             ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList())
                     {
