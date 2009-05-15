@@ -309,9 +309,6 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         File file = new File(libraryName);
 
         if (file.isFile() && file.canRead()) {
-            System.out.println("Opening user preferences "
-                    + PREFERENCES_FILE_NAME + "...");
-
             // If we have a jar URL, convert spaces to %20
             URL fileURL;
 
