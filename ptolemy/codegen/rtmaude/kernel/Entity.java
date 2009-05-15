@@ -41,7 +41,7 @@ public class Entity extends RTMaudeAdaptor {
      * attributes "store", "status", "ports" and "variables" are defined.
      * Each subclass should extend this method for their own attributes.
      * 
-     * @return
+     * @return A map of the attribute terms.
      * @throws IllegalActionException
      */
     protected Map<String,String> _generateAttributeTerms() throws IllegalActionException {

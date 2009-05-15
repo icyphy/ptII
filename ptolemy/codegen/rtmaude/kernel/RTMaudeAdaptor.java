@@ -38,7 +38,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     /**
      * @param blockName
      * @param args
-     * @return
+     * @return The block code
      * @throws IllegalActionException
      */
     protected String _generateBlockCode(String blockName, String ... args)

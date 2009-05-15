@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  Code generator helper for typed composite actor.
 
  @author Kyungmin Bae
- @version 
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (kquine)
  */
