@@ -72,8 +72,8 @@ public class Line3D extends GROActor {
         
         GL gl = ((GRODirector) getDirector()).getGL();
 
-        gl.glBegin(GL.GL_LINES);
         gl.glLineWidth((float) widthValue.doubleValue());
+        gl.glBegin(GL.GL_LINES);
 
         gl.glColor3d(
                 ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(), 
