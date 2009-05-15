@@ -365,13 +365,14 @@ public class PlotFormatter extends JPanel {
         _plot.setYRange(_originalYRange[0], _originalYRange[1]);
         _plot.setGrid(_originalGrid);
         _plot.setColor(_originalColor);
-        ((Plot)_plot).setLineStyles(_originalLineStyles);
-
         // FIXME: log axis format temporarily disable, see above.
         // _plot.setXLog(_originalXLog);
         // _plot.setYLog(_originalYLog);
         if (_plot instanceof Plot) {
+            // This method is also called by Histogram,
+            //  and Histogram does not have lineStyles
             Plot cplot = (Plot) _plot;
+            cplot.setLineStyles(_originalLineStyles);
             cplot.setMarksStyle(_originalMarks);
             cplot.setImpulses(_originalStems);
             _restoreConnected();

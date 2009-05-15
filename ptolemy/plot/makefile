@@ -503,9 +503,9 @@ fixtmpdist:
 	echo '	ln -s ptinvoke makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo '$$(BAT_FILES): makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	rm -f "\$@"' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	./makebat -q "`basename \$@ .bat`"' \
-		>> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	# We need $@ in bin/makefile, so we use awk to avoid substitution
+	echo "foo" | \
+		awk '{	 printf("\trm -f %c%c%c%c\n", 34, 36, 64, 34); printf("\t./makebat -q %c%cbasename %c%c .bat%c%c\n", 34, 96, 36, 64, 96, 34); }' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
