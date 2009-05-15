@@ -20,7 +20,7 @@ public class Triangle3D extends GROActor {
         super(container, name);
         GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
         GLPipelineObject.setOutput(true);
-        GLPipelineObjectOut.setTypeEquals(BaseType.OBJECT);
+        GLPipelineObject.setTypeEquals(BaseType.OBJECT);
     }
     
     public TypedIOPort GLPipelineObject;
