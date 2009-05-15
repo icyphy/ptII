@@ -42,17 +42,13 @@ if {[info procs jdkCapture] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-set makeArguments {}
-set whichMake [exec which make]
-if {![regexp /usr/ccs/bin/make $whichMake]} { 
-    # Probably GNU Make 
-    set makeArguments [list {--no-print-directory}]
-}
+
 
 ######################################################################
 ####
 #
 test MoMLCommandLineLocation-1.1 {} {
+    # $makeArguments is set in ptolemy/util/test/testDefs.tcl
     # Use "make $makeArguments" so that commands are not printed as they
     # are executed
     if {$makeArguments == {}} {

@@ -659,3 +659,16 @@ if {"$isRunningNightlyBuild" == "true" \
 proc createAndExecute {file} {
     java::new ptolemy.moml.MoMLSimpleApplication $file
 }
+
+
+# set makeArguments to {--no-print-directory} if we
+# are not running GNU make.  We do this to avoid strings like:
+# "make[11]: Leaving directory"
+# makeArguments is used in ptolemy/moml/test/MoMLCommandLineApplication.tcl
+# and ptolemy/codegen/c/kernel/type/test/CUnit.tcl
+set makeArguments {}
+set whichMake [exec which make]
+if {![regexp /usr/ccs/bin/make $whichMake]} { 
+    # Probably GNU Make 
+    set makeArguments [list {--no-print-directory}]
+}
