@@ -472,7 +472,6 @@ HYVISUAL_DOCS = \
 
 # PTIDES packages
 PTIDES_PACKAGES = \
-	ptolemy.codegen.c.targets.luminary.domains.ptides.lib \
 	ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
