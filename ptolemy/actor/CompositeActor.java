@@ -1707,7 +1707,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (container instanceof CompositeActor) {
             return ((CompositeActor) container)._getWidthInferenceAlgorithm();                
         } else {
-            assert _relationWidthInference != null;
+            // assert _relationWidthInference != null;
+            // Removed the assert. When your cloning this object it is possible
+            //  that _relationWidthInference hasn't been filled in yet.
             return _relationWidthInference;
         }
     }
