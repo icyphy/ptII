@@ -855,9 +855,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
             List outputPortList = actor.outputPortList();
             Iterator outputPorts = outputPortList.iterator();
-            sinkReference= "";
-            srcReference= "";
-            actorDriverCode ="";
+            sinkReference = "";
+            srcReference = "";
+            actorDriverCode = "";
             dir = actor.getDirector();
             code.append(_eol+"//My Director's name is: "+dir.getFullName()+_eol);
             if(actor instanceof CompositeActor && (dir.getFullName().contains("modal")||dir.getFullName().contains("_Director")))
@@ -1028,8 +1028,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append(_generateBlockCode("driverCode", args));
         }
 
-
-        return code.toString();   
+        return code.toString();
     }
 
 
@@ -1074,7 +1073,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             offset = 8 * portWidth;
         }
         // Make sure memory address is aligned to offset
-        int currentSharedMemoryAddress = (nextSharedMemoryAddress / offset) * offset;
+        int currentSharedMemoryAddress = (nextSharedMemoryAddress + offset - 1) / offset * offset;
         nextSharedMemoryAddress = currentSharedMemoryAddress + offset;
         if(nextSharedMemoryAddress >= 0x40000000) {
             throw new IllegalActionException("out of shared data space on PRET");
@@ -1084,7 +1083,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     private String _typeConversion(TypedIOPort source,TypedIOPort sink)
     {
-
         String sourceType;
         String sinkType;
         sourceType = targetType(source.getType());
@@ -1101,8 +1099,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             return sourceType+"to"+sinkType;
         }
     }
+
     static private int nextSharedMemoryAddress = 0x3F800000;
     private int threadID = 0;
-
 
 }
