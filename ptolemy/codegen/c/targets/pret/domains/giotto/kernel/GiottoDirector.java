@@ -335,8 +335,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         if(actor instanceof CompositeActor)
         {
             code.append(_eol+"//I'm a composite actor"+_eol);
-            if(actor.getDirector().getClassName().contains("Giotto"))
-            {
+            if(actor.getDirector() instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
                 for (Actor actor1 : (List<Actor>) 
                         ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList()) 
                 {
