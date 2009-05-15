@@ -1,4 +1,4 @@
-/* Code generator helper class associated with the GiottoDirector class.
+/* Code generator helper class associated with the FSMDirector class.
 
  Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -63,9 +63,9 @@ import ptolemy.kernel.util.NamedObj;
 public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirector {
 
     /** Construct the code generator helper associated with the given
-     *  GiottoDirector.
+     *  FSMDirector.
      *  @param giottoDirector The associated
-     *  ptolemy.domains.giotto.kernel.GiottoDirector
+     *  ptolemy.domains.giotto.kernel.FSMDirector
      */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector fsmDirector) {
         super(fsmDirector);
