@@ -39,7 +39,7 @@ axes.
                    VALUE = "ptolemy.plot.compat.PxgraphApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "../../.." > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/plot/pxgraphapplet.jar" > \
+                   VALUE = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "progressbar" VALUE = "true"> \
@@ -56,7 +56,7 @@ axes.
             type = "application/x-java-applet;version=1.4.2" \
             code = "ptolemy.plot.compat.PxgraphApplet" \
             codebase = "../../.." \
-            archive = "ptolemy/plot/pxgraphapplet.jar" \
+            archive = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" \
             width = "380" \
             height = "400" \
             background = "#ffffff" pxgraphargs = "-t \'X and Y Logarithmic Axes\' -lnx -lny logaxes.plt"  \
@@ -71,16 +71,16 @@ axes.
         ');
     else document.writeln('\
         <APPLET \
-            code = "ptolemy.plot.compat.PxgraphApplet" \
-            codebase = "../../.." \
-            archive = "ptolemy/plot/pxgraphapplet.jar" \
-            width = "380" \
-            height = "400" \
-            > \
-            <PARAM NAME = "background" VALUE = "#ffffff" > \
+           code = "ptolemy.plot.compat.PxgraphApplet" \
+           codebase = "../../.." \
+           archive = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" \
+           width = "380" \
+           height = "400" \
+           > \
+           <PARAM NAME = "background" VALUE = "#ffffff" > \
 	    <PARAM NAME = "pxgraphargs" VALUE = "-t \'X and Y Logarithmic Axes\' -lnx -lny logaxes.plt" > \
-            No Java Plug-in support for applet, see <a href="http://java.sun.com/products/plugin/"><code>http://java.sun.com/products/plugin/</code></a> \
-        </APPLET> \
+           No Java Plug-in support for applet, see <a href="http://java.sun.com/products/plugin/"><code>http://java.sun.com/products/plugin/</code></a> \
+       </APPLET> \
         ');
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
@@ -115,7 +115,7 @@ axes.
                    VALUE = "ptolemy.plot.compat.PxgraphApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "../../.." > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/plot/pxgraphapplet.jar" > \
+                   VALUE = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "progressbar" VALUE = "true"> \
@@ -132,7 +132,7 @@ axes.
             type = "application/x-java-applet;version=1.4.2" \
             code = "ptolemy.plot.compat.PxgraphApplet" \
             codebase = "../../.." \
-            archive = "ptolemy/plot/pxgraphapplet.jar" \
+            archive = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" \
             width = "380" \
             height = "400" \
             background = "#ffffff" pxgraphargs = "-t \'X and Y Linear Axes\' logaxes.plt"  \
@@ -149,7 +149,7 @@ axes.
         <APPLET \
             code = "ptolemy.plot.compat.PxgraphApplet" \
             codebase = "../../.." \
-            archive = "ptolemy/plot/pxgraphapplet.jar" \
+            archive = "ptolemy/plot/pxgraphapplet.jar,ptolemy/plot/demo/demo.jar" \
             width = "380" \
             height = "400" \
             > \

@@ -635,9 +635,12 @@ public class PlotFrame extends JFrame {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
+                System.out.println("Format Exception: " + exception);
+                exception.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Format Exception:\n"
                         + exception.toString(), "Ptolemy Plot Error",
                         JOptionPane.WARNING_MESSAGE);
+
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta

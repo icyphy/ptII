@@ -47,7 +47,8 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm, doc/download/index.htm
-PTVERSION =	5.7.1.devel
+PTVERSION =	5.8.beta
+PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
@@ -182,8 +183,10 @@ install: all jars
 # PlotBox uses PlotFormatter which uses ptolemy.gui.Query and other classes
 # ptolemy.gui has lots of classes, we need only a few of them.
 PTOLEMYGUIFILES = \
+	ptolemy/gui/PtGUIUtilities.class \
 	ptolemy/gui/Query.class \
 	'ptolemy/gui/Query$$1.class' \
+	ptolemy/gui/QueryChooser.class \
 	ptolemy/gui/QueryListener.class \
 	'ptolemy/gui/Query$$QueryScrollPane.class' \
 	'ptolemy/gui/Query$$QueryFileChooser.class' \
@@ -191,15 +194,22 @@ PTOLEMYGUIFILES = \
 	'ptolemy/gui/Query$$QueryActionListener.class' \
 	'ptolemy/gui/Query$$QueryFocusListener.class' \
 	'ptolemy/gui/Query$$QueryItemListener.class' \
+	'ptolemy/gui/SettableQueryChooser.class' \
 	'ptolemy/gui/ComponentDialog.class' \
 	'ptolemy/gui/ComponentDialog$$1.class' \
 	'ptolemy/gui/ComponentDialog$$2.class' \
-	ptolemy/gui/CloseListener.class
+	ptolemy/gui/CloseListener.class \
+	'ptolemy/gui/UndoListener$$RedoAction.class' \
+	'ptolemy/gui/UndoListener$$UndoAction.class' \
+	ptolemy/gui/UndoListener.class
 
 # PlotFrame uses StringUtilities.getProperty() 
 # ptolemy.util has lots of classes, we need only a few of them.
 PTOLEMYUTILFILES = \
+	ptolemy/util/CancelException.class \
 	ptolemy/util/FileUtilities.class \
+	ptolemy/util/MessageHandler.class \
+	ptolemy/util/RunnableExceptionCatcher.class \
 	ptolemy/util/StringUtilities.class
 
 # Class files used in all applets and applications
@@ -212,6 +222,8 @@ BASECLASSFILES = \
 		'$(ME)/Histogram$$1.class' \
 		'$(ME)/Histogram$$2.class' \
 		'$(ME)/Histogram$$3.class' \
+		'$(ME)/Histogram$$4.class' \
+		'$(ME)/Histogram$$5.class' \
 		$(ME)/HistogramApplet.class \
 		$(ME)/Plot.class \
 		'$(ME)/Plot$$1.class' \
@@ -491,8 +503,8 @@ fixtmpdist:
 	echo '	ln -s ptinvoke makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo '$$(BAT_FILES): makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	rm -f "$@"' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	./makebat -q "`basename $@ .bat`"' \
+	echo '	rm -f "\$@"' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '	./makebat -q "`basename \$@ .bat`"' \
 		>> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
@@ -502,9 +514,17 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/UndoListener.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/SettableQueryChooser.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/QueryChooser.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/Query.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/QueryListener.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/PtGUIUtilities.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/CloseListener.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
@@ -513,7 +533,7 @@ fixtmpdist:
 	cp "$(PTII)/ptolemy/gui/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	# Remove most of the .java files
-	egrep -v "BasicJApplet|CancelException|GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
+	egrep -v "BasicJApplet|CancelException|GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|QueryChooserHelper.java|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
 		"$(PTII)/ptolemy/gui/makefile" | \
 		sed "s/ test / /" | \
 		sed "s/\ttest//" > \
@@ -521,6 +541,12 @@ fixtmpdist:
 	@echo "Copy over util stuff"
 	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	# Remove most of the .java files
+	cp "$(PTII)/ptolemy/util/CancelException.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
+	cp "$(PTII)/ptolemy/util/MessageHandler.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
+	cp "$(PTII)/ptolemy/util/RunnableExceptionCatcher.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/StringUtilities.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/ClassUtilities.java" \
@@ -529,7 +555,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	egrep -v "CancelException|ExecuteCommands|MessageHandler|StreamExec|StringBufferExec.java|XSLTUtilities" \
+	egrep -v "ExecuteCommands|OrderedResourceBundle|StreamExec|StringBufferExec.java|XSLTUtilities" \
 		"$(PTII)/ptolemy/util/makefile" | \
 		sed "s/ test / /" | \
 		sed "s/\ttest/\t/" > \
@@ -593,6 +619,7 @@ fixtmpdist:
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
 	chmod -R a+r $(PTTMPDIR)/$(PTDIST)
+	$(FIND) $(PTTMPDIR)/$(PTDIST) -name "*.class" -exec rm {} \;
 
 
 isj:

@@ -41,7 +41,6 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 PTPACKAGE = 	demo
-PTVERSION =	2.0
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 DIRS =
@@ -55,7 +54,15 @@ JSRCS = \
 	PlotLiveDemoApplet.java \
 	TwoPlotExample.java
 
-EXTRA_SRCS = $(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
+	bargraph.plt \
+	data.plt \
+	errorbars.plt \
+	logaxes.plt \
+	plotmlSample.txt \
+	sinusoids.xml
+
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	BarGraph.htm \
 	Binary.htm \
 	Butterfly.htm \
@@ -70,13 +77,7 @@ EXTRA_SRCS = $(JSRCS) \
 	MarksSimple.htm \
 	TwoPlotExample.java \
 	Sinusoids.htm \
-	bargraph.plt \
-	data.plt \
-	errorbars.plt \
 	index.htm \
-	logaxes.plt \
-	plotmlSample.txt \
-	sinusoids.xml \
 	sinusoidsShow.htm \
 	toc.htm
 
