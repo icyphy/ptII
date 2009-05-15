@@ -20,21 +20,18 @@ public class Line3D extends GROActor {
     public Line3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        GLPipelineObject = new TypedIOPort(this, "GLPipelineObject");
-        GLPipelineObject.setOutput(true);
-        //GLPipelineObject.setTypeEquals(SceneGraphToken.TYPE);
-        GLPipelineObject.setMultiport(true);
+        GLPipelineObject = new TypedIOPort(this, "GLPipelineObject", false, true);
         
-        
+        width = new Parameter(this, "width");
+        width.setExpression("2.0");
+
         rgbColor = new ColorAttribute(this, "rgbColor");
-        rgbColor.setExpression("{0.0, 0.0, 0.0}");
+        rgbColor.setExpression("{1.0, 1.0, 1.0}");
 
-        
-
-        lineStart = new Parameter(this, "lineStart", new DoubleToken(0.0));
+        lineStart = new Parameter(this, "lineStart");
         lineStart.setExpression("{0.0, 0.0, 0.0}");
         
-        lineEnd= new Parameter(this, "lineEnd", new DoubleToken(0.0));
+        lineEnd= new Parameter(this, "lineEnd");
         lineEnd.setExpression("{0.0, 0.0, 0.0}");
 
        
@@ -42,7 +39,9 @@ public class Line3D extends GROActor {
     
     // ports and parameters
     
-    
+
+    public Parameter width;
+
 
     /** The red, green, blue, and alpha components of the line.  This
      *  parameter must contain an array of double values.  The default
@@ -66,17 +65,31 @@ public class Line3D extends GROActor {
         
         ArrayToken lineStartToken = ((ArrayToken) lineStart.getToken());
         ArrayToken lineEndToken = ((ArrayToken) lineEnd.getToken());
+        ArrayToken rgbColorValue = ((ArrayToken) rgbColor.getToken());
+        DoubleToken widthValue = (DoubleToken) width.getToken();
+        
         GL gl = ((GRODirector) getDirector()).getGL();
+
         gl.glBegin(GL.GL_LINES);
-        gl.glColor3f(0.3f, 0.7f, 0.3f); 
-        gl.glVertex3f((float) ((DoubleToken) lineStartToken.getElement(0))
-                .doubleValue(), (float) ((DoubleToken) lineStartToken.getElement(1))
-                .doubleValue(), (float) ((DoubleToken) lineStartToken.getElement(2))
-                .doubleValue()); // origin of the line
-        gl.glVertex3f((float) ((DoubleToken) lineEndToken.getElement(0))
-                .doubleValue(), (float) ((DoubleToken) lineEndToken.getElement(1))
-                .doubleValue(), (float) ((DoubleToken) lineEndToken.getElement(2))
-                .doubleValue()); // ending point of the line
+        gl.glLineWidth((float) widthValue.doubleValue());
+
+        gl.glColor3d(
+                ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(), 
+                ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(), 
+                ((DoubleToken) rgbColorValue.getElement(2)).doubleValue()); 
+
+        // origin of the line
+        gl.glVertex3d(
+                ((DoubleToken) lineStartToken.getElement(0)).doubleValue(), 
+                ((DoubleToken) lineStartToken.getElement(1)).doubleValue(), 
+                ((DoubleToken) lineStartToken.getElement(2)).doubleValue()); 
+        
+        // ending point of the line
+        gl.glVertex3d(
+                ((DoubleToken) lineEndToken.getElement(0)).doubleValue(), 
+                ((DoubleToken) lineEndToken.getElement(1)).doubleValue(), 
+                ((DoubleToken) lineEndToken.getElement(2)).doubleValue()); 
+
         gl.glEnd( );
         
     }

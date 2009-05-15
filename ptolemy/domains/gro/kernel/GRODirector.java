@@ -38,28 +38,22 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRReceiver;
-import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
@@ -474,7 +468,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
     private void _init() {
         try {
             //Scheduler scheduler = new Scheduler(workspace());
-            Scheduler scheduler = new Scheduler(workspace());
+            Scheduler scheduler = new GROScheduler(workspace());
             setScheduler(scheduler);
         } catch (Exception ex) {
             // if setScheduler fails, then we should just set it to Null.
@@ -486,7 +480,7 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
 
         try {
             iterationInterval = new Parameter(this, "iterationInterval");
-            iterationInterval.setExpression("{0, 1000}");
+            iterationInterval.setExpression("{0, 1000000}");
             iterationInterval.setTypeEquals(new ArrayType(BaseType.INT, 2));
             iterationTimeLowerBound = new Parameter(this,
                     "iterationTimeLowerBound", new IntToken(33));
@@ -538,13 +532,35 @@ public class GRODirector extends StaticSchedulingDirector implements GLEventList
             _gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
             _gl.glLoadIdentity();
 
-            _gl.glLineWidth(4.0f);
+            _gl.glBegin(GL.GL_LINES);
+            
+            
+            _gl.glLineWidth(2);
 
-            _gl.glTranslatef(0.0f, 0.0f, -0.45f);
-            //_gl.glScalef(2f, 2f, 2f);
-            _gl.glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+            _gl.glColor3d(1.0, 1.0, 1.0); 
 
-            _gl.glTranslatef(0.0f, 0.0f, -3.0f);
+            // x-axis
+            _gl.glVertex3d(1, 0, 0); 
+            _gl.glVertex3d(-1, 0, 0); 
+
+            // y-axis
+            _gl.glVertex3d(0, 1, 0); 
+            _gl.glVertex3d(0, -1, 0); 
+
+            // z-axis
+            _gl.glVertex3d(0, 0, 1); 
+            _gl.glVertex3d(0, 0, -1); 
+
+            _gl.glEnd( );
+            
+            
+//            _gl.glLineWidth(4.0f);
+
+//            _gl.glTranslatef(0.0f, 0.0f, -0.45f);
+//            //_gl.glScalef(2f, 2f, 2f);
+//            _gl.glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+//
+            //_gl.glTranslatef(0.0f, 0.0f, -3.0f);
 
             _gl.glPushMatrix();
 

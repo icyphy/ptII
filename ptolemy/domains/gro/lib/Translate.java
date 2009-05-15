@@ -3,6 +3,9 @@ package ptolemy.domains.gro.lib;
 import javax.media.opengl.GL;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.gro.kernel.GROActor;
 import ptolemy.domains.gro.kernel.GRODirector;
 import ptolemy.kernel.CompositeEntity;
@@ -17,23 +20,32 @@ public class Translate extends GROActor {
         GLPipelineObjectIn = new TypedIOPort(this, "GLPipelineObjectIn", true, false);
         GLPipelineObjectIn.setMultiport(true);
         GLPipelineObjectOut = new TypedIOPort(this, "GLPipelineObjectOut", false, true);
+        
+        translation = new Parameter(this, "translation");
+        translation.setExpression("{0.0, 0.0, 0.0}");
+        
     }
     
+    public Parameter translation;
+
     public TypedIOPort GLPipelineObjectIn;
 
     public TypedIOPort GLPipelineObjectOut;
   
-    float translateT = 0.0f;
     public void fire() throws IllegalActionException {
         GL gl = ((GRODirector) getDirector()).getGL();
-        translateT += 0.0001;
+
+        ArrayToken translationValue = ((ArrayToken) translation.getToken());
         
         // FIXME: need to do the push and pop matrix in the director
         gl.glPopMatrix();
         
         gl.glPushMatrix();
         
-        gl.glTranslatef(1.0f, 0.0f, 0.0f);
-        
+        gl.glTranslated(
+            ((DoubleToken) translationValue.getElement(0)).doubleValue(), 
+            ((DoubleToken) translationValue.getElement(1)).doubleValue(), 
+            ((DoubleToken) translationValue.getElement(2)).doubleValue() 
+        );         
     }
 }

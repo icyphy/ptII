@@ -65,7 +65,7 @@ public class ViewScreen3D extends TypedAtomicActor {
         _canvas.addGLEventListener((GRODirector)getDirector());
         
         _frame.add(_canvas);
-        _frame.setSize(320, 240);
+        _frame.setSize(500, 500);
         _frame.setUndecorated(true);
         int size = _frame.getExtendedState();
         //size |= Frame.MAXIMIZED_BOTH;
