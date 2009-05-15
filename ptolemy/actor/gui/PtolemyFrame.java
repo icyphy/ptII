@@ -145,7 +145,8 @@ public abstract class PtolemyFrame extends TableauFrame {
     public Effigy getEffigy() {
         Effigy originalEffigy = super.getEffigy();
         if (originalEffigy instanceof PtolemyEffigy) {
-            if (!getTableau().isMaster()) {
+            if (!getTableau().isMaster()
+                    && !originalEffigy.masterEffigy().equals(originalEffigy.topEffigy())) {
                 // The tableau is no longer the master, perhaps there
                 // was a deletion.  Hence, the original effigy should
                 // no longer be the associated effigy.
@@ -153,6 +154,8 @@ public abstract class PtolemyFrame extends TableauFrame {
                 // This code is necessary to solve a problem with deleting an
                 // open composite actor, see:
                 // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4053
+                // Also, try clicking on a codegen attribute:
+                // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=273
                 try {
                     PtolemyEffigy newEffigy = new PtolemyEffigy(
                             (CompositeEntity)originalEffigy.getContainer(),
