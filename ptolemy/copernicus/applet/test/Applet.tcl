@@ -82,3 +82,6 @@ test Applet-1.2 {Create an applet for a graphical demo that uses diva.jar in a d
 } {{}}
 
 
+# Delete ptapplet so that others may run this test
+file delete -force $ptapplet
+
