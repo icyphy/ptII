@@ -24,6 +24,7 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
     <ul>
     <li><a href="#modelTransformation">Model Transformation</a>
     <li><a href="#pteraDomain">Ptera Domain</a>
+    <li><a href="#threadedcomposite">ThreadedComposite</a>
     </ul>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
@@ -148,6 +149,16 @@ Events may also have parameters, and the actual values for those parameters are 
   <li> <a href="../../../ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.xml">SimultaneousCarWash</a> </li>
   <li> <a href="../../../ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> </li>
 </ul>
+
+<h3><a name="threadedcomposite">ThreadedComposite</a></h3>
+ 
+The ThreadedComposite actor supports execution of either an atomic actor
+or a composite actor in a separate thread. It thus brings multithreading
+to Ptolemy domains where the director does not use threads, such as
+DE, SR, and SDF.  The actor can be used to get parallel execution on
+multicore machines, to execute actors that block on I/O without blocking
+the model execution, and to execute actors in the background.
+See the <a href="../../actor/lib/hoc/demo/ThreadedComposite/index.htm">demos</a>.
 
 <h2><a name="demos">New demonstrations</a></h2>
 
