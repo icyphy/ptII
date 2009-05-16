@@ -118,7 +118,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                   + "if (setjmp(" + jumpBuffer + ")!=0) {" + _eol
                   + "  puts(\"Timing failure!\\n\");" + _eol
                   + "  END_SIMULATION;" + _eol
-                  + "}" + _eol);
+                  + "}" + _eol
+                  + "SYNC(\"3F\");" + _eol);
         //code.append("//generate main loop called for director "+_director.getFullName());
         Attribute iterations = _director.getAttribute("iterations");
         if (iterations == null) {
