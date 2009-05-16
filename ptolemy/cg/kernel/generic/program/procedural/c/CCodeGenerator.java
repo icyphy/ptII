@@ -1204,6 +1204,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     // Need -fPIC for jni actors, see
                     // codegen/c/actor/lib/jni/test/auto/Scale.xml
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
                 } else if (osName.startsWith("Mac OS X")) {
