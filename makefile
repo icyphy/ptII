@@ -253,11 +253,11 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/codegen/chaco \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
-		ptolemy/codegen/c/targets/mpi \
+		ptolemy/codegen/c/targets/arduino \
+		ptolemy/codegen/c/targets/iRobot \
+		ptolemy/codegen/c/targets/luminary \
 		ptolemy/codegen/c/targets/openRTOS \
-		ptolemy/codegen/c/targets/posix \
 		ptolemy/codegen/c/targets/pret \
-		ptolemy/codegen/c/targets/win32 \
 		ptolemy/codegen/domains/sr \
 		ptolemy/codegen/kernel/newInterfaces \
 		ptolemy/codegen/kernel/test/substitute.out \
