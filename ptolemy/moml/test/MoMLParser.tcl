@@ -4245,7 +4245,17 @@ xml at line 4 and column 47
 Caused by:
 	ptolemy.ker}
 
-    if { $result != $result1 && $result != $result2 && $result != $result3} {
-	error "$result\nwas not equal to\n$result1\nor\n$result2\nor$result3"
+    set result4 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.AltFileNameExceptionTestFile
+Because:
+XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.xml at line 4 and column 47
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: NotAClass
+Because:
+-}
+
+    if { $result != $result1 && $result != $result2 && $result != $result3 && $result != $result4} {
+	error "--start--\n$result\n--end--\n\nwas not equal to\n\n--start#1--\n$result1\n--end--\n\nnor\n--start#2---\n$result2\n--end--\n\nor\n\n--start#3---\n$result3\n--end--\n\n or \n\n--start#4--\n$result4\n--end--\n"
     }
 } {}
