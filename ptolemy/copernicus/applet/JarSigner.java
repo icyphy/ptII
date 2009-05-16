@@ -561,7 +561,10 @@ public class JarSigner {
 
                 Class contentSignerClass = Class.forName(JDK_CONTENT_SIGNER);
 
-                Constructor constructor = _findConstructor(blockClass,
+                Constructor constructor = null;
+                try {
+                    // Java 1.5
+                    constructor = _findConstructor(blockClass,
                         sfg.getJDKSignatureFileClass(),
                         PrivateKey.class,
                         X509Certificate[].class,
@@ -572,19 +575,54 @@ public class JarSigner {
                         String[].class,
                         ZipFile.class);
 
+                    block = constructor.newInstance(
+                            sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
+                            privateKey,
+                            certChain,
+                            externalSF,
+                            null,
+                            null,
+                            null,
+                            null,
+                            zipFile);
+
+                } catch (NoSuchMethodException ex) {
+                    // Java 1.6
+
+                    // In Java 1.6, SignatureFile$Block() takes a new argument,
+                    // String sigAlg, which can be null.  See the source code
+                    // for JarSigner at
+                    // http://www.java2s.com/Open-Source/Java-Document/6.0-JDK-Modules-sun/security/sun/security/tools/JarSigner.java.htm
+                    // and see
+                    // http://www.docjar.com/docs/api/sun/security/tools/SignatureFile.html
+
+                    constructor = _findConstructor(blockClass,
+                            sfg.getJDKSignatureFileClass(),
+                            PrivateKey.class,
+                            /* Is this the only difference between 1.5 and 1.6?*/
+                            /* signatureAlgorithm */ String.class,    
+                            X509Certificate[].class,
+                            Boolean.TYPE,
+                            String.class,
+                            X509Certificate.class,
+                            contentSignerClass,
+                            String[].class,
+                            ZipFile.class);
+
+                    block = constructor.newInstance(
+                            sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
+                            privateKey,
+                            /*signatureAlgorithm*/ null,
+                            certChain,
+                            externalSF,
+                            null,
+                            null,
+                            null,
+                            null,
+                            zipFile);
+                }
                 getMetaNameMethod = _findMethod(blockClass, GETMETANAME_METHOD);
                 writeMethod = _findMethod(blockClass, WRITE_METHOD, OutputStream.class);
-
-                block = constructor.newInstance(
-                        sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
-                        privateKey,
-                        certChain,
-                        externalSF,
-                        null,
-                        null,
-                        null,
-                        null,
-                        zipFile);
             }
 
             public String getMetaName() throws IllegalAccessException, InvocationTargetException {
