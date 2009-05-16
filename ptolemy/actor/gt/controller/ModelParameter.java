@@ -41,6 +41,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -174,6 +175,14 @@ public class ModelParameter extends Parameter implements Initializable {
     }
 
     public void setModel(CompositeEntity model) {
+        if (_model != null) {
+            _model.workspace().remove(_model);
+            try {
+                _model.setContainer(null);
+            } catch (KernelException e) {
+                // Should not occur.
+            }
+        }
         _model = model;
         _token = null;
         _tokenVersion = -1;
