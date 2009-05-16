@@ -4243,7 +4243,7 @@ Because:
 XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.\
 xml at line 4 and column 47
 Caused by:
-	ptolemy.ker}
+ ptolemy.ker}
 
     set result4 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
 Caused by:
