@@ -53,6 +53,8 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.gt.GTFrameTools;
@@ -96,6 +98,14 @@ public class View extends GTEvent {
         tableau = new TableauParameter(this, "tableau");
         tableau.setPersistent(false);
         tableau.setVisibility(Settable.EXPERT);
+
+        _init();
+    }
+
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        View newObject = (View) super.clone(workspace);
+        newObject._init();
+        return newObject;
     }
 
     public RefiringData fire(Token arguments) throws IllegalActionException {
@@ -108,7 +118,11 @@ public class View extends GTEvent {
         }
 
         CompositeEntity entity = getModelParameter().getModel();
-        entity = (CompositeEntity) GTTools.cleanupModel(entity);
+        try {
+            entity = (CompositeEntity) GTTools.cleanupModel(entity, _parser);
+        } finally {
+            _parser.reset();
+        }
 
         try {
             // Compute size of the new frame.
@@ -218,6 +232,11 @@ public class View extends GTEvent {
         return data;
     }
 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _workspace.removeAll();
+    }
+
     public StringParameter referredTableau;
 
     public Parameter reopenWindow;
@@ -229,4 +248,13 @@ public class View extends GTEvent {
     public TableauParameter tableau;
 
     public Parameter title;
+
+    private void _init() {
+        _workspace = new Workspace();
+        _parser = new MoMLParser(_workspace);
+    }
+
+    private MoMLParser _parser;
+
+    private Workspace _workspace;
 }

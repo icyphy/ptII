@@ -82,6 +82,33 @@ public class GTTools {
         return cleanupModel(model, new Workspace());
     }
 
+    /** Create a copy of the given model with the given parser that is cleaned
+     *  up with no execution state left in it.
+     *
+     *  @param model The model to be copied.
+     *  @param parser The parser.
+     *  @return A cleaned up copy of the given model.
+     *  @exception IllegalActionException If the model cannot be copied.
+     */
+    public static NamedObj cleanupModel(NamedObj model, MoMLParser parser)
+            throws IllegalActionException {
+        try {
+            URIAttribute uriAttribute = (URIAttribute) model.getAttribute(
+                    "_uri", URIAttribute.class);
+            NamedObj newModel;
+            if (uriAttribute != null) {
+                newModel = parser.parse(uriAttribute.getURL(),
+                        model.exportMoML());
+            } else {
+                newModel = parser.parse(model.exportMoML());
+            }
+            return newModel;
+        } catch (Exception e) {
+            throw new IllegalActionException(model, e,
+                    "Unable to clean up model.");
+        }
+    }
+
     /** Create a copy of the given model in the given workspace that is cleaned
      *  up with no execution state left in it.
      *
@@ -94,17 +121,7 @@ public class GTTools {
             throws IllegalActionException {
         try {
             workspace.getReadAccess();
-            MoMLParser parser = new MoMLParser(workspace);
-            URIAttribute uriAttribute = (URIAttribute) model.getAttribute(
-                    "_uri", URIAttribute.class);
-            NamedObj newModel;
-            if (uriAttribute != null) {
-                newModel = parser.parse(uriAttribute.getURL(),
-                        model.exportMoML());
-            } else {
-                newModel = parser.parse(model.exportMoML());
-            }
-            return newModel;
+            return cleanupModel(model, new MoMLParser(workspace));
         } catch (Exception e) {
             throw new IllegalActionException(model, e,
                     "Unable to clean up model.");

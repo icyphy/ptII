@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.ContainmentExtender;
@@ -39,6 +40,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,6 +62,19 @@ public class EventUtils {
      *  @param tableau The tableau to be closed.
      */
     public static void closeTableau(final Tableau tableau) {
+        Effigy effigy = (Effigy) tableau.getContainer();
+        if (effigy != null) {
+            try {
+                effigy.setContainer(null);
+            } catch (KernelException e) {
+                // Ignore if we can't remove the effigy from its
+                // container.
+            }
+        }
+        if (effigy instanceof PtolemyEffigy) {
+            PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) effigy;
+            ptolemyEffigy.setModel(null);
+        }
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 tableau.close();
