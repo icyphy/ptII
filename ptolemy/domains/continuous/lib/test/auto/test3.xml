@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10000">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -52,22 +52,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 205}">
         </property>
     </entity>
-    <entity name="EventSource" class="ptolemy.domains.continuous.lib.EventSource">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 350.0]">
-        </property>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value=" concatenate(repeat(4, 0), repeat(100, -2))">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 345.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -84,15 +84,13 @@
         <vertex name="vertex1" value="[290.0, 280.0]">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="Integrator.impulse" relation="relation3"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Integrator.impulse" relation="relation6"/>
     <link port="Integrator.derivative" relation="relation"/>
     <link port="Integrator.state" relation="relation5"/>
     <link port="CurrentTime.output" relation="relation2"/>
@@ -100,6 +98,6 @@
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.minus" relation="relation5"/>
     <link port="AddSubtract.output" relation="relation4"/>
-    <link port="EventSource.output" relation="relation3"/>
     <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="DiscreteClock.output" relation="relation6"/>
 </entity>

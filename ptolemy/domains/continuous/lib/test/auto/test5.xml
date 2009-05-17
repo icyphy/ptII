@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test5" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 19, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 22, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -43,32 +43,32 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 185.0]">
         </property>
     </entity>
-    <entity name="impulse" class="ptolemy.domains.continuous.lib.EventSource">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 255.0]">
-        </property>
-    </entity>
-    <entity name="reset" class="ptolemy.domains.continuous.lib.EventSource">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0, 7.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{-2, 1.0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 325.0]">
-        </property>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 0.6, 2.0, -2.0, -1.9, -1.4, 1.1, 3.0, 1.0, 1.1, 1.6, 4.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.domains.continuous.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.domains.continuous.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0, 7.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{-2, 1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 340.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -81,20 +81,16 @@
         <vertex name="vertex1" value="[295.0, 185.0]">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
-    <link port="Integrator.impulse" relation="relation3"/>
+    <link port="Integrator.impulse" relation="relation2"/>
     <link port="Integrator.derivative" relation="relation"/>
     <link port="Integrator.state" relation="relation5"/>
-    <link port="Integrator.initialState" relation="relation2"/>
+    <link port="Integrator.initialState" relation="relation4"/>
     <link port="Const.output" relation="relation"/>
-    <link port="impulse.output" relation="relation3"/>
-    <link port="reset.output" relation="relation2"/>
     <link port="NonStrictTest.input" relation="relation5"/>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="DiscreteClock2.output" relation="relation4"/>
 </entity>
