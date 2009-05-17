@@ -34,6 +34,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -286,6 +287,22 @@ public class FixedPointDirector extends StaticSchedulingDirector
         // some actors may call fireAt method to register breakpoints in DE
         // and Continuous domains, which depend on the value of _index.
         _index = 0;
+        // This could be getting re-initialized during execution
+        // (e.g., if we are inside a modal model), in which case,
+        // if the enclosing director is a superdense time director,
+        // we should initialize to its microstep, not to our own.
+        // NOTE: Some (weird) directors pretend they are not embedded even
+        // if they are (e.g. in Ptides), so we call _isEmbedded() to give
+        // the subclass the option of pretending it is not embedded.
+        if (_isEmbedded()) {
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Director executiveDirector = ((CompositeActor)container).getExecutiveDirector();
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    _index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                }
+            }
+        }
 
         _actorsAllowedToFire = new HashSet();
         _actorsFinishedFiring = new HashSet();
@@ -414,7 +431,7 @@ public class FixedPointDirector extends StaticSchedulingDirector
             }
         }
         if (_debugging) {
-            _debug(this.getFullName() + "Iteration " + _currentIteration
+            _debug(this.getFullName() + ": Iteration " + _currentIteration
                     + " is complete.");
         }
 
@@ -450,6 +467,17 @@ public class FixedPointDirector extends StaticSchedulingDirector
     public boolean prefire() throws IllegalActionException {
         _synchronizeToRealTime();
         return super.prefire();
+    }
+
+    /** Set the superdense time index. This should only be
+     *  called by an enclosing director.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void setIndex(int index) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Setting superdense time index to " + index);
+        }
+        _index = index;
     }
 
     /** Return an array of suggested directors to be used with
@@ -509,11 +537,17 @@ public class FixedPointDirector extends StaticSchedulingDirector
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         boolean result = false;
+        Director executiveDirector = ((CompositeActor)getContainer()).getExecutiveDirector();
         for (int i = 0; i < port.getWidthInside(); i++) {
             if (port.isKnownInside(i)) {
                 if (port.hasTokenInside(i)) {
                     result = super.transferOutputs(port) || result;
-                } else {
+                } else if (executiveDirector instanceof FixedPointDirector){
+                    // Mark the destination receivers absent.
+                    // Note that the clear() method of the FixedPointReceiver is
+                    // the right behavior, but this will do the wrong thing for
+                    // say a DE director, where it will clear out previously
+                    // produced data.
                     port.sendClear(i);
                 }
             }
@@ -548,10 +582,11 @@ public class FixedPointDirector extends StaticSchedulingDirector
 
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
-            ((FixedPointReceiver) receiverIterator.next()).reset();
+            FixedPointReceiver receiver = (FixedPointReceiver)receiverIterator.next();
+            receiver.reset();
         }
     }
-
+    
     /** Synchronize to real time, if appropriate.
      *  @exception IllegalActionException If the <i>synchronizeToRealTime</i>
      *   parameter is ill formed.
