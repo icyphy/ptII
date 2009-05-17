@@ -118,11 +118,14 @@ public class ModelExecutor extends TypedAtomicActor {
 
         Effigy parentEffigy = EventUtils.findToplevelEffigy(this);
         try {
+            parentEffigy.workspace().getWriteAccess();
             _wrapperEffigy = new PtolemyEffigy(parentEffigy,
                     parentEffigy.uniqueName("_wrapperEffigy"));
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(this, e, "Unable to create an " +
                     "effigy for the model.");
+        } finally {
+            parentEffigy.workspace().doneWriting();
         }
     }
 
