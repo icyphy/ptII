@@ -29,7 +29,6 @@ package ptolemy.domains.continuous.lib;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
