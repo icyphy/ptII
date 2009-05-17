@@ -37,9 +37,8 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-# Load up Tcl procs to print out enums
-if {[info procs _testEnums] == "" } then {
-    source testEnums.tcl
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -58,11 +57,12 @@ test CUnit-1.1 {Run the CUnit tests} {
     if {$makeArguments == {}} {
 	set results [exec make run]
     } else {
+
 	set results [exec make $makeArguments run]
     }
-    puts $result
+    puts $results
     # If this test fails, run "make run"
-    string range $result [string last {--Run Summary} $result] end 
+    string range $results [string last {--Run Summary} $results] end 
 } {--Run Summary: Type      Total     Ran  Passed  Failed
                suites        1       1     n/a       0
                tests         1       1       1       0
