@@ -42,11 +42,15 @@ import ptolemy.kernel.util.Workspace;
 /**
  Convert discrete events at the input to a continuous-time
  signal at the output by holding the value of the discrete
- event until the next discrete event arrives. If no discrete
- event is received, a default value specified by the defaultValue
- parameter is produced.
+ event until the next discrete event arrives. Specifically,
+ on each firing, produce the currently recorded value,
+ which is <i>defaultValue</i> initially. If an input is
+ present, then record the value of the input (after producing
+ the output), and request a refiring at the current time.
+ This actor thus introduces a microstep delay in superdense
+ time.
 
- @author Haiyang Zheng
+ @author Edward A. Lee, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (hyzheng)
@@ -83,9 +87,11 @@ public class ZeroOrderHold extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                       ////
 
-    /**Default output before any input has received.
-     * The default is an integer with value 0.
-     * The type of the output is set to at least this type.
+    /** Default output before any input has received.
+     *  The default is an integer with value 0, but any
+     *  type is acceptable.
+     *  The type of the output is set to at least the type of
+     *  this parameter (and also at least the type of the input).
      */
     public Parameter defaultValue;
 
@@ -111,13 +117,6 @@ public class ZeroOrderHold extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.isKnown() && input.hasToken(0)) {
-            _lastToken = input.get(0);
-            if (_debugging) {
-                _debug(getFullName() + " receives an event with token "
-                        + _lastToken.toString());
-            }
-        }
         output.send(0, _lastToken);
     }
 
@@ -136,6 +135,23 @@ public class ZeroOrderHold extends Transformer {
      */
     public boolean isStrict() {
         return false;
+    }
+    
+    /** If there is an input, record it and request a refiring at the
+     *  current time.
+     *  @exception IllegalActionException If the refiring request fails.
+     */
+    public boolean postfire() throws IllegalActionException {
+        super.postfire();
+        if (input.isKnown() && input.hasToken(0)) {
+            _lastToken = input.get(0);
+            if (_debugging) {
+                _debug("Reading an input "
+                        + _lastToken.toString());
+            }
+            _fireAt(getDirector().getModelTime());
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

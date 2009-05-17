@@ -8,8 +8,8 @@
   <configure>
     <?moml
       <group>
-        <entity name="EventSource"
-                class="ptolemy.domains.continuous.lib.EventSource"/>
+        <entity name="DiscreteClock"
+                class="ptolemy.actor.lib.DiscreteClock"/>
         <entity name="LevelCrossingDetector"
                 class="ptolemy.domains.continuous.lib.LevelCrossingDetector"/>
         <entity name="PeriodicSampler"

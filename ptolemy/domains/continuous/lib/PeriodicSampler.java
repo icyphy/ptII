@@ -27,7 +27,9 @@
  */
 package ptolemy.domains.continuous.lib;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -44,9 +46,32 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  This actor generates discrete events by periodically sampling the input signal.
- The events have the values of the input signal at the sampling times. The
- sampling rate is given by parameter "samplePeriod", which has default value
- 0.1. The actor has multiport inputs and outputs. Signals in
+ The sampling rate is given by parameter "samplePeriod", which has default value
+ 0.1.  Specifically, if the actor is initialized at time <i>t</i> and the sample
+ period is <i>T</i>, then the output will have the value of the input
+ at times <i>t</i> + <i>nT</i>, for all natural numbers <i>n</i>.
+ This sampler will send to the output <i>all</i> input events that occur
+ at a sample time.
+ <p>
+ If the enclosing director implements the SuperdenseTimeDirector
+ interface, then an output is produced only if the current index
+ of the director is 0. Thus, this sampler produces on its output
+ the <i>initial value</i> of the input at times <i>t</i> + <i>nT</i>.
+ If the input is absent at those times, then the output will be
+ absent.
+ <p>
+ If this actor is used inside a ModalModel, then its behavior may
+ seem a bit subtle, but it exactly matches the explanation above.
+ If, for example, you enter a mode that contains this actor at
+ time <i>t</i> + <i>nT</i>, and this actor is inside the
+ refinement of that mode, then it will not normally produce
+ an output at that time because the mode refinement of the
+ destination state does not get fired until the next larger
+ index, which will be greater than zero. It will produce
+ its first output at time <i>t</i> + (<i>n</i>+1)<i>T</i>.
+ FIXME: What if the enclosing director does not support superdense time?
+ <p>
+ This actor has multiport inputs and outputs. Signals in
  each input channel are sampled and produced to corresponding output
  channel.
 
@@ -76,6 +101,7 @@ public class PeriodicSampler extends Transformer {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
+        output.setWidthEquals(input, true);
 
         samplePeriod = new Parameter(this, "samplePeriod");
         samplePeriod.setExpression("0.1");
@@ -120,6 +146,30 @@ public class PeriodicSampler extends Transformer {
                 }
             }
         }
+    }
+    
+    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. A director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired. This base class identifies the next time at which
+     *  a firing should occur, and calls fireAt() with that time
+     *  argument.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to the actor.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        double samplePeriodValue = ((DoubleToken)samplePeriod.getToken()).doubleValue();
+        while (_nextSamplingTime.compareTo(currentTime) < 0) {
+            _nextSamplingTime = _nextSamplingTime.add(samplePeriodValue);
+        }
+        if (_debugging) {
+            _debug("Request refiring at " + _nextSamplingTime);
+        }
+        _fireAt(_nextSamplingTime);
     }
 
     /** Return true if there is a current event. In other words, the current

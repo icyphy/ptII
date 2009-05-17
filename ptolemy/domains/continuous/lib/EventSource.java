@@ -61,6 +61,7 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
+ @deprecated Use {@link ptolemy.actor.lib.DiscreteClock with period set to Infinity}
  */
 public class EventSource extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified

@@ -27,9 +27,6 @@
  */
 package ptolemy.domains.continuous.lib;
 
-import ptolemy.actor.lib.Clock;
-import ptolemy.actor.sched.FixedPointDirector;
-import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -38,28 +35,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DiscreteClock
 
 /**
- This actor is a version of the Clock actor specialized for use in the
- continuous domain. It produces a periodic signal, a sequence of
- discrete events at  regularly spaced intervals, and at times
- between these events the output is absent. It differs from
- the Clock actor (its base class) only in  that when current time
- matches an event time, it does not produce an output until
- superdense time index one. That is, at index 0, its output is absent.
- If it produces multiple events at the same time (this can occur
- if <i>offsets</i> has repeated entries), then the outputs are
- produced at successive indexes that begin with one.
- See the base class documentation for a description of the behavior.
- <p>
- To produce a continuous-time clock signal, which is present
- at all times, use this DiscreteClock actor followed by a ZeroOrderHold.
+ This actor is identical to {@link ptolemy.actor.lib.DiscreteClock},
+ except that for backward compatibility the default valus of the parameters
+ are changed to
+ <ul>
+ <li> period: 2.0
+ <li> offsets: {0.0, 1.0}
+ <li> values {1, 0}
+ </ul>
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
+ @deprecated Use ptolemy.actor.lib.DiscreteClock instead.
  */
-public class DiscreteClock extends Clock {
+public class DiscreteClock extends ptolemy.actor.lib.DiscreteClock {
 
     // This actor only generates predictable events and that is why it does not
     // implement the ContinuousStepSizeControlActor interface. This actor requests a
@@ -80,59 +72,8 @@ public class DiscreteClock extends Clock {
     public DiscreteClock(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        period.setExpression("2.0");
+        offsets.setExpression("{0.0, 1.0}");
+        values.setExpression("{1, 0}");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
-
-    /** Override the base class to initialize the index.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   or if the <i>values</i> parameter is not a row vector, or if the
-     *   fireAt() method of the director throws it, or if the director does not
-     *   agree to fire the actor at the specified time.
-     */
-    public synchronized void initialize() throws IllegalActionException {
-        super.initialize();
-        _nextOutputIndex = 1;
-    }
-
-    /** Override the base class to keep track of the index.
-     *  @return False if the specified number of cycles has been reached,
-     *   and true otherwise.
-     *  @exception IllegalActionException If the director throws it when
-     *   scheduling the next firing, or if an offset value exceeds the period.
-     */
-    public boolean postfire() throws IllegalActionException {
-        int previousPhase = _phase;
-        boolean result = super.postfire();
-        if (_outputProduced && (_offsets[previousPhase] == _offsets[_phase])) {
-            // Duplicate offsets allow production of multiple events
-            // at one time.
-            _nextOutputIndex++;
-        } else {
-            _nextOutputIndex = 1;
-        }
-        return result;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
-    /** Return true if the current time is the right time for an output.
-     *  @return True if the current time matches the _nextOutputTime.
-     */
-    protected boolean _isTimeForOutput() {
-        FixedPointDirector director = (FixedPointDirector) getDirector();
-        boolean rightIndex = _nextOutputIndex == director.getIndex();
-        Time currentTime = director.getModelTime();
-        return rightIndex && _tentativeNextOutputTime.equals(currentTime);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // The following are all transient because they need not be cloned.
-    // Either the clone method or the initialize() method sets them.
-
-    /** The index of when the output should be emitted. */
-    private transient int _nextOutputIndex;
 }
