@@ -35,10 +35,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
@@ -77,12 +78,15 @@ import ptolemy.kernel.util.StringAttribute;
  execution an input token is provided on the port, then the state of
  the integrator will be reset at that time to the value of the
  token. The default value of the parameter is 0.0.
+ This will occur one microstep after the input is provided.
 
  <P> An integrator also has an input port named <i>impulse</i>.  When
  present, a token at the <i>impulse</i> input port is interpreted as
- the weight of a Dirac delta function.  It cause an instantaneous
- increment or decrement to the state.  If both <i>impulse</i> and
- <i>initialState</i> have data, then <i>initialState</i> dominates.
+ the weight of a Dirac delta function.  It cause an 
+ increment or decrement to the state one microstep after
+ the arrival of the value.  If both <i>impulse</i> and
+ <i>initialState</i> have data on the same microstep,
+ then <i>initialState</i> dominates.
 
  <P> An integrator can generate an output (its current state) before
  the derivative input is known, and hence can be used in feedback
@@ -206,54 +210,42 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *   or <i>initialState</i> and the step size is greater than zero.
      */
     public void fire() throws IllegalActionException {
-        if (!impulse.isKnown() || !initialState.getPort().isKnown()) {
-            // Cannot do anything until these inputs are known.
-            return;
-        }
-        // Question: should the above go to the prefire() method?
-        // Answer: No, because of the design of the fixed point
-        // director.  In particular, since this actor is a nonstrict
-        // actor, it is "ready to fire". If this actor returns false
-        // from the prefire() method, then all outputs will be cleared
-        // (set to absent). This is not what we want to do. In this
-        // case, we allow the actor to be fired, and the fire() method
-        // should do the right thing.  Similar cases arise from any
-        // composite actor (including modal models), which may contain
-        // some source actor inside while the interface ports indicate
-        // the actor is a strict actor. Therefore, the prefire() actor
-        // of any composite actor should return true at any time, and
-        // they should be ready to be fired at any time.
-
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double stepSize = dir.getCurrentStepSize();
 
+        if (_debugging) {
+            _debug("Fire at time " + dir.getModelTime()
+                    + " with step size " + stepSize);
+        }
+
         // The state at the current model time depends on the inputs
-        // from both impulse and initialState ports (causal relation),
-        // but not on the derivative at the current model time.
-        for (int i = 0; i < impulse.getWidth(); i++) {
-            if (impulse.hasToken(i)) {
-                if (stepSize != 0.0) {
-                    throw new IllegalActionException(this,
-                            "Signal at the impulse port is not purely discrete.");
-                }
-                double currentState = getState()
-                        + ((DoubleToken) impulse.get(i)).doubleValue();
-                setTentativeState(currentState);
+        // from both impulse and initialState ports on the previous
+        // microstep.
+        if (_impulsePending) {
+            if (stepSize != 0.0) {
+                throw new IllegalActionException(this,
+                        "Signal at the impulse port is not purely discrete.");
+            }
+            double currentState = getState() + _impulseValue;
+            setTentativeState(currentState);
+            if (_debugging) {
+                _debug("-- Due to impulse input in the previous microstep, set state to "
+                        + currentState);
             }
         }
+                
         // The input from the initialState port overwrites the input from
         // the impulse port.
-        TypedIOPort statePort = initialState.getPort();
-        for (int i = 0; i < statePort.getWidth(); i++) {
-            if (statePort.hasToken(i)) {
-                if (stepSize != 0.0) {
-                    throw new IllegalActionException(this,
-                            "Signal at the initialState port is not "
-                            + "purely discrete.");
-                }
-                double currentState = ((DoubleToken) statePort.get(i))
-                        .doubleValue();
-                setTentativeState(currentState);
+        if (_initialStatePending) {
+            if (stepSize != 0.0) {
+                throw new IllegalActionException(this,
+                        "Signal at the initial state port is not purely discrete.");
+            }
+            double currentState = _initialStateValue;
+            setTentativeState(currentState);
+            if (_debugging) {
+                _debug("-- Due to initialState input in the previous microstep, set state to "
+                        + currentState);
             }
         }
 
@@ -313,20 +305,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     /** Return a causality interface for this actor. This causality
      *  interface expresses dependencies that are instances of
      *  BooleanDependency that declare that the <i>state</i> output
-     *  port does not depend on the <i>derivative</i> input port, but
-     *  does depend on the <i>initialState</i> and <i>impulse</i>
-     *  input ports. Moreover, the latter two input ports are
+     *  port does not depend on any of the input ports at this
+     *  microstep. Moreover, the  <i>initialState</i> and <i>impulse</i> ports are
      *  equivalent (to process inputs at either, you need to know
      *  about inputs at the other).  You do not need to know about
-     *  inputs at <i>derivative</i>.  Moreover, the way fire() is
-     *  implemented, you do not need to know the inputs at
-     *  <i>initialState</i> and <i>impulse</i> in order to invoke
-     *  fire(). If these inputs are not known when fire() is invoked,
-     *  then fire() returns leaving the output unknown. Thus, we rely
-     *  on the fixed-point semantics to converge to the right solution
-     *  even if the scheduler chooses to react to an input at
-     *  <i>derivative</i> before those other inputs are known. Hence,
-     *  <i>derivative</i> is in its own equivalence class.
+     *  inputs at <i>derivative</i>.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
@@ -389,6 +372,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
         _state = _tentativeState;
         _lastRoundOutput = _tentativeState;
+        _impulsePending = false;
+        _initialStatePending = false;
 
         if (_debugging) {
             _debug("Initialize: initial state = " + _tentativeState);
@@ -429,10 +414,40 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        _state = _tentativeState;
         _lastRound = -1;
+
         if (_debugging) {
-            _debug("Committing the state: " + _state);
+            _debug("Postfire called");
+        }
+
+        _impulsePending = false;
+        for (int i = 0; i < impulse.getWidth(); i++) {
+            _impulseValue = 0.0;
+            if (impulse.hasToken(i)) {
+                _impulsePending = true;
+                _impulseValue += ((DoubleToken) impulse.get(i)).doubleValue();
+                getDirector().fireAtCurrentTime(this);
+                if (_debugging) {
+                    _debug("-- impulse input found. State adjustment in next microstep: " + _impulseValue);
+                }
+            }
+        }
+        _initialStatePending = false;
+        ParameterPort initialStatePort = initialState.getPort();
+        for (int i = 0; i < initialStatePort.getWidth(); i++) {
+            _initialStateValue = 0.0;
+            if (initialStatePort.hasToken(i)) {
+                _initialStatePending = true;
+                _initialStateValue += ((DoubleToken) initialStatePort.get(i)).doubleValue();
+                getDirector().fireAtCurrentTime(this);
+                if (_debugging) {
+                    _debug("-- initialState input found. State in next microstep: " + _initialStateValue);
+                }
+           }
+        }
+        _state = _tentativeState;
+        if (_debugging) {
+            _debug("-- Committing the state: " + _state);
         }
         return true;
     }
@@ -445,15 +460,6 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         ContinuousODESolver solver = ((ContinuousDirector) getDirector())
                 ._getODESolver();
         return solver.integratorSuggestedStepSize(this);
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        removeDependency(derivative, state);
     }
 
     /** Return the estimation of the refined next step size.
@@ -522,6 +528,18 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The custom causality interface. */
     private CausalityInterface _causalityInterface;
+    
+    /** Indicator that an impulse input arrived in the previous microstep. */
+    private boolean _impulsePending;
+    
+    /** Value of the impulse from the previous microstep. */
+    private double _impulseValue;
+
+    /** Indicator that an initial state input arrived in the previous microstep. */
+    private boolean _initialStatePending;
+    
+    /** Value of the impulse from the previous microstep. */
+    private double _initialStateValue;
 
     /** The last round this integrator is fired. */
     private int _lastRound;
@@ -543,10 +561,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Custom causality interface that fine tunes the equivalent ports.
+    /** Custom causality interface that fine tunes the equivalent ports
+     *  and removes the dependence of the output on any of the inputs.
      */
     private class IntegratorCausalityInterface
-        extends DefaultCausalityInterface {
+            extends BreakCausalityInterface {
         public IntegratorCausalityInterface(Actor actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);
