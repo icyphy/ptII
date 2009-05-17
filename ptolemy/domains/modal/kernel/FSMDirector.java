@@ -873,7 +873,11 @@ public class FSMDirector extends Director implements
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
                 Director destinationDirector = actors[i].getDirector();
-                if (destinationDirector instanceof SuperdenseTimeDirector) {
+                // If the refinement doesn't have a director, then the
+                // destinationDirector would be this one!  This is an error,
+                // but we tolerate it here.
+                if (destinationDirector != this
+                        && destinationDirector instanceof SuperdenseTimeDirector) {
                     ((SuperdenseTimeDirector)destinationDirector).setIndex(index);
                 }
             }
