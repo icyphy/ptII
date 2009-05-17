@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ContinuousInContinuousInContinuous" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 52, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 52, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -18,10 +18,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 100}">
         </property>
     </property>
-    <entity name="Nested DE" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Nested Continuous" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 185.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 287, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 287, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -45,14 +45,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
             </property>
         </port>
-        <entity name="Nested CT" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="Nested Continuous" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 230.0]">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 85.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 111, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 111, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -124,15 +124,11 @@
         </relation>
         <link port="port" relation="relation3"/>
         <link port="port2" relation="relation2"/>
-        <link port="Nested CT.port" relation="relation3"/>
-        <link port="Nested CT.port2" relation="relation2"/>
+        <link port="Nested Continuous.port" relation="relation3"/>
+        <link port="Nested Continuous.port2" relation="relation2"/>
         <link port="NonStrictTest.input" relation="relation"/>
         <link port="CurrentTime.output" relation="relation"/>
         <link port="CurrentTime.trigger" relation="relation3"/>
-    </entity>
-    <entity name="EventSource" class="ptolemy.domains.continuous.lib.EventSource">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 260}">
-        </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 3.0, 4.0}">
@@ -147,10 +143,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="DiscreteClock" class="ptolemy.domains.continuous.lib.DiscreteClock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 190}">
         </property>
-    </relation>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -159,10 +155,12 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="Nested DE.port" relation="relation"/>
-    <link port="Nested DE.port2" relation="relation3"/>
-    <link port="EventSource.output" relation="relation"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Nested Continuous.port" relation="relation4"/>
+    <link port="Nested Continuous.port2" relation="relation3"/>
     <link port="NonStrictTest.input" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="DiscreteClock.output" relation="relation4"/>
 </entity>

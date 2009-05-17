@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IntegratorImpulse2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 230, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 230, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -40,9 +40,19 @@
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.domains.continuous.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 215.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -51,12 +61,6 @@
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 125.0]">
-        </property>
-    </entity>
-    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 215.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -80,6 +84,6 @@
     <link port="Integrator.derivative" relation="relation"/>
     <link port="Integrator.state" relation="relation2"/>
     <link port="DiscreteClock.output" relation="relation3"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
     <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>
