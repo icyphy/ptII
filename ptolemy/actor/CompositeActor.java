@@ -43,6 +43,7 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -469,6 +470,23 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 // We have not changed the structure of the model.
                 workspace().doneTemporaryWriting();
             }
+        }
+    }
+
+    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. A director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired. This base class delegates the call to the director,
+     *  if this actor is opaque, and otherwise does nothing.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to the actor.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException {
+        if (isOpaque()) {
+            getDirector().fireAtSkipped(time);
         }
     }
 

@@ -356,10 +356,25 @@ public class Director extends Attribute implements Executable {
      *  In particular, derived classes may override this method
      *  and modify the time of the firing, for example to prevent
      *  attempts to fire an actor in the past.
-     *  Such derived classes should always return the value at which
-     *  they will fire the specified actor. It is up to the actor
+     *  <p>
+     *  Derived classes should override this method to return the time at which
+     *  they expect to fire the specified actor. It is up to the actor
      *  to throw an exception if it is not acceptable for the time
      *  to differ from the requested time.
+     *  <p>
+     *  Even in derived classes, there is no guarantee that the
+     *  actor will be fired at the time returned by this method.
+     *  In particular, that time might be larger than the stop
+     *  time of the model. Moreover, in a modal model, this director
+     *  may not be active at the time of the requested firing.
+     *  In this latter case, if the director becomes active after
+     *  the requested time, it is required to detect that it missed
+     *  the requested firing, and call the method 
+     *  {@link Actor#fireAtSkipped(Time)} to notify the actor that
+     *  the requested firing was skipped. It is required to do this
+     *  before it again fires the actor.
+     *  This base class does not do that because it ignores
+     *  all fireAt() requests.
      *  <p>
      *  Note that it is not correct behavior for a director to override
      *  this method to simply fire the specified actor. The actor needs
@@ -417,6 +432,20 @@ public class Director extends Attribute implements Executable {
      */
     public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
         return fireAt(actor, getModelTime());
+    }
+
+    /** Notify this director that a {@link Director#fireAt(Actor,Time)}
+     *  request made of the executive director
+     *  was skipped, and that current time has passed the
+     *  requested time. An executive director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired. This base class does nothing.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to the actor.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException {
     }
 
     /** Return the current time value of the model being executed by this
@@ -1355,6 +1384,9 @@ public class Director extends Attribute implements Executable {
         if (container != null) {
             Director director = container.getExecutiveDirector();
             if (director != null) {
+                if (_debugging) {
+                    _debug("**** Requesting that enclosing director refire me at " + time);
+                }
                 Time result = director.fireAt(container, time);
                 if (!result.equals(time)) {
                     throw new IllegalActionException(this,

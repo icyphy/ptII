@@ -30,6 +30,7 @@ package ptolemy.actor;
 import java.util.List;
 
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
@@ -60,6 +61,18 @@ public interface Actor extends Executable, Nameable {
      *  @see CompositeActor#createReceivers
      */
     public void createReceivers() throws IllegalActionException;
+    
+    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. A director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to the actor.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException;
 
     /** Return the local director, if there is one, otherwise the executive
      *  director, if there is one, otherwise null.
