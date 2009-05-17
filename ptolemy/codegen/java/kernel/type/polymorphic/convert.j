@@ -18,7 +18,7 @@ int convert_Boolean_Integer(boolean a) {
 
 /*** convert_Boolean_String() ***/
 String convert_Boolean_String(boolean a) {
-    return a;
+    return Boolean.toString(a);
 }
 /**/
 
@@ -42,7 +42,7 @@ int convert_Double_Integer(double a) {
 
 /*** convert_Double_String() ***/
 String convert_Double_String(double a) {
-       return a;
+       return Double.toString(a);
 }
 /**/
 
@@ -78,7 +78,7 @@ int convert_Integer_Integer(int a) {
 
 /*** convert_Integer_String() ***/
 String convert_Integer_String(int a) {
-      return a;
+      return Integer.toString(a);
 }
 /**/
 
