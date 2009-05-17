@@ -98,12 +98,18 @@ public class WatchDog {
                     watchDogWentOff = true;
 
                     if (_exitOnTimeOut) {
+                        String userDir = "util.testsuite.WatchDog went off";
+                        try {
+                            userDir = System.getProperty("user.dir");
+                        } catch (Exception ex) {
+                            // ignore
+                        }
                         System.out.println("The string below is so that "
-                                + "the nightly build will notice");
-                        System.out.println("Failed: 666  Total Tests: 0 "
+                                + "the nightly build will notice\n"
+                                + "Failed: 666  Total Tests: 0 "
                                 + "((Passed: 0, Newly Passed: 0)  "
                                 + "Known Failed: 0) "
-                                + "util.testsuite.WatchDog went off");
+                                + userDir);
 
                         // Do not pass go, do not collect $200
                         StringUtilities.exit(4);
