@@ -371,6 +371,7 @@ public class GraphTransformer extends ChangeRequest {
         for (MatchResult matchResult : _matchResults) {
             _matchResult = (MatchResult) matchResult.clone();
             _host = (CompositeEntity) _matchResult.get(_pattern);
+            _moml = new HashMap<NamedObj, String>();
             if (_host == null) {
                 throw new TransformationException("Match result is invalid "
                         + "because it does not include the pattern.");
@@ -483,7 +484,6 @@ public class GraphTransformer extends ChangeRequest {
      *  @exception TransformationException If transformation is unsuccessful.
      */
     protected void _recordMoML() throws TransformationException {
-        _moml = new HashMap<NamedObj, String>();
         for (Map.Entry<NamedObj, NamedObj> entry : _replacementToHost
                 .entrySet()) {
             NamedObj replacement = entry.getKey();
@@ -590,7 +590,10 @@ public class GraphTransformer extends ChangeRequest {
                 NamedObj hostChild = _replacementToHost.get(child);
                 String moml = null;
                 if (hostChild == null) {
-                    moml = _getMoML(child);
+                    moml = _moml.get(child);
+                    if (moml == null) {
+                        moml = _getMoML(child);
+                    }
                 } else {
                     if (hostChild.getContainer() != host) {
                         moml = _moml.get(child);
@@ -1004,7 +1007,12 @@ public class GraphTransformer extends ChangeRequest {
             pattern = GTTools.getCorrespondingPatternObject(replacement);
         }
         if (pattern != null) {
-            _patternToReplacement.put(pattern, replacement);
+            if (_patternToReplacement.containsKey(pattern)) {
+                NamedObj host = (NamedObj) _matchResult.get(pattern);
+                _moml.put(replacement, _getMoML(host));
+            } else {
+                _patternToReplacement.put(pattern, replacement);
+            }
             if (pattern instanceof Entity && replacement instanceof Entity) {
                 Entity patternEntity = (Entity) pattern;
                 Entity replacementEntity = (Entity) replacement;
