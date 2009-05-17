@@ -796,6 +796,23 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         fireAt(actor, time.add(getModelTime()));
     }
 
+    /** Request a refiring at the current time. When that refiring
+     *  occurs, this director will identify events on the local event
+     *  queue that have been skipped, and will notify the destination
+     *  actors of those events that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. An executive director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to a refinement.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException {
+        fireAtCurrentTime((Actor)getContainer());
+    }
+
     /** Return the event queue. Note that this method is not synchronized.
      *  Any further accesses to this event queue needs synchronization.
      *  @return The event queue.
@@ -934,11 +951,28 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         // Reset the following private variables.
         _disabledActors = null;
         _exceedStopTime = false;
-        _microstep = 0;
         _noMoreActorsToFire = false;
         _realStartTime = System.currentTimeMillis();
         _stopFireRequested = false;
-
+        
+        _microstep = 0;
+        // This could be getting re-initialized during execution
+        // (e.g., if we are inside a modal model), in which case,
+        // if the enclosing director is a superdense time director,
+        // we should initialize to its microstep, not to our own.
+        // NOTE: Some (weird) directors pretend they are not embedded even
+        // if they are (e.g. in Ptides), so we call _isEmbedded() to give
+        // the subclass the option of pretending it is not embedded.
+        if (_isEmbedded()) {
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Director executiveDirector = ((CompositeActor)container).getExecutiveDirector();
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    _microstep = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                }
+            }
+        }
+        
         super.initialize();
 
         // Register the stop time as an event such that the model is
@@ -1091,9 +1125,23 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         // Set the model timestamp to the outside timestamp,
         // if this director is not at the top level.
         boolean result = super.prefire();
+        // Have to also do this for the microstep.
+        if (_isEmbedded()) {
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Director executiveDirector = ((CompositeActor)container).getExecutiveDirector();
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    _microstep = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                }
+            }
+        }
 
         if (_debugging) {
-            _debug("Current time is: " + getModelTime());
+            _debug("Current time is: (" 
+                    + getModelTime()
+                    + ", "
+                    + getIndex()
+                    + ")");
         }
 
         // A top-level DE director is always ready to fire.
@@ -1108,23 +1156,46 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         // whether this director is ready to fire.
         Time modelTime = getModelTime();
         Time nextEventTime = Time.POSITIVE_INFINITY;
+        int nextEventIndex = Integer.MAX_VALUE;
 
         if (!_eventQueue.isEmpty()) {
-            nextEventTime = _eventQueue.get().timeStamp();
+            DEEvent nextEvent = _eventQueue.get();
+            nextEventTime = nextEvent.timeStamp();
+            nextEventIndex = nextEvent.microstep();
         }
 
         // If the model time is larger (later) than the first event
         // in the queue, catch up with the current model time by discarding
-        // the old events. This can occur, for example, if we are in a
+        // the old events, calling fireAtSkipped() on each of the destination
+        // actors for those events if the events are pure event.
+        // This can occur, for example, if we are in a
         // modal model and this director was in an inactive mode before
         // we reached the time of the event.
-        while (modelTime.compareTo(nextEventTime) > 0) {
-            _eventQueue.take();
+        // This consumes events that are the past in superdense time
+        // as well those in the past in real time.
+        while (modelTime.compareTo(nextEventTime) > 0
+                || (modelTime.compareTo(nextEventTime) == 0 && getIndex() > nextEventIndex)) {
+            DEEvent skippedEvent = _eventQueue.take();
+            if (_debugging) {
+                _debug("Skipping event at time (" 
+                        + nextEventTime
+                        + ", "
+                        + nextEventIndex
+                        + ") destined for actor "
+                        + skippedEvent.actor().getFullName());
+            }
+            if (skippedEvent.ioPort() == null) {
+                // Event is a pure event.
+                skippedEvent.actor().fireAtSkipped(skippedEvent.timeStamp());
+            }
 
             if (!_eventQueue.isEmpty()) {
-                nextEventTime = _eventQueue.get().timeStamp();
+                DEEvent nextEvent = _eventQueue.get();
+                nextEventTime = nextEvent.timeStamp();
+                nextEventIndex = nextEvent.microstep();
             } else {
                 nextEventTime = Time.POSITIVE_INFINITY;
+                nextEventIndex = Integer.MAX_VALUE;
             }
         }
 
@@ -1233,6 +1304,17 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         }
 
         super.removeDebugListener(listener);
+    }
+
+    /** Set the superdense time index. This should only be
+     *  called by an enclosing director.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void setIndex(int index) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Setting superdense time index to " + index);
+        }
+        _microstep = index;
     }
 
     /** Request the execution of the current iteration to stop.
