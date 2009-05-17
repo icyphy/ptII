@@ -256,7 +256,7 @@ public class DiscreteClock extends TimedSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Clock newObject = (Clock) super.clone(workspace);
+        DiscreteClock newObject = (DiscreteClock) super.clone(workspace);
         try {
             ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             newObject._offsets = new double[offsetsValue.length()];
