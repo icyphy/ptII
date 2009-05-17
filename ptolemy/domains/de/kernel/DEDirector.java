@@ -471,20 +471,24 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                 return;
             }
 
-            // -- If the actor to be fired is not null.
-            // If the actor to be fired is the container of this director,
-            // the next event to be processed is in an inside receiver of
-            // an output port of the container. In this case, this method
-            // simply returns, and gives the outside domain a chance to react
-            // to that event.
-            // NOTE: Topological sort always assigns the composite actor the
-            // lowest priority. This guarantees that all the inside actors
+            // NOTE: Here we used to check to see whether
+            // the actor to be fired is the container of this director,
+            // and if so, return to give the outside domain a chance to react
+            // to that event. This strategy assumed that the
+            // topological sort would always assign the composite actor the
+            // lowest priority, which would guarantee that all the inside actors
             // have fired (reacted to their triggers) before the composite
-            // actor fires.
+            // actor is what is returned. However, the priority no longer
+            // seems to always be lower. A better strategy is to continue
+            // firing until we have exhausted all events with the current
+            // tag and microstep.
             if (actorToFire == getContainer()) {
+                /* What we used to do (before 5/17/09):
                 // Since we are now actually stopping the firing, we can set this false.
                 _stopFireRequested = false;
                 return;
+                */
+                continue;
             }
 
             if (_debugging) {
