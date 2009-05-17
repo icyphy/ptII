@@ -147,6 +147,7 @@ JSRCS = \
 	DoubleReader.java \
 	DB.java \
 	Discard.java \
+	DiscreteClock.java \
 	DiscreteRandomSource.java \
 	Distributor.java \
 	ElementsToArray.java \
