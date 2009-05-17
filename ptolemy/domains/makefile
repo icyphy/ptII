@@ -163,7 +163,9 @@ DEMOJARS = \
 	sr/demo/demo.jar \
 	sr/doc/doc.jar
 
-	
+all: jclass
+install: jclass jars
+
 demo.jar:
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
@@ -178,9 +180,6 @@ demo.jar:
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
-
-all: jclass
-install: jclass jars
 
 
 # Get the rest of the rules
