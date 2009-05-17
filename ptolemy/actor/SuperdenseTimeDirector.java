@@ -27,6 +27,8 @@
  */
 package ptolemy.actor;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// SuperdenseTimeDirector
 
@@ -45,4 +47,10 @@ public interface SuperdenseTimeDirector {
      *  @return A superdense time object.
      */
     public int getIndex();
+    
+    /** Set the superdense time index. This should only be
+     *  called by an enclosing director.
+     *  @exception IllegalActionException If the specified index is invalid.
+     */
+    public void setIndex(int index) throws IllegalActionException;
 }
