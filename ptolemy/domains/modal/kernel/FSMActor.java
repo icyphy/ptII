@@ -36,7 +36,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -47,6 +46,7 @@ import ptolemy.actor.IORelation;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
@@ -54,6 +54,7 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -82,7 +83,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -102,79 +102,86 @@ import ptolemy.kernel.util.Workspace;
  a <i>guard expression</i>, any number of <i>output actions</i>, and any
  number of <i>set actions</i>. It has an <i>initial state</i>, which is
  the unique state whose <i>isInitialState</i> parameter is true.
- In outline, a firing of this actor is a sequence of steps:
+ In outline, a firing of this actor is a sequence of steps as
+ follows. In the fire() method:
  <ol>
  <li> Read inputs.
  <li> Evaluate guards on outgoing transitions of the current state.
  <li> Choose a transitions whose guard is true.
  <li> Execute the output actions.
- <li> Execute the set actions.
+ </ol>
+ In the postfire() method:
+ <ol>
+ <li> Execute the set actions of the chosen transition.
  <li> Change the current state to the destination of the chosen transition.
  </ol>
- The first four steps are performed in fire(), and may occur more than once
- in an iteration. The last two are performed in postfire(), and occur exactly
- once in an iteration. Since this actor makes no persistent state changes in
- its fire()  method, it actor conforms
+ The fire() method may be invoked more than once
+ in an iteration, for example in a fixedpoint iteration.
+ This actor makes no persistent state changes in
+ its fire()  method, so actor conforms
  with the <i>actor abstract semantics</i>, and hence can be used in any
- Ptolemy II domain.  How it behaves in each domain, however, can be
- somewhat subtle, particularly with domains that have fixed-point
- semantics and when nondeterministic transitions are used.
- The details are given below.
-
- <p> If the initial state has an outgoing transition that is enabled
- when this actor is initialized, then this actor will request a firing
- at the current time by calling fireAtCurrentTime(). When it makes a
- transition to a new state, if the new state has an outgoing transition
- that is enabled, then will also request a firing at the current time.
- Thus, when used inside a timed domain like DE, the amount of model
- time spend in such a state is zero. Such a state is said to be
- <i>transient</i>.
-
- <p> When an FSMActor is fired, it first reads from input ports whose status
- is known. For each such input port named <i>portName</i>, it defines
- a set of variables that can be referenced in guards, output actions,
- and set actions. Specifically, for every input port, the identifier
- identifier "<i>portName</i>_<i>channelIndex</i>_isPresent" is true if
- the port has an input on the specified channel, and false otherwise.
- If it is true, then a second variable named
-"<i>portName</i>_<i>channelIndex</i>" has value equal to the token
- received on the port on the given channel.  The type of this
- variable is the same as the type of the port.
- For conciseness, channel 0 may be referred to without
- the channel index, i.e. by the identifiers "<i>portName</i>" and
- "<i>portName</i>_<i>isPresent</i>".
-
- FIXME: "<i>portName</i>Array".
- Lastly,
- the identifier "<i>portName</i>_<i>channelIndex</i>Array" refers the
+ Ptolemy II domain.
+ <p>
+ After reading the inputs, this actor examines
+ the outgoing transitions of the current state, evaluating their
+ guard expressions. A transition is <i>enabled</i> if its guard
+ expression evaluates to true. A blank guard expression is
+ interpreted to be always true. The guard expression may refer to any
+ input port and any variable in scope.
+ <p>
+ If an input port name <i>portName</i> is used in a guard expression,
+ it refers to the current input on that port on channel zero.
+ If the input port status is not known, or if the input is absent,
+ then a guard expression referring to <i>portName</i> will not be evaluated.
+ The guard expression may alternatively refer to <i>portName</i>_<i>isPresent</i>,
+ which is a boolean that is true if an input is present on the specified
+ port. Again, if the input port status is not known, such a guard
+ would not be evaluated. The status of an input port may not be
+ known during firings under a director with fixed-point semantics,
+ such as SR or Continuous.
+ <p>
+ To refer to a channel specificatlly, a guard expression may use
+ <i>portName</i>_<i>channelIndex</i>, which has value equal to the token
+ received on the port on the given channel. Similarly, it may refer
+ to <i>portName</i>_<i>channelIndex</i>_<i>isPresent</i>.
+ <p>
+ FIXME: Document multirate behavior.
+ <p>
+ The identifier <i>portName</i>Array or
+ <i>portName</i>_<i>channelIndex</i>Array refers the
  array of all tokens consumed from the port in the last firing.  This
  identifier has an array type whose element type is the type of the
  corresponding input port.
-
-
- <p> After reading the inputs, this actor examines
- the outgoing transitions of the current state, evaluating their
- guard expressions. A transition is <i>enabled</i> if its guard
- expression evaluates to true. The guard expression may refer to any
- input using the variables defined above,
- but if it refers to an input whose status is unknown,
- then that guard will not be evaluated. Presumably, that
- input will become known in a later firing in the same iteration
- (while converging to a fixed point).
- A guard expression may also refer to any parameter in scope
- (as well as to outputs of the current state refinement, see below).
- An IllegalActionException is thrown if more than one
- transition is enabled, unless all enabled transitions are marked
- <i>nondeterministic</i>. If there is exactly one enabled transition then it is
- chosen. If more than one transition is enabled and they are all marked
- nondeterministic, then one is chosen at random. If no transition is
+ <p>
+ Nondeterministic transitions are allowed if all enabled transitions
+ are marked <i>nondeterministic</i>. If more than one transition is
+ enabled and they are all marked nondeterministic, then one is chosen
+ at random in the fire() method. If the fire() method is invoked more
+ than once in an iteration, then subsequent invocations in the same
+ iteration will always choose the same transition.  However, 
+ if more transitions become enabled in subsequent firings and
+ they are not all marked nondeterminate, then an
+ exception will thrown. Note that this
+ means that if some input is unknown on the first invocation
+ of fire(), and a guard refers to that input, then that transition
+ will not be chosen. As a consequence, for nondeterministic state
+ machines, the behavior may depend on the order of firings in
+ a fixed-point iteration. This is in fact unavoidable (it is
+ related to the celebrated Brock-Ackerman anomaly, which demonstrates
+ that the input/output relations of a nondeterministic system do
+ not completely determine its behavior; the context in which it
+ is used can also affect the behavior; specifically, the context
+ may make it impossible to know the value of input on the first
+ invocation of fire() because of a feedback loop).
+ <p>
+ If no transition is
  enabled and all their guard expressions have been evaluated (all relevant
  inputs are known), then if there is a transition marked as a
  <i>default transition</i>, then that transition is chosen. If
  there is more than one default transition and they are all marked
  nondeterministic, then one is chosen at random.
-
- <p> Once a transition is chosen, its output actions are executed.
+ <p>
+ Once a transition is chosen, its output actions are executed.
  Typically, these will write values to output ports. The form of an output
  action is typically <i>y</i> = <i>expression</i>, where expression may
  refer to any variable defined as above or any parameter in scope
@@ -182,47 +189,32 @@ import ptolemy.kernel.util.Workspace;
  This gives the behavior of a Mealy machine, where
  outputs are produced by transitions rather than by states. Moore machine
  behavior is also achievable using state refinements that produce
- outputs (see below).
+ outputs (see FSMDirector documentation).
  Multiple output actions may be given by separating them with semicolons.
  Also, output actions may take the form of <i>d.p</i> = <i>expression</i>,
  where <i>d</i> is the name of the destination state and <i>p</i> is a
  parameter of the destination refinement.
-
- <p> An FSMActor does not change state during successive firings in one iteration
- in order to support domains that iterate to a fixed point. Moreover, if a
- transition is chosen on one invocation of fire(), then the same transition will
- be chosen on all subsequent invocations of fire() in the same iteration, even
- if more transitions become enabled. However, if more transitions become enabled
- in subsequent firings and they are not all marked nondeterminate, then an
- exception will thrown. When the FSMActor
- is postfired, the chosen transition is committed.
- The set actions contained by the transition are executed and
- the current state of the actor is set to the destination state of the
- transition.
-
- <p> A final state is a state that has its <i>isFinalState</i> parameter
+  <p>
+ After a transition is taken, this actor calls fireAtCurrentTime()
+ on its enclosing director. This ensures that if the destination
+ state has an enabled transition, that transition will be taken
+ at the same time (in the next superdense time index). It also
+ supports continuous-time models, where the destination state
+ refinement, if any, should produce an output at the next superdense
+ time index.
+ <p>
+ A final state is a state that has its <i>isFinalState</i> parameter
  set to true. When the actor reaches a final state, then the
  postfire method will return false, indicating that the actor does not
  wish to be fired again.
-
- <p> The guards and actions of FSM transitions are specified using
- expressions.  These expressions are evaluated in the scope returned by
- getPortScope.  This scope binds identifiers for FSM ports as defined
- in the following paragraph.  These identifiers are in the scope of
- guard and action expressions prior to any variables, and may shadow
- variables with appropriately chosen names.  Given appropriately chosen
- port names, there may be conflicts between these various identifiers.
- These conflicts are detected and an exception is thrown during
- execution.
-
- <p> An FSMActor can be used in a modal model to represent the mode
- control logic.  A state can have a TypedActor refinement. A transition
- in an FSMActor can be preemptive or non-preemptive. When a preemptive
- transition is chosen, the refinement of its source state is not
- fired. A non-preemptive transition can only be chosen after the
- refinement of its source state is fired.
-
- <p> By default, this actor has a conservative causality interface,
+ <p>
+ An FSMActor can be used in a modal model to represent the mode
+ control logic.  In this case, the states and transitions have
+ refinements, and this actor works in concert with the FSMDirector
+ to execute those refinements. See the documentation for
+ FSMDirector for details on how that works.
+ <p>
+ By default, this actor has a conservative causality interface,
  implemented by the {@link DefaultCausalityInterface}, which declares
  that all outputs depend on all inputs. If, however, the enclosing
  director and all state refinement directors implement the
@@ -236,7 +228,7 @@ import ptolemy.kernel.util.Workspace;
  different input/output dependencies depending on the state.
  See {@link FSMCausalityInterface} for details.
 
- @author Xiaojun Liu, Haiyang Zheng, Ye Zhou
+ @author Edward A. Lee, Xiaojun Liu, Haiyang Zheng, Ye Zhou
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (liuxj)
@@ -302,21 +294,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _initializables = new LinkedList<Initializable>();
         }
         _initializables.add(initializable);
-    }
-
-
-    /** React to a change in an attribute.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If thrown by the superclass
-     *   attributeChanged() method.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == finalStateNames) {
-            _parseFinalStates(finalStateNames.getExpression());
-        } else {
-            super.attributeChanged(attribute);
-        }
     }
 
     /** Return an enabled transition among the given list of transitions
@@ -463,7 +440,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._connectionMaps = null;
         newObject._connectionMapsVersion = -1;
         newObject._currentConnectionMap = null;
-        newObject._finalStateNames = null;
         newObject._receiversVersion = -1;
         newObject._receiversVersion = -1;
         newObject._tokenListArrays = null;
@@ -595,6 +571,27 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         chooseTransition(transitionList);
+    }
+    
+    /** Notify the refinements of the current state, if any,
+     *  that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. A director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired. This base class delegates the current state refinements,
+     *  if there are any.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to a refinement.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException {
+        Actor[] actors = _currentState.getRefinement();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; i++) {
+                actors[i].fireAtSkipped(time);
+            }
+        }
     }
 
     /** Return a causality interface for this actor. This
@@ -868,13 +865,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // we have to call it again because if a reset transition is
         // taken, preinitialize() is not called.
         reset();
-
-        // Reset the visited status of all states to not visited.
-        Iterator states = deepEntityList().iterator();
-        while (states.hasNext()) {
-            State state = (State) states.next();
-            state.setVisited(false);
-        }
 
         _lastChosenTransition = null;
 
@@ -1604,64 +1594,88 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             + "destination state.");
         }
 
-        // Set current time of the director of the destination
-        // refinement before executing actions because there may
-        // be attributeChanged() methods that are invoked that depend
-        // on current time.
-        Actor[] actors = _lastChosenTransition.destinationState()
-                .getRefinement();
+        // If the chosen transition is a reset transition, initialize the destination
+        // refinement. Otherwise, set the current time and index in the destination 
+        // refinement. Note that initializing the director will normally also have
+        // the side effect of setting its time and time to match the enclosing
+        // director. This is done before invoking the set actions because (1)
+        // the initialization may reverse the set actions or, (2)
+        // the set actions may trigger attributeChanged() calls that depend on
+        // the current time or index.
+        BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset.getToken();
+        Actor[] actors = _lastChosenTransition.destinationState().getRefinement();
         if (actors != null) {
+            Director executiveDirector = getExecutiveDirector();
             for (int i = 0; i < actors.length; ++i) {
-                actors[i].getDirector().setModelTime(
-                        getExecutiveDirector().getModelTime());
+                // If this is a reset transition, then we also need to initialize
+                // the destination refinement.
+                if (resetToken.booleanValue()) {
+                    if (_debugging) {
+                        _debug(getFullName() + " initialize refinement: "
+                                + ((NamedObj) actors[i]).getName());
+                    }
+                    // NOTE: For a modal model, the executive director will normally
+                    // be an FSMDirector. Here we communicate with that director
+                    // to ensure that it reports the correct superdense time index
+                    // during initialization, which is one greater than the current
+                    // superdense index of its context. If the enclosing director
+                    // is not an FSMDirector, then the initialize() method below
+                    // will likely set the index to one less than it should be.
+                    // I don't have a solution for this, but this situation is
+                    // unlikely to arise except in very weird models, since the
+                    // standard pattern is for FSMDirector and FSMActor to work
+                    // together.
+                    if (executiveDirector instanceof FSMDirector) {
+                        try {
+                            ((FSMDirector)executiveDirector)._indexOffset = 1;
+                            actors[i].initialize();
+                        } finally {
+                            ((FSMDirector)executiveDirector)._indexOffset = 0;
+                        }
+                    } else {
+                        actors[i].initialize();
+                    }
+                } else {
+                    // Set current time of the director of the destination
+                    // refinement before executing actions because there may
+                    // be attributeChanged() methods that are invoked that depend
+                    // on current time.
+                    actors[i].getDirector().setModelTime(executiveDirector.getModelTime());
+
+                    // Need also to set the superdense time index of the destination director
+                    // one greater than the one of the enclosing director.
+                    Director destinationDirector = actors[i].getDirector();
+                    int index = 1;
+                    if (executiveDirector instanceof SuperdenseTimeDirector) {
+                        index = ((SuperdenseTimeDirector)executiveDirector).getIndex() + 1;
+                    }
+                    if (destinationDirector instanceof SuperdenseTimeDirector) {
+                        ((SuperdenseTimeDirector)destinationDirector).setIndex(index);
+                    }
+                }
             }
         }
 
+        // Next execute the commit actions.
         Iterator actions = _lastChosenTransition.commitActionList().iterator();
-
         while (actions.hasNext() && !_stopRequested) {
             Action action = (Action) actions.next();
             action.execute();
         }
 
+        // Commit to the new state.
         // Before committing the new state, record whether it changed.
         boolean stateChanged = _currentState != _lastChosenTransition.destinationState();
         _currentState = _lastChosenTransition.destinationState();
-
-        if (((BooleanToken) _currentState.isFinalState.getToken())
-                .booleanValue()) {
-            _reachedFinalState = true;
-        } else if (_finalStateNames != null) {
-            // Backward compatibility for the old way of specifying it.
-            if (_finalStateNames.contains(_currentState.getName())) {
-                _reachedFinalState = true;
-            }
-        }
-
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
         }
 
-        BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
-                .getToken();
-
-        if (resetToken.booleanValue()) {
-            actors = _currentState.getRefinement();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_debugging) {
-                        _debug(getFullName() + " initialize refinement: "
-                                + ((NamedObj) actors[i]).getName());
-                    }
-
-                    actors[i].initialize();
-                }
-            }
-
-            // NOTE: The initialize method clears all receivers, we have to
-            // set the visited flag to false to enforce the reconstruction of
-            // continuous signals.
-            _currentState.setVisited(false);
+        // If we have reached a final state, make a record of that fact
+        // for the postfire() method.
+        if (((BooleanToken) _currentState.isFinalState.getToken())
+                .booleanValue()) {
+            _reachedFinalState = true;
         }
 
         _setCurrentConnectionMap();
@@ -1673,8 +1687,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // the analysis for causality loops will be redone before other state
         // machines have been given a chance to switch states.
         boolean stateDependent = ((BooleanToken)
-                stateDependentCausality.getToken())
-                .booleanValue();
+                stateDependentCausality.getToken()).booleanValue();
         if (stateDependent && stateChanged) {
             ChangeRequest request = new ChangeRequest(this, "Invalidate schedule") {
                 protected void _execute() {
@@ -1685,31 +1698,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             requestChange(request);
         }
 
-        // If there is a transition enabled in the new state, then request a
-        // refiring at the current time. The new state may be transient.
-        // Note that transitions may appear to be enabled if they are just
-        // testing for presence of inputs. This is because inputs do not
-        // get consumed here. By the time the refiring occurs, they may
-        // no longer be there because transferInputs() will have
-        // have been called again.  Presumably, this refiring is harmless,
-        // however.
-        // FIXME: Is it really? what if the destination state has a delay
-        // output about to be produced at the current time stamp?
-        // This will result in odd behavior where the output from the
-        // delay will be produced if the destination state happens to
-        // have an event that appears to be enabled!
-        List transitionList = _currentState.outgoingPort.linkedRelationList();
-        List enabledTransitions = enabledTransitions(transitionList);
-        // FIXME:
-        // getDirector().fireAtCurrentTime(this);
-
-        if (enabledTransitions.size() > 0) {
-            if (_debugging) {
-                _debug("FSMActor requesting refiring by at "
-                        + getDirector().getModelTime());
-            }
-            getDirector().fireAtCurrentTime(this);
-        }
+        // Finally, request a refiring at the current time. This ensures that
+        // if the new state is transient, zero time is spent in it.
+        // If the new state has a refinement, it is up to that refinement
+        // to examine the superdense time index if appropriate and not produce
+        // output if it should not produce output. This has implications on
+        // the design of actors like DiscreteClock.
+        getDirector().fireAtCurrentTime(this);
     }
 
     /** Given an identifier, return a channel number i if the identifier is of
@@ -2066,30 +2061,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _identifierToPort = new HashMap<String,Port>();
     }
 
-    /** Parse the final state names. This method handles backward
-     *  compatibility, because it used to be that final states were
-     *  specified in a parameter of the FSMActor, as a comma-separated
-     *  list of names. Now, each state has an attribute that indicates
-     *  whether it is a final state. This method parses the list of names,
-     *  sets the attribute of each state, and then sets the list to null.
-     *  If the model is then saved, it will have switched to the modern
-     *  method for recording final states.
-     */
-    private void _parseFinalStates(String names) {
-        StringTokenizer nameTokens = new StringTokenizer(names, ",");
-        while (nameTokens.hasMoreElements()) {
-            String name = (String) nameTokens.nextElement();
-            name = name.trim();
-            //State finalState = (State) getEntity(name);
-            // State has not been created. Record that it is
-            // final state to mark it when it is created.
-            if (_finalStateNames == null) {
-                _finalStateNames = new HashSet<String>();
-            }
-            _finalStateNames.add(name);
-        }
-    }
-
     /** Remove all variable definitions associated with the specified
      *  port name and channel number.
      *  @param portName The name of the port
@@ -2144,7 +2115,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             throws IllegalActionException {
         String string = transition.getGuardExpression();
         if (string.trim().equals("")) {
-            throw new IllegalActionException(transition, "guard expression on is null!");
+            return true;
         }
         PtParser parser = new PtParser();
         ASTPtRootNode parseTree = parser.generateParseTree(string);
@@ -2395,10 +2366,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // channel is connected to an output port of the refinement of the
     // current state.
     private Map _currentConnectionMap = null;
-
-    // Map of final state names recording in the obsolete finalStateNames
-    // parameter.
-    private HashSet<String> _finalStateNames = null;
 
     /** A map that associates each identifier with the unique port that that
      *  identifier describes.  This map is used to detect port names that result

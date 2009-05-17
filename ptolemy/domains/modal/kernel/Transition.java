@@ -133,8 +133,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  The <i>reset</i> parameter specifies whether the refinement of the destination
  state is reset when the transition is taken. There is no reset() method in the
- Actor interface, so the initialize() method of the refinement is called. Please
- note that this feature is still under development.
+ Actor interface, so the initialize() method of the refinement is called.
  <p>
  The <i>nondeterministic</i> parameter specifies whether this transition is
  nondeterministic. Here nondeterministic means that this transition may not
@@ -487,6 +486,10 @@ public class Transition extends ComponentRelation {
         if (_guardParseTree == null || _guardParseTreeVersion
                 != _workspace.getVersion()) {
             String expr = getGuardExpression();
+            // If the expression is empty, interpret this as true.
+            if (expr.trim().equals("")) {
+                return true;
+            }
             // Parse the guard expression.
             PtParser parser = new PtParser();
             try {

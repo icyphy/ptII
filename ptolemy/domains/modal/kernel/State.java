@@ -449,13 +449,6 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Return true if this state has been visited. Otherwise, return false.
-     *  @return Returns true if this state has been visited.
-     */
-    public boolean isVisited() {
-        return _visited;
-    }
-
     /** Return the list of non-preemptive outgoing transitions from
      *  this state.
      *  @return The list of non-preemptive outgoing transitions from
@@ -480,15 +473,6 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         }
 
         return _preemptiveTransitionList;
-    }
-
-    /** Set the flag that indicates whether this state has been visited with
-     *  the given boolean value.
-     *  @param visited The boolean flag indicating whether this state has been
-     *  visited.
-     */
-    public void setVisited(boolean visited) {
-        _visited = visited;
     }
 
     /** The port linking incoming transitions.
@@ -717,9 +701,6 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
     // Version of cached transition lists.
     private long _transitionListVersion = -1;
-
-    // Flag indicating whether this state has been visited.
-    private boolean _visited = false;
 
     //////////////////////////////////////////////////////////////////////////
     //// InvisibleModalModel

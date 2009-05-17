@@ -97,6 +97,8 @@ import ptolemy.kernel.util.Workspace;
  In postfire, the following steps are performed:
  <ol>
  <li> Postfire the refinements of the current state if they were fired.
+ <li> Initialize the refinements of the destination state if the transition
+      is a reset transition.
  <li> Execute the set actions of the chosen transition.
  <li> Postfire the transition refinements of the chosen transition.
  <li> Change the current state to the destination of the chosen transition.
@@ -344,7 +346,6 @@ public class FSMDirector extends Director implements
                 }
             }
         }
-        currentState.setVisited(true);
         controller.readOutputsFromRefinement();
 
         Transition chosenTransition = controller.chooseTransition(currentState.nonpreemptiveTransitionList());
@@ -405,6 +406,27 @@ public class FSMDirector extends Director implements
         }
         setModelTime(time);
         return time;
+    }
+    
+    /** Notify the refinements of the current state, if any,
+     *  that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. A director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired. This class delegates the current state refinements,
+     *  if there are any.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to a refinement.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException {
+        Actor[] actors = getController().currentState().getRefinement();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; i++) {
+                actors[i].fireAtSkipped(time);
+            }
+        }
     }
 
     /** Return the mode controller of this director. The name of the
@@ -561,7 +583,7 @@ public class FSMDirector extends Director implements
     public int getIndex() {
         Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
         if (executiveDirector instanceof SuperdenseTimeDirector) {
-            return ((SuperdenseTimeDirector)executiveDirector).getIndex();
+            return ((SuperdenseTimeDirector)executiveDirector).getIndex() + _indexOffset;
         }
         return 0;
     }
@@ -838,6 +860,23 @@ public class FSMDirector extends Director implements
 
         if (container != null) {
             container.setModelErrorHandler(this);
+        }
+    }
+    
+    /** Set the superdense time index by delegating to the directors
+     *  of the refinements of the current state, if any. This should only be
+     *  called by an enclosing director.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void setIndex(int index) throws IllegalActionException {
+        Actor[] actors = _controller.currentState().getRefinement();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; ++i) {
+                Director destinationDirector = actors[i].getDirector();
+                if (destinationDirector instanceof SuperdenseTimeDirector) {
+                    ((SuperdenseTimeDirector)destinationDirector).setIndex(index);
+                }
+            }
         }
     }
 
@@ -1226,6 +1265,13 @@ public class FSMDirector extends Director implements
     // it is only used in the HSFSMDirector. Modify the fire() method.
     // Or this may not be necessary.
     protected List _enabledRefinements;
+    
+    /** The _indexOffset is set by FSMActor during initialization of
+     *  destination refinements upon committing to a reset transition
+     *  in order to ensure that the destination refinement views its
+     *  index as one larger than the current index.
+     */
+    protected int _indexOffset = 0;
 
     /** Stores for each state of the mode controller the map from input
      *  ports of the modal model to the local receivers when the mode
