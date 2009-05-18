@@ -160,7 +160,6 @@ ptolemy/gui/JPanelTest.java
 ptolemy/codegen/c/targets/arduino
 ptolemy/codegen/c/targets/iRobot
 ptolemy/codegen/c/targets/luminary
-ptolemy/codegen/c/targets/posix
 ptolemy/codegen/c/targets/pret
 ptolemy/codegen/c/targets/win32
 ptolemy/codegen/domains/sr
