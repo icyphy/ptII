@@ -470,9 +470,9 @@ public class PNDirector extends Director {
             }
         }
     
-        _codeStream.clear();
-        _codeStream.appendCodeBlock("preinitBlock");
-        code.append(_codeStream.toString());
+        //_codeStream.clear();
+        //_codeStream.appendCodeBlock("preinitBlock");
+        //code.append(_codeStream.toString());
     
         _generateThreadFunctionCode(code);
     

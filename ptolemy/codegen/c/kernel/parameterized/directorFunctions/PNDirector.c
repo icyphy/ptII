@@ -61,7 +61,7 @@
 /**/
 
 /*** getWriteOffset() ***/
-// generate $declarePNStruct() && $incrementWriteBlockingThreads()
+// generate $declarePNDirectorStruct() && $declarePNStruct() && $incrementWriteBlockingThreads()
 // The above comment is necessary in this code block
 // to ensure the "declarePNStruct" code block is generated
 // before this code block.
@@ -112,7 +112,7 @@ int getWriteOffset(struct pnBufferHeader* header, struct directorHeader* directo
 /**/
 
 /*** getAdvancedWriteOffset() ***/
-// generate $declarePNStruct() && $incrementWriteBlockingThreads()
+// generate $declarePNDirectorStruct() && $declarePNStruct() && $incrementWriteBlockingThreads()
 // The above comment is necessary in this code block
 // to ensure the "declarePNStruct" code block is generated
 // before this code block.
@@ -168,7 +168,7 @@ int getAdvancedWriteOffset(int offset, struct pnBufferHeader* header, struct dir
 
 
 /*** getReadOffset() ***/
-// generate $declarePNStruct() && $incrementReadBlockingThreads()
+// generate $declarePNDirectorStruct() && $declarePNStruct() && $incrementReadBlockingThreads()
 // The above comment is necessary in this code block
 // to ensure the "declarePNStruct" code block is generated
 // before this code block.
@@ -217,11 +217,10 @@ int getReadOffset(struct pnBufferHeader* header, struct directorHeader* director
 
 
 /*** getAdvancedReadOffset() ***/
-// generate $declarePNStruct() && $incrementReadBlockingThreads()
+// generate $declarePNDirectorStruct() && $declarePNStruct() && $incrementReadBlockingThreads()
 // The above comment is necessary in this code block
 // to ensure the "declarePNStruct" code block is generated
 // before this code block.
-
 
 // Get the current read offset.
 int getAdvancedReadOffset(int offset, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
@@ -272,7 +271,11 @@ int getAdvancedReadOffset(int offset, struct pnBufferHeader* header, struct dire
 
 
 /*** incrementReadBlockingThreads ***/
-inline void incrementReadBlockingThreads(struct directorHeader* directorHeader) {
+// generate $declarePNDirectorStruct()
+// The above comment is necessary in this code block
+// to ensure the "declarePNDirectorStruct" code block is generated
+// before this code block.
+void incrementReadBlockingThreads(struct directorHeader* directorHeader) {
     int i;
     pthread_mutex_lock(&directorHeader->readBlockMutex);
     directorHeader->readBlockingThreads++;
@@ -308,7 +311,7 @@ inline void incrementReadBlockingThreads(struct directorHeader* directorHeader) 
 // The above comment is necessary in this code block
 // to ensure the "declarePNDirectorStruct" code block is generated
 // before this code block.
-inline void incrementWriteBlockingThreads(struct directorHeader* directorHeader) {
+void incrementWriteBlockingThreads(struct directorHeader* directorHeader) {
     pthread_mutex_lock(&directorHeader->writeBlockMutex);
     directorHeader->writeBlockingThreads++;
         #ifdef DEBUG_PN
@@ -325,6 +328,11 @@ inline void incrementWriteBlockingThreads(struct directorHeader* directorHeader)
 /**/
 
 /*** incrementWriteOffset ***/
+// generate $declarePNDirectorStruct() && $declarePNStruct()
+// The above comment is necessary in this code block
+// to ensure the "declarePNStruct" code block is generated
+// before this code block.
+
 // Increment the write offset by 1.
 void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
         #ifdef DEBUG_PN
@@ -367,6 +375,11 @@ void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* 
 /**/
 
 /*** incrementWriteOffsetBy ***/
+// generate $declarePNDirectorStruct() && $declarePNStruct()
+// The above comment is necessary in this code block
+// to ensure the "declarePNStruct" code block is generated
+// before this code block.
+
 // Increment the write offset by a specified increment.
 void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
         #ifdef DEBUG_PN
@@ -406,6 +419,11 @@ void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct
 /**/
 
 /*** incrementReadOffset ***/
+// generate $declarePNDirectorStruct() && $declarePNStruct()
+// The above comment is necessary in this code block
+// to ensure the "declarePNStruct" code block is generated
+// before this code block.
+
 // Increment the read offset by 1.
 void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
         #ifdef DEBUG_PN
@@ -448,6 +466,11 @@ void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* d
 /**/
 
 /*** incrementReadOffsetBy ***/
+// generate $declarePNDirectorStruct() && $declarePNStruct()
+// The above comment is necessary in this code block
+// to ensure the "declarePNStruct" code block is generated
+// before this code block.
+
 // Increment the read offset by a specified increment.
 void incrementReadOffsetBy(int increment, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
         #ifdef DEBUG_PN
