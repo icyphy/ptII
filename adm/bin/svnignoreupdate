@@ -1,0 +1,28 @@
+#!/bin/sh
+# $Id$
+# Update svn:ignore
+
+statusFile=/tmp/svnignoreupdate.statusFile.$$
+svnIgnoreFile=/tmp/svnignoreupdate.svnIgnoreFile.$$
+
+svn status | egrep '^\?' | awk '{print $2}' > $statusFile
+
+classDirs=`egrep ".class$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for classDir in $classDirs
+do
+    echo $classDir
+    svn propget snv:ignore $classDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo '*.class' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $classDir
+done
+
+alljtestsDirs=`egrep "alljtests.tcl$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for alljtestsDir in $alljtestsDirs
+do
+    echo $alljtestsDir
+    svn propget snv:ignore $alljtestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo 'alljtests.tcl' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $alljtestsDir
+done
+
+#rm -f $statusFile
