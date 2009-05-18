@@ -31,9 +31,6 @@
 
 ME =		ptolemy/domains/ddf/lib
 
-# Rule for index.xml uses this
-TITLE = 	"Dynamic dataflow actors"
-
 DIRS = 		test
 
 # Root of the Java directory
@@ -70,8 +67,7 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	index.xml
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

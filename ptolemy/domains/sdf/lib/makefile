@@ -31,9 +31,6 @@
 
 ME =		ptolemy/domains/sdf/lib
 
-# Rule for index.xml uses this
-TITLE = 	"Synchronous dataflow actors"
-
 DIRS = 		vq test
 
 # Root of the Java directory
@@ -113,7 +110,6 @@ MISC_FILES = 	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	index.xml \
 	'Autocorrelation$$1.class' \
 	'Autocorrelation$$FunctionTerm.class' \
 	'Autocorrelation$$OutputTypeTerm.class' \
@@ -128,7 +124,7 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass index.xml
+all: jclass
 install: jclass jars
 
 

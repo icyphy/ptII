@@ -31,9 +31,6 @@
 
 ME =		ptolemy/domains/gr/lib
 
-# Rule for index.xml uses this
-TITLE = 	"3D actors"
-
 # $PTII/configure looks for Quicktime for Java  and sets PTQUICKTIME_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTQUICKTIME_DIR is empty.
 DIRS =	$(PTQUICKTIME_DIR)
@@ -131,12 +128,11 @@ OPTIONAL_FILES = \
 	'MouseInput3D$$1.class' \
 	'MouseInput3D$$React.class' \
 	'ViewScreen$$MouseRotateView.class' \
-	doc \
-	index.xml
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass index.xml
+all: jclass
 install: jclass jars
 
 
