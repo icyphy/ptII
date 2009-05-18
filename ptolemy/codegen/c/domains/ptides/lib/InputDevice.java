@@ -47,23 +47,6 @@ public abstract class InputDevice extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /**
-     * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from SensorReceiver.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
-        ptolemy.domains.ptides.lib.InputDevice actor = (ptolemy.domains.ptides.lib.InputDevice) getComponent();
-
-        return code.toString();
-    }
-    
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         return "";
     }

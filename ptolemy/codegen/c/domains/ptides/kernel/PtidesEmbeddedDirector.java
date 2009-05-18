@@ -41,7 +41,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
@@ -466,46 +465,6 @@ public class PtidesEmbeddedDirector extends Director {
             }
         }
         return code.toString();
-    }
-
-    /**
-     * Return the buffer size of a given port, which is the maximum of
-     * the bufferSizes of all channels of the given port.
-     * @param port The given port.
-     * @return The buffer size of the given port.
-     * @exception IllegalActionException If the
-     * {@link #getBufferSize(IOPort, int)} method throws it.
-     * @see #setBufferSize(IOPort, int, int)
-     */
-    private int _getBufferSize(IOPort port) throws IllegalActionException {
-        int bufferSize = 1;
-
-        int length = 0;
-
-        length = port.getWidth();
-
-        for (int i = 0; i < length; i++) {
-            int channelBufferSize = _getBufferSize(port, i);
-
-            if (channelBufferSize > bufferSize) {
-                bufferSize = channelBufferSize;
-            }
-        }
-        return bufferSize;
-    }
-
-    /** Get the buffer size of the given port of this actor.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @return The buffer size of the given port and channel.
-     *  @exception IllegalActionException If the getBufferSize()
-     *   method of the actor helper class throws it.
-     * @see #setBufferSize(IOPort, int, int)
-     */
-    private int _getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
-        return ((PortCodeGenerator) _getHelper(port))
-        .getBufferSize(channelNumber);
     }
 
     public Map<Actor, Integer> _actuators;

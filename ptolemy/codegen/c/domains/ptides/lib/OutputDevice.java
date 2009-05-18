@@ -46,24 +46,6 @@ public abstract class OutputDevice extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /**
-     * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from ActuatorTransmitter.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
-        ptolemy.domains.ptides.lib.OutputDevice actor = (ptolemy.domains.ptides.lib.OutputDevice) getComponent();
-
-        code.append("\n\n//ActuatorTransmitter PreInit Stub\n");
-        return code.toString();
-    }
-    
     public String generateActuatorActuationFuncCode() throws IllegalActionException {
         return "";
     }

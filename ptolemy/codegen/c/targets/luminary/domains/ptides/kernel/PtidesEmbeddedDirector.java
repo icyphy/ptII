@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -37,9 +36,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.data.IntToken;
-import ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice;
-import ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////
