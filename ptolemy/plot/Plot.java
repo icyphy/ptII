@@ -2603,7 +2603,7 @@ public class Plot extends PlotBox {
             _drawLine(graphics, dataset, xpos, bin.firstYPos(), previousBin.xpos, previousBin.lastYPos(), true, _DEFAULT_WIDTH);
         }
 
-        if (_isConnected(dataset) && bin.rangeChanged() && bin.minYPos() != bin.maxYPos()) {
+        if (bin.isConnected() && bin.rangeChanged() && bin.minYPos() != bin.maxYPos()) {
             _drawLine(graphics, dataset, xpos, bin.minYPos(), xpos, bin.maxYPos(), true, _DEFAULT_WIDTH);
         }
 
@@ -2733,7 +2733,7 @@ public class Plot extends PlotBox {
             //First clear bin itself
             long minYPos = bin.minYPos();
             long maxYPos = bin.maxYPos();
-            if (minYPos != maxYPos) {
+            if (bin.isConnected() && minYPos != maxYPos) {
                 _drawLine(graphics, dataset, xpos, minYPos, xpos, maxYPos, true, _DEFAULT_WIDTH);
             }
 
@@ -2753,10 +2753,14 @@ public class Plot extends PlotBox {
             Format fmt = _formats.get(dataset);
 
             if ((fmt.impulsesUseDefault && _impulses) || (!fmt.impulsesUseDefault && fmt.impulses)) {
+                long prevypos = _INITIAL_PREVIOUS_VALUE;
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
-                    _drawImpulse(graphics, xpos, ypos, true);
+                    if (prevypos != ypos) {
+                        _drawImpulse(graphics, xpos, ypos, true);
+                        prevypos = ypos;
+                    }
                 }
             }
 
@@ -2769,25 +2773,35 @@ public class Plot extends PlotBox {
 
 
             if (marks != 0) {
+                long prevypos = _INITIAL_PREVIOUS_VALUE;
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
-                    _drawPoint(graphics, dataset, xpos, ypos, true);
+                    if (prevypos != ypos) {
+                        _drawPoint(graphics, dataset, xpos, ypos, true);
+                        prevypos = ypos;
+                    }
                 }
             }
 
             if (_bars) {
+                long prevypos = _INITIAL_PREVIOUS_VALUE;
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
-                    _drawBar(graphics, dataset, xpos, ypos, true);
+                    if (prevypos != ypos) {
+                        _drawBar(graphics, dataset, xpos, ypos, true);
+                        prevypos = ypos;
+                    }
                 }
             }
 
             if (bin.errorBar()) {
+                long prevypos = _INITIAL_PREVIOUS_VALUE;
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
-                    if (point.errorBar) {
+                    if (point.errorBar && prevypos != (_lry - (long) ((point.y - _yMin) * _yscale))) {
+
                         _drawErrorBar(graphics, dataset, xpos, _lry
                                 - (long) ((point.yLowEB - _yMin) * _yscale), _lry
                                 - (long) ((point.yHighEB - _yMin) * _yscale), true);
@@ -3130,7 +3144,7 @@ public class Plot extends PlotBox {
             int absolutePointIndex = pointIndex + _pointInBinOffset.get(_dataset);
             //The absolute point index is a index in the list of
             //  all points that once existed in the plot
-
+            
             if (_maxYPos < ypos) {
                 _maxYPos = ypos;
                 _rangeChanged = true;
@@ -3144,14 +3158,16 @@ public class Plot extends PlotBox {
                 _needConnectionWithPreviousBin = point.connected;
                 _firstYPos = ypos;
                 _firstPointIndex = absolutePointIndex;
+                _nextPointToPlot = _firstPointIndex; 
             } else {
+                _isConnected |= point.connected;
+             // if one point is connected within the bin, all points will be (it is difficult to do this otherwise)
+                
                 assert _afterLastPointIndex == absolutePointIndex; //Bin intervals should be contiguous intervals
             }
 
             _afterLastPointIndex = absolutePointIndex + 1;
-            _lastYPos = ypos;
-            _connected |= point.connected;
-                // if one point is connected within the bin, all points will be (it is difficult to do this otherwise)
+            _lastYPos = ypos;                
 
             _errorBar |= point.errorBar;
         }
@@ -3231,6 +3247,10 @@ public class Plot extends PlotBox {
         public boolean isConnectedWithPreviousBin() {
             return _isConnectedWithPreviousBin;
         }
+        
+        public boolean isConnected() {
+            return _isConnected;
+        }
 
 
         /**
@@ -3244,7 +3264,7 @@ public class Plot extends PlotBox {
          * This index is the index within the current points of the plot.
          */
         public int nextPointToPlot() {
-            return _firstPointIndex - _pointInBinOffset.get(_dataset) + _nextPointToPlot;
+            return _nextPointToPlot - _pointInBinOffset.get(_dataset);
         }
 
         /**
@@ -3289,6 +3309,7 @@ public class Plot extends PlotBox {
 
         private long _firstYPos = java.lang.Long.MIN_VALUE;
 
+        private boolean _isConnected = false;
         private boolean _isConnectedWithPreviousBin = false;
 
         private long _lastYPos = java.lang.Long.MIN_VALUE;
