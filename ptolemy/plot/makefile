@@ -653,14 +653,14 @@ isj:
 
 # Update the ftp site
 # Update a location with the files necessary to download
-DIST_BASE = /vol/ptolemy/pt0/ptweb/java
+DIST_BASE = /export/home/pt0/ptweb/java
 DIST_DIR = $(DIST_BASE)/$(PTDIST)
 
 
 update_ftp:
-	rm -rf $(DIST_DIR)
-	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); gtar -zxf -)
-	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
-	cp doc/download/index.htm $(DIST_DIR)/ptolemy/plot/doc/download
-	cp $(PTDIST).tar.gz $(DIST_DIR)/ptolemy/plot/
-	cp $(PTDIST).zip $(DIST_DIR)/ptolemy/plot/
+	ssh bennett rm -rf $(DIST_DIR)
+	cat $(PTDIST).tar.gz | ssh bennett "cd $(DIST_BASE); gtar -zxf -"
+	ssh bennett "cd $(DIST_BASE)/$(PTDIST)_tmp/; tar -cf - . | (cd $(DIST_DIR)/ptolemy/plot/doc/download; tar -xpf -)"
+	scp doc/download/index.htm bennett:$(DIST_DIR)/ptolemy/plot/doc/download
+	scp $(PTDIST).tar.gz bennett:$(DIST_DIR)/ptolemy/plot/
+	scp $(PTDIST).zip bennett:$(DIST_DIR)/ptolemy/plot/

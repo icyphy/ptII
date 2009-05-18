@@ -94,7 +94,7 @@ PTDIST_EX_BASE = $(PTDIST).ex
 PTDIST_EX =	$(PTTMPDIR)/$(PTDIST_EX_BASE)
 
 # GNU tar
-GNUTAR =	gtar
+GNUTAR =	tar
 
 # Minimal path for testing.  The path should not include GNU make.
 TESTPATH = 	/opt/local/j2sdk1.4.2_02/bin/:/bin:/usr/ccs/bin:.
@@ -126,7 +126,7 @@ $(PTTMPDIST): pttmpdist
 pttmpdist: $(PTTMPDIR) $(PTDIST_EX)
 	-mkdir -p $(PTTMPDIR)/$(PTDIST)
 	(cd $(ROOT); \
-	 	$(GNUTAR) -cf - --exclude="adm" --exclude="CVS" -X $(ME)/$(PTDIST_EX) \
+	 	$(GNUTAR) -cf - --exclude="adm" --exclude="CVS" --exclude=".svn" -X $(ME)/$(PTDIST_EX) \
 			$(ME) $(TOPFILES)) | \
 	(cd $(PTTMPDIR)/$(PTDIST); $(GNUTAR) -xf -)
 	# Remove .classpath, bin/comm.policy, lib/ptII.properties from configure
@@ -143,7 +143,7 @@ $(PTDIST_EX): $(ROOT)/mk/ptdist.mk
 		echo "won't create a tar exclude file"; \
 	else \
 		echo "dummy" | \
-		awk '{printf("adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n*.~*\n*Build_Output\n*.buildinstaller*\n")}' \
+		awk '{printf("adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n.svn\n*.~*\n*Build_Output\n*.buildinstaller*\n")}' \
 			> $@; \
 	fi
 
