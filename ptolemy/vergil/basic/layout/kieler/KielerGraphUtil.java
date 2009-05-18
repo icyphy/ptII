@@ -66,12 +66,6 @@ import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
 public class KielerGraphUtil {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /**
