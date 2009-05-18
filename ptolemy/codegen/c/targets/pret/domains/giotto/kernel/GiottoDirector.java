@@ -39,7 +39,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.codegen.c.actor.Receiver;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.DoubleToken;

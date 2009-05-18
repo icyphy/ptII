@@ -33,12 +33,10 @@ import java.util.List;
 import ptolemy.codegen.c.domains.ptides.kernel.PtidesEmbeddedDirector;
 import ptolemy.codegen.c.domains.ptides.lib.OutputDevice;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 /**
  * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice.

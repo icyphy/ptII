@@ -1,8 +1,8 @@
 package ptolemy.codegen.rtmaude.domains.fsm.kernel;
 
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
-import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
+import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class AbstractActionsAttribute extends RTMaudeAdaptor {

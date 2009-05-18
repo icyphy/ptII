@@ -28,7 +28,6 @@
 package ptolemy.codegen.c.domains.ptides.kernel;
 
 import ptolemy.codegen.actor.Director;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////

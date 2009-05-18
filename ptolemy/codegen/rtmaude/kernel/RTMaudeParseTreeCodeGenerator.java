@@ -12,14 +12,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BitwiseOperationToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.FunctionToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.MatrixToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtBitwiseNode;

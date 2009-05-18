@@ -30,7 +30,6 @@ package ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.codegen.c.domains.ptides.kernel.PtidesEmbeddedDirector;
 import ptolemy.codegen.c.domains.ptides.lib.InputDevice;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.IntToken;

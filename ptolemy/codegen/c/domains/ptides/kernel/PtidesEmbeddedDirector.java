@@ -42,7 +42,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.PortCodeGenerator;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;

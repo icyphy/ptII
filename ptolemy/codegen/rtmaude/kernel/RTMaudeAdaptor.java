@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.sf.saxon.type.Type;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
@@ -15,7 +13,6 @@ import ptolemy.codegen.rtmaude.data.expr.PropertyParameter;
 import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 

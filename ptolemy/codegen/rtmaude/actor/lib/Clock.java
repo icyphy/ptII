@@ -3,7 +3,6 @@ package ptolemy.codegen.rtmaude.actor.lib;
 import java.util.Map;
 
 import ptolemy.codegen.rtmaude.kernel.Entity;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class Clock extends Entity {

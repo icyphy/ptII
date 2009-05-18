@@ -1,6 +1,5 @@
 package ptolemy.codegen.c.domains.ptides.lib;
 
-import ptolemy.codegen.c.domains.ptides.lib.OutputDevice;
 
 /**
  * A code generation helper class for ptolemy.domains.ptides.lib.ActuatorOutputDevice

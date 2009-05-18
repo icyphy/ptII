@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.codegen.rtmaude.kernel.Entity;
-import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
+import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;

@@ -1,7 +1,6 @@
 package ptolemy.codegen.rtmaude.data.expr;
 
 import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
-import ptolemy.codegen.rtmaude.kernel.RTMaudeParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class Variable extends RTMaudeAdaptor {

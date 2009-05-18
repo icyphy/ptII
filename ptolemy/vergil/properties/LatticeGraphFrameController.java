@@ -32,9 +32,9 @@ import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ExternalIOPortController;
+import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.TransitionController;
-import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.JGraph;
 

@@ -27,35 +27,17 @@
  */
 package ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel;
 
-import java.util.*;
-
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-//import ptolemy.actor.Director;
-import ptolemy.codegen.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.LimitedFiringSource;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.DFUtilities;
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.codegen.kernel.ActorCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.PortCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.giotto.kernel.GiottoReceiver;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
 
 
 
