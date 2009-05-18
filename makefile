@@ -256,8 +256,8 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/codegen/c/targets/arduino \
 		ptolemy/codegen/c/targets/iRobot \
 		ptolemy/codegen/c/targets/luminary \
-		ptolemy/codegen/c/targets/openRTOS \
 		ptolemy/codegen/c/targets/pret \
+		ptolemy/codegen/c/targets/win32 \
 		ptolemy/codegen/domains/sr \
 		ptolemy/codegen/kernel/newInterfaces \
 		ptolemy/codegen/kernel/test/substitute.out \
