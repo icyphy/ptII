@@ -1,5 +1,5 @@
 /***preinitBlock***/
-int $actorSymbol(result) = 0;
+unsigned char $actorSymbol(result) = 0;
 /**/
 
 /*** sharedBlock ***/
@@ -8,6 +8,21 @@ int $actorSymbol(result) = 0;
 
 /*** initBlock ***/
 //GPIOA_Transmitter initBlock
+/**/
+
+/*** initializeGPOutput($pad, $pin) ***/
+// initialization for GPOutput$pad$pin
+// first disable GPIO
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
+GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+IntDisable(INT_GPIO$pad);
+GPIOPinIntDisable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
+SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIO$pad);
+// then configure GPIO
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
+GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_OUT); 
+GPIOPadConfigSet(GPIO_PORT$pad_BASE,GPIO_PIN_$pin,GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD); 
+GPIOPinTypeGPIOOutput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 /**/
 
 /*** fireBlock($actuator) ***/
@@ -47,17 +62,12 @@ else
 	}*/
 
 	#ifdef LCD_DEBUG
-	sprintf(str,"dead miss");
-	RIT128x96x4StringDraw(str, 0,90,15);
+    debugMessage("dead miss");
 	#endif
 }
-#ifdef LCD_DEBUG
-//sprintf(str,"actuatorfired %d",fireActuatorCount);
-//RIT128x96x4StringDraw(str, 0,60,15);
-#endif	   
 /**/
  
 /*** actuationBlock($pad, $pin) ***/
-$actorSymbol(result) ^= $actorSymbol(result);	//Toggle pin value
-GPIOPinWrite(GPIO_PORT$pad_BASE,GPIO_PIN_$pin,GPIO_PIN_$pin*$actorSymbol(result));
+$actorSymbol(result) ^= 0xFF;	//Toggle pin value
+GPIOPinWrite(GPIO_PORT$pad_BASE, GPIO_PIN_$pin, GPIO_PIN_$pin & $actorSymbol(result));
 /**/

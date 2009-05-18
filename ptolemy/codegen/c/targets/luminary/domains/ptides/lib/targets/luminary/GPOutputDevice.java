@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,10 +50,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class GPOutputDevice extends OutputDevice {
     /** Construct a helper with the given
-     *  ptolemy.domains.ptides.lib.GPIOA_Transmitter actor.
+     *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
      *  @throws IllegalActionException 
-     * @throws NameDuplicationException 
+     *  @throws NameDuplicationException 
      */
     public GPOutputDevice(ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor) throws IllegalActionException, NameDuplicationException {
         super(actor);
@@ -114,6 +115,15 @@ public class GPOutputDevice extends OutputDevice {
         _codeStream.appendCodeBlock("fireBlock", args);
 
         return processCode(_codeStream.toString());
+    }
+    
+    public String generateHardwareInitializationCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        List args = new ArrayList();
+        args.add(_padID);
+        args.add(_pinID);
+        code.append(processCode(_codeStream.getCodeBlock("initializeGPOutput", args)));
+        return code.toString();
     }
     
     private String _pinID;

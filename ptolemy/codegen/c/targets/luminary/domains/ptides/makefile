@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/luminary/domains/ptides
 
-DIRS =      kernel lib
+DIRS =      demo kernel lib
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../..
@@ -50,6 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
+	demo/demo.jar \
 	kernel/kernel.jar
 
 JSRCS =

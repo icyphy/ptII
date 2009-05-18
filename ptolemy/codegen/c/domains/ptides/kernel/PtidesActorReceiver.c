@@ -13,7 +13,7 @@ event->offsetTime.secs = $offsetTimeSecs;
 event->offsetTime.nsecs = $offsetTimeNsecs;
 event->fireMethod = $sinkFireName;
 event->Val.$type_Value = $convertedValue;
-event->sinkEvent = $sinkPortName;
+event->sinkEvent = &($sinkPortName);
 addEvent(event);
 }
 /**/

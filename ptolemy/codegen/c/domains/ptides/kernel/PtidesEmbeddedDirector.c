@@ -1,5 +1,5 @@
 /*** StructDefBlock ***/
-#define LCD_DEBUG
+//#define LCD_DEBUG
 
 #define FALSE 0
 #define TRUE  1
@@ -31,7 +31,7 @@ typedef struct event {
     } Val;
     Tag tag;
     void (*fireMethod)();
-	struct event* sinkEvent;
+	struct event** sinkEvent;
 
     int channelIndex;
     Time deadline;
@@ -451,7 +451,7 @@ void setCurrentModelTag(Event* currentEvent) {
  * propagate the data token to the downstream input port Event pointer.
  */
 void propagateDataToken(Event* currentEvent){
-    currentEvent->sinkEvent = currentEvent;
+    *(currentEvent->sinkEvent) = currentEvent;
 }
 
 /* 

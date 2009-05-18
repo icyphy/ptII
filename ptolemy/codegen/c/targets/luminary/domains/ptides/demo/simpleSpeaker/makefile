@@ -2,7 +2,7 @@
 #
 # @Authors: Jeff C. Jensen, based on a file by Man-Kit Leung, based on a file by Christopher Brooks
 #
-# $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
+# $Id$
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,9 +29,9 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/lib/targets
+ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/demo/simpleSpeaker
 
-DIRS =      luminary
+DIRS =      
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../../../..

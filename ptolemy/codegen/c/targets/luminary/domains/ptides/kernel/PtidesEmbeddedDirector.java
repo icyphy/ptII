@@ -195,6 +195,8 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         code.append(_codeStream.getCodeBlock("preinitPDBlock", args));
         
         code.append(_codeStream.getCodeBlock("initPDCodeBlock"));
+        
+        code.append(_generateInitializeHardwareCode());
 
         return code.toString();
     }
@@ -275,7 +277,6 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      */
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = super.getSharedCode();
-        sharedCode.add(_generateInitializeHardwareCode());
         return sharedCode;
     }
     
@@ -326,32 +327,26 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         return code.toString()*/
         return "";
     }
-    
+
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals
      *  @throws IllegalActionException
      */
     protected String _generateInitializeHardwareCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
-        code.append("void initializeGPIO() {" + _eol);
+
+        // FIXME: output initialization always needs to happen before input initialization.
+        code.append("void initializeHardware() {" + _eol);
         for (Actor actor : _actuators.keySet()) {
-            List args = new ArrayList();
-            args.add((((GPOutputDevice)actor).pad).stringValue());
-            args.add(((IntToken)(((GPOutputDevice)actor).pin).getToken()).toString());
-            code.append(processCode(_codeStream.getCodeBlock("initializeGPOutput", args)));
+            code.append(((ptolemy.codegen.c.domains.ptides.lib.OutputDevice)_getHelper(actor)).generateHardwareInitializationCode());
         }
         for (Actor actor : _sensors.keySet()) {
-            List args = new ArrayList();
-            args.add((((GPInputDevice)actor).pad).stringValue());
-            args.add(((IntToken)(((GPInputDevice)actor).pin).getToken()).toString());
-            code.append(processCode(_codeStream.getCodeBlock("initializeGPInput", args)));
+            code.append(((ptolemy.codegen.c.domains.ptides.lib.InputDevice)_getHelper(actor)).generateHardwareInitializationCode());
         }
         
         code.append("}" + _eol);
         return code.toString();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
