@@ -183,4 +183,4 @@ if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EEC
     sh $ADMDIR/bin/coveragesummary >> $mailmsg
 fi
 
-cat $mailmsg | /usr/ucb/Mail -s "Ptolemy II Nightly Build" $mailto
+cat $mailmsg | mailx -s "Ptolemy II Nightly Build `hostname -s`" $mailto
