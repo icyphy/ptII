@@ -61,8 +61,8 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
 
     /** Construct the code generator helper associated with the given
      *  FSMDirector.
-     *  @param giottoDirector The associated
-     *  ptolemy.domains.giotto.kernel.FSMDirector
+     *  @param fsmDirector The associated
+     *  ptolemy.domains.fsm.kernel.FSMDirector
      */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector fsmDirector) {
         super(fsmDirector);
