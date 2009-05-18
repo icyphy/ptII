@@ -1230,7 +1230,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                             <property name="input"/>
                         </port>
                     </entity>
-                    <entity name="ZeroCrossingDetector2" class="ptolemy.domains.continuous.lib.ZeroCrossingDetector">
+                    <entity name="ZeroCrossingDetector2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                         <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
                         </property>
                         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="true">
@@ -1240,7 +1240,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 265.0]">
                         </property>
                     </entity>
-                    <entity name="ZeroCrossingDetector" class="ptolemy.domains.continuous.lib.ZeroCrossingDetector">
+                    <entity name="ZeroCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                         <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
                         </property>
                         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="true">
@@ -1369,7 +1369,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                             <property name="input"/>
                         </port>
                     </entity>
-                    <entity name="ZeroCrossingDetector" class="ptolemy.domains.continuous.lib.ZeroCrossingDetector">
+                    <entity name="ZeroCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                         <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
                         </property>
                         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="true">
@@ -1379,7 +1379,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 265.0]">
                         </property>
                     </entity>
-                    <entity name="ZeroCrossingDetector2" class="ptolemy.domains.continuous.lib.ZeroCrossingDetector">
+                    <entity name="ZeroCrossingDetector2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                         <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
                         </property>
                         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="true">
