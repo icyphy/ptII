@@ -1,3 +1,6 @@
+/* Utilities class to work with the KIELER graph data structure.
+ * 
+ */
 package ptolemy.vergil.basic.layout.kieler;
 
 import java.awt.geom.Point2D;
@@ -25,20 +28,36 @@ import de.cau.cs.kieler.kiml.layout.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
 
+//////////////////////////////////////////////////////////////////////////
+////KielerGraphUtil
+/**
+ * Static helper class to work with KIELER graph datastructures. 
+ * 
+ * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
+ *
+ */
 public class KielerGraphUtil {
-    /**
-     * Print some status information about the layout run. I.e. the runtime of
-     * the layout algorithm given by the progress monitor
-     * 
-     * @param kgraph
-     * @param progressMonitor
-     */
-    protected static void _printStatus(KNode kgraph,
-            IKielerProgressMonitor progressMonitor) {
-        System.out.println("KIELER Execution Time: "
-                + (progressMonitor.getExecutionTime() * 1000) + " ms");
-    }
     
+///////////////////////////////////////////////////////////////////
+////                         public variables                  ////
+    
+///////////////////////////////////////////////////////////////////
+////                         public methods                    ////
+
+///////////////////////////////////////////////////////////////////
+////                         protected methods                 ////
+
+    /**
+     * Get the absolute layout of a Kieler KNode, i.e. a layout containing
+     * an absolute position of the top left corner of the node instead
+     * of something relative to only its parent node.
+     * 
+     * @param node
+     *          The KNode of which to retrieve the absolute layout.
+     * @return A shape layout containing the original size of the node
+     *          and its location in absolute coordinates (not relative
+     *          to its parent)
+     */
     protected static KShapeLayout _getAbsoluteLayout(KNode node) {
         KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(node);
         KShapeLayout absoluteLayout = KLayoutDataFactory.eINSTANCE
@@ -58,6 +77,20 @@ public class KielerGraphUtil {
         return absoluteLayout;
     }
     
+    /**
+     * Reposition a small object in a big object according to a given direction (NORTH, 
+     * EAST, SOUTH, WEST). The small object will be aligned to the big object's 
+     * direction side and centered on the other coordinate.
+     * @param originalBounds
+     *          Big object's bounds
+     * @param shrunkBounds
+     *          Small object's bounds
+     * @param direction
+     *          Direction of the small object within the big object given by a SwingConstants
+     *          direction constant
+     * @return  New location of the small object.
+     *          
+     */
     protected static Point2D _shrinkCoordinates(Rectangle2D originalBounds,
             Rectangle2D shrunkBounds, int direction) {
         double widthDiff = (originalBounds.getWidth() - shrunkBounds.getWidth()) / 2;
@@ -89,8 +122,10 @@ public class KielerGraphUtil {
      * Debug output a KEdge to a String, i.e. will represent all bendpoints in
      * the String.
      * 
-     * @param edge
+     * @param edge 
+     *          The edge to be toStringed
      * @return
+     *          A String representing the KEdge
      */
     protected static String _toString(KEdge edge) {
         StringBuffer string = new StringBuffer();
@@ -106,10 +141,34 @@ public class KielerGraphUtil {
         return string.toString();
     }
 
+    /**
+     * Debug output a KNode to a String, i.e. will represent the
+     * whole subgraph starting with this node recursively and
+     * also present all outgoing edges of all nodes.
+     * 
+     * @param knode 
+     *          The node to be toStringed
+     * @return
+     *          A String representing the KNode
+     */
     protected static String _toString(KNode knode) {
         return _toString(knode, 0);
     }
 
+
+    /**
+     * Debug output a KNode to a String, i.e. will represent the
+     * whole subgraph starting with this node recursively and
+     * also present all outgoing edges of all nodes.
+     * 
+     * @param knode 
+     *          The node to be toStringed
+     * @param level
+     *          Tree level of the currently processed element. Used for
+     *          recursive operation.
+     * @return
+     *          A String representing the KNode
+     */
     protected static String _toString(KNode knode, int level) {
         StringBuffer buffer = new StringBuffer();
         KShapeLayout layout = KimlLayoutUtil.getShapeLayout(knode);
@@ -135,9 +194,11 @@ public class KielerGraphUtil {
     /**
      * Write a KGraph (Kieler graph datastructure) to a file in its XMI
      * representation. Can be used for debugging (manually look at it) or
-     * loading it elsewhere, e.g. a KIELER Graph viewer.
+     * loading it elsewhere, e.g. a KIELER Graph viewer. The default filename
+     * is kgraph.xmi and will be written to the current working directory.
      * 
      * @param kgraph
+     *          The Kieler Graph datastructure given by its root KNode.
      */
     protected static void _writeToFile(KNode kgraph) {
         // Create a resource set.

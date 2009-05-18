@@ -251,7 +251,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
         // create change request and fire it
-        _ptolemyModelUtil.performChangeRequest(_compositeActor);
+        _ptolemyModelUtil._performChangeRequest(_compositeActor);
     }
 
     /**
@@ -317,7 +317,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // store node in the correct composite node depending on
                     // whether it has connections or not
                     if (PtolemyModelUtil
-                            ._hasConnections((NamedObj) semanticNode))
+                            ._isConnected((NamedObj) semanticNode))
                         knode.setParent(hierarchicalLayoutNode);
                     else
                         knode.setParent(boxLayoutNode);
@@ -829,6 +829,18 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // FIXME: Vertices are no ports!
                     return _getPort(nodes[(i + 1) % nodes.length],
                             KPortType.OUTPUT, relation);
+                }
+            }
+            // the port is a node, e.g. an inner port
+            else{
+                Object semanticObject = aGraph.getSemanticObject(nodes[i]);
+                if( semanticObject instanceof Port ){
+                    Port innerPort = (Port)semanticObject;
+                    //innerPort.
+                    // FIXME: How to determine whether a port is an input or output port???
+                    boolean isInput = PtolemyModelUtil._isInput(innerPort);
+                    
+                    System.out.println();
                 }
             }
         }
