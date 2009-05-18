@@ -478,7 +478,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         klayout.setYpos((float) bounds.getY());
         // transform coordinates
         _ptolemy2KNode(klayout);
-        LayoutOptions.setFixedSize(klayout);
+        LayoutOptions.setFixedSize(klayout, true);
         LayoutOptions.setPortConstraints(klayout, PortConstraints.FIXED_POS);
 
         // draw the director always as first element
@@ -511,7 +511,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         KShapeLayout layout = KimlLayoutUtil.getShapeLayout(knode);
         layout.setHeight(1);
         layout.setWidth(1);
-        LayoutOptions.setFixedSize(layout);
+        LayoutOptions.setFixedSize(layout, true);
         // as Kieler so far only suport nodes WITH port constraints,
         // add dummy ports
         KPort kinputport = KimlLayoutUtil.createInitializedPort();
@@ -965,7 +965,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * With the flag set to true especially the Kieler graph structure will be written to
      * a file on harddisk in order to review the graph later on.
      */
-    private boolean _debug = true;
+    private boolean _debug = false;
 
     /**
      * Map Kieler KEdges to Ptolemy Diva Edges.
