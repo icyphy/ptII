@@ -36,15 +36,15 @@ import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
  *
  */
 public class KielerGraphUtil {
-    
-///////////////////////////////////////////////////////////////////
-////                         public variables                  ////
-    
-///////////////////////////////////////////////////////////////////
-////                         public methods                    ////
 
-///////////////////////////////////////////////////////////////////
-////                         protected methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Get the absolute layout of a Kieler KNode, i.e. a layout containing
@@ -75,7 +75,7 @@ public class KielerGraphUtil {
         absoluteLayout.setYpos(klayout.getYpos() + offsetY);
         return absoluteLayout;
     }
-    
+
     /**
      * Reposition a small object in a big object according to a given direction (NORTH, 
      * EAST, SOUTH, WEST). The small object will be aligned to the big object's 
@@ -154,7 +154,6 @@ public class KielerGraphUtil {
         return _toString(knode, 0);
     }
 
-
     /**
      * Debug output a KNode to a String, i.e. will represent the
      * whole subgraph starting with this node recursively and
@@ -223,5 +222,5 @@ public class KielerGraphUtil {
         } catch (IOException e) {
         }
     }
-    
+
 }

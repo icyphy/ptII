@@ -141,7 +141,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      *            layouted.
      */
     public void setModel(CompositeActor model) {
-        this._compositeActor = (CompositeActor) model;
+        this._compositeActor = model;
     }
 
     /**
@@ -197,8 +197,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 
             // write to XML file for debugging layout
             // writing to file requires XMI resource factory
-            if (_debug)
+            if (_debug) {
                 KielerGraphUtil._writeToFile(boxLayoutNode);
+            }
 
             // apply layout to ptolemy model. Will do so
             // recursively for all containing nodes (e.g. especially
@@ -316,11 +317,11 @@ public class KielerLayout extends AbstractGlobalLayout {
                     KNode knode = _createKNode(node, semanticNode);
                     // store node in the correct composite node depending on
                     // whether it has connections or not
-                    if (PtolemyModelUtil
-                            ._isConnected((NamedObj) semanticNode))
+                    if (PtolemyModelUtil._isConnected((NamedObj) semanticNode)) {
                         knode.setParent(hierarchicalLayoutNode);
-                    else
+                    } else {
                         knode.setParent(boxLayoutNode);
+                    }
 
                     // handle ports
                     if (semanticNode instanceof Actor
@@ -381,7 +382,6 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
-   
     /** Create a Kieler KEdge for a Ptolemy Diva edge object. The KEdge will be
      * setup between either two ports or relation vertices or mixed. Hence the
      * KEdge corresponds more likely a Ptolemy link than a relation.
@@ -407,8 +407,9 @@ public class KielerLayout extends AbstractGlobalLayout {
 
             Object semObj = aGraph.getSemanticObject(divaEdge);
             Relation rel = null;
-            if (semObj instanceof Relation)
+            if (semObj instanceof Relation) {
                 rel = (Relation) semObj;
+            }
 
             Object sourceNode = edgeModel.getHead(divaEdge);
             Object targetNode = edgeModel.getTail(divaEdge);
@@ -482,8 +483,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         LayoutOptions.setPortConstraints(klayout, PortConstraints.FIXED_POS);
 
         // draw the director always as first element
-        if (semanticNode instanceof Director)
+        if (semanticNode instanceof Director) {
             BoxLayoutProvider.setPriority(klayout, 1);
+        }
 
         // store node for later applying layout back
         _ptolemy2KielerNodes.put(node, knode);
@@ -579,8 +581,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         knode.getPorts().add(kport);
         kport.setType(portType);
         // set a rank if valid
-        if (rank != NO_RANK)
+        if (rank != NO_RANK) {
             LayoutOptions.setPortRank(kportlayout, rank);
+        }
 
         // set port side and calc actual offset
         float offsetX = 0, offsetY = 0;
@@ -707,9 +710,10 @@ public class KielerLayout extends AbstractGlobalLayout {
                     _createKPort(knode, portType, port, NO_RANK, index,
                             maxIndex, DEFAULT_PORT_SIZE);
                 }
-            } else
+            } else {
                 // if not a multiport, just create one port
                 _createKPort(knode, portType, port, NO_RANK, 0, 0, -1);
+            }
         }
     }
 
@@ -757,8 +761,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         if (ptolemyObject instanceof Vertex) {
             KNode knode = _ptolemy2KielerNodes.get(ptolemyObject);
             for (KPort port : knode.getPorts()) {
-                if (port.getType().equals(type))
+                if (port.getType().equals(type)) {
                     return port;
+                }
             }
         } else if (ptolemyObject instanceof Port) {
             // Special case for multiports: For a particular relation, get its
@@ -774,8 +779,9 @@ public class KielerLayout extends AbstractGlobalLayout {
             int index = relations.indexOf(rel);
             List<KPort> kports = _ptolemy2KielerPorts.get(ptolemyObject);
             if (kports != null) {
-                if (index >= 0 && index < kports.size())
+                if (index >= 0 && index < kports.size()) {
                     return kports.get(index);
+                }
                 return kports.get(0);
             }
         }
@@ -821,10 +827,11 @@ public class KielerLayout extends AbstractGlobalLayout {
                 NamedObj obj = port.getContainer();
                 if (obj instanceof Actor) {
                     Actor actor = (Actor) obj;
-                    if (actor.outputPortList().contains(port))
+                    if (actor.outputPortList().contains(port)) {
                         return _getPort(nodes[i], KPortType.OUTPUT, relation);
-                    else if (actor.inputPortList().contains(port))
+                    } else if (actor.inputPortList().contains(port)) {
                         ;
+                    }
                     // then return the other one
                     // FIXME: Vertices are no ports!
                     return _getPort(nodes[(i + 1) % nodes.length],
@@ -832,14 +839,12 @@ public class KielerLayout extends AbstractGlobalLayout {
                 }
             }
             // the port is a node, e.g. an inner port
-            else{
+            else {
                 Object semanticObject = aGraph.getSemanticObject(nodes[i]);
-                if( semanticObject instanceof Port ){
-                    Port innerPort = (Port)semanticObject;
-                    //innerPort.
-                    // FIXME: How to determine whether a port is an input or output port???
-                    boolean isInput = PtolemyModelUtil._isInput(innerPort);
-                    
+                if (semanticObject instanceof Port) {
+                    Port innerPort = (Port) semanticObject;
+                    PtolemyModelUtil._isInput(innerPort);
+
                     System.out.println();
                 }
             }

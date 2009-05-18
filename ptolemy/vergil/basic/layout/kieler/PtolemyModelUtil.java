@@ -220,8 +220,9 @@ public class PtolemyModelUtil {
      *          Attribute. Defaults to false.
      */
     protected static boolean _isConnected(NamedObj namedObj) {
-        if (namedObj instanceof Attribute)
+        if (namedObj instanceof Attribute) {
             return false;
+        }
         if (namedObj instanceof Actor) {
             Actor actor = (Actor) namedObj;
             List<Port> ports = new ArrayList<Port>();
@@ -231,8 +232,9 @@ public class PtolemyModelUtil {
                 // if any port of an actor is conencted to any other
                 // assume that there is also no visible connection
                 if (!port.connectedPortList().isEmpty()
-                        || !port.linkedRelationList().isEmpty())
+                        || !port.linkedRelationList().isEmpty()) {
                     return true;
+                }
 
             }
             return false;
@@ -251,14 +253,15 @@ public class PtolemyModelUtil {
      * @return
      *          True if the port is an input port
      */
-    protected static boolean _isInput(Port port){
+    protected static boolean _isInput(Port port) {
         // FIXME: this does not work. A port has no input attribute
         Attribute inputAttribute = port.getAttribute("input");
-        if( inputAttribute != null)
+        if (inputAttribute != null) {
             return true;
+        }
         return true;
     }
-    
+
     /**
      * Flush all buffered change requests to the given Actor. Reset
      * the buffer afterwards. 
