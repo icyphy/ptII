@@ -1,0 +1,129 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HelloWorld" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, -15.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 141, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.3456439393939, 100.2979008838384}">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="target" class="ptolemy.data.expr.StringParameter" value="posix">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, -10.0]">
+        </property>
+    </property>
+    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 90.0]">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A hello-world demonstration for Process Network&#10;(PN) code generation. There four actor instances of&#10;the ThreadClass. Each actor contains a Ramp (counter)&#10;and a MonitorValue (reporting) actor. The generated&#10;code executes each of them in a separate thread. &#10;The display outputs are interleaved arbitrarily.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 40.0]">
+        </property>
+    </property>
+    <class name="ThreadClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 90.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 55.0]">
+            </property>
+        </property>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 185.0]">
+            </property>
+        </entity>
+        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+            <doc>Monitor and display values</doc>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 185.0}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="Ramp.output" relation="relation"/>
+        <link port="MonitorValue.input" relation="relation"/>
+    </class>
+    <entity name="InstanceOfThread" class="ThreadClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfThread2" class="ThreadClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfThread3" class="ThreadClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfThread4" class="ThreadClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
+        </property>
+    </entity>
+</entity>
