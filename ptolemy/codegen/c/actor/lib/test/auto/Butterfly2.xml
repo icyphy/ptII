@@ -2,27 +2,63 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Butterfly2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 21, 908, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 21, 908, 642}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7643312101911">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{369.837499999999, 284.2266666666666}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.2970861486487, 271.0553209459459}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 95.0]">
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 80.0]">
         </property>
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 70.0]">
         </property>
     </property>
-    <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
+    <property name="firingCount" class="ptolemy.data.expr.Parameter" value="1000">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
@@ -36,15 +72,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210, -20}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 105.0]">
         </property>
     </property>
     <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 325.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 300.0]">
         </property>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
@@ -54,11 +90,11 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 205.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="-2.0">
         </property>
@@ -69,26 +105,26 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 340.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 275.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 290.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
@@ -99,11 +135,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 335.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 315.0]">
         </property>
     </entity>
     <entity name="UnaryMathFunction" class="ptolemy.actor.lib.UnaryMathFunction">
@@ -113,18 +149,18 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 205.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 205.0]">
         </property>
     </entity>
     <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
@@ -134,15 +170,15 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 290.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide3" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 445.0]">
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="12.0">
         </property>
@@ -153,18 +189,18 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 455.0]">
         </property>
     </entity>
     <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 400.0]">
         </property>
     </entity>
     <entity name="TrigFunction3" class="ptolemy.actor.lib.TrigFunction">
@@ -174,30 +210,30 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 445.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 460.0]">
         </property>
     </entity>
     <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 435.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide5" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 540.0]">
         </property>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="12.0">
         </property>
@@ -208,18 +244,18 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 550.0]">
         </property>
     </entity>
     <entity name="Ramp5" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="firingCount">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 495.0]">
         </property>
     </entity>
     <entity name="TrigFunction4" class="ptolemy.actor.lib.TrigFunction">
@@ -229,7 +265,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 540.0]">
         </property>
     </entity>
     <entity name="UnaryMathFunction2" class="ptolemy.actor.lib.UnaryMathFunction">
@@ -241,7 +277,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 540.0]">
         </property>
     </entity>
     <entity name="UnaryMathFunction3" class="ptolemy.actor.lib.UnaryMathFunction">
@@ -253,7 +289,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 540.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -261,7 +297,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{675, 290}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 275.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -271,52 +307,100 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="PolarToCartesian.magnitude" relation="relation17"/>
     <link port="PolarToCartesian.angle" relation="relation18"/>
