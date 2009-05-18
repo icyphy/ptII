@@ -120,11 +120,6 @@ public class PNDirector extends Director {
 		return code.toString();
 	}
 
-	private int _getStackSize() {
-        // FIXME: stack size.
-        return 0;
-    }
-
 	/**
 	 * Get the files needed by the code generated from this helper class. This
 	 * base class returns an empty set.
@@ -153,7 +148,15 @@ public class PNDirector extends Director {
 		return libraries;
 	}
 
-	/**
+	public String generateDirectorHeader() {
+    	return CodeGeneratorHelper.generateName(_director) + "_controlBlock";
+    }
+
+    public static String generatePortHeader(IOPort port, int i) {
+    	return CodeGeneratorHelper.generateName(port) + "_" + i + "_pnHeader";
+    }
+
+    /**
 	 * Generate the initialize code for the associated PN director.
 	 * 
 	 * @return The generated initialize code.
@@ -334,6 +337,16 @@ public class PNDirector extends Director {
 		return code.toString();
 	}
 
+    /**
+     * Return the size of the generated buffer for the specified
+     * port channel. This returns the value of  
+     * "initialQueueCapacity" parameter of the PNDirector
+     * @param port The specified port.
+     * @param channelNumber The specified channel number.
+     * @return The size of the generated buffer.
+     * @exception IllegalActionException If an error occurs
+     *  when getting the value from the parameter.
+     */
 	public int getBufferSize(IOPort port, int channelNumber)
 			throws IllegalActionException {
 		IntToken sizeToken = (IntToken) ((ptolemy.domains.pn.kernel.PNDirector) _director).initialQueueCapacity
@@ -344,6 +357,12 @@ public class PNDirector extends Director {
 		return Math.max(sizeToken.intValue(), 2);
 	}
 
+    /**
+     * Generate the shared code for the associated PN director.
+     * @return The generated shared code.
+     * @exception IllegalActionException If the helper associated 
+     * with the director throws it while generating shared code.
+     */
 	public Set getSharedCode() throws IllegalActionException {
 		Set sharedCode = new HashSet();
 		return sharedCode;
@@ -403,10 +422,6 @@ public class PNDirector extends Director {
 		return code.toString();
 	}
 
-	public static String generatePortHeader(IOPort port, int i) {
-		return CodeGeneratorHelper.generateName(port) + "_" + i + "_pnHeader";
-	}
-
 	/**
 	 * Generate the notTerminate flag variable for the associated PN director.
 	 * Generating notTerminate instead of terminate saves the negation in
@@ -416,10 +431,6 @@ public class PNDirector extends Director {
 	 */
 	protected String _generateNotTerminateFlag() {
 		return "true";// "director_controlBlock.controlBlock";
-	}
-
-	public String generateDirectorHeader() {
-		return CodeGeneratorHelper.generateName(_director) + "_controlBlock";
 	}
 
 	/**
@@ -553,6 +564,11 @@ public class PNDirector extends Director {
 				+ "_ThreadFunction";
 	}
 
-	private HashSet<String> _buffers = new HashSet<String>();
+	private int _getStackSize() {
+        // FIXME: stack size.
+        return 0;
+    }
+
+    private HashSet<String> _buffers = new HashSet<String>();
 
 }
