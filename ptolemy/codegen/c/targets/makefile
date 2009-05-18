@@ -53,9 +53,17 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	mpi/mpi.jar \
+	openRTOS/openRTOS.jar \
+	posix/posix.jar
+
+# Jar files corresponding to source code that is not shipped.
+EXPERIMENTALJARS = \
 	arduino/arduino.jar \
+	iRobot/iRobot.jar \
 	luminary/luminary.jar \
-	iRobot/iRobot.jar
+	pret/pret.jar \
+	win32/win32.jar
 
 # Keep this list alphabetized.
 JSRCS =
