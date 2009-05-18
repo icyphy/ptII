@@ -67,7 +67,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  the port the channel resides is a multiport, if it is, then only a static
      *  variable is needed instead of an array of length 1.
      */
-    public String generateCodeForHasToken(String channel) throws IllegalActionException;
+//    public String generateCodeForHasToken(String channel) throws IllegalActionException;
     
     /** Generate the send code.
      *  @param channel The channel for which the send code is generated.
