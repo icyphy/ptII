@@ -1,16 +1,16 @@
 /*** sharedBlock ***/
-        $super()
-        int $actorClass(j);
+	$super()
+	int $actorClass(j);
 /**/
 
 /*** initBlock ***/
-        $actorSymbol(_taps) = $clone_$cgType(taps)($ref(taps));
-        $super()
+	$actorSymbol(_taps) = $ref(taps);//$clone_$cgType(taps)($ref(taps));
+	$super()
 /**/
 
 /*** fireBlock ***/
-        $actorSymbol(_taps) = $ref(newTaps);
-    $super.prefireBlock()
+    $actorSymbol(_taps) = $ref(newTaps);
+    $super.reinitializeBlock()
 
     $super.fireBlock0()
     for ($actorClass(j) = 0; $actorClass(j) < $val(blockSize); $actorClass(j)++) {
