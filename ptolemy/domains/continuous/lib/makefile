@@ -53,7 +53,6 @@ JSRCS = \
 	Integrator.java \
 	LevelCrossingDetector.java \
 	PeriodicSampler.java \
-	ZeroCrossingDetector.java \
 	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -65,8 +64,7 @@ OTHER_FILES_TO_BE_JARED = \
 	integral.gif \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
-	wavegenerators.xml \
-	ZeroCrossingDetectorIcon.xml
+	wavegenerators.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

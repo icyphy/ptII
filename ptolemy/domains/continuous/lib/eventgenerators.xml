@@ -14,8 +14,6 @@
                 class="ptolemy.domains.continuous.lib.LevelCrossingDetector"/>
         <entity name="PeriodicSampler"
                 class="ptolemy.domains.continuous.lib.PeriodicSampler"/>
-        <entity name="ZeroCrossingDetector"
-                class="ptolemy.domains.continuous.lib.ZeroCrossingDetector"/>
       </group>
     ?>
   </configure>
