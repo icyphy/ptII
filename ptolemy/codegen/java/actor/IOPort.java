@@ -40,7 +40,6 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -126,18 +125,12 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
 
     public String generatePreFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        if (_isPthread()) {
-            code.append("MPI_recv();" + _eol);
-        }
         return code.toString();
     }
 
 
     public String generatePostFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        if (_isPthread()) {
-            code.append("MPI_send();" + _eol);
-        }
         return code.toString();
     }
 
@@ -237,10 +230,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 Receiver receiver = _getReceiver(
                         offsetObject.toString(), sinkChannelNumber, sinkPort);
 
-                if (_isPthread() && ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
-                    code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
 
-                } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
+                if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
                     // PNReceiver.
                     code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
@@ -301,9 +292,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         //        }
 
         for (int i = 0; i < port.getWidth(); i++) {
-            if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isMpiReceiveBuffer(port, i)) {
-                // do nothing.
-            } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
+
+            if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
                 // FIXME: this is kind of hacky.
                 //PNDirector pnDirector = (PNDirector)//directorHelper;
@@ -329,84 +319,6 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private String _generateMPISendCode(int channelNumber,
-            int rate, ptolemy.actor.IOPort sinkPort,
-            int sinkChannelNumber, Director director) throws IllegalActionException {
-        ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
-
-        StringBuffer code = new StringBuffer();
-
-        code.append("// generateMPISendCode()" + _eol);
-
-        for (int i = 0; i < rate; i++) {
-
-            int sinkRank = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getRankNumber((Actor) sinkPort.getContainer());
-            int sourceRank = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getRankNumber((Actor) port.getContainer());
-
-            code.append("// Initialize send tag value." + _eol);
-            code.append("static int " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + " = " +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
-
-            if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector._DEBUG) {
-                code.append("printf(\"" + generateSimpleName(port.getContainer()) + "[" + sourceRank + "] sending msg <" +
-                        sinkRank + ", %d> for " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getBufferLabel(port, channelNumber) +
-                        "\\n\", " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
-            }
-
-            code.append("MPI_Isend(&");
-
-            String[] channelAndOffset = new String[2];
-            channelAndOffset[0] = "" + sinkChannelNumber;
-            channelAndOffset[1] = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" +
-            ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current]";
-
-            String buffer =
-                CodeGeneratorHelper.generatePortReference(sinkPort, channelAndOffset , false);
-
-            code.append(buffer);
-
-            // count.
-            code.append(", 1");
-
-            // FIXME: handle different mpi data types.
-            if (port.getType() == BaseType.DOUBLE) {
-                code.append(", MPI_DOUBLE");
-            } else if (port.getType() == BaseType.INT) {
-                code.append(", MPI_INT");
-            } else {
-                assert false;
-            }
-
-            code.append(", " + sinkRank);
-
-            code.append(", " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) +
-                    ", " + "comm, &" +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateMpiRequest(sinkPort, sinkChannelNumber) + "[" +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(sinkPort, sinkChannelNumber) +
-                    ".current" + (i == 0 ? "" : i) + "]]" + ");" + _eol);
-
-            if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector._DEBUG) {
-                code.append("printf(\"" + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getBufferLabel(port, channelNumber) +
-                        ", rank[" + sourceRank + "], sended tag[%d]\\n\", " +
-                        ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
-            }
-        }
-
-        // Update the Offset.
-        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(sinkPort, sinkChannelNumber) +
-                ".current += " + rate + ";" + _eol);
-
-        ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector directorHelper = (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector) _getHelper(director);
-        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + " += " +
-                directorHelper.getNumberOfMpiConnections(true) + ";" + _eol);
-
-        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + " &= 32767; // 2^15 - 1 which is the max tag value." + _eol);
-
-        return  code + _eol;
-
-    }
-
     /**
      * Generate the expression that represents the offset in the generated
      * code.
@@ -426,11 +338,6 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 .getToken()).booleanValue();
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-
-        //if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isLocalBuffer(port, channel)) {
-        //    int i = 1;
-        //}
-
 
         // When dynamic references are allowed, any input ports require
         // offsets.
@@ -481,11 +388,6 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 // getBufferSize(port, channelNumber) will always
                 // return a value at least 2.
 
-                //              if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isLocalBuffer(port, channel)) {
-                //              temp = offsetObject.toString();
-                //              temp = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateFreeSlots(port, channel) +
-                //              "[" + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(port, channel) + ".current]";
-                //              } else
                 if (padBuffers) {
                     int modulo = getBufferSize(port, channel) - 1;
                     temp = "(" + offsetObject.toString() + " + " + offsetString
@@ -511,11 +413,6 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 result = "[" + offset + "]";
             } else {
 
-                //              if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isLocalBuffer(port, channel)) {
-                //              result = offsetObject.toString();
-                //              result = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateFreeSlots(port, channel) +
-                //              "[" + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(port, channel) + ".current]";
-                //              } else
                 if (padBuffers) {
                     int modulo = getBufferSize(port, channel) - 1;
                     result = "[" + offsetObject + "&" + modulo + "]";
@@ -580,20 +477,14 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         }
     }
 
-
-//    private boolean _isMpi() {
-//        return getCodeGenerator().getAttribute("mpi") != null;
-//    }
-
-
     private boolean _isPthread() {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         boolean isPN = (((Actor) port.getContainer()).getDirector()
                 instanceof ptolemy.domains.pn.kernel.PNDirector);
 
-        return isPN && (null == getCodeGenerator().getAttribute("mpi"))
-        && (getCodeGenerator().target.getExpression().equals("default") ||
-            getCodeGenerator().target.getExpression().equals("posix"));
+        return isPN && 
+        (getCodeGenerator().target.getExpression().equals("default") ||
+         getCodeGenerator().target.getExpression().equals("posix"));
     }
 
 
