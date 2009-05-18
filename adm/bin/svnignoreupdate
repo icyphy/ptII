@@ -11,7 +11,7 @@ classDirs=`egrep ".class$" $statusFile | xargs -n 1 dirname | sort | uniq`
 for classDir in $classDirs
 do
     echo $classDir
-    svn propget snv:ignore $classDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    svn propget svn:ignore $classDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
     echo '*.class' >> $svnIgnoreFile
     svn propset svn:ignore -F $svnIgnoreFile $classDir
 done
@@ -20,9 +20,19 @@ alljtestsDirs=`egrep "alljtests.tcl$" $statusFile | xargs -n 1 dirname | sort | 
 for alljtestsDir in $alljtestsDirs
 do
     echo $alljtestsDir
-    svn propget snv:ignore $alljtestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    svn propget svn:ignore $alljtestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
     echo 'alljtests.tcl' >> $svnIgnoreFile
     svn propset svn:ignore -F $svnIgnoreFile $alljtestsDir
+done
+
+
+alljsimpletestsDirs=`egrep "alljsimpletests.tcl$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for alljsimpletestsDir in $alljsimpletestsDirs
+do
+    echo $alljsimpletestsDir
+    svn propget svn:ignore $alljsimpletestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo 'alljsimpletests.tcl' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $alljsimpletestsDir
 done
 
 #rm -f $statusFile
