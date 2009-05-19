@@ -84,8 +84,8 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  @exception IllegalActionException If the superclass throws
      *   it or if there is no executive director.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
 
         _eventAtPort = new HashMap<IOPort, PriorityQueue>();
 
@@ -124,6 +124,8 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         eventList.add(event);
         for (int i = _peekingIndex; (i + 1) < _eventQueue.size(); i++) {
             DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(i+1);
+            // FIXME: when causality interface for RealDependency works, replace this actor
+            // by the same equivalence class.
             if (nextEvent.hasTheSameTagAs(event) && (nextEvent.actor() == event.actor())) {
                 eventList.add(nextEvent);
             } else {
@@ -136,6 +138,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     /** Return the actor associated with this event. This method takes
      *  all events of the same tag destined for the same actor from the event 
      *  queue, and return the actor associated with it.
+     *  
      */
     protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
         if (events.get(0) != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
@@ -233,7 +236,8 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         }
         return result;
     }
-
+    
+    protected int _peekingIndex;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
@@ -245,5 +249,5 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  each iteration within _getNextSafeEvent().
      *  @see #_getNextSafeEvent()
      */
-    private int _peekingIndex;
+    
 }

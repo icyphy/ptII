@@ -52,6 +52,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
+import ptolemy.domains.ptides.lib.NetworkInputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -484,7 +485,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         _currentTime = newTime;
     }
-    
+
     /** Set the timestamp and microstep of the current time.
      */
     public void setTag(Time timestamp, int microstep) throws IllegalActionException {
@@ -532,6 +533,30 @@ public class PtidesBasicDirector extends DEDirector {
             Actor container = (Actor) getContainer();
             ((TypedCompositeActor)container).requestChange(request);
         }
+    }
+    
+    /** Return the absolute deadline of this event, if this event is a trigger event.
+     *  If this event is however a pure event, this event inherits the deadline of
+     *  the first port on the same actor. If this actor does not have any port, then
+     *  an exception is thrown.
+     *  FIXME: this is sort of a hack.
+     *  @param event Event to find deadline for.
+     *  @return deadline of this event.
+     *  @throws IllegalActionException
+     */
+    protected Time _getAbsoluteDeadline(DEEvent event) throws IllegalActionException {
+        IOPort port = event.ioPort();    
+        if (port == null) {
+            List<IOPort> inputPortList = event.actor().inputPortList();
+            if (inputPortList.size() == 0) {
+                throw new IllegalActionException("When getting the deadline for " +
+                        "a pure event at " + event.actor() + ", this actor" +
+                        "does not have an input port, thus" +
+                "unable to get relative deadline");
+            }
+            port = inputPortList.get(0);
+        }
+        return event.timeStamp().add(_getRelativeDeadline(port));
     }
     
     /** Return all the events in the event queue that are of the same tag as the event
@@ -887,6 +912,20 @@ public class PtidesBasicDirector extends DEDirector {
         Director director = container.getExecutiveDirector();
         return director.getModelTime();
     }
+    
+    /** Returns the relativeDeadline parameter
+     *  @param port
+     *  @return minDelay parameter
+     *  @throws IllegalActionException
+     */
+    protected double _getRelativeDeadline(IOPort port) throws IllegalActionException {
+        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("relativeDeadline");
+        if (parameter != null) {
+            return ((DoubleToken)parameter.getToken()).doubleValue();
+        } else {
+            return Double.POSITIVE_INFINITY;
+        }
+    }
 
     /** Highlight the specified actor with the specified color.
      *  @param actor The actor to highlight.
@@ -945,28 +984,23 @@ public class PtidesBasicDirector extends DEDirector {
     protected boolean _safeToProcess(DEEvent event) throws IllegalActionException {
         IOPort port = event.ioPort();
         if (port != null) {
-            try {
-                Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
-                if (parameter != null) {
-                    DoubleToken token;
-                    token = (DoubleToken) parameter.getToken();
-                    Time waitUntilPhysicalTime = event.timeStamp().subtract(token.doubleValue());
-                    if (_getPhysicalTime().subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0) {
-                        return true;
-                    } else {
-                        _setTimedInterrupt(waitUntilPhysicalTime);
-                        return false;
-                    }
-                } else {
+            Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
+            if (parameter != null) {
+                DoubleToken token;
+                token = (DoubleToken) parameter.getToken();
+                Time waitUntilPhysicalTime = event.timeStamp().subtract(token.doubleValue());
+                if (_getPhysicalTime().subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0) {
                     return true;
+                } else {
+                    _setTimedInterrupt(waitUntilPhysicalTime);
+                    return false;
                 }
-            } catch (ClassCastException ex) {
-                return true;
-            } catch (IllegalActionException e) {
+            } else {
                 // no minDelay, should only happen if the destination port is the only input port of
                 // the destination actor.
                 return true;
             }
+
         } else {
             // event does not have a destination port, must be a pure event.
             return true;
@@ -999,6 +1033,19 @@ public class PtidesBasicDirector extends DEDirector {
             ((TypedCompositeActor)container).requestChange(request);
         }
     }
+
+    /** Call fireAt() of the executive director, which is in charge of bookkeeping the
+     *  physical time.
+     */
+    protected void _setTimedInterrupt(Time wakeUpTime) {
+        Actor container = (Actor) getContainer();
+        Director executiveDirector = ((Actor)container).getExecutiveDirector();
+        try {
+            executiveDirector.fireAt((Actor)container, wakeUpTime);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+    }
     
     /** This method keeps track of the last event an actor decides to process. This method
      *  is called immediately after _safeToProcess, thus it serves as a check to see if the
@@ -1019,6 +1066,15 @@ public class PtidesBasicDirector extends DEDirector {
         if (obj == null) {
             obj= (NamedObj) event.actor();
         }
+        
+        // FIXME: this is sort of a hack. We have this because the network inteface may receive
+        // many events at the same physical time, but then they will decode the incoming token
+        // to produce events of (hopefully) different timestamps. Thus here we do not need to
+        // check if safe to process was correct if the actor is a NetworkInputDevice.
+        if (obj.getContainer() instanceof NetworkInputDevice) {
+            return;
+        }
+        
         
         Tag tag = new Tag(event.timeStamp(), event.microstep());
         Tag prevTag = _LastConsumedTag.get(obj);
@@ -1302,19 +1358,6 @@ public class PtidesBasicDirector extends DEDirector {
             return ((BooleanToken)parameter.getToken()).booleanValue();
         }
         return false;
-    }
-    
-    /** Call fireAt() of the executive director, which is in charge of bookkeeping the
-     *  physical time.
-     */
-    private void _setTimedInterrupt(Time wakeUpTime) {
-        Actor container = (Actor) getContainer();
-        Director executiveDirector = ((Actor)container).getExecutiveDirector();
-        try {
-            executiveDirector.fireAt((Actor)container, wakeUpTime);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
