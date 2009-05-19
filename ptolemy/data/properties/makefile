@@ -56,6 +56,8 @@ PTCLASSALLJARS = \
 	token/token.jar \
 	util/util.jar
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
 	AnalyzeModel.java \
 	AnalyzerAttribute.java \
