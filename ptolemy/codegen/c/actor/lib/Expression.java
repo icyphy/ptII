@@ -76,11 +76,14 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     protected String _generateFireCode() throws IllegalActionException {
+        CParseTreeCodeGenerator parseTreeCG = 
+            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+        
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
         code.append(processCode("$ref(output) = "
-                + _cParseTreeCodeGenerator.generateFireCode())
+                + parseTreeCG.generateFireCode())
                 + ";" + _eol);
         return code.toString();
     }
@@ -94,9 +97,12 @@ public class Expression extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
+        CParseTreeCodeGenerator parseTreeCG = 
+            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
-        code.append(processCode(_cParseTreeCodeGenerator
+        code.append(processCode(parseTreeCG
                 .generateInitializeCode()));
         return code.toString();
     }
@@ -113,10 +119,9 @@ public class Expression extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        if (_cParseTreeCodeGenerator == null) {
-            // FIXME: why does this need to be done here?
-            _cParseTreeCodeGenerator = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
-        }
+        CParseTreeCodeGenerator parseTreeCG = 
+            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
         try {
@@ -127,7 +132,7 @@ public class Expression extends CCodeGeneratorHelper {
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());
 
-            _cParseTreeCodeGenerator.evaluateParseTree(parseTree,
+            parseTreeCG.evaluateParseTree(parseTree,
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
@@ -135,7 +140,7 @@ public class Expression extends CCodeGeneratorHelper {
                     + actor.expression.getExpression() + "\" invalid.");
         }
 
-        code.append(processCode(_cParseTreeCodeGenerator
+        code.append(processCode(parseTreeCG
                 .generatePreinitializeCode()));
         return code.toString();
     }
@@ -151,10 +156,11 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        _cParseTreeCodeGenerator = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+        CParseTreeCodeGenerator parseTreeCG = 
+            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         Set codeBlocks = super.getSharedCode();
-        codeBlocks.add(processCode(_cParseTreeCodeGenerator
+        codeBlocks.add(processCode(parseTreeCG
                 .generateSharedCode()));
         return codeBlocks;
     }
@@ -170,12 +176,15 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
+        CParseTreeCodeGenerator parseTreeCG = 
+            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
-        code.append(processCode(_cParseTreeCodeGenerator.generateWrapupCode()));
+        code.append(processCode(parseTreeCG.generateWrapupCode()));
 
         // Free up memory
-        _cParseTreeCodeGenerator = null;
+        parseTreeCG = null;
         return code.toString();
     }
 
@@ -192,9 +201,6 @@ public class Expression extends CCodeGeneratorHelper {
         files.add("<string.h>");
         return files;
     }
-
-    /** The parse tree code generator. */
-    protected CParseTreeCodeGenerator _cParseTreeCodeGenerator;
 
     /**
      * Variable scope class customized for the CParseTreeCodeGenerator.
