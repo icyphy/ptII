@@ -45,9 +45,9 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE =     util
 
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJARS =
+PTCLASSALLJARS = 
 
 JSRCS = \
 	MultiHashMap.java \

@@ -52,7 +52,6 @@ PTCLASSALLJARS = \
 	demo/demo.jar \
 	gui/gui.jar \
 	lattice/lattice.jar \
-	test/test.jar \
 	token/token.jar \
 	util/util.jar
 
