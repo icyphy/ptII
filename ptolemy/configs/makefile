@@ -100,6 +100,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityColorAttribute.xml \
 	utilityCompositeActor.xml \
 	utilityFileParameter.xml \
+	utilityFsmModalModal.xml \
 	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
 	utilityNameParameter.xml \
