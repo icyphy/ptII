@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/demo
 
-DIRS =      
+DIRS = 		ConstNonconst LogicalAND LogicalOrBackward RegressionTest Sinewave Workflow
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
@@ -47,7 +47,13 @@ PTPACKAGE =     demo
 
 PTCLASSJAR =
 
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	ConstNonconst/ConstNonconst.jar \
+	LogicalAND/LogicalAND.jar \
+	LogicalOrBackward/LogicalOrBackward.jar \
+	RegressionTest/RegressionTest.jar \
+	Sinewave/Sinewave.jar \
+	Workflow/Workflow.jar
 
 JSRCS =
 
@@ -62,11 +68,11 @@ MISC_FILES =    $(DIRS)
 OPTIONAL_FILES = \
     doc
 
-JCLASS = $(JSRCS:%.java=%.class)
-
-
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
 install: jclass jars
+
+demo: subdemo
 
 propertyTestReports:: test_properties_reports
 
