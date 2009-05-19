@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Properties Lattice NamingSetLattice Kernel
+# Makefile for Java Ptolemy Data Properties Lattice ExampleSetLattice Kernel
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
 # $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/namingSetLattice/kernel
+ME =        ptolemy/data/properties/lattice/exampleSetLattice/kernel
 
 DIRS =      
 
@@ -43,11 +43,15 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     properties
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =     kernel
+
+PTCLASSJAR =
+
+PTCLASSALLJARS =
 
 JSRCS = \
 	CompositeEntity.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -65,6 +69,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

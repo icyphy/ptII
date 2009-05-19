@@ -2,9 +2,9 @@
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
-# $Id: makefile 50667 2008-09-19 02:21:38Z cxh $
+# $Id: makefile,v 1.2 2009/01/30 01:45:00 cxh Exp $
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -43,10 +43,15 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     properties
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =     modal
+
+PTCLASSJAR =
+
+PTCLASSALLJARS = \
+	kernel/kernel.jar
 
 JSRCS =
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -64,6 +69,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

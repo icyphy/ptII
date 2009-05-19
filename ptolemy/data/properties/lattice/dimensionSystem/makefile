@@ -2,7 +2,7 @@
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
-# $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
+# $Id: makefile,v 1.2 2009/01/30 01:45:00 cxh Exp $
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties.lattice.dimensionSystem
+ME =        ptolemy/data/properties/lattice/dimensionSystem
 
 DIRS =      actor data domains
 
@@ -47,8 +47,6 @@ PTPACKAGE =     dimensionSystem
 
 PTCLASSJAR =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
 PTCLASSALLJARS = \
 	actor/actor.jar \
 	data/data.jar \
@@ -63,6 +61,7 @@ JSRCS = \
 	Top.java \
 	Unitless.java \
 	Unknown.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -80,6 +79,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

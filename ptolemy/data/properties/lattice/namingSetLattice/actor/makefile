@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/namingSetLattice/actor
 
-DIRS =
+DIRS =      
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../..
@@ -44,7 +44,10 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     actor
-PTCLASSJAR = $(PTPACKAGE).jar
+
+PTCLASSJAR =
+
+PTCLASSALLJARS =
 
 JSRCS = \
 	AtomicActor.java
@@ -66,6 +69,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

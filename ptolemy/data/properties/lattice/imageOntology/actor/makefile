@@ -45,13 +45,14 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE =     actor
 
-PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSJAR =
 
 PTCLASSALLJARS = \
 	lib/lib.jar
 
 JSRCS = \
 	AtomicActor.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -69,6 +70,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

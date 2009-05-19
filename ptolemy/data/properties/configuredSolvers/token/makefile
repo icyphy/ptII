@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Properties tokens
+# Makefile for Java Ptolemy Data Properties ConfiguredSolvers Token
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
 # $Id$
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,40 +26,42 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/properties/configuredSolvers/token
+ME =        ptolemy/data/properties/configuredSolvers/token
 
-DIRS = 		
+DIRS =      
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =      ../../../../..
 
-# data/properties/PropertySolverBase.java calls com.sun.tools.javac
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(TOOLS_JAR)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	token
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =     token
+
+PTCLASSJAR =
+
+PTCLASSALLJARS =
 
 JSRCS = \
 	FirstValuePTS.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+    doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -67,6 +69,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

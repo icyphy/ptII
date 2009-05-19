@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/exampleSetLattice
 
-DIRS =      actor data kernel test
+DIRS =      actor data kernel
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
@@ -43,8 +43,14 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     properties
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =     exampleSetLattice
+
+PTCLASSJAR =
+
+PTCLASSALLJARS = \
+	actor/actor.jar \
+	data/data.jar \
+	kernel/kernel.jar
 
 JSRCS = \
 	A.java \
@@ -70,6 +76,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

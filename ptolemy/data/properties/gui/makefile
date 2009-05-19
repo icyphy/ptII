@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Properties GUI
+# Makefile for Java Ptolemy Data Properties Gui
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
 # $Id$
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,57 +26,52 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/properties/gui
+ME =        ptolemy/data/properties/gui
 
-DIRS = 		
+DIRS =      
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =      ../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gui
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =     gui
+
+PTCLASSJAR =
+
+PTCLASSALLJARS =
 
 JSRCS = \
 	PropertyDisplayActions.java \
 	PropertyDisplayGUIFactory.java \
 	PropertySolverGUIFactory.java
 
-
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'PropertyDisplayActions$$ClearDisplay.class' \
-	'PropertyDisplayActions$$ClearProperty.class' \
-	'PropertyDisplayActions$$ConfigureHighlightAction.class' \
-	'PropertyDisplayActions$$EditHighlightDialog.class' \
-	'PropertyDisplayActions$$HighlightProperty.class' \
-	'PropertyDisplayActions$$HighlighterController.class' \
-	'PropertyDisplayActions$$ShowProperty.class'
+    doc
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

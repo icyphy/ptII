@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/imageOntology
 
-DIRS =      actor kernel demo
+DIRS =      actor demo kernel
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
@@ -45,10 +45,11 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE =     imageOntology
 
-PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSJAR =
 
 PTCLASSALLJARS = \
 	actor/actor.jar \
+	demo/demo.jar \
 	kernel/kernel.jar
 
 JSRCS = \
@@ -63,20 +64,20 @@ EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =    actor kernel
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	demo 
+    doc
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

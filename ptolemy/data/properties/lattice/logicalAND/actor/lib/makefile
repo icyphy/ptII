@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -43,8 +43,11 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     properties
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =     lib
+
+PTCLASSJAR =
+
+PTCLASSALLJARS =
 
 JSRCS = \
 	Const.java \
@@ -55,6 +58,7 @@ JSRCS = \
 	Sequence.java \
 	SetVariable.java \
 	Source.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -64,9 +68,7 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'Limiter$$1.class' \
-	'Limiter$$FunctionTerm.class'
+    doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -74,6 +76,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

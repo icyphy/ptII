@@ -1,10 +1,10 @@
 # Makefile for Java Ptolemy Data Properties Lattice
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
 # $Id$
 #
-# @Copyright (c) 2008-2009 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,46 +26,37 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/properties/lattice
+ME =        ptolemy/data/properties/lattice
 
-DIRS = \
-	academicFalseTrueEqualPriority \
-	academicFalseTrueSet \
-	exampleSetLattice \
-	imageOntology \
-	logicalAND \
-	logicalOrBackward \
-	namingSetLattice \
-	typeSystem_C
+DIRS =      academicFalseTrueEqualPriority academicFalseTrueSet dimensionSystem exampleSetLattice imageOntology logicalAND logicalOrBackward namingSetLattice typeSystem_C
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =      ../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lattice
+PTPACKAGE =     lattice
+
 PTCLASSJAR =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	academicFalseTrueEqualPriority/properties.jar \
-	academicFalseTrueSet/properties.jar \
-	exampleSetLattice/properties.jar \
+	academicFalseTrueEqualPriority/academicFalseTrueEqualPriority.jar \
+	academicFalseTrueSet/academicFalseTrueSet.jar \
+	dimensionSystem/dimensionSystem.jar \
+	exampleSetLattice/exampleSetLattice.jar \
 	imageOntology/imageOntology.jar \
-	logicalAND/properties.jar \
-	logicalOrBackward/properties.jar \
+	logicalAND/logicalAND.jar \
+	logicalOrBackward/logicalOrBackward.jar \
 	namingSetLattice/namingSetLattice.jar \
-	typeSystem_C/properties.jar
+	typeSystem_C/typeSystem_C.jar
 
 JSRCS = \
 	ConstraintManager.java \
@@ -90,21 +81,16 @@ JSRCS = \
 	PropertyTermPartialEvaluator.java \
 	TypeProperty.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'InequalitySolver$$1.class' \
-	'InequalitySolver$$Info.class' \
-	'PropertyConstraintHelper$$Inequality.class' \
-	'PropertyConstraintSolver$$ConstraintType.class' \
-	'PropertyTermManager$$InequalityTerm.class'
+    doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -113,7 +99,6 @@ all: jclass
 install: jclass jars
 
 propertyTestReports:: test_properties_reports
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
