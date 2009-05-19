@@ -164,6 +164,20 @@ jnlpDemo: $(JCLASS)
 		$(MODELPATH)
 
 
+jnlpIIRSimple:
+	$(MAKE) MODEL=IIR MODELPATH=../../../ptolemy/actor/lib/test/auto/IIR.xml jnlpSimpleDemo
+	javaws cg/IIR/IIR.jnlp
+
+# 
+jnlpSimpleDemo:
+	@echo "generate an applet for '$(MODELPATH)'"
+	$(PTII)/bin/copernicus \
+		-verbose \
+		-codeGenerator   "applet" \
+		-run 		 "false" \
+		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
+		$(MODELPATH)
+
 # Run the OrthoComm demo
 ORTHOCOMMTARGETDIRECTORY = $(TARGETPATH)/ToplevelModel
 runOrthoCommDemo:
@@ -198,7 +212,7 @@ test1: $(JCLASS)
 
 
 # Test using signed jars
-TESTSIGNED_DIR=c:/tmp/testSigned
+TESTSIGNED_DIR=/tmp/testSigned
 
 SIGNED_DIRECTORY=$(PTII)/signed
 

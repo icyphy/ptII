@@ -43,6 +43,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
@@ -285,7 +286,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             while (jarFileNames.hasNext()) {
                 String jarFileName = (String) jarFileNames.next();
-
+                System.out.println("AppletWriter: jar: " + jarFileName);
                 if (jarFilesResults.length() > 0) {
                     jarFilesResults.append(",");
                 }
@@ -296,9 +297,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 String signed =  "";
                 String signedJarFileName = _ptIIJarsPath + File.separator + "signed"
                     + File.separator + jarFileName;
-                if (new File(signedJarFileName).exists()) {;
+                if (new File(signedJarFileName).exists()) {
                     signed = "signed" + File.separator;
                     sawSignedOnce = true;
+                } else {
+                    if (new File(_ptIIJarsPath + File.separator + "signed").exists()) {
+                        sawSignedOnce = true;
+                    }
                 }
                 if (signed.equals("") && sawSignedOnce) {
                     // We saw something in the signed directory, but this file
@@ -346,7 +351,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + File.separator + jarFileName;
                 if (new File(signedJarFileName).exists()) {;
                     signed = "signed" + File.separator;
-                    sawSignedOnce = true;
+                } else {
+                    if (new File(_ptIIJarsPath + File.separator + "signed").exists()) {
+                        sawSignedOnce = true;
+                    }
                 }
                 if (signed == "" && sawSignedOnce) {
                     // We saw something in the signed directory, but this file
@@ -672,13 +680,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             HashSet jarFilesThatHaveBeenRequired) throws IOException {
         File potentialSourceJarFile = new File(_ptIIJarsPath, jarFile);
 
-        System.out.println("AppletWriter: className: " + className
+        System.out.println("AppletWriter cpjf: className: " + className
                 + "\tpotentialSourceJarFile: " + potentialSourceJarFile);
 
         if (potentialSourceJarFile.exists()) {
+            System.out.println("AppletWriter cpjf: " + potentialSourceJarFile + " exists!");
             jarFilesThatHaveBeenRequired.add(jarFile);
 
             if (_codeBase.equals(".")) {
+                System.out.println("AppletWriter cpjf: codeBase = .");
                 // If the codeBase is equal to the current directory,
                 // we copy the jar file.
                 // Ptolemy II development trees will have jar files
@@ -732,17 +742,21 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         Iterator classNames = classMap.entrySet().iterator();
 
+        System.out.println("AppletWriter cjf: About to loop through jar files and copy as necessary");
         while (classNames.hasNext()) {
             Map.Entry entry = (Map.Entry) classNames.next();
             String className = (String) entry.getKey();
-
+            System.out.println("AppletWriter cjf: className: " + className + " jarFile: "  
+                    + (String) entry.getValue());
             if (jarFilesThatHaveBeenRequired.contains(classMap.get(className))) {
                 // If we have already possibly copied the jar file, then skip
+                System.out.println("AppletWriter cjf: already copied");
                 continue;
             }
 
             if (!_copyPotentialJarFile((String) entry.getValue(), className,
                     jarFilesThatHaveBeenRequired)) {
+                System.out.println("AppletWriter cjf: did not copy potential jar file");
                 // The className could not be found in the classMap
                 // Under Web Start, the resource that contains a class
                 // will have a mangled name, so we copy the jar file.
@@ -843,6 +857,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 //                 }
             }
         }
+        System.out.println("AppletWriter cjf: done looping through jar files.");
         return fixJarFiles;
     }
 
@@ -1100,6 +1115,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // FIXME: vergil.fsm.modal.ModalModel depends on CTStepSizeControlActor
         classMap.put("ptolemy.domains.ct.kernel.CTStepSizeControlActor",
                 "ptolemy/domains/ct/ct.jar");
+
+        // FIXME: unfortunately, vergil depends on domains.modal now.
+        classMap.put("ptolemy.domains.modal.modal.ModalModel",
+                "ptolemy/domains/modal/modal.jar");
+
         classMap.put("diva.graph.GraphController", "lib/diva.jar");
 
         HashSet jarFilesThatHaveBeenRequired = new HashSet();
@@ -1126,14 +1146,41 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // FIXME: Hardwired paths and passwords here.
         String keystoreFileName = StringUtilities.getProperty("ptolemy.ptII.dir")
             + File.separator + "ptKeystore";
-        char[] storePassword = {'t', 'h', 'i', 's', '.', 'i', 's', '.', 't', 'h', 'e', '.', 's', 't', 'o', 'r', 'e', 'P', 'a', 's', 's', 'w', 'o', 'r', 'd', ',', 'c', 'h', 'a', 'n', 'g', 'e', '.', 'i', 't'};
-        char[] keyPassword = {'t', 'h', 'i', 's', '.', 'i', 's', '.', 't', 'h', 'e', '.', 'k', 'e', 'y', 'P', 'a', 's', 's', 'w', 'o', 'r', 'd', ',', 'c', 'h', 'a', 'n', 'g', 'e', '.', 'i', 't'};
+
+        
+        String storePassword = "this.is.the.storePassword,change.it";
+        String keyPassword = "this.is.the.keyPassword,change.it";
         String alias = "claudius";
+
+        String keystorePropertiesFileName = StringUtilities.getProperty("ptolemy.ptII.dir") 
+            + File.separator + "ptKeystore.properties";
+
+        Properties properties = new Properties();
+        try {
+
+            properties.load(new FileInputStream(keystorePropertiesFileName));
+            storePassword = properties.getProperty("storePassword");
+            keyPassword = properties.getProperty("keyPassword");
+            alias = properties.getProperty("alias");
+        } catch (IOException ex) {
+            System.err.println("Failed to read \"" + keystorePropertiesFileName
+                    + "\", using default store password, key password and alias:" + ex);
+        }
 
         System.out.println("About to sign \"" + jarFileName + "\" and create \""
                 + signedJarFileName + "\"");
+        File signedJarFile = new File(signedJarFileName);
+        File parent = signedJarFile.getParentFile();
+        if (parent != null) {
+            if (!parent.mkdirs()) {
+                if (!parent.isDirectory()) {
+                    throw new IOException("Failed to create directories for \""
+                            + signedJarFileName + "\"");
+                }
+            } 
+        }
         JarSigner.sign (jarFileName, signedJarFileName,
-                keystoreFileName, alias, storePassword, keyPassword);
+                keystoreFileName, alias, storePassword.toCharArray(), keyPassword.toCharArray());
     }
 
     /** Create a jar file.

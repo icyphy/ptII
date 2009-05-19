@@ -1,4 +1,4 @@
-/* Wrapper class to start up the DSP version of Vergil
+/* Wrapper class to start up Vergil for use with JNLP (Web Start).
 
  Copyright (c) 2003-2009 The Regents of the University of California.
  All rights reserved.
