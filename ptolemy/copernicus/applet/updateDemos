@@ -1,0 +1,32 @@
+#!/bin/sh
+# $Id$
+# Script that updates the demos
+
+demos=`cd $PTII/ptolemy/configs/doc; make list_demos`
+for demo in $demos
+do
+     model=`basename $demo .xml` 
+
+     modelDirectory=`dirname $demo`
+     modelPath=`cd $PTII/ptolemy/configs/doc/$modelDirectory; pwd`
+
+     targetPath=`echo $modelPath | sed "s@$PTII/@@"`
+
+     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+
+     if [ -f  $modelPath/$model.htm ]; then
+         awk -v jnlpFile=$model.jnlp '{ if ($0 ~ /<!-- HTML CONVERTER -->/) {
+	        sawHTMLConverter = 1
+	        print "<!-- PT JNLP CONVERTER -->";
+                print "<a href=\"" jnlpFile "\">Run the demo using Web Start</a>";
+	    } else if ($0 ~ /<!-- \/HTML CONVERTER -->/) {
+	        sawHTMLConverter = 0 
+	        print "<!-- /PT JNLP CONVERTER -->";
+	    } else if (sawHTMLConverter == 0) {
+	        print $0
+            }  
+          }' $modelPath/$model.htm > /tmp/$model.htm
+
+          #diff /tmp/$model.htm $modelPath/$model.htm
+     fi
+done

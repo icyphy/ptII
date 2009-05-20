@@ -166,17 +166,30 @@ jnlpDemo: $(JCLASS)
 
 jnlpIIRSimple:
 	$(MAKE) MODEL=IIR MODELPATH=../../../ptolemy/actor/lib/test/auto/IIR.xml jnlpSimpleDemo
-	javaws cg/IIR/IIR.jnlp
+	javaws -wait cg/IIR/IIR.jnlp
 
 # 
 jnlpSimpleDemo:
-	@echo "generate an applet for '$(MODELPATH)'"
+	@echo "generate a jnlp for '$(MODELPATH)'"
 	$(PTII)/bin/copernicus \
 		-verbose \
 		-codeGenerator   "applet" \
 		-run 		 "false" \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		$(MODELPATH)
+
+
+# Used to update demos with jnlp files, see ./updateDemos
+jnlpUpdateDemo:
+	@echo "generate a jnlp for '$(MODELPATH)'"
+	$(PTII)/bin/copernicus \
+		-verbose \
+		-codeGenerator   "applet" \
+		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
+		-run 		 "false" \
+		-targetPath	 "$(TARGETPATH)" \
+		$(MODELPATH)
+	javaws -wait $(PTII)/$(TARGETPATH)/$(MODEL).jnlp
 
 # Run the OrthoComm demo
 ORTHOCOMMTARGETDIRECTORY = $(TARGETPATH)/ToplevelModel

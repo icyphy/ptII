@@ -111,7 +111,7 @@ public class JarSigner {
         String alias = "claudius";
 
         try {
-            sign (args[0], args[1], keystoreFileName, alias, storePassword, keyPassword);
+            sign(args[0], args[1], keystoreFileName, alias, storePassword, keyPassword);
         } catch(Throwable ex) {
             ex.printStackTrace();
         }
@@ -402,6 +402,7 @@ public class JarSigner {
         Enumeration allEntries = jarFile.entries();
         while (allEntries.hasMoreElements()) {
             JarEntry entry = (JarEntry) allEntries.nextElement();
+            System.out.println("JarSigner: entry: " + entry);
             if (!entry.getName().startsWith("META-INF")) {
                 _writeJarEntry(entry, jarFile, jos);
             }
@@ -469,7 +470,7 @@ public class JarSigner {
     /** A helper function that can take entries from one jar file and
      *  write it to another jar stream.
      */
-    private static void _writeJarEntry(JarEntry je, JarFile jarFile, JarOutputStream jos)
+    protected static void _writeJarEntry(JarEntry je, JarFile jarFile, JarOutputStream jos)
             throws IOException {
         jos.putNextEntry(je);
         byte[] buffer = new byte[2048];
