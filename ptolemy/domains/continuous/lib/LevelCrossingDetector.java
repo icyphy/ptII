@@ -132,8 +132,12 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      */
     public StringParameter direction;
 
-    /** The parameter of error tolerance of type double. This
-     *  is a double with default 1e-4.
+    /** The error tolerance specifying how close the value of a continuous
+     *  input needs to be to the specified level to produce the output event.
+     *  Note that this indirectly affects the accuracy of the time of the
+     *  output since the output can be produced at any time after the
+     *  level crossing occurs while it is still within the specified
+     *  error tolerance of the level. This is a double with default 1e-4.
      */
     public Parameter errorTolerance;
 
@@ -211,15 +215,10 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         return newObject;
     }
 
-    /** Produce a discrete event if level crossing happens. If the current
-     *  execution is in a continuous phase, the current trigger is recorded but
-     *  no event can be produced. If the current execution is in a discrete
-     *  phase, the current and previous trigger tokens are compared to find
-     *  whether a level crossing happens. If there is a crossing, a discrete
-     *  event is generated.
-     *  <p>
-     *  The value of this event may be the specified level, or the default
-     *  event value if the usingDefaultEventValue is configured true (checked).
+    /** Produce an output event if the current input compared to the input
+     *  on the last iteration indicates that a level crossing in the
+     *  appropriate direction has occurred, if the time is within
+     *  <i>errorTolerance</i> of the time at which the crossing occurs.
      *  @exception IllegalActionException If can not get token from the trigger
      *  port or can not send token through the output port.
      */
@@ -230,6 +229,11 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         if (_debugging) {
             _debug("Called fire() at time " + dir.getModelTime()
                     + " with step size " + currentStepSize);
+        }
+        // If the trigger input is not connected, or there is no
+        // token, then produce no output.
+        if (trigger.getWidth() < 1 || !trigger.hasToken(0)) {
+            return;
         }
         // Record the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
