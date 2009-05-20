@@ -407,9 +407,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             _currentStepSize = 0.0;
             _ODESolver._reset();
             super.fire();
-            // FIXME: If this happens because DE refired us because we
-            // didn't consume inputs, then we will now clear any outputs
-            // we produced on the previous iteration!
             _transferOutputsToEnvironment();
             return;
         }
@@ -438,6 +435,11 @@ public class ContinuousDirector extends FixedPointDirector implements
                     && !_stopRequested) {
                 
                 _resetAllReceivers();
+                // We only get here if we have no input events.
+                // The following call sets the receivers connected to the
+                // intputs to be "absent".
+                _transferInputsToInside();
+                
                 super.fire();
                 // Outputs should only be produced on the first iteration of
                 // the solver because after that we are computing values in
@@ -1925,7 +1927,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         Iterator inports = container.inputPortList().iterator();
         while (inports.hasNext() && !_stopRequested) {
             IOPort port = (IOPort) inports.next();
-            result = result || super.transferInputs(port);
+            result = super.transferInputs(port) || result;
         }
         return result;
     }
