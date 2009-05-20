@@ -182,12 +182,12 @@ public class ModelRepaintController extends Attribute {
 
         // Don't piggy back on previous container anymore.
         NamedObj previousContainer = getContainer();
-        if (previousContainer != null && previousContainer instanceof CompositeActor) {
+        if (previousContainer instanceof CompositeActor) {
             ((CompositeActor) previousContainer).removePiggyback(_executable);
         }
         super.setContainer(container);
 
-        if (container != null && container instanceof CompositeActor) {
+        if (container instanceof CompositeActor) {
             ((CompositeActor) container).addPiggyback(_executable);
         }
     }

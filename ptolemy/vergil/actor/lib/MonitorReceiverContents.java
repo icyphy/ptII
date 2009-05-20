@@ -57,7 +57,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  To stop monitoring the queue contents, simply delete
  this attribute from the model.
 
- @author  Edward A. Lee
+ @author  Edward A. Lee, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (eal)
@@ -203,13 +203,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
                 };
             }
 
-            // NOTE: The container may be transparent, in which case,
-            // we need to piggyback on the next opaque container above this
-            // in the hierarchy.
             _piggybackContainer = (CompositeActor)container;
-            while (!_piggybackContainer.isOpaque()) {
-                _piggybackContainer = (CompositeActor)_piggybackContainer.getContainer();
-            }
             _piggybackContainer.addPiggyback(_executable);
         }
     }

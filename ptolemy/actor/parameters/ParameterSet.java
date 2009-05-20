@@ -401,13 +401,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             }
         }
         super.setContainer(container);
-        while (container != null) {
-            if (container instanceof CompositeActor
-                    && ((CompositeActor) container).isOpaque()) {
-                ((CompositeActor) container).addPiggyback(this);
-                break;
-            }
-            container = container.getContainer();
+        if (container instanceof CompositeActor) {
+            ((CompositeActor) container).addPiggyback(this);
         }
     }
 

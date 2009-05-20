@@ -34,9 +34,11 @@
  */
 package ptolemy.actor;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.BooleanDependency;
@@ -218,7 +220,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
         _initializables.add(initializable);
     }
-
+    
     /** Add the specified object to the list of objects whose action
      *  methods should be invoked upon invocation of the corresponding
      *  actions methods of this object.
@@ -231,6 +233,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
             _piggybacks = new LinkedList<Executable>();
         }
         _piggybacks.add(piggyback);
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // We want to piggy back on a opaque CompositeActor
+            ((CompositeActor) container)._addDerivedPiggyback(piggyback);
+        }
     }
 
     /** Clone the actor into the specified workspace. The new object is
@@ -383,6 +390,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (_piggybacks != null) {
                 // Invoke the fire() method of each piggyback.
                 for (Executable piggyback : _piggybacks) {
+                    piggyback.fire();
+                }
+            }
+            if (_derivedPiggybacks != null) {
+                // Invoke the fire() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
                     piggyback.fire();
                 }
             }
@@ -654,6 +667,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     piggyback.initialize();
                 }
             }
+            if (_derivedPiggybacks != null) {
+                // Invoke the initialize() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
+                    piggyback.initialize();
+                }
+            }
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
@@ -768,8 +787,16 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // If any piggybacked object is not functional, then this object
             // is not functional.
             if (_piggybacks != null) {
-                // Invoke the isFieFunctional() method of each piggyback.
+                // Invoke the isFireFunctional() method of each piggyback.
                 for (Executable piggyback : _piggybacks) {
+                    if (!piggyback.isFireFunctional()) {
+                        return false;
+                    }
+                }
+            }
+            if (_derivedPiggybacks != null) {
+                // Invoke the isFireFunctional() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
                     if (!piggyback.isFireFunctional()) {
                         return false;
                     }
@@ -842,6 +869,17 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (_piggybacks != null) {
             // Invoke the iterate() method of each piggyback.
             for (Executable piggyback : _piggybacks) {
+                int result = piggyback.iterate(count);
+                if (result == NOT_READY) {
+                    return NOT_READY;
+                } else if (result == STOP_ITERATING) {
+                    stopIterating = true;
+                }
+            }
+        }
+        if (_derivedPiggybacks != null) {
+            // Invoke the iterate() method of each piggyback.
+            for (Executable piggyback : _derivedPiggybacks) {
                 int result = piggyback.iterate(count);
                 if (result == NOT_READY) {
                     return NOT_READY;
@@ -1072,6 +1110,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     result = result && piggyback.postfire();
                 }
             }
+            if (_derivedPiggybacks != null) {
+                // Invoke the postfire() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
+                    result = result && piggyback.postfire();
+                }
+            }
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -1116,6 +1160,17 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (_piggybacks != null) {
                 // Invoke the prefire method of each piggyback.
                 for (Executable piggyback : _piggybacks) {
+                    if (!piggyback.prefire()) {
+                        if (_debugging) {
+                            _debug("CompositeActor: prefire returns false due to piggybacked object.");
+                        }
+                        return false;
+                    }
+                }
+            }
+            if (_derivedPiggybacks != null) {
+                // Invoke the prefire method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
                     if (!piggyback.prefire()) {
                         if (_debugging) {
                             _debug("CompositeActor: prefire returns false due to piggybacked object.");
@@ -1171,6 +1226,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (_piggybacks != null) {
                 // Invoke the preinitialize() method of each piggyback.
                 for (Executable piggyback : _piggybacks) {
+                    piggyback.preinitialize();
+                }
+            }
+            if (_derivedPiggybacks != null) {
+                // Invoke the preinitialize() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
                     piggyback.preinitialize();
                 }
             }
@@ -1270,6 +1331,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 _piggybacks = null;
             }
         }
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // We need to remove the piggyback on the parent opaque CompositeActor
+            ((CompositeActor) container)._removeDerivedPiggyback(piggyback);
+        }
     }
 
     /** Queue a change request.  If there is a manager, then first call
@@ -1349,6 +1415,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
             NameDuplicationException {
         if (director != null) {
             director.setContainer(this);
+            // No need to call _setDirector in here since the
+            // director will do this directly.            
         } else {
             _setDirector(null);
         }
@@ -1430,6 +1498,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     piggyback.stop();
                 }
             }
+            if (_derivedPiggybacks != null) {
+                // Invoke the stop method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
+                    piggyback.stop();
+                }
+            }
 
             _stopRequested = true;
 
@@ -1468,6 +1542,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     piggyback.stopFire();
                 }
             }
+            if (_derivedPiggybacks != null) {
+                // Invoke the stopFire() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
+                    piggyback.stopFire();
+                }
+            }
 
             if (!isOpaque()) {
                 return;
@@ -1496,6 +1576,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (_piggybacks != null) {
             // Invoke the terminate() method of each piggyback.
             for (Executable piggyback : _piggybacks) {
+                piggyback.terminate();
+            }
+        }
+        if (_derivedPiggybacks != null) {
+            // Invoke the terminate() method of each piggyback.
+            for (Executable piggyback : _derivedPiggybacks) {
                 piggyback.terminate();
             }
         }
@@ -1536,6 +1622,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     piggyback.wrapup();
                 }
             }
+            if (_derivedPiggybacks != null) {
+                // Invoke the wrapup() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
+                    piggyback.wrapup();
+                }
+            }            
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this, "Missing director.");
@@ -1581,6 +1673,32 @@ public class CompositeActor extends CompositeEntity implements Actor,
         _actorFiring(new FiringEvent(null, this, type, multiplicity));
     }
 
+
+    /** Add the specified object to the list of objects whose action
+     *  methods should be invoked upon invocation of the corresponding
+     *  actions methods of this object. The difference with addPiggyback
+     *  is that is called by contained transparent CompositeActors, that
+     *  need to communicate the piggyback to its containing opaque
+     *  CompositeActor.
+     *  @param piggyback The piggyback object.
+     *  @see #addPiggyback(Executable)
+     *  @see #_removeDerivedPiggyback(Executable)
+     *  @see #removePiggyback(Executable)
+     */
+     protected void _addDerivedPiggyback(Executable piggyback) {
+         if (isOpaque()) {
+             if (_derivedPiggybacks == null) {
+                 _derivedPiggybacks = new HashSet<Executable>();
+             }
+             _derivedPiggybacks.add(piggyback);
+         } else {
+             NamedObj container = getContainer();
+             if (container instanceof CompositeActor) {
+                 ((CompositeActor) container)._addDerivedPiggyback(piggyback);     
+             }             
+         }
+    }
+     
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
      *  implements the Actor interface.
@@ -1603,6 +1721,17 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
 
         super._addEntity(entity);
+        
+        // Get the derived piggybacks
+        if (entity instanceof CompositeActor && !entity.isOpaque()) {
+            if (_derivedPiggybacks == null) {
+                _derivedPiggybacks = new HashSet<Executable>();
+            }
+            ((CompositeActor) entity)._getTransparentActorPiggybacks(_derivedPiggybacks, true);
+            if (_derivedPiggybacks.isEmpty()) {
+                _derivedPiggybacks = null;
+            }
+        }
     }
 
     /** Add a port to this actor. This overrides the base class to
@@ -1677,6 +1806,35 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Remove the specified object from the list of objects whose action
+     *  methods should be invoked upon invocation of the corresponding
+     *  actions methods of this object. If the specified object is not
+     *  on the list, do nothing. The difference with addPiggyback
+     *  is that is called by contained transparent CompositeActors, that
+     *  need to communicate the piggyback to its containing opaque
+     *  CompositeActor.
+     *  @param piggyback The piggyback object.
+     *  @see #addPiggyback(Executable)
+     *  @see #_addDerivedPiggyback(Executable)
+     *  @see #removePiggyback(Executable)
+     */
+    protected void _removeDerivedPiggyback(Executable piggyback) {
+        if (isOpaque()) {
+            if (_derivedPiggybacks != null) {
+                _derivedPiggybacks.remove(piggyback);
+                if (_derivedPiggybacks.size() == 0) {
+                    _derivedPiggybacks = null;
+                }
+            }
+        } else {
+            NamedObj container = getContainer();
+            if (container instanceof CompositeActor) {
+                ((CompositeActor) container)._removeDerivedPiggyback(piggyback);     
+            }                         
+        }
+        //TODO derived piggybacks
+    }
+
     /** Set the local director for execution of this CompositeActor.
      *  This should not be called be directly.  Instead, call setContainer()
      *  on the director.  This method removes any previous director
@@ -1710,6 +1868,78 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
             if (executiveDirector != null) {
                 executiveDirector.invalidateSchedule();
+            }
+        }
+        if (oldDirector == null && director != null) {
+            // This CompositeActor has become opaque. Hence we need to update
+            // the piggyback since these are work for opaque CompositeActor.
+            // What needs to be done is register the add piggyback at this level
+            // and remove them forom higher levels.
+            
+            // _piggybacks are no longer derived for higher levels.
+            NamedObj container = getContainer();
+            if (container instanceof CompositeActor) {
+                if (_piggybacks != null) {
+                    for (Executable piggyback : _piggybacks) {
+                        ((CompositeActor) container)._removeDerivedPiggyback(piggyback);
+                    }
+                }            
+            }
+            assert(_derivedPiggybacks == null);
+            Set<Executable> derivedPiggybacks = new HashSet<Executable>();
+            _getTransparentActorPiggybacks(derivedPiggybacks, false);
+            if (container instanceof CompositeActor) {
+                for (Executable piggyback : derivedPiggybacks) {
+                    ((CompositeActor) container)._removeDerivedPiggyback(piggyback);
+                }
+            }
+            if (!derivedPiggybacks.isEmpty()) {
+                _derivedPiggybacks = derivedPiggybacks;
+            }
+        } else if (oldDirector != null && director == null) {
+            // This CompositeActor has become transparent. Hence we need to update
+            // the piggyback since these are work for opaque CompositeActor.
+            
+            // All derived piggybacks should now become derived piggybacks from
+            // the container and all piggyback should become derived piggybacks from
+            // the container.
+            NamedObj container = getContainer();
+            if (container instanceof CompositeActor) {
+                if (_derivedPiggybacks != null) {
+                    for (Executable piggyback : _derivedPiggybacks) {
+                        // We want to piggy back on a opaque CompositeActor
+                        ((CompositeActor) container)._addDerivedPiggyback(piggyback);
+                    }
+                }
+                if (_piggybacks != null) {
+                    for (Executable piggyback : _piggybacks) {
+                        // We want to piggy back on a opaque CompositeActor
+                        ((CompositeActor) container)._addDerivedPiggyback(piggyback);
+                    }
+                }
+            }
+            _derivedPiggybacks = null;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Fill in the piggybacks in the containted transparent CompositeActors.
+     *  If addPiggyBackAtThisLevel equals to True, the piggybacks directly in
+     *  this composite actor will also be included. 
+     *  @param piggybacks The piggybacks that will be filled it.
+     *  @param addPiggyBackAtThisLevel True when the piggybacks directly in this composite
+     *          actor should also be included.
+     */
+    private void _getTransparentActorPiggybacks(Set<Executable> piggybacks, boolean addPiggyBackAtThisLevel) {
+        assert piggybacks != null;
+        if (addPiggyBackAtThisLevel && _piggybacks != null) {
+            piggybacks.addAll(_piggybacks);
+        }
+        for (CompositeActor actor : (List<CompositeActor>) entityList(CompositeActor.class)) {
+            if (!actor.isOpaque()) {
+                actor._getTransparentActorPiggybacks(piggybacks, true);
             }
         }
     }
@@ -1758,6 +1988,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The derived piggybacked executables. Derived piggybacked executables
+     * are executables that are added to transparent composite actors that are
+     * contained by this composite actor. These should also piggy back on this actor.
+     * These are only filled in if this actor is a opaque composite actor.*/
+    private transient Set<Executable> _derivedPiggybacks;
+
     // The director for this composite actor.
     private Director _director;
 
@@ -1781,7 +2017,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** List piggybacked objects. */
     private transient List<Executable> _piggybacks;
-
+    
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
     
