@@ -545,6 +545,7 @@ public class FixedPointDirector extends StaticSchedulingDirector
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         boolean result = false;
         Director executiveDirector = ((CompositeActor)getContainer()).getExecutiveDirector();
+        int outsideWidth = port.getWidth();
         for (int i = 0; i < port.getWidthInside(); i++) {
             if (port.isKnownInside(i)) {
                 if (port.hasTokenInside(i)) {
@@ -555,9 +556,15 @@ public class FixedPointDirector extends StaticSchedulingDirector
                     // the right behavior, but this will do the wrong thing for
                     // say a DE director, where it will clear out previously
                     // produced data.
-                    port.sendClear(i);
+                    if (i < outsideWidth) {
+                        port.sendClear(i);
+                    }
                 }
             }
+        }
+        // If the outside is wider than the inside, send clear on the outside.
+        for (int i = port.getWidthInside(); i < outsideWidth; i++) {
+            port.sendClear(i);
         }
         return result;
     }
