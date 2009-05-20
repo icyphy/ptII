@@ -677,15 +677,18 @@ public class ContinuousDirector extends FixedPointDirector implements
         // The reason for doing this is that if a Continuous composite actor
         // is embedded in a DE model but has no input ports, without the
         // following statements, the composite actor has no chance to be fired.
-
+        // Also, we want to be sure to be fired at the stop time.
         if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
             _fireContainerAt(_startTime);
+            if (!_stopTime.isInfinite()) {
+                _fireContainerAt(_stopTime);
+            }
         }
         // Set a breakpoint with index 0 for the stop time.
         // Note that do not use fireAt because that will set index to 1,
         // which may produce more than one output at the stop time.
         _breakpoints.insert(new SuperdenseTime(_stopTime, 0));
-
+        
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
@@ -1542,6 +1545,10 @@ public class ContinuousDirector extends FixedPointDirector implements
         // the current time + suggested step size
         if (_currentStepSize == 0) {
             _fireContainerAt(_currentTime);
+        } else if (_breakpoints.size() > 0) {
+            // Request a firing at the time of the first breakpoint.
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            _fireContainerAt(nextBreakpoint.timestamp());
         }
 
         return postfireResult;
