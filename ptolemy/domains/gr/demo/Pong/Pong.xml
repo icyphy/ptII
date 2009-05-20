@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1022, 738}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1020, 741}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -798,7 +798,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="Pong Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 155.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1032, 746}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 749}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
         </property>
@@ -892,7 +892,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 152]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-36, 93, 1021, 573}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 163, 1021, 573}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -1077,7 +1077,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 742}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 749}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -1161,7 +1161,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     </property>
                 </port>
                 <entity name="X_Movement" class="ptolemy.actor.TypedCompositeActor">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 165.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 165.0}">
                     </property>
                     <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-5.0E-5">
                     </property>
@@ -1169,9 +1169,17 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                     </property>
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 1036, 546}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[823, 436]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{411.5, 218.0}">
+                    </property>
                     <port name="bump" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 265.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 295.0]">
                         </property>
                     </port>
                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
@@ -1250,16 +1258,14 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 370.0]">
                         </property>
                     </entity>
+                    <entity name="ContinuousMerge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 270.0]">
+                        </property>
+                    </entity>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                         <vertex name="vertex1" value="[340.0, 210.0]">
-                        </vertex>
-                    </relation>
-                    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                        </property>
-                        <vertex name="vertex1" value="[605.0, 265.0]">
                         </vertex>
                     </relation>
                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1276,7 +1282,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                         <vertex name="vertex1" value="[220.0, 115.0]">
                         </vertex>
                     </relation>
-                    <link port="bump" relation="relation2"/>
+                    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <link port="bump" relation="relation"/>
                     <link port="velocity" relation="relation6"/>
                     <link port="position" relation="relation3"/>
                     <link port="acceleration" relation="relation5"/>
@@ -1288,8 +1300,11 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     <link port="Expression.input" relation="relation3"/>
                     <link port="ZeroCrossingDetector2.output" relation="relation2"/>
                     <link port="ZeroCrossingDetector2.trigger" relation="relation3"/>
-                    <link port="ZeroCrossingDetector.output" relation="relation2"/>
+                    <link port="ZeroCrossingDetector.output" relation="relation7"/>
                     <link port="ZeroCrossingDetector.trigger" relation="relation4"/>
+                    <link port="ContinuousMerge.input" relation="relation2"/>
+                    <link port="ContinuousMerge.input" relation="relation7"/>
+                    <link port="ContinuousMerge.output" relation="relation"/>
                 </entity>
                 <entity name="Y_Movement" class="ptolemy.actor.TypedCompositeActor">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 360.0]">
@@ -1300,7 +1315,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 742}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 749}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
                     </property>
@@ -1310,7 +1325,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     </property>
                     <port name="bump" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 265.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 310.0]">
                         </property>
                     </port>
                     <port name="velocity" class="ptolemy.actor.TypedIOPort">
@@ -1389,16 +1404,14 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.3515625, 370.0]">
                         </property>
                     </entity>
+                    <entity name="ContinuousMerge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 280.0}">
+                        </property>
+                    </entity>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                         <vertex name="vertex1" value="[340.0, 210.0]">
-                        </vertex>
-                    </relation>
-                    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                        </property>
-                        <vertex name="vertex1" value="[605.0, 265.0]">
                         </vertex>
                     </relation>
                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1415,7 +1428,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                         <vertex name="vertex1" value="[215.0, 115.0]">
                         </vertex>
                     </relation>
-                    <link port="bump" relation="relation2"/>
+                    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <link port="bump" relation="relation7"/>
                     <link port="velocity" relation="relation6"/>
                     <link port="position" relation="relation3"/>
                     <link port="acceleration" relation="relation5"/>
@@ -1425,10 +1444,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     <link port="Velocity.state" relation="relation6"/>
                     <link port="Expression.output" relation="relation4"/>
                     <link port="Expression.input" relation="relation3"/>
-                    <link port="ZeroCrossingDetector.output" relation="relation2"/>
+                    <link port="ZeroCrossingDetector.output" relation="relation"/>
                     <link port="ZeroCrossingDetector.trigger" relation="relation3"/>
                     <link port="ZeroCrossingDetector2.output" relation="relation2"/>
                     <link port="ZeroCrossingDetector2.trigger" relation="relation4"/>
+                    <link port="ContinuousMerge.input" relation="relation"/>
+                    <link port="ContinuousMerge.input" relation="relation2"/>
+                    <link port="ContinuousMerge.output" relation="relation7"/>
                 </entity>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(abs(y_pos - 10.0) &lt; 0.001)  || ((abs(y_pos - 0.0) &lt; 0.001) &amp;&amp; (abs(x_pos - paddle_x_pos) * 2.0 &lt; paddle_size))">
