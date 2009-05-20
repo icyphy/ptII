@@ -52,6 +52,7 @@ JSRCS = \
 	EventSource.java \
 	Integrator.java \
 	LevelCrossingDetector.java \
+	ContinuousMerge.java \
 	PeriodicSampler.java \
 	ZeroOrderHold.java
 

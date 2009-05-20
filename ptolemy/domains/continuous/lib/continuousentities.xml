@@ -8,10 +8,12 @@
       <group>
 <doc>Continuous actors</doc>
 
-<entity name="DiscreteClock"
-                class="ptolemy.domains.continuous.lib.DiscreteClock"/>
+<entity name="ContinuousMerge"
+                class="ptolemy.domains.continuous.lib.ContinuousMerge"/>
 <entity name="ContinuousSinewave"
                 class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
+<entity name="DiscreteClock"
+                class="ptolemy.domains.continuous.lib.DiscreteClock"/>
 
 <input source="ptolemy/domains/continuous/lib/dynamics.xml"/>
 <input source="ptolemy/domains/continuous/lib/eventgenerators.xml"/>
