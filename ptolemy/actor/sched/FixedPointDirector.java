@@ -508,17 +508,24 @@ public class FixedPointDirector extends StaticSchedulingDirector
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         boolean result = false;
+        int insideWidth = port.getWidthInside();
         for (int i = 0; i < port.getWidth(); i++) {
             if (port.isKnown(i)) {
                 if (port.hasToken(i)) {
                     result = super.transferInputs(port) || result;
                 } else {
-                    port.sendClearInside(i);
+                    if (i < insideWidth) {
+                        port.sendClearInside(i);
+                    }
                 }
             }
             // we do not explicit reset the receivers receiving inputs
             // from this port because the fixedpoint director resets the
             // receivers in its prefire() method.
+        }
+        // If the inside is wider than the outside, send clear on the inside.
+        for (int i = port.getWidth(); i < insideWidth; i++) {
+            port.sendClearInside(i);
         }
         return result;
     }
