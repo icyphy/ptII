@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="piggyback" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, -35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.4811520542143">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{691.0039612676057, 567.0312500000001}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model sometimes doesn't stop.&#10;&#10;In each postfire the piggyback of MonitorReceiverContents will launch a change request&#10; public boolean postfire() {&#10;        ChangeRequest request = new ChangeRequest(this,&#10;                &quot;SetVariable change request&quot;, true) {&#10;            protected void _execute() throws IllegalActionException {&#10;            }&#10;        };&#10;        ....&#10; This will result in the execution of requestChange in CompositeActor:&#10;&#10;    public void requestChange(ChangeRequest change) {&#10;        Manager manager = getManager();&#10;        super.requestChange(change);&#10;        // stopFire() should be called after the change has been requested&#10;        // to ensure that if it is being requested in a separate thread&#10;        // from the director thread that it will be present in the change&#10;        // queue when the director gets around to handling it. The call&#10;        // to stopFire() below may wake up the director to handle it.&#10;        if (manager != null) {&#10;            stopFire();&#10;        }&#10;    }&#10;&#10;For the DEDirector stopFire will basically do&#10;&#10;_stopFireRequested = true;&#10;&#10;Suppose there are no actors anymore to fire in the next iteration.&#10;&#10;DEDirector.fire will execute this code&#10;&#10;           // Find the next actor to be fired.&#10;            Actor actorToFire = _getNextActorToFire();&#10;&#10;            // Check whether the actor to be fired is null.&#10;            // -- If the actor to be fired is null,&#10;            // There are two conditions that the actor to be fired&#10;            // can be null.&#10;            if (actorToFire == null) {&#10;                if (_isTopLevel()) {&#10;                    // Case 1:&#10;                    // If this director is an executive director at&#10;                    // the top level, a null actor means that there are&#10;                    // no events in the event queue.&#10;                    if (_debugging) {&#10;                        _debug(&quot;No more events in the event queue.&quot;);&#10;                    }&#10;&#10;                    // Setting the following variable to true makes the&#10;                    // postfire method return false.&#10;                    // Do not do this if _stopFireRequested is true,&#10;                    // since there may in fact be actors to fire, but&#10;                    // their firing has been deferred.&#10;                    if (!_stopFireRequested) {&#10;                        _noMoreActorsToFire = true;&#10;                    }&#10;                    [...]&#10;                }&#10;                // Nothing more needs to be done in the current iteration.&#10;                // Simply return.&#10;                // Since we are now actually stopping the firing, we can set this false.&#10;              _stopFireRequested = false;&#10;&#10;&#10;since _stopFireRequested has been changed to true by the stopfire in the&#10;requestChange, the boolean _noMoreActorsToFire won't be set to true, and hence&#10;the code will continue executing. The postfire another changerequest is done and&#10;in this way the code never stops.&#10;&#10;To fire another time when doing a change request is probably to avoid stopping&#10;prematurily (the change request might result in another firing). Howver if you&#10;have a component like MonitorReceiverContents  that will do a change request&#10;each time the container executes postfire you'll end up in a inifinite loop.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -95.0]">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 70.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="MonitorReceiverContents" class="ptolemy.vergil.actor.lib.MonitorReceiverContents">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 175}">
+            </property>
+        </property>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 75.0]">
+            </property>
+        </entity>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={338, 268, 348, 232}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[340, 184]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 75.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="Const.output" relation="relation"/>
+        <link port="Display.input" relation="relation"/>
+    </entity>
+</entity>
