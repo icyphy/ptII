@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="hierarchicalModalModel4" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 37, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 37, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,9 +19,15 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Using preemptive transitions.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Using preemptive transitions to reset states.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 220.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how the multiple layers of hierarchical &#10;modal model is supported by Continuous domain.&#10;&#10;Look inside the modal model to see the internal structure.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 270.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -29,14 +35,12 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 155.0}">
         </property>
         <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
-            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -68,6 +72,8 @@ to another. Then delete this annotation.</text>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
@@ -81,7 +87,7 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 70.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={153, 102, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={153, 102, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -99,14 +105,12 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{205, 150}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
                 </property>
                 <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
-                    </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
@@ -129,7 +133,7 @@ to another. Then delete this annotation.</text>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -145,6 +149,8 @@ to another. Then delete this annotation.</text>
                     </port>
                     <entity name="state" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                        </property>
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
@@ -164,6 +170,8 @@ to another. Then delete this annotation.</text>
                         </property>
                     </entity>
                     <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
@@ -217,7 +225,7 @@ to another. Then delete this annotation.</text>
                     <link port="init.outgoingPort" relation="relation2"/>
                 </entity>
                 <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={647, 528, 815, 518}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 89, 813, 510}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -277,6 +285,14 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 165.0]">
                         </property>
                     </entity>
+                    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, -1.0, -0.9, 0.1, 1.1, 2.1, 3.1, 4.0}">
+                        </property>
+                        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 245.0]">
+                        </property>
+                    </entity>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
@@ -291,6 +307,7 @@ to another. Then delete this annotation.</text>
                     <link port="Const.output" relation="relation"/>
                     <link port="Integrator.derivative" relation="relation"/>
                     <link port="Integrator.state" relation="relation3"/>
+                    <link port="NonStrictTest.input" relation="relation3"/>
                 </entity>
                 <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -315,38 +332,14 @@ to another. Then delete this annotation.</text>
         <link port="_Controller.output" relation="outputRelation"/>
         <link port="state.output" relation="outputRelation"/>
     </entity>
-    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 255.0}">
-        </property>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, 0.0, -1.0, -0.9, 0.1, 1.1, 2.1, 3.1, 4.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, -1.0, -0.9, 0.1, 1.1, 2.1, 3.1, 4.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 155.0]">
         </property>
     </entity>
-    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.1, 1.1, 2.1, 3.1, 4.1, 5.0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 255.0}">
-        </property>
-    </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="{305.0, 155.0}">
-        </vertex>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <link port="ModalModel.output" relation="relation2"/>
-    <link port="CurrentTime.output" relation="relation3"/>
-    <link port="CurrentTime.trigger" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
-    <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="ModalModel.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
 </entity>
