@@ -6,6 +6,8 @@ import java.util.PriorityQueue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -23,6 +25,11 @@ import ptolemy.kernel.util.NamedObj;
  *  looks at all events in the event queue, takes the one that is safe to process and has
  *  the smallest deadline. Here, deadline is calculated by summing timestamp with the
  *  relativeDeadline parameter as annotated by the user.
+ *  <p>
+ *  Notice this director has to use RealDependency, though all PTIDES directors should be
+ *  using RealDependency. The reason it is used here is because safe to process relies on
+ *  the correct ordering of depth in order to provide the correct answer, and 
+ *  BooleanDependency does not return the correct value for depth.
  *
  *  @author Slobodan Matic, Jia Zou
  *  @version $Id$
@@ -41,6 +48,31 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
     public PtidesPreemptiveEDFDirector(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
+    }
+    
+
+    /**
+     * Return the default dependency between input and output ports which for
+     * the Ptides domain is a RealDependency.
+     *
+     * @return The default dependency which describes a delay of 0.0 between
+     *         ports.
+     */ 
+    public Dependency defaultDependency() {
+        return RealDependency.OTIMES_IDENTITY;
+    }
+
+
+    /**
+     * Return a real dependency representing a model-time delay of the
+     * specified amount.
+     *
+     * @param delay
+     *            A non-negative delay.
+     * @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return RealDependency.valueOf(delay);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -71,11 +103,12 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
     protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
         List<DEEvent> eventList = super._getAllSameTagEventsFromQueue(event);
         for (int i = _peekingIndex; (i - 1) >= 0; i--) {
-            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(i-1);
+            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(_peekingIndex-1);
             // FIXME: when causality interface for RealDependency works, replace this actor
             // by the same equivalence class.
             if (nextEvent.hasTheSameTagAs(event) && (nextEvent.actor() == event.actor())) {
                 eventList.add(nextEvent);
+                _peekingIndex--;
             } else {
                 break;
             }
@@ -93,24 +126,14 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
             throw new IllegalActionException("The event to get is not the event pointed " +
                         "to by peeking index.");
         }
-        DEEvent event = events.get(0);
-        int eventsLeftInQueue = events.size();
-        // FIXME: why didn't I take out the event(0)?
-        // take from the event queue all the ones that are in front of _peekingIndex.
-        for (int i = _peekingIndex; (i - 1) >= 0; i--) {
-            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(i-1);
-            // FIXME: when causality interface for RealDependency works, replace this actor
-            // by the same equivalence class.
-            if (nextEvent.hasTheSameTagAs(event) && (nextEvent.actor() == event.actor())) {
-                ((DEListEventQueue)_eventQueue).take(i-1);
-                eventsLeftInQueue--;
-            } else {
-                break;
-            }
-        }
-        // then take from the event queues all the ones that are after _peekingIndex
-        for (int i = 0; (_peekingIndex + i) < eventsLeftInQueue; i++) {
-            ((DEListEventQueue)_eventQueue).take(_peekingIndex + i);
+        // take from the event queue all the events from the event queue starting
+        // for _peekingIndex. Here we assume _peekingIndex is the index of the smallest
+        // event in the event queue. that we want to process. (This is set in 
+        // _getAllSameTagEventsFromQueue()).
+        for (int i = 0; i < events.size(); i++) {
+            // We always take the one from _peekingIndex because it points to the next
+            // event in the queue once we take the previous one from the event queue.
+            ((DEListEventQueue)_eventQueue).take(_peekingIndex);
         }
         return events.get(0).actor();
     }
@@ -226,9 +249,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         if (smallestQueueDeadline.compareTo(smallestStackDeadline) > 0 ) {
             _eventToProcess = null;
         } else if (smallestQueueDeadline.compareTo(smallestStackDeadline) == 0 ) {
-            if (_eventToProcess.compareTo(executingEvent) > 0) {
+            if (_eventToProcess.compareTo(executingEvent) >= 0) {
                 _eventToProcess = null;    
-            } // if the deadline and tag and depth are all equeue, don't preempt.
+            } // if the deadline and tag and depth are all equal, don't preempt.
         }
 
         if (_eventToProcess == null) {

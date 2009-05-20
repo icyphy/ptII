@@ -164,6 +164,11 @@ public class DEReceiver extends AbstractReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected long _directorVersion = -1;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Return the director that created this receiver.
@@ -227,8 +232,6 @@ public class DEReceiver extends AbstractReceiver {
     ////                         private variables                 ////
     // The director where this DEReceiver should register for De events.
     private DEDirector _director;
-
-    private long _directorVersion = -1;
 
     // List for storing tokens.  Access with clear(), add(), and take().
     private LinkedList _tokens = new LinkedList();

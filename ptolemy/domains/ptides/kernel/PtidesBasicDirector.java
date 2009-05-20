@@ -42,6 +42,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -52,6 +53,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
+import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.domains.ptides.lib.NetworkInputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -68,7 +70,10 @@ import ptolemy.vergil.kernel.attributes.VisibleAttribute;
  *  represents physical time, whereas this time represents model
  *  time in the Ptides model.
  *  Assume the incoming event always has higher priority, so preemption always occurs.
- *
+ *  <p>
+ *  The receiver used in this case is the PtidesBasicReceiver.
+ *  @see #PtidesBasicReceiver
+ *  
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 7.1
@@ -111,6 +116,13 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public int getMicrostep() {
         return _microstep;
+    }
+    
+    /** Get the current Tag.
+     *  @return timestamp and microstep of the current time.
+     */
+    public Tag getModelTag() {
+        return new Tag(_currentTime, _microstep);
     }
 
     /** Advance the current model tag to that of the earliest event in
@@ -402,6 +414,18 @@ public class PtidesBasicDirector extends DEDirector {
         _setIcon(_getIdleIcon(), true);
     }
     
+
+    /** Return a new receiver of the type PtidesBasicReceiver.
+     *  @return A new PtidesBasicReceiver.
+     */
+    public Receiver newReceiver() {
+        if (_debugging && _verbose) {
+            _debug("Creating a new PTIDES basic receiver.");
+        }
+
+        return new PtidesBasicReceiver();
+    }
+    
     /** Uses the preinitilize() method in the super class.
      *  However we use the DEListEventQueue instead of the calendar queue because we need
      *  to access to not just the first event in the event queue.
@@ -535,6 +559,14 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
     
+    /** Calls the method in super class. We have this here so that PtidesBasicReceiver
+     *  can have access to it (because it's in the same package).
+     * @throws IllegalActionException 
+     */
+    protected void _enqueueTriggerEvent(IOPort ioPort) throws IllegalActionException {
+        super._enqueueTriggerEvent(ioPort);
+    }
+    
     /** Return the absolute deadline of this event, if this event is a trigger event.
      *  If this event is however a pure event, this event inherits the deadline of
      *  the first port on the same actor. If this actor does not have any port, then
@@ -568,24 +600,13 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
         List<DEEvent> eventList = new ArrayList<DEEvent>();
-        eventList.add(_eventQueue.take());
-        if (event != eventList.get(0)) {
-            throw new IllegalActionException("The event to get is not the top event from the queue. " +
-                    "Probably need to overwrite this method");
-        }
-        while (!_eventQueue.isEmpty()) {
-            DEEvent nextEvent = _eventQueue.get();
+        for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
+            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(eventIndex);
             if (nextEvent.hasTheSameTagAs(event) && nextEvent.actor() == event.actor()) {
-                eventList.add(_eventQueue.take());
+                eventList.add(nextEvent);
             } else {
                 break;
             }
-        }
-        // FIXME: this is extremely inefficient. We need to take out all events
-        // from the event queue of the same tag, but we could not do it without removing
-        // the events from the queue, so after finishing, we need to put them all back.
-        for (DEEvent smallestEvent : eventList) {
-            _eventQueue.put(smallestEvent);
         }
         return eventList;
     }
@@ -1075,7 +1096,6 @@ public class PtidesBasicDirector extends DEDirector {
             return;
         }
         
-        
         Tag tag = new Tag(event.timeStamp(), event.microstep());
         Tag prevTag = _LastConsumedTag.get(obj);
         if (prevTag != null) {
@@ -1442,35 +1462,6 @@ public class PtidesBasicDirector extends DEDirector {
         
         public int compareTo(Object other) {
             return deliveryTime.compareTo(((RealTimeEvent)other).deliveryTime);
-        }
-    }
-    
-    /** Holds a timestamp microstep pair
-     */
-    public class Tag implements Comparable{
-        public Time timestamp;
-        public int microstep;
-        
-        public Tag(Time timestamp, int microstep) {
-            this.timestamp = timestamp;
-            this.microstep = microstep;
-        }
-        
-        public int compareTo(Object other) {
-            Tag tag2 = (Tag) other;
-            if (timestamp.compareTo(tag2.timestamp) == 1) {
-                return 1;
-            } else if (timestamp.compareTo(tag2.timestamp) == -1) {
-                return -1;
-            } else {
-                if (microstep > tag2.microstep) {
-                    return 1;
-                } else if (microstep < tag2.microstep) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
         }
     }
 }

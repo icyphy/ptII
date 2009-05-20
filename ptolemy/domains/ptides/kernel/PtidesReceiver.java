@@ -42,7 +42,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * Receivers in the Ptides domain use a this timed queue to sort and events in
+ * Receivers in the Ptides domain use a timed queue to sort events in
  * the receivers.
  *
  * @author Patricia Derler
