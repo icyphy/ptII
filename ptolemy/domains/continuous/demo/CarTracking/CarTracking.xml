@@ -56,6 +56,52 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 55.0}">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate the&#10;driver of the&#10;leading car.&#10;Output is the &#10;driver's&#10;desired speed.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 235.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a car&#10;that matches&#10;the desired speed&#10;using feedback&#10;control with a&#10;specified time&#10;constant.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 225.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a wireless&#10;network that corrupts&#10;the data when the fault&#10;input is true.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 110.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate faults.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a car&#10;that attempts&#10;to detect faults&#10;in communication&#10;and adapt its&#10;behavior.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 95.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple adaptive cruise control system,&#10;illustrating model-integrated control strategies. A leading&#10;car model produces information that is observed with possible&#10;flaws by a following car. If the following car detects flaws, it&#10;uses a conservative strategy. Otherwise, it tracks the leading&#10;car closely.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 5.0]">
+        </property>
+    </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 195.0]">
         </property>
@@ -264,7 +310,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>distance (meters)</yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="2288.1998117074386"/>
+<yRange min="0.0" max="2288.199811539898"/>
 </plot>?>
         </configure>
     </entity>
@@ -558,7 +604,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={569, 368, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -786,9 +832,12 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
             </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="packetIn" relation="relation"/>
             <link port="packetOut" relation="relation6"/>
             <link port="Const.output" relation="relation4"/>
+            <link port="Const.trigger" relation="relation7"/>
             <link port="RecordAssembler.output" relation="relation6"/>
             <link port="RecordAssembler.time" relation="relation2"/>
             <link port="RecordAssembler.acceleration" relation="relation3"/>
@@ -798,6 +847,7 @@
             <link port="RecordDisassembler.time" relation="relation2"/>
             <link port="RecordDisassembler.acceleration" relation="relation3"/>
             <link port="RecordDisassembler.speed" relation="relation5"/>
+            <link port="RecordDisassembler.position" relation="relation7"/>
         </entity>
         <relation name="packetInRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -1367,10 +1417,14 @@
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="packetIn" relation="relation"/>
                 <link port="desiredSpeed" relation="relation2"/>
                 <link port="Const.output" relation="relation2"/>
+                <link port="Const.trigger" relation="relation3"/>
                 <link port="RecordDisassembler.input" relation="relation"/>
+                <link port="RecordDisassembler.speed" relation="relation3"/>
             </entity>
             <relation name="packetInRelation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
