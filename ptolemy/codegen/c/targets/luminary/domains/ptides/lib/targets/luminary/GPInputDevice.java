@@ -36,7 +36,6 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
