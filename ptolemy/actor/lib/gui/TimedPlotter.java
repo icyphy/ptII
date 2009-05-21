@@ -27,10 +27,14 @@
  */
 package ptolemy.actor.lib.gui;
 
+import java.util.ArrayList;
+
 import ptolemy.actor.TimedActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,22 +69,59 @@ public class TimedPlotter extends Plotter implements TimedActor {
     public TimedPlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        disconnectGraphOnAbscentValue = new Parameter(this, "disconnectGraphOnAbscentValue",
+                new BooleanToken(false));
+        disconnectGraphOnAbscentValue.setTypeEquals(BaseType.BOOLEAN);
 
         // Create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** When disconnectGraphOnAbscentValue is True there will be a gap
+     *  in the graph each time a the actor is fired, but the value
+     *  is absent for a certain channel. Especially in the continuous
+     *  domain this options is useful. By default this parameter is
+     *  False.
+     */
+    public Parameter disconnectGraphOnAbscentValue;
+
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
+
+    /** Initialize this actor.  Derived classes override this method
+     *  to perform actions that should occur once at the beginning of
+     *  an execution, but after type resolution.  Derived classes can
+     *  produce output data and schedule events.
+     *
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        int width = input.getWidth();
+        _connected.clear();
+        for (int i = 0; i < width; i++) {
+            _connected.add(true);
+        }
+        if (((BooleanToken) disconnectGraphOnAbscentValue.getToken()).booleanValue()) {
+         // NOTE: We assume the superclass ensures this cast is safe.
+            if (((Plot) plot).getMarksStyle().equals("none")) {
+                // If we wouldn't do this you wouldn't see anything for discrete signals.
+                ((Plot) plot).setMarksStyle("dots");
+            }
+        }
+    }
+    
     /** Read at most one input from each channel and plot it as a
      *  function of time.
      *  This is done in postfire to ensure that data has settled.
@@ -91,6 +132,8 @@ public class TimedPlotter extends Plotter implements TimedActor {
     public boolean postfire() throws IllegalActionException {
         double currentTimeValue;
         int width = input.getWidth();
+        
+        boolean disconnectOnAbscent = ((BooleanToken) disconnectGraphOnAbscentValue.getToken()).booleanValue();
         int offset = ((IntToken) startingDataset.getToken()).intValue();
 
         for (int i = width - 1; i >= 0; i--) {
@@ -102,10 +145,17 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
                 // NOTE: We assume the superclass ensures this cast is safe.
                 ((Plot) plot).addPoint(i + offset, currentTimeValue,
-                        currentValue, true);
+                        currentValue, _connected.get(i));
+                if (disconnectOnAbscent) {
+                    _connected.set(i, true);
+                }
+            } else if (disconnectOnAbscent && _connected.get(i)) {
+                _connected.set(i, false);                                       
             }
         }
 
         return super.postfire();
     }
+    
+    private ArrayList<Boolean> _connected = new ArrayList<Boolean>();
 }
