@@ -1,8 +1,6 @@
 package ptolemy.domains.ptides.kernel;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;

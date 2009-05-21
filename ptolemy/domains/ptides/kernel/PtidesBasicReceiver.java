@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
@@ -41,7 +42,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEReceiver;
-import ptolemy.domains.ptides.kernel.PtidesReceiver.TimeComparator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -92,8 +92,9 @@ public class PtidesBasicReceiver extends DEReceiver {
      */
     public List<Token> elementList() {
         LinkedList tokens = new LinkedList<Token>();
-        for (Event event : _queue.descendingSet()) {
-            tokens.add(event._token);
+        Iterator it = _queue.iterator();
+        while (it.hasNext()) {
+            tokens.add(((Event)it.next())._token);
         }
         return tokens;
     }
