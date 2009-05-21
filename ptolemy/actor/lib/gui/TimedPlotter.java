@@ -51,7 +51,7 @@ import ptolemy.plot.Plot;
  Each channel is plotted as a separate data set.
  The horizontal axis represents time.
 
- @author  Edward A. Lee
+ @author  Edward A. Lee, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Green (eal)
@@ -149,13 +149,18 @@ public class TimedPlotter extends Plotter implements TimedActor {
                 if (disconnectOnAbscent) {
                     _connected.set(i, true);
                 }
-            } else if (disconnectOnAbscent && _connected.get(i)) {
+            } else if (disconnectOnAbscent) {
+                // We have not token, and hence we want to create a gap
+                // in the graph.
                 _connected.set(i, false);                                       
             }
         }
 
         return super.postfire();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     private ArrayList<Boolean> _connected = new ArrayList<Boolean>();
 }
