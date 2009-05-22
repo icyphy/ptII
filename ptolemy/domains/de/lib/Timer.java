@@ -27,8 +27,6 @@
  */
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
@@ -154,20 +152,6 @@ public class Timer extends DETransformer {
                 // no tokens to be produced at the current time.
             }
         }
-    }
-
-    /** Override the base class to return a causality interface that
-     *  indicates that the output does not depend (immediately) on
-     *  the input.
-     *  @return A representation of the dependencies between input ports
-     *   and output ports.
-     */
-    public CausalityInterface getCausalityInterface() {
-        if (_causalityInterface == null) {
-            _causalityInterface = new BreakCausalityInterface(
-                    this, BooleanDependency.OTIMES_IDENTITY);
-        }
-        return _causalityInterface;
     }
 
     /** Initialize the internal states of this actor.
