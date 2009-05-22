@@ -104,7 +104,9 @@ public class VariableDelay extends TimedDelay {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(delay.getPort(), output);
+        // Declare that output does not immediately depend on the delay input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(delay.getPort(), output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

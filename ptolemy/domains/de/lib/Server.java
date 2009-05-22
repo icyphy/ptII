@@ -239,8 +239,10 @@ public class Server extends DETransformer {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(input, output);
-        removeDependency(serviceTime.getPort(), output);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(input, output, 0.0);
+        declareDelayDependency(serviceTime.getPort(), output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
