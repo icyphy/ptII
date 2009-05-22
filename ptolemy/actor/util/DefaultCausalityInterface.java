@@ -112,7 +112,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
         // FIXME: need to support SuperdenseDependency.
         if (_defaultDependency instanceof RealDependency) {
             if (timeDelay != 0.0) {
-                removeDependency(input, output);
+                _removeDependency(input, output);
             }
             // Store the time delay.
             Dependency dependency = RealDependency.valueOf(timeDelay);
@@ -123,7 +123,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
             entry.put(output, dependency);
             _delayDependencies.put(input, entry);
         } else {
-            removeDependency(input, output);
+            _removeDependency(input, output);
         }
     }
     
@@ -392,23 +392,17 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *   input port.
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
-        if (_forwardPrunedDependencies == null) {
-            _forwardPrunedDependencies = new HashMap<IOPort, Set<IOPort>>();
-            _backwardPrunedDependencies = new HashMap<IOPort, Set<IOPort>>();
+        if (_defaultDependency instanceof RealDependency) {
+            // Set time delay to infinity.
+            Dependency dependency = RealDependency.OPLUS_IDENTITY;
+            if (_delayDependencies == null) {
+                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+            }
+            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            entry.put(outputPort, dependency);
+            _delayDependencies.put(inputPort, entry);
         }
-        Set<IOPort> outputPorts = _forwardPrunedDependencies.get(inputPort);
-        if (outputPorts == null) {
-            outputPorts = new HashSet<IOPort>();
-            _forwardPrunedDependencies.put(inputPort, outputPorts);
-        }
-        outputPorts.add(outputPort);
-
-        Set<IOPort> inputPorts = _backwardPrunedDependencies.get(outputPort);
-        if (inputPorts == null) {
-            inputPorts = new HashSet<IOPort>();
-            _backwardPrunedDependencies.put(outputPort, inputPorts);
-        }
-        inputPorts.add(inputPort);
+        _removeDependency(inputPort, outputPort);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -463,4 +457,32 @@ public class DefaultCausalityInterface implements CausalityInterface {
 
     /** A record of removed dependencies from input to output, if any. */
     protected Map<IOPort, Set<IOPort>> _forwardPrunedDependencies;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** For the benefit of the dependentPorts() and equivalentPorts()
+     *  methods, remove the dependency that the input has on the output.
+     *  @param inputPort The input.
+     *  @param outputPort The output.
+     */
+    private void _removeDependency(IOPort inputPort, IOPort outputPort) {
+        if (_forwardPrunedDependencies == null) {
+            _forwardPrunedDependencies = new HashMap<IOPort, Set<IOPort>>();
+            _backwardPrunedDependencies = new HashMap<IOPort, Set<IOPort>>();
+        }
+        Set<IOPort> outputPorts = _forwardPrunedDependencies.get(inputPort);
+        if (outputPorts == null) {
+            outputPorts = new HashSet<IOPort>();
+            _forwardPrunedDependencies.put(inputPort, outputPorts);
+        }
+        outputPorts.add(outputPort);
+
+        Set<IOPort> inputPorts = _backwardPrunedDependencies.get(outputPort);
+        if (inputPorts == null) {
+            inputPorts = new HashSet<IOPort>();
+            _backwardPrunedDependencies.put(outputPort, inputPorts);
+        }
+        inputPorts.add(inputPort);
+    }
 }
