@@ -130,9 +130,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** Return a collection of the ports in this actor that depend on
      *  or are depended on by the specified port. A port X depends
      *  on a port Y if X is an output and Y is an input and
-     *  getDependency(X,Y) returns something not equal to
-     *  the oPlusIdentity() of the default dependency specified
-     *  in the constructor.
+     *  getDependency(X,Y) returns oTimesIdentity()
+     *  of the default dependency specified in the constructor.
      *  <p>
      *  This base class presumes (but does not check) that the
      *  argument is a port contained by the associated actor.
