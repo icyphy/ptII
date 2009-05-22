@@ -153,7 +153,7 @@ public class RealDependency implements Dependency {
         return _value;
     }
 
-    /** Return an instance of BooleanDependency with the specified
+    /** Return an instance of RealDependency with the specified
      *  value. This is preferable to use over the constructor
      *  because it uses the same instances for the most common
      *  values.
