@@ -29,8 +29,7 @@
       <!-- FairDF is not shipping in 4.0 -->
       <!--property name="FairDF Director" class="ptolemy.domains.fairdf.kernel.FairDFDirector"/-->
       <property name="Distributed SDF Director" class="ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector"/>
-      <property name="Ptides Director" class="ptolemy.domains.ptides.kernel.PtidesDirector"/>
-      <property name="Ptides Embedded Director" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector"/>
+      <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector"/>
       </group>
     ?>
   </configure>
