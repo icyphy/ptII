@@ -90,7 +90,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public CCodeGeneratorHelper(Object component) {
         super(component);
-        _parseTreeCodeGenerator = getParseTreeCodeGenerator();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,7 +102,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
         // if we could use the same CParseTreeCodeGenerator over and over.
-        _parseTreeCodeGenerator = new CParseTreeCodeGenerator(_codeGenerator);
+        if (!(_parseTreeCodeGenerator instanceof CParseTreeCodeGenerator)) {
+            _parseTreeCodeGenerator = new CParseTreeCodeGenerator(_codeGenerator);
+        }
         return _parseTreeCodeGenerator;
     }
 

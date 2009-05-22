@@ -116,7 +116,9 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
         // if we could use the same JavaParseTreeCodeGenerator over and over.
-        _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+        if (!(_parseTreeCodeGenerator instanceof JavaParseTreeCodeGenerator)) {
+            _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+        }
         return _parseTreeCodeGenerator;
     }
 

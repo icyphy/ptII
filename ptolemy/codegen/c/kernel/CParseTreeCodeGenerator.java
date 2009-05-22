@@ -122,16 +122,6 @@ ParseTreeCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Evaluate the parse tree with the specified root node.
-     *  @param node The root of the parse tree.
-     *  @return The result of evaluation.
-     *  @exception IllegalActionException If an parse error occurs.
-     */
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
-    throws IllegalActionException {
-        return evaluateParseTree(node, null);
-    }
-
     /** Evaluate the parse tree with the specified root node using
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
@@ -152,8 +142,6 @@ ParseTreeCodeGenerator {
         // Evaluate the value of the root node.
         node.visit(this);
 
-        // and return it.
-        _scope = null;
         return _evaluatedChildToken;
     }
 

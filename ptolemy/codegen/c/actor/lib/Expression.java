@@ -183,8 +183,6 @@ public class Expression extends CCodeGeneratorHelper {
         code.append(super.generateWrapupCode());
         code.append(processCode(parseTreeCG.generateWrapupCode()));
 
-        // Free up memory
-        parseTreeCG = null;
         return code.toString();
     }
 
