@@ -36,6 +36,7 @@ import java.util.Set;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -446,6 +447,18 @@ public class Director extends Attribute implements Executable {
      *   is not acceptable to the actor.
      */
     public void fireAtSkipped(Time time) throws IllegalActionException {
+    }
+    
+    /** Return a causality interface for the composite actor that
+     *  contains this director. This base class returns an
+     *  instance of {@link CausalityInterfaceForComposites}, but
+     *  subclasses may override this to return a domain-specific
+     *  causality interface.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports of the container.
+     */
+    public CausalityInterface getCausalityInterface() {
+        return new CausalityInterfaceForComposites((Actor)getContainer(), defaultDependency());
     }
 
     /** Return the current time value of the model being executed by this
