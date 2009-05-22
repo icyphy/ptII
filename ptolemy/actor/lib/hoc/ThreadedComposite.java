@@ -324,6 +324,12 @@ public class ThreadedComposite extends MirrorComposite {
      * the type of dependency that is required cannot be resolved.
      */
     public CausalityInterface getCausalityInterface() {
+        // FIXME: This will not work property with Ptides because it will effectively
+        // declare that the delay from input to output is infinite, which it is not.
+        // What we want is for the delay from input to output to be a superdense time
+        // delay of (0.0, 1).  This could be implemented by a class similar to
+        // BreakCausalityInterface that does the right thing when the director
+        // provides a Dependency that is a SuperdenseTimeIdentity.
         if (_causalityInterface == null) {
             _causalityInterface = new BreakCausalityInterface(
                     this, getExecutiveDirector().defaultDependency());
