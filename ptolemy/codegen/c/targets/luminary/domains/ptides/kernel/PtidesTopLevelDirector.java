@@ -51,7 +51,7 @@ package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating
  */
-public class PtidesDirector extends ptolemy.codegen.c.domains.ptides.kernel.PtidesDirector {
+public class PtidesTopLevelDirector extends ptolemy.codegen.c.domains.ptides.kernel.PtidesTopLevelDirector {
 
     /**
      * Construct the code generator helper associated with the given
@@ -59,7 +59,7 @@ public class PtidesDirector extends ptolemy.codegen.c.domains.ptides.kernel.Ptid
      * @param ptidesDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesDirector
      */
-    public PtidesDirector(ptolemy.domains.ptides.kernel.PtidesDirector ptidesDirector) {
-        super(ptidesDirector);
+    public PtidesTopLevelDirector(ptolemy.domains.ptides.kernel.PtidesTopLevelDirector ptidesTopLevelDirector) {
+        super(ptidesTopLevelDirector);
     }
 }

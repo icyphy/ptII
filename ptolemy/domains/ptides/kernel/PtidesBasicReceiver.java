@@ -138,7 +138,7 @@ public class PtidesBasicReceiver extends DEReceiver {
     /** Return true if there is at least one token available to the
      *  get() method.
      *  @return True if there are more tokens.
-     * @throws IllegalActionException 
+     *  @throws IllegalActionException 
      */
     public boolean hasToken() {
         try {
@@ -146,10 +146,9 @@ public class PtidesBasicReceiver extends DEReceiver {
                 int result = _queue.first().getTag().compareTo(_getDirector().getModelTag());
                 if (result < 0) {
                     throw new IllegalActionException(getContainer(),
-                            "While checking for hasToken at actor: " +
-                            this.getContainer().getContainer() +
-                            ", the token at input port is of smaller tag than" +
-                    " the current tag");
+                            "The input port has an unconsumed token with timestamp " +
+                            _queue.first().getTag() + ", while the current model time is " +
+                            _getDirector().getModelTag());
                 } else if (result == 0) {
                     return true;
                 }

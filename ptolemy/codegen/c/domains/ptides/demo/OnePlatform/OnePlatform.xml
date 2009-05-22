@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.0, 222.5}">
     </property>
-    <property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
+    <property name="PtidesTopLevelDirector" class="ptolemy.domains.ptides.kernel.PtidesTopLevelDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
@@ -47,7 +47,7 @@
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 145.0]">
         </property>
-        <property name="PtidesEmbeddedDirector" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector">
+        <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
             </property>
         </property>

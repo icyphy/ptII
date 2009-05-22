@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.codegen.c.domains.ptides.kernel.PtidesEmbeddedDirector;
+import ptolemy.codegen.c.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.codegen.c.domains.ptides.lib.OutputDevice;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -107,7 +107,7 @@ public class GPOutputDevice extends OutputDevice {
         List args = new LinkedList();
         
         ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice) getComponent();
-        PtidesEmbeddedDirector helper = (PtidesEmbeddedDirector)_getHelper(actor.getDirector());
+        PtidesBasicDirector helper = (PtidesBasicDirector)_getHelper(actor.getDirector());
 
         args.add((helper._actuators.get(actor)).toString());
 

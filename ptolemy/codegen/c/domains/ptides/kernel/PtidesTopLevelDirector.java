@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating
  */
-public class PtidesDirector extends Director
+public class PtidesTopLevelDirector extends Director
 /* CompositeProcessDirector implements TimedDirector*/ {
 
     /** Construct the code generator helper associated with the given
@@ -55,8 +55,8 @@ public class PtidesDirector extends Director
      *  @param ptidesDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesDirector
      */
-    public PtidesDirector(ptolemy.domains.ptides.kernel.PtidesDirector ptidesDirector) {
-        super(ptidesDirector);
+    public PtidesTopLevelDirector(ptolemy.domains.ptides.kernel.PtidesTopLevelDirector ptidesTopLevelDirector) {
+        super(ptidesTopLevelDirector);
     }
 
     /** Generate a main loop for an execution under the control of

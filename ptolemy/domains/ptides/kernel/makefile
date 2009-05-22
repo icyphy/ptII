@@ -49,15 +49,13 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	DEListEventQueue.java \
-	PtidesActorProperties.java \
-	PtidesActorReceiver.java \
 	PtidesBasicDirector.java \
-	PtidesDirector.java \
+	PtidesBasicPreemptiveEDFDirector.java \
+	PtidesBasicReceiver.java \
 	PtidesEmbeddedDirector.java \
 	PtidesNoPhysicalTimeDirector.java \
-	PtidesPlatformReceiver.java \
 	PtidesPreemptiveEDFDirector.java \
-	PtidesReceiver.java
+	Tag.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -69,16 +67,11 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'PtidesBasicDirector$$DoubleTimedEvent.class' \
-	'PtidesReceiver$$Event.class' \
-	'PtidesReceiver$$TimeComparator.class' \
-	'PtidesBasicDirector$$DoubleTimedEvent.class' \
 	'PtidesBasicDirector$$RealTimeEvent.class' \
 	'PtidesBasicDirector$$Tag.class' \
 	'PtidesNoPhysicalTimeDirector$$DoubleTimedEvent.class' \
 	'PtidesNoPhysicalTimeDirector$$RealTimeEvent.class' \
-	'PtidesNoPhysicalTimeDirector$$Tag.class' \
-	'PtidesNoPhysicalTimeDirector.class' 
+	'PtidesNoPhysicalTimeDirector$$Tag.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

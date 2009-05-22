@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ptides
 
-DIRS =		kernel lib demo platform test
+DIRS =		kernel lib demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..

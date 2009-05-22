@@ -62,7 +62,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating
  */
-public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.kernel.PtidesEmbeddedDirector {
+public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel.PtidesBasicDirector {
 
     /**
      * Construct the code generator helper associated with the given
@@ -70,8 +70,8 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      * @param ptidesEmbeddedDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector
      */
-    public PtidesEmbeddedDirector(ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector ptidesEmbeddedDirector) {
-        super(ptidesEmbeddedDirector);
+    public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
+        super(ptidesBasicDirector);
     }
 
     ////////////////////////////////////////////////////////////////////////

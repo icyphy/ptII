@@ -4,7 +4,7 @@
 <entity name="simpleSpeaker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
+    <property name="PtidesTopLevelDirector" class="ptolemy.domains.ptides.kernel.PtidesTopLevelDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 60.0}">
@@ -41,7 +41,7 @@
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 150.0]">
         </property>
-        <property name="PtidesEmbeddedDirector" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector">
+        <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
             </property>
         </property>

@@ -30,7 +30,7 @@ package ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.codegen.c.domains.ptides.kernel.PtidesEmbeddedDirector;
+import ptolemy.codegen.c.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.codegen.c.domains.ptides.lib.OutputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -83,7 +83,7 @@ public class SpeakerOutputDevice extends OutputDevice {
         List args = new LinkedList();
         
         ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice) getComponent();
-        PtidesEmbeddedDirector helper = (PtidesEmbeddedDirector)_getHelper(actor.getDirector());
+        PtidesBasicDirector helper = (PtidesBasicDirector)_getHelper(actor.getDirector());
 
         args.add((helper._actuators.get(actor)).toString());
 

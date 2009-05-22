@@ -10,9 +10,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class PtidesActorReceiver extends ptolemy.codegen.c.actor.Receiver {
+public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
 
-    public PtidesActorReceiver(ptolemy.domains.ptides.kernel.PtidesActorReceiver receiver) {
+    public PtidesBasicReceiver(ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver) {
         super(receiver);
         // TODO Auto-generated constructor stub
     }

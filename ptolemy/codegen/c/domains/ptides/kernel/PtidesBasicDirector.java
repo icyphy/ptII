@@ -63,15 +63,15 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating
  */
-public class PtidesEmbeddedDirector extends Director {
+public class PtidesBasicDirector extends Director {
 
     /** Construct the code generator helper associated with the given
      *  PtidesEmbeddedDirector.
      *  @param ptidesEmbeddedDirector The associated director
      *  ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector
      */
-    public PtidesEmbeddedDirector(ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector ptidesEmbeddedDirector) {
-        super(ptidesEmbeddedDirector);
+    public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
+        super(ptidesBasicDirector);
     }
 
     ////////////////////////////////////////////////////////////////////////
