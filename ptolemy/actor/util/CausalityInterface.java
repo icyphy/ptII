@@ -62,11 +62,27 @@ public interface CausalityInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Set the dependency that the specified output port has
+     *  on the specified input port to represent a time
+     *  delay with the specified value and superdense time index.
+     *  Implementations of this method should be adaptive to the type
+     *  of Dependency provided by the director. For example, if the
+     *  director provides a BooleanDependency, then an implementation
+     *  of this method should define the dependency to be oTimesIdentity if
+     *  the timeDelay is 0.0 and the index is 0, and otherwise it should
+     *  be oPlusIdentity.
+     *  @param input The input port.
+     *  @param output The output port with a time delay dependency on the
+     *   input port.
+     *  @param timeDelay The time delay.
+     *  @param index The superdense time index.
+     */
+    public void declareDelayDependency(IOPort input, IOPort output, double timeDelay, int index);
+    
     /** Return a collection of the ports in this actor that depend on
      *  or are depended on by the specified port. A port X depends
      *  on a port Y if X is an output and Y is an input and
-     *  getDependency(X,Y) returns something not equal to
-     *  the additive identity of the relevant Dependency.
+     *  getDependency(X,Y) return the oTimesIdentity.
      *  The argument port should be contained by the same actor
      *  returned by getActor().
      *  @param port The port to find the dependents of.
@@ -81,9 +97,9 @@ public interface CausalityInterface {
     /** Return a collection of input ports in the associated actor that are
      *  in the same equivalence class as the specified input port.
      *  An equivalence class is defined as follows.
-     *  If input ports X and Y each have a dependency not equal to the
-     *  default depenency's oPlusIdentity() on any common port
-     *  or on the state of the associated actor, then they
+     *  If input ports X and Y each have a dependency equal to the
+     *  default dependency's oTimesIdentity to any common output port
+     *  or to the state of the associated actor, then they
      *  are in an equivalence class. That is,
      *  there is a causal dependency. They are also in
      *  the same equivalence class if there is a port Z
@@ -122,7 +138,8 @@ public interface CausalityInterface {
             throws IllegalActionException;
 
     /** Remove the dependency that the specified output port has
-     *  on the specified input port. If there is no
+     *  on the specified input port, meaning that the dependency
+     *  is set to oPlusIdentity. If there is no
      *  defined dependency between the two ports, then this
      *  method will have no effect.
      *  @param inputPort The input port.
