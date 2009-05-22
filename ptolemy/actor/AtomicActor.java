@@ -233,6 +233,36 @@ public class AtomicActor extends ComponentEntity implements Actor,
             }
         }
     }
+    
+    /** Set the dependency that the specified output port has
+     *  on the specified input port to represent a time
+     *  delay with the specified value. By default, each
+     *  output port is assumed to have a dependency on all input
+     *  ports. Subclasses can call this method in preinitialize()
+     *  instead of implementing a custom {@link CausalityInterface}
+     *  for the cases where output ports depend on input ports with
+     *  a time delay. If the time delay is 0.0, this method nonetheless
+     *  assumes that the output port does not (immediately) depend on
+     *  the input port (this amounts to a superdense time delay of
+     *  (0.0, 1)). There should be one such call for each
+     *  input, output pair that does not have a dependency.
+     *  @param input The input port.
+     *  @param output The output port with a time delay dependency on the
+     *   input port.
+     *  @param timeDelay The time delay.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency(IOPort input, IOPort output, double timeDelay) 
+            throws IllegalActionException {
+        CausalityInterface causality = getCausalityInterface();
+        if (timeDelay == 0.0) {
+            causality.declareDelayDependency(input, output, 0.0, 1);
+        } else {
+            causality.declareDelayDependency(input, output, timeDelay, 0);            
+        }
+    }
 
     /** Do nothing.  Derived classes override this method to define their
      *  primary run-time action.
@@ -259,11 +289,13 @@ public class AtomicActor extends ComponentEntity implements Actor,
     }
 
     /** Return a causality interface for this actor. In this base class,
-     *  if there is a director, we delegate to the director to return
-     *  a default causality interface. Otherwise, we return an instance
-     *  of CausalityInterface with BooleanDependency.OTIMES_IDENTITY as
-     *  its default. This declares the dependency between input ports
-     *  and output ports of an actor to be true, the multiplicative identity.
+     *  we return an instance of {@link DefaultCausalityInterface}
+     *  with the dependency type given by the director, or with a BooleanDependency
+     *  if there is no director.
+     *  This declares that all output ports of the actor depend on all input
+     *  ports, unless the actor calls
+     *  {@link #removeDependency(IOPort, IOPort)} or 
+     *  {@link #delayDependency(IOPort, IOPort, double)}.
      *  If this is called multiple times, the same object is returned each
      *  time unless the director has changed since the last call, in
      *  which case a new object is returned.
