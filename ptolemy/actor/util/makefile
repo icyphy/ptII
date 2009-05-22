@@ -77,6 +77,7 @@ JSRCS = \
 	FuzzyDoubleComparator.java \
 	GeneralComparator.java \
 	RealDependency.java \
+	SuperdenseDependency.java \
 	SuperdenseTime.java \
 	Time.java \
 	TimedEvent.java \
