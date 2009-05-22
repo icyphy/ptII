@@ -23,7 +23,6 @@ import java.util.List;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
@@ -191,7 +190,7 @@ public class TDLActor extends FSMActor {
             physicalTime = topLevelDirector.getModelTime();
         else
             physicalTime = executiveDirector.getModelTime();
-        CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) ((CompositeActor) ((TDLModule) getContainer())
+        TDLCausalityInterface causalityInterface = (TDLCausalityInterface) ((CompositeActor) ((TDLModule) getContainer())
                 .getContainer()).getCausalityInterface();
         Dependency minimumDelay = causalityInterface.getMinimumDelay(port);
         if (minimumDelay instanceof RealDependency) {

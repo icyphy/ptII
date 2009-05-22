@@ -43,6 +43,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -367,6 +368,16 @@ public class TDLModuleDirector extends ModalDirector {
         } catch (IllegalActionException ex) {
             return false;
         }
+    }
+
+    /** Return a causality interface for the composite actor that
+     *  contains this director. This class returns an
+     *  instance of {@link TDLCausalityInterface}.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports of the container.
+     */
+    public CausalityInterface getCausalityInterface() {
+        return new TDLCausalityInterface((Actor)getContainer(), defaultDependency());
     }
 
     /**

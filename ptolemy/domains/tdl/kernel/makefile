@@ -52,6 +52,7 @@ JSRCS = \
 	TDLAction.java \
 	TDLActionsGraph.java \
 	TDLActor.java  \
+	TDLCausalityInterface.java \
 	TDLCodeGenerator.java \
 	TDLCodeGeneratorUtilities.java \
 	TDLController.java \
