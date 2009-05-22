@@ -90,6 +90,43 @@ public class DefaultCausalityInterface implements CausalityInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Set the dependency that the specified output port has
+     *  on the specified input port to represent a time
+     *  delay with the specified value and superdense time index.
+     *  This method is adaptive to the type
+     *  of Dependency provided in the constructor. For example, if the
+     *  constructor provides a BooleanDependency, then
+     *  this method defines the dependency to be TRUE if
+     *  the timeDelay is 0.0 and the index is 0, and otherwise it should
+     *  be FALSE. If the Dependency is a RealDependency, then it uses
+     *  the <i>timeDelay</i> argument to define the dependency.
+     *  If it is a SuperdenseDependency, then it uses both the <i>timeDelay</i>
+     *  and the <i>index</i>.
+     *  @param input The input port.
+     *  @param output The output port with a time delay dependency on the
+     *   input port.
+     *  @param timeDelay The time delay.
+     *  @param index The superdense time index.
+     */
+    public void declareDelayDependency(IOPort input, IOPort output, double timeDelay, int index) {
+        // FIXME: need to support SuperdenseDependency.
+        if (_defaultDependency instanceof RealDependency) {
+            if (timeDelay != 0.0) {
+                removeDependency(input, output);
+            }
+            // Store the time delay.
+            Dependency dependency = RealDependency.valueOf(timeDelay);
+            if (_delayDependencies == null) {
+                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+            }
+            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            entry.put(output, dependency);
+            _delayDependencies.put(input, entry);
+        } else {
+            removeDependency(input, output);
+        }
+    }
+    
     /** Return a collection of the ports in this actor that depend on
      *  or are depended on by the specified port. A port X depends
      *  on a port Y if X is an output and Y is an input and
@@ -289,6 +326,16 @@ public class DefaultCausalityInterface implements CausalityInterface {
      */
     public Dependency getDependency(IOPort input, IOPort output)
             throws IllegalActionException {
+        // If there is a recorded delay dependency, return that.
+        if (_delayDependencies != null) {
+            Map<IOPort,Dependency> entry = _delayDependencies.get(input);
+            if (entry != null) {
+                Dependency result = entry.get(output);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
         if (input.isInput() && input.getContainer() == _actor
                 && output.isOutput() && output.getContainer() == _actor) {
             if (_forwardPrunedDependencies != null) {
@@ -410,6 +457,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
 
     /** The default dependency of an output port on an input port. */
     protected Dependency _defaultDependency;
+
+    /** A record of delay dependencies from input to output, if any. */
+    protected Map<IOPort, Map<IOPort,Dependency>> _delayDependencies;
 
     /** A record of removed dependencies from input to output, if any. */
     protected Map<IOPort, Set<IOPort>> _forwardPrunedDependencies;
