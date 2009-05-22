@@ -61,11 +61,11 @@
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 175.0]">
         </property>
     </entity>
     <entity name="InitQueue" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -74,7 +74,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 175.0]">
         </property>
     </entity>
     <entity name="InitServers" class="ptolemy.actor.lib.Const">
@@ -87,11 +87,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[224.75, 125.0]">
         </property>
     </entity>
     <entity name="PteraSubmodel" class="ptolemy.domains.ptera.kernel.PteraModalModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 165.0]">
         </property>
         <port name="serversIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -639,14 +639,14 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 160.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="1997.0261647685002"/>
+<xRange min="0.0" max="2000"/>
 <yRange min="0.0" max="23.0"/>
 </plot>?>
         </configure>
@@ -654,7 +654,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[195.0, 180.0]">
+        <vertex name="vertex1" value="[185.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

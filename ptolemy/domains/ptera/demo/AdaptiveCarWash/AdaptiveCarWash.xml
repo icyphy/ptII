@@ -84,7 +84,7 @@
         </property>
     </entity>
     <entity name="InitQueue" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -443,8 +443,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="1999.2427402946"/>
-<yRange min="0.0" max="22.0"/>
+<xRange min="0.0" max="2000"/>
+<yRange min="0.0" max="23.0"/>
 </plot>?>
         </configure>
     </entity>
