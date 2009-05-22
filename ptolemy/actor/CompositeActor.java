@@ -517,12 +517,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 && _causalityInterfaceDirector == director) {
             return _causalityInterface;
         }
-        Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
         if (director != null) {
-            defaultDependency = director.defaultDependency();
+            _causalityInterface = director.getCausalityInterface();
+            _causalityInterfaceDirector = director;
+            return _causalityInterface;
         }
+        Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
         _causalityInterface = new CausalityInterfaceForComposites(this, defaultDependency);
-        _causalityInterfaceDirector = director;
+        _causalityInterfaceDirector = null;
         return _causalityInterface;
     }
 
