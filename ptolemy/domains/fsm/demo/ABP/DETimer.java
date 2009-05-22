@@ -119,7 +119,9 @@ public class DETimer extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(set, expired);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(set, expired, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

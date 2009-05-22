@@ -154,8 +154,10 @@ public class DEMessageSource extends RandomSource {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(next, output);
-        removeDependency(next, request);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(next, output, 0.0);
+        declareDelayDependency(next, request, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
