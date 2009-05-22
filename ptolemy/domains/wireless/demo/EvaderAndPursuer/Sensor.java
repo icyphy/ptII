@@ -162,8 +162,10 @@ public class Sensor extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        super.removeDependency(input, output);
-        super.removeDependency(signal, output);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(input, output, 0.0);
+        declareDelayDependency(signal, output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

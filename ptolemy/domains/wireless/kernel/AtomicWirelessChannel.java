@@ -338,7 +338,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(_channelPort, _channelPort);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(_channelPort, _channelPort, 0.0);
     }
 
     /** Register a property transformer for transmissions from the specified

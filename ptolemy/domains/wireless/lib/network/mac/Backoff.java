@@ -289,8 +289,10 @@ public class Backoff extends MACActorBase {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(getBackoff, BKDone);
-        removeDependency(fromDataPump, BKDone);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(getBackoff, BKDone, 0.0);
+        declareDelayDependency(fromDataPump, BKDone, 0.0);
     }
    
     ///////////////////////////////////////////////////////////////////

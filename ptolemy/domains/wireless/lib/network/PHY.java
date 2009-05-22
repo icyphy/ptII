@@ -500,9 +500,11 @@ public class PHY extends NetworkActorBase {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(fromMAC, toMAC);
-        removeDependency(fromMAC, channelStatus);
-        removeDependency(fromMAC, PHYConfirm);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(fromMAC, toMAC, 0.0);
+        declareDelayDependency(fromMAC, channelStatus, 0.0);
+        declareDelayDependency(fromMAC, PHYConfirm, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

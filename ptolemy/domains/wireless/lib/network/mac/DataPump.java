@@ -272,10 +272,12 @@ public class DataPump extends MACActorBase {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(TXTXRequest, TXTXConfirm);
-        removeDependency(RXTXRequest, RXTXConfirm);
-        removeDependency(TXTXRequest, RXTXConfirm);
-        removeDependency(RXTXRequest, TXTXConfirm);
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        declareDelayDependency(TXTXRequest, TXTXConfirm, 0.0);
+        declareDelayDependency(RXTXRequest, RXTXConfirm, 0.0);
+        declareDelayDependency(TXTXRequest, RXTXConfirm, 0.0);
+        declareDelayDependency(RXTXRequest, TXTXConfirm, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
