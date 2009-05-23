@@ -72,15 +72,22 @@ public class SuperdenseDependency implements Dependency {
      *  this never returns Dependency.INCOMPARABLE. The order is the
      *  usual numerical ordering of doubles, with Double.POSITIVE_INFINITY
      *  on top.
+     *  <p>
+     *  In the case where both dependencies have _time value equal to
+     *  Double.POSITIVE_INFINITY, these two dependencies are equal, even
+     *  though its indices may differ. This conforms with valueOf() method
+     *  @see #valueOf(double, int). 
      *  @param dependency The dependency to compare against.
      *  @return The result of comparison.
      *  @exception ClassCastException If the argument is not an instance
      *   of SuperdenseDependency.
      */
     public int compareTo(Dependency dependency) {
-        // FIXME: handle case where real part is infinity.
-        // In that case, index doesn't matter.
         if (equals(dependency)) {
+            return Dependency.EQUALS;
+        }
+        if (((SuperdenseDependency) dependency)._time == Double.POSITIVE_INFINITY
+                && _time == Double.POSITIVE_INFINITY) {
             return Dependency.EQUALS;
         }
         if (_time < ((SuperdenseDependency) dependency)._time) {
@@ -96,13 +103,20 @@ public class SuperdenseDependency implements Dependency {
     /** Return true if the value of this dependency equals that
      *  of the specified one, and the specified one is an instance
      *  of RealDepedency.
+     *  <p>
+     *  In the case where both dependencies have _time value equal to
+     *  Double.POSITIVE_INFINITY, these two dependencies are equal, even
+     *  though its indices may differ. This conforms with valueOf() method
+     *  @see #valueOf(double, int).
      *  @param object The object to compare against.
      *  @return true if this object is the same as the object argument.
      */
     public boolean equals(Object object) {
-        // FIXME: handle case where real part is infinity.
-        // In that case, index doesn't matter.
         if (object instanceof SuperdenseDependency) {
+            if (((SuperdenseDependency) object)._time == Double.POSITIVE_INFINITY
+                    && _time == Double.POSITIVE_INFINITY) {
+                return true;
+            }
             return (_time == ((SuperdenseDependency) object)._time
                     && _index == ((SuperdenseDependency) object)._index);
         }
