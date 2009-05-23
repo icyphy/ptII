@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 220.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="minDelay = &#10;3.0">
@@ -47,13 +47,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 160.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 135, 811, 507}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 400]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.0, 200.0}">
         </property>
         <property name="PtidesPreemptiveEDFDirector" class="ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 55.0]">
@@ -131,9 +131,11 @@
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 3\n   plus: 3\n   minus: 3\n   output: 3\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 2\n   input: 2\n   output: 2\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;, &quot;.PtidesPreemptEDF_OnePlatform2.CompositeActor.AddSubtract: 1\n   plus: 1\n   minus: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Scale2: 1\n   input: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TimedDelay2: 0\n   input: 2\n   output: 0\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.TestActorPortDepth: 1\n   trigger: 1\n   output: 1\n.PtidesPreemptEDF_OnePlatform2.CompositeActor.Test: 2\n   input: 2\n   output: 2\n&quot;}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 345.0]">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 345.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -156,26 +158,26 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
-            <vertex name="vertex1" value="[500.0, 185.0]">
-            </vertex>
-        </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
             <vertex name="vertex1" value="{115.0, 255.0}">
             </vertex>
         </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{225.0, 345.0}">
+            </vertex>
+        </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port" relation="relation8"/>
+        <link port="port" relation="relation6"/>
         <link port="port2" relation="relation7"/>
         <link port="port3" relation="relation2"/>
         <link port="AddSubtract.plus" relation="relation5"/>
         <link port="AddSubtract.minus" relation="relation"/>
-        <link port="AddSubtract.output" relation="relation8"/>
+        <link port="AddSubtract.output" relation="relation6"/>
         <link port="Scale.input" relation="relation2"/>
         <link port="Scale.output" relation="relation3"/>
         <link port="TimedDelay.input" relation="relation3"/>
@@ -185,8 +187,8 @@
         <link port="TimedDelay2.input" relation="relation4"/>
         <link port="TimedDelay2.output" relation="relation5"/>
         <link port="TestActorPortDepth.trigger" relation="relation2"/>
-        <link port="TestActorPortDepth.output" relation="relation6"/>
-        <link port="Test.input" relation="relation6"/>
+        <link port="TestActorPortDepth.output" relation="relation9"/>
+        <link port="Test.input" relation="relation9"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
@@ -210,14 +212,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 245.0}">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 220.0]">
-        </property>
-    </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 220.0]">
@@ -226,9 +220,17 @@
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 1, 1, 1, 1, 1, 1, 1}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 220.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -239,21 +241,21 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[315.0, 220.0]">
         </vertex>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="CompositeActor.port" relation="relation5"/>
     <link port="CompositeActor.port2" relation="relation"/>
     <link port="CompositeActor.port3" relation="relation2"/>
     <link port="Clock.output" relation="relation"/>
     <link port="Clock2.output" relation="relation2"/>
-    <link port="Test.input" relation="relation3"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation5"/>
     <link port="Test2.input" relation="relation5"/>
+    <link port="Test.input" relation="relation3"/>
 </entity>
