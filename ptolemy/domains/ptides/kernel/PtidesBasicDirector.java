@@ -44,6 +44,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
@@ -53,7 +55,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.domains.ptides.lib.NetworkInputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -110,7 +111,30 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+  
+    /**
+     * Return the default dependency between input and output ports which for
+     * the Ptides domain is a SuperdenseDependency.
+     *
+     * @return The default dependency which describes a time delay of 0.0,
+     *          and a index delay of 0 between ports.
+     */ 
+    public Dependency defaultDependency() {
+        return SuperdenseDependency.OTIMES_IDENTITY;
+    }
+
+    /**
+     * Return a real dependency representing a model-time delay of the
+     * specified amount.
+     *
+     * @param delay
+     *            A non-negative delay.
+     * @return A Superdense dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay, int index) {
+        return SuperdenseDependency.valueOf(delay, index);
+    }
+        
     /** Get the current microstep.
      *  @return microstep of the current time.
      */

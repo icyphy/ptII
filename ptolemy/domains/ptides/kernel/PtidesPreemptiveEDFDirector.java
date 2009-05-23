@@ -47,32 +47,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
 
-    /**
-     * Return the default dependency between input and output ports which for
-     * the Ptides domain is a RealDependency.
-     *
-     * @return The default dependency which describes a delay of 0.0 between
-     *         ports.
-     */ 
-    public Dependency defaultDependency() {
-        return RealDependency.OTIMES_IDENTITY;
-    }
-
-
-    /**
-     * Return a real dependency representing a model-time delay of the
-     * specified amount.
-     *
-     * @param delay
-     *            A non-negative delay.
-     * @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return RealDependency.valueOf(delay);
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
