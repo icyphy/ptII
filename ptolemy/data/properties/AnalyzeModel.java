@@ -1,4 +1,4 @@
-/*
+/* An GT event that triggers property analysis.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -39,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 
+An GT event that triggers property analysis.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -49,8 +50,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class AnalyzeModel extends GTEvent {
 
     /**
-     *  @param container
-     *  @param name
+     * Construct an AnalyzeModel GT event.
+     *  @param container The specified container.
+     *  @param name The name of the event
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
@@ -87,5 +89,8 @@ public class AnalyzeModel extends GTEvent {
     }
 
 
+    /**
+     * 
+     */
     private AnalyzerAttribute _analyzerWrapper;
 }
