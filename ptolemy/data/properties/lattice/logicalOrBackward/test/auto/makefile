@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Data Properties Lattice AcademicFalseTrueEqualPriority Data
+# Makefile for Java Ptolemy Data Properties Lattice LogicalOrBackward Test Auto
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
-# $Id$
+# $Id: makefile,v 1.2 2009/01/30 01:45:00 cxh Exp $
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/academicFalseTrueEqualPriority/data
+ME =        ptolemy/data/properties/lattice/logicalOrBackward/test/auto
 
-DIRS =      expr
+DIRS =      knownFailedTests
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+ROOT =      ../../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,12 +43,12 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     data
+PTPACKAGE =     auto
 
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-    expr/expr.jar
+    knownFailedTests/knownFailedTests.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

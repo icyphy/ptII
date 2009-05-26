@@ -47,6 +47,8 @@ PTPACKAGE =     firstValueToken
 
 PTCLASSJAR =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 PTCLASSALLJARS = \
 	actor/actor.jar \
 	domains/domains.jar \

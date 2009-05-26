@@ -1,10 +1,9 @@
-# Makefile for Java Ptolemy Data Properties Demo
+# Makefile for PtolemyII properties demos
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
+# @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
-# $Id$
-#
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,27 +25,26 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/demo
+ME =		ptolemy/data/properties/demo
 
+# Keep these alphabetical please.
 DIRS = 		ConstNonconst LogicalAND LogicalOrBackward RegressionTest Sinewave Workflow
 
-# Root of the Ptolemy II directory
-ROOT =      ../../../..
-
-CLASSPATH = $(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
 # Get configuration info
-CONFIG =    $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     demo
-
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	ConstNonconst/ConstNonconst.jar \
 	LogicalAND/LogicalAND.jar \
@@ -55,26 +53,23 @@ PTCLASSALLJARS = \
 	Sinewave/Sinewave.jar \
 	Workflow/Workflow.jar
 
-JSRCS =
-
-EXTRA_SRCS =    $(JSRCS)
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	doc
 
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
 
 demo: subdemo
-
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

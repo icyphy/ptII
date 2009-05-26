@@ -48,10 +48,12 @@ PTPACKAGE =     actor
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-	lib/lib.jar
+    lib/lib.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AtomicActor.java
+    AtomicActor.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -70,7 +72,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

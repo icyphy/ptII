@@ -48,17 +48,19 @@ PTPACKAGE =     academicFalseTrueEqualPriority
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar \
-	domains/domains.jar \
-	kernel/kernel.jar
+    actor/actor.jar \
+    data/data.jar \
+    domains/domains.jar \
+    kernel/kernel.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Conflict.java \
-	False.java \
-	Lattice.java \
-	True.java \
-	Unknown.java
+    Conflict.java \
+    False.java \
+    Lattice.java \
+    True.java \
+    Unknown.java
 
 EXTRA_SRCS =    $(JSRCS)
 

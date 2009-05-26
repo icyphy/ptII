@@ -48,17 +48,19 @@ PTPACKAGE =     academicFalseTrueSet
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar \
-	domains/domains.jar \
-	kernel/kernel.jar
+    actor/actor.jar \
+    data/data.jar \
+    domains/domains.jar \
+    kernel/kernel.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	EmptySet.java \
-	False.java \
-	Lattice.java \
-	PowerSet.java \
-	True.java
+    EmptySet.java \
+    False.java \
+    Lattice.java \
+    PowerSet.java \
+    True.java
 
 EXTRA_SRCS =    $(JSRCS)
 

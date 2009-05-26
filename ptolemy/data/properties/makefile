@@ -88,7 +88,14 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	demo \
+    doc \
+    'PropertyHelper$$Channel.class' \
+    'PropertyRemover$$1.class'
+
+OTHER_FILES_TO_BE_JARED = \
+      AnalyzeModelIcon.xml \
+      EventLibrary.xml
 
 JCLASS = $(JSRCS:%.java=%.class)
 

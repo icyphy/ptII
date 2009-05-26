@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/exampleSetLattice
 
-DIRS =      actor data kernel
+DIRS =      actor data kernel test
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
@@ -48,16 +48,19 @@ PTPACKAGE =     exampleSetLattice
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar \
-	kernel/kernel.jar
+    actor/actor.jar \
+    data/data.jar \
+    kernel/kernel.jar \
+    test/test.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	A.java \
-	B.java \
-	C.java \
-	Lattice.java \
-	Unknown.java
+    A.java \
+    B.java \
+    C.java \
+    Lattice.java \
+    Unknown.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -77,6 +80,7 @@ all: jclass
 install: jclass jars
 
 propertyTestReports:: test_properties_reports
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
