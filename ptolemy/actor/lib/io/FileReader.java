@@ -153,7 +153,7 @@ public class FileReader extends LimitedFiringSource {
             output.broadcast(new StringToken(lineBuffer.toString()));
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                    "Failed to write '" + fileOrURL + "'");
+                    "Failed to read '" + fileOrURL + "'");
         } finally {
             if (fileOrURL != null) {
                 fileOrURL.close();
