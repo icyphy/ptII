@@ -31,7 +31,7 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.lib.EmbeddedCodeActor;
 import ptolemy.kernel.util.IllegalActionException;
@@ -49,7 +49,7 @@ Code generator adapter for {@link ptolemy.actor.IOPort}.
 @Pt.AcceptedRating Red (mankit)
  */
 
-public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
+public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGenerator {
 
     /** Construct the code generator adapter associated
      *  with the given IOPort.
@@ -98,7 +98,7 @@ public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(getComponent().getContainer());
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(getComponent().getContainer());
 
         return adapter.processCode(code.toString());
     }
@@ -196,7 +196,7 @@ public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
             MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current]";
 
             String buffer =
-                CodeGeneratorAdapter.generatePortReference(sinkPort, channelAndOffset , false);
+                ProgramCodeGeneratorAdapter.generatePortReference(sinkPort, channelAndOffset , false);
 
             code.append(buffer);
 

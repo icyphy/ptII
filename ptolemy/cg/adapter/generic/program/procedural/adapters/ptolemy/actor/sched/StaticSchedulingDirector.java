@@ -44,11 +44,11 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -166,7 +166,7 @@ public class StaticSchedulingDirector extends Director {
             // FIXME: Before looking for a adapter class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
-            CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
 
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
@@ -188,7 +188,7 @@ public class StaticSchedulingDirector extends Director {
                             + " ; i++) {" + _eol);
                 }
 
-                code.append(CodeGeneratorAdapterStrategy.generateName((NamedObj)
+                code.append(ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj)
                  actor) + "();" + _eol);
 
                 _generateUpdatePortOffsetCode(code, actor);
@@ -243,7 +243,7 @@ public class StaticSchedulingDirector extends Director {
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
-        CodeGeneratorAdapter modelAdapter = getCodeGenerator().getAdapter(_director
+        ProgramCodeGeneratorAdapter modelAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(_director
                 .getContainer());
         modelAdapter.generateModeTransitionCode(code);
 
@@ -305,13 +305,13 @@ public class StaticSchedulingDirector extends Director {
      *
      *  @param name The name of the parameter or port
      *  @param isWrite Whether to generate the write or read offset.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target)
+    public String getReference(String name, boolean isWrite, ProgramCodeGeneratorAdapter target)
     throws IllegalActionException {
 
         name = processCode(name);
@@ -370,14 +370,14 @@ public class StaticSchedulingDirector extends Director {
     }
 
     /** 
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
      */
     public String getReference(TypedIOPort port,
             String[] channelAndOffset,
             boolean forComposite,
-            boolean isWrite, CodeGeneratorAdapter target) throws IllegalActionException {
+            boolean isWrite, ProgramCodeGeneratorAdapter target) throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
@@ -407,7 +407,7 @@ public class StaticSchedulingDirector extends Director {
                         + " for output ports");
             } else {
 
-                return CodeGeneratorAdapterStrategy.generatePortReference(port, channelAndOffset, isWrite);
+                return ProgramCodeGeneratorAdapterStrategy.generatePortReference(port, channelAndOffset, isWrite);
             }
         }
 
@@ -417,7 +417,7 @@ public class StaticSchedulingDirector extends Director {
         // an output port of a modal controller will receive the tokens sent
         // from the same port.  During commit action, an output port of a modal
         // controller will NOT receive the tokens sent from the same port.
-        if (CodeGeneratorAdapterStrategy.checkRemote(forComposite, port)) {
+        if (ProgramCodeGeneratorAdapterStrategy.checkRemote(forComposite, port)) {
             Receiver[][] remoteReceivers;
 
             // For the same reason as above, we cannot do: if (port.isInput())...
@@ -429,7 +429,7 @@ public class StaticSchedulingDirector extends Director {
 
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
-                result.append(CodeGeneratorAdapterStrategy.generateName(target.getComponent()));
+                result.append(ProgramCodeGeneratorAdapterStrategy.generateName(target.getComponent()));
                 result.append("_");
                 result.append(port.getName());
                 return result.toString();
@@ -439,7 +439,7 @@ public class StaticSchedulingDirector extends Director {
 
             List<Channel> typeConvertSinks = getStrategy()._getTypeConvertSinkChannels(sourceChannel);
 
-            List<Channel> sinkChannels = CodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
+            List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
 
             boolean hasTypeConvertReference = false;
 
@@ -456,14 +456,14 @@ public class StaticSchedulingDirector extends Director {
                         if (i != 0) {
                             result.append(" = ");
                         }
-                        result.append(CodeGeneratorAdapterStrategy.getTypeConvertReference(sourceChannel));
+                        result.append(ProgramCodeGeneratorAdapterStrategy.getTypeConvertReference(sourceChannel));
 
                         if (dynamicReferencesAllowed && port.isInput()) {
                             if (channelAndOffset[1].trim().length() > 0) {
                                 result.append("[" + channelAndOffset[1].trim() + "]");
                             } else {
                                 result.append("[" +
-                                        CodeGeneratorAdapterStrategy.generateChannelOffset(
+                                        ProgramCodeGeneratorAdapterStrategy.generateChannelOffset(
                                                 port, isWrite, channelAndOffset[0]) + "]");
                             }
                         } else {
@@ -485,7 +485,7 @@ public class StaticSchedulingDirector extends Director {
                     if (i != 0) {
                         result.append(" = ");
                     }
-                    result.append(CodeGeneratorAdapterStrategy.generateName(sinkPort));
+                    result.append(ProgramCodeGeneratorAdapterStrategy.generateName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
@@ -507,9 +507,9 @@ public class StaticSchedulingDirector extends Director {
         // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
         // tests this.
 
-        if (CodeGeneratorAdapterStrategy.checkLocal(forComposite, port)) {
+        if (ProgramCodeGeneratorAdapterStrategy.checkLocal(forComposite, port)) {
 
-            result.append(CodeGeneratorAdapterStrategy.generateName(port));
+            result.append(ProgramCodeGeneratorAdapterStrategy.generateName(port));
 
             //if (!channelAndOffset[0].equals("")) {
             if (port.isMultiport()) {
@@ -569,9 +569,9 @@ public class StaticSchedulingDirector extends Director {
     ////                         protected methods                      ////
     
     /** 
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      */
-    protected String _getReference(CodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
+    protected String _getReference(ProgramCodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
         throws IllegalActionException {
         return "";
     }
@@ -687,8 +687,8 @@ public class StaticSchedulingDirector extends Director {
         //     "port, offset", or
         //     "port#channel, offset".
 
-        int poundIndex = CodeGeneratorAdapterStrategy.indexOf("#", name, 0);
-        int commaIndex = CodeGeneratorAdapterStrategy.indexOf(",", name, 0);
+        int poundIndex = ProgramCodeGeneratorAdapterStrategy.indexOf("#", name, 0);
+        int commaIndex = ProgramCodeGeneratorAdapterStrategy.indexOf(",", name, 0);
 
         if (commaIndex < 0) {
             commaIndex = name.length();
@@ -762,7 +762,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public int getBufferSize(int channelNumber)
             throws IllegalActionException {
-            CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
 
             if (_bufferSizes.get(channel) == null) {
                 // This should be a special case for doing
@@ -821,7 +821,7 @@ public class StaticSchedulingDirector extends Director {
             .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
                 // Initialize code for the actor.
                 code.append(adapterObject.generateInitializeCode());
 
@@ -835,8 +835,8 @@ public class StaticSchedulingDirector extends Director {
 
                 for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                     if (port.isOutsideConnected()) {
-                        CodeGeneratorAdapter portAdapter =
-                            getCodeGenerator().getAdapter(port);
+                        ProgramCodeGeneratorAdapter portAdapter =
+                            (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(port);
                         code.append(portAdapter.generateInitializeCode());
                     }
                 }
@@ -894,7 +894,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public Object getReadOffset(int channelNumber)
             throws IllegalActionException {
-            CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             return _readOffsets.get(channel);
 
         }
@@ -909,7 +909,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public Object getWriteOffset(int channelNumber)
         throws IllegalActionException {
-            CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             return _writeOffsets.get(channel);
 
         }
@@ -953,7 +953,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #getBufferSize(int)
          */
         public void setBufferSize(int channelNumber, int bufferSize) {
-            CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             _bufferSizes.put(channel, bufferSize);
         }
 
@@ -964,7 +964,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #getReadOffset(int)
          */
         public void setReadOffset(int channelNumber, Object readOffset) {
-            CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             _readOffsets.put(channel, readOffset);
         }
 
@@ -974,7 +974,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #getWriteOffset(int)
          */
         public void setWriteOffset(int channelNumber, Object writeOffset) {
-            CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             _writeOffsets.put(channel, writeOffset);
         }
 
@@ -993,7 +993,7 @@ public class StaticSchedulingDirector extends Director {
 
             StringBuffer code = new StringBuffer();
             code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
-                                                   + CodeGeneratorAdapterStrategy.generateName(_port)));
+                                                   + ProgramCodeGeneratorAdapterStrategy.generateName(_port)));
 
             if (rate == 0) {
                 return "";
@@ -1010,7 +1010,7 @@ public class StaticSchedulingDirector extends Director {
             }
 
             for (int j = 0; j < length; j++) {
-                List<Channel> sinkChannels = CodeGeneratorAdapterStrategy.getSinkChannels(_port, j);
+                List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy.getSinkChannels(_port, j);
 
                 for (int k = 0; k < sinkChannels.size(); k++) {
                     Channel channel = (Channel) sinkChannels.get(k);
@@ -1067,7 +1067,7 @@ public class StaticSchedulingDirector extends Director {
                 }
             }
             code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
-                                                   + CodeGeneratorAdapterStrategy.generateName(_port)));
+                                                   + ProgramCodeGeneratorAdapterStrategy.generateName(_port)));
             return code.toString();
         }
 
@@ -1084,7 +1084,7 @@ public class StaticSchedulingDirector extends Director {
             //Receiver receiver = _getReceiver(null, 0, _port);
 
             String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...."
-                                                     + CodeGeneratorAdapterStrategy.generateName(_port));
+                                                     + ProgramCodeGeneratorAdapterStrategy.generateName(_port));
 
             //        int width = 0;
             //        if (port.isInput()) {
@@ -1112,13 +1112,13 @@ public class StaticSchedulingDirector extends Director {
                                 channel.channelNumber, directorAdapter, false);
                     }
                     code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-                                                       + CodeGeneratorAdapterStrategy.generateName(port));
+                                                       + ProgramCodeGeneratorAdapterStrategy.generateName(port));
                 */
                  // End FIXME rodiers
                 } else {
                     code += _updateOffset(i, rate);
                     code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
-                                                       + CodeGeneratorAdapterStrategy.generateName(_port));
+                                                       + ProgramCodeGeneratorAdapterStrategy.generateName(_port));
                 }
             }
             return code;
@@ -1126,8 +1126,8 @@ public class StaticSchedulingDirector extends Director {
 
 
 
-        private CodeGeneratorAdapterStrategy.Channel _getChannel(int channelNumber) {
-            return new CodeGeneratorAdapterStrategy.Channel((ptolemy.actor.IOPort)
+        private ProgramCodeGeneratorAdapterStrategy.Channel _getChannel(int channelNumber) {
+            return new ProgramCodeGeneratorAdapterStrategy.Channel((ptolemy.actor.IOPort)
                     _port, channelNumber);
         }
 
@@ -1331,8 +1331,8 @@ public class StaticSchedulingDirector extends Director {
         /** A HashMap that keeps track of the bufferSizes of each channel
          *  of the actor.
          */
-        private HashMap<CodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes =
-            new HashMap<CodeGeneratorAdapterStrategy.Channel, Integer>();
+        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes =
+            new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer>();
 
         /** The port for which we are doing extra bookkeeping to generate code.
          */ 
@@ -1341,14 +1341,14 @@ public class StaticSchedulingDirector extends Director {
         /** A HashMap that keeps track of the read offsets of each input channel of
          *  the actor.
          */
-        private HashMap<CodeGeneratorAdapterStrategy.Channel, Object> _readOffsets =
-            new HashMap<CodeGeneratorAdapterStrategy.Channel, Object>();
+        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _readOffsets =
+            new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
 
         /** A HashMap that keeps track of the write offsets of each input channel of
          *  the actor.
          */
-        private HashMap<CodeGeneratorAdapterStrategy.Channel, Object> _writeOffsets =
-            new HashMap<CodeGeneratorAdapterStrategy.Channel, Object>();
+        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _writeOffsets =
+            new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
 
     }
 

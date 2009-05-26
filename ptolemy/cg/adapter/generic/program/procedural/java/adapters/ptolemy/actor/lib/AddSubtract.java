@@ -29,8 +29,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Yellow (mankit) Pending FIXME in AddSubtract.c: need to deallocate Tokens
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class AddSubtract extends CodeGeneratorAdapter {
+public class AddSubtract extends ProgramCodeGeneratorAdapter {
     /**
      * Construct an AddSubtract adapter.
      * @param actor the associated actor

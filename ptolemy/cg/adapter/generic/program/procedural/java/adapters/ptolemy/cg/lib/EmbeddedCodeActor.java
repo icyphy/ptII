@@ -29,7 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.l
 
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
     /** A placeholder or dummy actor used in Embedded Java code generation.
      */
-    public static class EmbeddedActor extends CodeGeneratorAdapter {
+    public static class EmbeddedActor extends ProgramCodeGeneratorAdapter {
 
         /** Create a EmbeddedActor.
          *  @param actor The associated actor.

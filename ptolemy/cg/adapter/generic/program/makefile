@@ -33,9 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program
 
-# html was commented out because it does not have makefiles.
-# If you add html back in, then uncomment the html/html.jar line below.
-DIRS =		procedural #html
+DIRS =		procedural
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -56,8 +54,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	procedural/procedural.jar
-
-#	html/html.jar
 
 # Keep this list alphabetized.
 JSRCS = 

@@ -29,8 +29,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class Test extends CodeGeneratorAdapter {
+public class Test extends ProgramCodeGeneratorAdapter {
     /**
      *  Construct a Test adapter.
      *  @param actor The master Test actor.

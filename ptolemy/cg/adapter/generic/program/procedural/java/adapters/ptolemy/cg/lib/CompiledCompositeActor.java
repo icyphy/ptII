@@ -31,7 +31,8 @@ import java.io.IOException;
 import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -74,15 +75,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  <i>codeDirectory</i> parameter.
      *  @exception IllegalActionException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
-     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy#copyFilesToCodeDirectory(NamedObj, GenericCodeGenerator)
+     *  @see ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy#copyFilesToCodeDirectory(NamedObj, GenericCodeGenerator)
      */
     public static long copyFilesToCodeDirectory(
             ptolemy.actor.TypedCompositeActor compositeActor)
             throws IOException, IllegalActionException {
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
-        GenericCodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
-        return CodeGeneratorAdapterStrategy.copyFilesToCodeDirectory(compositeActor,
+        ProgramCodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
+        return ProgramCodeGeneratorAdapterStrategy.copyFilesToCodeDirectory(compositeActor,
                 codeGenerator);
     }
 
@@ -140,12 +141,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @exception IllegalActionException If there are problems
      *  accessing the actor.
      */
-    private static GenericCodeGenerator _getCodeGenerator(
+    private static ProgramCodeGenerator _getCodeGenerator(
             ptolemy.actor.TypedCompositeActor compositeActor)
             throws IllegalActionException {
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
         // will not depend on ptolemy.codegen
-        GenericCodeGenerator codeGenerator = null;
+        ProgramCodeGenerator codeGenerator = null;
         try {
             // FindBugs wants this.
             if (!(compositeActor instanceof ptolemy.cg.lib.CompiledCompositeActor)) {
@@ -166,7 +167,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             } else {
                 // Get the last GenericCodeGenerator in the list, maybe
                 // it was added last?
-                codeGenerator = (GenericCodeGenerator) codeGenerators
+                codeGenerator = (ProgramCodeGenerator) codeGenerators
                         .get(codeGenerators.size() - 1);
             }
 

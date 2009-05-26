@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.cg.kernel.generic;
+package ptolemy.cg.kernel.generic.program;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,6 +38,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -101,7 +103,7 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(CodeGeneratorAdapter adapter) {
+    public CodeStream(ProgramCodeGeneratorAdapter adapter) {
         _adapter = adapter;
         this._codeGenerator = _adapter.getCodeGenerator();
     }
@@ -115,7 +117,7 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(List<String> templateArguments, CodeGeneratorAdapter adapter) {
+    public CodeStream(List<String> templateArguments, ProgramCodeGeneratorAdapter adapter) {
         this(adapter);
         _templateArguments = templateArguments;
     }
@@ -128,7 +130,7 @@ public class CodeStream {
      * @param path The given file path.
      * @param generator The generator associated with this CodeStream.
      */
-    public CodeStream(String path, GenericCodeGenerator generator) {
+    public CodeStream(String path, ProgramCodeGenerator generator) {
         _filePath = path;
         _originalFilePath = path;
         _codeGenerator = generator;
@@ -281,12 +283,12 @@ public class CodeStream {
             // That means this is a request by the user. This check prevents
             // user from appending duplicate code blocks that are already
             // appended by the code generator by default.
-            String[] blocks = CodeGeneratorAdapterStrategy.getDefaultBlocks();
+            String[] blocks = ProgramCodeGeneratorAdapterStrategy.getDefaultBlocks();
 
             for (int i = 0; i < blocks.length; i++) {
 
                 // The default blocks are automatically appended
-                // by CodeGeneratorAdapter.
+                // by ProgramCodeGeneratorAdapter.
                 if (_adapter != null && blockName.matches(blocks[i])) {
                     throw new IllegalActionException(
                             blockName
@@ -929,7 +931,7 @@ public class CodeStream {
      * @return Path for the adapter .[target] file.
      */
     private String _getPath(Class<?> adapterClass) {
-        GenericCodeGenerator codeGenerator = _adapter.getCodeGenerator();
+        ProgramCodeGenerator codeGenerator = _adapter.getCodeGenerator();
         if (codeGenerator == null) {
             return "";
         }
@@ -1147,9 +1149,9 @@ public class CodeStream {
         }
 
         // Keep parsing for extra parameters.
-        for (int commaIndex = CodeGeneratorAdapterStrategy.indexOf(",", codeInFile.toString(), startIndex);
+        for (int commaIndex = ProgramCodeGeneratorAdapterStrategy.indexOf(",", codeInFile.toString(), startIndex);
         commaIndex != -1 && commaIndex <= endIndex;
-        commaIndex = CodeGeneratorAdapterStrategy.indexOf(",", codeInFile.toString(), commaIndex + 1)) {
+        commaIndex = ProgramCodeGeneratorAdapterStrategy.indexOf(",", codeInFile.toString(), commaIndex + 1)) {
 
             String newParameter = codeInFile.substring(
                     startIndex, commaIndex);
@@ -1427,7 +1429,7 @@ public class CodeStream {
 
                     int dotIndex = codeBlock.indexOf(".", macroIndex);
                     int openIndex = codeBlock.indexOf("(", macroIndex);
-                    int closeParen = CodeGeneratorAdapterStrategy._findClosedParen(codeBlock.toString(), openIndex);
+                    int closeParen = ProgramCodeGeneratorAdapterStrategy._findClosedParen(codeBlock.toString(), openIndex);
 
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 
@@ -1655,7 +1657,7 @@ public class CodeStream {
 
     /** The code generator associated with this code stream.
      */
-    protected GenericCodeGenerator _codeGenerator;
+    protected ProgramCodeGenerator _codeGenerator;
 
     private String _codeBlocks;
 
@@ -1684,7 +1686,7 @@ public class CodeStream {
     /**
      * The adapter associated with this code stream.
      */
-    private CodeGeneratorAdapter _adapter = null;
+    private ProgramCodeGeneratorAdapter _adapter = null;
 
     /** Original value of _filePath, used for error messages. */
     private String _originalFilePath = null;

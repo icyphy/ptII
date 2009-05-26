@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
@@ -108,7 +108,7 @@ import ptolemy.util.StringUtilities;
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ParseTreeCodeGenerator {
 
-    public CParseTreeCodeGenerator(GenericCodeGenerator generator) {
+    public CParseTreeCodeGenerator(ProgramCodeGenerator generator) {
         _generator = generator;
     }
 
@@ -1738,7 +1738,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     ////                         private variables                 ////
 
     /** The code generator. */
-    private GenericCodeGenerator _generator;
+    private ProgramCodeGenerator _generator;
     
     /** A static list of the primitive types supported by the code generator. */
     //private static final List _primitiveTypes = Arrays.asList(new String[] {

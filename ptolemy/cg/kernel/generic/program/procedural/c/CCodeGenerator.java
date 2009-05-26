@@ -44,10 +44,10 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -592,7 +592,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If illegal macro names are found.
      */
     private String processCode(String code) throws IllegalActionException {
-        CodeGeneratorAdapter adapter = getAdapter(getContainer());
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
         return adapter.processCode(code);
     }
 
@@ -662,7 +662,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                CodeGeneratorAdapter adapter =  getAdapter(variable.getContainer());
+                ProgramCodeGeneratorAdapter adapter =  (ProgramCodeGeneratorAdapter) getAdapter(variable.getContainer());
                 code.append("static "
                         + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
@@ -692,7 +692,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 Variable variable = (Variable) modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
-                CodeGeneratorAdapter containerAdapter =  getAdapter(container);
+                ProgramCodeGeneratorAdapter containerAdapter =  (ProgramCodeGeneratorAdapter) getAdapter(container);
                 code.append(INDENT1
                         + generateVariableName(variable)
                         + " = "
@@ -810,7 +810,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *   include directories.
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
-        CodeGeneratorAdapter adapter = getAdapter(getContainer());
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
         Set actorIncludeDirectories = adapter.getIncludeDirectories();
         Iterator includeIterator = actorIncludeDirectories.iterator();
@@ -824,7 +824,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
-        CodeGeneratorAdapter adapter = getAdapter(getContainer());
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
         Set actorLibraryDirectories = adapter.getLibraryDirectories();
         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
@@ -1024,7 +1024,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter compositeActorAdapter = getAdapter(getContainer());
+        ProgramCodeGeneratorAdapter compositeActorAdapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
         Set<String> includingFiles = compositeActorAdapter.getHeaderFiles();
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
@@ -1084,7 +1084,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return startCode.toString();
     }
 
-    protected Class<? extends CodeGeneratorAdapterStrategy> _strategyClass() {
+    protected Class<? extends ProgramCodeGeneratorAdapterStrategy> _strategyClass() {
         return CCodeGeneratorAdapterStrategy.class;
     }
 

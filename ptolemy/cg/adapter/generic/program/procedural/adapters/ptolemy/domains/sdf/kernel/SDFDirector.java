@@ -37,11 +37,12 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -92,13 +93,13 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
                 .getContainer();
-        CodeGeneratorAdapter containerAdapter = getCodeGenerator().getAdapter(container);
+        ProgramCodeGeneratorAdapter containerAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(container);
 
         // Reset the offset for all of the contained actors' input ports.
         Iterator<?> actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
-            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter(actor);
+            ProgramCodeGeneratorAdapter actorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(actor);
             StringBuffer resetCode = new StringBuffer();
             Iterator<?> inputPorts = ((Actor) actorAdapter.getComponent()).inputPortList().iterator();
 
@@ -269,7 +270,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         if (width != 0) {
             // Declare the read offset variable.
-            String channelReadOffset = CodeGeneratorAdapterStrategy.generateName(port);
+            String channelReadOffset = ProgramCodeGeneratorAdapterStrategy.generateName(port);
             channelReadOffset += "_readOffset";
 
             // Now replace the concrete offset with the variable.
@@ -281,7 +282,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append("static int " + channelReadOffset + ";\n");
 
             // Declare the write offset variable.
-            String channelWriteOffset = CodeGeneratorAdapterStrategy.generateName(port);
+            String channelWriteOffset = ProgramCodeGeneratorAdapterStrategy.generateName(port);
 
             channelWriteOffset += "_writeOffset";
 
@@ -382,7 +383,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
                 channelReadOffset
-                        .append(CodeGeneratorAdapterStrategy.generateName(port));
+                        .append(ProgramCodeGeneratorAdapterStrategy.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
@@ -400,7 +401,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(CodeGeneratorAdapterStrategy
+                channelWriteOffset.append(ProgramCodeGeneratorAdapterStrategy
                         .generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
@@ -419,16 +420,16 @@ public class SDFDirector extends StaticSchedulingDirector {
 
 
     /** Generate variable initialization for the referenced parameters.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    protected String _generateVariableInitialization(CodeGeneratorAdapter target)
+    protected String _generateVariableInitialization(ProgramCodeGeneratorAdapter target)
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         
-        GenericCodeGenerator codeGenerator = getCodeGenerator();
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
         //  Generate variable initialization for referenced parameters.
         if (!_referencedParameters.isEmpty() && _referencedParameters.containsKey(target)) {
@@ -459,9 +460,9 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     /**
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      */
-    protected String _getReference(CodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
+    protected String _getReference(ProgramCodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
     throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
@@ -589,7 +590,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             .insideSourcePortList().iterator();
                     label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
-//                            CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
+//                            ProgramCodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
 //                                    .getContainer());
                         int width;
                         if (sourcePort.isInput()) {
@@ -598,7 +599,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             width = sourcePort.getWidth();
                         }
                         for (int j = 0; j < width; j++) {
-                            Iterator<?> channels = CodeGeneratorAdapterStrategy.getSinkChannels(
+                            Iterator<?> channels = ProgramCodeGeneratorAdapterStrategy.getSinkChannels(
                                     sourcePort, j).iterator();
                             while (channels.hasNext()) {
                                 Channel channel = (Channel) channels.next();
@@ -664,7 +665,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 .iterator();
                         label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-//                                CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
+//                                ProgramCodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
 //                                        .getContainer());
                             int width;
                             if (sourcePort.isInput()) {
@@ -673,7 +674,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 width = sourcePort.getWidth();
                             }
                             for (int j = 0; j < width; j++) {
-                                Iterator<?> channels = CodeGeneratorAdapterStrategy.getSinkChannels(
+                                Iterator<?> channels = ProgramCodeGeneratorAdapterStrategy.getSinkChannels(
                                         sourcePort, j).iterator();
                                 while (channels.hasNext()) {
                                     Channel channel = (Channel) channels
@@ -800,6 +801,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** A hashmap that keeps track of parameters that are referenced for
      *  the associated actor.
      */
-    protected HashMap<CodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<CodeGeneratorAdapter, HashSet<Parameter>>();
+    protected HashMap<ProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<ProgramCodeGeneratorAdapter, HashSet<Parameter>>();
     
 }

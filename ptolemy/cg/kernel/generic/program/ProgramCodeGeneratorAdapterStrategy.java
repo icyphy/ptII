@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.kernel.generic;
+package ptolemy.cg.kernel.generic.program;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +49,10 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
+import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -72,11 +76,11 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////////
-//// CodeGeneratorAdapterStrategy
+//// ProgramCodeGeneratorAdapterStrategy
 
 /**
  * FIXME: Overhaul comments.
- * The strategy that determines how code should be generated for a certain CodeGeneratorAdapter.
+ * The strategy that determines how code should be generated for a certain ProgramCodeGeneratorAdapter.
  *
  * <p>Subclasses should override generateFireCode(),
  * generateInitializeCode() generatePostfireCode(),
@@ -102,11 +106,11 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Yellow (eal)
  */
 // FIXME: Why extend NamedObj? Extend Attribute and store in the actor being adapted?
-public class CodeGeneratorAdapterStrategy extends NamedObj {
+public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     /** Construct the code generator adapter strategy.
      */
-    public CodeGeneratorAdapterStrategy() {
+    public ProgramCodeGeneratorAdapterStrategy() {
     }
 
     /** Set the component for which we are generating code.
@@ -338,7 +342,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
 
 //        Actor actor = (Actor) getComponent();
 //        for (IOPort port : (List<IOPort>) actor.outputPortList()) {
-//            CodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
+//            ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
 //            code.append(portAdapter.generatePostfireCode());
 //        }
         return processCode(code.toString());
@@ -354,7 +358,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         StringBuffer code = new StringBuffer();
         //Actor actor = (Actor) getComponent();
         //for (IOPort port : (List<IOPort>) actor.inputPortList()) {
-        //    CodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
+        //    ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
         //    code.append(portAdapter.generatePrefireCode());
         //}
         return processCode(code.toString());
@@ -440,7 +444,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
-    public GenericCodeGenerator getCodeGenerator() {
+    public ProgramCodeGenerator getCodeGenerator() {
         return _codeGenerator;
     }
 
@@ -1144,7 +1148,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     /** Set the adapter.
      *  @param adapter The given adapter.
      */
-    final public void setAdapter(CodeGeneratorAdapter adapter) {
+    final public void setAdapter(ProgramCodeGeneratorAdapter adapter) {
         _adapter = adapter;
         _codeStream = new CodeStream(_adapter);
     }
@@ -1154,7 +1158,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   adapter class.
      *  @see #getCodeGenerator()
      */
-    final public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
+    final public void setCodeGenerator(ProgramCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }
 
@@ -1285,7 +1289,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *  <i>codeDirectory</i> parameter.
      */
     public static long copyFilesToCodeDirectory(NamedObj namedObj,
-            GenericCodeGenerator codeGenerator) throws IOException,
+            ProgramCodeGenerator codeGenerator) throws IOException,
             IllegalActionException {
 
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
@@ -1396,7 +1400,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
             channelString = "0";
         }
 
-        String channelOffset = CodeGeneratorAdapterStrategy.generateName(port);
+        String channelOffset = ProgramCodeGeneratorAdapterStrategy.generateName(port);
         channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
         channelOffset += "[" + channelString + "]";
 
@@ -1431,7 +1435,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         StringBuffer result = new StringBuffer();
         String channelOffset;
         if (channelAndOffset[1].equals("")) {
-            channelOffset = CodeGeneratorAdapterStrategy
+            channelOffset = ProgramCodeGeneratorAdapterStrategy
             .generateChannelOffset(port, isWrite,
                     channelAndOffset[0]);
         } else {
@@ -1687,7 +1691,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
         + source.channelNumber + ", " + offset;
-        String sourceRef = ((CodeGeneratorAdapter) _getAdapter(source.port
+        String sourceRef = ((ProgramCodeGeneratorAdapter) _getAdapter(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
@@ -1700,7 +1704,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((CodeGeneratorAdapter) _getAdapter(sink.port
+        String sinkRef = ((ProgramCodeGeneratorAdapter) _getAdapter(sink.port
                 .getContainer())).getReference(sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
@@ -1776,9 +1780,9 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    protected CodeGeneratorAdapter _getAdapter(NamedObj component)
+    protected ProgramCodeGeneratorAdapter _getAdapter(NamedObj component)
     throws IllegalActionException {
-        return _codeGenerator.getAdapter(component);
+        return (ProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(component);
     }
 
     /**
@@ -1998,13 +2002,13 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The CodeGeneratorAdapter.*/
-    protected CodeGeneratorAdapter _adapter;
+    /** The ProgramCodeGeneratorAdapter.*/
+    protected ProgramCodeGeneratorAdapter _adapter;
     
 
     /** The code generator that contains this adapter class.
      */
-    protected GenericCodeGenerator _codeGenerator;
+    protected ProgramCodeGenerator _codeGenerator;
 
     /**
      * The code stream associated with this adapter.
@@ -2278,11 +2282,11 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     private static CodeStream _getActualCodeStream(NamedObj namedObj,
             GenericCodeGenerator codeGenerator) throws IllegalActionException {
 
-        CodeGeneratorAdapter adapter = null;
+        ProgramCodeGeneratorAdapter adapter = null;
         CodeStream codeStream = null;
         if (namedObj != null
                 && namedObj instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
-            adapter =  codeGenerator.getAdapter(codeGenerator.getContainer());
+            adapter =  (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter(codeGenerator.getContainer());
             codeStream = new CodeStream(adapter);
             // We have an EmbeddedCActor, read the codeBlocks from
             // the embeddedCCode parameter.
@@ -2290,7 +2294,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
             .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) namedObj).embeddedCCode
                     .getExpression());
         } else {
-            adapter = codeGenerator.getAdapter(namedObj);
+            adapter = (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter(namedObj);
             codeStream = new CodeStream(adapter);
         }
 

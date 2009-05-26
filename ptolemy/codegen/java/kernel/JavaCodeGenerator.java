@@ -881,7 +881,6 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         List commands = new LinkedList();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            //TODO RODIERS
             commands.add("make -f " + _sanitizedModelName + ".mk "
                     + compileTarget.stringValue());
         }

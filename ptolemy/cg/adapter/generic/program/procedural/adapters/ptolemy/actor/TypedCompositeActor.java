@@ -38,8 +38,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -74,7 +74,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
      * need type conversion.
      * @exception IllegalActionException If any of the adapters of the
      * inside actors is unavailable.
-     * @see ptolemy.cg.kernel.generic.CodeGeneratorAdapter#analyzeTypeConvert
+     * @see ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter#analyzeTypeConvert
      */
     @Override
     public void analyzeTypeConvert() throws IllegalActionException {
@@ -85,7 +85,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             try {
-                CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
                 adapterObject.analyzeTypeConvert();
             } catch (Throwable throwable) {
                 throw new IllegalActionException(actor, throwable,
@@ -346,7 +346,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             files.addAll(adapterObject.getHeaderFiles());
         }
 
@@ -374,7 +374,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             includeDirectories.addAll(adapterObject.getIncludeDirectories());
         }
 
@@ -401,7 +401,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             libraries.addAll(adapterObject.getLibraries());
         }
 
@@ -467,7 +467,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             sharedCode.addAll(adapterObject.getSharedCode());
         }
 

@@ -29,8 +29,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)
  */
-public class Ramp extends CodeGeneratorAdapter {
+public class Ramp extends ProgramCodeGeneratorAdapter {
     /**
      *  Construct the Ramp adapter.
      *  @param actor the associated actor

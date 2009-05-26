@@ -35,8 +35,8 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -68,7 +68,7 @@ import ptolemy.util.StringUtilities;
  code block to the output.
 
  <p>For a complete list of methods to define, see
- {@link ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy}.
+ {@link ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy}.
 
  <p>For further details, see <code>$PTII/ptolemy/cg/README.html</code>
 
@@ -78,7 +78,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy {
+public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterStrategy {
     /**
      * Create a new instance of the C code generator adapter.
      */
@@ -315,7 +315,7 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
         + source.channelNumber + ", " + offset;
-        String sourceRef = ((CodeGeneratorAdapter) _getAdapter(source.port
+        String sourceRef = ((ProgramCodeGeneratorAdapter) _getAdapter(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
@@ -328,7 +328,7 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((CodeGeneratorAdapter) _getAdapter(sink.port
+        String sinkRef = ((ProgramCodeGeneratorAdapter) _getAdapter(sink.port
                 .getContainer())).getReference(sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is

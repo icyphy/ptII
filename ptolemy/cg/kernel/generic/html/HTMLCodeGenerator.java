@@ -26,14 +26,13 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.cg.kernel.generic.program.html;
+package ptolemy.cg.kernel.generic.html;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-
 
 //////////////////////////////////////////////////////////////////////////
 ////HTMLCodeGenerator
@@ -46,7 +45,7 @@ import ptolemy.kernel.util.Settable;
 *  @Pt.ProposedRating red (rodiers)
 *  @Pt.AcceptedRating red (rodiers)
 */
-public class HTMLCodeGenerator extends ProgramCodeGenerator {
+public class HTMLCodeGenerator extends GenericCodeGenerator {
 
     /** Create a new instance of the HTMLCodeGenerator.
      *  @param container The container.
@@ -58,14 +57,9 @@ public class HTMLCodeGenerator extends ProgramCodeGenerator {
      */
     public HTMLCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name, "html", "html");
+        super(container, name, "html");
 
-        measureTime.setVisibility(Settable.NONE);
-        
-        run.setExpression("false");
-        run.setVisibility(Settable.NONE);
-                
-        generatorPackageList.setExpression("generic.program.html");
+        generatorPackageList.setExpression("generic.html");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,8 +72,23 @@ public class HTMLCodeGenerator extends ProgramCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
     
-    protected String _generateBodyCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+    /** Generate code and append it to the given string buffer.
+     *  Write the code to the directory specified by the codeDirectory
+     *  parameter.  The file name is a sanitized version of the model
+     *  name with a suffix that is based on last package name of the
+     *  <i>generatorPackage</i> parameter.  Thus if the
+     *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
+     *  model is <code>Foo</code> and the <i>generatorPackage</i>
+     *  is <code>ptolemy.codegen.c</code>, then the file that is
+     *  written will be <code>$HOME/Foo.c</code>
+     *  This method is the main entry point.
+     *  @param code The given string buffer.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
+     *  @exception KernelException If the target file cannot be overwritten
+     *   or write-to-file throw any exception.
+     */
+    protected int _generateCode(StringBuffer code) throws KernelException {;
         // FIXME: We should put in some default html version info.
         // e.g. <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         // <html xmlns="http://www.w3.org/1999/xhtml"xml:lang="en" lang="en" dir="ltr">
@@ -91,13 +100,22 @@ public class HTMLCodeGenerator extends ProgramCodeGenerator {
         code.append("</head>" + _eol);        
 
         code.append("<body>" + _eol);        
-        code.append(getAdapter(toplevel()).generateFireCode());
+        code.append(((HTMLCodeGeneratorAdapter)getAdapter(toplevel())).generateHTML());        
         code.append("</body>" + _eol);        
 
         code.append("</html>" + _eol);
         
-        return code.toString();
+        return super._generateCode(code);
     }
+    
+    /** Return the filter class to find adapters. All
+     *  adapters have to extend this class.
+     *  @return The base class for the adapters.  
+     */
+    protected Class<?> _getAdapterClassFilter() {
+        return HTMLCodeGeneratorAdapter.class;
+    }
+        
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

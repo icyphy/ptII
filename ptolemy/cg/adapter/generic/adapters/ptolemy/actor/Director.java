@@ -37,11 +37,12 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -62,7 +63,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Yellow (zhouye)
 
  */
-public class Director extends CodeGeneratorAdapter {
+public class Director extends ProgramCodeGeneratorAdapter {
     /** Construct the code generator adapter associated with the given director.
      *  Note before calling the generate*() methods, you must also call
      *  setCodeGenerator(GenericCodeGenerator).
@@ -113,7 +114,7 @@ public class Director extends CodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             code.append(adapter.generateFireCode());
         }
         return code.toString();
@@ -133,7 +134,7 @@ public class Director extends CodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter actorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             code.append(actorAdapter.generateFireFunctionCode());
         }
         return code.toString();
@@ -174,7 +175,7 @@ public class Director extends CodeGeneratorAdapter {
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             // Initialize code for the actor.
             code.append(adapterObject.generateInitializeCode());
 
@@ -193,7 +194,7 @@ public class Director extends CodeGeneratorAdapter {
 
             for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                 if (port.isOutsideConnected()) {
-                    CodeGeneratorAdapter portAdapter =
+                    ProgramCodeGeneratorAdapter portAdapter =
                         getCodeGenerator().getAdapter(port);
                     code.append(portAdapter.generateInitializeCode());
                 }
@@ -220,7 +221,7 @@ public class Director extends CodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             code.append(adapterObject.generatePostfireCode());
         }
 
@@ -244,7 +245,7 @@ public class Director extends CodeGeneratorAdapter {
         boolean addedDirectorComment = false;
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
 
             // If a adapter generates preinitialization code, then
             // print a comment
@@ -252,7 +253,7 @@ public class Director extends CodeGeneratorAdapter {
             .generatePreinitializeCode();
 
             if (!addedDirectorComment
-                    && GenericCodeGenerator
+                    && ProgramCodeGenerator
                     .containsCode(adapterObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(getCodeGenerator().comment(0,
@@ -279,7 +280,7 @@ public class Director extends CodeGeneratorAdapter {
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             adapterObject.generateModeTransitionCode(code);
         }
     }
@@ -295,7 +296,7 @@ public class Director extends CodeGeneratorAdapter {
         code.append(CodeStream.indent(getCodeGenerator()
                 .comment("Transfer tokens to the inside")));
 
-        CodeGeneratorAdapter _compositeActorAdapter = getCodeGenerator().getAdapter(_director
+        ProgramCodeGeneratorAdapter _compositeActorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(_director
                 .getContainer());
 
         for (int i = 0; i < inputPort.getWidth(); i++) {
@@ -329,7 +330,7 @@ public class Director extends CodeGeneratorAdapter {
         code.append(getCodeGenerator()
                 .comment("Transfer tokens to the outside"));
 
-        CodeGeneratorAdapter _compositeActorAdapter = getCodeGenerator().getAdapter(_director
+        ProgramCodeGeneratorAdapter _compositeActorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(_director
                 .getContainer());
 
         for (int i = 0; i < outputPort.getWidthInside(); i++) {
@@ -364,7 +365,7 @@ public class Director extends CodeGeneratorAdapter {
         CompositeActor container = (CompositeActor) _director.getContainer();
         GenericCodeGenerator codeGenerator = getCodeGenerator(); 
         {
-            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter(container);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter(container);
             code.append(_generateVariableDeclaration(adapterObject));
         }
         
@@ -372,7 +373,7 @@ public class Director extends CodeGeneratorAdapter {
         
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter((NamedObj) actor);
             code.append(_generateVariableDeclaration(adapterObject));
         }
 
@@ -391,7 +392,7 @@ public class Director extends CodeGeneratorAdapter {
         CompositeActor container = (CompositeActor) _director.getContainer();
         GenericCodeGenerator codeGenerator = getCodeGenerator(); 
         {
-            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter(container);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter(container);
             code.append(_generateVariableInitialization(adapterObject));
         }
         
@@ -399,7 +400,7 @@ public class Director extends CodeGeneratorAdapter {
         
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = codeGenerator.getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter((NamedObj) actor);
             code.append(_generateVariableInitialization(adapterObject));
         }
 
@@ -424,7 +425,7 @@ public class Director extends CodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             code.append(adapterObject.generateWrapupCode());
         }
 
@@ -441,13 +442,13 @@ public class Director extends CodeGeneratorAdapter {
      *
      *  @param name The name of the parameter or port
      *  @param isWrite Whether to generate the write or read offset.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target)
+    public String getReference(String name, boolean isWrite, ProgramCodeGeneratorAdapter target)
         throws IllegalActionException {
         return "";
     }
@@ -468,7 +469,7 @@ public class Director extends CodeGeneratorAdapter {
                 || (port.isInput() && forComposite)) {
 
             List<Channel> sinkChannels =
-                CodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
+                ProgramCodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
 
             return sinkChannels;
         }
@@ -535,7 +536,7 @@ public class Director extends CodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
             set.addAll(adapterObject.getModifiedVariables());
         }
 
@@ -569,22 +570,22 @@ public class Director extends CodeGeneratorAdapter {
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    protected String _generateVariableDeclaration(CodeGeneratorAdapter target) throws IllegalActionException {    
+    protected String _generateVariableDeclaration(ProgramCodeGeneratorAdapter target) throws IllegalActionException {    
         return "";
     }
 
     /** Generate variable initialization for the referenced parameters.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    protected String _generateVariableInitialization(CodeGeneratorAdapter target)
+    protected String _generateVariableInitialization(ProgramCodeGeneratorAdapter target)
     throws IllegalActionException {
         return "";
     }

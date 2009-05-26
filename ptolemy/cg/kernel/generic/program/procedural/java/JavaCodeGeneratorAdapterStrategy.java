@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
  code block to the output.
 
  <p>For a complete list of methods to define, see
- {@link ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy}.
+ {@link ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy}.
 
  <p>For further details, see <code>$PTII/ptolemy/cg/README.html</code>
 
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.IllegalActionException;
  o @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy {
+public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterStrategy {
     /**
      * Create a new instance of the C code generator adapter.
      */

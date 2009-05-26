@@ -36,11 +36,12 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -319,18 +320,18 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
     @Override
-    protected String _generateVariableDeclaration(CodeGeneratorAdapter target) throws IllegalActionException {        
+    protected String _generateVariableDeclaration(ProgramCodeGeneratorAdapter target) throws IllegalActionException {        
         StringBuffer code = new StringBuffer();
         
-        GenericCodeGenerator codeGenerator = getCodeGenerator();
+        ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        String name = CodeGeneratorAdapterStrategy.generateName(target.getComponent());
+        String name = ProgramCodeGeneratorAdapterStrategy.generateName(target.getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
         if (referencedParameterDeclaration.length() > 1) {
@@ -367,10 +368,10 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }    
 
     /**
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      */
     @Override
-    protected String _getReference(CodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
+    protected String _getReference(ProgramCodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
     throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
@@ -434,7 +435,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     throws IllegalActionException {
 
         code.append("static " + targetType(port.getType()) + " "
-                + CodeGeneratorAdapterStrategy.generateName(port));
+                + ProgramCodeGeneratorAdapterStrategy.generateName(port));
 
         int bufferSize = _ports.getBufferSize(port);
 
@@ -466,12 +467,12 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }
 
     /** Generate input variable declarations.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return a String that declares input variables.
      *  @exception IllegalActionException If thrown while
      *  getting port information.
      */
-    private String _generateInputVariableDeclaration(CodeGeneratorAdapter target)
+    private String _generateInputVariableDeclaration(ProgramCodeGeneratorAdapter target)
         throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
@@ -493,12 +494,12 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }
 
     /** Generate output variable declarations.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return a String that declares output variables.
      *  @exception IllegalActionException If thrown while
      *  getting port information.
      */
-    private String _generateOutputVariableDeclaration(CodeGeneratorAdapter target)
+    private String _generateOutputVariableDeclaration(ProgramCodeGeneratorAdapter target)
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -519,12 +520,12 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }
 
     /** Generate referenced parameter declarations.
-     *  @param target The CodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return a String that declares referenced parameters.
      *  @exception IllegalActionException If thrown while
      *  getting modified variable information.
      */
-    private String _generateReferencedParameterDeclaration(CodeGeneratorAdapter target)
+    private String _generateReferencedParameterDeclaration(ProgramCodeGeneratorAdapter target)
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -562,7 +563,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                 code.append("static ");
                 code.append(targetType(portType));
                 getStrategy();
-                code.append(" " + CodeGeneratorAdapterStrategy.getTypeConvertReference(channel));
+                code.append(" " + ProgramCodeGeneratorAdapterStrategy.getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
                 int bufferSize = Math.max(DFUtilities

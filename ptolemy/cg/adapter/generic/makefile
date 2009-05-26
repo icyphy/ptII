@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic
 
-DIRS =		adapters program
+DIRS =		adapters html program
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	adapters/adapters.jar \
+	html/html.jar \
 	program/program.jar
 
 # Keep this list alphabetized.
@@ -66,7 +67,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	adapters program
+MISC_FILES =	adapters html program
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

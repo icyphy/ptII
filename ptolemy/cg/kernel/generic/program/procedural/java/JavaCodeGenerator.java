@@ -45,10 +45,10 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.PointerToken;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
-import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
@@ -261,7 +261,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             mainEntryCode.append(_eol + _eol + "public Object[] "
                     + _eol + "fire (" + _eol);
 
-            Iterator inputPorts = ((Actor) getContainer()).inputPortList()
+            Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             boolean addComma = false;
             while (inputPorts.hasNext()) {
@@ -354,9 +354,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
-        HashSet functions = _getReferencedFunctions();
+        HashSet<String> functions = _getReferencedFunctions();
 
-        HashSet types = _getReferencedTypes(functions);
+        HashSet<String> types = _getReferencedTypes(functions);
 
         Object[] typesArray = types.toArray();
         CodeStream[] typeStreams = new CodeStream[types.size()];
@@ -408,7 +408,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             code.append(typeStreams[i].toString());
         }
 
-        ArrayList args = new ArrayList();
+        ArrayList<String> args = new ArrayList<String>();
         // Token declareBlock.
         if (typeMembers.length() != 0) {
             args.add(typeMembers.toString());
@@ -565,16 +565,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If illegal macro names are found.
      */
     private String processCode(String code) throws IllegalActionException {
-        CodeGeneratorAdapter adapter = ((CodeGeneratorAdapter) getAdapter(getContainer()));
+        ProgramCodeGeneratorAdapter adapter = ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()));
         return adapter.processCode(code);
     }
 
     /**
      * @return
      */
-    private HashSet _getReferencedFunctions() {
+    private HashSet<String> _getReferencedFunctions() {
         // Determine the total number of referenced polymorphic functions.
-        HashSet functions = new HashSet();
+        HashSet<String> functions = new HashSet<String>();
         functions.add("new");
         functions.add("delete");
         //functions.add("toString");    // for debugging.
@@ -590,9 +590,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @param functions
      * @return
      */
-    private HashSet _getReferencedTypes(HashSet functions) {
+    private HashSet<String> _getReferencedTypes(HashSet<String> functions) {
         // Determine the total number of referenced types.
-        HashSet types = new HashSet();
+        HashSet<String> types = new HashSet<String>();
         if (functions.contains("equals") || functions.contains("isCloseTo")) {
             types.add("Boolean");
         }
@@ -626,12 +626,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment("Generate variable declarations for "
                     + "modified parameters"));
-            Iterator modifiedVariables = _modifiedVariables.iterator();
+            Iterator<?> modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) getAdapter(variable.getContainer());
+                ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(variable.getContainer());
                 code.append("static "
                         + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
@@ -655,13 +655,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment(1, "Generate variable initialization for "
                     + "modified parameters"));
-            Iterator modifiedVariables = _modifiedVariables.iterator();
+            Iterator<?> modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
-                CodeGeneratorAdapter containerAdapter = (CodeGeneratorAdapter) getAdapter(container);
+                ProgramCodeGeneratorAdapter containerAdapter = (ProgramCodeGeneratorAdapter) getAdapter(container);
                 code.append(INDENT1
                         + generateVariableName(variable)
                         + " = "
@@ -791,7 +791,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @return The Java data type.
      */
     public String targetType(Type ptType) {
-        // FIXME: this is duplicated code from CodeGeneratorAdapter.targetType()
+        // FIXME: this is duplicated code from ProgramCodeGeneratorAdapter.targetType()
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
                 : ptType == BaseType.STRING ? "String"
@@ -888,9 +888,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     protected int _executeCommands() throws IllegalActionException {
 
-        List commands = new LinkedList();
+        List<String> commands = new LinkedList<String>();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            //TODO RODIERS
             commands.add("make -f " + _sanitizedModelName + ".mk "
                     + compileTarget.stringValue());
         }
@@ -913,7 +912,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             _executeCommands.start();
         } catch (Exception ex) {
             StringBuffer errorMessage = new StringBuffer();
-            Iterator allCommands = commands.iterator();
+            Iterator<?> allCommands = commands.iterator();
             while (allCommands.hasNext()) {
                 errorMessage.append((String) allCommands.next() + _eol);
             }
@@ -948,7 +947,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         code = new StringBuffer();
 
         boolean okToPrint = true;
-        HashSet defines = new HashSet<String>();
+        HashSet<String> defines = new HashSet<String>();
         while (tokenizer.hasMoreTokens()) {
             String line = tokenizer.nextToken();
             if (line.indexOf("#") == -1) {
@@ -1003,8 +1002,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter compositeActorAdapter = getAdapter(getContainer());
-        Set includingFiles = compositeActorAdapter.getHeaderFiles();
+        ProgramCodeGeneratorAdapter compositeActorAdapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        Set<String> includingFiles = compositeActorAdapter.getHeaderFiles();
 
         //includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
@@ -1062,10 +1061,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return startCode.toString();
     }
 
-    protected Class<? extends CodeGeneratorAdapterStrategy> _strategyClass() {
+    protected Class<? extends ProgramCodeGeneratorAdapterStrategy> _strategyClass() {
         return JavaCodeGeneratorAdapterStrategy.class;
     }
-
 
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
@@ -1151,7 +1149,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     + codeDirectory.stringValue() + "\" directory.");
         }
 
-        Map substituteMap;
+        Map<String, String> substituteMap;
         try {
             // Add substitutions for all the parameter.
             // For example, @generatorPackage@ will be replaced with
@@ -1211,7 +1209,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     "Problem generating substitution map from " + _model);
         }
 
-        List templateList = new LinkedList();
+        List<String> templateList = new LinkedList<String>();
 
         // 1. Look for a .mk.in file with the same name as the model.
         URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
@@ -1248,7 +1246,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         String makefileTemplateName = null;
         boolean success = false;
         try {
-            Iterator templates = templateList.iterator();
+            Iterator<?> templates = templateList.iterator();
             while (templates.hasNext()) {
                 makefileTemplateName = (String) templates.next();
                 try {
@@ -1296,14 +1294,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return A String that contains each element of the Set separated by
      *  a space.
      */
-    private static String _concatenateClasspath(Collection collection) {
+    private static String _concatenateClasspath(Collection<String> collection) {
         StringBuffer buffer = new StringBuffer();
-        Iterator iterator = collection.iterator();
+        Iterator<String> iterator = collection.iterator();
         while (iterator.hasNext()) {
             if (buffer.length() > 0) {
                 buffer.append("$(CLASSPATHSEPARATOR)");
             }
-            buffer.append((String) iterator.next());
+            buffer.append(iterator.next());
         }
         if (buffer.length() > 0) {
             buffer.append("$(CLASSPATHSEPARATOR)");
@@ -1317,14 +1315,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return A String that contains each element of the Set separated by
      *  a space.
      */
-    private static String _concatenateElements(Collection collection) {
+    private static String _concatenateElements(Collection<String> collection) {
         StringBuffer buffer = new StringBuffer();
-        Iterator iterator = collection.iterator();
+        Iterator<String> iterator = collection.iterator();
         while (iterator.hasNext()) {
             if (buffer.length() > 0) {
                 buffer.append(" ");
             }
-            buffer.append((String) iterator.next());
+            buffer.append(iterator.next());
         }
         return buffer.toString();
     }
@@ -1377,12 +1375,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.
      */
-    private static Set _unsupportedTypeFunctions;
+    private static Set<String> _unsupportedTypeFunctions;
 
     /** Types that share the scalarDelete() method, which does nothing.
      *  We use one method so as to reduce code size.
      */
-    private static Set _scalarDeleteTypes;
+    private static Set<String> _scalarDeleteTypes;
 
     /** A list of the primitive types supported by the code generator.
      */
@@ -1393,7 +1391,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     }
 
     static {
-        _unsupportedTypeFunctions = new HashSet();
+        _unsupportedTypeFunctions = new HashSet<String>();
         _unsupportedTypeFunctions.add("String_divide");
         _unsupportedTypeFunctions.add("String_multiply");
         _unsupportedTypeFunctions.add("String_negate");
@@ -1404,7 +1402,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         _unsupportedTypeFunctions.add("Boolean_multiply");
         _unsupportedTypeFunctions.add("Boolean_subtract");
 
-        _scalarDeleteTypes = new HashSet();
+        _scalarDeleteTypes = new HashSet<String>();
         _scalarDeleteTypes.add("Boolean");
         _scalarDeleteTypes.add("Double");
         _scalarDeleteTypes.add("Integer");
