@@ -48,6 +48,7 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/HocDE/HocDE.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Hysteresis/Hysteresis.xml
+$CLASSPATH/ptolemy/domains/ptera/demo/CarWash/CarWash_DE.xml
 $CLASSPATH/ptolemy/domains/de/demo/Clock/Clock.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml
@@ -72,7 +73,6 @@ $CLASSPATH/ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Helicopter/Helicopter.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/HierarchicalModalModel/HierarchicalModalModel.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld-MultiInstanceComposite.xml
 $CLASSPATH/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
@@ -81,7 +81,6 @@ $CLASSPATH/ptolemy/domains/ct/demo/ComparedClocks/ComparedClocks.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml
 $CLASSPATH/ptolemy/backtrack/demo/RampRollback/RampRollback.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Transmission/EfficiencyCurve.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/Integration/Integration2.xml
 $CLASSPATH/ptolemy/backtrack/demo/PrimeTest/PrimeTest.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml
 $CLASSPATH/ptolemy/domains/ct/demo/HybridPlant/DeterministicHybridPlant.xml
@@ -90,7 +89,6 @@ $CLASSPATH/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Satellite/Satellite.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml
 $CLASSPATH/ptolemy/domains/hdf/demo/Hysteresis/Hysteresis.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/Integration/Integration5.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
@@ -165,7 +163,6 @@ $CLASSPATH/ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.xml
 $CLASSPATH/ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml
 $CLASSPATH/ptolemy/domains/de/demo/LongRuns/LongRuns.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/Integration/Integration.xml
 $CLASSPATH/ptolemy/backtrack/demo/TrialModule/TrialModule.xml
 $CLASSPATH/ptolemy/domains/gr/demo/SolarSystem/SolarSystem.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
@@ -199,7 +196,6 @@ $CLASSPATH/ptolemy/domains/ptera/demo/CarWash/CarWash.xml
 $CLASSPATH/ptolemy/actor/lib/x10/demo/OnOff/OnOff.xml
 $CLASSPATH/ptolemy/domains/ct/demo/CTInsideDE/CTInsideDE.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/Integration/Integration3.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/OrderedMerge/OrderedMerge.xml
 $CLASSPATH/ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.xml
