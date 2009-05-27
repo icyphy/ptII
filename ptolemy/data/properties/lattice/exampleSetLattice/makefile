@@ -50,8 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
     actor/actor.jar \
     data/data.jar \
-    kernel/kernel.jar \
-    test/test.jar
+    kernel/kernel.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
