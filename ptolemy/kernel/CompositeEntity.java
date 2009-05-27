@@ -852,7 +852,19 @@ public class CompositeEntity extends ComponentEntity {
                     if (relation.getContainer() == this) {
                         relationName = relation.getName();
                     } else {
-                        relationName = relation.getFullName();
+                        if (deepContains(relation)) {
+                            // NOTE: This used to export the full name, but the
+                            // relative name is sufficient.
+                            relationName = relation.getName(this);
+                        } else {
+                            // Can't export the link here since when the
+                            // MoML file is re-read there is no assurance that
+                            // the relation exists when the link is to be
+                            // created.  Need to delegate to the least common
+                            // container.
+                            _recordLevelCrossingLink(port, relation, null, index);
+                            continue;
+                        }
                     }
 
                     if (useIndex) {
@@ -926,7 +938,19 @@ public class CompositeEntity extends ComponentEntity {
                         if (relation.getContainer() == this) {
                             relationName = relation.getName();
                         } else {
-                            relationName = relation.getFullName();
+                            if (deepContains(relation)) {
+                                // NOTE: This used to export the full name, but the
+                                // relative name is sufficient.
+                                relationName = relation.getName(this);
+                            } else {
+                                // Can't export the link here since when the
+                                // MoML file is re-read there is no assurance that
+                                // the relation exists when the link is to be
+                                // created.  Need to delegate to the least common
+                                // container.
+                                _recordLevelCrossingLink(port, relation, null, index);
+                                continue;
+                            }
                         }
 
                         if (useIndex) {
@@ -995,7 +1019,19 @@ public class CompositeEntity extends ComponentEntity {
                         if (relation.getContainer() == this) {
                             relationName = relation.getName();
                         } else {
-                            relationName = relation.getFullName();
+                            if (deepContains(relation)) {
+                                // NOTE: This used to export the full name, but the
+                                // relative name is sufficient.
+                                relationName = relation.getName(this);
+                            } else {
+                                // Can't export the link here since when the
+                                // MoML file is re-read there is no assurance that
+                                // the relation exists when the link is to be
+                                // created.  Need to delegate to the least common
+                                // container.
+                                _recordLevelCrossingLink(null, relation, otherRelation, 0);
+                                continue;
+                            }
                         }
 
                         String otherRelationName;
@@ -1003,7 +1039,13 @@ public class CompositeEntity extends ComponentEntity {
                         if (otherRelation.getContainer() == this) {
                             otherRelationName = otherRelation.getName();
                         } else {
-                            otherRelationName = otherRelation.getFullName();
+                            // Can't export the link here since when the
+                            // MoML file is re-read there is no assurance that
+                            // the relation exists when the link is to be
+                            // created.  Need to delegate to the least common
+                            // container.
+                            _recordLevelCrossingLink(null, relation, otherRelation, 0);
+                            continue;
                         }
 
                         result.append(_getIndentPrefix(depth)
@@ -1016,6 +1058,26 @@ public class CompositeEntity extends ComponentEntity {
         }
 
         return result.toString();
+    }
+    
+    /** Override the base class to initialize a data structure that can
+     *  capture and then export level-crossing links deeply contained
+     *  structure within. Otherwise, this delegates to the base
+     *  class to do all the work.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use in the exported MoML.
+     *  @exception IOException If an I/O error occurs.
+     *  @see ptolemy.kernel.util.MoMLExportable
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+        try {
+            _levelCrossingLinks = new LinkedList<LinkRecord>();
+            super.exportMoML(output, depth, name);
+        } finally {
+            _levelCrossingLinks = null;
+        }
     }
 
     /** Get the attribute with the given name. The name may be compound,
@@ -2060,6 +2122,29 @@ public class CompositeEntity extends ComponentEntity {
         // That mechanism was far too fragile.
         // EAL 3/10/04
         output.write(exportLinks(depth, null));
+        
+        // Export level crossing links, if there are any.
+        if (_levelCrossingLinks != null) {
+            for (LinkRecord record : _levelCrossingLinks) {
+                if (record.port != null) {
+                    output.write(_getIndentPrefix(depth) 
+                            + "<link port=\""
+                            + record.port.getName(this)
+                            + "\" insertAt=\"" 
+                            + record.index
+                            + "\" relation=\"" 
+                            + record.relation1.getName(this)
+                            + "\"/>\n");
+                } else {
+                    output.write(_getIndentPrefix(depth)
+                            + "<link relation1=\""
+                            + record.relation1.getName(this)
+                            + "\" relation2=\""
+                            + record.relation2.getName(this)
+                            + "\"/>\n");
+                }
+            }
+        }
     }
 
     /** Notify this entity that the given entity has been added inside it.
@@ -2174,8 +2259,16 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    
+    /** Level-crossing links within this composite for which this composite
+     *  is responsible.  This data structure is populated when exportMoML()
+     *  is called.
+     */
+    protected List<LinkRecord> _levelCrossingLinks;
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     /**
      * Add all elements from the sourceList into the targetList.
@@ -2187,8 +2280,74 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Add a default icon description. */
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
+    }
+    
+    /** Find the least common container of the two objects.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
+     *  @return The least common container, or null if there
+     *   isn't one.
+     */
+    private NamedObj _commonContainer(NamedObj object1, NamedObj object2) {
+        NamedObj container = object1.getContainer();
+        while (container != null) {
+            if (container.deepContains(object2)) {
+                return container;
+            }
+            container = container.getContainer();
+        }
+        return null;
+    }
+    
+    /** Record a level-crossing link with the least common container if there
+     *  is such a least common container and if that least common container is
+     *  currently exporting MoML. Otherwise, do nothing.
+     *  @param port The port, or null for a link between relations.
+     *  @param relation1 The first relation.
+     *  @param relation2 The second relation.
+     *  @param index The index of the link.
+     */
+    private void _recordLevelCrossingLink(Port port, Relation relation1, Relation relation2, int index) {
+        // Find the least common container.
+        NamedObj container;
+        if (port != null) {
+            container = _commonContainer(port, relation1);
+        } else {
+            // This is a link between relations.
+            // Find the common container.
+            container = _commonContainer(relation1, relation2);
+            // We have to make sure
+            // that the link only appears once in the export MoML.
+            // To do this, check to see whether the common container
+            // already contains a link record with relation2 in the
+            // position of relation1.
+            if (container instanceof CompositeEntity) {
+                List<LinkRecord> linkRecords = ((CompositeEntity)container)._levelCrossingLinks;
+                if (linkRecords != null) {
+                    for (LinkRecord record : linkRecords) {
+                        if (record.relation1 == relation2) {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        if (container instanceof CompositeEntity) {
+            List<LinkRecord> linkRecords = ((CompositeEntity)container)._levelCrossingLinks;
+            // If the common container is outside the scope of what is being exported,
+            // then linkRecords will be null.
+            if (linkRecords != null) {
+                LinkRecord record = new LinkRecord();
+                record.port = port;
+                record.relation1 = relation1;
+                record.relation2 = relation2;
+                record.index = index;
+                linkRecords.add(record);
+            }
+        }
     }
 
     /** Remove all level-crossing links from relations contained by
@@ -2401,5 +2560,13 @@ public class CompositeEntity extends ComponentEntity {
 
             return result;
         }
+    }
+    
+    /** A data structure for level-crossing links. */
+    private static class LinkRecord {
+        public Port port;
+        public Relation relation1;
+        public Relation relation2;
+        public int index;
     }
 }
