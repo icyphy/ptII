@@ -419,7 +419,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     /** Generate a variable name for the NamedObj.
      *  @param namedObj The NamedObj to generate variable name for.
-     *  @see ptolemy.cg.kernel.generic.GenericCodeGenerator#generateVariableName(NamedObj)
+     *  @see ProgramCodeGenerator#generateVariableName(NamedObj)
      *  @return The variable name for the NamedObj.
      */
     public String generateVariableName(NamedObj namedObj) {
@@ -442,7 +442,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
-     *  @see #setCodeGenerator(GenericCodeGenerator)
+     *  @see #setCodeGenerator(ProgramCodeGenerator)
      */
     public ProgramCodeGenerator getCodeGenerator() {
         return _codeGenerator;

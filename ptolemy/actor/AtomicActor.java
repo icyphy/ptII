@@ -295,7 +295,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  This declares that all output ports of the actor depend on all input
      *  ports, unless the actor calls
      *  {@link #removeDependency(IOPort, IOPort)} or 
-     *  {@link #delayDependency(IOPort, IOPort, double)}.
+     *  {@link #declareDelayDependency(IOPort, IOPort, double)}.
      *  If this is called multiple times, the same object is returned each
      *  time unless the director has changed since the last call, in
      *  which case a new object is returned.
