@@ -34,6 +34,7 @@ ME =		ptolemy/data/properties/lattice
 DIRS = \
 	academicFalseTrueEqualPriority \
 	academicFalseTrueSet \
+	dimensionSystem \
 	exampleSetLattice \
 	imageOntology \
 	logicalAND \
