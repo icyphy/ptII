@@ -52,7 +52,6 @@ JSRCS = \
 	PtidesBasicDirector.java \
 	PtidesBasicPreemptiveEDFDirector.java \
 	PtidesBasicReceiver.java \
-	PtidesEmbeddedDirector.java \
 	PtidesNoPhysicalTimeDirector.java \
 	PtidesPreemptiveEDFDirector.java \
 	Tag.java
