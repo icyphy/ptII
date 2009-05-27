@@ -122,27 +122,31 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
-        diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
-        diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
-        diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
-        diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar,
-                _newInputMultiportAction);
-        diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar,
-                _newOutputMultiportAction);
-        diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar,
-                _newInoutMultiportAction);
+        // Only include the port actions if there is an actor library.
+        // The ptinyViewer configuration uses this.
+        if (getConfiguration().getEntity("actor library") != null) {
+            diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
+            diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
+            diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
+            diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                    _newInputMultiportAction);
+            diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                    _newOutputMultiportAction);
+            diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                    _newInoutMultiportAction);
 
-        menu.addSeparator();
+            menu.addSeparator();
 
-        // Add an item that adds new relations.
-        diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
+            // Add an item that adds new relations.
+            diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
+        }
     }
 
     /** Set the configuration.  The configuration is used when

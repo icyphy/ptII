@@ -788,7 +788,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Remove the association with the library. This is necessary to allow
         // this frame, and the rest of the model to be properly garbage
         // collected
-        _libraryModel.setRoot(null);
+        if (_libraryModel != null) {
+            _libraryModel.setRoot(null);
+        }
         _openGraphFrames.remove(this);
         disposeSuper();
     }
@@ -1043,7 +1045,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Perform the layout and repaint
         layout.layout(model.getRoot());
         getJGraph().repaint();
-        _graphPanner.repaint();
+        if (_graphPanner != null) {
+            _graphPanner.repaint();
+        }
     }
 
     /** Do nothing.
@@ -1559,12 +1563,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _rightComponent.addMouseMotionListener(this);
         _rightComponent.addMouseListener(this);
 
-        // Create the panner.
-        _graphPanner = new JCanvasPanner(getJGraph());
-        _graphPanner.setPreferredSize(new Dimension(200, 150));
-        _graphPanner.setMaximumSize(new Dimension(200, 150));
-        _graphPanner.setSize(200, 150);
-
         // NOTE: Border causes all kinds of problems!
         // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
         // Create the library of actors, or use the one in the entity,
@@ -1594,6 +1592,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
 
+        // If we don't have a library, we might be trying to only show
+        // models
+        if (gotLibrary) {
+            // Create the panner.
+            _graphPanner = new JCanvasPanner(getJGraph());
+            _graphPanner.setPreferredSize(new Dimension(200, 150));
+            _graphPanner.setMaximumSize(new Dimension(200, 150));
+            _graphPanner.setSize(200, 150);
+        }
+
         if (!gotLibrary) {
             try {
                 if (_defaultLibrary != null) {
@@ -1621,43 +1629,51 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _topLibrary = _createDefaultLibrary(getModel().workspace());
         }
 
-        _libraryModel = new VisibleTreeModel(_topLibrary);
-        _library = new PTree(_libraryModel);
-        _library.setRootVisible(false);
-        _library.setBackground(BACKGROUND_COLOR);
+        // Only include the palettePane and panner if there is an actor library.
+        // The ptinyViewer configuration uses this.
+        if ((CompositeEntity) configuration.getEntity("actor library") != null) {
+            _libraryModel = new VisibleTreeModel(_topLibrary);
+            _library = new PTree(_libraryModel);
+            _library.setRootVisible(false);
+            _library.setBackground(BACKGROUND_COLOR);
 
-        // If you want to expand the top-level libraries, uncomment this.
-        // Object[] path = new Object[2];
-        // path[0] = _topLibrary;
-        // Iterator libraries = _topLibrary.entityList().iterator();
-        // while (libraries.hasNext()) {
-        //     path[1] = libraries.next();
-        //     _library.expandPath(new javax.swing.tree.TreePath(path));
-        // }
+            // If you want to expand the top-level libraries, uncomment this.
+            // Object[] path = new Object[2];
+            // path[0] = _topLibrary;
+            // Iterator libraries = _topLibrary.entityList().iterator();
+            // while (libraries.hasNext()) {
+            //     path[1] = libraries.next();
+            //     _library.expandPath(new javax.swing.tree.TreePath(path));
+            // }
 
-        _libraryContextMenuCreator = new PTreeMenuCreator();
-        _libraryContextMenuCreator
+            _libraryContextMenuCreator = new PTreeMenuCreator();
+            _libraryContextMenuCreator
                 .addMenuItemFactory(new OpenLibraryMenuItemFactory());
-        _libraryContextMenuCreator
+            _libraryContextMenuCreator
                 .addMenuItemFactory(new DocumentationMenuItemFactory());
-        _library.addMouseListener(_libraryContextMenuCreator);
+            _library.addMouseListener(_libraryContextMenuCreator);
 
-        _libraryScrollPane = new JScrollPane(_library);
-        _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
-        _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
+            _libraryScrollPane = new JScrollPane(_library);
+            _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
+            _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
 
-        // create the palette on the left.
-        _palettePane = new JPanel();
-        _palettePane.setBorder(null);
-        _palettePane.setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
+            // create the palette on the left.
+            _palettePane = new JPanel();
+            _palettePane.setBorder(null);
+            _palettePane.setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
 
-        _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
-        _palettePane.add(_graphPanner, BorderLayout.SOUTH);
+            _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
+            if (_graphPanner != null) { 
+                _palettePane.add(_graphPanner, BorderLayout.SOUTH);
+            }
 
-        _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-        _splitPane.setLeftComponent(_palettePane);
-        _splitPane.setRightComponent(_rightComponent);
-        getContentPane().add(_splitPane, BorderLayout.CENTER);
+            _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+            _splitPane.setLeftComponent(_palettePane);
+            _splitPane.setRightComponent(_rightComponent);
+            getContentPane().add(_splitPane, BorderLayout.CENTER);
+        } else {
+            getContentPane().add(_rightComponent, BorderLayout.CENTER);
+        }
 
         _toolbar = new JToolBar();
         _toolbar.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));

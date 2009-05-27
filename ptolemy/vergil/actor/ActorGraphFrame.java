@@ -163,10 +163,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
         _createHierarchyAction = new CreateHierarchyAction();
         _layoutAction = new LayoutAction();
-        _saveInLibraryAction = new SaveInLibraryAction();
-        _importLibraryAction = new ImportLibraryAction();
-        _instantiateAttributeAction = new InstantiateAttributeAction();
-        _instantiateEntityAction = new InstantiateEntityAction();
+        // Only include the various actions if there is an actor library
+        // The ptinyViewer configuration uses this.
+        if (getConfiguration().getEntity("actor library") != null) {
+            _saveInLibraryAction = new SaveInLibraryAction();
+            _importLibraryAction = new ImportLibraryAction();
+            _instantiateAttributeAction = new InstantiateAttributeAction();
+            _instantiateEntityAction = new InstantiateEntityAction();
+        }
 
     }
 
@@ -182,20 +186,23 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         _menubar.add(_graphMenu);
         GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
         GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        GUIUtilities.addHotKey(_getRightComponent(), _saveInLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
-        GUIUtilities.addHotKey(_getRightComponent(), _importLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _instantiateAttributeAction);
-        GUIUtilities.addHotKey(_getRightComponent(),
-                _instantiateAttributeAction);
-        GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
-        GUIUtilities.addHotKey(_getRightComponent(), _instantiateEntityAction);
-        _graphMenu.addSeparator();
-        diva.gui.GUIUtilities.addHotKey(_getRightComponent(),
-                _createHierarchyAction);
-        diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
-
+        // Only include the various actions if there is an actor library
+        // The ptinyViewer configuration uses this.
+        if (getConfiguration().getEntity("actor library") != null) {
+            GUIUtilities.addHotKey(_getRightComponent(), _saveInLibraryAction);
+            GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
+            GUIUtilities.addHotKey(_getRightComponent(), _importLibraryAction);
+            GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
+            GUIUtilities.addMenuItem(_graphMenu, _instantiateAttributeAction);
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _instantiateAttributeAction);
+            GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
+            GUIUtilities.addHotKey(_getRightComponent(), _instantiateEntityAction);
+            _graphMenu.addSeparator();
+            diva.gui.GUIUtilities.addHotKey(_getRightComponent(),
+                    _createHierarchyAction);
+            diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
+        }
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
         _graphMenu.addSeparator();
@@ -253,7 +260,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
     /** Create the items in the File menu. A null element in the array
      *  represents a separator in the menu.
-     *
      *  @return The items in the File menu.
      */
     protected JMenuItem[] _createFileMenuItems() {
@@ -261,7 +267,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         int i = 0;
         for (JMenuItem item : fileMenuItems) {
             i++;
-            if (item.getActionCommand().equals("Save As")) {
+            // Only include the various actions if there is an actor library
+            // The ptinyViewer configuration uses this.
+            Configuration configuration = getConfiguration();
+            if ((configuration != null && configuration.getEntity("actor library") != null)
+                    && item.getActionCommand().equals("Save As")) {
                 // Add a SaveAsDesignPattern here.
                 JMenuItem importItem = new JMenuItem(
                         "Import Design Pattern", KeyEvent.VK_D);
@@ -394,8 +404,17 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 try {
                     PtolemyPreferences preferences = PtolemyPreferences
                         .getPtolemyPreferencesWithinConfiguration(configuration);
-                    getCanvas().setBackground(
-                            preferences.backgroundColor.asColor());
+                    if (preferences != null) {
+                        getCanvas().setBackground(
+                                preferences.backgroundColor.asColor());
+                    } else {
+                        if (_backgroundWarningCount < 1) {
+                            _backgroundWarningCount++;
+                            if (configuration.getEntity("actor library") != null) {
+                                System.out.println("Failed to get PtolemyPreferences?  This can happen when there is no left hand library.");
+                            }
+                        }
+                    }
                 } catch (IllegalActionException ex) {
                     System.err.println("Warning, failed to find Ptolemy Preferences "
                                        + "or set the background, using default.");
@@ -404,6 +423,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             }
         }
 
+        private static int _backgroundWarningCount = 0;
         private NamedObj _entity;
     }
 
