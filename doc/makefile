@@ -183,7 +183,6 @@ COMPACKAGES = \
 # cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g'
 CGPACKAGES = \
 	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
-	ptolemy.cg.adapter.generic.program.html.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
@@ -195,7 +194,6 @@ CGPACKAGES = \
 	ptolemy.cg.gui \
 	ptolemy.cg.kernel.generic \
 	ptolemy.cg.kernel.generic.program \
-	ptolemy.cg.kernel.generic.program.html \
 	ptolemy.cg.kernel.generic.program.procedural \
 	ptolemy.cg.kernel.generic.program.procedural.c \
 	ptolemy.cg.kernel.generic.program.procedural.java \
