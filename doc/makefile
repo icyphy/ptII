@@ -485,8 +485,7 @@ PTIDES_PACKAGES = \
 	ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
-	ptolemy.domains.ptides.lib.targets.luminary \
-	ptolemy.domains.ptides.platform
+	ptolemy.domains.ptides.lib.targets.luminary
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
@@ -904,7 +903,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/rendezvous/lib/*.java \
 			../ptolemy/domains/ptides/kernel/*.java \
 			../ptolemy/domains/ptides/lib/*.java \
-			../ptolemy/domains/ptides/platform/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
