@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/domains/sdf/kernel
+ME =		ptolemy/codegen/java/domains/sdf/kernel
 
 DIRS =		test
 
