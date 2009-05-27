@@ -1395,8 +1395,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
-	$(REMOTE1PTIIDIST)/ptolemy/configs \
-	$(REMOTE1PTIIDIST)/adm
+	$(REMOTE1PTIIDIST)/ptolemy/configs
 
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
@@ -1409,7 +1408,8 @@ NONJSALLDIRS = \
 	ptolemy/copernicus/shallow \
 	ptolemy/kernel \
 	ptolemy/moml \
-	ptolemy/util
+	ptolemy/util \
+	adm
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
