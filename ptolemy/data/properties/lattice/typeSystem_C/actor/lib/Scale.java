@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Const.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
@@ -50,7 +50,7 @@ public class Scale extends AtomicActor {
      * Construct an Const helper.
      * @param actor the associated actor
      */
-    public Scale(PropertyConstraintSolver solver,
+    public Scale(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Scale actor) throws IllegalActionException {
 
         super(solver, actor, false);
@@ -58,8 +58,8 @@ public class Scale extends AtomicActor {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        setAtLeast(_actor.output, _actor.factor);
-        setAtLeast(_actor.output, _actor.input);
+        setAtLeast(_actor.output, _actor.factor);        
+        setAtLeast(_actor.output, _actor.input);        
 
         return super.constraintList();
     }

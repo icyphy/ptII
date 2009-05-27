@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtFunctionApplicationNode.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,33 +43,33 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
 public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
-    public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver,
+    public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver, 
             ptolemy.data.expr.ASTPtFunctionApplicationNode node) throws IllegalActionException {
         super(solver, node);
     }
-
+    
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.data.expr.ASTPtFunctionApplicationNode node =
+        ptolemy.data.expr.ASTPtFunctionApplicationNode node = 
             (ptolemy.data.expr.ASTPtFunctionApplicationNode) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
 
         if (_real32Functions.contains(node.getFunctionName())) {
-
+            
             _useDefaultConstraints = false;
-            setEquals(node, lattice.DOUBLE);
+            setEquals(node, lattice.getElement("DOUBLE"));
         }
 
         return super.constraintList();
     }
 
-    private static List _real32Functions = Arrays.asList(
+    private static List _real32Functions = Arrays.asList( 
             new String[]{ ""
     });
 
@@ -78,6 +78,6 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
     }
 
     public void setEffective(boolean isEffective) {
-
+        
     }
 }

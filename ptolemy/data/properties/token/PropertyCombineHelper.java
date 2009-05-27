@@ -35,6 +35,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
+import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.PropertySolver;
 import ptolemy.kernel.Entity;
@@ -99,10 +100,11 @@ public class PropertyCombineHelper extends PropertyHelper {
         return list;
     }
 
-    public void setEquals(Object object, PropertyToken property) {
+    public void setEquals(Object object, Property property) {
+// FIXME: Charles Shelton 05/27/09 - Thomas Mandl's code doesn't call super.setEquals.  We will keep it for now.
         super.setEquals(object, property);
         if (property != null) {
-            getSolver().putToken(object, property.getToken());
+            getSolver().putToken(object, (PropertyToken) property);
         }
     }
 

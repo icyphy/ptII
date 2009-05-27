@@ -368,32 +368,34 @@ public abstract class PropertyHelper {
      *
      * @return The list of PropertyHelpers for ASTPtRootNodes.
      */
-    protected List<PropertyHelper> _getASTNodeHelpers() {
+    protected List<PropertyHelper> _getASTNodeHelpers() throws IllegalActionException {
         List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
-        ParseTreeASTNodeHelperCollector collector = new ParseTreeASTNodeHelperCollector();
+        ParseTreeASTNodeHelperCollector collector = 
+            new ParseTreeASTNodeHelperCollector();
 
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
-                try {
+//                try {
                     List<PropertyHelper> helpers = collector.collectHelpers(
                             root, getSolver());
                     astHelpers.addAll(helpers);
-                } catch (IllegalActionException ex) {
-                    // This means the expression is not parse-able.
-                    // FIXME: So, we will discard it for now.
-                    throw new AssertionError(ex);
-                }
+//                } catch (IllegalActionException ex) {
+//                    // This means the expression is not parse-able.
+//                    // FIXME: So, we will discard it for now.
+//                    throw new AssertionError(ex.stackTraceToString(ex));
+//                }
             }
         }
         return astHelpers;
     }
 
     /**
-     * Return the list of parse trees for all property-able Attributes.
-     *
+     * Return the list of parse trees for all settable Attributes
+     * of the component. 
      * @return The list of ASTPtRootNodes.
+     * @throws IllegalActionException 
      */
-    protected List<ASTPtRootNode> _getAttributeParseTrees() {
+    protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
         List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();
 
         Iterator attributes = null;
@@ -403,17 +405,19 @@ public abstract class PropertyHelper {
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute) attributes.next();
 
-            try {
+//            try {
                 ASTPtRootNode pt = getParseTree(attribute);
                 if (pt != null) {
                     result.add(pt);
                 }
-            } catch (IllegalActionException ex) {
-                // This means the expression is not parse-able.
-                // FIXME: So, we will discard it for now.
-                // System.out.println(KernelException.stackTraceToString(ex));
-                throw new AssertionError(ex);
-            }
+//            } catch (IllegalActionException ex) {
+//                // This means the expression is not parse-able.
+//                // FIXME: So, we will discard it for now.
+//                // FIXME: Breaks the regression test. Need to figure out a better
+//                // way to deal with the problem.
+//                System.out.println(KernelException.stackTraceToString(ex));
+//                //throw new AssertionError(ex.stackTraceToString(ex));
+//            }
         }
         return result;
     }
@@ -471,6 +475,10 @@ public abstract class PropertyHelper {
                                         "conservativeAnalysis")
                                 || ((Parameter) attribute).getName().equals(
                                         "directorClass")
+                                || ((Parameter) attribute).getName().equals(
+                                        "stateDependentCausality")
+                                || ((Parameter) attribute).getName().equals(
+                                        "delayed")
                                 || ((Parameter) attribute).getName().equals(
                                         "displayWidth")) {
 

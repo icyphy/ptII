@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Pulse.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
@@ -55,9 +55,9 @@ public class Pulse extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public Pulse(PropertyConstraintSolver solver,
+    public Pulse(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Pulse actor)
             throws IllegalActionException {
 
@@ -68,7 +68,7 @@ public class Pulse extends AtomicActor {
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ArrayToken valuesArray = (ArrayToken) _actor.values.getToken();
-
+        
         setEquals(_actor.output, _lattice.leastUpperBound(
                         _lattice.convertJavaToCtype(valuesArray.getElement(0).getType(),valuesArray.getElement(0)),
                         _lattice.convertJavaToCtype(valuesArray.getElement(1).getType(),valuesArray.getElement(1))));
@@ -80,7 +80,7 @@ public class Pulse extends AtomicActor {
     ////                         private variables                 ////
     private ptolemy.actor.lib.Pulse _actor;
     private Lattice _lattice;
-/*
+/*    
     protected List<Attribute> _getPropertyableAttributes() {
         ptolemy.actor.lib.Expression actor =
             (ptolemy.actor.lib.Expression) _component;
@@ -89,5 +89,5 @@ public class Pulse extends AtomicActor {
         result.add(actor.expression);
         return result;
     }
-*/
+*/    
 }

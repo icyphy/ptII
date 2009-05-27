@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.BooleanSelect.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
@@ -50,20 +50,20 @@ public class BooleanSelect extends AtomicActor {
     /**
      * Construct an BooleanSelect helper.
      * @param actor the associated actor
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public BooleanSelect(PropertyConstraintSolver solver,
+    public BooleanSelect(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.BooleanSelect actor) throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
         _actor = actor;
-    }
+    }   
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        setAtLeast(_actor.output, _actor.trueInput);
-        setAtLeast(_actor.output, _actor.falseInput);
-        setEquals(_actor.control, _lattice.BOOLEAN);
+        setAtLeast(_actor.output, _actor.trueInput);        
+        setAtLeast(_actor.output, _actor.falseInput);                
+        setEquals(_actor.control, _lattice.getElement("BOOLEAN"));        
 
         return super.constraintList();
     }

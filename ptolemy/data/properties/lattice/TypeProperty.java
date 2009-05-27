@@ -27,6 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.data.properties.lattice;
 
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 public interface TypeProperty {
 
@@ -34,4 +35,5 @@ public interface TypeProperty {
 
     public Token getMaxValue();
     public Token getMinValue();
+    public boolean isInRange(Token token) throws IllegalActionException;
 }

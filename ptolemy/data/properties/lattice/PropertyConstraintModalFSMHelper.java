@@ -226,7 +226,7 @@ public class PropertyConstraintModalFSMHelper extends PropertyConstraintComposit
     /**
      *
      */
-    protected List<ASTPtRootNode> _getAttributeParseTrees() {
+    protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException{
         List<ASTPtRootNode> result = super._getAttributeParseTrees();
     
         ptolemy.domains.modal.kernel.FSMActor actor =

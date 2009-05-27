@@ -1,6 +1,6 @@
 /** A base class representing a property.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,10 +29,12 @@
 package ptolemy.data.properties.lattice.typeSystem_C;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,12 +45,12 @@ import ptolemy.data.properties.lattice.TypeProperty;
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 0.4
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
 public class Float extends LatticeProperty implements TypeProperty {
-
+        
     public Float(PropertyLattice lattice) {
         super(lattice);
     }
@@ -63,5 +65,15 @@ public class Float extends LatticeProperty implements TypeProperty {
 
     public boolean hasMinMaxValue() {
        return true;
+    }
+
+    public boolean isInRange(Token token) throws IllegalActionException {
+        if ((((ScalarToken)token).doubleValue() < ((ScalarToken)getMinValue()).doubleValue()) ||
+            (((ScalarToken)token).doubleValue() > ((ScalarToken)getMaxValue()).doubleValue())) {
+            
+            return false;
+        } else {
+            return true;
+        }
     }
 }

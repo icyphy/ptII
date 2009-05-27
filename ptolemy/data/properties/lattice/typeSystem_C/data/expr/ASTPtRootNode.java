@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtRootNode.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
@@ -47,20 +47,20 @@ public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
     /**
      * Construct an ASTPtRootNode helper.
      * @param actor the associated actor
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public ASTPtRootNode(PropertyConstraintSolver solver,
-            ptolemy.data.expr.ASTPtRootNode actor)
+    public ASTPtRootNode(PropertyConstraintSolver solver, 
+            ptolemy.data.expr.ASTPtRootNode actor) 
     throws IllegalActionException {
-
+        
         super(solver, actor);
     }
 
-    public ASTPtRootNode(PropertyConstraintSolver solver,
-            ptolemy.data.expr.ASTPtRootNode actor,
-            boolean useDefaultConstraints)
+    public ASTPtRootNode(PropertyConstraintSolver solver, 
+            ptolemy.data.expr.ASTPtRootNode actor, 
+            boolean useDefaultConstraints) 
     throws IllegalActionException {
-
+        
         super(solver, actor, useDefaultConstraints);
     }
 
@@ -69,6 +69,6 @@ public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
     }
 
     public void setEffective(boolean isEffective) {
-
+        
     }
 }

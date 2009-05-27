@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.AtomicActor.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
@@ -47,28 +47,28 @@ public class AtomicActor extends PropertyConstraintHelper {
     /**
      * Construct an AddSubtract helper.
      * @param actor the associated actor
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public AtomicActor(PropertyConstraintSolver solver,
+    public AtomicActor(PropertyConstraintSolver solver, 
             ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
         super(solver, actor);
     }
 
-
-    public AtomicActor(PropertyConstraintSolver solver,
-            ptolemy.actor.AtomicActor actor,
+    
+    public AtomicActor(PropertyConstraintSolver solver, 
+            ptolemy.actor.AtomicActor actor, 
             boolean useDefaultConstraints)
     throws IllegalActionException {
 
         super(solver, actor, useDefaultConstraints);
-    }
+    }    
 
     public boolean isEffective() {
         return true;
     }
 
     public void setEffective(boolean isEffective) {
-
+        
     }
 }

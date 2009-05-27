@@ -1,6 +1,6 @@
 /* A property constraint helper for composite actor.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,22 +39,22 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
 public class CompositeEntity extends PropertyConstraintCompositeHelper {
 
-    /**
+    /** 
      * Construct a property constraint helper for the given
-     * CompositeActor. This is the helper class for any
+     * CompositeActor. This is the helper class for any 
      * CompositeActor that does not have a specific defined
      * helper class.
      * @param solver The given solver.
      * @param entity The given CompositeEntity.
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public CompositeEntity(PropertyConstraintSolver solver,
+    public CompositeEntity(PropertyConstraintSolver solver, 
             ptolemy.kernel.CompositeEntity entity)
         throws IllegalActionException {
 
@@ -66,6 +66,6 @@ public class CompositeEntity extends PropertyConstraintCompositeHelper {
     }
 
     public void setEffective(boolean isEffective) {
-
+        
     }
 }

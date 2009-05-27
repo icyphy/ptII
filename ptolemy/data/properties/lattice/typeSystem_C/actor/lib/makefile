@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Properties Lattice TypeSystem_C Actor Lib
+# Makefile for Java Ptolemy Data Properties Lattice
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # $Id$
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,29 +26,25 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/typeSystem_C/actor/lib
+ME =		ptolemy/data/properties/lattice/typeSystem_C/actor/lib
 
-DIRS =      logic
+DIRS = 		logic
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../../..
+ROOT =		../../../../../../..
 
-CLASSPATH = $(ROOT)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
-CONFIG =    $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     lib
-
-PTCLASSJAR =
-
-PTCLASSALLJARS = \
-	logic/logic.jar
+PTPACKAGE = 	properties
+PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	BooleanSelect.java \
@@ -59,17 +55,17 @@ JSRCS = \
 	Scale.java \
 	Sequence.java \
 	TrigFunction.java
-
-EXTRA_SRCS =    $(JSRCS)
+	
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -77,7 +73,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

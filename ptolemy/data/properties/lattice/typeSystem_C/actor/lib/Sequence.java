@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Sequence.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
@@ -55,22 +55,22 @@ public class Sequence extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public Sequence(PropertyConstraintSolver solver,
+    public Sequence(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Sequence actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
-        _actor = actor;
-    }
+        _actor = actor;        
+    } 
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ArrayToken valuesArray = (ArrayToken) _actor.values.getToken();
-
+        
         for (int i=0; i < valuesArray.length(); i++) {
-            setEquals(_actor.output, _lattice.convertJavaToCtype(valuesArray.getElement(i).getType(),valuesArray.getElement(i)));
+            setEquals(_actor.output, _lattice.convertJavaToCtype(valuesArray.getElement(i).getType(),valuesArray.getElement(i)));               
         }
 
         return super.constraintList();

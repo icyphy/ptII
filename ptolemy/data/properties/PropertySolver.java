@@ -137,18 +137,20 @@ public abstract class PropertySolver extends PropertySolverBase {
      * errors in the regression test.
      */
     public void checkErrors() throws PropertyResolutionException {
+
+        // first, store errors to statistics
+        _addErrorStatistics();
+        
+        // FIXME: remove the errors as well.
+
         List errors = _sharedUtilities.removeErrors();
         Collections.sort(errors);
 
         if (!errors.isEmpty()) {
             String errorMessage = errors.toString();
 
-            if (isTesting()) {
-                throw new PropertyFailedRegressionTestException(
+                throw new PropertyResolutionException(
                         this, errorMessage);
-            } else {
-                throw new PropertyResolutionException(this, errorMessage);
-            }
         }
     }
 
@@ -477,6 +479,8 @@ public abstract class PropertySolver extends PropertySolverBase {
 
         try {
 
+            _initializeStatistics();
+
             getSharedUtilities().addRanSolvers(this);
 
             _analyzer = analyzer;
@@ -522,7 +526,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
                 _sharedUtilities._previousInvokedSolver = this;
 
-                // If we are in TRAINING mode, then keep
+                // If we are in ANNOTATE_ALL or TRAINING mode, then keep
                 // all the intermediate results.
                 boolean keepIntermediates =
                     // actionValue.equals(ANNOTATE_ALL) ||
@@ -965,4 +969,22 @@ public abstract class PropertySolver extends PropertySolverBase {
      * The name of the trained exception attribute.
      */
     private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
+  
+  protected void _initializeStatistics() {
+      _stats.put("has trained resolution errors", false);
+      _stats.put("# of trained resolution errors", 0);
+      _stats.put("# of helpers", 0);
+      _stats.put("# of propertyables", 0);
+      _stats.put("# of resolved properties", 0);
+      _stats.put("# of manual annotations", 0);
+  }
+
+  protected void _addErrorStatistics() {
+      Integer errorCount = (Integer)_stats.get("# of trained resolution errors");
+      if (errorCount == null) {
+          errorCount = 0;
+      }
+      _stats.put("# of trained resolution errors", errorCount + _sharedUtilities.getErrors().size());
+  }
+  
 }

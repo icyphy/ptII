@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Const.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
@@ -53,9 +53,9 @@ public class Expression extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public Expression(PropertyConstraintSolver solver,
+    public Expression(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Expression actor)
             throws IllegalActionException {
 
@@ -72,7 +72,7 @@ public class Expression extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.actor.lib.Expression _actor;
-/*
+/*    
     protected List<Attribute> _getPropertyableAttributes() {
         ptolemy.actor.lib.Expression actor =
             (ptolemy.actor.lib.Expression) _component;
@@ -81,5 +81,5 @@ public class Expression extends AtomicActor {
         result.add(actor.expression);
         return result;
     }
-*/
+*/    
 }

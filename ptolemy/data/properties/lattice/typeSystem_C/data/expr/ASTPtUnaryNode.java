@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtUnaryNode.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,19 +45,19 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
 public class ASTPtUnaryNode extends ASTPtRootNode {
 
-    public ASTPtUnaryNode(PropertyConstraintSolver solver,
+    public ASTPtUnaryNode(PropertyConstraintSolver solver, 
             ptolemy.data.expr.ASTPtUnaryNode node) throws IllegalActionException {
         super(solver, node);
     }
-
+    
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.data.expr.ASTPtUnaryNode node =
+        ptolemy.data.expr.ASTPtUnaryNode node = 
             (ptolemy.data.expr.ASTPtUnaryNode) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
@@ -71,10 +71,10 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                 PropertySolver solver = getSolver().findSolver("extendedFirstValueToken");
                 PropertyToken propertyToken = (PropertyToken) solver.getProperty(node);
                 Token valueToken = propertyToken.getToken();
-                setEquals(node, lattice.convertJavaToCtype(valueToken.getType(), valueToken));
+                setEquals(node, lattice.convertJavaToCtype(valueToken.getType(), valueToken));                
             }
         }
-
+        
         return super.constraintList();
     }
 
@@ -83,6 +83,6 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
     }
 
     public void setEffective(boolean isEffective) {
-
+        
     }
 }

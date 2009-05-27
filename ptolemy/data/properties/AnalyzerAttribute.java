@@ -161,7 +161,7 @@ public class AnalyzerAttribute extends Attribute {
                 }
     
                 String previousAction = chosenSolver.setAction(actionValue);
-                chosenSolver.invokeSolver(this);
+                chosenSolver.invokeSolver(getContainer());
                 chosenSolver.setAction(previousAction);
     
             } catch (PropertyFailedRegressionTestException ex) {

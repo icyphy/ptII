@@ -1,6 +1,6 @@
 /** A base class representing a property.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,12 +42,12 @@ import ptolemy.data.properties.lattice.TypeProperty;
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 0.4
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
 public class Unknown extends LatticeProperty implements TypeProperty {
-
+        
     public Unknown(PropertyLattice lattice) {
         super(lattice);
     }
@@ -64,6 +64,10 @@ public class Unknown extends LatticeProperty implements TypeProperty {
     }
 
     public boolean isAcceptableSolution() {
+        return false;
+    }
+
+    public boolean isInRange(Token token) {
         return false;
     }
 }

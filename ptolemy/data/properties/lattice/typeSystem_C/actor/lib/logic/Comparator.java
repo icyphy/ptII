@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Comparator.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
@@ -51,7 +51,7 @@ public class Comparator extends AtomicActor {
      * Construct an Comparator helper.
      * @param actor the associated actor
      */
-    public Comparator(PropertyConstraintSolver solver,
+    public Comparator(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.logic.Comparator actor) throws IllegalActionException {
 
         super(solver, actor, false);
@@ -60,7 +60,7 @@ public class Comparator extends AtomicActor {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        setEquals(_actor.output, _lattice.BOOLEAN);
+        setEquals(_actor.output, _lattice.getElement("BOOLEAN"));        
 
         return super.constraintList();
     }

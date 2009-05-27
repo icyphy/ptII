@@ -167,13 +167,17 @@ public class PropertyCombineSolver extends PropertySolver {
     public Boolean getUnconnectedPorts() {
         return (_unconnectedPorts.getExpression().equalsIgnoreCase("true")) ? true : false;
     }
+    
+    public Property getResolvedProperty(Object object) {
+        return getToken(object);
+    }    
 
-    public void putToken(Object object, Token token) {
+    public void putToken(Object object, PropertyToken token) {
         _tokenMap.put(object, token);
     }
 
-    public Token getToken(Object object) {
-        return _tokenMap.get(object);
+    public PropertyToken getToken(Object object) {
+        return (PropertyToken)_tokenMap.get(object);
     }
 
     /*
@@ -188,6 +192,6 @@ public class PropertyCombineSolver extends PropertySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    private Map<Object, Token> _tokenMap = new HashMap<Object, Token>();
+    private Map<Object, PropertyToken> _tokenMap = new HashMap<Object, PropertyToken>();
 
 }

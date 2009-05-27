@@ -69,7 +69,8 @@ public class PropertyToken extends Property {
     }
 
     public String toString() {
-        return _token.toString();
+// FIXME: Charles Shelton 05/27/09 - How do we distinguish between an empty string token and an unresolved property (null) token?
+        return (_token == null ? "" : _token.toString());
     }
 
     public boolean equals(Object object) {

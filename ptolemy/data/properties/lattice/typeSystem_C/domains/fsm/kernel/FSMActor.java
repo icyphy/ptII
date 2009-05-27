@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.AtomicActor.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
@@ -49,23 +49,23 @@ public class FSMActor extends PropertyConstraintFSMHelper {
      * Construct a helper for the given AtomicActor. This is the
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
-     * are set for this helper.
+     * are set for this helper. 
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public FSMActor(PropertyConstraintSolver solver,
+    public FSMActor(PropertyConstraintSolver solver, 
             ptolemy.domains.fsm.kernel.FSMActor actor)
             throws IllegalActionException {
-
+        
         super(solver, actor);
     }
-
+    
     public boolean isEffective() {
         return true;
     }
 
     public void setEffective(boolean isEffective) {
-
-    }
+        
+    }    
 }

@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Ramp.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
@@ -50,27 +50,27 @@ public class Ramp extends AtomicActor {
     /**
      * Construct an Ramp helper.
      * @param actor the associated actor
-     * @exception IllegalActionException
+     * @throws IllegalActionException 
      */
-    public Ramp(PropertyConstraintSolver solver,
+    public Ramp(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Ramp actor) throws IllegalActionException {
 
         super(solver, actor);
         _lattice = (Lattice) getSolver().getLattice();
         _actor = actor;
-   }
+   }       
 
     public List<Inequality> constraintList() throws IllegalActionException {
-//        setAtLeast(actor.output, actor.init);
+//        setAtLeast(actor.output, actor.init);         
 //        setAtLeast(actor.output, actor.step);
 //        // FIXME: Is this the right thing to do???
 //        //        How do we make sure that Ptolemy and EDC type systems are consistent?
-//
+//        
 //        // this does not work!
-//        setAtLeast(actor.output, lattice.getEDCtype(actor.output.getType(), null));
+//        setAtLeast(actor.output, lattice.getEDCtype(actor.output.getType(), null));         
 
-//FIXME: consider firingCountLimit for output type
-        setEquals(_actor.output, _lattice.convertJavaToCtype(_actor.output.getType(), null));
+//FIXME: consider firingCountLimit for output type        
+        setEquals(_actor.output, _lattice.convertJavaToCtype(_actor.output.getType(), null));         
         return super.constraintList();
     }
 

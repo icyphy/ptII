@@ -61,6 +61,8 @@ import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.domains.properties.kernel.PropertyLatticeAttribute;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
@@ -619,6 +621,8 @@ public class PropertyConstraintSolver extends PropertySolver {
                 }
 
                 // Record the initial constraints.
+// FIXME: merge comment: Jackies code is "if (super.isResolve() && isLogMode()) {"; why different?
+// FIXME: Charles Shelton 05/27/09 - We took the change that Jackie made to include the isLogMode() condition.
                 if (super.isResolve() && isLogMode()) {
                     String constraintFilename =
                         _getTrainedConstraintFilename() + "_initial.txt";
@@ -699,10 +703,11 @@ public class PropertyConstraintSolver extends PropertySolver {
             // In initialize mode, we can skip this.
             if (!isInitializeSolver() && !isCollectConstraints()) {
                 if (conflicts.size() > 0) {
-                    throw new TypeConflictException(conflicts,
+                    throw new PropertyResolutionException(this, toplevel(),
                             "Properties conflicts occurred in "
-                            + toplevel.getFullName()
-                            + " on the following inequalities:");
+                            + toplevel().getFullName()
+                            + " on the following inequalities:\n"
+                            + conflicts);
                 }
                 if (unacceptable.size() > 0) {
                     throw new TypeConflictException(unacceptable,
@@ -1015,7 +1020,15 @@ public class PropertyConstraintSolver extends PropertySolver {
         replace("\\", "/").replaceAll("%5c", "/");
     }
 
-
+    protected void _initializeStatistics() {
+        super._initializeStatistics();
+        getStats().put("# of default constraints", 0);        
+        getStats().put("# of composite default constraints", 0);      
+        getStats().put("# of atomic actor default constraints", 0);   
+        getStats().put("# of AST default constraints", 0);    
+        getStats().put("# of generated constraints", 0);
+        getStats().put("# of trained constraints", 0);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
