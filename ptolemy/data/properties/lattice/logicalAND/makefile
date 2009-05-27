@@ -53,6 +53,8 @@ PTCLASSALLJARS = \
 	domains/domains.jar \
 	kernel/kernel.jar
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
 	False.java \
 	Lattice.java \
