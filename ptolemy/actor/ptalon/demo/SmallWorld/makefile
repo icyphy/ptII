@@ -49,11 +49,11 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Initiator.xml \
-	ParameterSweep-SmallWorld-fsm.xml \
-	ParameterSweep-SmallWorld-sdf.xml \
+	ParameterSweepSmallWorldFSM.xml \
+	ParameterSweepSmallWorldSDF.xml \
 	RelayNode.xml \
-	SmallWorld-MultiInstanceComposite.xml \
-	SmallWorld-PtalonActor.xml \
+	SmallWorldMultiInstanceComposite.xml \
+	SmallWorldPtalonActor.xml \
 	SmallWorld.ptln \
 	SmallWorld.xml
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SmallWorld-MultiInstanceComposite" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SmallWorldMultiInstanceComposite" class="ptolemy.actor.TypedCompositeActor">
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="487.0, 2.0">
         </property>
