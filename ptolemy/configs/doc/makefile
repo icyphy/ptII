@@ -103,24 +103,24 @@ install: all jars
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 completeDemosPtiny.htm: completeDemos.htm
-	awk -f $(ROOT)/doc/javahtml.awk completeDemos.htm | sed 's/demos.htm/demosPtiny.htm/' > $@  
+	$(GAWK) -f $(ROOT)/doc/javahtml.awk completeDemos.htm | sed 's/demos.htm/demosPtiny.htm/' > $@  
 
 # Generate a file that consists of only the text within
 # <!--ptinyKeplerDocs--> ... <!--/ptinyKeplerDocs--> blocks
 completeDemosPtinyKepler.htm: completeDemosPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk completeDemosPtiny.htm | sed 's/demosPtiny.htm/demosPtinyKepler.htm/' > $@  
+	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk completeDemosPtiny.htm | sed 's/demosPtiny.htm/demosPtinyKepler.htm/' > $@  
 
 demosPtiny.htm: demos.htm
-	awk -f $(ROOT)/doc/javahtml.awk demos.htm | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
+	$(GAWK) -f $(ROOT)/doc/javahtml.awk demos.htm | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
 demosPtinyKepler.htm: demosPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk demosPtiny.htm | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
+	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk demosPtiny.htm | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
 
 docsPtiny.htm: docs.htm
-	awk -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
+	$(GAWK) -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
 docsPtinyKepler.htm: docsPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk docsPtiny.htm | sed 's/introPtiny.htm/introPtinyKepler.htm/' | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
+	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk docsPtiny.htm | sed 's/introPtiny.htm/introPtinyKepler.htm/' | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
 
 # models.txt contains a list of model file names
 # Use AUXCLASSPATH so that we work under codecoverage with JavaScope
@@ -139,7 +139,10 @@ update_clean:
 
 check_applets:
 	echo "These applets might be missing:"
-	ls `grep .xml completeDemos.htm | grep -v "<!--" | gawk -F \" '{print $$2}' | sed 's/.xml/.htm/'` 2>&1 | sed 's/ls: //' | grep "No such file" | awk '{print $$1}'
+	ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}' | sed 's/.xml/.htm/'` 2>&1 | sed 's/ls: //' | grep "No such file" | $(GAWK) '{print $$1}'
+
+list_demos:
+	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
