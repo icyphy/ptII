@@ -272,3 +272,127 @@ test ComponentEntity-9.1 {remove a port} {
     </port>
 </entity>
 }
+
+########################################################################
+####
+#
+test ComponentEntity-10.1 {level-crossing links} {
+	# Use a dummy top to suppress boilerplat cruft.
+	set t [java::new ptolemy.kernel.CompositeEntity]
+    $t setName T
+    set a [java::new ptolemy.kernel.CompositeEntity $t A]
+    set b [java::new ptolemy.kernel.ComponentEntity $a B]
+    set p [java::new ptolemy.kernel.ComponentPort $b P]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set r [java::new ptolemy.kernel.ComponentRelation $c R]
+    $p liberalLink $r
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <entity name="B" class="ptolemy.kernel.ComponentEntity">
+        <port name="P" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <link port="B.P" relation="C.R"/>
+</entity>
+}
+
+test ComponentEntity-10.2 {level-crossing links} {
+	# Use a dummy top to suppress boilerplat cruft.
+	set t [java::new ptolemy.kernel.CompositeEntity]
+    $t setName T
+    set a [java::new ptolemy.kernel.CompositeEntity $t A]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set b [java::new ptolemy.kernel.ComponentEntity $c B]
+    set p [java::new ptolemy.kernel.ComponentPort $b P]
+    set r [java::new ptolemy.kernel.ComponentRelation $a R]
+    $p liberalLink $r
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <entity name="B" class="ptolemy.kernel.ComponentEntity">
+            <port name="P" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+    </entity>
+    <relation name="R" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="C.B.P" insertAt="0" relation="R"/>
+</entity>
+}
+
+test ComponentEntity-10.3 {level-crossing links} {
+	# Use a dummy top to suppress boilerplat cruft.
+	set t [java::new ptolemy.kernel.CompositeEntity]
+    $t setName T
+    set a [java::new ptolemy.kernel.CompositeEntity $t A]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set b [java::new ptolemy.kernel.ComponentEntity $c B]
+    set p [java::new ptolemy.kernel.ComponentPort $b P]
+    set d [java::new ptolemy.kernel.CompositeEntity $a D]
+    set r [java::new ptolemy.kernel.ComponentRelation $d R]
+    $p liberalLink $r
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <entity name="B" class="ptolemy.kernel.ComponentEntity">
+            <port name="P" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+    </entity>
+    <entity name="D" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <link port="C.B.P" insertAt="0" relation="D.R"/>
+</entity>
+}
+
+test ComponentEntity-10.4 {level-crossing links} {
+	# Use a dummy top to suppress boilerplat cruft.
+	set t [java::new ptolemy.kernel.CompositeEntity]
+    $t setName T
+    set a [java::new ptolemy.kernel.CompositeEntity $t A]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $c R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $a R2]
+    $r1 link $r2
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R1" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <relation name="R2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link relation1="C.R1" relation2="R2"/>
+</entity>
+}
+
+test ComponentEntity-10.5 {level-crossing links} {
+	# Use a dummy top to suppress boilerplat cruft.
+	set t [java::new ptolemy.kernel.CompositeEntity]
+    $t setName T
+    set a [java::new ptolemy.kernel.CompositeEntity $t A]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.CompositeEntity $a D]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $c R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $d R2]
+    $r1 link $r2
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R1" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <entity name="D" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R2" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <link relation1="C.R1" relation2="D.R2"/>
+</entity>
+}
+
