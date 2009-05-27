@@ -50,7 +50,10 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
@@ -434,6 +437,8 @@ public class TableauFrame extends Top {
 
     /** Add a View menu and items to the File:New menu
      *  if a tableau was given in the constructor.
+     *  <p>If the configuration has a _disableFileNew parameter that
+     *  is set to true, then we do not populate the File-&gt;New menu.
      */
     protected void _addMenus() {
         super._addMenus();
@@ -447,8 +452,27 @@ public class TableauFrame extends Top {
                     .getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
+            
 
-            if ((effigyFactory != null) && (directory != null)) {
+            // If the configuration has a _disableFileNew parameter that
+            // is set to true, then we do not populate the File->New menu.
+            boolean disableFileNew = false;
+            try {
+                Parameter disableFileNewParameter = (Parameter) configuration
+                    .getAttribute("_disableFileNew", Parameter.class);
+                if (disableFileNewParameter != null) {
+                    Token token = disableFileNewParameter.getToken();
+                    if (token instanceof BooleanToken) {
+                        disableFileNew = ((BooleanToken) token).booleanValue();
+                    }
+                }
+            } catch (Exception ex) {
+                // Ignore, there was a problem reading _disableFileNew,
+                // so we enable the File->New Menu choice
+            }
+
+            if ((effigyFactory != null) && (directory != null)
+                    && !disableFileNew) {
                 List factoryList = effigyFactory
                         .entityList(EffigyFactory.class);
                 Iterator factories = factoryList.iterator();
