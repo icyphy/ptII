@@ -53,15 +53,16 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	actor/actor.jar \
 	c/c.jar \
 	demo/demo.jar \
 	gui/gui.jar \
 	java/java.jar \
-	kernel/kernel.jar \
-	chaco/chaco.jar
+	kernel/kernel.jar
 
-# The vhdl work is incomplete, so we don't include it in the jar
+# The vhdl and chaco work is incomplete, so we don't include it in the jar
 #	vhdl/vhdl.jar
+#	chaco/chaco.jar
 
 # Keep this list alphabetized.
 JSRCS =
