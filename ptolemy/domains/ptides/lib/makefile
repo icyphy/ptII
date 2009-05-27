@@ -59,8 +59,6 @@ JSRCS = \
 	NetworkInputDevice.java \
 	NetworkOutputDevice.java \
 	OutputDevice.java \
-	ScheduleListener.java \
-	SchedulePlotter.java \
 	SensorInputDevice.java
 
 OTHER_FILES_TO_BE_JARED = \
