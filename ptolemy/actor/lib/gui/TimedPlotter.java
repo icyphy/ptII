@@ -69,9 +69,9 @@ public class TimedPlotter extends Plotter implements TimedActor {
     public TimedPlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        disconnectGraphOnAbscentValue = new Parameter(this, "disconnectGraphOnAbscentValue",
+        disconnectGraphOnAbsentValue = new Parameter(this, "disconnectGraphOnAbsentValue",
                 new BooleanToken(false));
-        disconnectGraphOnAbscentValue.setTypeEquals(BaseType.BOOLEAN);
+        disconnectGraphOnAbsentValue.setTypeEquals(BaseType.BOOLEAN);
 
         // Create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
@@ -83,13 +83,13 @@ public class TimedPlotter extends Plotter implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** When disconnectGraphOnAbscentValue is True there will be a gap
+    /** When disconnectGraphOnAbsentValue is True there will be a gap
      *  in the graph each time a the actor is fired, but the value
      *  is absent for a certain channel. Especially in the continuous
      *  domain this options is useful. By default this parameter is
      *  False.
      */
-    public Parameter disconnectGraphOnAbscentValue;
+    public Parameter disconnectGraphOnAbsentValue;
 
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
@@ -113,13 +113,6 @@ public class TimedPlotter extends Plotter implements TimedActor {
         for (int i = 0; i < width; i++) {
             _connected.add(true);
         }
-        if (((BooleanToken) disconnectGraphOnAbscentValue.getToken()).booleanValue()) {
-         // NOTE: We assume the superclass ensures this cast is safe.
-            if (((Plot) plot).getMarksStyle().equals("none")) {
-                // If we wouldn't do this you wouldn't see anything for discrete signals.
-                ((Plot) plot).setMarksStyle("dots");
-            }
-        }
     }
     
     /** Read at most one input from each channel and plot it as a
@@ -133,7 +126,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
         double currentTimeValue;
         int width = input.getWidth();
         
-        boolean disconnectOnAbscent = ((BooleanToken) disconnectGraphOnAbscentValue.getToken()).booleanValue();
+        boolean disconnectOnAbsent = ((BooleanToken) disconnectGraphOnAbsentValue.getToken()).booleanValue();
         int offset = ((IntToken) startingDataset.getToken()).intValue();
 
         for (int i = width - 1; i >= 0; i--) {
@@ -146,10 +139,10 @@ public class TimedPlotter extends Plotter implements TimedActor {
                 // NOTE: We assume the superclass ensures this cast is safe.
                 ((Plot) plot).addPoint(i + offset, currentTimeValue,
                         currentValue, _connected.get(i));
-                if (disconnectOnAbscent) {
+                if (disconnectOnAbsent) {
                     _connected.set(i, true);
                 }
-            } else if (disconnectOnAbscent) {
+            } else if (disconnectOnAbsent) {
                 // We have not token, and hence we want to create a gap
                 // in the graph.
                 _connected.set(i, false);                                       
