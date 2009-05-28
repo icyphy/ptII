@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 87.5]">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="./sinu-ball.pdf">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/ct/demo/SinuBouncingBall/sinu-ball.pdf">
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="0.9">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
