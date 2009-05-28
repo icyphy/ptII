@@ -53,7 +53,7 @@ test WatchDog-1.0 {create a 1 second watchDog} {
 	$watchDog setExitOnTimeOut false
 	sleep 2   
     } results
-
+    puts $results
     list \
 	    [regexp "util.testsuite.WatchDog went off after 1000ms" \
 	    $results] \
