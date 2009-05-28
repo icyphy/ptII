@@ -1952,9 +1952,21 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+
+    /** The set of actors that have returned false in their postfire()
+     *  methods. Events destined for these actors are discarded and
+     *  the actors are  never fired.
+     */
+    protected Set<Actor> _disabledActors;
+    
     /** The queue used for sorting events. */
     protected DEEventQueue _eventQueue;
 
+    /** A local boolean variable indicating whether this director is in
+     *  initialization phase execution.
+     */
+    protected boolean _isInitializing = false;
+    
     /** The current microstep. */
     protected int _microstep = 0;
 
@@ -1963,8 +1975,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
 
     /** Flag that stopFire() has been called. */
     protected boolean _stopFireRequested = false;
-
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -2042,21 +2053,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      */
     private boolean _delegateFireAt = false;
 
-    /** The set of actors that have returned false in their postfire()
-     *  methods. Events destined for these actors are discarded and
-     *  the actors are  never fired.
-     */
-    private Set<Actor> _disabledActors;
-
     /** Set to true when the time stamp of the token to be dequeue
      *  has exceeded the stopTime.
      */
     private boolean _exceedStopTime = false;
-
-    /** A local boolean variable indicating whether this director is in
-     *  initialization phase execution.
-     */
-    private boolean _isInitializing = false;
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;

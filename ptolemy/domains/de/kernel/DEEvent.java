@@ -78,7 +78,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public final class DEEvent implements Comparable {
+public class DEEvent implements Comparable {
     /** Construct a pure event with the specified destination actor,
      *  timestamp, microstep, and depth.
      *  @param actor The destination actor
@@ -283,9 +283,31 @@ public final class DEEvent implements Comparable {
             _depth = newDepth;
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    // The destination actor.
+    protected Actor _actor;
+
+    // The depth of this event.
+    protected int _depth;
+
+    // The destination IO port.
+    protected IOPort _ioPort;
+
+    // The microstep of this event.
+    protected int _microstep;
+
+    // The priority of the event (used when the timestamp, depth and microstep
+    // cannot resolve a conflict.
+    protected int _priority;
+
+    // The timestamp of the event.
+    protected Time _timestamp;
+    
 
     ///////////////////////////////////////////////////////////////////
-    ////                         package protected methods         ////
+    ////                         package private   methods         ////
 
     /** Construct a pure event with the specified destination actor, IO port
      *  timestamp, microstep, and depth.
@@ -316,24 +338,4 @@ public final class DEEvent implements Comparable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // The destination actor.
-    private Actor _actor;
-
-    // The depth of this event.
-    private int _depth;
-
-    // The destination IO port.
-    private IOPort _ioPort;
-
-    // The microstep of this event.
-    private int _microstep;
-
-    // The priority of the event (used when the timestamp, depth and microstep
-    // cannot resolve a conflict.
-    private int _priority;
-
-    // The timestamp of the event.
-    private Time _timestamp;
 }
