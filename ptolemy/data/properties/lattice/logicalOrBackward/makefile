@@ -51,8 +51,7 @@ PTCLASSALLJARS = \
     actor/actor.jar \
     data/data.jar \
     domains/domains.jar \
-    kernel/kernel.jar \
-    test/test.jar
+    kernel/kernel.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
