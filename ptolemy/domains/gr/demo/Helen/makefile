@@ -47,6 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	Helen.png \
 	Helen.xml
 
 EXTRA_SRCS = \
@@ -70,7 +71,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all jars
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:

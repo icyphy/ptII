@@ -47,7 +47,7 @@
         </property>
         <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
         </property>
-        <property name="texture" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen.png">
+        <property name="texture" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/gr/demo/Helen/Helen.png">
         </property>
         <property name="Box3DIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
