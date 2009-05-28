@@ -4234,14 +4234,11 @@ Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: NotAClass
 Because:}
 
-    set result3 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/t\
-est/ at line 5 and column 70
+    set result3 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
 Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.AltFileNameExcepti\
-onTestFile
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.AltFileNameExceptionTestFile
 Because:
-XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.\
-xml at line 4 and column 47
+XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.xml at line 4 and column 47
 Caused by:
  ptolemy.ker}
 
