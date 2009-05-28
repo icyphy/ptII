@@ -1,4 +1,4 @@
-/* Interface representing a dependency between ports of a composite actor.
+/* Interface representing a dependency in the TDL domain.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
