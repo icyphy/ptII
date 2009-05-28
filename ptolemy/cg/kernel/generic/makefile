@@ -59,9 +59,7 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = \
 	CodeGeneratorAdapter.java \
-	CodeGeneratorAdapterStrategy.java \
 	CodeGeneratorUtilities.java \
-	CodeStream.java \
 	GenericCodeGenerator.java \
 	ParseTreeCodeGenerator.java \
 	PortCodeGenerator.java
