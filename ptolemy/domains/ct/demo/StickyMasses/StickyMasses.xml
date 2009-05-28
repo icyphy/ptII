@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -60,7 +60,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 285.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 5, 770, 497}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 22, 768, 490}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -169,7 +169,7 @@
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={491, 234, 508, 528}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={491, 234, 500, 517}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 473]">
         </property>
@@ -226,8 +226,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
@@ -348,6 +346,8 @@
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -483,13 +483,13 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 260.5}">
             </property>
-            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2844113605434">
+            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.284441021416">
             </property>
-            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.5936022016585">
+            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.5935242030212">
             </property>
-            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2844113605434">
+            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.284441021416">
             </property>
-            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5936022016585">
+            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5935242030212">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -715,34 +715,54 @@
                 </property>
             </entity>
             <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="20.0, 200.0">
                 </vertex>
             </relation>
             <relation name="1:_R5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="1:_R8" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="135.0, 365.0">
                 </vertex>
             </relation>
             <relation name="1:_R6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="310.0, 245.0">
                 </vertex>
             </relation>
             <relation name="1:_R1" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="1:_R7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="30.0, 285.0">
                 </vertex>
             </relation>
             <relation name="1:_R2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="270.0, 140.0">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <link port="V1" relation="1:_R2"/>
             <link port="V2" relation="1:_R6"/>
@@ -776,9 +796,9 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.8771362988194">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.877218583037">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="0.1499156608489">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="0.1498556890296">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
@@ -986,26 +1006,38 @@
                 </property>
             </entity>
             <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="100.0, 160.0">
                 </vertex>
             </relation>
             <relation name="1:relation0" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex1" value="32.0, 356.0">
                 </vertex>
             </relation>
             <relation name="1:_R1" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="160.0, 415.0">
                 </vertex>
             </relation>
             <relation name="1:_R4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex0" value="230.0, 160.0">
                 </vertex>
             </relation>
             <relation name="1:relation1" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex1" value="31.0, 108.0">
                 </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex1" value="[465.0, 315.0]">
                 </vertex>
             </relation>
@@ -1028,18 +1060,32 @@
             <link port="Gain.output" relation="1:relation0"/>
         </entity>
         <relation name="V1Relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="V2Relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="P1Relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="P2Relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="touchedRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="forceRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="stickinessRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="V1" relation="V1Relation"/>
         <link port="V2" relation="V2Relation"/>
@@ -1069,8 +1115,12 @@
         <link port="Together.stickiness" relation="stickinessRelation"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Plot Positions vs Time.input" relation="relation"/>
     <link port="Plot Positions vs Time.input" relation="relation2"/>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Starmac" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 98, 979, 751}, maximized=false}">
     </property>
@@ -175,7 +175,7 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0, 0.0]">
             </property>
-            <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+            <property name="pivotLocation" class="ptolemy.actor.parameters.PortParameter" value="[0.0, 0.0, 0.0]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 250.0}">
             </property>
@@ -187,7 +187,7 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0]">
             </property>
-            <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+            <property name="pivotLocation" class="ptolemy.actor.parameters.PortParameter" value="[0.0, 0.0, 0.0]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[374.99709701538086, 327.50823974609375]">
             </property>
@@ -199,7 +199,7 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
             </property>
-            <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+            <property name="pivotLocation" class="ptolemy.actor.parameters.PortParameter" value="[0.0, 0.0, 0.0]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 170.0]">
             </property>
@@ -688,8 +688,12 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -1028,27 +1032,27 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </port>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <link port="input" relation="inputRelation"/>
@@ -1974,27 +1978,27 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </port>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <link port="input" relation="inputRelation"/>
@@ -2081,27 +2085,27 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </port>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <link port="input" relation="inputRelation"/>
@@ -2188,27 +2192,27 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </port>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                     </property>
                 </relation>
                 <link port="input" relation="inputRelation"/>
@@ -7577,7 +7581,7 @@ http://java3d.dev.java.net/</text></svg></configure>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.0, 199.0}">
         </property>
         <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-            <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 110.0]">
             </property>

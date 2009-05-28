@@ -124,8 +124,6 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -169,6 +167,8 @@ change the value of the constant.</text></svg></configure>
             <entity name="high" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant">
                 </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -187,7 +187,7 @@ change the value of the constant.</text></svg></configure>
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -362,13 +362,13 @@ change the value of the constant.</text></svg></configure>
 <title>Hysteresis</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="6.833427671"/>
+<xRange min="0.0" max="20.0"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 410, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 22, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -381,7 +381,7 @@ change the value of the constant.</text></svg></configure>
 <title>XYPlotter</title>
 <xLabel>input</xLabel>
 <yLabel>output</yLabel>
-<xRange min="-0.9135695649878802" max="1.0"/>
+<xRange min="-0.9997794403753453" max="1.0"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
         </configure>
