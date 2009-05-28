@@ -63,6 +63,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
@@ -571,6 +572,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
 
             _createJarFile(new File(jnlpUnsignedJarFileName),
+                           new File(_outputDirectory + "/" + new File(_outputDirectory).getName() + ".jar"),
                            new String [] {
                                "JNLP-INF/APPLICATION.JNLP",
                                _sanitizedModelName + ".xml",
@@ -612,6 +614,63 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     // Return a Map that maps classes to jar files for all the AtomicEntities
     // and Directors in the model
+    private Map _allAttributeJars() {
+        HashMap results = new HashMap();
+
+        Iterator attributes = _model.attributeList().iterator();
+        while (attributes.hasNext()) {
+            Object object = attributes.next();
+            String className = object.getClass().getName();
+            System.out.println("allAttributeJars1: " + object);
+            if (className.contains("ptolemy.codegen")) {
+                results.put(className, "ptolemy/codegen/codegen.jar");
+            }
+            //results.put(object.getClass().getName(), _getDomainJar(object
+            //        .getClass().getPackage().getName()));
+        }
+
+        Iterator composites = _model.allCompositeEntityList().iterator();
+        while (composites.hasNext()) {
+            CompositeEntity composite = ((CompositeEntity)(composites.next()));
+
+            attributes = composite.attributeList().iterator();
+            while (attributes.hasNext()) {
+                Object object = attributes.next();
+                String className = object.getClass().getName();
+                System.out.println("allAttributeJars1: " + object);
+                if (className.contains("ptolemy.codegen")) {
+                    results.put(className, "ptolemy/codegen/codegen.jar");
+                }
+                //results.put(object.getClass().getName(), _getDomainJar(object
+                //        .getClass().getPackage().getName()));
+            }
+        }
+
+
+        composites = _model.deepEntityList().iterator();
+        while (composites.hasNext()) {
+            Object object = composites.next();
+            if (object instanceof CompositeEntity) {
+                CompositeEntity composite = (CompositeEntity)object;
+
+                attributes = composite.attributeList().iterator();
+                while (attributes.hasNext()) {
+                    String className = attributes.next().getClass().getName();
+                    System.out.println("allAttributeJars2: " + className);
+                    if (className.contains("ptolemy.codegen")) {
+                        results.put(className, "ptolemy/codegen/codegen.jar");
+                    }
+                    //results.put(object.getClass().getName(), _getDomainJar(object
+                    //        .getClass().getPackage().getName()));
+                }
+            }
+        }
+
+        return results;
+    }
+
+    // Return a Map that maps classes to jar files for all the AtomicEntities
+    // and Directors in the model
     private Map _allAtomicEntityJars() {
         HashMap results = new HashMap();
         Iterator atomicEntities = _model.allAtomicEntityList().iterator();
@@ -641,7 +700,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (opaqueEntities.hasNext()) {
             ComponentEntity componentEntity = (ComponentEntity) opaqueEntities.next();
 
-            System.out.println("_deepOpaqueEntityJars: " + componentEntity);
+            System.out.println("_deepOpaqueEntityJars: " + componentEntity.getClass().getName());
+            if (componentEntity.getClass().getName().contains("ptolemy.actor.lib.jni")) {
+
+                System.out.println("_deepOpaqueEntityJars1: " + ((CompositeActor) componentEntity).getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getClass());
+
+
+                // This hack includes codegen.jar so that we can run codegen/demo/Butterfly/Butterfly.xml
+                results.put(((CompositeActor) componentEntity).getClass()
+                        .getName(), "ptolemy/codegen/codegen.jar");
+            }
 
             if (componentEntity instanceof CompositeActor) {
                 // gt/demo/BouncingBallX2/BouncingBallX2.xml has an SDF director
@@ -987,39 +1055,46 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // We use a HashMap that maps class names to destination jar
         // files.
         Map classMap = _allAtomicEntityJars();
+        classMap.putAll(_allAttributeJars());
         classMap.putAll(_deepOpaqueEntityJars());
-
+        
         // Create a map of classes and their dependencies
         Map auxiliaryJarMap = new HashMap();
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBeta", "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBinomial", "lib/ptcolt.jar");
+
+        String caltropJar = "ptolemy/caltrop/caltrop.jar";
+        auxiliaryJarMap.put("ptolemy.caltrop.actors.CalInterpreter",
+                caltropJar);
+
+        String coltJar = "ptolemy/actor/lib/colt/colt.jar";
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBeta", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBinomial", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBinomialSelector",
-                "lib/ptcolt.jar");
+                coltJar);
         auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtBreitWigner", "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtChiSquare", "lib/ptcolt.jar");
+                .put("ptolemy.actor.lib.colt.ColtBreitWigner", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtChiSquare", coltJar);
         auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtExponential", "lib/ptcolt.jar");
+                .put("ptolemy.actor.lib.colt.ColtExponential", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtExponentialPower",
-                "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtGamma", "lib/ptcolt.jar");
+                coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtGamma", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtHyperGeometric",
-                "lib/ptcolt.jar");
+                coltJar);
         auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtLogarithmic", "lib/ptcolt.jar");
+                .put("ptolemy.actor.lib.colt.ColtLogarithmic", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtNegativeBinomial",
-                "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtNormal", "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtPoisson", "lib/ptcolt.jar");
+                coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtNormal", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtPoisson", coltJar);
         auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtPoissonSlow", "lib/ptcolt.jar");
+                .put("ptolemy.actor.lib.colt.ColtPoissonSlow", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtRandomSource",
-                "lib/ptcolt.jar");
+                coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtSeedParameter",
-                "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtStudentT", "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtVonMises", "lib/ptcolt.jar");
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtZeta", "lib/ptcolt.jar");
+                coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtStudentT", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtVonMises", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtZeta", coltJar);
 
         
         String gtJar = "ptolemy/actor/gt/gt.jar";
@@ -1028,14 +1103,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
 
+        String jniJar = "ptolemy/actor/jni/jni.jar";
+        auxiliaryJarMap.put("ptolemy.actor.jni.CompiledCompositeActor", jniJar);
+
         // Ptalon requires multiple jar files
         String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
         auxiliaryJarMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
 
-        // auxiliaryJarMap.put("ptolemy.actor.lib.python.PythonScript",
-        //                 "lib/jython.jar");
-        // auxiliaryJarMap.put("caltrop.ptolemy.actors.CalInterpreter",
-        //                 "lib/ptCal.jar");
+        String pythonJar = "ptolemy/actor/lib/python/python.jar";
+        auxiliaryJarMap.put("ptolemy.actor.lib.python.PythonScript",
+                pythonJar);
+
         classMap.put(director.getClass().getName(), _domainJar);
 
         // database requires multiple jars
@@ -1111,16 +1189,56 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // them to auxliaryClassMap and copy them.
         Map auxiliaryClassMap = new HashMap();
 
+        
+//         System.out.println("About to print jarFileThatHaveBeenRequired");
+//         Iterator jarFiles = jarFilesThatHaveBeenRequired.iterator();
+//         while (jarFiles.hasNext()) {
+//             System.out.println((String)jarFiles.next());
+//         }
+
+        if (jarFilesThatHaveBeenRequired.contains(caltropJar)) {
+            // colt requires multiple jar files
+            auxiliaryClassMap.put("caltrop jar needs ptCal",
+                    "lib/ptCal.jar");
+            auxiliaryClassMap.put("ptCal jar needs saxon8",
+                    "lib/saxon8.jar");
+            auxiliaryClassMap.put("saxon8 jar needs saxon8-dom",
+                    "lib/saxon8-dom.jar");
+            auxiliaryClassMap.put("CalInterpreter needs java_cup.jar",
+                    "lib/java_cup.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(coltJar)) {
+            // colt requires multiple jar files
+            auxiliaryClassMap.put("colt jar needs ptcolt",
+                    "lib/ptcolt.jar");
+        }
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/codegen/codegen.jar")) {
+            auxiliaryClassMap.put("codgen jar needs embeddedJava",
+                "ptolemy/actor/lib/embeddedJava/embeddedJava.jar");
+        }
         if (jarFilesThatHaveBeenRequired.contains(gtJar)) {
             // gt requires multiple jar files
             auxiliaryClassMap.put("gt jar needs ptera jar",
                     "ptolemy/domains/ptera/ptera.jar");
         }
 
+        if (jarFilesThatHaveBeenRequired.contains(jniJar)) {
+            // Ptalon requires multiple jar files
+            auxiliaryClassMap.put("jni jar needs codegen jar",
+                    "ptolemy/codegen/codegen.jar");
+        }
+
         if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
             // Ptalon requires multiple jar files
             auxiliaryClassMap.put("ptalon jar needs antlr jar",
                     "ptolemy/actor/ptalon/antlr/antlr.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(pythonJar)) {
+            // Ptalon requires multiple jar files
+            auxiliaryClassMap.put("python jar needs jython jar",
+                    "lib/jython.jar");
         }
 
         // actor.lib.database and domains.space require ojdbc6.jar
@@ -1245,10 +1363,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     /** Create a jar file.
      *        Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
+
      */
-    private void _createJarFile(File jarFile, String [] jarFileNames, File[] filesToBeJared)
+    private void _createJarFile(File jarFile, File optionalJarFile, String [] jarFileNames, File[] filesToBeJared)
         throws Exception {
 
+        System.out.println("AppletWriter: _createJarFile" + 
+                jarFile + " " + jarFile.exists() + " " + optionalJarFile + " " + optionalJarFile.exists());
         byte buffer[] = new byte[1024];
 
         // Open archive file
@@ -1261,15 +1382,25 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         try {
   
-            if (!jarFile.exists()) {
+            if (!jarFile.exists() && !optionalJarFile.exists()) {
                 outputStream = new FileOutputStream(jarFile);
                 jarOutputStream = new JarOutputStream(outputStream, new Manifest());
-          } else {
+            } else {
                 // The jar file exists, so we read in the entries and write them
                 // to a temporary file.
                 renameJarFile = true;
-                inputStream = new FileInputStream(jarFile);
-                jarInputStream = new JarInputStream(inputStream);
+                if (jarFile.exists()) {
+                    inputStream = new FileInputStream(jarFile);
+                    jarInputStream = new JarInputStream(inputStream);
+                } else {
+                    // We check the optionalJarFile to handle the case where we
+                    // have a demo directory Foo, that has a Foo.jar file, but
+                    // there are multiple models in Foo, such as FooBar.xml.
+                    // If this is the case, then we want to read in Foo.jar and
+                    // generate FooBar.jar so that we get files like images etc.
+                    inputStream = new FileInputStream(optionalJarFile);
+                    jarInputStream = new JarInputStream(inputStream);
+                }
 
                 temporaryJarFileName = File.createTempFile("AppletWriter", ".jar");
                 System.out.println("Temporary jar file: " + temporaryJarFileName);

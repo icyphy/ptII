@@ -1,0 +1,22 @@
+<!-- : $Id$
+  @author: 
+ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="@codeBase@/doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>@sanitizedModelName@</TITLE>
+</HEAD>
+<BODY>
+<H1>@sanitizedModelName@</H1>
+<P>
+The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic editor:
+
+<CENTER>
+<!-- PT JNLP CONVERTER -->
+<a href="@sanitizedModelName@.jnlp">Run the demo using Web Start</a>.
+<!-- /PT JNLP CONVERTER -->
+</CENTER>
+</p>
+</BODY>
+</HTML>
