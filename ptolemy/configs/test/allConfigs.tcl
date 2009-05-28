@@ -327,41 +327,45 @@ foreach i $configs {
 	#set entityList [$configuration allAtomicEntityList]
 	set actorLibrary [java::cast ptolemy.kernel.CompositeEntity \
 		[$configuration getEntity {actor library}]]
-	set directors [java::cast ptolemy.kernel.CompositeEntity \
-		[$actorLibrary getEntity {Directors}]]
-	if [java::isnull $directors] {
-	    puts "Warning: $i has no 'actor library.Directors'? (this is ok for dsp, viptos)"
-        } else {
-            set attributeList [$directors attributeList]
-	    set allDirectors [java::new java.util.LinkedList $attributeList]
-            set experimentalDirectors \
-		[$directors getEntity ExperimentalDirectors]
+	set results {}
+	if [ java::isnull $actorLibrary] {
+	    puts "Warning: $i has no 'actor library'?  (this is ok for ptinyViewer)"
+	} else {
+	    set directors [java::cast ptolemy.kernel.CompositeEntity \
+			       [$actorLibrary getEntity {Directors}]]
+	    if [java::isnull $directors] {
+		puts "Warning: $i has no 'actor library.Directors'? (this is ok for dsp, viptos)"
+	    } else {
+		set attributeList [$directors attributeList]
+		set allDirectors [java::new java.util.LinkedList $attributeList]
+		set experimentalDirectors \
+		    [$directors getEntity ExperimentalDirectors]
 	
-	    if {![java::isnull $experimentalDirectors]} {
-	        set moreDirectors [$experimentalDirectors attributeList]
-                $allDirectors addAll $moreDirectors
-            }
+		if {![java::isnull $experimentalDirectors]} {
+		    set moreDirectors [$experimentalDirectors attributeList]
+		    $allDirectors addAll $moreDirectors
+		}
 
-	    #puts "Testing as many as [$allDirectors size] directors in $i"
-	    set results {}
-	    for {set iterator [$allDirectors iterator]} \
-	        {[$iterator hasNext] == 1} {} {
-	        set entity [$iterator next]
+		#puts "Testing as many as [$allDirectors size] directors in $i"
+		for {set iterator [$allDirectors iterator]} \
+		    {[$iterator hasNext] == 1} {} {
+			set entity [$iterator next]
 
-                # Call all the suggestedModalModelDirectors methods
-		# and instantiate each director that is returned.
-	        if [java::instanceof $entity ptolemy.actor.Director] {
-		    set director [java::cast ptolemy.actor.Director $entity]
-		    #puts "testing director [$director getName]"
-		    set msg {}
-		    catch {testSuggestedModalModelDirectors $director} msg
-		    if {"$msg" != ""} {
-		        lappend results $msg
+			# Call all the suggestedModalModelDirectors methods
+			# and instantiate each director that is returned.
+			if [java::instanceof $entity ptolemy.actor.Director] {
+			    set director [java::cast ptolemy.actor.Director $entity]
+			    #puts "testing director [$director getName]"
+			    set msg {}
+			    catch {testSuggestedModalModelDirectors $director} msg
+			    if {"$msg" != ""} {
+				lappend results $msg
+			    }
+			}
 		    }
-                }
-            }
-         }
-         list $results
+	    }
+	}
+	list $results
     } {{}}
 }
 
