@@ -12,10 +12,6 @@
         <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="60">
         </property>
     </property>
-    <property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 55.0}">
-        </property>
-    </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="E:/workspace/ptresearch/ptides/PtidesCodegen/">
         </property>
