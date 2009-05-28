@@ -529,7 +529,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                     </property>
                 </property>
                 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/pendulum.gif">
+                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/pendulum.gif">
                     </property>
                     <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
                     </property>
@@ -1271,7 +1271,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                     </property>
                 </property>
                 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/pendulum.gif">
+                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/pendulum.gif">
                     </property>
                     <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
                     </property>
@@ -2013,7 +2013,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                     </property>
                 </property>
                 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/pendulum.gif">
+                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/pendulum.gif">
                     </property>
                     <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
                     </property>
