@@ -270,7 +270,6 @@ public class FixedPointDirector extends StaticSchedulingDirector
      *  methods, it does not change its own state.  Thus, such a director
      *  can be used within a model of computation that has a fixed-point
      *  semantics, such as SRDirector and ContinuousDirector.
-     *  This base class returns false.
      *  @return True.
      */
     public boolean implementsStrictActorSemantics() {
