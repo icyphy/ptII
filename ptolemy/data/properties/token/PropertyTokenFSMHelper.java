@@ -104,7 +104,7 @@ public class PropertyTokenFSMHelper extends PropertyTokenCompositeHelper {
         return helpers;
     }
 
-    protected List<ASTPtRootNode> _getAttributeParseTrees() {
+    protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
 
         List<ASTPtRootNode> result = super._getAttributeParseTrees();
 

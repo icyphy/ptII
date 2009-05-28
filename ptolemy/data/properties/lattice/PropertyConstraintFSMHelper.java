@@ -223,7 +223,7 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         }
     }
 
-    protected List<ASTPtRootNode> _getAttributeParseTrees() {
+    protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
         List<ASTPtRootNode> result = super._getAttributeParseTrees();
     
         ptolemy.domains.fsm.kernel.FSMActor actor =
