@@ -1477,7 +1477,9 @@ public class Director extends Attribute implements Executable {
                         Token t = port.get(i);
 
                         if (_debugging) {
-                            _debug(getName(), "transferring input from "
+                            _debug("Transferring input "
+                                    + t
+                                    + " from "
                                     + port.getName());
                         }
 
