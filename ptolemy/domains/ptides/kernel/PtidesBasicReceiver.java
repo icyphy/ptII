@@ -30,16 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.kernel.util.IllegalActionException;
@@ -84,80 +79,6 @@ public class PtidesBasicReceiver extends DEReceiver {
     public PtidesBasicReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
-    
-
-    /** Return a list with tokens that are currently in the receiver
-     *  available for get() or getArray(), beginning with the oldest one.
-     *  @return A list of instances of Token.
-     */
-    public List<Token> elementList() {
-        LinkedList tokens = new LinkedList<Token>();
-        Iterator it = _queue.iterator();
-        while (it.hasNext()) {
-            tokens.add(((Event)it.next())._token);
-        }
-        return tokens;
-    }
-    
-    /** Get the first token from the receiver. The token returned is one that
-     *  was put in the receiver with a timestamp equal to or earlier than
-     *  the current time. If there is no token, throw an exception. If this
-     *  receiver contains more than one event, the oldest event is removed
-     *  first. In other words, this receiver has a FIFO behavior.
-     *  @return A token.
-     *  @exception NoTokenException If there are no more tokens. This is
-     *   a runtime exception, so it need not to be declared explicitly.
-     */
-    public Token get() throws NoTokenException {
-        if (_queue.isEmpty()) {
-            throw new NoTokenException(getContainer(),
-                    "No more tokens in the Ptides basic receiver.");
-        }
-
-        Event firstEvent = _queue.first();
-        int result;
-        try {
-            result = firstEvent.getTag().compareTo(_getDirector().getModelTag());
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(null, e, null);
-        }
-        if (result < 0) {
-            throw new NoTokenException(getContainer(),
-                    "While getting from receiver at actor: " +
-                    this.getContainer().getContainer() +
-                    ", the token at input port is of smaller tag than" +
-                    " the current tag");
-        } else if (result == 0) {
-            _queue.remove(firstEvent);
-            return firstEvent._token;
-        }
-        throw new NoTokenException(getContainer(),
-                    "No more tokens in the Ptides basic receiver.");
-    }
-    
-    /** Return true if there is at least one token available to the
-     *  get() method.
-     *  @return True if there are more tokens.
-     *  @throws IllegalActionException 
-     */
-    public boolean hasToken() {
-        try {
-            if (!_queue.isEmpty()) {
-                int result = _queue.first().getTag().compareTo(_getDirector().getModelTag());
-                if (result < 0) {
-                    throw new IllegalActionException(getContainer(),
-                            "The input port has an unconsumed token with timestamp " +
-                            _queue.first().getTag() + ", while the current model time is " +
-                            _getDirector().getModelTag());
-                } else if (result == 0) {
-                    return true;
-                }
-            }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(null, e, null);
-        }
-        return false;
-    }
 
     /**
      * Return true if there are <i>numberOfTokens</i> tokens tokens available to
@@ -177,7 +98,7 @@ public class PtidesBasicReceiver extends DEReceiver {
     }
 
     /**
-     * Put a token into this receiver and post a trigger event to the director.
+     * Wrap the token in an DETokenEvent and post the trigger event to the director.
      * The director will be responsible to dequeue the trigger event at the
      * correct timestamp and microstep and invoke the corresponding actor whose
      * input port contains this receiver. This receiver may contain more than
@@ -188,19 +109,19 @@ public class PtidesBasicReceiver extends DEReceiver {
      */
     public void put(Token token) {
         try {
-            _getDirector()._enqueueTriggerEvent(getContainer());
-            _queue.add(new Event(token, _director.getModelTag()));
+            _getDirector()._enqueueTriggerEvent(getContainer(), token, this);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
         }
     }
     
-    
-    ///////////////////////////////////////////////////////////////////
-    //// protected variables ////
-
-    /** The set in which this receiver stores tokens. */
-    protected TreeSet<Event> _queue = new TreeSet<Event>(new TagComparator());
+    /** Actually put the token into this receiver. This method should be called
+     *  by the director when to token is ready to be processed by the actor
+     *  where this receier resides.
+     */
+    public void putToReceiver(Token token) {
+        _tokens.add(token);
+    }
     
     // /////////////////////////////////////////////////////////////////
     // // private methods ////
@@ -266,7 +187,7 @@ public class PtidesBasicReceiver extends DEReceiver {
     // /////////////////////////////////////////////////////////////////
     // // private variables ////
     
-    // The director where this DEReceiver should register for De events.
+    // The director where this DEReceiver should register for ptides events.
     private PtidesBasicDirector _director;
 
     /**

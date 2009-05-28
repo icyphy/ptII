@@ -4,8 +4,6 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;

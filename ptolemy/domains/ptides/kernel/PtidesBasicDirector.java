@@ -124,11 +124,13 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /**
-     * Return a real dependency representing a model-time delay of the
+     * Return a superdense dependency representing a model-time delay of the
      * specified amount.
      *
      * @param delay
-     *            A non-negative delay.
+     *            The real (timestamp) part of the delay.
+     * @param index
+     *            The integer (microstep) part ofthe delay
      * @return A Superdense dependency representing a delay.
      */
     public Dependency delayDependency(double delay, int index) {
@@ -583,12 +585,104 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
     
-    /** Calls the method in super class. We have this here so that PtidesBasicReceiver
-     *  can have access to it (because it's in the same package).
-     * @throws IllegalActionException 
+    /** Put a pure event into the event queue to schedule the given actor to
+     *  fire at the specified timestamp.
+     *  <p>
+     *  The default microstep for the queued event is equal to zero,
+     *  unless the time is equal to the current time, where the microstep
+     *  will be the current microstep plus one.
+     *  </p><p>
+     *  The depth for the queued event is the minimum of the depths of
+     *  all the ports of the destination actor.
+     *  </p><p>
+     *  If there is no event queue or the given actor is disabled, then
+     *  this method does nothing.</p>
+     *
+     *  @param actor The actor to be fired.
+     *  @param time The timestamp of the event.
+     *  @exception IllegalActionException If the time argument is less than
+     *  the current model time, or the depth of the actor has not be calculated,
+     *  or the new event can not be enqueued.
      */
-    protected void _enqueueTriggerEvent(IOPort ioPort) throws IllegalActionException {
-        super._enqueueTriggerEvent(ioPort);
+    protected void _enqueueEvent(Actor actor, Time time)
+            throws IllegalActionException {
+        if ((_eventQueue == null)
+                || ((_disabledActors != null) && _disabledActors
+                        .contains(actor))) {
+            return;
+        }
+
+        // Adjust the microstep.
+        int microstep = 0;
+
+        if (time.compareTo(getModelTime()) == 0) {
+            // If during initialization, do not increase the microstep.
+            // This is based on the assumption that an actor only requests
+            // one firing during initialization. In fact, if an actor requests
+            // several firings at the same time,
+            // only the first request will be granted.
+            if (_isInitializing) {
+                microstep = _microstep;
+            } else {
+                microstep = _microstep + 1;
+            }
+        } else if (time.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException(actor,
+                    "Attempt to queue an event in the past:"
+                            + " Current time is " + getModelTime()
+                            + " while event time is " + time);
+        }
+
+        int depth = _getDepthOfActor(actor);
+
+        if (_debugging) {
+            _debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
+                    "time = " + time + " microstep = " + microstep
+                            + " depth = " + depth);
+        }
+
+        DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
+        _eventQueue.put(newEvent);
+    }
+
+    /** Put a trigger event into the event queue.
+     *  <p>
+     *  The trigger event has the same timestamp as that of the director.
+     *  The microstep of this event is always equal to the current microstep
+     *  of this director. The depth for the queued event is the
+     *  depth of the destination IO port.
+     *  </p><p>
+     *  If the event queue is not ready or the actor contains the destination
+     *  port is disabled, do nothing.</p>
+     *
+     *  @param ioPort The destination IO port.
+     *  @exception IllegalActionException If the time argument is not the
+     *  current time, or the depth of the given IO port has not be calculated,
+     *  or the new event can not be enqueued.
+     */
+    protected void _enqueueTriggerEvent(IOPort ioPort, Token token, Receiver receiver)
+            throws IllegalActionException {
+        Actor actor = (Actor) ioPort.getContainer();
+
+        if ((_eventQueue == null)
+                || ((_disabledActors != null) && _disabledActors
+                        .contains(actor))) {
+            return;
+        }
+
+        int depth = _getDepthOfIOPort(ioPort);
+
+        if (_debugging) {
+            _debug("enqueue a trigger event for ",
+                    ((NamedObj) actor).getName(), " time = " + getModelTime()
+                            + " microstep = " + _microstep + " depth = "
+                            + depth);
+        }
+
+        // Register this trigger event.
+        DEEvent newEvent = new DETokenEvent(ioPort, getModelTime(), _microstep,
+                depth, token, receiver);
+        _eventQueue.put(newEvent);
     }
     
     /** Return the absolute deadline of this event, if this event is a trigger event.
