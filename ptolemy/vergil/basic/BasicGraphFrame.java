@@ -1563,10 +1563,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _rightComponent.addMouseMotionListener(this);
         _rightComponent.addMouseListener(this);
 
-        _graphPanner = new JCanvasPanner(getJGraph());
-        _graphPanner.setPreferredSize(new Dimension(200, 150));
-        _graphPanner.setMaximumSize(new Dimension(200, 150));
-        _graphPanner.setSize(200, 150);
+        // If we don't have a library, we might be trying to only show
+        // models
+        // FIXME: should we be checking for _library instead?
+        if ((CompositeEntity) configuration.getEntity("actor library") != null) {
+            // Create the panner.
+            _graphPanner = new JCanvasPanner(getJGraph());
+            _graphPanner.setPreferredSize(new Dimension(200, 150));
+            _graphPanner.setMaximumSize(new Dimension(200, 150));
+            _graphPanner.setSize(200, 150);
+        }
 
         // NOTE: Border causes all kinds of problems!
         // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
@@ -1595,16 +1601,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 MessageHandler.warning("Invalid library in the model.", ex);
             } catch (CancelException e) {
             }
-        }
-
-        // If we don't have a library, we might be trying to only show
-        // models
-        if (gotLibrary) {
-            // Create the panner.
-            _graphPanner = new JCanvasPanner(getJGraph());
-            _graphPanner.setPreferredSize(new Dimension(200, 150));
-            _graphPanner.setMaximumSize(new Dimension(200, 150));
-            _graphPanner.setSize(200, 150);
         }
 
         if (!gotLibrary) {
