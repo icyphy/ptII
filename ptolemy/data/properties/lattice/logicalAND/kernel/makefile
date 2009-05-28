@@ -49,8 +49,10 @@ PTCLASSJAR =
 
 PTCLASSALLJARS =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
-	CompositeEntity.java
+    CompositeEntity.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -69,7 +71,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

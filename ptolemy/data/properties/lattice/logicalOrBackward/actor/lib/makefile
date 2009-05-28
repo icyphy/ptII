@@ -36,9 +36,7 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../..
 
-# Sink.java calls com.sun.tools.javac.Main.compile()
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(TOOLS_JAR)
-
+CLASSPATH = $(ROOT)
 
 # Get configuration info
 CONFIG =    $(ROOT)/mk/ptII.mk
@@ -51,12 +49,14 @@ PTCLASSJAR =
 
 PTCLASSALLJARS =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
-	Discard.java \
-	MonitorValue.java \
-	Recorder.java \
-	Scale.java \
-	Sink.java
+    Discard.java \
+    MonitorValue.java \
+    Recorder.java \
+    Scale.java \
+    Sink.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -75,7 +75,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/logicalOrBackward
 
-DIRS =      actor data domains kernel
+DIRS =      actor data domains kernel test
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
@@ -48,16 +48,19 @@ PTPACKAGE =     logicalOrBackward
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar \
-	domains/domains.jar \
-	kernel/kernel.jar
+    actor/actor.jar \
+    data/data.jar \
+    domains/domains.jar \
+    kernel/kernel.jar \
+    test/test.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	False.java \
-	Lattice.java \
-	True.java \
-	Unknown.java
+    False.java \
+    Lattice.java \
+    True.java \
+    Unknown.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -76,7 +79,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

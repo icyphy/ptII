@@ -48,11 +48,13 @@ PTPACKAGE =     domains
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-	continuous/continuous.jar \
-	ct/ct.jar \
-	fsm/fsm.jar \
-	modal/modal.jar \
-	sdf/sdf.jar
+    continuous/continuous.jar \
+    ct/ct.jar \
+    fsm/fsm.jar \
+    modal/modal.jar \
+    sdf/sdf.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =
 
@@ -73,7 +75,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

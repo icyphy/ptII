@@ -49,10 +49,12 @@ PTCLASSJAR =
 
 PTCLASSALLJARS =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
-	ASTPtArrayConstructNode.java \
-	ASTPtLeafNode.java \
-	ASTPtRootNode.java
+    ASTPtArrayConstructNode.java \
+    ASTPtLeafNode.java \
+    ASTPtRootNode.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -63,7 +65,8 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+    doc \
+    ASTPtArrayConstructNode$FunctionTerm.class
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -71,7 +74,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
