@@ -58,6 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	makefile.in \
 	model.htm.in \
 	model.jnlp.in \
+	modelJnlp.htm.in \
 	modelVergil.htm.in \
 	runCommandTemplate.txt
 
