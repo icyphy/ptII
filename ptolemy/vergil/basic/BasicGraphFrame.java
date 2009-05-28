@@ -1563,6 +1563,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _rightComponent.addMouseMotionListener(this);
         _rightComponent.addMouseListener(this);
 
+        _graphPanner = new JCanvasPanner(getJGraph());
+        _graphPanner.setPreferredSize(new Dimension(200, 150));
+        _graphPanner.setMaximumSize(new Dimension(200, 150));
+        _graphPanner.setSize(200, 150);
+
         // NOTE: Border causes all kinds of problems!
         // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
         // Create the library of actors, or use the one in the entity,
