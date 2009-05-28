@@ -549,7 +549,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="table_height / display_scale_factor">
             </property>
-            <property name="texture" class="ptolemy.data.expr.FileParameter" value="gameover.gif">
+            <property name="texture" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/gr/demo/Pong/gameover.gif">
             </property>
             <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
             </property>
