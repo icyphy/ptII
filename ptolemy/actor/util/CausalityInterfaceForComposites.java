@@ -98,9 +98,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     /** Return a collection of the ports in the associated actor that depend on
      *  or are depended on by the specified port. A port X depends
      *  on a port Y if X is an output and Y is an input and
-     *  getDependency(X,Y) returns something not equal to
-     *  the oPlusIdentity() of the default dependency specified
-     *  in the constructor.
+     *  getDependency(X,Y) returns oTimesIdentity() of the default 
+     *  dependency specified in the constructor.
      *  <p>
      *  This class presumes (but does not check) that the
      *  argument is a port contained by the associated actor.
@@ -177,8 +176,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  The returned result includes the specified input port.
      *  <p>
      *  An equivalence class is defined as follows.
-     *  If input ports X and Y each have a dependency not equal to the
-     *  default depenency's oPlusIdentity() on any common port
+     *  If input ports X and Y each have a dependency equal to
+     *  oTimesIdentity() on any common port
      *  or on two equivalent ports
      *  or on the state of the associated actor, then they
      *  are in an equivalence class. That is,

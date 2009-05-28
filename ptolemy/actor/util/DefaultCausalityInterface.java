@@ -109,8 +109,19 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param index The superdense time index.
      */
     public void declareDelayDependency(IOPort input, IOPort output, double timeDelay, int index) {
-        // FIXME: need to support SuperdenseDependency.
-        if (_defaultDependency instanceof RealDependency) {
+        if (_defaultDependency instanceof SuperdenseDependency) {
+            if (timeDelay != 0.0 || index != 0) {
+                _removeDependency(input, output);
+            }
+            // Store the time delay.
+            Dependency dependency = SuperdenseDependency.valueOf(timeDelay, index);
+            if (_delayDependencies == null) {
+                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+            }
+            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            entry.put(output, dependency);
+            _delayDependencies.put(input, entry);
+        } else if (_defaultDependency instanceof RealDependency) {
             if (timeDelay != 0.0) {
                 _removeDependency(input, output);
             }
@@ -122,7 +133,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
             Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
             entry.put(output, dependency);
             _delayDependencies.put(input, entry);
-        } else {
+        } else { // the dependency is a BooleanDependency.
             _removeDependency(input, output);
         }
     }
@@ -391,6 +402,16 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *   input port.
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
+        if (_defaultDependency instanceof SuperdenseDependency) {
+            // Set time delay to infinity.
+            Dependency dependency = SuperdenseDependency.OPLUS_IDENTITY;
+            if (_delayDependencies == null) {
+                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+            }
+            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            entry.put(outputPort, dependency);
+            _delayDependencies.put(inputPort, entry);
+        }
         if (_defaultDependency instanceof RealDependency) {
             // Set time delay to infinity.
             Dependency dependency = RealDependency.OPLUS_IDENTITY;
@@ -442,7 +463,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** The associated actor. */
     protected Actor _actor;
 
-    /** A record of removed dependencies from output to input, if any. */
+    /** A record of removed dependencies from output to input, if any.
+     *  In this case, if the dependency between the ports are anything
+     *  other than the oTimesIdentity, then the dependency is removed. */
     protected Map<IOPort, Set<IOPort>> _backwardPrunedDependencies;
 
     /** Empty collection for use by dependentPort(). */
@@ -454,7 +477,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** A record of delay dependencies from input to output, if any. */
     protected Map<IOPort, Map<IOPort,Dependency>> _delayDependencies;
 
-    /** A record of removed dependencies from input to output, if any. */
+    /** A record of removed dependencies from input to output, if any. 
+     *  In this case, if the dependency between the ports are anything
+     *  other than the oTimesIdentity, then the dependency is removed. */
     protected Map<IOPort, Set<IOPort>> _forwardPrunedDependencies;
     
     ///////////////////////////////////////////////////////////////////
