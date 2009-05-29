@@ -431,11 +431,15 @@ public class PlotFormatter extends JPanel {
     // the Plot class, taking advantage of the fact that this class is
     // in the same package.
     private void _setConnected(boolean value) {
-        ArrayList<ArrayList<PlotPoint>> points = ((Plot) _plot)._points;
+        //ArrayList<ArrayList<PlotPoint>> points = ((Plot) _plot)._points;
 
         // Make sure the default matches.
         ((Plot) _plot).setConnected(value);
 
+        // We don't change the individual points anymore, but when the
+        // we plot points we'll both look at the global connected state and
+        // the one of the individual points (both will be and'ed).
+        /*
         boolean[][] result = new boolean[points.size()][];
 
         for (int dataset = 0; dataset < points.size(); dataset++) {
@@ -450,6 +454,7 @@ public class PlotFormatter extends JPanel {
                 first = false;
             }
         }
+        */
     }
 
     // Restore the connected state of all the point that were in the

@@ -634,6 +634,10 @@ public class Plot extends PlotBox {
      *  connected, individual points can be not connected by giving the
      *  appropriate argument to addPoint().  Also, a different default
      *  can be set for each dataset, overriding this global default.
+     *  setConnected will also change the behavior of points that were
+     *  already drawn if the graph is redrawn. If it isn't the points
+     *  are not touched. If you change back the setConnected state,
+     *  the again see what was visible before. 
      *  @param on If true, draw lines between points.
      *  @see #setConnected(boolean, int)
      *  @see #getConnected
@@ -2393,13 +2397,15 @@ public class Plot extends PlotBox {
         if (!bin.needReplot()) {
             return;
         }
+        
+        boolean connectedFlag = getConnected();
 
-        if (bin.needConnectionWithPreviousBin()) {
+        if (connectedFlag && bin.needConnectionWithPreviousBin()) {
             Bin previousBin = bins.get(binIndex - 1);
             _drawLine(graphics, dataset, xpos, bin.firstYPos(), previousBin.xpos, previousBin.lastYPos(), true, _DEFAULT_WIDTH);
         }
 
-        if (bin.isConnected() && bin.rangeChanged() && bin.minYPos() != bin.maxYPos()) {
+        if (connectedFlag && bin.isConnected() && bin.rangeChanged() && bin.minYPos() != bin.maxYPos()) {
             _drawLine(graphics, dataset, xpos, bin.minYPos(), xpos, bin.maxYPos(), true, _DEFAULT_WIDTH);
         }
 
@@ -2433,11 +2439,11 @@ public class Plot extends PlotBox {
 
         for (int i = startPosition; i < endPosition; ++i) {
             PlotPoint point = points.get(i);
-            if (marks != 0 || !point.connected) {
+            if (marks != 0 || !(connectedFlag && point.connected )) {
                 long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                 if (prevypos != ypos || prevxpos != xpos) {
                     int updatedMarks = marks;
-                    if (!point.connected && marks == 0) {
+                    if (!(connectedFlag && point.connected) && marks == 0) {
                         updatedMarks = 1; // dots   
                     }
                     _drawPoint(graphics, dataset, xpos, ypos, true, updatedMarks);
@@ -2756,7 +2762,9 @@ public class Plot extends PlotBox {
             //First clear bin itself
             long minYPos = bin.minYPos();
             long maxYPos = bin.maxYPos();
-            if (bin.isConnected() && minYPos != maxYPos) {
+            boolean connectedFlag = getConnected();
+            
+            if (connectedFlag && bin.isConnected() && minYPos != maxYPos) {
                 _drawLine(graphics, dataset, xpos, minYPos, xpos, maxYPos, true, _DEFAULT_WIDTH);
             }
 
@@ -2766,7 +2774,7 @@ public class Plot extends PlotBox {
                 long nextx = nextBin.xpos;
 
                 // NOTE: I have no idea why I have to give this point backwards.
-                if (nextBin.isConnectedWithPreviousBin()) {
+                if (connectedFlag && nextBin.isConnectedWithPreviousBin()) {
                     _drawLine(graphics, dataset, nextx, nextBin.firstYPos(), xpos, bin.lastYPos(),
                             true, 2f);
                 }
@@ -2798,11 +2806,11 @@ public class Plot extends PlotBox {
                 long prevypos = _INITIAL_PREVIOUS_VALUE;
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
-                    if (marks != 0 || !point.connected) {
+                    if (marks != 0 || !(connectedFlag && point.connected)) {
                         long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                         if (prevypos != ypos) {
                             int updatedMarks = marks;
-                            if (!point.connected && marks == 0) {
+                            if (!(connectedFlag && point.connected) && marks == 0) {
                                 updatedMarks = 1; // dots   
                             }                        
                             _drawPoint(graphics, dataset, xpos, ypos, true, updatedMarks);
