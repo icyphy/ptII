@@ -1023,7 +1023,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -2181,7 +2181,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -3339,7 +3339,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -4497,7 +4497,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -5247,7 +5247,7 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightNorth" class="CarLight">
+        <entity name="CarLightNorth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0001">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0002">
@@ -5257,7 +5257,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 180.0]">
             </property>
         </entity>
-        <entity name="CarLightWest" class="CarLight">
+        <entity name="CarLightWest" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0010">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0020">
@@ -5275,7 +5275,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="CarLightSouth" class="CarLight">
+        <entity name="CarLightSouth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0100">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0200">
@@ -5291,7 +5291,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="CarLightEast" class="CarLight">
+        <entity name="CarLightEast" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x1000">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x2000">
@@ -6185,7 +6185,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -7343,7 +7343,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -8093,7 +8093,7 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightWest" class="CarLight">
+        <entity name="CarLightWest" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0010">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0020">
@@ -8113,7 +8113,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="CarLightSouth" class="CarLight">
+        <entity name="CarLightSouth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0100">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0200">
@@ -8537,7 +8537,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -9287,7 +9287,7 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightEast" class="CarLight">
+        <entity name="CarLightEast" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x1000">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x2000">
@@ -10185,7 +10185,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -11343,7 +11343,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -12501,7 +12501,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -13251,11 +13251,11 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightNorth" class="CarLight">
+        <entity name="CarLightNorth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 180.0]">
             </property>
         </entity>
-        <entity name="CarLightWest" class="CarLight">
+        <entity name="CarLightWest" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0010">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0020">
@@ -13275,7 +13275,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="CarLightEast" class="CarLight">
+        <entity name="CarLightEast" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x1000">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x2000">
@@ -14023,7 +14023,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -15181,7 +15181,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -15931,7 +15931,7 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightWest" class="CarLight">
+        <entity name="CarLightWest" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0010">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0020">
@@ -15951,7 +15951,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="CarLightEast" class="CarLight">
+        <entity name="CarLightEast" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x1000">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x2000">
@@ -16853,7 +16853,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -18011,7 +18011,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -19169,7 +19169,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -19919,13 +19919,13 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightNorth" class="CarLight">
+        <entity name="CarLightNorth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="LightsToWait" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 180.0]">
             </property>
         </entity>
-        <entity name="CarLightSouth" class="CarLight">
+        <entity name="CarLightSouth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0100">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0200">
@@ -19943,7 +19943,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="CarLightEast" class="CarLight">
+        <entity name="CarLightEast" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x1000">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x2000">
@@ -20843,7 +20843,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -22001,7 +22001,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -23159,7 +23159,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -23909,13 +23909,13 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightNorth" class="CarLight">
+        <entity name="CarLightNorth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="LightsToWait" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 180.0]">
             </property>
         </entity>
-        <entity name="CarLightWest" class="CarLight">
+        <entity name="CarLightWest" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0010">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0020">
@@ -23933,7 +23933,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="CarLightSouth" class="CarLight">
+        <entity name="CarLightSouth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0100">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0200">
@@ -24689,7 +24689,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -25847,7 +25847,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                         </property>
                     </port>
-                    <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
+                    <entity name="PedestrianLightNormal" class="ptolemy.domains.wireless.demo.Intersections.PedestrianLightNormal">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                         </property>
                     </entity>
@@ -26597,13 +26597,13 @@
             <link relation1="relation7" relation2="relation10"/>
             <link relation1="relation10" relation2="relation12"/>
         </entity>
-        <entity name="CarLightNorth" class="CarLight">
+        <entity name="CarLightNorth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="LightsToWait" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 180.0]">
             </property>
         </entity>
-        <entity name="CarLightSouth" class="CarLight">
+        <entity name="CarLightSouth" class="ptolemy.domains.wireless.demo.Intersections.CarLight">
             <property name="PgoCode" class="ptolemy.data.expr.Parameter" value="0x0100">
             </property>
             <property name="PstopCode" class="ptolemy.data.expr.Parameter" value="0x0200">
