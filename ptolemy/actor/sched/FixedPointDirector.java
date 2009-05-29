@@ -562,9 +562,15 @@ public class FixedPointDirector extends StaticSchedulingDirector
             }
         }
         // If the outside is wider than the inside, send clear on the outside.
+        /* NOTE: This isn't right!  Need to leave the output unknown in case
+         * we are in a modal model. A transition may be wanting to set it.
+         * it has to become known only if the environment sets it known
+         * by presuming that any unproduced outputs are absent.
+         *
         for (int i = port.getWidthInside(); i < outsideWidth; i++) {
             port.sendClear(i);
         }
+        */
         return result;
     }
 
