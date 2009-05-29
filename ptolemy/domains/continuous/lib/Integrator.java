@@ -43,15 +43,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  dx/dt = f(x, t), can be built as follows:
  <P>
  <pre>
- +---------------+
- dx/dt  |               |   x
+            +---------------+
+     dx/dt  |               |   x
  +--------->|   Integrator  |---------+----->
  |          |               |         |
  |          +----^-----^----+         |
  |                                    |
  |             |---------|            |
  +-------------| f(x, t) |<-----------+
- |---------|
+               |---------|
  </pre>
  <P>
  An integrator also has a port-parameter called <i>initialState</i>. The
