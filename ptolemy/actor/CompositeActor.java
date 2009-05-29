@@ -1352,7 +1352,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
         // from the director thread that it will be present in the change
         // queue when the director gets around to handling it. The call
         // to stopFire() below may wake up the director to handle it.
-        if (manager != null) {
+        // The call of stopFire() only needs to happen in case the change
+        // represents a structural change. Not if we request a change to
+        // refresh the GUI.
+        if (manager != null && change.isStructuralChange()) {
             stopFire();
         }
     }
