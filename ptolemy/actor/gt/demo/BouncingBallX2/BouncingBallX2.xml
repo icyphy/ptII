@@ -5,20 +5,20 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows two bouncing ball models&#10;running in separate threads. Each model is&#10;defined in BouncingBall.xml in the same directory.&#10;The model is read and parsed into an ActorToken.&#10;One copy of it is executed in ModelExecutor, which corresponds to the red ball at the top. The other copy&#10;of the ActorToken is sent to two chained transformation rules in ReverseDirection. Those transformation&#10;rules reverse the position and moving direction of the ball and send it to ModelExecutor2. That ball is&#10;shown in blue at the bottom.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.5, 217.5]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 200, 929, 519}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 200, 1029, 587}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 405]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[816, 477]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.9999999999999, 202.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.9999999999999, 238.5}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
@@ -47,7 +47,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The two models independently send the last updated positions of the balls to the Animation. Because PN&#10;(Process Network) is used as the governing model of computation (MoC), the Animation has to read both&#10;positions at the same time. This demo also works with the Rendezvous MoC, exhibiting the same behavior.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.5, 362.5]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -69,7 +69,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.5, 442.5]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -77,13 +77,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo requires Java 3D (http://java.sun.com/products/java-media/3D/).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.5, 422.5]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <entity name="ModelExecutor" class="ptolemy.actor.gt.ModelExecutor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.5, 142.5]">
         </property>
         <port name="yPosition" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -92,14 +92,14 @@
         </port>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="BouncingBall.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="xxxxxxCLASSPATHxxxxxx/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBall.xml">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[199.5, 102.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 175.0]">
         </property>
     </entity>
     <entity name="Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[659.5, 107.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 180.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -349,7 +349,7 @@
         <link port="Expression3.in" relation="relation13"/>
     </entity>
     <entity name="ModelExecutor2" class="ptolemy.actor.gt.ModelExecutor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.5, 217.5]">
         </property>
         <port name="actorInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -363,7 +363,7 @@
         </port>
     </entity>
     <entity name="ReverseDirection" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[409.5, 177.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 250.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
@@ -467,7 +467,7 @@
             </entity>
             <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#FF0000"/><rect x="2" y="2" width="56" height="36"  style="fill:#C0C0C0"/><rect x="6" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="38" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="26" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="34" y2="30"  style="stroke:#404040"/><text x="16" y="14"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                    <configure><svg><rect x="0" y="0" width="60" height="40" style="fill:#FF0000"></rect><rect x="2" y="2" width="56" height="36" style="fill:#C0C0C0"></rect><rect x="6" y="17" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><rect x="38" y="25" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><line x1="26" y1="22" x2="30" y2="22" style="stroke:#404040"></line><line x1="30" y1="22" x2="30" y2="30" style="stroke:#404040"></line><line x1="30" y1="30" x2="34" y2="30" style="stroke:#404040"></line><text x="16" y="14" style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                 </property>
                 <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                     <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
@@ -518,13 +518,13 @@
         <link port="ReverseCrossingDirection.modelOutput" relation="relation2"/>
     </entity>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[289.5, 102.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 175.0]">
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="BouncingBall.xml">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBall.xml">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -535,7 +535,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[84.5, 112.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 90.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -557,7 +557,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[349.5, 102.5]">
+        <vertex name="vertex1" value="[360.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
