@@ -617,32 +617,6 @@ public class HybridModalDirector extends FSMDirector implements
         return result;
     }
 
-    /** Transfer data from the specified output port of the
-     *  container to the ports it is connected to on the outside.
-     *  If there is no data on the specified output port, then
-     *  set the ports on the outside to absent by calling sendClear().
-     *  This method delegates the data transfer
-     *  operation to the transferOutputs method of the super class.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if at least one token is transferred.
-     */
-    public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        boolean result = false;
-        for (int i = 0; i < port.getWidthInside(); i++) {
-            if (port.isKnownInside(i)) {
-                if (port.hasTokenInside(i)) {
-                    result = super.transferOutputs(port) || result;
-                } else {
-                    port.sendClear(i);
-                }
-            }
-        }
-        return result;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 

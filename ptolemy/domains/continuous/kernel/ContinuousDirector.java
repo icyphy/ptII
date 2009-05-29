@@ -513,8 +513,12 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Handle firing requests from the contained actors by registering
      *  breakpoints. If the specified time is earlier than the current time,
-     *  throw an exception. Otherwise, insert the specified time into the
-     *  breakpoint table.
+     *  then request a firing at the current time.
+     *  Otherwise, insert the specified time into the
+     *  breakpoint table. If the specified time is earlier than or
+     *  equal to the current time, then for the breakpoint table entry,
+     *  use an index one larger than the current index, unless this director
+     *  is currently in initialize(), in which case use the current index.
      *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
      *  @return The time at which the actor passed as an argument
@@ -529,17 +533,23 @@ public class ContinuousDirector extends FixedPointDirector implements
         synchronized(_breakpoints) {
             // Check if the request time is earlier than the current time.
             Time currentTime = getModelTime();
-            // Breakpoints always have an index larger than 1 except the
-            // stop time breakpoint.
-            int index = 1;
-
+            int index = 0;
             int comparisonResult = time.compareTo(currentTime);
+            // Adjust time to at least match the current time.
             if (comparisonResult < 0) {
-                // Adjust time to match the current time.
                 time = currentTime;
-                index = _index + 1;
-            } else if (comparisonResult == 0) {
-                index = _index + 1;
+            }
+            if (comparisonResult <= 0) {
+                // If during initialization, do not increase the microstep.
+                // This is based on the assumption that an actor only requests
+                // one firing during initialization. In fact, if an actor requests
+                // several firings at the same time,
+                // only the first request will be granted.
+                if (_isInitializing) {
+                    index = _index;
+                } else {
+                    index = _index + 1;
+                }
             }
             // Insert a superdense time object as a breakpoint into the
             // breakpoint table.
@@ -662,6 +672,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
+        _isInitializing = true;
+
         // set current time and initialize actors.
         super.initialize();
 
@@ -685,8 +697,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
         }
         // Set a breakpoint with index 0 for the stop time.
-        // Note that do not use fireAt because that will set index to 1,
-        // which may produce more than one output at the stop time.
         _breakpoints.insert(new SuperdenseTime(_stopTime, 0));
         
         // Record starting point of the real time (the computer system time)
@@ -694,8 +704,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         _timeBase = System.currentTimeMillis();
 
         _commitIsPending = false;
-        
         _postfireReturns = true;
+        _isInitializing = false;
     }
 
     /** Return true if all step size control actors agree that the current
@@ -1237,6 +1247,11 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** A local boolean variable indicating whether this director is in
+     *  initialization phase execution.
+     */
+    protected boolean _isInitializing = false;
 
     /** The real starting time in term of system millisecond counts.
      */
