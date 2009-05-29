@@ -48,7 +48,7 @@ proc parseTreeTest {expression} {
     set parseTreeCodeGenerator \
 	[java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator $codeGenerator]
     # We have to eval the parse tree first, though we ignore the value
-    set token [$parseTreeCodeGenerator evaluateParseTree $parseTree]
+    set token [$parseTreeCodeGenerator evaluateParseTree $parseTree [java::null]]
     # return [list [$token toString] [$parseTreeCodeGenerator generateFireCode]]
     return [list [$parseTreeCodeGenerator generateFireCode]]
 }
