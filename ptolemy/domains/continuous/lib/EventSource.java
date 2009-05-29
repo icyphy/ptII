@@ -225,7 +225,7 @@ public class EventSource extends TypedAtomicActor {
         FixedPointDirector director = (FixedPointDirector) getDirector();
 
         _cycleStartTime = director.getModelTime();
-        _nextOutputIndex = 1;
+        _nextOutputIndex = 0;
         _phase = 0;
         _readyToFire = true;
 
