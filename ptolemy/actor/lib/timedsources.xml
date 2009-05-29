@@ -7,7 +7,7 @@
       <group>
 <doc>Sources that depend on time.</doc>
 
-<entity name="Clock" class="ptolemy.actor.lib.Clock">
+<entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
 <doc>Create periodic timed events.</doc>
 </entity>
 
