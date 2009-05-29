@@ -57,12 +57,14 @@ import ptolemy.kernel.util.Workspace;
  time by this amount in each invocation of postfire().
  If it is not at the top level, then it calls
  fireAt(currentTime + period) in postfire().
+ Moreover, if the period is non-zero and it fires at a time
+ not matching a multiple of the period value, it will return
+ false in prefire(), thus refusing to fire.
  </p><p>
- This behavior gives an interesting use of SR within DE:
- You can "kick start" an SDF submodel with a single
- event, and then if the director of that SDF submodel
- has a period greater than 0.0, then it will continue to fire
- periodically with the specified period.
+ This behavior gives an interesting use of SR within DE or
+ Continuous. In particular, if set a period other than 0.0,
+ the composite actor with this SR director will fire periodically
+ with the specified period.
  </p><p>
  If <i>period</i> is greater than 0.0 and the parameter
  <i>synchronizeToRealTime</i> is set to <code>true</code>,
@@ -236,6 +238,13 @@ public class SRDirector extends FixedPointDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextFiringTime = getModelTime();
+        
+        // In case we are embedded within a timed director, request a first
+        // firing.
+        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        if (executiveDirector != null) {
+            executiveDirector.fireAtCurrentTime((Actor)getContainer());
+        }
     }
 
     /** Invoke super.prefire(), which will synchronize to real time, if appropriate.
@@ -384,7 +393,7 @@ public class SRDirector extends FixedPointDirector {
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
-        period = new Parameter(this, "period", new DoubleToken(1.0));
+        period = new Parameter(this, "period");
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");
     }
