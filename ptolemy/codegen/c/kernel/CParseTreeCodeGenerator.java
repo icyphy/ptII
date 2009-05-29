@@ -137,11 +137,18 @@ ParseTreeCodeGenerator {
         ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
         typeInference.inferTypes(node, scope);
 
+        // Keep track of the previous scope because we
+        // need to restore it when we recursively evaluate
+        // an expression.
+        ParserScope previousScope = _scope;
+        
         _scope = scope;
 
         // Evaluate the value of the root node.
         node.visit(this);
 
+        _scope = previousScope;
+        
         return _evaluatedChildToken;
     }
 
