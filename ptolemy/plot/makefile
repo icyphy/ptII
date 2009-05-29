@@ -176,9 +176,11 @@ OTHER_JARS = $(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
 
 all: sources jclass
 
-install: all jars
+install: all $(ROOT)/ptolemy/gui/QueryChooser.class jars 
 	(cd ../../bin; $(MAKE) install)
 
+$(ROOT)/ptolemy/gui/QueryChooser.class:
+	(cd $(ROOT)/ptolemy/gui; $(MAKE))
 
 # PlotBox uses PlotFormatter which uses ptolemy.gui.Query and other classes
 # ptolemy.gui has lots of classes, we need only a few of them.
