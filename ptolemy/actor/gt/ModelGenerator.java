@@ -30,6 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt;
 
+import java.io.File;
+import java.io.IOException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -44,6 +47,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -168,11 +172,24 @@ public class ModelGenerator extends Source {
             return new URI(modelName);
         } else {
             String path = uri.getPath();
-            int pos = path.lastIndexOf('/');
-            if (pos >= 0) {
-                path = path.substring(0, pos + 1) + modelName + ".xml";
+            if (path == null || uri.toString().startsWith("jar:")) {
+                // Probably a JarURL in Web Start
+                try {
+                    File temporaryFile = File.createTempFile(modelName, ".xml");
+                    temporaryFile.deleteOnExit();
+                    URI results = temporaryFile.toURI();
+                    return results;
+                } catch (IOException ex) {
+                    throw new InternalErrorException(this, ex, "Failed to create temporary file for " + modelName);
+                }
             } else {
-                path += "/" + modelName + ".xml";
+                int pos = 0;
+                pos = path.lastIndexOf('/');
+                if (pos >= 0) {
+                    path = path.substring(0, pos + 1) + modelName + ".xml";
+                } else {
+                    path += "/" + modelName + ".xml";
+                }
             }
             return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
                     uri.getPort(), path, uri.getQuery(), uri.getFragment());
