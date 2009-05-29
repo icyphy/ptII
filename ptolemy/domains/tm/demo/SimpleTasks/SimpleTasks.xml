@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SimpleTasks" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[668, 350]">
     </property>
@@ -52,7 +52,7 @@ preemptive parameter to true or false.
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 255.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 3, 883, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 22, 881, 460}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -65,7 +65,7 @@ preemptive parameter to true or false.
         </property>
     </property>
     <entity name="Clock: period = 1" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
@@ -76,7 +76,7 @@ preemptive parameter to true or false.
         </property>
     </entity>
     <entity name="Clock: period = 4" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="4.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
@@ -145,16 +145,24 @@ preemptive parameter to true or false.
         </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="160.0, 140.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="120.0, 205.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Clock: period = 1.output" relation="relation4"/>
     <link port="Clock: period = 4.output" relation="relation"/>
