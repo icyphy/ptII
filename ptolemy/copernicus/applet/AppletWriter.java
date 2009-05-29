@@ -612,12 +612,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
     }
 
-    // Return a Map that maps classes to jar files for all the AtomicEntities
-    // and Directors in the model
-    private Map _allAttributeJars() {
+    // Return a Map that maps classes to jar files for all the Attributes
+    // in a model.
+    private Map _allAttributeJars(CompositeEntity compositeEntity) {
         HashMap results = new HashMap();
 
-        Iterator attributes = _model.attributeList().iterator();
+        // Get the attributes of the top level of the model
+        Iterator attributes = compositeEntity.attributeList().iterator();
         while (attributes.hasNext()) {
             Object object = attributes.next();
             String className = object.getClass().getName();
@@ -625,46 +626,56 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             if (className.contains("ptolemy.codegen")) {
                 results.put(className, "ptolemy/codegen/codegen.jar");
             }
-            //results.put(object.getClass().getName(), _getDomainJar(object
-            //        .getClass().getPackage().getName()));
+            results.put(object.getClass().getName(), _getDomainJar(object
+                    .getClass().getPackage().getName()));
         }
 
-        Iterator composites = _model.allCompositeEntityList().iterator();
-        while (composites.hasNext()) {
-            CompositeEntity composite = ((CompositeEntity)(composites.next()));
-
-            attributes = composite.attributeList().iterator();
-            while (attributes.hasNext()) {
-                Object object = attributes.next();
-                String className = object.getClass().getName();
-                System.out.println("allAttributeJars1: " + object);
-                if (className.contains("ptolemy.codegen")) {
-                    results.put(className, "ptolemy/codegen/codegen.jar");
-                }
-                //results.put(object.getClass().getName(), _getDomainJar(object
-                //        .getClass().getPackage().getName()));
-            }
-        }
-
-
-        composites = _model.deepEntityList().iterator();
+        // Get the attributes of the composites.  We need to traverse
+        // each opaque composite because it might have inner opaque composites.
+        // ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml needed this.
+        Iterator composites = compositeEntity.deepEntityList().iterator();
         while (composites.hasNext()) {
             Object object = composites.next();
             if (object instanceof CompositeEntity) {
-                CompositeEntity composite = (CompositeEntity)object;
+                // FIXME: should we get the attributes inside atomic actors?
+                System.out.println("allAttributeJars2: " + object);
+                results.putAll(_allAttributeJars((CompositeEntity)object));
 
-                attributes = composite.attributeList().iterator();
-                while (attributes.hasNext()) {
-                    String className = attributes.next().getClass().getName();
-                    System.out.println("allAttributeJars2: " + className);
-                    if (className.contains("ptolemy.codegen")) {
-                        results.put(className, "ptolemy/codegen/codegen.jar");
-                    }
-                    //results.put(object.getClass().getName(), _getDomainJar(object
-                    //        .getClass().getPackage().getName()));
-                }
             }
+//             attributes = composite.attributeList().iterator();
+//             while (attributes.hasNext()) {
+//                 Object object = attributes.next();
+//                 String className = object.getClass().getName();
+//                 System.out.println("allAttributeJars1: " + object);
+//                 if (className.contains("ptolemy.codegen")) {
+//                     results.put(className, "ptolemy/codegen/codegen.jar");
+//                 }
+//                 //results.put(object.getClass().getName(), _getDomainJar(object
+//                 //        .getClass().getPackage().getName()));
+//             }
         }
+
+
+//         composites = _model.deepEntityList().iterator();
+//         while (composites.hasNext()) {
+//             Object object = composites.next();
+//             System.out.println("allAttributeJars2: " + object);
+//             if (object instanceof CompositeEntity) {
+//                 CompositeEntity composite = (CompositeEntity)object;
+
+//                 attributes = composite.attributeList().iterator();
+//                 while (attributes.hasNext()) {
+//                     Object object2 = attributes.next();
+//                     String className = object2.getClass().getName();
+//                     System.out.println("allAttributeJars3: " + object2);
+//                     if (className.contains("ptolemy.codegen")) {
+//                         results.put(className, "ptolemy/codegen/codegen.jar");
+//                     }
+//                     //results.put(object.getClass().getName(), _getDomainJar(object
+//                     //        .getClass().getPackage().getName()));
+//                 }
+//             }
+//         }
 
         return results;
     }
@@ -677,8 +688,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
-            results.put(object.getClass().getName(), _getDomainJar(object
-                    .getClass().getPackage().getName()));
+            System.out.println("_allAtomicEntityJars: "
+                    + object.getClass().getName() + " "
+                    + _getDomainJar(object.getClass().getPackage().getName()));
+
+            // Add in the entity
+            results.put(object.getClass().getName(),
+                    _getDomainJar(object.getClass().getPackage().getName()));
 
             if (object instanceof AtomicActor) {
                 // Add in the Managers.
@@ -701,6 +717,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             ComponentEntity componentEntity = (ComponentEntity) opaqueEntities.next();
 
             System.out.println("_deepOpaqueEntityJars: " + componentEntity.getClass().getName());
+
             if (componentEntity.getClass().getName().contains("ptolemy.actor.lib.jni")) {
 
                 System.out.println("_deepOpaqueEntityJars1: " + ((CompositeActor) componentEntity).getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getClass());
@@ -1055,7 +1072,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // We use a HashMap that maps class names to destination jar
         // files.
         Map classMap = _allAtomicEntityJars();
-        classMap.putAll(_allAttributeJars());
+        classMap.putAll(_allAttributeJars(_model));
         classMap.putAll(_deepOpaqueEntityJars());
         
         // Create a map of classes and their dependencies
@@ -1229,10 +1246,24 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/codegen/codegen.jar");
         }
 
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/psdf/psdf.jar")) {
+            // colt requires multiple jar files
+            auxiliaryClassMap.put("psdf requires mapss",
+                    "lib/mapss.jar");
+        }
+
         if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
             // Ptalon requires multiple jar files
             auxiliaryClassMap.put("ptalon jar needs antlr jar",
                     "ptolemy/actor/ptalon/antlr/antlr.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/ptera/ptera.jar")) {
+            auxiliaryClassMap.put("ptera jar needs vergil ptera jar",
+                    "ptolemy/vergil/ptera/ptera.jar");
+
+            auxiliaryClassMap.put("ptera lib Plot needs DEDirector",
+                    "ptolemy/domains/de/de.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(pythonJar)) {
@@ -1248,6 +1279,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         } else if (jarFilesThatHaveBeenRequired.contains(spaceJar)) {
             auxiliaryClassMap.put("space jar needs ojdbc6 jar",
                     "ptolemy/actor/lib/database/ojdbc6.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/sdf/lib/vq/vq.jar")) {
+            auxiliaryClassMap.put("vq needs its data",
+                    "ptolemy/domains/sdf/lib/vq/data/data.jar");
         }
 
         boolean fixAuxiliaryJarFiles = _copyJarFiles(auxiliaryClassMap,
@@ -1308,6 +1344,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     // Given a domain package, return the corresponding jar file
     private static String _getDomainJar(String domainPackage) {
+        if (domainPackage.equals("ptolemy.domains.sdf.lib.vq")) {
+            return "ptolemy/domains/sdf/lib/vq/vq.jar";
+        }
         String domainPackageDomain = domainPackage.substring(0, domainPackage
                 .lastIndexOf("."));
 
