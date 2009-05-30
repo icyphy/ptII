@@ -147,7 +147,10 @@ import ptolemy.kernel.util.Workspace;
  appear on the output of the composite actor containing this director.
  However, the first of these output values, the one produced by
  the refinement, may affect whether the transition is taken.
- That is, it can affect the guard.
+ That is, it can affect the guard. If an addition a transition refinement
+ writes to the output, then that value will be produced, overwriting
+ the value produced either by the state refinement or the output
+ action on the transition.
  <p>
  At the end of one firing, the modal model transfers its outputs to the outside
  model. The mode controller does not change state during successive firings
