@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This director is a placeholder for code generation at the platform level.
  *  <p>
  *  It is exactly the same as DEDirector, only named differently.
- *  {@link #DEDirector.java}
+ *  @see DEDirector.java
  *  
  *  @author Jia Zou
  *  @version $Id$

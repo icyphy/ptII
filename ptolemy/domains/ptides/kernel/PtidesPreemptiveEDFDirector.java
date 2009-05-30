@@ -197,7 +197,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  event of smallest tag + depth is stored in _eventToProcess. 
      *  @return whether we want to preempt the executing event.
      *  @throws IllegalActionException
-     *  @see {@link #_getNextSafeEvent()} 
+     *  @see #_getNextSafeEvent()
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
 

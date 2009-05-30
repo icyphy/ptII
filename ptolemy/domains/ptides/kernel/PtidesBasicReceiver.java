@@ -203,8 +203,8 @@ public class PtidesBasicReceiver extends DEReceiver {
          *
          * @param token
          *            Token for the event.
-         * @param time
-         *            Time stamp of the event.
+         * @param tag
+         *            Tag tag of the event.
          */
         public Event(Token token, Tag tag) {
             _token = token;

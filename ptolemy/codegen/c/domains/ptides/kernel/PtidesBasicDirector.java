@@ -1,4 +1,4 @@
-/* Code generator helper class associated with the PtidesEmbeddedDirector class.
+/* Code generator helper class associated with the PtidesBasicDirector class.
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -50,10 +50,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////
-//// PtidesEmbeddedDirector
+//// PtidesBasicDirector
 
 /**
- Code generator helper associated with the PtidesEmbeddedDirector class. This class
+ Code generator helper associated with the PtidesBasicDirector class. This class
  is also associated with a code generator.
  Also unlike the Ptolemy implementation, the execution does not depend on the WCET
  of actor.
@@ -66,9 +66,9 @@ import ptolemy.kernel.util.NamedObj;
 public class PtidesBasicDirector extends Director {
 
     /** Construct the code generator helper associated with the given
-     *  PtidesEmbeddedDirector.
-     *  @param ptidesEmbeddedDirector The associated director
-     *  ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector
+     *  PtidesBasicDirector.
+     *  @param ptidesBasicDirector The associated director
+     *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
     public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
         super(ptidesBasicDirector);

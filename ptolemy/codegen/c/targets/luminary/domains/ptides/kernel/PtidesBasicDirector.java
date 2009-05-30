@@ -39,7 +39,7 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////
-//// PtidesEmbeddedDirector
+//// PtidesBasicDirector
 
 /**
  Code generator helper associated with the PtidesDirector class.
@@ -67,8 +67,8 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
     /**
      * Construct the code generator helper associated with the given
      * PtidesDirector.
-     * @param ptidesEmbeddedDirector The associated
-     *  ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector
+     * @param ptidesBasicDirector The associated
+     *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
     public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
         super(ptidesBasicDirector);

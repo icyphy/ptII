@@ -1,4 +1,4 @@
-/* Code generator helper class associated with the PidesDirector class.
+/* Code generator helper class associated with the PidesTopLevelDirector class.
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -28,10 +28,10 @@
 package ptolemy.codegen.c.targets.luminary.domains.ptides.kernel;
 
 //////////////////////////////////////////////////////////////////
-////PtidesDirector
+////PtidesTopLevelDirector
 
 /**
- Code generator helper associated with the PtidesDirector class.
+ Code generator helper associated with the PtidesTopLevelDirector class.
  This helper generates Luminary specific code.
 
  This director starts a task for each actor. Each task has a specified
@@ -55,9 +55,9 @@ public class PtidesTopLevelDirector extends ptolemy.codegen.c.domains.ptides.ker
 
     /**
      * Construct the code generator helper associated with the given
-     * PtidesDirector.
-     * @param ptidesDirector The associated
-     *  ptolemy.domains.ptides.kernel.PtidesDirector
+     * PtidesTopLevelDirector.
+     * @param ptidesTopLevelDirector The associated
+     *  ptolemy.domains.ptides.kernel.PtidesTopLevelDirector
      */
     public PtidesTopLevelDirector(ptolemy.domains.ptides.kernel.PtidesTopLevelDirector ptidesTopLevelDirector) {
         super(ptidesTopLevelDirector);

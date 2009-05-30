@@ -31,7 +31,7 @@ import ptolemy.codegen.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////
-////PtidesDirector
+////PtidesTopLevelDirector
 
 /**
  Code generator helper associated with the PTIDESDirector class. This class
@@ -52,8 +52,8 @@ public class PtidesTopLevelDirector extends Director
 
     /** Construct the code generator helper associated with the given
      *  PTIDESDirector.
-     *  @param ptidesDirector The associated
-     *  ptolemy.domains.ptides.kernel.PtidesDirector
+     *  @param ptidesTopLevelDirector The associated
+     *  ptolemy.domains.ptides.kernel.PtidesTopLevelDirector
      */
     public PtidesTopLevelDirector(ptolemy.domains.ptides.kernel.PtidesTopLevelDirector ptidesTopLevelDirector) {
         super(ptidesTopLevelDirector);

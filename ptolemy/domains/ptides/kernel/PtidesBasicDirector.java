@@ -73,7 +73,7 @@ import ptolemy.vergil.kernel.attributes.VisibleAttribute;
  *  Assume the incoming event always has higher priority, so preemption always occurs.
  *  <p>
  *  The receiver used in this case is the PtidesBasicReceiver.
- *  @see #PtidesBasicReceiver
+ *  @see PtidesBasicReceiver
  *  
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$

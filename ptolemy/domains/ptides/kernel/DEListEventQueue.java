@@ -116,7 +116,6 @@ public class DEListEventQueue implements DEEventQueue {
      *  Also, the same event should not be taken out of the event queue and then put
      *  into the event queue multiple times.
      *  
-     *  @param index The index of this event in the event queue.
      *  @return The event associated with this index in the event queue.
      *  @throws InvalidStateException
      */
