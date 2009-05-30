@@ -111,8 +111,6 @@ import ptolemy.kernel.util.Workspace;
  however, can be somewhat subtle, particularly with domains that have fixed-point
  semantics and when nondeterministic transitions are used.
  The details are given below.
-
-
  <p>
  When a modal model is fired, this director first transfers the input tokens
  from the outside domain to the mode controller and the refinement of its
@@ -142,6 +140,14 @@ import ptolemy.kernel.util.Workspace;
  enabled transition are executed. Any output token produced by the refinements
  is transferred to both the output ports of the modal model and the input
  ports of the mode controller.
+ <p>
+ In a firing, it is possible that the current state refinement produces
+ an output, and a transition that is taken also produces an output on
+ the same port. In this case, only the second of these outputs will
+ appear on the output of the composite actor containing this director.
+ However, the first of these output values, the one produced by
+ the refinement, may affect whether the transition is taken.
+ That is, it can affect the guard.
  <p>
  At the end of one firing, the modal model transfers its outputs to the outside
  model. The mode controller does not change state during successive firings
