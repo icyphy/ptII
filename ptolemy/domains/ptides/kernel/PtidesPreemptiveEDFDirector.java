@@ -120,20 +120,27 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         DEEvent tempEvent;
         if (_eventToProcess == null) {
             // _eventToProcess is set in the following method.
-            // _peekingIndex is then updated.
-            _peekingIndex = _getSmallestDeadlineSafeEventFromQueue();
+            // _peekingIndex is also updated.
+            _getSmallestDeadlineSafeEventFromQueue();
         }
+        // if _preemptExecutingActor already decided on an event to process,
+        // that event is stored in _eventToProcess, and _peekingIndex is set
+        // to point to that event already.
         tempEvent = _eventToProcess;
+        // _eventToProcess is used to keep track of the preempting event.
+        // Now that we know what that event should be, _eventToProcess
+        // is cleared so that it could be used properly in the next iteration.
         _eventToProcess = null;
         return tempEvent;
     }
     
     /** This method finds the event in the queue that is of the smallest deadline
-     *  The event found is stored in _eventToProcess. This method then returns the
-     *  index of the event in the queue. If no event is found, then it returns -1.
+     *  The event found is stored in _eventToProcess. It then stores the
+     *  index of the event in _peekingIndex. TIf no event is found, this method
+     *  returns false, otherwise it returns true.
      *  @throws IllegalActionException
      */
-    protected int _getSmallestDeadlineSafeEventFromQueue() throws IllegalActionException {
+    protected boolean _getSmallestDeadlineSafeEventFromQueue() throws IllegalActionException {
 
         // clear _eventToProcess.
         _eventToProcess = null;
@@ -173,9 +180,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         }
         
         if (_eventToProcess == null) {
-            return -1;
+            return false;
         } else {
-            return result;
+            _peekingIndex = result;
+            return true;
         }
     }
 
@@ -195,7 +203,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
 
         // First, _eventToProcess is set to the event of smallest deadline in the queue.
         // If no event is found, then there's no preemption
-        if (_getSmallestDeadlineSafeEventFromQueue() < 0) {
+        if (!_getSmallestDeadlineSafeEventFromQueue()) {
             return false;
         }
         

@@ -71,7 +71,7 @@ public class PtidesCausalityInterface extends CausalityInterfaceForComposites {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Return a collection of ports the given pot is dependent on.
+    /** Return a collection of ports the given port is dependent on.
      * 
      *  @param port The given port to find finite dependent ports.
      *  @return Collection of finite dependent ports.

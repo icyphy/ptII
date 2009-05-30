@@ -584,73 +584,14 @@ public class PtidesBasicDirector extends DEDirector {
             ((TypedCompositeActor)container).requestChange(request);
         }
     }
-    
-    /** Put a pure event into the event queue to schedule the given actor to
-     *  fire at the specified timestamp.
-     *  <p>
-     *  The default microstep for the queued event is equal to zero,
-     *  unless the time is equal to the current time, where the microstep
-     *  will be the current microstep plus one.
-     *  </p><p>
-     *  The depth for the queued event is the minimum of the depths of
-     *  all the ports of the destination actor.
-     *  </p><p>
-     *  If there is no event queue or the given actor is disabled, then
-     *  this method does nothing.</p>
-     *
-     *  @param actor The actor to be fired.
-     *  @param time The timestamp of the event.
-     *  @exception IllegalActionException If the time argument is less than
-     *  the current model time, or the depth of the actor has not be calculated,
-     *  or the new event can not be enqueued.
-     */
-    protected void _enqueueEvent(Actor actor, Time time)
-            throws IllegalActionException {
-        if ((_eventQueue == null)
-                || ((_disabledActors != null) && _disabledActors
-                        .contains(actor))) {
-            return;
-        }
-
-        // Adjust the microstep.
-        int microstep = 0;
-
-        if (time.compareTo(getModelTime()) == 0) {
-            // If during initialization, do not increase the microstep.
-            // This is based on the assumption that an actor only requests
-            // one firing during initialization. In fact, if an actor requests
-            // several firings at the same time,
-            // only the first request will be granted.
-            if (_isInitializing) {
-                microstep = _microstep;
-            } else {
-                microstep = _microstep + 1;
-            }
-        } else if (time.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(actor,
-                    "Attempt to queue an event in the past:"
-                            + " Current time is " + getModelTime()
-                            + " while event time is " + time);
-        }
-
-        int depth = _getDepthOfActor(actor);
-
-        if (_debugging) {
-            _debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
-                    "time = " + time + " microstep = " + microstep
-                            + " depth = " + depth);
-        }
-
-        DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
-        _eventQueue.put(newEvent);
-    }
 
     /** Put a trigger event into the event queue.
      *  <p>
      *  The trigger event has the same timestamp as that of the director.
      *  The microstep of this event is always equal to the current microstep
      *  of this director. The depth for the queued event is the
-     *  depth of the destination IO port.
+     *  depth of the destination IO port. Finally, the token and the receiver
+     *  this token is destined for are also stored in the event.
      *  </p><p>
      *  If the event queue is not ready or the actor contains the destination
      *  port is disabled, do nothing.</p>
@@ -915,23 +856,12 @@ public class PtidesBasicDirector extends DEDirector {
         _trackLastTagConsumedByActor(eventFromQueue);
 
         List<DEEvent> eventsToProcess = _getAllSameTagEventsFromQueue(eventFromQueue);
-        //        Actor actorToFire = executingEvents.get(0).actor();
 
         Actor actorToFire = _getNextActorToFireForTheseEvents(eventsToProcess);
 
         Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
 
-        // If the events are pure events, then they should be processed immediately, instead
-        // of waiting for some execution time to pass.
-        // FIXME: this fix does not work.
-//        boolean processNow = false;
-//        for (DEEvent event : eventsToProcess) {
-//            if (event.ioPort() == null) {
-//                processNow = true;
-//            }
-//        }
-
-        if (executionTime.compareTo(_zero) == 0 ) { //|| processNow) {
+        if (executionTime.compareTo(_zero) == 0 ) {
             // If execution time is zero, return the actor.
             // It will be fired now.
             setTag(timeStampOfEventFromQueue, microstepOfEventFromQueue);
@@ -982,8 +912,6 @@ public class PtidesBasicDirector extends DEDirector {
                             + currentEventList.remainingExecutionTime);
                 }
             }
-            //            List eventList = new ArrayList();
-            //            eventList.add(eventFromQueue);
             _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue, 
                     microstepOfEventFromQueue, eventsToProcess, executionTime));
             _physicalTimeExecutionStarted = physicalTime;
