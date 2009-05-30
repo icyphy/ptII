@@ -20,10 +20,6 @@
         <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="60">
         </property>
     </property>
-    <property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 45.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example shows a single platform containing &#10;two sensors and one actuator.&#10;&#10;A sensor has a boolean attribute &quot;isSensor&quot; which is&#10;set to true, an actuator has an &quot;isActuator&quot; attribute.&#10;&#10;The attribute &quot;WCET&quot; specifies the worst case execution&#10;time of an actuator.&#10;&#10;The attribute &quot;minDelay&quot; of a port specifies the minimum&#10;model time delay. For ports in the same equivalence class, &#10;this attribute contains the same (minimum) value.">
         </property>
