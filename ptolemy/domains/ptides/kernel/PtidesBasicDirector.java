@@ -44,6 +44,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
@@ -130,13 +132,25 @@ public class PtidesBasicDirector extends DEDirector {
      * @param delay
      *            The real (timestamp) part of the delay.
      * @param index
-     *            The integer (microstep) part ofthe delay
+     *            The integer (microstep) part of the delay
      * @return A Superdense dependency representing a delay.
      */
     public Dependency delayDependency(double delay, int index) {
         return SuperdenseDependency.valueOf(delay, index);
     }
-        
+
+    /** Return a causality interface for the composite actor that
+     *  contains this director. This base class returns an
+     *  instance of {@link CausalityInterfaceForComposites}, but
+     *  subclasses may override this to return a domain-specific
+     *  causality interface.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports of the container.
+     */
+    public CausalityInterface getCausalityInterface() {
+        return new PtidesCausalityInterface((Actor)getContainer(), defaultDependency());
+    }
+    
     /** Get the current microstep.
      *  @return microstep of the current time.
      */
@@ -702,6 +716,20 @@ public class PtidesBasicDirector extends DEDirector {
                 "    <property name=\"fillColor\" value=\"{0.0, 1.0, 0.0, 1.0}\"/>" +
                 "  </property>";
     }
+    
+    /** Returns the minDelay parameter
+     *  @param port
+     *  @return minDelay parameter
+     *  @throws IllegalActionException
+     */
+    protected double _getMinDelay(IOPort port) throws IllegalActionException {
+        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
+        if (parameter != null) {
+            return ((DoubleToken)parameter.getToken()).doubleValue();
+        } else {
+            return 0.0;
+        }
+    }
 
     /** Return the actor to fire in this iteration, or null if no actor
      *  should be fired.
@@ -978,6 +1006,20 @@ public class PtidesBasicDirector extends DEDirector {
         Actor container = (Actor) getContainer();
         Director director = container.getExecutiveDirector();
         return director.getModelTime();
+    }
+    
+    /** Returns the realTimeDelay parameter
+     *  @param port
+     *  @return realTimeDelay parameter
+     *  @throws IllegalActionException
+     */
+    protected double _getRealTimeDelay(IOPort port) throws IllegalActionException {
+        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("realTimeDelay");
+        if (parameter != null) {
+            return ((DoubleToken)parameter.getToken()).doubleValue();
+        } else {
+            return 0.0;
+        }
     }
     
     /** Returns the relativeDeadline parameter
