@@ -2444,7 +2444,7 @@ public class Plot extends PlotBox {
                 if (prevypos != ypos || prevxpos != xpos) {
                     int updatedMarks = marks;
                     if (!(connectedFlag && point.connected) && marks == 0) {
-                        updatedMarks = 1; // dots   
+                        updatedMarks = 1; // marking style: points   
                     }
                     _drawPoint(graphics, dataset, xpos, ypos, true, updatedMarks);
                 }
@@ -2811,7 +2811,7 @@ public class Plot extends PlotBox {
                         if (prevypos != ypos) {
                             int updatedMarks = marks;
                             if (!(connectedFlag && point.connected) && marks == 0) {
-                                updatedMarks = 1; // dots   
+                                updatedMarks = 1; // marking style: points   
                             }                        
                             _drawPoint(graphics, dataset, xpos, ypos, true, updatedMarks);
                             prevypos = ypos;
