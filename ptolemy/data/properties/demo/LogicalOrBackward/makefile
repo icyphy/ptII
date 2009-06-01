@@ -69,7 +69,7 @@ OPTIONAL_FILES =
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, run 'make demo'"
+	@echo "To run the demo, run 'make run'"
 
 run:
 	"$(PTII)/bin/vergil" LogicalOrBackward.xml

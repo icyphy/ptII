@@ -67,7 +67,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run all the demos, run 'make demo'"
+	@echo "To run all the demos, run 'make run'"
 
 install: all
 
