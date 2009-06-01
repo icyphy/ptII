@@ -396,13 +396,14 @@ public class TransitionController extends BasicEdgeController {
                 return;
             }
 
-            super.actionPerformed(e);
-
-            NamedObj target = getTarget();
-
-            // If the target is not an instance of
-            // State or Transition, do nothing.
             try {
+                super.actionPerformed(e);
+
+                NamedObj target = getTarget();
+
+                // If the target is not an instance of
+                // State or Transition, do nothing.
+               
                 TypedActor[] refinements = null;
 
                 if (target instanceof Transition) {
