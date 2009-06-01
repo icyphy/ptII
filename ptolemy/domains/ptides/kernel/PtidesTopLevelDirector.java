@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This director is a placeholder for code generation at the platform level.
  *  <p>
  *  It is exactly the same as DEDirector, only named differently.
- *  @see DEDirector.java
+ *  @see ptolemy.domains.de.kernel.DEDirector.java
  *  
  *  @author Jia Zou
  *  @version $Id$
@@ -47,7 +47,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (cxh)
  *
  */
-// This 
 public class PtidesTopLevelDirector extends DEDirector {
     /** Construct a director with the specified container and name.
      *  @param container The container
