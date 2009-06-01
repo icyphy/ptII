@@ -52,8 +52,13 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
-	PtidesDirector.java \
-	PtidesEmbeddedDirector.java
+	PtidesBasicDirector.java \
+	PtidesTopLevelDirector.java
+	
+OTHER_FILES_TO_BE_JARED = \
+	PtidesBasicDirector.c \
+	PtidesTopLevelDirector.c
+	
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

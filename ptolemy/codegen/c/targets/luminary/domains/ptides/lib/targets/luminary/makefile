@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/targets/luminary
+ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/lib/targets/luminary
 
 DIRS =      
 
@@ -43,7 +43,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     ptides
+PTPACKAGE =     luminary
 
 PTCLASSJAR =
 

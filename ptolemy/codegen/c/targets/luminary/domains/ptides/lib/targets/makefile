@@ -43,14 +43,14 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     ptides
+PTPACKAGE =     targets
 
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
-	kernel/kernel.jar
+	targets/targets.jar
 
 JSRCS =
 EXTRA_SRCS =    $(JSRCS)
