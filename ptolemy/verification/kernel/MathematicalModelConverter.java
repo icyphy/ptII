@@ -143,22 +143,22 @@ public class MathematicalModelConverter extends Attribute {
             if (_model instanceof CompositeActor)
                 systemDescription.append(
                         SMVUtility.advancedGenerateSMVDescription(
-                                (CompositeActor) _model,
+                                (CompositeActor) _model.clone(),
                                 inputTemporalFormula, formulaType,
                                 variableSpanSize));
             else // FSMActor
                 systemDescription.append(
-                        ((FmvAutomaton)_model).convertToSMVFormat(
+                        ((FmvAutomaton)_model.clone()).convertToSMVFormat(
                             inputTemporalFormula, formulaType,
                             variableSpanSize));
             break;
-        case CTA:
-            systemDescription.append(
-                    REDUtility.generateREDDescription(
-                            (CompositeActor) _model,
-                            inputTemporalFormula, formulaType,
-                            variableSpanSize, FSMBufferSize));
-            break;
+        //case CTA:
+        //    systemDescription.append(
+        //            REDUtility.generateREDDescription(
+        //                    (CompositeActor) _model.clone(),
+        //                    inputTemporalFormula, formulaType,
+        //                    variableSpanSize, FSMBufferSize));
+        //    break;
         case Maude:
             if (_model instanceof CompositeActor)
                 if (template.getExpression().trim().equals("")) {
@@ -335,12 +335,13 @@ public class MathematicalModelConverter extends Attribute {
     }
 
     public enum ModelType {
-        CTA {
-            public String toString() {
-                return "Communicating Timed Automata (Acceptable by RED " +
-                        "under DE)";
-            }
-        }, Kripke {
+        //CTA {
+        //    public String toString() {
+        //        return "Communicating Timed Automata (Acceptable by RED " +
+        //                "under DE)";
+        //    }
+        //}, 
+        Kripke {
             public String toString() {
                 return "Kripke Structures (Acceptable by NuSMV under SR)";
             }
