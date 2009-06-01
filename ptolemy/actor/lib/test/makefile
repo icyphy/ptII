@@ -134,17 +134,20 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
+# We remove certain files from /tmp before and after running.
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
-		cleanFileWriter cleanRunCompositeActor test_auto
+		cleanFileWriter cleanRunCompositeActor test_auto \
+		cleanFileWriter cleanRunCompositeActor  \
 	$(JTCLSH) alljtests.tcl
 
-# auto/FileWriter1.xml creates this file, so we remove it before running
-# the tests
+
 # auto/FileWriter1.xml creates this file, so we remove it before running
 # the tests
 cleanFileWriter:
 	echo 'if [catch {file delete -force [file join [java::call System getProperty java.io.tmpdir] FileWriter1Output.txt]} errMsg ] {puts $$errMsg}; exit ' | $(JTCLSH)
 
+# auto/FileWriter1.xml creates this file, so we remove it before running
+# the tests
 cleanRunCompositeActor:
 	echo 'if [catch {file delete -force [file join [java::call System getProperty java.io.tmpdir] RunCompositeActor.txt]} errMsg ] {puts $$errMsg}; exit ' | $(JTCLSH)
 
