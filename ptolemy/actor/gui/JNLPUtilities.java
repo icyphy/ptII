@@ -222,7 +222,7 @@ public class JNLPUtilities {
         if (jarURLParentFileName.endsWith(parentEntryFileName)
                 && jarURLParentFileName.startsWith("jar:file:/")) {
             // The top level directory, probably $PTII
-            String jarURLTop = jarURLParentFileName.substring(10,
+            String jarURLTop = jarURLParentFileName.substring(9,
                     jarURLParentFileName.length()
                             - parentEntryFileName.length());
 
