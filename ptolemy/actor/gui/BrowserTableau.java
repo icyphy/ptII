@@ -120,7 +120,8 @@ public class BrowserTableau extends Tableau {
                 } catch (Exception ex) {
                     // We print out the error and move on.
                     // Eventually, this could be logged as a warning.
-                    System.out.println("Failed to save '" + url + ": " + ex);
+                    System.out.println("Failed to save '" + url + "': " + ex);
+                    ex.printStackTrace();
                 }
 
                 if (temporaryURL != null) {
