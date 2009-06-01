@@ -337,7 +337,7 @@ public class MathematicalModelConverter extends Attribute {
     public enum ModelType {
         //CTA {
         //    public String toString() {
-        //        return "Communicating Timed Automata (Acceptable by RED " +
+        //        return "Communicating Timed Automata (Acceptable by UPPAAL " +
         //                "under DE)";
         //    }
         //}, 
@@ -356,11 +356,11 @@ public class MathematicalModelConverter extends Attribute {
         CTL,
         LTL,
         TCTL,
-        Buffer {
-            public String toString() {
-                return "Buffer Overflow";
-            }
-        },
+        //Buffer {
+        //    public String toString() {
+        //        return "Buffer Overflow";
+        //    }
+        //},
         Risk,
         Reachability
     }
