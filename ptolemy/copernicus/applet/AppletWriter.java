@@ -61,6 +61,9 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -80,6 +83,16 @@ import soot.SceneTransformer;
  For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
  Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
  outputDirectory parameter.
+
+ <p>The model is traversed and jar files are found for each
+class.  If a model uses other code by reference at runtime,
+then if the model includes a parameter named "_jnlpClassesToJars",
+then that parameter is expected to be an array of two element arrays,
+where the first element is dot separated class name, and the
+second element is the slash separated path to the jar file.
+For example, <code>{{"ptolemy.domains.sdf.kernel.SDFDirectory",
+"ptolemy/domains/sdf/sdf.jar"}}</code> means that <code>sdf.jar</code>
+should be included in the jar files.
 
  <p>Potential future enhancements
  <menu>
@@ -622,12 +635,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (attributes.hasNext()) {
             Object object = attributes.next();
             String className = object.getClass().getName();
-            System.out.println("allAttributeJars1: " + object);
+            System.out.println("allAttributeJars1: " + object + " "
+                               + _getDomainJar(object
+                                       .getClass().getPackage().getName()));
+
             if (className.contains("ptolemy.codegen")) {
                 results.put(className, "ptolemy/codegen/codegen.jar");
             }
-            results.put(object.getClass().getName(), _getDomainJar(object
-                    .getClass().getPackage().getName()));
+            results.put(object.getClass().getName(), 
+                    _getDomainJar(object.getClass().getPackage().getName()));
         }
 
         // Get the attributes of the composites.  We need to traverse
@@ -698,6 +714,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             if (object instanceof AtomicActor) {
                 // Add in the Managers.
+                System.out.println("_allAtomicEntityJars2: "
+                        + ((AtomicActor) object).getDirector().getClass().getName() + " "
+                        + _getDomainJar(((AtomicActor) object)
+                                .getDirector().getClass().getPackage().getName()));
+
                 results.put(((AtomicActor) object).getDirector().getClass()
                         .getName(), _getDomainJar(((AtomicActor) object)
                         .getDirector().getClass().getPackage().getName()));
@@ -721,7 +742,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             if (componentEntity.getClass().getName().contains("ptolemy.actor.lib.jni")) {
 
                 System.out.println("_deepOpaqueEntityJars1: " + ((CompositeActor) componentEntity).getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getClass());
-
 
                 // This hack includes codegen.jar so that we can run codegen/demo/Butterfly/Butterfly.xml
                 results.put(((CompositeActor) componentEntity).getClass()
@@ -1074,7 +1094,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         Map classMap = _allAtomicEntityJars();
         classMap.putAll(_allAttributeJars(_model));
         classMap.putAll(_deepOpaqueEntityJars());
-        
+        classMap.putAll(_userSpecifiedJars());
+
         // Create a map of classes and their dependencies
         Map auxiliaryJarMap = new HashMap();
 
@@ -1179,12 +1200,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // list of directories.  Instead, we get the primary offenders.
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
+        jarFilesThatHaveBeenRequired.add("ptolemy/ptolemy.jar");
+        jarFilesThatHaveBeenRequired.add("ptolemy/kernel/kernel.jar");
 
         boolean fixJarFiles = _copyJarFiles(classMap,
                 jarFilesThatHaveBeenRequired);
 
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
+        jarFilesThatHaveBeenRequired.remove("ptolemy/ptolemy.jar");
+        jarFilesThatHaveBeenRequired.remove("ptolemy/kernel/kernel.jar");
 
         File potentialDomainJarFile = new File(_ptIIJarsPath, _domainJar);
 
@@ -1353,8 +1378,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String domainDomain = domainPackageDomain.substring(domainPackageDomain
                 .lastIndexOf(".") + 1);
 
-        return StringUtilities.substitute(domainPackageDomain, ".", "/") + "/"
+        String results = StringUtilities.substitute(domainPackageDomain, ".", "/") + "/"
                 + domainDomain + ".jar";
+        if (results.equals("ptolemy/ptolemy.jar")) {
+            return "ptolemy/ptsupport.jar";
+        }
+        return results;
     }
 
     /** Sign a jar file.
@@ -1380,7 +1409,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             keyPassword = properties.getProperty("keyPassword");
             alias = properties.getProperty("alias");
         } catch (IOException ex) {
-            System.err.println("Failed to read \"" + keystorePropertiesFileName
+            System.out.println("Warning: failed to read \"" + keystorePropertiesFileName
                     + "\", using default store password, key password and alias:" + ex);
         }
 
@@ -1524,6 +1553,47 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
             }
         }
+    }
+
+    // Return a Map that maps user specified classes to jar files.  
+    // The contents of _jnlpClassesToJars property is read, which,
+    // if present, is expected to be an array of two element arrays,
+    // where the first element is dot separated class name, and the
+    // second element is the slash separated path to the jar file.
+    // For example, <code>{{"ptolemy.domains.sdf.kernel.SDFDirectory",
+    // "ptolemy/domains/sdf/sdf.jar"}}</code> means that <code>sdf.jar</code>
+    // should be included in the jar files
+    private Map _userSpecifiedJars() {
+        String parameterName = "_jnlpClassesToJars";
+        Parameter jnlpClassesToJarsParameter = (Parameter) _model
+            .getAttribute(parameterName);
+        HashMap results = new HashMap();
+        if (jnlpClassesToJarsParameter == null) {
+            return results;
+        }
+
+        Token jnlpClassesToJarsToken = null;
+        try {
+            jnlpClassesToJarsToken = jnlpClassesToJarsParameter.getToken();
+            if (! (jnlpClassesToJarsToken instanceof ArrayToken)) {
+                return results;
+            }
+        } catch (Exception ex) {
+            System.out.println("Failed to parse " + parameterName
+                    + " " + jnlpClassesToJarsParameter);
+            ex.printStackTrace();
+            return results;
+        }
+
+        for (int i = 0; i < ((ArrayToken) jnlpClassesToJarsToken).length(); i++) {
+            ArrayToken classJarPair = (ArrayToken) ((ArrayToken) jnlpClassesToJarsToken).getElement(i);
+            String className = ((StringToken)(classJarPair.getElement(0))).stringValue();
+            String jarName = ((StringToken)(classJarPair.getElement(1))).stringValue();
+            System.out.println("_userSpecifiedJars(): adding " + className
+                    + " " + jarName);
+            results.put(className, jarName);
+        }
+        return results;
     }
 
     ///////////////////////////////////////////////////////////////////
