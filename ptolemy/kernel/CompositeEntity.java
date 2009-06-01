@@ -204,7 +204,7 @@ public class CompositeEntity extends ComponentEntity {
         return entities;
     }
 
-    /** Return a list that consists of all the composite entities in a
+    /** Return a list that consists of all the non-opaque composite entities in a
      *  model.  This method differs from allAtomicEntityList() in that
      *  this method returns CompositeEntities and
      *  allAtomicEntityList() returns atomic entities.  This method
