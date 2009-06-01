@@ -52,7 +52,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	multipleActorsHierarchyLoopFSM.xml
+	LogicalOrBackward.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -71,8 +71,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run the demo, run 'make demo'"
 
-demo:
-	"$(PTII)/bin/vergil" multipleActorsHierarchyLoopFSM.xml
+run:
+	"$(PTII)/bin/vergil" LogicalOrBackward.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

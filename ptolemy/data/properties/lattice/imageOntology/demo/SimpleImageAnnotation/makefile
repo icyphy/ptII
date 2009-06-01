@@ -71,8 +71,7 @@ all: jclass
 
 install: all
 
-demo: demo_vergil
-demo_vergil:
+run: 
 	"$(PTII)/bin/vergil" SimpleImageAnnotation.xml
 
 # Get the rest of the rules

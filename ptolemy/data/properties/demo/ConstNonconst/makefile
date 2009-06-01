@@ -71,7 +71,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run the demo, run 'make demo'"
 
-demo:
+run:
 	"$(PTII)/bin/vergil" ConstNonconst.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
