@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Helen256x256.png \
-	ImageReconstruction.xml
+	ImageReconstruction.xml \
+	PtolemyII256x256.png
 
 EXTRA_SRCS = \
 	$(JSRCS) \
