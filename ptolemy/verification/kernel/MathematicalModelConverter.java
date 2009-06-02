@@ -356,11 +356,11 @@ public class MathematicalModelConverter extends Attribute {
         CTL,
         LTL,
         TCTL,
-        //Buffer {
-        //    public String toString() {
-        //        return "Buffer Overflow";
-        //    }
-        //},
+        Buffer {
+            public String toString() {
+                return "Buffer Overflow";
+            }
+        },
         Risk,
         Reachability
     }
