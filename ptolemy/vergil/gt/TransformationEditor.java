@@ -50,6 +50,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
@@ -1796,6 +1797,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
 
         private File[] _getModelFiles() {
+            // FIXME: This method should return a URL[], not a File[] so that
+            // this method works properly with jar URLs and remote files.
             TransformationRule rule =
                 getFrameController().getTransformationRule();
             Pattern pattern = rule.getPattern();
@@ -1973,6 +1976,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             private List<MatchResult>[] _allResults;
 
+            // FIXME: This should be a URL[], not a File[] so that this code
+            // works properly with jar URLs and remote files.
             private File[] _files;
 
             private int _index;
@@ -2113,9 +2118,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         protected CompositeEntity _getModel(File file)
                 throws MalformedURLException, Exception {
             if (!file.exists()) {
-                MessageHandler.error("Model file " + file.getPath()
-                        + " does not exist.");
-                return null;
+                throw new FileNotFoundException("Model file \"" + file.getPath()
+                        + "\" does not exist.");
             }
 
             _parser.reset();
@@ -2378,10 +2382,16 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            new SingleViewController();
+            try {
+                new SingleViewController();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
-        private File _getModelFile() {
+        private File _getModelFile() throws FileNotFoundException {
+            // FIXME: This method should return a URL, not a File so that
+            // this method works properly with jar URLs and remote files.
             File modelFile = null;
             try {
                 TransformationRule rule =
@@ -2394,6 +2404,19 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         (FileParameter) attribute.parameter;
                     if (parameter.getExpression() != null) {
                         modelFile = parameter.asFile();
+                    }
+                    if (modelFile != null && !modelFile.exists()) {
+                        try {
+                            // If we get here, it could be because the DefaultModel
+                            // parameter was starts with $CLASSPATH.
+                            String path = parameter.asURL().getPath();
+                            if (path.startsWith("file:/")) {
+                                modelFile = new File(path);
+                            }
+                        } catch (Exception ex) {
+                            System.out.println("Problem looking up " + parameter + " as a URL");
+                            // Ignore
+                        }
                     }
                 }
 
@@ -2408,9 +2431,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 }
 
                 if (modelFile != null && !modelFile.exists()) {
-                    MessageHandler.error("Model file " + modelFile.getPath()
-                            + " does not exist.");
-                    return null;
+                    throw new FileNotFoundException("Model file \"" + modelFile.getPath()
+                        + "\" does not exist.");
                 }
 
                 return modelFile;
@@ -2446,8 +2468,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 }
             }
 
-            SingleViewController() {
+            SingleViewController() throws FileNotFoundException {
                 try {
+                    // FIXME: This method should return a URL, not a File so that
+                    // this method works properly with jar URLs and remote files.
                     File file = _getModelFile();
                     if (file == null) {
                         return;
