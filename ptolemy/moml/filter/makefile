@@ -51,6 +51,7 @@ JSRCS = \
 	AddEditorFactory.java \
 	AddIcon.java \
 	BackwardCompatibility.java \
+	ChangeFixedWidth1ToAuto.java \
 	ClassChanges.java \
 	GRColorChanges.java \
 	HideAnnotationNames.java \
