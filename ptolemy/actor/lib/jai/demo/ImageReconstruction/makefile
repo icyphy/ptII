@@ -47,6 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	Helen256x256.png \
 	ImageReconstruction.xml
 
 EXTRA_SRCS = \
