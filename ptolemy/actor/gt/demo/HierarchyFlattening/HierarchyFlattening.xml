@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchyFlattening" class="ptolemy.actor.gt.TransformationRule">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={301, 182, 797, 685}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={425, 102, 654, 697}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[569, 543]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 545]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.3196022727272, 85.7897727272727}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{284.3196022727272, 86.7897727272727}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -21,9 +21,11 @@
         </property>
         <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
             <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../test">
-<display name="Directory"/>            </property>
+                <display name="Directory"/>
+            </property>
             <property name="filter" class="ptolemy.data.expr.StringParameter" value="*_succ?.xml">
-<display name="File filter (*.xml)"/>            </property>
+                <display name="File filter (*.xml)"/>
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
@@ -128,7 +130,7 @@ directory ../../test/ (specified by the DefaultDirectory).</text></svg></configu
         <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
             <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/match.gif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[98.0, -93.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, -95.0]">
             </property>
             <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -158,7 +160,7 @@ multiple files (when the buttons are enabled).</text></svg></configure>
         <property name="Image3" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
             <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/previous.gif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[444.0, -63.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, -60.0]">
             </property>
             <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -166,7 +168,7 @@ multiple files (when the buttons are enabled).</text></svg></configure>
         <property name="Image4" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
             <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/next.gif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[504.0, -63.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, -60.0]">
             </property>
             <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -174,7 +176,7 @@ multiple files (when the buttons are enabled).</text></svg></configure>
         <property name="Image5" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
             <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/previousfile.gif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -43.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, -45.0]">
             </property>
             <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -182,7 +184,7 @@ multiple files (when the buttons are enabled).</text></svg></configure>
         <property name="Image6" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
             <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/nextfile.gif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, -43.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -45.0]">
             </property>
             <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -211,13 +213,13 @@ perform hierarchy flattening on it.</text></svg></configure>
         <property name="Image7" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
             <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/transform.gif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[451.0, 2.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 0.0]">
             </property>
             <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, -160.0]">
             </property>
         </entity>
     </entity>

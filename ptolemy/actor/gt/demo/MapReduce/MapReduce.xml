@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MapReduce" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 115, 935, 697}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 115, 817, 697}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 587]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 591]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.0, 293.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 295.5}">
     </property>
     <property name="ConfigureModel" class="ptolemy.actor.gt.controller.TransformationAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 180.0]">
@@ -2800,14 +2800,14 @@
         <link port="Stop.input" relation="relation2"/>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="ReadTest.map">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$(CLASSPATH)/ptolemy/actor/gt/demo/MapReduce/ReadTest.map">
         </property>
         <doc>Read one line at a time from a text file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 115.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={572, 360, 342, 244}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={572, 360, 326, 231}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 187]">
         </property>

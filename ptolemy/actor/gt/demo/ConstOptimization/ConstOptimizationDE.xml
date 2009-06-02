@@ -26,15 +26,15 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 677, 505}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[677, 399]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.5, 199.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
@@ -64,8 +64,35 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.domains.sdf.kernel.SDFDirector&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;}}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 375.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.data.expr.StringParameter" value="Used by the JNLP system">
+            </property>
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+    </property>
     <entity name="TransformationController" class="ptolemy.actor.gt.controller.TransformationController">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 195.0]">
         </property>
         <port name="finished" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -108,7 +135,7 @@
                         </property>
                         <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                             <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.input.getWidth() == 2">
+                                <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="A.input.getWidth() == 2">
                                 </property>
                                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -125,7 +152,7 @@
                                 </property>
                             </property>
                             <property name="Constraint2" class="ptolemy.actor.gt.Constraint">
-                                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.AddSubtract&quot;) &amp;&amp; A.input.getName().equals(&quot;plus&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.MultiplyDivide&quot;) &amp;&amp; A.input.getName().equals(&quot;multiply&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.Maximum&quot;)">
+                                <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.AddSubtract&quot;) &amp;&amp; A.input.getName().equals(&quot;plus&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.MultiplyDivide&quot;) &amp;&amp; A.input.getName().equals(&quot;multiply&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.Maximum&quot;)">
                                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                                         </property>
@@ -165,7 +192,7 @@
                                 </property>
                             </property>
                             <property name="Constraint3" class="ptolemy.actor.gt.Constraint">
-                                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.output.getWidth() == 1">
+                                <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="A.output.getWidth() == 1">
                                 </property>
                                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -209,6 +236,9 @@
                                 <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false/true/&quot;input&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false/true/&quot;output&quot;)">
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 100.0]">
+                                </property>
+                                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                    <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                 </property>
                             </entity>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -257,7 +287,7 @@
                             <link port="C1.criterion2" relation="relation"/>
                         </entity>
                     </entity>
-</configure>
+                </configure>
             </entity>
             <entity name="Test" class="ptolemy.domains.ptera.lib.Test">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -283,6 +313,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6578234828767375">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -305,6 +336,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.139271196171661">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -323,12 +355,14 @@
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Transform.matched">
-<display name="condition"/>                </property>
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5819804962962184">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1374285290546564">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -351,6 +385,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5139539015869775">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -369,12 +404,14 @@
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Transform.matched">
-<display name="condition"/>                </property>
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0385523057578437">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -412,7 +449,7 @@
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="BaseModel.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$(CLASSPATH)/ptolemy/actor/gt/demo/ConstOptimization/BaseModel.xml">
         </property>
         <doc>Read an entire file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 115.0]">
@@ -425,7 +462,7 @@
     <entity name="OptimizedModel" class="ptolemy.actor.gt.ModelView">
         <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="[700, 0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 195.0]">
         </property>
     </entity>
     <entity name="OriginalModel" class="ptolemy.actor.gt.ModelView">
@@ -433,11 +470,11 @@
         </property>
         <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 125.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 255.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -455,7 +492,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[300.0, 115.0]">
+        <vertex name="vertex1" value="[320.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
