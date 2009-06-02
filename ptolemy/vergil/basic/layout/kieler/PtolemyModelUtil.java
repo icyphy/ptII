@@ -1,4 +1,4 @@
-/*
+/* Static methods for manipulating Ptolemy models.
 @Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
 
@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/* Static methods for manipulating Ptolemy models.
- * 
- */
+
 package ptolemy.vergil.basic.layout.kieler;
 
 import java.util.ArrayList;
@@ -56,8 +54,11 @@ import ptolemy.moml.Vertex;
  * order to perform multiple changes at once for performance.
  * 
  * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
+ * @version $Id: PtidesTopLevelDirector.java 54093 2009-06-02 16:16:05Z bldmastr $
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
-
 public class PtolemyModelUtil {
 
     /**
@@ -67,15 +68,6 @@ public class PtolemyModelUtil {
         _momlChangeRequest = new StringBuffer();
         _nameSuffix = 0;
     }
-
-    // /////////////////////////////////////////////////////////////////
-    // // public variables ////
-
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
-
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
 
     /**
      * Create a new MoMLChangeRequest to add a new Relation. The MoML code is
@@ -99,10 +91,10 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Create a new MoMLChangeRequest to add a new Relation with a Vertex at a
-     * given position. The MoML code is appended to the field MoMLChangeRequest
-     * buffer to buffer multiple such requests. Don't actually execute the
-     * request.
+     * Create a new MoMLChangeRequest to add a new Relation with a
+     * Vertex at a given position. The MoML code is appended to the
+     * field MoMLChangeRequest buffer to buffer multiple such
+     * requests. Don't actually execute the request.
      * 
      *  * To flush the request, the method
      * {@link #_performChangeRequest(CompositeActor)} must be called.
@@ -130,11 +122,12 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Create a new MoMLChangeRequest to add a new link between arbitrary
-     * objects. The MoML code is appended to the field MoMLChangeRequest buffer
-     * to buffer multiple such requests. Don't actually execute the request.
-     * Supported types are given by MoML, e.g. "port", "relation". Connecting
-     * multiple relations requires to add a number, "relation1", "relation2" to
+     * Create a new MoMLChangeRequest to add a new link between
+     * arbitrary objects. The MoML code is appended to the field
+     * MoMLChangeRequest buffer to buffer multiple such
+     * requests. Don't actually execute the request.  Supported types
+     * are given by MoML, e.g. "port", "relation". Connecting multiple
+     * relations requires to add a number, "relation1", "relation2" to
      * the corresponding type.
      * 
      * To flush the request, the method
@@ -189,10 +182,11 @@ public class PtolemyModelUtil {
      * attribute, return double zero.
      * @param namedObj
      *          The Ptolemy object for which the location should be retrieved.
-     * @return
-     *          A double array containing two double values corresponding to the
-     *          location (x and y) of the object. Will return double zero if no
-     *          location attribute is set for the object. 
+
+     * @return A double array containing two double values
+     *          corresponding to the location (x and y) of the
+     *          object. Will return double zero if no location
+     *          attribute is set for the object.
      */
     protected static double[] _getLocation(NamedObj namedObj) {
         Attribute locationAttribute = namedObj.getAttribute("_location");
@@ -236,8 +230,9 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Check whether the given Ptolemy model object has any connections, i.e. is
-     * connected to any other components via some link.
+     * Check whether the given Ptolemy model object has any
+     * connections, i.e. is connected to any other components via some
+     * link.
      * 
      * @param namedObj
      *          The Ptolemy model object which is to be analyzed
@@ -310,10 +305,11 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Create a MoMLChangeRequest to move a Ptolemy model object and schedule it
-     * immediately. The request is addressed to a specific NamedObj in the
-     * Ptolemy model and hence does not get buffered because there is only
-     * exactly one move request per layout run per node.
+     * Create a MoMLChangeRequest to move a Ptolemy model object and
+     * schedule it immediately. The request is addressed to a specific
+     * NamedObj in the Ptolemy model and hence does not get buffered
+     * because there is only exactly one move request per layout run
+     * per node.
      * 
      * @param obj
      *            Ptolemy node to be moved
@@ -335,13 +331,16 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Create a MoMLChangeRequest to move a Ptolemy model object and schedule it
-     * immediately. The request is addressed to a specific NamedObj in the
-     * Ptolemy model and hence does not get buffered because there is only
-     * exactly one move request per layout run per node.
+     * Create a MoMLChangeRequest to move a Ptolemy model object and
+     * schedule it immediately. The request is addressed to a specific
+     * NamedObj in the Ptolemy model and hence does not get buffered
+     * because there is only exactly one move request per layout run
+     * per node.
      * 
-     * @param obj
+     * @param vertex
      *            Ptolemy node to be moved
+     * @param relation
+     *            Ptolemy Relation to be moved
      * @param x
      *            new coordinate
      * @param y
@@ -349,7 +348,8 @@ public class PtolemyModelUtil {
      */
     protected static void _setLocation(Vertex vertex, Relation relation,
             double x, double y) {
-        String moml = "<vertex name=\"" + vertex.getName() + "\" value=\"[" + x
+        String moml = "<vertex name=\"" + vertex.getName() + "\" value=\"["
+	        + x
                 + "," + y + "]\"></vertex>\n";
         // need to request a MoML Change for a particular Vertex
         // and not the
@@ -362,13 +362,13 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Create a unique name in the model nameset prefixed by the given prefix.
-     * This method actually does not guarantee this yet but tries brute force by
-     * adding some counting String. Problem with the uniqueName() method of
-     * CompositeActors is, that they will return always the same name while the
-     * corresponding objects are not yet added to the model, e.g. by buffering
-     * multiple relation creations in one MoMLChangeRequest which gets executed
-     * later.
+     * Create a unique name in the model nameset prefixed by the given
+     * prefix.  This method actually does not guarantee this yet but
+     * tries brute force by adding some counting String. Problem with
+     * the uniqueName() method of CompositeActors is, that they will
+     * return always the same name while the corresponding objects are
+     * not yet added to the model, e.g. by buffering multiple relation
+     * creations in one MoMLChangeRequest which gets executed later.
      * 
      * @param prefix
      * @return Unique name in the model context
@@ -380,9 +380,10 @@ public class PtolemyModelUtil {
 
     /**
      * StringBuffer for Requests of Model changes. In Ptolemy the main
-     * infrastructure to do model changes is through XML change requests of the
-     * XML representation. This field is used to collect all changes in one
-     * String and then carry them out in only one operation whereas possible.
+     * infrastructure to do model changes is through XML change
+     * requests of the XML representation. This field is used to
+     * collect all changes in one String and then carry them out in
+     * only one operation whereas possible.
      */
     private StringBuffer _momlChangeRequest;
 
