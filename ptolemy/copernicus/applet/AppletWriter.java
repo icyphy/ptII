@@ -454,6 +454,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@appletHeight@", Integer.toString(appletHeight));
         _substituteMap.put("@appletWidth@", Integer.toString(appletWidth));
         _substituteMap.put("@codeBase@", _codeBase);
+        _substituteMap.put("@configurationName@", _configurationName);
         _substituteMap.put("@jnlpJars@", _jnlpJars);
         _substituteMap.put("@modelJarFiles@", _modelJarFiles);
         _substituteMap.put("@outputDirectory@", _outputDirectory);
@@ -640,10 +641,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                        .getClass().getPackage().getName()));
 
             if (className.contains("ptolemy.codegen")) {
+                System.out.println("allAttributeJars2: " + object + " "
+                        + className + "ptolemy/codegen/codegen.jar");
                 results.put(className, "ptolemy/codegen/codegen.jar");
+            } else {
+                results.put(object.getClass().getName(), 
+                        _getDomainJar(object.getClass().getPackage().getName()));
             }
-            results.put(object.getClass().getName(), 
-                    _getDomainJar(object.getClass().getPackage().getName()));
         }
 
         // Get the attributes of the composites.  We need to traverse
@@ -1138,6 +1142,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String gtJar = "ptolemy/actor/gt/gt.jar";
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelGenerator", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelExecutor", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.TransformationMode", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.TransformationRule", gtJar);
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
 
@@ -1259,40 +1265,42 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             auxiliaryClassMap.put("codgen jar needs embeddedJava",
                 "ptolemy/actor/lib/embeddedJava/embeddedJava.jar");
         }
-        if (jarFilesThatHaveBeenRequired.contains(gtJar)) {
-            // gt requires multiple jar files
-            auxiliaryClassMap.put("gt jar needs ptera jar",
-                    "ptolemy/domains/ptera/ptera.jar");
-        }
-
-        if (jarFilesThatHaveBeenRequired.contains(jniJar)) {
-            // Ptalon requires multiple jar files
-            auxiliaryClassMap.put("jni jar needs codegen jar",
-                    "ptolemy/codegen/codegen.jar");
-        }
-
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/psdf/psdf.jar")) {
-            // colt requires multiple jar files
-            auxiliaryClassMap.put("psdf requires mapss",
-                    "lib/mapss.jar");
-        }
-
-        if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
-            // Ptalon requires multiple jar files
-            auxiliaryClassMap.put("ptalon jar needs antlr jar",
-                    "ptolemy/actor/ptalon/antlr/antlr.jar");
-        }
-
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/ptera/ptera.jar")) {
+        if (jarFilesThatHaveBeenRequired.contains(gtJar)
+                || jarFilesThatHaveBeenRequired.contains("ptolemy/domains/ptera/ptera.jar")) {
+            if (jarFilesThatHaveBeenRequired.contains(gtJar)) {
+                // gt requires multiple jar files
+                auxiliaryClassMap.put("gt jar needs ptera jar",
+                        "ptolemy/domains/ptera/ptera.jar");
+            }
             auxiliaryClassMap.put("ptera jar needs vergil ptera jar",
                     "ptolemy/vergil/ptera/ptera.jar");
 
             auxiliaryClassMap.put("ptera lib Plot needs DEDirector",
                     "ptolemy/domains/de/de.jar");
+            _configurationName = "-fullViewer";
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(jniJar)) {
+            auxiliaryClassMap.put("jni jar needs codegen jar",
+                    "ptolemy/codegen/codegen.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/psdf/psdf.jar")) {
+            auxiliaryClassMap.put("psdf requires mapss",
+                    "lib/mapss.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/actor/ptalon/gt/gt.jar")
+                || jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
+            if (jarFilesThatHaveBeenRequired.contains("ptolemy/actor/ptalon/gt/gt.jar")) {
+                auxiliaryClassMap.put("ptalon/gt jar needs ptalon jar",
+                        "ptolemy/actor/ptalon/ptalon.jar");
+            }
+            auxiliaryClassMap.put("ptalon jar needs antlr jar",
+                    "ptolemy/actor/ptalon/antlr/antlr.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(pythonJar)) {
-            // Ptalon requires multiple jar files
             auxiliaryClassMap.put("python jar needs jython jar",
                     "lib/jython.jar");
         }
@@ -1600,6 +1608,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     ////                         private variables                 ////
     // The relative path to $PTII, for example "../../..".
     private String _codeBase = null;
+
+    // The Ptolemy configuration to use.  Defaults to "-ptinyViewer",
+    // which means that files from $PTII/ptolemy/configs/ptinyViewer/
+    // are used.  Other values include "-fullViewer", which is selected
+    // if gt is used in the model. 
+    private String _configurationName = "-ptinyViewer";
 
     // The path to the jar file containing the domain classes,
     // for example "ptolemy/domains/sdf/sdf.jar".
