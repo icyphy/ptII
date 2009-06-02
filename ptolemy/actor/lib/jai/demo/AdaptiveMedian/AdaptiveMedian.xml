@@ -61,7 +61,7 @@
         </property>
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen.png">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/jai/demo/AdaptiveMedian/Helen.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
