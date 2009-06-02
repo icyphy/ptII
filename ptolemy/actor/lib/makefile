@@ -195,6 +195,7 @@ JSRCS = \
 	RecursiveLattice.java \
 	Remainder.java \
 	RemoveNilTokens.java \
+	ResettableTimer.java \
 	Rician.java \
 	Scale.java \
 	Select.java \
@@ -219,6 +220,7 @@ JSRCS = \
 	TestExceptionHandler.java \
 	ThrowException.java \
 	ThrowModelError.java \
+	TimeDelay.java \
 	TimedSource.java \
 	Transformer.java \
 	Triangular.java \
@@ -248,6 +250,7 @@ OTHER_FILES_TO_BE_JARED = \
 	GaussianIcon.xml \
 	TriangularIcon.xml \
 	PowerEstimate.xml \
+	ResettableTimerIcon.xml \
 	SelectIcon.xml \
 	Sinewave.xml \
 	SwitchIcon.xml \
