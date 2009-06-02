@@ -64,7 +64,7 @@ public class RelationWidthChanges implements MoMLFilter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Filter relations widths and change 0 to -1..
+    /** Filter relations widths and change 0 to -1.
      *  @param container  The container for XML element.
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
