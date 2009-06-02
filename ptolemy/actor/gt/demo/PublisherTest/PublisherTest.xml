@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PublisherTest" class="ptolemy.actor.gt.TransformationRule">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={241, 153, 742, 469}, maximized=false}">
     </property>
@@ -32,9 +32,11 @@
         </property>
         <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
             <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../../lib/test/auto">
-<display name="Directory"/>            </property>
+                <display name="Directory"/>
+            </property>
             <property name="filter" class="ptolemy.data.expr.StringParameter" value="Publisher*.xml">
-<display name="File filter (*.xml)"/>            </property>
+                <display name="File filter (*.xml)"/>
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
@@ -82,10 +84,15 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -100.0]">
             </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"/>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"/>
+</svg>
+</configure>
+            </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <vertex name="vertex1" value="[50.0, -100.0]">
             </vertex>
         </relation>
@@ -113,6 +120,13 @@
                 </property>
                 <property name="replacementObject" class="ptolemy.actor.gt.ReplacementObjectAttribute" value="E:CompositeActor.AtomicActorMatcher">
                 </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg>
+<rect x="-30" y="-20" width="60" height="40" style="fill:white"/>
+<polygon points="-20,-10 20,0 -20,10" style="fill:blue"/>
+</svg>
+</configure>
+                </property>
             </entity>
             <entity name="Test" class="ptolemy.actor.lib.Test">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 270.0]">
@@ -132,8 +146,6 @@
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <vertex name="vertex1" value="[125.0, 200.0]">
                 </vertex>
                 <property name="replacementObject" class="ptolemy.actor.gt.ReplacementObjectAttribute" value="R:CompositeActor.relation">
@@ -144,8 +156,6 @@
             <link port="Test.input" relation="relation"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <vertex name="vertex1" value="{125.0, 135.0}">
             </vertex>
             <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">

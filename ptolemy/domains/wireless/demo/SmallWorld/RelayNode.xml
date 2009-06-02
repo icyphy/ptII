@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="RelayNode" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -67,8 +67,6 @@
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-        </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -124,14 +122,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 40.0">
         </property>
     </property>
-    <property name="model ID" class="ptolemy.kernel.attributes.IDAttribute">
+    <property name="model ID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
+        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Jun 2, 2009 3:03:20 PM">
+        </property>
         <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 14, 2004 12:29:18 PM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 50.0">
         </property>

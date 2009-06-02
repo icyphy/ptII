@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="ErrorGenerator" extends="ptolemy.domains.ptera.kernel.PteraModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <port name="ErrorIn" class="ptolemy.domains.fsm.modal.ModalPort">
         <property name="input"/>
@@ -164,6 +164,7 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.306341254733026">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -186,6 +187,7 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4617754476273435">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -206,12 +208,14 @@
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==0&#10;&amp;&amp; ErrorIn_isPresent">
-<display name="condition"/>            </property>
+                <display name="condition"/>
+            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42302937080469905">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.658187147214215">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -230,12 +234,14 @@
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==1&#10;&amp;&amp; OkIn_isPresent">
-<display name="condition"/>            </property>
+                <display name="condition"/>
+            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.5053197973926118">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.101408345872705">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -258,6 +264,7 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.8860447513202603">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -278,12 +285,14 @@
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==0&#10;&amp;&amp; ErrorIn_isPresent">
-<display name="condition"/>            </property>
+                <display name="condition"/>
+            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.22724458090317992">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.09368217665959318">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -306,6 +315,7 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.7157603195197797">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -328,6 +338,7 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4526279688533228">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="initialize"/>
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -360,20 +371,12 @@
         <link port="ok.outgoingPort" relation="relation9"/>
     </entity>
     <relation name="ErrorInRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="OkInRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="ErrorOutRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="OkOutRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="ErrorIn" relation="ErrorInRelation"/>
     <link port="OkIn" relation="OkInRelation"/>

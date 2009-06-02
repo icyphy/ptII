@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -269,7 +269,7 @@ order.</text></svg></configure>
         </configure>
     </entity>
     <entity name="Regular Bus Arrivals" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="regularBusArrivalRate">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="regularBusArrivalRate">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
@@ -386,11 +386,13 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <link port="Const.trigger" relation="relation9"/>
     </entity>
     <entity name="Display Average Waiting Times" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 430, 108}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="60">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 430, 108}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 395.0]">
         </property>

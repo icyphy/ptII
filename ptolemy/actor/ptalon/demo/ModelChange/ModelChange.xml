@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModelChange" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 50}">
@@ -40,6 +40,7 @@
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.ModelChange.ModelChange">
+                <ptalonParameter name="node" value="ptolemy.domains.de.lib.SingleEvent"/>
                 <ptalonExpressionParameter name="n" value="n"/>
             </ptalon>
         </configure>
@@ -65,8 +66,6 @@
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="ModelChange.myoutput" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation"/>

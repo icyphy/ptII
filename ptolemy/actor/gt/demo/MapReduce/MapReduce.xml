@@ -95,14 +95,10 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
@@ -159,12 +155,8 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <link port="Map.outputKeys" relation="relation"/>
                                     <link port="Map.outputValues" relation="relation2"/>
@@ -429,26 +421,16 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[290.0, 185.0]">
                                         </vertex>
                                     </relation>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <link port="LineReader.output" relation="relation3"/>
                                     <link port="LineReader.endOfFile" relation="relation"/>
@@ -579,44 +561,28 @@
                                             </property>
                                         </entity>
                                         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                             <vertex name="vertex1" value="[375.0, 175.0]">
                                             </vertex>
                                             <property name="setReduceCount" class="ptolemy.data.expr.Parameter" value="true">
                                             </property>
                                         </relation>
                                         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                             <vertex name="vertex1" value="[480.0, 230.0]">
                                             </vertex>
                                             <property name="setReduceCount" class="ptolemy.data.expr.Parameter" value="true">
                                             </property>
                                         </relation>
                                         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <link port="inputKeys" relation="relation3"/>
                                         <link port="inputValues" relation="relation4"/>
@@ -636,48 +602,32 @@
                                         <link port="storage.doneEmitting" relation="relation6"/>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[290.0, 185.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
                                         </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation3">
                                         </property>
                                     </relation>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation2">
                                         </property>
                                     </relation>
                                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation4">
                                         </property>
                                     </relation>
                                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation5">
                                         </property>
                                     </relation>
                                     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <link port="LineReader.output" relation="relation2"/>
                                     <link port="LineReader.endOfFile" relation="relation"/>
@@ -868,14 +818,10 @@
                                         </property>
                                     </entity>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[285.0, 205.0]">
                                         </vertex>
                                     </relation>
                                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <link port="Reduce.doneReceiving" relation="relation3"/>
                                     <link port="Reduce.output" relation="relation4"/>
@@ -966,32 +912,20 @@
                                             </property>
                                         </entity>
                                         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                         </relation>
                                         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                             <vertex name="vertex1" value="[175.0, 145.0]">
                                             </vertex>
                                             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
                                             </property>
                                         </relation>
                                         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                            </property>
                                             <vertex name="vertex1" value="[140.0, 205.0]">
                                             </vertex>
                                             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
@@ -1011,22 +945,16 @@
                                         <link port="converter.output" relation="relation4"/>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[285.0, 205.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation3">
                                         </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation4">
                                         </property>
                                     </relation>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                     </relation>
                                     <link port="Reduce.doneReceiving" relation="relation"/>
                                     <link port="Reduce.output" relation="relation2"/>
@@ -1168,8 +1096,6 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setMapCount&quot;/false//true/&quot;true&quot;)">
@@ -1195,8 +1121,6 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1229,8 +1153,6 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setReduceCount&quot;/false//true/&quot;true&quot;)">
@@ -1256,8 +1178,6 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1531,8 +1451,6 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[215.0, 95.0]">
                                         </vertex>
                                     </relation>
@@ -1648,8 +1566,6 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setMapCount&quot;/false//true/&quot;true&quot;)">
@@ -1675,8 +1591,6 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1709,8 +1623,6 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setReduceCount&quot;/false//true/&quot;true&quot;)">
@@ -1736,8 +1648,6 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1937,8 +1847,6 @@
                                         </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <vertex name="vertex1" value="[170.0, 130.0]">
                                         </vertex>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
@@ -2210,8 +2118,6 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
@@ -2270,8 +2176,6 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
@@ -2506,16 +2410,10 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <link port="keys" relation="relation"/>
         <link port="values" relation="relation2"/>
@@ -2586,40 +2484,24 @@
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="setReduceCount" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="setReduceCount" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <link port="inputKeys" relation="relation3"/>
         <link port="inputValues" relation="relation4"/>
@@ -2676,30 +2558,18 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
@@ -2756,32 +2626,20 @@
             </property>
         </entity>
         <relation name="mergeOut" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="filterOut" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <vertex name="vertex1" value="[85.0, 225.0]">
             </vertex>
             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
@@ -2822,46 +2680,26 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex" value="[340.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="Split.keys" relation="relation4"/>
     <link port="Split.values" relation="relation5"/>

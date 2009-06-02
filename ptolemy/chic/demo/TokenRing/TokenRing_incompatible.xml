@@ -2,13 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TokenRing_incompatible" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 612]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[2, 12]">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
         <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -17,11 +19,7 @@
                 </property>
             </property>
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
-        </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -80,18 +78,14 @@ This example is from:
         </property>
     </property>
     <property name="chic" class="ptolemy.chic.ChicInvoker">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.chic.ChicControllerFactory">
-        </property>
         <property name="InterfaceName" class="ptolemy.kernel.util.StringAttribute" value="synag">
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="745.0, 280.0">
         </property>
     </property>
     <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Request1__Block1__Block3__Block1__Request2__Request3&#10;input .IncorrectTokenRing.Request1.trigger, .IncorrectTokenRing.Request2.trigger, .IncorrectTokenRing.Request3.trigger;&#10;output .IncorrectTokenRing.Request1.output, .IncorrectTokenRing.Block2.TO, .IncorrectTokenRing.Block2.PO, .IncorrectTokenRing.Block2.G, .IncorrectTokenRing.Block3.TO, .IncorrectTokenRing.Block3.PO, .IncorrectTokenRing.Block3.G, .IncorrectTokenRing.Block1.TO, .IncorrectTokenRing.Block1.PO, .IncorrectTokenRing.Block1.G, .IncorrectTokenRing.Request2.output, .IncorrectTokenRing.Request3.output;&#10;&#10;state a__a__a__b__a__a&#10;assume (1) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=0)((.IncorrectTokenRing.Block1.TO=1)((.IncorrectTokenRing.Block3.TO=0)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;state a__a__a__a__a__a&#10;assume (1) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=0)((.IncorrectTokenRing.Block1.TO=0)((.IncorrectTokenRing.Block3.TO=0)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;state a__a__b__b__a__a&#10;assume (0) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=0)((.IncorrectTokenRing.Block1.TO=1)((.IncorrectTokenRing.Block3.TO=1)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;state a__a__b__a__a__a&#10;assume (1) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=0)((.IncorrectTokenRing.Block1.TO=0)((.IncorrectTokenRing.Block3.TO=1)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;state a__b__a__b__a__a&#10;assume (0) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=1)((.IncorrectTokenRing.Block1.TO=1)((.IncorrectTokenRing.Block3.TO=0)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;state a__b__a__a__a__a&#10;assume (1) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=1)((.IncorrectTokenRing.Block1.TO=0)((.IncorrectTokenRing.Block3.TO=0)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;state a__b__b__b__a__a&#10;assume (0) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=1)((.IncorrectTokenRing.Block1.TO=1)((.IncorrectTokenRing.Block3.TO=1)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;state a__b__b__a__a__a&#10;assume (0) &#10;guarantee ((.IncorrectTokenRing.Request1.output=1)((.IncorrectTokenRing.Block2.TO=1)((.IncorrectTokenRing.Block1.TO=0)((.IncorrectTokenRing.Block3.TO=1)((.IncorrectTokenRing.Request2.output=1)((.IncorrectTokenRing.Request3.output=1)) ) ) ) ) ) &#10;&#10;&#10;end&#10;">
-        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-        </property>
     </property>
     <entity name="Request1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -106,34 +100,21 @@ This example is from:
             </property>
         </property>
         <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Request1&#10;&#10;input trigger;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee output;&#10;&#10;end&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
-    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 490.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Block2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 385.0">
@@ -143,6 +124,8 @@ This example is from:
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[0, 0]">
         </property>
         <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -151,14 +134,10 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
             </property>
         </property>
         <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Block2&#10;&#10;input TI, PI, R;&#10;output TO, PO, G;&#10;&#10;state b&#10;assume !TI;&#10;guarantee TO;&#10;true -&gt; a;&#10;&#10;state a&#10;assume true;&#10;guarantee !TO;&#10;true -&gt; b;&#10;&#10;end&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            </property>
         </property>
         <port name="PI" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -215,13 +194,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 340.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -244,13 +216,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -273,13 +238,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 210.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NAND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="nand">
@@ -302,18 +260,11 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 400.0">
             </property>
@@ -380,10 +331,10 @@ This example is from:
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[0, 0]">
         </property>
         <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Block3&#10;&#10;input TI, PI, R;&#10;output TO, PO, G;&#10;&#10;state a&#10;assume true;&#10;guarantee !TO;&#10;true -&gt; b;&#10;&#10;state b&#10;assume !TI;&#10;guarantee TO;&#10;true -&gt; a;&#10;&#10;end&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            </property>
         </property>
         <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -391,8 +342,6 @@ This example is from:
                     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                     </property>
                 </property>
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 45.0">
             </property>
@@ -452,13 +401,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 340.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -481,13 +423,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -510,13 +445,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 210.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NAND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="nand">
@@ -539,18 +467,11 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 400.0">
             </property>
@@ -617,12 +538,12 @@ This example is from:
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[130, 140]">
         </property>
         <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Block1&#10;&#10;input TI, PI, R;&#10;output TO, PO, G;&#10;&#10;state b&#10;assume !TI;&#10;guarantee TO;&#10;true -&gt; a;&#10;&#10;state a&#10;assume true;&#10;guarantee !TO;&#10;true -&gt; b;&#10;&#10;end&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 14, 1019, 739}}">
         </property>
         <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -630,8 +551,6 @@ This example is from:
                     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                     </property>
                 </property>
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 45.0">
             </property>
@@ -691,13 +610,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 340.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -720,13 +632,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -749,13 +654,6 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 210.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NAND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="nand">
@@ -778,18 +676,11 @@ This example is from:
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 400.0">
             </property>
@@ -861,16 +752,7 @@ This example is from:
             </property>
         </property>
         <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Request2&#10;&#10;input trigger;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee output;&#10;&#10;end&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Request3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -885,21 +767,10 @@ This example is from:
             </property>
         </property>
         <property name="synag" class="ptolemy.chic.ChicAttribute" value="interface Request3&#10;&#10;input trigger;&#10;output output;&#10;&#10;state a&#10;assume true;&#10;guarantee output;&#10;&#10;end&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 66, 508, 355}}">
         </property>
@@ -913,10 +784,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 575.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -937,12 +804,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 575.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
@@ -951,12 +812,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 535.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="2:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
@@ -965,12 +820,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 500.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

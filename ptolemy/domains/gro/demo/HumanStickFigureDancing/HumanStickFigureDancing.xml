@@ -340,8 +340,6 @@
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <link port="songName" relation="relation6"/>
         <link port="SetVariable.input" relation="relation7"/>

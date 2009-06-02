@@ -48,13 +48,11 @@
             </property>
             <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
             </property>
-            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_codeGeneratorGUIFactory" class="ptolemy.cg.gui.CodeGeneratorGUIFactory">
-            </property>
             <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -92,8 +90,6 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">

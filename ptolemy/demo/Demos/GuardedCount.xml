@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GuardedCount" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 933, 629}, maximized=false}">
     </property>
@@ -27,13 +27,11 @@
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.sr.kernel.SROptimizedScheduler">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 95.0]">
+        <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.sr.kernel.SROptimizedScheduler">
         </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 95.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -62,12 +60,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 20.0]">
         </property>
     </property>
-    <entity name="DisplayCount" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="DisplayCount" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 350, 150, 414}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="21">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 350, 150, 414}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 235.0]">
         </property>
@@ -335,12 +335,14 @@
         <link port="Comparator2.output" relation="relation12"/>
         <link port="Const3.output" relation="relation11"/>
     </entity>
-    <entity name="DisplayEnable" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="DisplayEnable" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={306, 351, 150, 414}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="21">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={306, 351, 150, 414}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 320.0]">
         </property>
@@ -348,8 +350,6 @@
     <entity name="EnabledComposite" class="ptolemy.domains.sr.lib.EnabledComposite">
         <property name="SRDirector" class="ptolemy.domains.sr.kernel.SRDirector">
             <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.sr.kernel.SROptimizedScheduler">
-            </property>
-            <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 245.0]">
@@ -404,12 +404,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
             </property>
         </entity>
-        <entity name="DisplayCountRequests" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+        <entity name="DisplayCountRequests" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 350, 150, 414}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
             <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="21">
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 350, 150, 414}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 165.0]">
             </property>

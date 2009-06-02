@@ -242,18 +242,12 @@
                                 </property>
                             </entity>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                </property>
                                 <vertex name="vertex1" value="[345.0, 120.0]">
                                 </vertex>
                             </relation>
                             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                </property>
                             </relation>
                             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                </property>
                             </relation>
                             <link port="C1.criterion2" relation="relation2"/>
                             <link port="C2.criterion2" relation="relation3"/>
@@ -277,8 +271,6 @@
                                 </property>
                             </entity>
                             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                                </property>
                                 <vertex name="vertex1" value="[345.0, 120.0]">
                                 </vertex>
                                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -438,8 +430,6 @@
             <link port="Finish.incomingPort" relation="relation_1_5"/>
         </entity>
         <relation name="finishedRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <link port="finished" relation="finishedRelation"/>
         <link port="_Controller.finished" relation="finishedRelation"/>
@@ -478,26 +468,16 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[320.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="TransformationController.modelInput" relation="relation5"/>
     <link port="TransformationController.modelOutput" relation="relation4"/>

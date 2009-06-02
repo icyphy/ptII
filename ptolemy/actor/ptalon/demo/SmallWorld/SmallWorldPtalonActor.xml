@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmallWorldPtalonActor" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 929, 616}, maximized=false}">
     </property>
@@ -308,6 +308,11 @@ Based on $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml</text></s
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.SmallWorld.SmallWorld">
+                <ptalonParameter name="node" value="ptolemy.actor.ptalon.demo.SmallWorld.RelayNode"/>
+                <ptalonParameter name="channel" value="ptolemy.domains.wireless.lib.LimitedRangeChannel"/>
+                <ptalonParameter name="initiator" value="ptolemy.actor.ptalon.demo.SmallWorld.Initiator"/>
+                <ptalonParameter name="wirelessToWired" value="ptolemy.domains.wireless.lib.WirelessToWired"/>
+                <ptalonParameter name="nodeRandomizer" value="ptolemy.domains.wireless.lib.NodeRandomizer"/>
                 <ptalonExpressionParameter name="n" value="49"/>
                 <ptalonExpressionParameter name="channelName" value="channelName"/>
                 <ptalonExpressionParameter name="reportChannelName" value="reportChannelName"/>

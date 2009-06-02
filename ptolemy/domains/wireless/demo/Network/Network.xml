@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Network" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
@@ -25,9 +25,9 @@
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is still underconstrution">
-        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is still underconstrution">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 280.0">
         </property>
@@ -657,7 +657,7 @@
                             </property>
                         </port>
                         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+                            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                             </property>
                             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                                 <configure>
@@ -748,7 +748,9 @@
                                 </property>
                             </port>
                             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
-                                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
@@ -756,7 +758,7 @@
                                 </property>
                             </entity>
                             <entity name="CS_noNAV" class="ptolemy.domains.fsm.kernel.State">
-                                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
@@ -764,7 +766,7 @@
                                 </property>
                             </entity>
                             <entity name="CS_NAV" class="ptolemy.domains.fsm.kernel.State">
-                                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
@@ -772,7 +774,7 @@
                                 </property>
                             </entity>
                             <entity name="noCS_noNAV" class="ptolemy.domains.fsm.kernel.State">
-                                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
@@ -780,7 +782,7 @@
                                 </property>
                             </entity>
                             <entity name="noCS_NAV" class="ptolemy.domains.fsm.kernel.State">
-                                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
@@ -788,7 +790,7 @@
                                 </property>
                             </entity>
                             <entity name="waitIFS" class="ptolemy.domains.fsm.kernel.State">
-                                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                                 </property>
@@ -1512,6 +1514,8 @@
             </entity>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}, maximized=false}">
+                </property>
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 70.0">
                 </property>

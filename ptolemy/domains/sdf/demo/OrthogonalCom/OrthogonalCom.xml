@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="OrthogonalCom" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
@@ -50,7 +50,7 @@ See $PTII/doc/copernicus.htm for details.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{396.5, 269.5}">
     </property>
     <entity name="bitSource" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 360.0">
         </property>
@@ -88,7 +88,7 @@ See $PTII/doc/copernicus.htm for details.</text></svg></configure>
         </property>
     </entity>
     <entity name="Gaussian Noise" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>

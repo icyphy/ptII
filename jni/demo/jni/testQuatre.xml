@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testQuatre" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 0, 991, 758}, maximized=false}">
     </property>
@@ -98,7 +98,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
@@ -144,7 +144,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
     <entity name="Clock3" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
@@ -159,7 +159,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
     <entity name="Clock4" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MapReduceLinkGraph" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 162, 890, 553}, maximized=false}">
     </property>
@@ -45,6 +45,10 @@
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.MapReduce.MapReduce">
+                <ptalonParameter name="split" value="ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Split"/>
+                <ptalonParameter name="map" value="ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Map"/>
+                <ptalonParameter name="reduce" value="ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Reduce"/>
+                <ptalonParameter name="stop" value="ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.WaitingStop"/>
                 <ptalonExpressionParameter name="fileNamePrefix" value="&quot;LinkGraph&quot;"/>
                 <ptalonExpressionParameter name="className" value="&quot;ptolemy.actor.ptalon.lib.ReverseLink&quot;"/>
                 <ptalonExpressionParameter name="numberOfMachines" value="5"/>
@@ -52,8 +56,6 @@
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="Display.input" relation="relation"/>
     <link port="MapReduce.status" relation="relation"/>

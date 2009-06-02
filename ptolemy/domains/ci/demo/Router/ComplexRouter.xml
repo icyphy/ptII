@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ComplexRouter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[785, 463]">
     </property>
@@ -142,13 +142,11 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 70.0">
             </property>
@@ -165,24 +163,12 @@
         <entity name="Counter" class="ptolemy.actor.lib.Counter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 230.0">
             </property>
-            <port name="increment" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="decrement" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 180.0">
             </property>
             <property name="data" class="ptolemy.data.expr.Parameter">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
             <port name="data" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -191,20 +177,18 @@
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 200, 290, 227}}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
             <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Fast Interface">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 200, 290, 227}}">
+            <property name="title" class="ptolemy.data.expr.StringParameter" value="Packets from the Fast Interface">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="160.0, 170.0">
@@ -249,13 +233,11 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 70.0">
             </property>
@@ -272,24 +254,12 @@
         <entity name="Counter" class="ptolemy.actor.lib.Counter">
             <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 230.0">
             </property>
-            <port name="increment" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="decrement" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 180.0">
             </property>
             <property name="data" class="ptolemy.data.expr.Parameter">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
             <port name="data" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -298,20 +268,18 @@
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 287, 290, 227}}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
             <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Slow Interface">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 287, 290, 227}}">
+            <property name="title" class="ptolemy.data.expr.StringParameter" value="Packets from the Slow Interface">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="160.0, 170.0">
@@ -372,9 +340,6 @@
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="{unsignedByte}">
             </property>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
         </port>
     </entity>
     <entity name="MonitorValue - q1 length" class="ptolemy.actor.lib.MonitorValue">
@@ -444,30 +409,22 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 135.0">
         </property>
-        <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="returnSocketNumber" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="push" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={611, 528, 290, 227}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Dropped Packets">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={611, 528, 290, 227}}">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Dropped Packets">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 410.0">
         </property>
@@ -501,9 +458,6 @@
         <port name="q1_out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="dropped" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
         <port name="q2_out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="push" class="ptolemy.data.expr.Parameter" value="true">
@@ -520,13 +474,11 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 60.0">
             </property>
@@ -550,18 +502,10 @@
             </property>
         </port>
         <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-            <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="period">
+            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="period">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 160.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -582,13 +526,11 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 60.0">
             </property>
@@ -612,18 +554,10 @@
             </property>
         </port>
         <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-            <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="period">
+            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="period">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 160.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -678,11 +612,11 @@
     <link port="MonitorValue - q2 length.input" relation="relation10"/>
     <link port="DatagramReader.output" relation="relation4"/>
     <link port="Display.input" relation="relation5"/>
+    <link port="QueueControl.dropped" relation="relation5"/>
     <link port="QueueControl.q1_len" relation="relation9"/>
     <link port="QueueControl.pkt_in" relation="relation2"/>
     <link port="QueueControl.q2_len" relation="relation10"/>
     <link port="QueueControl.q1_out" relation="relation8"/>
-    <link port="QueueControl.dropped" relation="relation5"/>
     <link port="QueueControl.q2_out" relation="2:relation8"/>
     <link port="Interface - fast.in" relation="relation8"/>
     <link port="Interface - fast.out" relation="relation"/>

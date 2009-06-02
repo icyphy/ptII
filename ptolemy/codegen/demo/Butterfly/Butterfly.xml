@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Butterfly" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 3, 795, 723}, maximized=false}">
     </property>
@@ -128,7 +128,7 @@
             </property>
             <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -195,12 +195,8 @@
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <link port="x" relation="relation2"/>
         <link port="y" relation="relation3"/>
@@ -213,12 +209,8 @@
         <link port="Expression.ramp" relation="node"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="XYPlotter.inputX" relation="relation"/>
     <link port="XYPlotter.inputY" relation="relation2"/>

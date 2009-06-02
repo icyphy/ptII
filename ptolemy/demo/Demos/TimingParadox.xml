@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimingParadox" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -312,7 +312,7 @@ delays.</text></svg></configure>
         </property>
     </entity>
     <entity name="Rician" class="ptolemy.actor.lib.Rician">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="xMean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -325,7 +325,7 @@ delays.</text></svg></configure>
         </property>
     </entity>
     <entity name="Rician2" class="ptolemy.actor.lib.Rician">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="xMean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>

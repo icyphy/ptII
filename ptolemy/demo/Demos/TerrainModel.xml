@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TerrainModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -216,7 +216,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
         </entity>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>
@@ -393,7 +393,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>

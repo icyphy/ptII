@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="curriculumOption4" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
     </property>
@@ -28,8 +28,10 @@
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_relationSize" class="ptolemy.data.expr.Parameter" value="6.0">
+            <display name="Relation size"/>
         </property>
         <property name="_linkBendRadius" class="ptolemy.data.expr.Parameter" value="15.0">
+            <display name="Link bend radius"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, -20.0]">
         </property>
@@ -145,222 +147,296 @@
         </property>
     </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 115.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Signals and Systems">
         </property>
     </entity>
     <entity name="40" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Microelectronic Circuits">
         </property>
     </entity>
     <entity name="61A" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 385.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Computer Programs">
         </property>
     </entity>
     <entity name="61B" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 385.0}">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Data Structures">
         </property>
     </entity>
     <entity name="61C" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 435.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Machine Structures">
         </property>
     </entity>
     <entity name="70" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 465.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Discrete Mathematics and Probability Theory">
         </property>
     </entity>
     <entity name="150" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 305.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Components and Design Techniques for DigitalSystems">
         </property>
     </entity>
     <entity name="152" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 305.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Computer Architecture and Engineering">
         </property>
     </entity>
     <entity name="160" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 330.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="User Interface Design and Development">
         </property>
     </entity>
     <entity name="Math 53" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 90.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Multivariable Calculus">
         </property>
     </entity>
     <entity name="Math 54" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 65.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Linear Algebra and Differential Equations">
         </property>
     </entity>
     <entity name="162" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 355.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Operating Systems and System Programming">
         </property>
     </entity>
     <entity name="164" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 380.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Programming Languages and Compilers">
         </property>
     </entity>
     <entity name="169" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 410.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Software Engineering">
         </property>
     </entity>
     <entity name="170" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 440.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Efficient Algorithms and Intractable Problems">
         </property>
     </entity>
     <entity name="172" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 440.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Computability and Complexity">
         </property>
     </entity>
     <entity name="182" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 345.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="The Neural Basis of Thought and Language">
         </property>
     </entity>
     <entity name="184" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 370.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Foundations of Computer Graphics">
         </property>
     </entity>
     <entity name="186" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 470.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Database Systems">
         </property>
     </entity>
     <entity name="188" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 400.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Artificial Intelligence">
         </property>
     </entity>
     <entity name="Physics 7A" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 160.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
         </property>
     </entity>
     <entity name="Physics 7B" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 190.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
         </property>
     </entity>
     <entity name="100" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -15.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Electronic Techniques for Engineering">
         </property>
     </entity>
     <entity name="113" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 240.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Power Electronics">
         </property>
     </entity>
     <entity name="105" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 215.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microelectronic Devices and Circuits">
         </property>
     </entity>
     <entity name="Math 1A" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -10.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Calculus">
         </property>
     </entity>
     <entity name="Math 1B" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 15.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Calculus">
         </property>
     </entity>
     <entity name="117" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 95.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Electromagnetic Fields and Waves">
         </property>
     </entity>
     <entity name="118" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Optical Communication Systems and Networks">
         </property>
     </entity>
     <entity name="Physics 7C" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 230.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
         </property>
     </entity>
     <entity name="119" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 230.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Optical Engineering">
         </property>
     </entity>
     <entity name="120" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 70.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Signals and Systems">
         </property>
     </entity>
     <entity name="121" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -20.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Communication Systems">
         </property>
     </entity>
     <entity name="122" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -5.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Communication Networks">
         </property>
     </entity>
     <entity name="123" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 5.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Digital Signal Processing">
         </property>
     </entity>
     <entity name="125" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 30.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Robotics">
         </property>
     </entity>
     <entity name="128" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 55.0}">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Feedback Control">
@@ -371,6 +447,8 @@
         </property>
     </entity>
     <entity name="130" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 190.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Integrated-Circuit Devices">
@@ -378,6 +456,8 @@
     </entity>
     <entity name="131" class="ptolemy.domains.curriculum.Course">
         <property name="units" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 135.0]">
         </property>
@@ -387,30 +467,40 @@
     <entity name="133" class="ptolemy.domains.curriculum.Course">
         <property name="units" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 145.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microfabrication Equipment Laboratory">
         </property>
     </entity>
     <entity name="140" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 190.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Linear Integrated Circuits">
         </property>
     </entity>
     <entity name="141" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Digital Integrated Circuits">
         </property>
     </entity>
     <entity name="142" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 75.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Integrated Circuits for Communications">
         </property>
     </entity>
     <entity name="143" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 235.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microfabrication Technology">
@@ -419,24 +509,32 @@
     <entity name="145M" class="ptolemy.domains.curriculum.Course">
         <property name="units" class="ptolemy.data.expr.Parameter" value="3">
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 285.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introductory Microcomputer Interfacing Laboratory">
         </property>
     </entity>
     <entity name="145L" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 260.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introductory Electronic Transducer Laboratory">
         </property>
     </entity>
     <entity name="192" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 260.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introductory Electronic Transducer Laboratory">
         </property>
     </entity>
     <entity name="CS 3" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 430.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Programming">
@@ -449,6 +547,8 @@
     <entity name="129" class="ptolemy.domains.curriculum.Course">
         <property name="units" class="ptolemy.data.expr.Parameter" value="3">
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 85.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Neural and Nonlinear Information Processing">
@@ -457,164 +557,112 @@
     <entity name="145B" class="ptolemy.domains.curriculum.Course">
         <property name="units" class="ptolemy.data.expr.Parameter" value="4">
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 110.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Image Processing and Reconstruction Tomography">
         </property>
     </entity>
     <entity name="26" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 140.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Signals and Systems">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[210.0, 300.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[420.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[235.0, 385.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[235.0, 330.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[335.0, 435.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[320.0, 465.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[125.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[115.0, 15.0]">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[350.0, 215.0]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[230.0, 90.0]">
         </vertex>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[220.0, 65.0]">
         </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[240.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[335.0, 70.0]">
         </vertex>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[210.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="{125.0, 210.0}">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="{80.0, 615.0}">
         </vertex>
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[155.0, 385.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="{245.0, 545.0}">
         </vertex>
     </relation>
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="{205.0, 140.0}">
         </vertex>
     </relation>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LocalZenoTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="90.0">
@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Clock" class="ptolemy.domains.dde.demo.LocalZeno.ListenClock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="20.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="20.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 10.0, 15.0}">
         </property>

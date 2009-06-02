@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Networked" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <doc>Multiply a low-frequency sine wave (the signal)&#10;by a higher frequency one (the carrier).</doc>
     <property name="frequency1" class="ptolemy.data.expr.Parameter" value="PI*0.2">
@@ -297,18 +297,12 @@
         </configure>
     </entity>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex0" value="195.0, 120.0">
         </vertex>
     </relation>
     <relation name="r3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="Carrier.output" relation="relation1"/>
     <link port="Remotely Defined Signal Source.output" relation="r2"/>

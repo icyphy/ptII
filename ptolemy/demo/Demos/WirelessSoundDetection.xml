@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="WirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 777}, maximized=false}">
     </property>
@@ -417,7 +417,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>
@@ -450,7 +450,7 @@ GraphicalLocator)</text></svg></configure>
             </port>
         </entity>
         <entity name="Clock2" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>

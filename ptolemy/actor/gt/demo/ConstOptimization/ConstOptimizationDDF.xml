@@ -222,18 +222,12 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <vertex name="vertex1" value="[345.0, 120.0]">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <link port="C1.criterion2" relation="relation2"/>
             <link port="C2.criterion2" relation="relation3"/>
@@ -243,7 +237,7 @@
         </entity>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#FF0000"/><rect x="2" y="2" width="56" height="36"  style="fill:#C0C0C0"/><rect x="6" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="38" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="26" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="34" y2="30"  style="stroke:#404040"/><text x="16" y="14"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                <configure><svg><rect x="0" y="0" width="60" height="40" style="fill:#FF0000"></rect><rect x="2" y="2" width="56" height="36" style="fill:#C0C0C0"></rect><rect x="6" y="17" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><rect x="38" y="25" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><line x1="26" y1="22" x2="30" y2="22" style="stroke:#404040"></line><line x1="30" y1="22" x2="30" y2="30" style="stroke:#404040"></line><line x1="30" y1="30" x2="34" y2="30" style="stroke:#404040"></line><text x="16" y="14" style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
             </property>
             <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/false/&quot;value&quot;/false//false/&quot;$(A.getClassName().equals(\&quot;ptolemy.actor.lib.AddSubtract\&quot;) ? C1.value + C2.value : A.getClassName().equals(\&quot;ptolemy.actor.lib.MultiplyDivide\&quot;) ? C1.value * C2.value : C1.value &gt;= C2.value ? C1.value : C2.value)&quot;)">
@@ -260,8 +254,6 @@
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <vertex name="vertex1" value="{355.0, 130.0}">
                 </vertex>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -345,58 +337,34 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[385.0, 270.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[185.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[185.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="ModelGenerator.model" relation="relation2"/>
     <link port="ModelGenerator.moml" relation="relation"/>

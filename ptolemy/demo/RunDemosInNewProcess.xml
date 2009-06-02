@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RunDemosInNewProcess" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 0, 815, 647}, maximized=false}">
     </property>
@@ -105,11 +105,15 @@
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={712, 79, 290, 227}, maximized=false}">
         </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[552.5, 285.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={712, 327, 290, 227}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[552.5, 345.0]">
         </property>
@@ -157,9 +161,9 @@
     <link port="DirectoryListing.output" relation="relation"/>
     <link port="ArrayToSequence.input" relation="relation"/>
     <link port="ArrayToSequence.output" relation="relation6"/>
+    <link port="Exec.output" relation="relation3"/>
     <link port="Exec.command" relation="relation7"/>
     <link port="Exec.error" relation="relation2"/>
-    <link port="Exec.output" relation="relation3"/>
     <link port="Display.input" relation="relation2"/>
     <link port="Display2.input" relation="relation3"/>
     <link port="Const.output" relation="relation5"/>

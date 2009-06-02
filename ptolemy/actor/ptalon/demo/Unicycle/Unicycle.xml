@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Unicycle" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 516}, maximized=false}">
     </property>
@@ -79,6 +79,11 @@
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.Unicycle.NonlinearStateSpace">
+                <ptalonParameter name="integrator" value="ptolemy.domains.ct.lib.Integrator"/>
+                <ptalonParameter name="assembler" value="ptolemy.actor.lib.VectorAssembler"/>
+                <ptalonParameter name="disassembler" value="ptolemy.actor.lib.VectorDisassembler"/>
+                <ptalonParameter name="expression" value="ptolemy.actor.lib.Expression"/>
+                <ptalonParameter name="typeConverter" value="ptolemy.actor.lib.conversions.AnythingToDouble"/>
                 <ptalonExpressionParameter name="numberOfInputs" value="2"/>
                 <ptalonExpressionParameter name="numberOfStates" value="3"/>
                 <ptalonExpressionParameter name="numberOfOutputs" value="2"/>
@@ -111,28 +116,16 @@
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="AnythingToDouble.input" relation="relation"/>
     <link port="AnythingToDouble.output" relation="relation5"/>

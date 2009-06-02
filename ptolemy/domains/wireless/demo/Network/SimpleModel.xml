@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SimpleModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
@@ -310,9 +310,9 @@
                 </property>
             </entity>
             <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-                <property name="seed" class="ptolemy.data.expr.Parameter" value="1L">
+                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="2L">
                 </property>
-                <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2.0">
+                <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="2.0">
                 </property>
                 <doc>Create a sequence of uniformly distributed random numbers</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 155.0">
@@ -323,9 +323,9 @@
                 </property>
             </entity>
             <entity name="Uniform2" class="ptolemy.actor.lib.Uniform">
-                <property name="seed" class="ptolemy.data.expr.Parameter" value="1L">
+                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="2L">
                 </property>
-                <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2.0">
+                <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="2.0">
                 </property>
                 <doc>Create a sequence of uniformly distributed random numbers</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 260.0">
@@ -498,6 +498,8 @@
             </entity>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}, maximized=false}">
+                </property>
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 70.0">
                 </property>
@@ -866,9 +868,9 @@
                 </property>
             </entity>
             <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-                <property name="seed" class="ptolemy.data.expr.Parameter" value="2L">
+                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="2L">
                 </property>
-                <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2.0">
+                <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="2.0">
                 </property>
                 <doc>Create a sequence of uniformly distributed random numbers</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 155.0">
@@ -879,9 +881,9 @@
                 </property>
             </entity>
             <entity name="Uniform2" class="ptolemy.actor.lib.Uniform">
-                <property name="seed" class="ptolemy.data.expr.Parameter" value="2L">
+                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="2L">
                 </property>
-                <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2.0">
+                <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="2.0">
                 </property>
                 <doc>Create a sequence of uniformly distributed random numbers</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 280.0">
@@ -1054,6 +1056,8 @@
             </entity>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 290, 227}, maximized=false}">
+                </property>
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 80.0">
                 </property>

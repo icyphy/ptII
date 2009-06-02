@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HelloWorld" class="ptolemy.actor.CompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
         <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/HelloWorld/output">
@@ -11,7 +11,7 @@
         </property>
         <property name="target" class="ptolemy.data.expr.StringParameter" value="mica">
         </property>
-        <property name="simulate" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="simulate" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
         </property>
@@ -94,7 +94,11 @@
             </property>
             <property name="target" class="ptolemy.data.expr.StringParameter" value="mica">
             </property>
-            <property name="simulate" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="simulate" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="10584">
+            </property>
+            <property name="nodeID" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
             </property>

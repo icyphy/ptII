@@ -203,8 +203,6 @@ Iterations 4</text></svg></configure>
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex1" value="[170.0, 165.0]">
         </vertex>
     </relation>

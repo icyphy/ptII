@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testDeux" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 31, 832, 538}, maximized=false}">
     </property>
@@ -92,7 +92,7 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
@@ -107,7 +107,7 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="3.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0}">
         </property>
@@ -122,6 +122,8 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 265, 330, 237}, maximized=false}">
         </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 310.0]">
         </property>
     </entity>
@@ -134,14 +136,10 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex" value="[520.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <vertex name="vertex" value="[495.0, 325.0]">
         </vertex>
     </relation>

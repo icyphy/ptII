@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="PedestrianLightNormal" extends="ptolemy.domains.fsm.modal.ModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
     </property>
@@ -68,6 +68,8 @@
             </property>
         </port>
         <entity name="Pred" class="ptolemy.domains.fsm.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -160,8 +162,6 @@
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="PedLight=1">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.9336272141162464">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6904581121892654">
@@ -174,8 +174,6 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </relation>
         <link port="Pred.incomingPort" relation="relation3"/>
         <link port="Pred.incomingPort" relation="relation2"/>
@@ -187,20 +185,12 @@
         <link port="init.outgoingPort" relation="relation4"/>
     </entity>
     <relation name="PgoRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="PstopRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="SecRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="PedLightRelation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="Pgo" relation="PgoRelation"/>
     <link port="Pstop" relation="PstopRelation"/>

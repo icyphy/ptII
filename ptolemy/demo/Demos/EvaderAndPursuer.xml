@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="EvaderAndPursuer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, -1, 1011, 735}, maximized=false}">
     </property>
@@ -1021,7 +1021,7 @@ sensors.</text></svg></configure>
             </property>
         </entity>
         <entity name="Random" class="ptolemy.actor.lib.DiscreteRandomSource">
-            <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
             </property>
             <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.25, 0.25, 0.25, 0.25}">
             </property>
@@ -1057,7 +1057,7 @@ sensors.</text></svg></configure>
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1099,6 +1099,10 @@ to another. Then delete this annotation.</text>
                     </property>
                 </port>
                 <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 215.0">
@@ -1492,6 +1496,8 @@ to another. Then delete this annotation.</text>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 796, 290, 227}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 110.0">
             </property>

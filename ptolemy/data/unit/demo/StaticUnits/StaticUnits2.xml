@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StaticUnits2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
@@ -21,8 +23,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -32,16 +32,6 @@
                 <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                 </property>
                 <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                </property>
-            </property>
-        </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                 </property>
             </property>
         </property>
@@ -65,29 +55,29 @@
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Heatproduction.heat port has units&#10;calories, but the HeatExchanger.output&#10;has units calories/second. The&#10;AddSubtract actor requires that the units on&#10;the plus, and minus ports be the same.&#10;Therefore, the units constraints in this&#10;part of the model are inconsistent.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Heatproduction.heat port has units&#10;calories, but the HeatExchanger.output&#10;has units calories/second. The&#10;AddSubtract actor requires that the units on&#10;the plus, and minus ports be the same.&#10;Therefore, the units constraints in this&#10;part of the model are inconsistent.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 150.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This relation has been modified so that the&#10;units population coming from growth.population&#10;gets converted to joules which matches the units&#10;on HeatProduction.work.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.54901963,0.003921569,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This relation has been modified so that the&#10;units population coming from growth.population&#10;gets converted to joules which matches the units&#10;on HeatProduction.work.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 5.0]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Rowland R Johnson">
-        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Rowland R Johnson">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 625.0]">
         </property>
@@ -99,21 +89,21 @@
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/data/unit/demo/StaticUnits/NonAppletStaticUnits.htm">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The flow actor has been&#10;replaced with the flow&#10;rate actor which has&#10;units gallonUS/hour.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.54901963,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The flow actor has been&#10;replaced with the flow&#10;rate actor which has&#10;units gallonUS/hour.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 360.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatExchanger.TempVessel&#10;port and the Growth.vatTemp&#10;port both have units degrees.&#10;However, the Integrator.output&#10;will have units calories. ">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatExchanger.TempVessel&#10;port and the Growth.vatTemp&#10;port both have units degrees.&#10;However, the Integrator.output&#10;will have units calories. ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 150.0]">
         </property>
@@ -166,7 +156,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="population">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="population">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -179,7 +169,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
         <entity name="growthAddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -285,7 +275,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="joule">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="joule">
             </property>
         </port>
         <port name="heat" class="ptolemy.actor.TypedIOPort">
@@ -298,7 +288,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="calorie">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="calorie">
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -345,7 +335,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
         <port name="TempCW" class="ptolemy.actor.TypedIOPort">
@@ -358,7 +348,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -369,7 +359,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="calorie second^-1">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="calorie second^-1">
             </property>
         </port>
         <port name="flow" class="ptolemy.actor.TypedIOPort">
@@ -380,7 +370,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="gallonUS hour^-1">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="gallonUS hour^-1">
             </property>
         </port>
         <entity name="HeatExchanger" class="ptolemy.actor.lib.Expression">
@@ -453,7 +443,7 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[317.5, 132.5]">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
+        <property name="_unitConstraints" class="ptolemy.moml.unit.UnitAttribute" value="$output=$minus;$plus=$minus">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -478,7 +468,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 132.5]">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$input second">
+        <property name="_unitConstraints" class="ptolemy.moml.unit.UnitAttribute" value="$output=$input second">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
@@ -507,7 +497,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
     </entity>
@@ -525,7 +515,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="gallonUS hour^-1">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="gallonUS hour^-1">
             </property>
         </port>
     </entity>
@@ -542,7 +532,7 @@
             <property name="output"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="joule">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="joule">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
