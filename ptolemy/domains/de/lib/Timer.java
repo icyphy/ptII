@@ -66,6 +66,8 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
+ @deprecated Use VariableDelay instead, which is essentially identical,
+  or ResettableTimer for a more reasonable timer behavior.
  */
 public class Timer extends DETransformer {
     /** Construct an actor with the specified container and name.

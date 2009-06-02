@@ -66,6 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 4.1
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
+ @deprecated Use ptolemy.actor.lib.ResettableTimer.
  */
 public class NonInterruptibleTimer extends Timer {
     /** Construct an actor with the specified container and name.

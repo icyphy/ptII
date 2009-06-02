@@ -23,9 +23,6 @@
 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
 </entity>
 
-<entity name="NonInterruptibleTimer" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
-</entity>
-
 <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
 </entity>
 
@@ -33,6 +30,9 @@
 </entity>
 
 <entity name="Register" class="ptolemy.domains.de.lib.Register">
+</entity>
+
+<entity name="ResettableTimer" class="ptolemy.actor.lib.ResettableTimer">
 </entity>
 
 <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
@@ -54,9 +54,6 @@
 </entity>
 
 <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
-</entity>
-
-<entity name="Timer" class="ptolemy.domains.de.lib.Timer">
 </entity>
 
 <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
