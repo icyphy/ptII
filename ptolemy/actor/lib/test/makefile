@@ -136,9 +136,9 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 # These tests do not require a graphics terminal, but do use Jacl and Java
 # We remove certain files from /tmp before and after running.
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
-		cleanFileWriter cleanRunCompositeActor test_auto \
-		cleanFileWriter cleanRunCompositeActor  \
-	$(JTCLSH) alljtests.tcl
+		cleanFileWriter cleanRunCompositeActor test_auto
+	-$(JTCLSH) alljtests.tcl
+	$(MAKE)	cleanFileWriter cleanRunCompositeActor
 
 
 # auto/FileWriter1.xml creates this file, so we remove it before running
