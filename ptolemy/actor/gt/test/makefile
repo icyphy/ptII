@@ -51,6 +51,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+    DefaultModelAttribute.tcl \
     GeneratedModel1.tcl \
     GeneratedModel2.tcl \
     Match3Actors.tcl \
