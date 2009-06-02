@@ -134,12 +134,11 @@ public class ImageReader extends Source {
             throw new IllegalActionException("sourceURL was null");
         }
 
-        _fileRoot = _url.getFile();
-        _image = new ImageIcon(_fileRoot).getImage();
+        _image = new ImageIcon(_url).getImage();
 
         if ((_image.getWidth(null) == -1) && (_image.getHeight(null) == -1)) {
             throw new IllegalActionException(this,
-                    "Image size is -1 x -1.  Failed to open '" + _fileRoot
+                    "Image size is -1 x -1.  Failed to open '" + _url
                             + "'");
         }
 
