@@ -152,13 +152,13 @@ public class MathematicalModelConverter extends Attribute {
                             inputTemporalFormula, formulaType,
                             variableSpanSize));
             break;
-        //case CTA:
-        //    systemDescription.append(
-        //            REDUtility.generateREDDescription(
-        //                    (CompositeActor) _model.clone(),
-        //                    inputTemporalFormula, formulaType,
-        //                    variableSpanSize, FSMBufferSize));
-        //    break;
+        case CTA:
+            systemDescription.append(
+                    REDUtility.generateREDDescription(
+                            (CompositeActor) _model.clone(),
+                            inputTemporalFormula, formulaType,
+                            variableSpanSize, FSMBufferSize));
+            break;
         case Maude:
             if (_model instanceof CompositeActor)
                 if (template.getExpression().trim().equals("")) {
@@ -335,13 +335,12 @@ public class MathematicalModelConverter extends Attribute {
     }
 
     public enum ModelType {
-        //CTA {
-        //    public String toString() {
-        //        return "Communicating Timed Automata (Acceptable by UPPAAL " +
-        //                "under DE)";
-        //    }
-        //}, 
-        Kripke {
+        CTA {
+            public String toString() {
+                return "Communicating Timed Automata (Acceptable by RED " +
+                        "under DE)";
+            }
+        }, Kripke {
             public String toString() {
                 return "Kripke Structures (Acceptable by NuSMV under SR)";
             }
