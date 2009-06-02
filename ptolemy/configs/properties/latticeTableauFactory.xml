@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<!-- Factory for graph rewriting rule editor.  -->
+<!-- Factory for property lattice editor.  -->
 <property name="latticeTableauFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
-  <!-- These will appear in the View menu of a graph rewriting rule tableau. -->
+  <!-- These will appear in the View menu of a property lattice tableau. -->
 
 
 
