@@ -35,13 +35,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 653, 508}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 402]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.5, 201.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
@@ -183,7 +183,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
                 </property>
             </property>
-            <property name="threshold" class="ptolemy.data.expr.Parameter" value="3.2959236220635">
+            <property name="threshold" class="ptolemy.data.expr.Parameter" value="1.1206265193479">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -262,7 +262,7 @@
         <link port="wait.event" relation="eventRelation"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 411, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 411, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -275,14 +275,14 @@
 <title>Events</title>
 <xLabel>time</xLabel>
 <yLabel>elapsed time</yLabel>
-<xRange min="5.0284813606" max="398.7855894995"/>
-<yRange min="0.025821562549847923" max="3.6225734515461814"/>
+<xRange min="3.2959736221" max="399.62304601150004"/>
+<yRange min="0.0012511860794868755" max="9.04247924137453"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 55, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 55, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -299,15 +299,15 @@
 <title>Times Between Events</title>
 <xLabel>amount of time</xLabel>
 <yLabel>number of occurrences</yLabel>
-<xRange min="0.1" max="3.8000000000000003"/>
-<yRange min="0.0" max="12.0"/>
+<xRange min="0.1" max="9.2"/>
+<yRange min="0.0" max="72.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[220.0, 180.0]">
+        <vertex name="vertex1" value="[230.0, 180.0]">
         </vertex>
     </relation>
     <link port="Poisson.event" relation="relation2"/>

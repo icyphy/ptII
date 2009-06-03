@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 70.0}">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[555, 380]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 380]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
@@ -60,11 +60,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 285.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 22, 768, 490}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 22, 581, 486}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{277.5, 190.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 190.0}">
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

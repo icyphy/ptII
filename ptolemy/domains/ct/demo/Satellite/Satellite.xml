@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 30, 989, 738}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 30, 839, 733}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 628]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 627]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.0, 314.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.5, 313.5}">
     </property>
     <property name="miu" class="ptolemy.data.expr.Parameter" value="0.012129">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -143,7 +143,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 600.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -157,7 +157,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: Here we use the RK45Solver which&#10;has better performance than the &#10;RK23Solver.  To see the difference,&#10;double click on the CTDirector and change&#10;the ODESolver parameter.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 300.0]">
         </property>
     </property>
     <entity name="y1" class="ptolemy.domains.ct.lib.Integrator">
@@ -287,7 +287,7 @@
         </port>
     </entity>
     <entity name="Trajectory" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 66, 446, 351}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 66, 438, 347}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[438, 303]">
         </property>

@@ -4,7 +4,7 @@
 <entity name="Pong" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 641]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 407]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -14,7 +14,8 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A simplified version of the game Pong using DE, Continuous, ModalModel and GR.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A simplified version of the game Pong using DE, 
+Continuous, ModalModel and GR.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -27,10 +28,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, -25.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 748}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 711, 513}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -49,7 +50,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 295.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -71,12 +72,12 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 255.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.8863636363638, 262.9356060606061}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.8863636363638, 145.9356060606061}">
     </property>
     <property name="paddle_size" class="ptolemy.data.expr.Parameter" value="3.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -94,7 +95,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 170.0]">
         </property>
     </property>
     <property name="table_height" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -113,7 +114,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 190.0]">
         </property>
     </property>
     <property name="table_width" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -132,7 +133,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 210.0]">
         </property>
     </property>
     <property name="display_scale_factor" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -151,7 +152,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 230.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -178,7 +179,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 250.0]">
         </property>
     </property>
     <entity name="Animation" class="ptolemy.actor.TypedCompositeActor">
