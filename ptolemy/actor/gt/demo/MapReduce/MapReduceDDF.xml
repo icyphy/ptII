@@ -452,9 +452,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[368.5, 202.5]">
                 </property>
                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="storage.outputKey.getWidth() &lt; reduceCount">
-                        </property>
+                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="storage.outputKey.getWidth() &lt; reduceCount">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>
@@ -567,9 +565,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 295.0]">
             </property>
             <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                    <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="Actor.getName().startsWith(&quot;_&quot;)">
-                    </property>
+                <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="Actor.getName().startsWith(&quot;_&quot;)">
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                         </property>
@@ -728,9 +724,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 200.0]">
                 </property>
                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="worker.inputKey.getWidth() &lt; mapCount">
-                        </property>
+                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="worker.inputKey.getWidth() &lt; mapCount">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>
@@ -828,9 +822,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 200.0]">
                 </property>
                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="!Map.outputKeys.connectedPortList().contains(Reduce.inputKey)">
-                        </property>
+                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="!Map.outputKeys.connectedPortList().contains(Reduce.inputKey)">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>

@@ -555,9 +555,7 @@
                         </property>
                     </property>
                     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                        <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                            <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;M.multiply.getWidth() == 1 &amp;&amp;&#10;M.divide.getWidth() == 0 &amp;&amp;&#10;M.output.getWidth() == 1">
-                            </property>
+                        <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="&#10;M.multiply.getWidth() == 1 &amp;&amp;&#10;M.divide.getWidth() == 0 &amp;&amp;&#10;M.output.getWidth() == 1">
                             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                 </property>

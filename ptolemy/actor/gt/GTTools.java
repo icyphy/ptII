@@ -53,6 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 
@@ -69,6 +70,71 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTTools {
+
+    /** Check the class of the container in which the attribute is to be placed.
+     *  If the container is not an intended one, throw an
+     *  IllegalActionException.
+     *
+     *  @param attribute The attribute to check.
+     *  @param container The container.
+     *  @param containerClass The intended class of container.
+     *  @param deep Whether containers of the container should be checked
+     *   instead, if the container does not qualify.
+     *  @exception IllegalActionException If this attribute cannot be used with
+     *   the given container.
+     */
+    public static void checkContainerClass(Attribute attribute,
+            NamedObj container, Class<? extends CompositeEntity> containerClass,
+            boolean deep) throws IllegalActionException {
+        while (deep && container != null
+                && !containerClass.isInstance(container)
+                && !(container instanceof EntityLibrary)) {
+            container = container.getContainer();
+            if (container instanceof EntityLibrary) {
+                return;
+            }
+        }
+
+        if (container == null ||
+                !containerClass.isInstance(container) &&
+                !(container instanceof EntityLibrary)) {
+            _delete(attribute);
+            throw new IllegalActionException(attribute.getClass().getSimpleName()
+                    + " can only be added to " + containerClass.getSimpleName()
+                    + ".");
+        }
+    }
+
+    /** Check whether the attribute is unique in the given container.
+     *
+     *  @param attribute The attribute to check.
+     *  @param container The container.
+     *  @exception IllegalActionException If the container already has an
+     *   attribute in the same class.
+     */
+    public static void checkUniqueness(Attribute attribute, NamedObj container)
+            throws IllegalActionException {
+        if (container instanceof EntityLibrary) {
+            return;
+        }
+
+        try {
+            container.workspace().getReadAccess();
+            List<Attribute> attributeList = container.attributeList(
+                    attribute.getClass());
+            for (Attribute existingAttribute : attributeList) {
+                if (existingAttribute != attribute &&
+                        existingAttribute.isPersistent()) {
+                    _delete(attribute);
+                    throw new IllegalActionException("Only 1 " +
+                            attribute.getClass().getSimpleName() +
+                            " can be used.");
+                }
+            }
+        } finally {
+            container.workspace().doneReading();
+        }
+    }
 
     /** Create a copy of the given model in a new workspace that is cleaned up
      *  with no execution state left in it.
@@ -482,5 +548,31 @@ public class GTTools {
                 saveValues((ComponentEntity) entity, records);
             }
         }
+    }
+
+    /** Execute a MoMLChangeRequest to set the icon description of the
+     *  attribute.
+     *
+     *  @param object The attribute.
+     *  @param iconDescription The icon description.
+     */
+    public static void setIconDescription(NamedObj object,
+            String iconDescription) {
+        String moml = "<property name=\"_iconDescription\" class="
+                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+                + "  <configure>" + iconDescription + "</configure>"
+                + "</property>";
+        MoMLChangeRequest request = new MoMLChangeRequest(object, object, moml);
+        request.execute();
+    }
+
+    /** Request a MoMLChangeRequest to delete this attribute from its container.
+     * 
+     *  @param attribute The attribute to be deleted.
+     */
+    private static void _delete(Attribute attribute) {
+        String moml = "<deleteProperty name=\"" + attribute.getName() + "\"/>";
+        attribute.requestChange(new MoMLChangeRequest(attribute,
+                attribute.getContainer(), moml));
     }
 }

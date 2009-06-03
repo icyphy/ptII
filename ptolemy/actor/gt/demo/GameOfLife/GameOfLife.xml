@@ -534,9 +534,7 @@
                         </property>
                     </property>
                     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                        <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                            <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="A.x == B.x &amp;&amp; (A.y + 1 == B.y || A.y == Rows - 1 &amp;&amp; B.y == 0)">
-                            </property>
+                        <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="A.x == B.x &amp;&amp; (A.y + 1 == B.y || A.y == Rows - 1 &amp;&amp; B.y == 0)">
                             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                 </property>
@@ -715,9 +713,7 @@
                         </property>
                     </property>
                     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                        <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                            <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="(A.x + 1 == B.x || A.x == Columns - 1 &amp;&amp; B.x == 0) &amp;&amp; A.y == B.y">
-                            </property>
+                        <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="(A.x + 1 == B.x || A.x == Columns - 1 &amp;&amp; B.x == 0) &amp;&amp; A.y == B.y">
                             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                 </property>
@@ -2751,9 +2747,7 @@
                         </property>
                     </property>
                     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                        <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                            <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="A.isOccupied != A.newIsOccupied">
-                            </property>
+                        <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="A.isOccupied != A.newIsOccupied">
                             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                 </property>
@@ -2766,8 +2760,6 @@
         </configure>
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 230.0]">
-                            </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint">
                             </property>
                         </property>
                         <entity name="A" class="ptolemy.actor.TypedCompositeActor">

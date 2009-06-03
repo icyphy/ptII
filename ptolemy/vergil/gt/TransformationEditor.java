@@ -69,6 +69,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -115,9 +116,9 @@ import ptolemy.actor.gt.util.RecursiveFileFilter;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.GraphicalMessageHandler;
@@ -226,10 +227,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, entity instanceof FSMActor ? defaultLibrary
                 : _importActorLibrary(tableau, defaultLibrary));
-
-        // Override the default help file.
-        // FIXME
-        // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1770,10 +1767,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         public BatchMatchAction() {
             super("Match Models in a Directory");
 
-            _attribute = new DefaultDirectoryAttribute((Workspace) null);
-            _attribute.directory.setBaseDirectory(URIAttribute
-                    .getModelURI(getModel()));
-
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/batchmatch.gif",
                             GUIUtilities.LARGE_ICON },
@@ -1797,8 +1790,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
 
         private File[] _getModelFiles() {
-            // FIXME: This method should return a URL[], not a File[] so that
-            // this method works properly with jar URLs and remote files.
             TransformationRule rule =
                 getFrameController().getTransformationRule();
             Pattern pattern = rule.getPattern();
@@ -1811,6 +1802,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 try {
                     directoryFile = attribute.directory.asFile();
                     fileFilter = attribute.fileFilter.stringValue();
+                    if (fileFilter.equals("")) {
+                        fileFilter = "*.xml";
+                    }
                     recursive = ((BooleanToken) attribute.subdirs.getToken())
                             .booleanValue();
                 } catch (IllegalActionException e) {
@@ -1820,14 +1814,31 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
 
             if (directoryFile == null) {
+                attribute = (DefaultDirectoryAttribute) pattern.getAttribute(
+                        "_defaultDirectory");
+                if (attribute == null) {
+                    try {
+                        attribute = new DefaultDirectoryAttribute(pattern,
+                                "_defaultDirectory");
+                        attribute.setPersistent(false);
+                    } catch (KernelException e) {
+                        throw new KernelRuntimeException(e,
+                                "Unable to initialize DefaultDirectoryAttribute.");
+                    }
+                    attribute.directory.setBaseDirectory(URIAttribute
+                            .getModelURI(getModel()));
+                }
                 ComponentDialog dialog = new ComponentDialog(
                         TransformationEditor.this, "Select Model Directory",
-                        new Configurer(_attribute));
+                        new Configurer(attribute));
                 if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
                     try {
-                        directoryFile = _attribute.directory.asFile();
-                        fileFilter = _attribute.fileFilter.getExpression();
-                        recursive = ((BooleanToken) _attribute.subdirs
+                        directoryFile = attribute.directory.asFile();
+                        fileFilter = attribute.fileFilter.getExpression();
+                        if (fileFilter.equals("")) {
+                            fileFilter = "*.xml";
+                        }
+                        recursive = ((BooleanToken) attribute.subdirs
                                 .getToken()).booleanValue();
                     } catch (IllegalActionException e) {
                         throw new KernelRuntimeException(e, "Unable to get "
@@ -1850,8 +1861,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 return files;
             }
         }
-
-        private DefaultDirectoryAttribute _attribute;
 
         private class MultipleViewController extends ViewController {
 
@@ -1976,8 +1985,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             private List<MatchResult>[] _allResults;
 
-            // FIXME: This should be a URL[], not a File[] so that this code
-            // works properly with jar URLs and remote files.
             private File[] _files;
 
             private int _index;
@@ -2129,10 +2136,18 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             return model;
         }
 
+        protected CompositeEntity _getModel(URL url)
+                throws MalformedURLException, Exception {
+            _parser.reset();
+            InputStream stream = url.openStream();
+            CompositeEntity model = (CompositeEntity) _parser.parse(null,
+                    url.toExternalForm(), stream);
+            return model;
+        }
+
         protected MatchResultViewer _showViewer(CompositeEntity model,
                 List<MatchResult> results, String sourceFileName)
                 throws IllegalActionException, NameDuplicationException {
-
             MatchResultViewer._setTableauFactory(this, model);
             Configuration configuration =
                 getFrameController().getConfiguration();
@@ -2141,10 +2156,17 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
 
             Tableau tableau = configuration.openModel(model);
-            MatchResultViewer viewer = (MatchResultViewer) tableau.getFrame();
-            viewer.setMatchResult(getFrameController().getTransformationRule(),
-                    sourceFileName, results);
-            return viewer;
+            JFrame frame = tableau.getFrame();
+            if (!(frame instanceof MatchResultViewer)) {
+                throw new IllegalActionException("Unable to find an " +
+                        "appropriate pattern matching viewer for the model.");
+            } else {
+                MatchResultViewer viewer = (MatchResultViewer) frame;
+                viewer.setMatchResult(
+                        getFrameController().getTransformationRule(),
+                        sourceFileName, results);
+                return viewer;
+            }
         }
 
         MatchAction(String name) {
@@ -2358,10 +2380,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         public SingleMatchAction() {
             super("Match Model");
 
-            _attribute = new DefaultModelAttribute((Workspace) null);
-            ((FileParameter) _attribute.parameter)
-                    .setBaseDirectory(URIAttribute.getModelURI(getModel()));
-
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/match.gif",
                             GUIUtilities.LARGE_ICON },
@@ -2389,59 +2407,55 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
         }
 
-        private File _getModelFile() throws FileNotFoundException {
-            // FIXME: This method should return a URL, not a File so that
-            // this method works properly with jar URLs and remote files.
-            File modelFile = null;
-            try {
-                TransformationRule rule =
-                    getFrameController().getTransformationRule();
-                Pattern pattern = rule.getPattern();
-                DefaultModelAttribute attribute = (DefaultModelAttribute)
-                        pattern.getAttribute("DefaultModel");
-                if (attribute != null) {
-                    FileParameter parameter =
-                        (FileParameter) attribute.parameter;
-                    if (parameter.getExpression() != null) {
-                        modelFile = parameter.asFile();
-                    }
-                    if (modelFile != null && !modelFile.exists()) {
-                        try {
-                            // If we get here, it could be because the DefaultModel
-                            // parameter was starts with $CLASSPATH.
-                            String path = parameter.asURL().getPath();
-                            if (path.startsWith("file:/")) {
-                                modelFile = new File(path);
-                            }
-                        } catch (Exception ex) {
-                            System.out.println("Problem looking up " + parameter + " as a URL");
-                            // Ignore
-                        }
+        private URL _getModelURL() throws FileNotFoundException {
+            URL modelURL = null;
+            TransformationRule rule =
+                getFrameController().getTransformationRule();
+            Pattern pattern = rule.getPattern();
+            DefaultModelAttribute attribute = (DefaultModelAttribute)
+                    pattern.getAttribute("DefaultModel");
+            if (attribute != null) {
+                if (attribute.getExpression() != null) {
+                    try {
+                        modelURL = attribute.asURL();
+                    } catch (IllegalActionException e) {
+                        throw new KernelRuntimeException(e,
+                                "Cannot obtain model file.");
                     }
                 }
-
-                if (modelFile == null) {
-                    ComponentDialog dialog = new ComponentDialog(
-                            TransformationEditor.this, "Select Model File",
-                            new Configurer(_attribute));
-                    if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
-                        modelFile = ((FileParameter) _attribute.parameter)
-                                .asFile();
-                    }
-                }
-
-                if (modelFile != null && !modelFile.exists()) {
-                    throw new FileNotFoundException("Model file \"" + modelFile.getPath()
-                        + "\" does not exist.");
-                }
-
-                return modelFile;
-            } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e, "Cannot obtain model file.");
             }
-        }
 
-        private DefaultModelAttribute _attribute;
+            if (modelURL == null) {
+                attribute = (DefaultModelAttribute) pattern.getAttribute(
+                        "_defaultModel");
+                if (attribute == null) {
+                    try {
+                        attribute = new DefaultModelAttribute(pattern,
+                                "_defaultModel");
+                        attribute.setDisplayName("DefaultModel");
+                        attribute.setPersistent(false);
+                    } catch (KernelException e) {
+                        throw new KernelRuntimeException(e,
+                                "Unable to initialize DefaultModelAttribute.");
+                    }
+                }
+                PtolemyQuery query = new PtolemyQuery(attribute);
+                query.addStyledEntry(attribute);
+                ComponentDialog dialog = new ComponentDialog(
+                        TransformationEditor.this, "Select Model File",
+                        query);
+                if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
+                    try {
+                        modelURL = attribute.asURL();
+                    } catch (IllegalActionException e) {
+                        throw new KernelRuntimeException(e,
+                                "Cannot obtain model file.");
+                    }
+                }
+            }
+
+            return modelURL;
+        }
 
         private class SingleViewController extends ViewController {
 
@@ -2470,14 +2484,12 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             SingleViewController() throws FileNotFoundException {
                 try {
-                    // FIXME: This method should return a URL, not a File so that
-                    // this method works properly with jar URLs and remote files.
-                    File file = _getModelFile();
-                    if (file == null) {
+                    URL modelURL = _getModelURL();
+                    if (modelURL == null) {
                         return;
                     }
 
-                    CompositeEntity model = _getModel(file);
+                    CompositeEntity model = _getModel(modelURL);
                     if (model == null) {
                         return;
                     }
@@ -2486,8 +2498,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     if (results.isEmpty()) {
                         MessageHandler.message("No match found.");
                     } else {
-                        _viewer = _showViewer(model, results, file
-                                .getCanonicalPath());
+                        _viewer = _showViewer(model, results,
+                                modelURL.toExternalForm());
                         _viewer.addWindowListener(this);
                     }
                 } catch (MalformedURLException ex) {
@@ -2538,7 +2550,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 MessageHandler.error("Unable to obtain URL from the input "
                         + "file name.", throwable);
             } else {
-                throw new InternalErrorException(throwable);
+                MessageHandler.error(throwable.getMessage());
             }
         }
 

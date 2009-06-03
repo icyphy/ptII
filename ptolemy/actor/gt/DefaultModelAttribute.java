@@ -32,11 +32,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.gt;
 
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// DefaultModelAttribute
@@ -51,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DefaultModelAttribute extends ParameterAttribute {
+public class DefaultModelAttribute extends FileParameter {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -69,33 +68,9 @@ public class DefaultModelAttribute extends ParameterAttribute {
     public DefaultModelAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-    }
 
-    /** Construct an attribute in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument
-     *  is null, then use the default workspace.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the attribute.
-     */
-    public DefaultModelAttribute(Workspace workspace) {
-        super(workspace);
-    }
-
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an attribute with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DefaultModelAttribute newObject =
-            (DefaultModelAttribute) super.clone(workspace);
-        newObject.parameter = (Parameter) newObject.getAttribute("model");
-        return newObject;
+        editorFactory = new VisibleParameterEditorFactory(this,
+                "editorFactory");
     }
 
     /** Specify the container NamedObj, adding this attribute to the
@@ -131,22 +106,12 @@ public class DefaultModelAttribute extends ParameterAttribute {
             NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
-            _checkContainerClass(container, Pattern.class, false);
-            _checkUniqueness(container);
+            GTTools.checkContainerClass(this, container, Pattern.class, false);
+            GTTools.checkUniqueness(this, container);
         }
     }
 
-    /** Initialize the parameter used to contain the value of this attribute.
-     *
-     *  @exception IllegalActionException If value of the parameter cannot be
-     *   set.
-     *  @exception NameDuplicationException If the parameter cannot be created.
+    /** The editor factory.
      */
-    protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        FileParameter fileParameter = new FileParameter(this, "model");
-
-        parameter = fileParameter;
-    }
-
+    public VisibleParameterEditorFactory editorFactory;
 }

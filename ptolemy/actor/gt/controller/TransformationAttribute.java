@@ -72,8 +72,8 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationAttribute extends GTAttribute
-implements Configurable {
+public class TransformationAttribute extends Attribute implements Configurable,
+GTAttribute {
 
     public TransformationAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

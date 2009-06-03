@@ -1,4 +1,4 @@
-/* Superclass of the attributes used in the patterns or replacements of
+/* Interface of the attributes used in the patterns or replacements of
    transformation rules.
 
 @Copyright (c) 2007-2009 The Regents of the University of California.
@@ -32,19 +32,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
-import java.util.List;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.EntityLibrary;
-import ptolemy.moml.MoMLChangeRequest;
 
 /**
- Superclass of the attributes used in the patterns or replacements of
+ Interface of the attributes used in the patterns or replacements of
  transformation rules.
 
  @author Thomas Huining Feng
@@ -53,124 +43,5 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class GTAttribute extends Attribute {
-
-    /** Construct an attribute in the default workspace with an empty string
-     *  as its name.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     */
-    public GTAttribute() {
-    }
-
-    /** Construct an attribute with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The container.
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public GTAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-    }
-
-    /** Construct an attribute in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument
-     *  is null, then use the default workspace.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the attribute.
-     */
-    public GTAttribute(Workspace workspace) {
-        super(workspace);
-    }
-
-    /** Check the class of the container in which this attribute is to be
-     *  placed. If the container is not an intended one, throw an
-     *  IllegalActionException.
-     *
-     *  @param container The container.
-     *  @param containerClass The intended class of container.
-     *  @param deep Whether containers of the container should be checked
-     *   instead, if the container does not qualify.
-     *  @exception IllegalActionException If this attribute cannot be used with
-     *   the given container.
-     */
-    protected void _checkContainerClass(NamedObj container,
-            Class<? extends CompositeEntity> containerClass, boolean deep)
-            throws IllegalActionException {
-        while (deep && container != null
-                && !containerClass.isInstance(container)
-                && !(container instanceof EntityLibrary)) {
-            container = container.getContainer();
-            if (container instanceof EntityLibrary) {
-                return;
-            }
-        }
-
-        if (container == null ||
-                !containerClass.isInstance(container) &&
-                !(container instanceof EntityLibrary)) {
-            _deleteThis();
-            throw new IllegalActionException(getClass().getSimpleName()
-                    + " can only be added to " + containerClass.getSimpleName()
-                    + ".");
-        }
-    }
-
-    /** Check whether this attribute is unique in the given container.
-     *
-     *  @param container The container.
-     *  @exception IllegalActionException If the container already has an
-     *   attribute in the same class.
-     */
-    protected void _checkUniqueness(NamedObj container)
-            throws IllegalActionException {
-        if (container instanceof EntityLibrary) {
-            return;
-        }
-
-        try {
-            container.workspace().getReadAccess();
-            List<?> attributeList = container.attributeList(getClass());
-            for (Object attributeObject : attributeList) {
-                if (attributeObject != this) {
-                    _deleteThis();
-                    throw new IllegalActionException("Only 1 "
-                            + getClass().getSimpleName() + " can be used.");
-                }
-            }
-        } finally {
-            container.workspace().doneReading();
-        }
-    }
-
-    /** Execute a MoMLChangeRequest to set the icon description of this
-     *  attribute.
-     *
-     *  @param iconDescription The icon description.
-     */
-    protected void _setIconDescription(String iconDescription) {
-        String moml = "<property name=\"_iconDescription\" class="
-                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-                + "  <configure>" + iconDescription + "</configure>"
-                + "</property>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-        request.execute();
-    }
-
-    /** Request a MoMLChangeRequest to delete this attribute from its container.
-     */
-    private void _deleteThis() {
-        String moml = "<deleteProperty name=\"" + getName() + "\"/>";
-        requestChange(new MoMLChangeRequest(this, getContainer(), moml));
-    }
+public interface GTAttribute {
 }

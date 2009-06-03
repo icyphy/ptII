@@ -312,9 +312,7 @@
                     </property>
                 </property>
                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightN&quot;) || CarLightNS.getName().equals(&quot;CarLightS&quot;)) ||&#10;!NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightE&quot;) || CarLightNS.getName().equals(&quot;CarLightW&quot;))">
-                        </property>
+                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="&#10;NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightN&quot;) || CarLightNS.getName().equals(&quot;CarLightS&quot;)) ||&#10;!NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightE&quot;) || CarLightNS.getName().equals(&quot;CarLightW&quot;))">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>
@@ -389,9 +387,7 @@
                     </property>
                 </property>
                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightN&quot;) || CarLightNS.getName().equals(&quot;CarLightS&quot;)) ||&#10;!NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightE&quot;) || CarLightNS.getName().equals(&quot;CarLightW&quot;))">
-                        </property>
+                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="&#10;NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightN&quot;) || CarLightNS.getName().equals(&quot;CarLightS&quot;)) ||&#10;!NS &amp;&amp; (CarLightNS.getName().equals(&quot;CarLightE&quot;) || CarLightNS.getName().equals(&quot;CarLightW&quot;))">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>
@@ -494,9 +490,7 @@
                     </property>
                 </property>
                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightN&quot;) || PedLightNS.getName().equals(&quot;PedLightS&quot;)) ||&#10;!NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightE&quot;) || PedLightNS.getName().equals(&quot;PedLightW&quot;))">
-                        </property>
+                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="&#10;NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightN&quot;) || PedLightNS.getName().equals(&quot;PedLightS&quot;)) ||&#10;!NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightE&quot;) || PedLightNS.getName().equals(&quot;PedLightW&quot;))">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>
@@ -571,9 +565,7 @@
                     </property>
                 </property>
                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightN&quot;) || PedLightNS.getName().equals(&quot;PedLightS&quot;)) ||&#10;!NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightE&quot;) || PedLightNS.getName().equals(&quot;PedLightW&quot;))">
-                        </property>
+                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="&#10;NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightN&quot;) || PedLightNS.getName().equals(&quot;PedLightS&quot;)) ||&#10;!NS &amp;&amp; (PedLightNS.getName().equals(&quot;PedLightE&quot;) || PedLightNS.getName().equals(&quot;PedLightW&quot;))">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>

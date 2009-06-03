@@ -30,7 +30,7 @@
         </property>
     </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={548, 343, 823, 514}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -332,7 +332,7 @@
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+            <property name="priority" class="ptolemy.actor.parameters.Priority" value="-1">
             </property>
         </relation>
         <relation name="relation_1_4" class="ptolemy.domains.ptera.kernel.SchedulingRelation">

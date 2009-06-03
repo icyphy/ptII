@@ -42,7 +42,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DefaultDirectoryAttribute
@@ -57,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DefaultDirectoryAttribute extends ParameterAttribute implements
+public class DefaultDirectoryAttribute extends StringParameter implements
         ValueListener {
 
     /** Construct an attribute with the given name contained by the specified
@@ -76,33 +75,29 @@ public class DefaultDirectoryAttribute extends ParameterAttribute implements
     public DefaultDirectoryAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-    }
 
-    /** Construct an attribute in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument
-     *  is null, then use the default workspace.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the attribute.
-     */
-    public DefaultDirectoryAttribute(Workspace workspace) {
-        super(workspace);
-    }
+        directory = new FileParameter(this, "directory");
+        directory.setDisplayName("Directory");
+        directory.setExpression(".");
+        directory.addValueListener(this);
+        Parameter allowFiles = new Parameter(directory, "allowFiles");
+        allowFiles.setTypeEquals(BaseType.BOOLEAN);
+        allowFiles.setToken(BooleanToken.FALSE);
+        Parameter allowDirectories = new Parameter(directory,
+                "allowDirectories");
+        allowDirectories.setTypeEquals(BaseType.BOOLEAN);
+        allowDirectories.setToken(BooleanToken.TRUE);
 
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an attribute with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DefaultDirectoryAttribute newObject =
-            (DefaultDirectoryAttribute) super.clone(workspace);
-        newObject.parameter = (Parameter) newObject.getAttribute("display");
-        return newObject;
+        fileFilter = new StringParameter(this, "filter");
+        fileFilter.setDisplayName("File filter (*.xml)");
+        fileFilter.setExpression("");
+        fileFilter.addValueListener(this);
+
+        subdirs = new Parameter(this, "subdirs");
+        subdirs.setDisplayName("Include subdirs");
+        subdirs.setTypeEquals(BaseType.BOOLEAN);
+        subdirs.setExpression("true");
+        subdirs.addValueListener(this);
     }
 
     /** Specify the container NamedObj, adding this attribute to the
@@ -138,8 +133,8 @@ public class DefaultDirectoryAttribute extends ParameterAttribute implements
             NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
-            _checkContainerClass(container, Pattern.class, false);
-            _checkUniqueness(container);
+            GTTools.checkContainerClass(this, container, Pattern.class, false);
+            GTTools.checkUniqueness(this, container);
         }
     }
 
@@ -161,7 +156,7 @@ public class DefaultDirectoryAttribute extends ParameterAttribute implements
             }
         } catch (IllegalActionException e) {
         }
-        parameter.setExpression(display);
+        setExpression(display);
     }
 
     /** The default directory where model files are searched.
@@ -176,42 +171,4 @@ public class DefaultDirectoryAttribute extends ParameterAttribute implements
      *  are also searched.
      */
     public Parameter subdirs;
-
-    /** Initialize the parameter used to contain the value of this attribute.
-     *
-     *  @exception IllegalActionException If value of the parameter cannot be
-     *   set.
-     *  @exception NameDuplicationException If the parameter cannot be created.
-     */
-    protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        parameter = new StringParameter(this, "display");
-        parameter.setDisplayName("Display (./)");
-        parameter.setPersistent(false);
-        parameter.setVisibility(NONE);
-
-        directory = new FileParameter(this, "directory");
-        directory.setDisplayName("Directory");
-        directory.setExpression(".");
-        directory.addValueListener(this);
-        Parameter allowFiles = new Parameter(directory, "allowFiles");
-        allowFiles.setTypeEquals(BaseType.BOOLEAN);
-        allowFiles.setToken(BooleanToken.FALSE);
-        Parameter allowDirectories = new Parameter(directory,
-                "allowDirectories");
-        allowDirectories.setTypeEquals(BaseType.BOOLEAN);
-        allowDirectories.setToken(BooleanToken.TRUE);
-
-        fileFilter = new StringParameter(this, "filter");
-        fileFilter.setDisplayName("File filter (*.xml)");
-        fileFilter.setExpression("");
-        fileFilter.addValueListener(this);
-
-        subdirs = new Parameter(this, "subdirs");
-        subdirs.setDisplayName("Include subdirs");
-        subdirs.setTypeEquals(BaseType.BOOLEAN);
-        subdirs.setExpression("true");
-        subdirs.addValueListener(this);
-    }
-
 }

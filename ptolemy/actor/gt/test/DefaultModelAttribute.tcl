@@ -58,8 +58,7 @@ test DefaultModelAttribute-2.0 {Check constructor} {
 # 
 test DefaultModelAttribute-3.0 {asFile} {
     # uses param4 from 2.0 above
-    set fileParam3 [java::cast ptolemy.data.expr.FileParameter [java::field [java::cast ptolemy.actor.gt.ParameterAttribute $param4] parameter]]
-    list [java::isnull [$fileParam3 asFile]]
+    list [java::isnull [$param4 asFile]]
 } {1}
 
 ######################################################################
@@ -72,8 +71,7 @@ test DefaultModelAttribute-3.1 {asFile on $PTII} {
     set defaultModelAttribute3_1 [java::new ptolemy.actor.gt.DefaultModelAttribute $pattern3_1 \
 			  myDefaultModelAttribute3_1]
     $defaultModelAttribute3_1 setExpression {$PTII}
-    set fileParam3_1 [java::cast ptolemy.data.expr.FileParameter [java::field [java::cast ptolemy.actor.gt.ParameterAttribute $defaultModelAttribute3_1] parameter]]
-    set file3_1 [$fileParam3_1 asFile]
+    set file3_1 [$defaultModelAttribute3_1 asFile]
     set uri3_1 [[$file3_1 getCanonicalFile] toURI]
 
     # Compare against $PTII
@@ -81,7 +79,7 @@ test DefaultModelAttribute-3.1 {asFile on $PTII} {
     set ptIIURI [[$ptIIFile getCanonicalFile] toURI]
 
     list [$uri3_1 compareTo $ptIIURI] \
-	[java::isnull [$fileParam3_1 getBaseDirectory]]
+	[java::isnull [$defaultModelAttribute3_1 getBaseDirectory]]
 } {0 1}
 
 ######################################################################
@@ -95,8 +93,7 @@ test DefaultModelAttribute-3.2 {asFile on $CLASSPATH} {
 			  myDefaultModelAttribute3_2]
 
     $defaultModelAttribute3_2 setExpression {$CLASSPATH/ptolemy/actor/gt/test/DefaultModelAttribute.tcl}
-    set fileParam3_2 [java::cast ptolemy.data.expr.FileParameter [java::field [java::cast ptolemy.actor.gt.ParameterAttribute $defaultModelAttribute3_2] parameter]]
-    set url3_2a [$fileParam3_2 asURL]
+    set url3_2a [$defaultModelAttribute3_2 asURL]
     set uri3_2a [$url3_2a toURI]
 
     set e3_2 [java::new {ptolemy.kernel.Entity String} entity3_2]
@@ -115,8 +112,7 @@ test DefaultModelAttribute-3.2 {asFile on $CLASSPATH} {
 # 
 test DefaultModelAttribute-4.0 {asURL} {
     # uses param4 from 2.0 above
-    set fileParam3 [java::cast ptolemy.data.expr.FileParameter [java::field [java::cast ptolemy.actor.gt.ParameterAttribute $param4] parameter]]
-    list [java::isnull [$fileParam3 asURL]]
+    list [java::isnull [$param4 asURL]]
 } {1}
 
 ######################################################################
@@ -129,14 +125,13 @@ test DefaultModelAttribute-4.1 {asURL on $PTII} {
     set defaultModelAttribute4_1 [java::new ptolemy.actor.gt.DefaultModelAttribute $pattern4_1 \
 			  myDefaultModelAttribute4_1]
     $defaultModelAttribute4_1 setExpression {$PTII}
-    set fileParam4_1 [java::cast ptolemy.data.expr.FileParameter [java::field [java::cast ptolemy.actor.gt.ParameterAttribute $defaultModelAttribute4_1] parameter]]
-    set url4_1 [$fileParam4_1 asURL]
+    set url4_1 [$defaultModelAttribute4_1 asURL]
 
     set file4_1 [[java::new java.io.File [$url4_1 getFile]] getCanonicalFile]
     set ptIIFile [[java::new java.io.File $PTII] getCanonicalFile]
     
     list [$file4_1 equals $ptIIFile] \
-	[java::isnull [$fileParam4_1 getBaseDirectory]]
+	[java::isnull [$defaultModelAttribute4_1 getBaseDirectory]]
 } {1 1}
 
 ######################################################################
@@ -149,11 +144,10 @@ test DefaultModelAttribute-5.0 {clone} {
     set defaultModelAttribute5_1 [java::new ptolemy.actor.gt.DefaultModelAttribute $pattern5_1 \
 			  myDefaultModelAttribute5_1]
 
-    set fileParam5 [java::cast ptolemy.data.expr.FileParameter [java::field [java::cast ptolemy.actor.gt.ParameterAttribute $defaultModelAttribute5_1] parameter]]
     set e5_0 [java::new {ptolemy.kernel.Entity String} entity5_0]
-    set cloneFileParam5 [$fileParam5 clone [$e5_0 workspace]]
+    set cloneFileParam5 [$defaultModelAttribute5_1 clone [$e5_0 workspace]]
     # FIXME: test that the baseDirectory, reader and writer are closed
-    list [$fileParam5 toString] [$cloneFileParam5 toString]
-} {{ptolemy.data.expr.FileParameter {.e5_1.pattern5_1.myDefaultModelAttribute5_1.model} ""} {ptolemy.data.expr.FileParameter {.model} ""}}
+    list [$defaultModelAttribute5_1 toString] [$cloneFileParam5 toString]
+} {{ptolemy.actor.gt.DefaultModelAttribute {.e5_1.pattern5_1.myDefaultModelAttribute5_1} ""} {ptolemy.actor.gt.DefaultModelAttribute {.myDefaultModelAttribute5_1} ""}}
 
 

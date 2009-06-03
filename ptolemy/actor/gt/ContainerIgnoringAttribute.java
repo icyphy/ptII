@@ -28,19 +28,19 @@
 */
 package ptolemy.actor.gt;
 
+import java.util.Collection;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.EntityLibrary;
+import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 //////////////////////////////////////////////////////////////////////////
-//// IgnoreContainerAttribute
+//// ContainerIgnoringAttribute
 
 /**
  An attribute to specify that all composite actors within its container should
@@ -52,7 +52,8 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ContainerIgnoringAttribute extends ParameterAttribute {
+public class ContainerIgnoringAttribute extends Parameter
+implements GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -70,62 +71,12 @@ public class ContainerIgnoringAttribute extends ParameterAttribute {
     public ContainerIgnoringAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-    }
 
-    /** Construct an attribute in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument
-     *  is null, then use the default workspace.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the attribute.
-     */
-    public ContainerIgnoringAttribute(Workspace workspace) {
-        super(workspace);
-    }
+        setTypeEquals(BaseType.BOOLEAN);
+        setToken(BooleanToken.getInstance(!DEFAULT));
 
-    /** React to a change in an attribute.  This method is called by
-     *  a contained attribute when its value changes.
-     *
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this base class).
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (getContainer() instanceof EntityLibrary) {
-            return;
-        }
-
-        if (attribute == parameter) {
-            try {
-                if (((BooleanToken) parameter.getToken())
-                        .equals(BooleanToken.TRUE)) {
-                    _setIconDescription(_FLATTENING_ICON);
-                } else {
-                    _setIconDescription(_NOT_FLATTENING_ICON);
-                }
-            } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e,
-                        "Cannot get token from the attribute.");
-            }
-        }
-    }
-
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an attribute with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ContainerIgnoringAttribute newObject =
-            (ContainerIgnoringAttribute) super.clone(workspace);
-        newObject.parameter = (Parameter) newObject.getAttribute(
-                "containerIgnoring");
-        return newObject;
+        editorFactory = new VisibleParameterEditorFactory(this,
+                "editorFactory");
     }
 
     /** Specify the container NamedObj, adding this attribute to the
@@ -161,27 +112,56 @@ public class ContainerIgnoringAttribute extends ParameterAttribute {
     NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
-            _checkContainerClass(container, Pattern.class, true);
-            _checkUniqueness(container);
+            GTTools.checkContainerClass(this, container, Pattern.class, true);
+            GTTools.checkUniqueness(this, container);
         }
+    }
+
+    /** If this variable is not lazy (the default) then evaluate
+     *  the expression contained in this variable, and notify any
+     *  value dependents. If those are not lazy, then they too will
+     *  be evaluated.  Also, if the variable is not lazy, then
+     *  notify its container, if there is one, by calling its
+     *  attributeChanged() method.
+     *  <p>
+     *  If this variable is lazy, then mark this variable and any
+     *  of its value dependents as needing evaluation and for any
+     *  value dependents that are not lazy, evaluate them.
+     *  Note that if there are no value dependents,
+     *  or if they are all lazy, then this will not
+     *  result in evaluation of this variable, and hence will not ensure
+     *  that the expression giving its value is valid.  Call getToken()
+     *  or getType() to accomplish that.
+     *  @return The current list of value listeners, which are evaluated
+     *   as a consequence of this call to validate().
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public Collection validate() throws IllegalActionException {
+        Collection collection = super.validate();
+        try {
+            BooleanToken token = (BooleanToken) getToken();
+            if (token == null || token.equals(BooleanToken.TRUE)) {
+                GTTools.setIconDescription(this, _FLATTENING_ICON);
+            } else {
+                GTTools.setIconDescription(this, _NOT_FLATTENING_ICON);
+            }
+        } catch (IllegalActionException e) {
+            throw new KernelRuntimeException(e,
+                    "Cannot get token from the attribute.");
+        }
+        return collection;
     }
 
     /** The default value of this attribute.
      */
     public static final boolean DEFAULT = false;
 
-    /** Initialize the parameter used to contain the value of this attribute.
-     *
-     *  @exception IllegalActionException If value of the parameter cannot be
-     *   set.
-     *  @exception NameDuplicationException If the parameter cannot be created.
+    /** The editor factory.
      */
-    protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        parameter = new Parameter(this, "containerIgnoring");
-        parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
-    }
+    public VisibleParameterEditorFactory editorFactory;
 
     /** The icon used when flattening is set to true.
      */

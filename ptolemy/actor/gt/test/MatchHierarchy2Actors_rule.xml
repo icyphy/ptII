@@ -13,9 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.5, 113.0}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-        <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
-            <property name="hierarchyFlattening" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
+        <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute" value="true">
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
           <svg>
@@ -32,9 +30,7 @@
             <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="HierarchyFlattening">
             </property>
         </property>
-        <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute">
-            <property name="relationCollapsing" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
+        <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute" value="true">
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
           <svg>

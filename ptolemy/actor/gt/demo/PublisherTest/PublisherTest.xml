@@ -4,7 +4,7 @@
 <entity name="PublisherTest" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={241, 153, 742, 469}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 365, 742, 469}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 327]">
     </property>
@@ -13,24 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{217.0, -60.5}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-        <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
-            <property name="model" class="ptolemy.data.expr.FileParameter" value="../../../lib/test/auto/PublisherNonStrictTest.xml">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-          <svg>
-            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
-          </svg>
-        </configure>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.5, -200.0]">
-            </property>
-        </property>
-        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
+        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute" value="../../../lib/test/auto/Publisher*.xml [...]">
             <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../../lib/test/auto">
                 <display name="Directory"/>
             </property>
@@ -48,7 +31,7 @@
           </svg>
         </configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.5, -175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, -175.0}">
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -77,6 +60,21 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 65.0]">
             </property>
             <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
+            </property>
+        </property>
+        <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute" value="../../../lib/test/auto/PublisherNonStrictTest.xml">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -200.0]">
             </property>
         </property>
         <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">

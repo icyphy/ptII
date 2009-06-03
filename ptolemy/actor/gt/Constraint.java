@@ -34,14 +34,12 @@ import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 //////////////////////////////////////////////////////////////////////////
 ////Constraint
@@ -64,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
 */
-public class Constraint extends ParameterAttribute {
+public class Constraint extends GTParameter {
 
     /** Constraint a constraint.
      *
@@ -79,14 +77,13 @@ public class Constraint extends ParameterAttribute {
     public Constraint(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
 
-    /** Construct a constraint.
-     *
-     *  @param workspace The workspace that will list the attribute.
-     */
-    public Constraint(Workspace workspace) {
-        super(workspace);
+        Variable variable = new Variable(this, "_textHeightHint");
+        variable.setExpression("5");
+        variable.setPersistent(false);
+
+        editorFactory = new VisibleParameterEditorFactory(this,
+                "editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,25 +101,11 @@ public class Constraint extends ParameterAttribute {
      */
     public boolean check(Pattern pattern, MatchResult matchResult) {
         try {
-            ((GTParameter) parameter)._evaluate(pattern, matchResult);
-            return ((BooleanToken) parameter.getToken()).booleanValue();
+            _evaluate(pattern, matchResult);
+            return ((BooleanToken) getToken()).booleanValue();
         } catch (IllegalActionException e) {
             return false;
         }
-    }
-
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an attribute with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Constraint newObject = (Constraint) super.clone(workspace);
-        newObject.parameter = (Parameter) newObject.getAttribute("constraint");
-        return newObject;
     }
 
     /** Set the container of this constraint. This method ensures that the
@@ -142,58 +125,81 @@ public class Constraint extends ParameterAttribute {
             NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
-            _checkContainerClass(container, Pattern.class, false);
+            GTTools.checkContainerClass(this, container, Pattern.class, false);
         }
     }
+
+    /** The editor factory.
+     */
+    public VisibleParameterEditorFactory editorFactory;
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Initialize the parameter used to specify the expression of this
-     *  constraint.
+    /** Evaluate the current expression to a token with the given pattern and
+     *  match result using {@link ptolemy.actor.gt.GTParameter.Evaluator}. If
+     *  this variable
+     *  was last set directly with a token, then do nothing. In other words,
+     *  the expression is evaluated only if the value of the token was most
+     *  recently given by an expression.  The expression is also evaluated
+     *  if any of the variables it refers to have changed since the last
+     *  evaluation.  If the value of this variable
+     *  changes due to this evaluation, then notify all
+     *  value dependents and notify the container (if there is one) by
+     *  calling its attributeChanged() and attributeTypeChanged() methods,
+     *  as appropriate. An exception is thrown
+     *  if the expression is illegal, for example if a parse error occurs
+     *  or if there is a dependency loop.
+     *  <p>
+     *  If evaluation results in a token that is not of the same type
+     *  as the current type of the variable, then the type of the variable
+     *  is changed, unless the new type is incompatible with statically
+     *  specified types (setTypeEquals() and setTypeAtMost()).
+     *  If the type is changed, the attributeTypeChanged() method of
+     *  the container is called.  The container can reject the change
+     *  by throwing an exception.
+     *  <p>
+     *  This method may trigger a model error, which is delegated up
+     *  the container hierarchy until an error handler is found, and
+     *  is ignored if no error handler is found.  A model error occurs
+     *  if the expression cannot be parsed or cannot be evaluated.
+     *  <p>
+     *  Part of this method is read-synchronized on the workspace.
      *
-     *  @exception IllegalActionException If the parameter is not of an
-     *   acceptable class for the container.
-     *  @exception NameDuplicationException If the parameter's name
-     *   ("constraint") coincides with a parameter already in the container.
+     *  @param pattern The pattern.
+     *  @param matchResult The match result for the match between the pattern
+     *   and a host model.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
-    protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        parameter = new GTParameter(this, "constraint") {
-            protected void _evaluate(Pattern pattern, MatchResult matchResult)
-                    throws IllegalActionException {
-                setParseTreeEvaluator(new Evaluator(pattern, matchResult) {
-                    protected ParserScope _createScope(Pattern pattern,
-                            MatchResult matchResult, ParserScope superScope) {
-                        return new Scope(pattern, matchResult, superScope) {
-                            public Token get(String name)
-                                    throws IllegalActionException {
-                                if (name.equals("this")) {
-                                    NamedObj container =
-                                        Constraint.this.getContainer();
-                                    NamedObj match =
-                                        (NamedObj) _matchResult.get(container);
-                                    if (match != null) {
-                                        return new ObjectToken(match,
-                                                match.getClass());
-                                    }
-                                }
-                                return super.get(name);
+    protected void _evaluate(Pattern pattern, MatchResult matchResult)
+            throws IllegalActionException {
+        setParseTreeEvaluator(new Evaluator(pattern, matchResult) {
+            protected ParserScope _createScope(Pattern pattern,
+                    MatchResult matchResult, ParserScope superScope) {
+                return new Scope(pattern, matchResult, superScope) {
+                    public Token get(String name)
+                            throws IllegalActionException {
+                        if (name.equals("this")) {
+                            NamedObj container =
+                                Constraint.this.getContainer();
+                            NamedObj match =
+                                (NamedObj) _matchResult.get(container);
+                            if (match != null) {
+                                return new ObjectToken(match,
+                                        match.getClass());
                             }
-                        };
+                        }
+                        return super.get(name);
                     }
-                });
-                try {
-                    super._evaluate();
-                } finally {
-                    setParseTreeEvaluator(null);
-                    _parserScope = null;
-                }
+                };
             }
-        };
-        parameter.setTypeEquals(BaseType.BOOLEAN);
-        Variable variable = new Variable(parameter, "_textHeightHint");
-        variable.setExpression("5");
-        variable.setPersistent(false);
+        });
+        try {
+            super._evaluate();
+        } finally {
+            setParseTreeEvaluator(null);
+            _parserScope = null;
+        }
     }
 }

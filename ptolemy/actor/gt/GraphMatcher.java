@@ -583,7 +583,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @return The value of the attribute, if found, or null otherwise.
      */
     private Token _getAttribute(NamedObj container,
-            Class<? extends ParameterAttribute> attributeClass,
+            Class<? extends Parameter> attributeClass,
             boolean searchContainer, boolean patternOnly, boolean hostOnly) {
 
         boolean isInHost = false;
@@ -600,16 +600,11 @@ public class GraphMatcher extends GraphAnalyzer {
             if ((!patternOnly || !isInHost) && (!hostOnly || isInHost)) {
                 List<?> attributes = container.attributeList(attributeClass);
                 if (!attributes.isEmpty()) {
-                    ParameterAttribute attribute =
-                        (ParameterAttribute) attributes.get(0);
+                    Parameter attribute = (Parameter) attributes.get(0);
                     try {
-                        attribute.workspace().getReadAccess();
-                        Parameter parameter = attribute.parameter;
-                        return parameter == null ? null : parameter.getToken();
+                        return attribute.getToken();
                     } catch (IllegalActionException e) {
                         return null;
-                    } finally {
-                        attribute.workspace().doneReading();
                     }
                 }
             }

@@ -752,25 +752,18 @@ public class GraphTransformer extends ChangeRequest {
      *  @return The attribute, if found, or null otherwise.
      */
     private Token _getAttribute(NamedObj container, String name,
-            Class<? extends GTAttribute> attributeClass) {
+            Class<? extends Parameter> attributeClass) {
 
         while (container != null) {
             if (_replacementToHost.containsValue(container)) {
                 container = _replacementToHost.getKey(container);
             }
-            Attribute attribute = container.getAttribute(name);
+            Parameter attribute = (Parameter) container.getAttribute(name);
             if (attribute != null && attributeClass.isInstance(attribute)) {
                 try {
-                    attribute.workspace().getReadAccess();
-                    Parameter parameter = (Parameter) attribute.attributeList()
-                            .get(0);
-                    try {
-                        return parameter == null ? null : parameter.getToken();
-                    } catch (IllegalActionException e) {
-                        return null;
-                    }
-                } finally {
-                    attribute.workspace().doneReading();
+                    return attribute.getToken();
+                } catch (IllegalActionException e) {
+                    return null;
                 }
             }
             container = container.getContainer();

@@ -31,16 +31,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
+import java.util.Collection;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.EntityLibrary;
+import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 /**
 
@@ -50,66 +50,72 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationCollapsingAttribute extends ParameterAttribute {
+public class RelationCollapsingAttribute extends Parameter
+implements GTAttribute {
 
     public RelationCollapsingAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-    }
 
-    public void attributeChanged(Attribute attribute) {
-        if (getContainer() instanceof EntityLibrary) {
-            return;
-        }
+        setTypeEquals(BaseType.BOOLEAN);
+        setToken(BooleanToken.getInstance(!DEFAULT));
 
-        if (attribute == parameter) {
-            try {
-                if (((BooleanToken) parameter.getToken())
-                        .equals(BooleanToken.TRUE)) {
-                    _setIconDescription(_COLLAPSING_ICON);
-                } else {
-                    _setIconDescription(_NON_COLLAPSING_ICON);
-                }
-            } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e,
-                        "Cannot get token from the attribute.");
-            }
-        }
-    }
-
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an attribute with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RelationCollapsingAttribute newObject =
-            (RelationCollapsingAttribute) super.clone(workspace);
-        newObject.parameter = (Parameter) newObject.getAttribute(
-                "relationCollapsing");
-        return newObject;
+        editorFactory = new VisibleParameterEditorFactory(this,
+                "editorFactory");
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
-            _checkContainerClass(container, Pattern.class, true);
-            _checkUniqueness(container);
+            GTTools.checkContainerClass(this, container, Pattern.class, true);
+            GTTools.checkUniqueness(this, container);
         }
+    }
+
+    /** If this variable is not lazy (the default) then evaluate
+     *  the expression contained in this variable, and notify any
+     *  value dependents. If those are not lazy, then they too will
+     *  be evaluated.  Also, if the variable is not lazy, then
+     *  notify its container, if there is one, by calling its
+     *  attributeChanged() method.
+     *  <p>
+     *  If this variable is lazy, then mark this variable and any
+     *  of its value dependents as needing evaluation and for any
+     *  value dependents that are not lazy, evaluate them.
+     *  Note that if there are no value dependents,
+     *  or if they are all lazy, then this will not
+     *  result in evaluation of this variable, and hence will not ensure
+     *  that the expression giving its value is valid.  Call getToken()
+     *  or getType() to accomplish that.
+     *  @return The current list of value listeners, which are evaluated
+     *   as a consequence of this call to validate().
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public Collection validate() throws IllegalActionException {
+        Collection collection = super.validate();
+        try {
+            BooleanToken token = (BooleanToken) getToken();
+            if (token == null || token.equals(BooleanToken.TRUE)) {
+                GTTools.setIconDescription(this, _COLLAPSING_ICON);
+            } else {
+                GTTools.setIconDescription(this, _NON_COLLAPSING_ICON);
+            }
+        } catch (IllegalActionException e) {
+            throw new KernelRuntimeException(e,
+                    "Cannot get token from the attribute.");
+        }
+        return collection;
     }
 
     public static final boolean DEFAULT = false;
 
-    protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        parameter = new Parameter(this, "relationCollapsing");
-        parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
-    }
+    /** The editor factory.
+     */
+    public VisibleParameterEditorFactory editorFactory;
 
     private static final String _COLLAPSING_ICON = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""

@@ -35,7 +35,7 @@ import java.util.List;
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
-import ptolemy.actor.gt.ParameterAttribute;
+import ptolemy.actor.gt.GTAttribute;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
@@ -49,7 +49,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
@@ -65,23 +64,19 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DesignPatternImporter extends ParameterAttribute
-        implements ValueListener {
+public class DesignPatternImporter extends Attribute
+        implements GTAttribute, ValueListener {
 
     public DesignPatternImporter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        designPatternFile = new FileParameter(this, "designPatternFile");
+        designPatternFile.addValueListener(this);
     }
 
     public void attributeChanged(Settable settable) {
         update();
-    }
-
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DesignPatternImporter newObject =
-            (DesignPatternImporter) super.clone(workspace);
-        newObject.parameter = (Parameter) getAttribute("designPatternFile");
-        return newObject;
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
@@ -112,7 +107,7 @@ public class DesignPatternImporter extends ParameterAttribute
             try {
                 Token token = parameter.getToken();
                 table.put(parameter.getName(), token);
-                if (parameter == this.parameter) {
+                if (parameter == designPatternFile) {
                     value = ((StringToken) token).stringValue();
                 } else {
                     action.overrideParameter(parameter.getName(),
@@ -147,8 +142,8 @@ public class DesignPatternImporter extends ParameterAttribute
         final MoMLParser parser = new MoMLParser();
         NamedObj model;
         try {
-            Reader reader = ((FileParameter) parameter).openForReading();
-            URI baseDirectory = ((FileParameter) parameter).getBaseDirectory();
+            Reader reader = designPatternFile.openForReading();
+            URI baseDirectory = designPatternFile.getBaseDirectory();
             model = parser.parse(baseDirectory == null ? null :
                 baseDirectory.toURL(), value, reader);
         } catch (Exception e) {
@@ -237,11 +232,7 @@ public class DesignPatternImporter extends ParameterAttribute
         update();
     }
 
-    protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        parameter = new FileParameter(this, "designPatternFile");
-        parameter.addValueListener(this);
-    }
+    public FileParameter designPatternFile;
 
     private UndoStackAttribute _lastUndoStack;
 

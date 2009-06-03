@@ -299,9 +299,7 @@
                                     </property>
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;C.getName().equals(&quot;_ElementsToArray&quot;)">
-                                        </property>
+                                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="&#10;C.getName().equals(&quot;_ElementsToArray&quot;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -315,12 +313,8 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 330.0}">
                                         </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint3">
-                                        </property>
                                     </property>
-                                    <property name="Constraint2" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;fold(&#10;  function(v:boolean, r:object)&#10;    v &amp;&amp; r != relation,&#10;  true,&#10;  C.input.linkedRelationList()&#10;)">
-                                        </property>
+                                    <property name="Constraint2" class="ptolemy.actor.gt.Constraint" value="&#10;fold(&#10;  function(v:boolean, r:object)&#10;    v &amp;&amp; r != relation,&#10;  true,&#10;  C.input.linkedRelationList()&#10;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -334,12 +328,8 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 255.0}">
                                         </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint4">
-                                        </property>
                                     </property>
-                                    <property name="Constraint3" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;!A.getName().startsWith(&quot;_&quot;)">
-                                        </property>
+                                    <property name="Constraint3" class="ptolemy.actor.gt.Constraint" value="&#10;!A.getName().startsWith(&quot;_&quot;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -353,12 +343,8 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 260.0}">
                                         </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint1">
-                                        </property>
                                     </property>
-                                    <property name="Constraint4" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;!B.getName().startsWith(&quot;_&quot;)">
-                                        </property>
+                                    <property name="Constraint4" class="ptolemy.actor.gt.Constraint" value="&#10;!B.getName().startsWith(&quot;_&quot;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -371,8 +357,6 @@
         </configure>
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 295.0}">
-                                        </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint2">
                                         </property>
                                     </property>
                                     <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -589,9 +573,7 @@
                                     </property>
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="A.getName().startsWith(&quot;_&quot;)">
-                                        </property>
+                                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="A.getName().startsWith(&quot;_&quot;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -604,8 +586,6 @@
         </configure>
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 200.0}">
-                                        </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint">
                                         </property>
                                     </property>
                                     <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -772,9 +752,7 @@
                                     </property>
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                                    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;fold(&#10;  function(v:boolean, r:object)&#10;    v &amp;&amp; r != relation,&#10;  true,&#10;  C.input.linkedRelationList()&#10;)">
-                                        </property>
+                                    <property name="Constraint" class="ptolemy.actor.gt.Constraint" value="&#10;fold(&#10;  function(v:boolean, r:object)&#10;    v &amp;&amp; r != relation,&#10;  true,&#10;  C.input.linkedRelationList()&#10;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -788,12 +766,8 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 265.0}">
                                         </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint4">
-                                        </property>
                                     </property>
-                                    <property name="Constraint2" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;C.getName().equals(&quot;_Test&quot;)">
-                                        </property>
+                                    <property name="Constraint2" class="ptolemy.actor.gt.Constraint" value="&#10;C.getName().equals(&quot;_Test&quot;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -807,12 +781,8 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 340.0}">
                                         </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint3">
-                                        </property>
                                     </property>
-                                    <property name="Constraint3" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;!A.getName().startsWith(&quot;_&quot;)">
-                                        </property>
+                                    <property name="Constraint3" class="ptolemy.actor.gt.Constraint" value="&#10;!A.getName().startsWith(&quot;_&quot;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -826,12 +796,8 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 270.0}">
                                         </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint1">
-                                        </property>
                                     </property>
-                                    <property name="Constraint4" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;!B.getName().startsWith(&quot;_&quot;)">
-                                        </property>
+                                    <property name="Constraint4" class="ptolemy.actor.gt.Constraint" value="&#10;!B.getName().startsWith(&quot;_&quot;)">
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                             </property>
@@ -844,8 +810,6 @@
         </configure>
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 305.0}">
-                                        </property>
-                                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint2">
                                         </property>
                                     </property>
                                     <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
