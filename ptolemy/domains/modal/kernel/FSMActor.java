@@ -490,14 +490,27 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             Transition transition = (Transition) transitionRelations.next();
             if (transition.isDefault()) {
                 defaultTransitions.add(transition);
-            } else if (_referencedInputPortsByGuardKnown(transition)) {
-                if (transition.isEnabled()) {
-                    enabledTransitions.add(transition);
-                }
             } else {
-                // Found a transition that is not known to be enabled
-                // or disabled.
-                foundUnknown = true;
+                foundUnknown = !_referencedInputPortsByGuardKnown(transition);
+                // Try to evaluate the guard whether the inputs are known
+                // or not. An unknown input might be in a part of the
+                // guard expression that is not evaluated, e.g. if the
+                // guard expression is "true || in == 1".
+                try {
+                    if (transition.isEnabled()) {
+                        enabledTransitions.add(transition);
+                    }
+                } catch (RuntimeException ex) {
+                    if (!foundUnknown) {
+                        // All referenced inputs are known, so the exception is real.
+                        throw ex;
+                    }
+                } catch (IllegalActionException ex) {
+                    if (!foundUnknown) {
+                        // All referenced inputs are known, so the exception is real.
+                        throw ex;
+                    }
+                }
             }
         }
 
@@ -508,6 +521,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             return enabledTransitions;
         } else {
             if (!foundUnknown) {
+                // Default transitions cannot become enabled until all
+                // guard expressions can be evaluated.
                 return defaultTransitions;
             }
         }
@@ -2098,7 +2113,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Given a transitions, find any input ports
      *  referenced in the guard expressions of the
      *  transitions, and if any of those input ports has status
-     *  unknown, return false. Also, if the port identifier does
+     *  unknown, return false. 
+     *  FIXME: bogus:
+     *  Also, if the port identifier does
      *  not end with "_isPresent", then return false if port
      *  identifier with "_isPresent" appended is false. There is no data on
      *  the port "in" then the identifier "in" will be undefined, or worse,
@@ -2113,6 +2130,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     private boolean _referencedInputPortsByGuardKnown(Transition transition)
             throws IllegalActionException {
+        
+        // FIXME: This method is wrong!
+        // E.g., if the guard expression is (!in_isPresent || in == 1)
+        // then this method will return false when in is absent!
+        // The next method below may also be wrong!
+        
         String string = transition.getGuardExpression();
         if (string.trim().equals("")) {
             return true;
@@ -2132,6 +2155,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     if (!((IOPort)port).isKnown(channel)) {
                         return false;
                     }
+                    /* FIXME: bogus? */
                     if (!name.endsWith("_isPresent")) {
                         Token token = scope.get(port.getName() + "_" + channel + "_isPresent");
                         if (!(token instanceof BooleanToken) || !((BooleanToken)token).booleanValue()) {
@@ -2143,6 +2167,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     if (!((IOPort)port).isKnown()) {
                         return false;
                     }
+                    /* FIXME: bogus? */
                     if (!name.endsWith("_isPresent")) {
                         Token token = scope.get(port.getName() + "_isPresent");
                         if (!(token instanceof BooleanToken) || !((BooleanToken)token).booleanValue()) {
@@ -2155,7 +2180,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return true;
     }
 
-    /** Given a transitions, find any input ports
+    /** Given a transition, find any input ports
      *  referenced in the output actions of the
      *  transitions, and if any of those input ports has status
      *  unknown, return false. Otherwise, return true.
@@ -2196,9 +2221,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         // Port status is known, but the referenced
                         // identifier may be undefined (e.g. "in" when
                         // in is absent).
+                        /* FIXME: Bogus. Could be in a part of the
+                         * output that will not be evaluated.
                         if (scope.get(name) == null) {
                             return false;
                         }
+                        */
                     }
                 }
             }
