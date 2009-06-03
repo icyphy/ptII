@@ -41,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// MapFileStorage
@@ -81,10 +82,14 @@ public class MapFileStorage extends DEActor {
         outputKey = new TypedIOPort(this, "outputKey", false, true);
         outputKey.setTypeEquals(BaseType.STRING);
         outputKey.setMultiport(true);
+        
+        outputKey.setWidthEquals(numberOfOutputs);
 
         outputValue = new TypedIOPort(this, "outputValue", false, true);
         outputValue.setTypeEquals(BaseType.STRING);
         outputValue.setMultiport(true);
+        
+        outputValue.setWidthEquals(numberOfOutputs);
 
         doneReceiving = new TypedIOPort(this, "doneReceiving", true, false);
         doneReceiving.setTypeEquals(BaseType.BOOLEAN);
@@ -172,6 +177,20 @@ public class MapFileStorage extends DEActor {
             super.attributeChanged(attribute);
         }
     }
+    
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MapFileStorage newObject = (MapFileStorage) super.clone(workspace);
+        newObject.outputKey.setWidthEquals(newObject.numberOfOutputs);
+        newObject.outputValue.setWidthEquals(newObject.numberOfOutputs);
+        return newObject;
+    }    
 
     /** Output the data read in the preinitialize() or in the previous
      *  invocation of postfire(), if there is any.
