@@ -208,7 +208,11 @@ public class MoMLViewerApplet extends MoMLApplet {
             // top level is not an FSM actor.
             ActorViewerGraphController controller = new ActorViewerGraphController();
 
-            controller.setConfiguration(_configuration);
+            // FIXME: To get things like open documentation to work, have
+            // to specify a configuration.  But currently, there isn't one.
+            if (_configuration != null) {
+                controller.setConfiguration(_configuration);
+            }
 
             GraphModel model = new ActorGraphModel(_toplevel);
             pane = new GraphPane(controller, model);
