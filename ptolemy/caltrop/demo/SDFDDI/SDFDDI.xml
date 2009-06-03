@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 58, 817, 605}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 58, 654, 603}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 495]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[654, 497]">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -49,12 +49,12 @@ model is about to be run, and signal an error if it is found to be violated.
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 247.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.0, 248.5}">
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {681, 185, 292, 222}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={681, 185, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
         </property>

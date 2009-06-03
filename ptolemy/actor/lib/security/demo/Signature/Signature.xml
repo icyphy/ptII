@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 22, 905, 572}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 22, 692, 568}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[692, 462]">
     </property>
@@ -309,9 +309,9 @@ exception.</text></svg></configure>
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={654, 532, 290, 227}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={654, 532, 484, 208}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
             </property>
             <property name="title" class="ptolemy.data.expr.StringParameter" value="Man in the Middle">
             </property>
@@ -347,9 +347,9 @@ exception.</text></svg></configure>
         <link port="Display.input" relation="relation5"/>
     </entity>
     <entity name="Ramp Output" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={352, 531, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={352, 531, 484, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Ramp Output">
         </property>

@@ -22,13 +22,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 3, 863, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 699, 509}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[648, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[699, 403]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.5, 201.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to use a modal model and a discrete actor &#10;to model a triggered a continuous clock signal in the CT domain.&#10;&#10;The modal model has four states. Each state produces a constant &#10;value. The modal model is at the &quot;init&quot; state initially and outputs&#10;a constant continuous-time signal with value as the defaultOutputValue.&#10;&#10;When the modal model receives a trigger event, which happens at 0.5, &#10;the modal model starts iterating the other three states repeatedly. &#10;The output signal from the modal model is a continuous clock signal&#10;with period as 4.0 and offsets as { 0.0, 1.0, 2.0}. ">
@@ -172,8 +172,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -212,6 +210,8 @@
             </port>
             <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -551,7 +551,7 @@
         <link port="init.trigger" relation="triggerRelation"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={480, 432, 500, 294}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={480, 432, 492, 283}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[492, 239]">
         </property>
