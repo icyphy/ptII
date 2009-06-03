@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CausalityInterface9" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 245, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 245, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,9 +19,9 @@
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 180.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 41, 815, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 41, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -77,7 +77,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 245.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 447, 815, 517}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={536, 274, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -92,7 +92,7 @@
             </port>
             <port name="out1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 190.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 205.0]">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
@@ -104,7 +104,7 @@
             </port>
             <port name="out2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 250.0]">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
@@ -118,7 +118,7 @@
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 285.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 300.0]">
                 </property>
             </port>
             <entity name="State" class="ptolemy.domains.fsm.kernel.State">
@@ -138,7 +138,7 @@
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in1_0 == true &amp;&amp; in2_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in1_0_isPresent &amp;&amp; in1_0 == true &amp;&amp; in2_isPresent">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out1 = 1">
                 </property>
@@ -263,7 +263,6 @@
         <link port="in3" relation="relation8"/>
         <link port="out3" relation="relation9"/>
         <link port="GetCausalityInterface.output" relation="relation"/>
-        <link port="GetCausalityInterface.trigger" relation="relation2"/>
         <link port="GetCausalityInterface.dependents" relation="relation4"/>
         <link port="GetCausalityInterface.equivalences" relation="relation5"/>
         <link port="FSMActor.in1" relation="relation2"/>
