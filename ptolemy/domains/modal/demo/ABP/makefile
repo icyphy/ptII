@@ -49,9 +49,7 @@ CLASSPATH = 	../../../../..
 PTPACKAGE = 	ABP
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	DEMessageSource.java \
-	DETimer.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
@@ -70,16 +68,9 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	'ABPApplet$$CurrentTimeThread.class' \
-	'ABPApplet$$FinishButtonListener.class' \
-	'ABPApplet$$GoButtonListener.class' \
-	'ABPApplet$$MyExecutionListener.class' \
-	'ABPApplet$$PauseButtonListener.class' \
-	'ABPApplet$$TerminateButtonListener.class'
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
