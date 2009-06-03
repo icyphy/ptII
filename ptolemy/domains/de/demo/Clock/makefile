@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	gong.wav \
 	Clock.xml \
 	ClockTest.xml
 
