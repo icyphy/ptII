@@ -475,8 +475,7 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    /** Return true if the transition is enabled, that is the guard is true, or
-     *  some event has been detected due to crossing some level.
+    /** Return true if the transition is enabled, that is the guard is true.
      *  @param scope The parser scope in which the guard is to be evaluated.
      *  @return True If the transition is enabled and some event is detected.
      *  @exception IllegalActionException If thrown when evaluating the guard.
@@ -502,8 +501,14 @@ public class Transition extends ComponentRelation {
         }
         Token token = parseTreeEvaluator.evaluateParseTree(_guardParseTree,
                 scope);
-        if (token == null) {
-            // FIXME: when could this happen??
+        if (!(token instanceof BooleanToken)) {
+            // This odd situation can occur, for example, if a guard
+            // directly references an input, e.g. "in" and the input
+            // is absent. In this case, the ID "in" evaluates to the port!
+            // The guard expression evaluator, oddly, seems to return a
+            // nil token, but in any case, it isn't a boolean token,
+            // so evaluating its boolean value will trigger a rather
+            // ugly class cast exception.
             return false;
         }
         boolean result = ((BooleanToken) token).booleanValue();
