@@ -650,16 +650,6 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     private void _computeInputDepth(IOPort inputPort,
             Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
             throws IllegalActionException {
-        // FIXME: If we change CausalityInterface, this comment
-        // becomes obsolete.
-        // NOTE: The definition of equivalence class, which comes
-        // from CausalityInterface, is not quite what we want if
-        // we use RealDependency instead of BooleanDependency
-        // and represent metric delays.  In that case, we want
-        // the equivalence class to include only ports that
-        // have exactly zero delay dependency on some output port.
-        // So if we switch to using RealDependency, this implementation
-        // will have to change.
         int depth = 0;
         // Iterate over all the ports in the equivalence class.
         Actor actor = (Actor) inputPort.getContainer();
