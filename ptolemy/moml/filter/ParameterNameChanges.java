@@ -118,7 +118,7 @@ public class ParameterNameChanges implements MoMLFilter {
             _lastNameSeen = attributeValue;
 
             if (_currentlyProcessingActorWithParameterNameChanges) {
-                if (_propertyMap.containsKey(attributeValue)) {
+                if (_propertyMap != null && _propertyMap.containsKey(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
                     _newName = (String) _propertyMap.get(attributeValue);
