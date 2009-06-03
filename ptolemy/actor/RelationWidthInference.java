@@ -247,7 +247,8 @@ public class RelationWidthInference {
                             }
                         }
                         for (IOPort port : multiports) {
-                            List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
+                            List<IORelation> updatedRelations = new LinkedList<IORelation>();
+                            _updateRelationsFromMultiport(port, updatedRelations);
                             if (checkConsistencyAtMultiport && !updatedRelations.isEmpty()) {
                                 // If we have updated relations for this port, it means that it is consistent
                                 // and hence we don't need to check consistency anymore.
@@ -265,12 +266,15 @@ public class RelationWidthInference {
                         continueInference = false;
                         LinkedList<IOPort> workingPortList = new LinkedList<IOPort>(workingPortSet);
                         for (IOPort port : workingPortList) {
-                            List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
+                            List<IORelation> updatedRelations = new LinkedList<IORelation>();
+                            boolean constraintStillUseful = _updateRelationsFromMultiport(port, updatedRelations);
                             if (!updatedRelations.isEmpty()) {
                                 workingPortSet.remove(port);
                                 continueInference = true;
                                     // We found new information, so we can try to infer
                                     // new relations.
+                            } else if (!constraintStillUseful) {
+                                workingDefaultPortSet.remove(port);
                             }
                             if (checkConsistencyAtMultiport && !updatedRelations.isEmpty()) {
                                 // If we have updated relations for this port, it means that it is consistent
@@ -290,12 +294,15 @@ public class RelationWidthInference {
                     if (!workingDefaultPortSet.isEmpty() && workingRelationList.isEmpty()) {
                         LinkedList<IOPort> workingDefaultPortList = new LinkedList<IOPort>(workingDefaultPortSet);
                         for (IOPort port : workingDefaultPortList) {
-                            List<IORelation> updatedRelations = _updateRelationsFromDefaultWidth(port);
+                            List<IORelation> updatedRelations = new LinkedList<IORelation>();
+                            boolean constraintStillUseful = _updateRelationsFromDefaultWidth(port, updatedRelations);
                             if (!updatedRelations.isEmpty()) {
                                 workingDefaultPortSet.remove(port);
                                 continueInference = true;
                                     // We found new information, so we can try to infer
                                     // new relations.
+                            } else if (!constraintStillUseful) {
+                                workingDefaultPortSet.remove(port);
                             }
                             workingRelationList.addAll(updatedRelations);
                         }
@@ -446,15 +453,15 @@ public class RelationWidthInference {
 
     /**
      * Infer the width for the relations connected to the port. If the width can be
-     * inferred, update the width and return the relations for which the width has been
+     * inferred, update the width and add the relations for which the width has been
      * updated.
-     * @param  port The port for whose connected relations the width should be inferred.
-     * @return The relations for which the width has been updated.
+     * @param port The port for whose connected relations the width should be inferred.
+     * @param updatedRelations The relations for which the width has been updated.
+     * @return true When this constraint is still useful (can be used to extra more information).
      * @exception IllegalActionException If the widths of the relations at port are not consistent.
      */
-    static private List<IORelation> _relationsWithUpdatedWidthForMultiport(IOPort port) throws IllegalActionException {
-        List<IORelation> result = new LinkedList<IORelation>();
-
+    static private boolean _updateRelationsFromMultiport(IOPort port, List<IORelation> updatedRelations) throws IllegalActionException {
+        boolean constraintStillUseful = true;
         Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.linkedRelationList());
                 //port.linkedRelationList() returns the outside relations
 
@@ -463,7 +470,7 @@ public class RelationWidthInference {
         NamedObj namedObject = port.getContainer();
         if (namedObject == null) {
             assert false; // not expected
-            return result;
+            return false;
         }
         int difference = -1;
         Set<IORelation> unspecifiedWidths = null;
@@ -474,19 +481,21 @@ public class RelationWidthInference {
                 difference = port.getWidthFromConstraints();
                 unspecifiedWidths = outsideUnspecifiedWidths;
                 if (difference < 0) {
-                    return result; // Constraints still unknown
+                    return true; // Constraints still unknown
                 }
             } else {
-                return result;
+                return false;
             }
         } else {
 
             Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.insideRelationList());
             int insideUnspecifiedWidthsSize = insideUnspecifiedWidths.size();
 
-            if ((insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0)
-                    || (insideUnspecifiedWidthsSize == 0 && outsideUnspecifiedWidthsSize == 0)) {
-                return result;
+            if (insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0) {
+                return true;
+            }
+            if (insideUnspecifiedWidthsSize == 0 && outsideUnspecifiedWidthsSize == 0) {
+                return false;
             }
 
             int insideWidth = port._getInsideWidth(null);
@@ -512,7 +521,7 @@ public class RelationWidthInference {
             if (port.isOpaque() && difference < 0) {
                 assert false; // We don't expect to come in this case
                 assert insideWidth == 0;
-                return result; // No width inference possible and necessary at this port.
+                return false; // No width inference possible and necessary at this port.
             }
             if (difference < 0) {
                 throw new IllegalActionException(port,
@@ -542,26 +551,28 @@ public class RelationWidthInference {
             assert width >= 0;
             for (IORelation relation : unspecifiedWidths) {
                 relation._setInferredWidth(width);
-                result.add(relation);
+                updatedRelations.add(relation);
             }
+            constraintStillUseful = false;
         }
-        return result;
+        return constraintStillUseful;
     }
     
     
     /** Infer the width for the relations connected to the port (which should have a default width).
-     *  If the width can be inferred, update the width and return the relations for which the width
+     *  If the width can be inferred, update the width and add the relations for which the width
      *  has been updated.
-     *  @param  port The port for whose connected relations the width should be inferred.
-     *  @return The relations for which the width has been updated.
+     *  @param port The port for whose connected relations the width should be inferred.
+     *  @param updatedRelations The relations for which the width has been updated.
+     *  @return true When this constraint is still useful (can be used to extra more information). 
      *  @exception IllegalActionException If the expression for the width cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
-    static private List<IORelation> _updateRelationsFromDefaultWidth(IOPort port) throws IllegalActionException {
-        List<IORelation> result = new LinkedList<IORelation>();
-
+    static private boolean _updateRelationsFromDefaultWidth(IOPort port, List<IORelation> updatedRelations) throws IllegalActionException {
+        boolean constraintStillUseful = true;
+        
         Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.linkedRelationList());
                 //port.linkedRelationList() returns the outside relations
 
@@ -570,7 +581,7 @@ public class RelationWidthInference {
         NamedObj namedObject = port.getContainer();
         if (namedObject == null) {
             assert false; // not expected
-            return result;
+            return false;
         }
         assert outsideUnspecifiedWidthsSize >= 0;
         if (outsideUnspecifiedWidthsSize > 0) {
@@ -582,11 +593,14 @@ public class RelationWidthInference {
                 assert width >= 0;
                 for (IORelation relation : outsideUnspecifiedWidths) {
                     relation._setInferredWidth(width);
-                    result.add(relation);
+                    updatedRelations.add(relation);
                 }
+                constraintStillUseful = false;
             }
+        } else {
+            constraintStillUseful = false;
         }
-        return result;
+        return constraintStillUseful;
     }
 
     ///////////////////////////////////////////////////////////////////
