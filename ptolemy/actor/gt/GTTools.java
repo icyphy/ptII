@@ -49,6 +49,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -369,8 +370,12 @@ public class GTTools {
                     .getPattern();
         }
 
-        PatternObjectAttribute attribute = getPatternObjectAttribute(
-                replacementObject);
+        PatternObjectAttribute attribute;
+        try {
+            attribute = getPatternObjectAttribute(replacementObject, false);
+        } catch (KernelException e) {
+            attribute = null;
+        }
         if (attribute == null) {
             return null;
         }
@@ -451,13 +456,14 @@ public class GTTools {
     }
 
     public static PatternObjectAttribute getPatternObjectAttribute(
-            NamedObj object) {
+            NamedObj object, boolean createNew) throws IllegalActionException,
+            NameDuplicationException {
         Attribute attribute = object.getAttribute("patternObject");
-        if (attribute != null && attribute instanceof PatternObjectAttribute) {
-            return (PatternObjectAttribute) attribute;
-        } else {
-            return null;
+        if (createNew && (attribute == null ||
+                !(attribute instanceof PatternObjectAttribute))) {
+            attribute = new PatternObjectAttribute(object, "patternObject");
         }
+        return (PatternObjectAttribute) attribute;
     }
 
     public static boolean isCreated(Object object) {
@@ -567,7 +573,7 @@ public class GTTools {
     }
 
     /** Request a MoMLChangeRequest to delete this attribute from its container.
-     * 
+     *
      *  @param attribute The attribute to be deleted.
      */
     private static void _delete(Attribute attribute) {

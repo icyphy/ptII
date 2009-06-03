@@ -485,9 +485,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 entities.add(entity);
             }
         }
-        int i = 0;
-        for (ComponentEntity entity : entities) {
-            _setPatternObject(entity, "", i++ > 0);
+        if (entities.isEmpty()) {
+            _refreshTable();
+        } else {
+            int i = 0;
+            for (ComponentEntity entity : entities) {
+                _setPatternObject(entity, "", i++ > 0);
+            }
         }
     }
 
@@ -549,16 +553,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         return;
                     }
 
-                    PatternObjectAttribute attribute = GTTools
-                            .getPatternObjectAttribute(replacementObject);
-                    if (attribute == null) {
-                        try {
-                            attribute = new PatternObjectAttribute(
-                                    replacementObject, "patternObject");
-                        } catch (KernelException e) {
-                            throw new KernelRuntimeException(e, "Unable to "
-                                    + "create patternObject attribute.");
-                        }
+                    PatternObjectAttribute attribute;
+                    try {
+                        attribute = GTTools.getPatternObjectAttribute(
+                                replacementObject, true);
+                    } catch (KernelException e) {
+                        throw new KernelRuntimeException(e, "Unable to "
+                                + "create patternObject attribute.");
                     }
                     if (!attribute.getExpression().equals(patternObjectName)) {
                         _setPatternObject(replacementObject, patternObjectName,
@@ -579,22 +580,19 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     if (replacementObject == null) {
                         String message = "Entity or relation with name \""
                                 + replacementObjectName
-                                + "\" cannot be found in the replacement of the "
-                                + "transformation rule.";
+                                + "\" cannot be found in the replacement of "
+                                + "the transformation rule.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
 
-                    PatternObjectAttribute attribute = GTTools
-                            .getPatternObjectAttribute(replacementObject);
-                    if (attribute == null) {
-                        String message = "Entity or relation with name \""
-                                + replacementObject
-                                + "\" in the replacement part of the "
-                                + "transformation rule does not have a "
-                                + "\"patternObject\" attribute.";
-                        _showTableError(message, row, column, previousString);
-                        return;
+                    PatternObjectAttribute attribute;
+                    try {
+                        attribute = GTTools.getPatternObjectAttribute(
+                                replacementObject, true);
+                    } catch (KernelException e) {
+                        throw new KernelRuntimeException(e, "Unable to "
+                                + "create patternObject attribute.");
                     }
 
                     _cellEditor.setPreviousString(replacementObjectName);
@@ -1477,8 +1475,14 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                             container.relationList() });
             for (Object entityObject : objectCollection) {
                 NamedObj object = (NamedObj) entityObject;
-                PatternObjectAttribute attribute = GTTools
-                        .getPatternObjectAttribute(object);
+                PatternObjectAttribute attribute;
+                try {
+                    attribute = GTTools.getPatternObjectAttribute(object,
+                            false);
+                } catch (KernelException e) {
+                    throw new KernelRuntimeException(e, "Unable to find " +
+                            "patternObject attribute.");
+                }
                 if (attribute != null) {
                     attribute.addValueListener(this);
                     String patternObject = attribute.getExpression();
@@ -1645,7 +1649,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 children = filter;
             }
             PatternObjectAttribute patternObject = GTTools
-                .getPatternObjectAttribute(object);
+                .getPatternObjectAttribute(object, false);
             if (isSet) {
                 if (patternObject == null) {
                     patternObject = new PatternObjectAttribute(object,
@@ -1686,13 +1690,26 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private void _setPatternObject(NamedObj replacementObject,
             String patternObjectName, boolean mergeWithPrevious) {
-        String moml = "<property name=\"patternObject\" value=\""
-                + patternObjectName + "\"/>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this,
-                replacementObject, moml);
-        request.setUndoable(true);
-        request.setMergeWithPreviousUndo(mergeWithPrevious);
-        replacementObject.requestChange(request);
+        if (patternObjectName.equals("")) {
+            try {
+                PatternObjectAttribute attribute =
+                    GTTools.getPatternObjectAttribute(replacementObject, false);
+                if (attribute != null) {
+                    attribute.setContainer(null);
+                }
+            } catch (KernelException e) {
+                throw new InternalErrorException(replacementObject, e,
+                        "Unexpected error.");
+            }
+        } else {
+            String moml = "<property name=\"patternObject\" value=\""
+                    + patternObjectName + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    replacementObject, moml);
+            request.setUndoable(true);
+            request.setMergeWithPreviousUndo(mergeWithPrevious);
+            replacementObject.requestChange(request);
+        }
     }
 
     private void _showTableError(String message, final int row,
