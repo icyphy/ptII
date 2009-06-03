@@ -88,6 +88,11 @@ public class Execute extends GTEvent {
                 CompositeActor actor = (CompositeActor) toplevel;
                 if (_effigy == null || _effigy.getContainer() == null) {
                     Effigy parentEffigy = EventUtils.findToplevelEffigy(this);
+                    if (parentEffigy == null) {
+                        // Can't find the effigy, which may mean the user closes
+                        // the window for the main model.
+                        return data;
+                    }
                     try {
                         _effigy = new PtolemyEffigy(parentEffigy,
                                 parentEffigy.uniqueName("_executeEffigy"));
