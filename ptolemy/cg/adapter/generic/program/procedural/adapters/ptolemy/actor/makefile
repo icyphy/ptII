@@ -57,6 +57,7 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = IOPort.java \
+	Receiver.java \
 	TypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = 
