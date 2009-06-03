@@ -311,8 +311,8 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    final public  Object getAdapter(NamedObj component) throws IllegalActionException {
-        return _getAdapter((Object) component);
+    final public  Object getAdapter(Object component) throws IllegalActionException {
+        return _getAdapter(component);
     }
 
     /** Return the name of the code file that was written, if any.

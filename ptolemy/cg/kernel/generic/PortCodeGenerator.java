@@ -45,7 +45,7 @@ public interface PortCodeGenerator {
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
-    public String generateCodeForGet(String channel) throws IllegalActionException;
+    public String generateGetCode(String channel) throws IllegalActionException;
 
     /** Generate the send code.
      *  @param channel The channel for which the send code is generated.
@@ -53,6 +53,16 @@ public interface PortCodeGenerator {
      *  @return The code that sends the dataToken on the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
-    public String generateCodeForSend(String channel, String dataToken)
+    public String generateSendCode(String channel, String dataToken)
         throws IllegalActionException;
+        
+    /** Generate code for HasToken.
+     *  @param channel The channel for which the get code is generated.
+     *  @return The code that generates has token from the channel. 
+     *  FIXME: potentially, we could also pass in a boolean that indicates whether
+     *  the port the channel resides is a multiport, if it is, then only a static
+     *  variable is needed instead of an array of length 1.
+     */
+    public String generateHasTokenCode(String channel) throws IllegalActionException;
+    
 }

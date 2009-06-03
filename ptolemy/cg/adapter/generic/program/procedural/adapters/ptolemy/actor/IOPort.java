@@ -28,12 +28,9 @@
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
-import ptolemy.cg.lib.EmbeddedCodeActor;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,12 +64,24 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
-    public String generateCodeForGet(String channel) throws IllegalActionException {
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
-        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        int channelNumber = Integer.valueOf(channel);
-
-        return directorAdapter.generateCodeForGet(port, channelNumber);
+    public String generateGetCode(String channel) throws IllegalActionException {
+        Receiver[][] receivers = getReceiverAdapters();
+        int channelIndex = Integer.parseInt(channel);
+        // FIXME: take care of the offset, and why are we getting all the receivers all the time?
+        StringBuffer code = new StringBuffer();
+        // FIXME: Don't know why would a channel have more than one relations
+        // Thus for now to make sure we don't run into such problems, have a check to ensure
+        // this is not true. IF THIS IS TRUE HOWEVER, then the generated code in the receivers would
+        // need to change to ensure no name collisions between multiple receivers within the same 
+        // channel would occur.
+        if (receivers[channelIndex].length > 1) {
+            throw new IllegalActionException("Didn't take care of the case where one channel" +
+                "has more than one receiver");
+        }
+        for (int j = 0; j < receivers[channelIndex].length; j++) {
+            code.append(receivers[channelIndex][j].generateGetCode());
+        }
+        return code.toString();
     }
     
     /** Generate the send code.
@@ -81,12 +90,33 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      *  @return The code that sends the dataToken on the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */    
-    public String generateCodeForSend(String channel, String dataToken) throws IllegalActionException {
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
-        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        int channelNumber = Integer.valueOf(channel);
-
-        return directorAdapter.generateCodeForSend(port, channelNumber, dataToken);
+    public String generateSendCode(String channel, String dataToken) throws IllegalActionException {
+        
+        Receiver[][] remoteReceivers = getRemoteReceiverAdapters();
+        int channelIndex = Integer.parseInt(channel);
+        // FIXME: take care of the offset, and why are we getting all the receivers all the time?
+        if ((remoteReceivers == null) || (remoteReceivers.length <= channelIndex)
+                || (remoteReceivers[channelIndex] == null)) {
+            return "";
+        }
+        StringBuffer code = new StringBuffer();
+        // FIXME: Don't know why would a channel have more than one relations
+        // Thus for now to make sure we don't run into such problems, have a check to ensure
+        // this is not true. IF THIS IS TRUE HOWEVER, then the generated code in the receivers would
+        // need to change to ensure no name collisions between multiple receivers within the same 
+        // channel would occur.
+        if (remoteReceivers[channelIndex].length > 1) {
+            throw new IllegalActionException("Didn't take care of the case where one channel" +
+                "has more than one receiver");
+        }
+        for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
+            Type sourceType = ((ptolemy.actor.TypedIOPort)getComponent()).getType();
+            Type sinkType = ((ptolemy.actor.TypedIOPort)remoteReceivers[channelIndex][i].getReceiver().getContainer()).getType();
+            dataToken = "$convert_" + getStrategy().codeGenType(sourceType) + "_" 
+            + getStrategy().codeGenType(sinkType) + "(" + dataToken + ")";
+            code.append(remoteReceivers[channelIndex][i].generatePutCode(dataToken));
+        }
+        return code.toString();
     }
 
     /** Generate the initialize code for this director.
@@ -103,240 +133,59 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
         return adapter.processCode(code.toString());
     }
 
-
-    /** Generate the prefire code of the associated composite actor.
-    *
-    *  @return The prefire code of the associated composite actor.
-    *  @exception IllegalActionException If illegal macro names are found.
-    */
-    public String generatePreFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        if (_isPthread()) {
-            code.append("MPI_recv();" + _eol);
+    public String generateHasTokenCode(String channel)
+            throws IllegalActionException {
+        Receiver[][] receivers = getReceiverAdapters();
+        int channelNumber = Integer.parseInt(channel);
+        // FIXME: take care of the offset, and why are we getting all the receivers all the time?
+        if (receivers[channelNumber].length > 1) {
+            throw new IllegalActionException("Didn't take care of the case where one channel" +
+                "has more than one receiver");
         }
-        return code.toString();
+        if (receivers[channelNumber].length > 0) {
+            return receivers[channelNumber][0].generateHasTokenCode();
+        } else {
+            return "";
+        }
     }
-
-    /** Generate the postfire code of the associated composite actor.
-    *
-    *  @return The postfire code of the associated composite actor.
-    *  @exception IllegalActionException If the adapter associated with
-    *   an actor throws it while generating postfire code for the actor
-    *   or while creating buffer size and offset map.
-    */
-    public String generatePostFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        if (_isPthread()) {
-            code.append("MPI_send();" + _eol);
-        }
-        return code.toString();
-    }
-
-
-    /** Return the director.
-     *  @return The director.
-     */
-    public ptolemy.actor.Director getDirector() {
-        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        Actor actor = (Actor) port.getContainer();
-
-        if (actor instanceof EmbeddedCodeActor.EmbeddedActor) {
-            // ignore the inner SDFDirector.
-            actor = (Actor) actor.getContainer();
-        }
-        Director director = null;
-
-        // FIXME: why are we checking if this is a input port?
-        //if (port.isInput() && !port.isOutput() && (actor instanceof CompositeActor)) {
-        if (actor instanceof CompositeActor) {
-            director = actor.getExecutiveDirector();
-        }
-
-        if (director == null) {
-            director = actor.getDirector();
-        }
-        return director;
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
- // FIXME rodiers: reintroduce PN specifics (but somewhere else)
-    /*
-    private String _generateMPISendCode(int channelNumber,
-            int rate, ptolemy.actor.IOPort sinkPort,
-            int sinkChannelNumber, Director director) throws IllegalActionException {
-        ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
-
-        StringBuffer code = new StringBuffer();
-
-        code.append("// generateMPISendCode()" + _eol);
-
-        for (int i = 0; i < rate; i++) {
-
-            int sinkRank = MpiPNDirector.getRankNumber((Actor) sinkPort.getContainer());
-            int sourceRank = MpiPNDirector.getRankNumber((Actor) port.getContainer());
-
-            code.append("// Initialize send tag value." + _eol);
-            code.append("static int " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " = " +
-                    MpiPNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
-
-            if (MpiPNDirector._DEBUG) {
-                code.append("printf(\"" + port.getContainer().getName() + "[" + sourceRank + "] sending msg <" +
-                        sinkRank + ", %d> for " + MpiPNDirector.getBufferLabel(port, channelNumber) +
-                        "\\n\", " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
-            }
-
-            code.append("MPI_Isend(&");
-
-            String[] channelAndOffset = new String[2];
-            channelAndOffset[0] = "" + sinkChannelNumber;
-            channelAndOffset[1] = MpiPNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" +
-            MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current]";
-
-            String buffer =
-                ProgramCodeGeneratorAdapter.generatePortReference(sinkPort, channelAndOffset , false);
-
-            code.append(buffer);
-
-            // count.
-            code.append(", 1");
-
-            // FIXME: handle different mpi data types.
-            if (port.getType() == BaseType.DOUBLE) {
-                code.append(", MPI_DOUBLE");
-            } else if (port.getType() == BaseType.INT) {
-                code.append(", MPI_INT");
-            } else {
-                assert false;
-            }
-
-            code.append(", " + sinkRank);
-
-            code.append(", " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) +
-                    ", " + "comm, &" +
-                    MpiPNDirector.generateMpiRequest(sinkPort, sinkChannelNumber) + "[" +
-                    MpiPNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" +
-                    MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) +
-                    ".current" + (i == 0 ? "" : i) + "]]" + ");" + _eol);
-
-            if (MpiPNDirector._DEBUG) {
-                code.append("printf(\"" + MpiPNDirector.getBufferLabel(port, channelNumber) +
-                        ", rank[" + sourceRank + "], sended tag[%d]\\n\", " +
-                        MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
-            }
-        }
-
-        // Update the Offset.
-        code.append(MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) +
-                ".current += " + rate + ";" + _eol);
-
-        MpiPNDirector directorAdapter = (MpiPNDirector) _getAdapter(director);
-        code.append(MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " += " +
-                directorAdapter.getNumberOfMpiConnections(true) + ";" + _eol);
-
-        code.append(MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " &= 32767; // 2^15 - 1 which is the max tag value." + _eol);
-
-        return  code + _eol;
-
-    }
-    //End FIXME rodiers
-     */
     
-    /** Return the director adapter.
-     *  @return The director adapter.
-     *  @exception IllegalActionException If the director adapter class cannot be found.
+    /** Get the remote receivers connected to this port.
+     * 
+     *  @return
+     *  @throws IllegalActionException
      */
-    private ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director _getDirectorAdapter() throws IllegalActionException {
-        Director director = getDirector();
-        return (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator().getAdapter(director);
-    }
-
-
-//    private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
-//        Receiver[][] receivers = port.getReceivers();
-//
-//        // For output ports getReceivers always returns an empty table.
-//        if (receivers.length == 0) {
-//            return null;
-//        }
-//
-//        int staticOffset = -1;
-//        Receiver receiver = null;
-//        if (offset != null) {
-//            try {
-//                staticOffset = Integer.parseInt(offset);
-//                receiver = receivers[channel][staticOffset];
-//            } catch (Exception ex) {
-//                staticOffset = -1;
-//            }
-//        }
-//
-//        if (staticOffset == -1) {
-//            // FIXME: Assume all receivers are the same type for the channel.
-//            // However, this may not be true.
-//            assert (receivers.length > 0);
-//            receiver = receivers[channel][0];
-//        }
-//        return receiver;
-//    }
-//
-
-//    private boolean _isMpi() {
-//        return getCodeGenerator().getAttribute("mpi") != null;
-//    }
-
-
-    private boolean _isPthread() {
-        //ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        //boolean isPN = (((Actor) port.getContainer()).getDirector()
-        //        instanceof ptolemy.domains.pn.kernel.PNDirector);
-
-        /* FIXME rodiers
-        return isPN && (null == getCodeGenerator().getAttribute("mpi"))
-        && (getCodeGenerator().target.getExpression().equals("default") ||
-            getCodeGenerator().target.getExpression().equals("posix"));
-        */
-        return false;
-        //End FIXME rodiers
-    }
-
-
-
-    // FIXME rodiers: reintroduce PN specifics (but somewhere else)
-    /*
-    private String _updatePNOffset(int rate, ptolemy.actor.IOPort port,
-            int channelNumber, Director directorAdapter, boolean isWrite)
-    throws IllegalActionException {
-        // FIXME: this is kind of hacky.
-        PNDirector pnDirector = (PNDirector) //directorAdapter;
-        _getAdapter(((Actor) port.getContainer()).getExecutiveDirector());
-
-        String incrementFunction = (isWrite) ?
-                "$incrementWriteOffset" : "$incrementReadOffset";
-
-        if (rate <= 0) {
-            assert false;
+    public Receiver[][] getRemoteReceiverAdapters() throws IllegalActionException {
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        
+        ptolemy.actor.Receiver[][] farReceivers = port.getRemoteReceivers();
+        Receiver[][] receiverAdapters = new Receiver[farReceivers.length][];
+        for (int i = 0; i < farReceivers.length; i++) {
+            receiverAdapters[i] = new Receiver[farReceivers[i].length];
+            for (int j = 0; j < farReceivers[i].length; j++) {
+                receiverAdapters[i][j] = (Receiver) getAdapter(farReceivers[i][j]);                
+            }
         }
-
-        String incrementArg = "";
-        if (rate > 1) {
-            incrementFunction += "By";
-
-            // Supply the increment argument.
-            incrementArg += rate + ", ";
-        }
-
-        // FIXME: generate the right buffer reference from
-        // both input and output ports.
-
-        return incrementFunction + "(" + incrementArg + "&" +
-        PNDirector.generatePortHeader(port, channelNumber) + ", &" +
-        pnDirector.generateDirectorHeader() + ");" + _eol;
+        return receiverAdapters;
     }
-    //end FIXME rodiers
-    */
+    
+    /** get helpers for receiver
+     * @throws IllegalActionException 
+     */
+    public Receiver[][] getReceiverAdapters() throws IllegalActionException {
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        ptolemy.actor.Receiver[][] receivers = port.getReceivers();
+        Receiver[][] receiverAdapters = new Receiver[receivers.length][];
+        for (int i = 0; i < receivers.length; i++) {
+            receiverAdapters[i] = new Receiver[receivers[i].length];
+            for (int j = 0; j < receivers[i].length; j++) {
+                receiverAdapters[i][j] = (Receiver) getAdapter(receivers[i][j]);
+            }
+        }
+        return receiverAdapters;
+    }
 
 
 }

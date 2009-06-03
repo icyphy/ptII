@@ -49,7 +49,6 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
@@ -2064,6 +2063,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             } else {
                 shortBlockName = blockName;
             }
+
             _codeStream.insert(0, _eol
                     + _codeGenerator.comment(shortBlockName
                             + getComponent().getName()));
@@ -2238,7 +2238,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _getAdapter(port);
 
-        return portAdapter.generateCodeForGet(channel);
+        return portAdapter.generateGetCode(channel);
     }
 
     private String _replaceSendMacro(String parameter) throws IllegalActionException {
@@ -2268,7 +2268,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _getAdapter(port);
 
-        return portAdapter.generateCodeForSend(channel, dataToken);
+        return portAdapter.generateSendCode(channel, dataToken);
     }
 
     /** Return the actual CodeStream associated with the given Actor and

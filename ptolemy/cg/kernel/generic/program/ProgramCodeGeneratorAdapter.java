@@ -223,7 +223,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    final public ProgramCodeGeneratorAdapter getAdapter(NamedObj component) throws IllegalActionException {
+    final public ProgramCodeGeneratorAdapter getAdapter(Object component) throws IllegalActionException {
         return (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(component);
     }
 
