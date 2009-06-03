@@ -36,14 +36,22 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 30, 874, 643}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9923166150926">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.5, 266.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.2152706525563, 275.0947265625}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of the discrete event (DE) domain&#10;and hierarchical finite state machines (FSMs) to model the alternating&#10;bit protocol (ABP). ABP is a simple mechanism for achieving reliable,&#10;ordered delivery of messages over channels with unreliable delivery and&#10;variable delay.&#10;&#10;This demo shows that:&#10;* Hierarchical FSMs can efficiently capture complex sequential control behavior.&#10;* Embedding FSMs within other models of computation is a clean and flexible&#10;way to model the concurrent execution of FSMs.&#10;&#10;A detailed discussion of this model is in&#10;$PTII/ptolemy/domains/fsm/demo/ABP/ABP.htm&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 290.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Xiaojun Liu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 520.0]">
         </property>
     </property>
     <class name="Channel" extends="ptolemy.actor.TypedCompositeActor">

@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 10.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 969, 571}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 22, 969, 571}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -50,6 +50,14 @@
         <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 400.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Xiaojun Liu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 435.0]">
         </property>
     </property>
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
@@ -736,7 +744,7 @@
     <entity name="Control_SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={513, 402, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={513, 402, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -755,8 +763,8 @@
 <title>Control - SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="99.0"/>
-<yRange min="-1.0" max="1.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -764,7 +772,7 @@
     <entity name="Input_SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 404, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 404, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -783,8 +791,8 @@
 <title>Input - SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="99.0"/>
-<yRange min="-7.984213827426177" max="7.984213827426176"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -800,12 +808,18 @@
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="295.0, 315.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="BlendingController.input" relation="relation2"/>
     <link port="BlendingController.output" relation="relation3"/>
