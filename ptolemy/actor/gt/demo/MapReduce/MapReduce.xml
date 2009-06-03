@@ -2413,8 +2413,6 @@
     <entity name="merge" class="ptolemy.domains.de.lib.Merge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 70.0]">
         </property>
-        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute">
-        </property>
     </entity>
     <entity name="Map" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 70.0]">

@@ -244,8 +244,6 @@
                 <entity name="merge" class="ptolemy.domains.de.lib.Merge">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 200.0]">
                     </property>
-                    <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute">
-                    </property>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" value="[205.0, 200.0]">
