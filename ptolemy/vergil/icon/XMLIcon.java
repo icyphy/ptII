@@ -31,6 +31,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.Iterator;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.ConfigurableAttribute;
@@ -411,25 +412,32 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      * If the attribute is present, return the class, if not, return null.
      */
     private static Class _getAlternateXMLIcon() throws Exception {
-        Configuration _config = (Configuration)Configuration.configurations().iterator().next();
-        String _alternateXMLIconClassName = null;
-        if (_config != null) {
-            // If _alternateXMLIcon is set in the config, use that
-            // class as the XMLIcon instead of the default
+        // Applets might not have a configuration, so we check to see
+        // if there is a next configuration.
+        Iterator configurations = Configuration.configurations().iterator();
+        // FIXME: why does this always skip the first configuration?
+        // Instead, we should check each configuration as we go.
+        if (configurations.hasNext()) {
+            Configuration config = (Configuration)configurations.next();
+            String alternateXMLIconClassName = null;
+            if (config != null) {
+                // If _alternateXMLIcon is set in the config, use that
+                // class as the XMLIcon instead of the default
 
-          StringAttribute _alternateXMLIconAttribute = (StringAttribute)
-            _config.getAttribute("_alternateXMLIcon");
-          if (_alternateXMLIconAttribute != null) {
-              _alternateXMLIconClassName =
-                _alternateXMLIconAttribute.getExpression();
-          }
+                StringAttribute alternateXMLIconAttribute = (StringAttribute)
+                    config.getAttribute("_alternateXMLIcon");
+                if (alternateXMLIconAttribute != null) {
+                    alternateXMLIconClassName =
+                        alternateXMLIconAttribute.getExpression();
+                }
 
-          if (_alternateXMLIconClassName == null) {  //attribute was not found
-              return null;
-          } else {
-              Class _alternateXMLIconClass = Class.forName(_alternateXMLIconClassName);
-              return _alternateXMLIconClass;
-          }
+                if (alternateXMLIconClassName == null) {  //attribute was not found
+                    return null;
+                } else {
+                    Class alternateXMLIconClass = Class.forName(alternateXMLIconClassName);
+                    return alternateXMLIconClass;
+                }
+            }
         }
         return null;
     }
