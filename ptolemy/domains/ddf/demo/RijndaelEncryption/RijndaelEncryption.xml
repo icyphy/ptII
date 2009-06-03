@@ -34,7 +34,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 22, 759, 612}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 22, 761, 609}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -95,7 +95,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 45.0}">
         </property>
     </property>
     <class name="convertToStringClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -330,7 +330,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, -100.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 996, 684}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 996, 674}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -871,7 +871,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 420.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 90, 894, 519}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 90, 894, 509}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -938,7 +938,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 90.0">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {270, 154, 661, 459}, maximized = false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 154, 661, 457}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -990,18 +990,26 @@
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <vertex name="vertex1" value="235.0, 160.0">
                     </vertex>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" value="235.0, 190.0">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <vertex name="vertex1" value="{235.0, 190.0}">
                     </vertex>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <vertex name="vertex1" value="235.0, 220.0">
                     </vertex>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <vertex name="vertex1" value="235.0, 250.0">
                     </vertex>
                 </relation>
@@ -1133,9 +1141,9 @@
                     </property>
                     <property name="wordsInKey" class="ptolemy.data.expr.Parameter" value="4">
                     </property>
-                    <property name="cycle" class="ptolemy.data.expr.Parameter" value="3">
+                    <property name="cycle" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 150, 751, 467}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 154, 751, 459}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -1232,7 +1240,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {50, 147, 849, 459}, maximized = false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 147, 849, 457}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -1341,7 +1349,7 @@
                         </property>
                     </entity>
                     <entity name="InstanceOfrotate bytes" class="rotate bytes">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 210.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 210.0}">
                         </property>
                     </entity>
                     <entity name="InstanceOfMulTwo" class="MulTwo">
