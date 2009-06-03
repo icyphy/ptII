@@ -34,6 +34,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.lib.jni.EmbeddedCActor;
 import ptolemy.codegen.c.domains.pn.kernel.PNDirector;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
@@ -102,6 +103,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         Receiver receiver = _getReceiver(offset, channel, port);
 
+        // FIXME: This is very poor form because it means that
+        // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
+        // which makes it hard to ship a subset of codegen.
         if (_isPthread() && receiver instanceof PNQueueReceiver) {
             String result;
             if (offset.length() == 0 || offset.equals("0")) {
@@ -113,6 +117,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 result += offset + ", ";
             }
 
+            // FIXME: This is very poor form because it means that
+            // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
+            // which makes it hard to ship a subset of codegen.
             PNDirector pnDirector = (PNDirector) _getHelper(director);
             result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
             result += "&" + pnDirector.generateDirectorHeader() + ")";
@@ -306,6 +313,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                     Receiver receiver = _getReceiver(
                             offsetObject.toString(), sinkChannelNumber, sinkPort);
     
+                    // FIXME: This is very poor form because it means that
+                    // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
+                    // which makes it hard to ship a subset of codegen.
                     if (_isPthread() && receiver instanceof PNQueueReceiver) {
     
                         // PNReceiver.
@@ -366,12 +376,17 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             //        }
     
             for (int i = 0; i < port.getWidth(); i++) {
+                // FIXME: This is very poor form because it means that
+                // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
+                // which makes it hard to ship a subset of codegen.
                 if (_isPthread() && receiver instanceof PNQueueReceiver) {
     
                     // FIXME: this is kind of hacky.
-                    //PNDirector pnDirector = (PNDirector)//directorHelper;
                     _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
     
+                    // FIXME: This is very poor form because it means that
+                    // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
+                    // which makes it hard to ship a subset of codegen.
                     List<Channel> channels = PNDirector.getReferenceChannels(port, i);
     
                     for (Channel channel : channels) {
@@ -612,7 +627,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     private boolean _isPthread() {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         boolean isPN = (((Actor) port.getContainer()).getDirector()
-                instanceof ptolemy.domains.pn.kernel.PNDirector);
+                instanceof CompositeProcessDirector);
     
         return isPN && 
         (getCodeGenerator().target.getExpression().equals("default") ||
@@ -621,8 +636,11 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     private String _updatePNOffset(int rate, ptolemy.actor.IOPort port,
             int channelNumber, Director directorHelper, boolean isWrite)
-    throws IllegalActionException {
-        // FIXME: this is kind of hacky.
+            throws IllegalActionException {
+            // FIXME: this is kind of hacky.
+            // FIXME: This is very poor form because it means that
+            // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
+            // which makes it hard to ship a subset of codegen.
         PNDirector pnDirector = (PNDirector) //directorHelper;
         _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
     
@@ -644,6 +662,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         // FIXME: generate the right buffer reference from
         // both input and output ports.
     
+        // FIXME: This is very poor form because it means that
+        // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
+        // which makes it hard to ship a subset of codegen.
         return incrementFunction + "(" + incrementArg + "&" +
         PNDirector.generatePortHeader(port, channelNumber) + ", &" +
         pnDirector.generateDirectorHeader() + ");" + _eol;
