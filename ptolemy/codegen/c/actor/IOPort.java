@@ -33,6 +33,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.lib.jni.EmbeddedCActor;
@@ -41,7 +42,6 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
-import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,9 +59,9 @@ Code generator helper for IOPort.
 
 public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
-    /** Construct the code generator helper associated
+    /** Construct a code generator helper associated
      *  with the given IOPort.
-     *  @param component The associated component.
+     *  @param component The given IOPort.
      */
     public IOPort(ptolemy.actor.IOPort component) {
         super(component);
@@ -70,6 +70,14 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     /////////////////////////////////////////////////////////////////////
     ////                           public methods                    ////
 
+    public String generateCodeForGet(String channel) throws IllegalActionException {
+        ptolemy.codegen.actor.Director directorHelper = _getDirectorHelper();
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        int channelNumber = Integer.valueOf(channel);
+    
+        return directorHelper.generateCodeForGet(port, channelNumber);
+    }
+
     public String generateCodeForSend(String channel, String dataToken)
     throws IllegalActionException {
         ptolemy.codegen.actor.Director directorHelper = _getDirectorHelper();
@@ -77,14 +85,6 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         int channelNumber = Integer.valueOf(channel);
 
         return directorHelper.generateCodeForSend(port, channelNumber, dataToken);
-    }
-
-    public String generateCodeForGet(String channel) throws IllegalActionException {
-        ptolemy.codegen.actor.Director directorHelper = _getDirectorHelper();
-        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        int channelNumber = Integer.valueOf(channel);
-
-        return directorHelper.generateCodeForGet(port, channelNumber);
     }
 
     public String generateInitializeCode() throws IllegalActionException {
@@ -103,10 +103,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         Receiver receiver = _getReceiver(offset, channel, port);
 
-        // FIXME: This is very poor form because it means that
-        // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
-        // which makes it hard to ship a subset of codegen.
-        if (_isPthread() && receiver instanceof PNQueueReceiver) {
+        if (_isPthread() && _isPNQueueReceiver(receiver)) {
             String result;
             if (offset.length() == 0 || offset.equals("0")) {
                 result = (isWrite) ?
@@ -313,10 +310,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                     Receiver receiver = _getReceiver(
                             offsetObject.toString(), sinkChannelNumber, sinkPort);
     
-                    // FIXME: This is very poor form because it means that
-                    // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
-                    // which makes it hard to ship a subset of codegen.
-                    if (_isPthread() && receiver instanceof PNQueueReceiver) {
+                    if (_isPthread() && _isPNQueueReceiver(receiver)) {
     
                         // PNReceiver.
                         code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
@@ -376,18 +370,11 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             //        }
     
             for (int i = 0; i < port.getWidth(); i++) {
-                // FIXME: This is very poor form because it means that
-                // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
-                // which makes it hard to ship a subset of codegen.
-                if (_isPthread() && receiver instanceof PNQueueReceiver) {
-    
+                if (_isPthread() && _isPNQueueReceiver(receiver)) {
                     // FIXME: this is kind of hacky.
                     _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
     
-                    // FIXME: This is very poor form because it means that
-                    // codegen/c depends on codegen.c.domains.pn.kernel.PNDirector,
-                    // which makes it hard to ship a subset of codegen.
-                    List<Channel> channels = PNDirector.getReferenceChannels(port, i);
+                    List<Channel> channels = ptolemy.codegen.actor.Director.getReferenceChannels(port, i);
     
                     for (Channel channel : channels) {
                         code += _updatePNOffset(rate, channel.port,
@@ -548,6 +535,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
+    
     /** A HashMap that keeps track of the bufferSizes of each channel
      *  of the actor.
      */
@@ -622,6 +612,19 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         } catch (NumberFormatException ex) {
             return false;
         }
+    }
+
+    /**
+     * Return true if the specified receiver is a PNQueueReceiver;
+     * otherwise, false.
+     * @param receiver The specified receiver.
+     * @return true if the specified receiver is a PNQueueReceiver;
+     * otherwise, false.
+     */
+    private boolean _isPNQueueReceiver(Receiver receiver) {
+        // FIXME: use QueueReceiver instead to avoid
+        // dependency on the PN package.
+        return receiver instanceof QueueReceiver;
     }
 
     private boolean _isPthread() {
