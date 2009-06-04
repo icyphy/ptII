@@ -52,7 +52,6 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.dde.kernel.NullToken;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.modal.RefinementExtender;
 import ptolemy.domains.ptera.kernel.PteraDirector.TimedEvent;
@@ -306,7 +305,7 @@ public class Event extends State implements Initializable {
                 if (i < array.length()) {
                     tokens[i] = types[i].convert(array.getElement(i));
                 } else {
-                    tokens[i] = NullToken.NIL;
+                    tokens[i] = Token.NIL;
                 }
                 variable.setToken(tokens[i]);
                 i++;
@@ -318,7 +317,7 @@ public class Event extends State implements Initializable {
                 Variable variable = (Variable) getAttribute(name);
                 tokens[i] = record.get(name);
                 if (tokens[i] == null) {
-                    tokens[i] = NullToken.NIL;
+                    tokens[i] = Token.NIL;
                 } else {
                     tokens[i] = types[i].convert(tokens[i]);
                 }
