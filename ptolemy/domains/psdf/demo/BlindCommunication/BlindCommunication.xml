@@ -506,16 +506,12 @@
             </property>
         </entity>
         <entity name="Periodogram" class="ptolemy.domains.sdf.lib.Periodogram">
-            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
-            </property>
             <property name="order" class="ptolemy.data.expr.Parameter" value="order">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 300.0]">
             </property>
         </entity>
         <entity name="SmoothedPeriodogram" class="ptolemy.domains.sdf.lib.SmoothedPeriodogram">
-            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
-            </property>
             <property name="order" class="ptolemy.data.expr.Parameter" value="order">
             </property>
             <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="2^order">
@@ -579,8 +575,6 @@
         <link port="SmoothedPeriodogram.output" relation="relation6"/>
     </entity>
     <entity name="BaudRateEstimator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
-        </property>
         <property name="frequencyOffset" class="ptolemy.data.expr.Parameter" value="30.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -1425,8 +1419,6 @@
         <link port="CountTrues.output" relation="relation6"/>
     </entity>
     <entity name="PhaseStatesEstimator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={224, 109, 795, 650}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 534]">
