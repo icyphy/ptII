@@ -151,7 +151,7 @@ is taken.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 52, 960, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 52, 960, 596}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 489]">
     </property>
@@ -167,7 +167,7 @@ is taken.</text></svg></configure>
         </property>
         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
         </property>
     </port>
     <port name="report" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -205,7 +205,7 @@ is taken.</text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 125.0]">
         </property>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -400,18 +400,42 @@ is taken.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 285.0]">
         </property>
     </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 185.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
+    <entity name="Discard2" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 285.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[75.0, 145.0]">
+        <vertex name="vertex1" value="[70.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[405.0, 135.0]">
+        <vertex name="vertex1" value="[400.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -440,6 +464,10 @@ is taken.</text></svg></configure>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="arrival" relation="relation7"/>
     <link port="report" relation="relation12"/>
     <link port="leave" relation="relation"/>
@@ -450,6 +478,7 @@ is taken.</text></svg></configure>
     <link port="BooleanSwitch.input" relation="relation7"/>
     <link port="BooleanSwitch.control" relation="relation8"/>
     <link port="BooleanSwitch.trueOutput" relation="relation10"/>
+    <link port="BooleanSwitch.falseOutput" relation="relation17"/>
     <link port="SetVariable.input" relation="relation6"/>
     <link port="SingleEvent.output" relation="relation3"/>
     <link port="Expression3.output" relation="relation8"/>
@@ -470,6 +499,7 @@ is taken.</text></svg></configure>
     <link port="BooleanSwitch2.input" relation="relation"/>
     <link port="BooleanSwitch2.control" relation="relation2"/>
     <link port="BooleanSwitch2.trueOutput" relation="relation14"/>
+    <link port="BooleanSwitch2.falseOutput" relation="relation18"/>
     <link port="RecordAssembler2.output" relation="relation5"/>
     <link port="RecordAssembler2.lot" relation="relation14"/>
     <link port="RecordAssembler2.state" relation="relation13"/>
@@ -478,4 +508,6 @@ is taken.</text></svg></configure>
     <link port="Const4.output" relation="relation15"/>
     <link port="Const4.trigger" relation="relation14"/>
     <link port="initialize.output" relation="relation16"/>
+    <link port="Discard.input" relation="relation17"/>
+    <link port="Discard2.input" relation="relation18"/>
 </class>
