@@ -70,7 +70,7 @@ import ptolemy.util.StringUtilities;
 * Generate RTMaude code for expressions
 *
 * @author Kyungmin Bae
-* @version $Id: RTMaudeParseTreeCodeGenerator.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */

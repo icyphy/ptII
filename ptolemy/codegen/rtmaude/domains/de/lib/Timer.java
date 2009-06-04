@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 *
 * @see ptolemy.domains.de.lib.Timer
 * @author Kyungmin Bae
-* @version $Id: Timer.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */

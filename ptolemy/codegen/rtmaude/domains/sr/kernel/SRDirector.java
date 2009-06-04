@@ -38,7 +38,7 @@ import ptolemy.codegen.rtmaude.actor.Director;
 *
 * @see ptolemy.domains.sr.kernel.SRDirector
 * @author Kyungmin Bae
-* @version $Id: SRDirector.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */

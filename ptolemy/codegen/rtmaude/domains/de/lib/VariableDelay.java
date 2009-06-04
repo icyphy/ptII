@@ -35,7 +35,7 @@ package ptolemy.codegen.rtmaude.domains.de.lib;
 *
 * @see ptolemy.domains.de.lib.VariableDelay
 * @author Kyungmin Bae
-* @version $Id: VariableDelay.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */

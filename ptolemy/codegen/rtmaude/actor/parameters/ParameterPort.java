@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.parameters.ParameterPort
  * @author Kyungmin Bae
- * @version $Id: ParameterPort.java 53821 2009-04-12 19:12:45Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (kquine)
  *
  */

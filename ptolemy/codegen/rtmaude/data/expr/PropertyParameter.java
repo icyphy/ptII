@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
 * The contents is translated to related RTMaude model checking command.
 *
 * @author Kyungmin Bae
-* @version $Id: PropertyParameter.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.lib.Pulse
  * @author Kyungmin Bae
- * @version $Id: Pulse.java 53821 2009-04-12 19:12:45Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (kquine)
  *
  */

@@ -37,7 +37,7 @@ import ptolemy.codegen.rtmaude.actor.Director;
 *
 * @see ptolemy.domains.fsm.kernel.FSMDirector
 * @author Kyungmin Bae
-* @version $Id: FSMDirector.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */

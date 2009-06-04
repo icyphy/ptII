@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 * Generate a list RTMaude term (AU or ACU) for an iterable data structure. 
 *
 * @author Kyungmin Bae
-* @version $Id: ListTerm.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.IOPort
  * @author Kyungmin Bae
- * @version $Id: IOPort.java 53821 2009-04-12 19:12:45Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (kquine)
  *
  */

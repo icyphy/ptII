@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Settable;
 *
 * @see ptolemy.codegen.kernel.CodeGenerator
 * @author Kyungmin Bae
-* @version $Id: Director.java 53821 2009-04-12 19:12:45Z cxh $
+* @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */
