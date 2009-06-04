@@ -80,8 +80,8 @@ public interface CausalityInterface {
     public void declareDelayDependency(IOPort input, IOPort output, double timeDelay, int index);
     
     /** Return a collection of the ports in this actor that depend on
-     *  or are depended on by the specified port. A port X depends
-     *  on a port Y if X is an output and Y is an input and
+     *  or are depended on by the specified port. A port Y depends
+     *  on a port X if Y is an output and X is an input and
      *  getDependency(X,Y) return the oTimesIdentity.
      *  The argument port should be contained by the same actor
      *  returned by getActor().
@@ -113,7 +113,7 @@ public interface CausalityInterface {
      *  class as the specified input port.
      */
     public Collection<IOPort> equivalentPorts(IOPort input)
-            throws IllegalActionException;;
+            throws IllegalActionException;
 
     /** Return the associated actor.
      *  @return The actor for which this is a dependency.
