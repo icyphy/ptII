@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 943, 539}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 945, 536}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[730, 429]">
     </property>
@@ -147,6 +147,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 180.0]">
         </property>
     </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{660, 340}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[540.0, 110.0]">
         </vertex>
@@ -163,9 +175,12 @@
         <vertex name="vertex1" value="[540.0, 260.0]">
         </vertex>
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Display.input" relation="relation2"/>
     <link port="Sleep.input" relation="relation6"/>
+    <link port="Sleep.output" relation="relation4"/>
     <link port="Sleep.sleepTime" relation="relation"/>
     <link port="Uniform.output" relation="relation3"/>
     <link port="Round.input" relation="relation3"/>
@@ -174,5 +189,6 @@
     <link port="Barrier.input" relation="relation6"/>
     <link port="Ramp2.output" relation="relation5"/>
     <link port="Display2.input" relation="relation5"/>
+    <link port="Discard.input" relation="relation4"/>
     <link relation1="relation2" relation2="relation6"/>
 </entity>
