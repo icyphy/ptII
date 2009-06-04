@@ -47,6 +47,7 @@
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/modalTableauFactory.xml"/>
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
+    <input source="ptolemy/configs/caseTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
