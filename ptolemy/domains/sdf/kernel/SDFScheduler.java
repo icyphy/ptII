@@ -41,6 +41,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
@@ -751,11 +752,55 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + "Usually, disconnected actors in an SDF model "
                             + "indicates an error.  If this is not an error, try "
                             + "setting the SDFDirector parameter "
-                            + "allowDisconnectedGraphs to true.\n"
-                            + "Unreached Actors:\n");
+                            + "allowDisconnectedGraphs to true.");
 
-            // Only display the first 100 connected or disconnected actors.
+            // Look through all the unreached actors.  If any of them are
+            // in transparent composite actors that contain PortParameters,
+            // print a message.
+            // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4086
+
+            // We only print messages about the first 99 PortParameters.
             int count = 0;
+            StringBuffer portParameterMessageBuffer = new StringBuffer();
+            Set portParametersFound = new HashSet();
+            Set containersSeen = new HashSet();
+            for (Iterator actors = actorList.iterator();
+                 actors.hasNext()
+                     && count < 100; count++) {
+                NamedObj actor = (NamedObj) (actors.next());
+                NamedObj actorContainer = actor.getContainer();
+                if (actorContainer instanceof CompositeActor
+                        && !((CompositeActor)actorContainer).isOpaque()
+                        && !containersSeen.contains(actorContainer)) {
+                    containersSeen.add(actorContainer);
+                    List portParameters = actorContainer.attributeList(PortParameter.class);
+                    for (Object portParameter : portParameters) {
+                        if (!portParametersFound.contains(portParameter)) {
+                            portParametersFound.add(portParameter);
+                            portParameterMessageBuffer.append(((PortParameter)portParameter).getFullName() + " ");
+                            if (count > 100) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (portParameterMessageBuffer.length() > 0) {
+                messageBuffer.append("Note that some of the unreached actors are in "
+                        + "transparent composite actors that have PortParameters.  "
+                        + "A transparent composite actor is composite actor that has "
+                        + "no local director.  Transparent composite actors and "
+                        + "PortParameters are not compatible, the workaround is to "
+                        + "insert a director or remove the PortParameter.  "
+                        + "\nThe PortParameters:\n"
+                        + portParameterMessageBuffer.toString());
+                if (count >= 99) {
+                    messageBuffer.append("...");
+                }
+            }
+
+            messageBuffer.append("\nUnreached Actors:\n");
+            count = 0;
             for (Iterator unreachedActors = remainingActors.iterator(); unreachedActors
                     .hasNext()
                     && count < 100; count++) {
@@ -783,7 +828,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if (count >= 99) {
                 messageBuffer.append("...");
             }
-
             throw new NotSchedulableException(messageBuffer.toString());
         }
 

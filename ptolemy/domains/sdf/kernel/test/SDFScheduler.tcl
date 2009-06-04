@@ -1554,3 +1554,21 @@ test SDFScheduler-14.4 {Multirate Scheduling tests} {
     list $sched1
 } {{{Delay3 Delay4 Delay5 Consumer}}}
 
+#####
+test SDFScheduler-15.0 {Test the error message for Transparent PortParameters} {
+    # See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4086
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+		     [$parser parseFile PortParameterTransparent.xml]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] \
+		     "myManager"]
+    $toplevel setManager $manager
+    catch {$manager execute} errMsg 		 
+    list $errMsg
+} {{ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.Note that some of the unreached actors are in transparent composite actors that have PortParameters.  A transparent composite actor is composite actor that has no local director.  Transparent composite actors and PortParameters are not compatible, the workaround is to insert a director or remove the PortParameter.  
+The PortParameters:
+.PortParameterTransparent.CompositeActor.PortParameter 
+Unreached Actors:
+.PortParameterTransparent.Ramp 
+Reached Actors:
+.PortParameterTransparent.CompositeActor.Test .PortParameterTransparent.CompositeActor.Expression }}
