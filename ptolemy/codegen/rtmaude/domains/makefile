@@ -1,6 +1,6 @@
 # Makefile for Java Ptolemy Codegen Rtmaude Domains
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
+# @Authors: Kyungmin Bae, based on a file by Christopher Brooks
 #
 # $Id$
 #
@@ -26,12 +26,12 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+#  PT_COPYRIGHT_VERSION_2
+#  COPYRIGHTENDKEY
 
 ME =        ptolemy/codegen/rtmaude/domains
 
-DIRS =      de
+DIRS =      de fsm sr
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
@@ -43,15 +43,22 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     domains
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =  domains
+PTCLASSJAR =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR 
 PTCLASSALLJARS = \
-	de/de.jar
-
+	de/de.jar \
+	fsm/fsm.jar \
+	sr/sr.jar
 
 JSRCS =
-EXTRA_SRCS =    $(JSRCS)
+	
+OTHER_FILES_TO_BE_JARED = 
+	
+EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -60,14 +67,13 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+    doc \
+    $(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

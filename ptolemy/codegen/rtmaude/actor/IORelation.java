@@ -1,6 +1,6 @@
-/* Code generator helper for typed composite actor.
+/* RTMaude Code generator helper class for the IORelation class.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,6 +34,18 @@ import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+//// IORelation
+
+/**
+ * Generate RTMaude code for an IORelationt in DE domain.
+ *
+ * @see ptolemy.actor.IORelation
+ * @author Kyungmin Bae
+ * @version $Id: IOPort.java 53821 2009-04-12 19:12:45Z cxh $
+ * @Pt.ProposedRating Red (kquine)
+ *
+ */
 public class IORelation extends RTMaudeAdaptor {
 
     /** Construct the code generator helper associated

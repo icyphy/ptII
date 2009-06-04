@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Codegen Rtmaude classes
+# Makefile for Ptolemy CodeGen RTMaude demo: VariableDelay
 #
 # @Authors: Kyungmin Bae, based on a file by Christopher Brooks
 #
@@ -29,44 +29,52 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =		ptolemy/codegen/rtmaude/demo/VariableDelay
 
-DIRS =      
+DIRS =
 
-# Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+# Root of the Java directory
+ROOT =		../../../../..
 
-CLASSPATH = $(ROOT)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
-CONFIG =    $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =  kernel
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	VariableDelay
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS = \
-	DEDirector.java
-	
-OTHER_FILES_TO_BE_JARED = 
-	
-EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
+# Keep this list alphabetized.
+JSRCS =
+
+OTHER_FILES_TO_BE_JARED = \
+	VariableDelay.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc \
+	doc \
     $(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+	@echo "To run the demo, run 'make demo'"
+	
+install: jclass jars
+
+demo:
+	"$(PTII)/bin/vergil" VariableDelay.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

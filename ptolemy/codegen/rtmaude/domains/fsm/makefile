@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Codegen Rtmaude classes
+# Makefile for Java Ptolemy Codegen Rtmaude FSM domains
 #
 # @Authors: Kyungmin Bae, based on a file by Christopher Brooks
 #
@@ -29,12 +29,12 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =        ptolemy/codegen/rtmaude/domains/fsm
 
-DIRS =      
+DIRS =      kernel modal
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+ROOT =      ../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,11 +43,17 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =  kernel
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =  fsm
+PTCLASSJAR =
 
-JSRCS = \
-	DEDirector.java
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR 
+PTCLASSALLJARS = \
+	kernel/kernel.jar \
+	modal/modal.jar
+
+JSRCS =
 	
 OTHER_FILES_TO_BE_JARED = 
 	
@@ -66,7 +72,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

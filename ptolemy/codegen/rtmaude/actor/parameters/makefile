@@ -29,12 +29,12 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =        ptolemy/codegen/rtmaude/actor/parameters
 
 DIRS =      
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+ROOT =      ../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,13 +43,14 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =  kernel
+PTPACKAGE =  parameters
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	DEDirector.java
+	ParameterPort.java
 	
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	ParameterPort.rtmaude 
 	
 EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 

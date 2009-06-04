@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Codegen Rtmaude classes
+# Makefile for Java Ptolemy Codegen Rtmaude kernel utils
 #
 # @Authors: Kyungmin Bae, based on a file by Christopher Brooks
 #
@@ -29,12 +29,12 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =        ptolemy/codegen/rtmaude/kernel/util
 
 DIRS =      
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+ROOT =      ../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,11 +43,11 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =  kernel
+PTPACKAGE =  util
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	DEDirector.java
+	ListTerm.java
 	
 OTHER_FILES_TO_BE_JARED = 
 	

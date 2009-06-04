@@ -1,6 +1,6 @@
-/* Code generator helper for typed composite actor.
+/* RTMaude Code generator helper for typed composite actor.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,17 +41,17 @@ import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 
 /**
- Code generator helper for typed composite actor.
-
- @author Kyungmin Bae
- @version $Id$
- @since Ptolemy II 7.2
- @Pt.ProposedRating Red (kquine)
+ * Generate RTMaude code for a typed composite actor.
+ *
+ * @see ptolemy.actor.TypedCompositeActor
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @Pt.ProposedRating Red (kquine)
+ *
  */
 public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
     /** Construct the code generator helper associated

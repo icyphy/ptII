@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Codegen Rtmaude classes
+# Makefile for Java Ptolemy Codegen Rtmaude Actor Lib/gui
 #
 # @Authors: Kyungmin Bae, based on a file by Christopher Brooks
 #
@@ -29,7 +29,7 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =        ptolemy/codegen/rtmaude/actor/lib/gui
 
 DIRS =      
 
@@ -43,13 +43,14 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =  kernel
+PTPACKAGE =  gui
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	DEDirector.java
+	TimedPlotter.java
 	
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	TimedPlotter.rtmaude 
 	
 EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 

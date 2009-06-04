@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Codegen Rtmaude classes
+# Makefile for Java Ptolemy Codegen Rtmaude demo
 #
 # @Authors: Kyungmin Bae, based on a file by Christopher Brooks
 #
@@ -29,12 +29,12 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =        ptolemy/codegen/rtmaude/demo
 
-DIRS =      
+DIRS =      AssemblyLine DE_SimpleTrafficLight HierarchicalTrafficLight RailroadSystem VariableDelay
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+ROOT =      ../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,11 +43,20 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =  kernel
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE =  demo
+PTCLASSJAR =
 
-JSRCS = \
-	DEDirector.java
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR 
+PTCLASSALLJARS = \
+	AssemblyLine/AssemblyLine.jar \
+	DE_SimpleTrafficLight/DE_SimpleTrafficLight.jar \
+	HierarchicalTrafficLight/HierarchicalTrafficLight.jar \
+	RailroadSystem/RailroadSystem.jar \
+	VariableDelay/VariableDelay.jar
+
+JSRCS = 
 	
 OTHER_FILES_TO_BE_JARED = 
 	
@@ -55,8 +64,14 @@ EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
-
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES = \
+	AssemblyLine \
+	DE_SimpleTrafficLight \
+	HierarchicalTrafficLight \
+	RailroadSystem \
+	VariableDelay
+	
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
@@ -66,7 +81,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

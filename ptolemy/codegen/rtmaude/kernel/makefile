@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II style code generation
+# Makefile for Java Ptolemy Codegen Rtmaude kernel
 #
-# @Authors: Man-Kit Leung
+# @Authors: Kyungmin Bae, based on a file by Christopher Brooks
 #
-# @Version: $Id$
+# $Id$
 #
-# @Copyright (c) 2006-2007 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,55 +26,61 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#  PT_COPYRIGHT_VERSION_2
+#  COPYRIGHTENDKEY
 
-ME =		ptolemy/codegen/rtmaude/kernel
+ME =        ptolemy/codegen/rtmaude/kernel
 
-DIRS =		 type test #parameterized
+DIRS =      util
 
-# Root of the Java directory
-ROOT =		../../../..
+# Root of the Ptolemy II directory
+ROOT =      ../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE =  kernel
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	type/type.jar
-
-#	parameterized/parameterized.jar
+# Include the .class files from these jars in PTCLASSALLJAR 
+PTCLASSALLJARS = \ 
+	util/util.jar 
 
 JSRCS = \
-	RTMaudeAdaptor.java
-
+	Entity.java \
+	RTMaudeAdaptor.java \
+	RTMaudeCodeGenerator.java \
+	RTMaudeParseTreeCodeGenerator.java
+	
 OTHER_FILES_TO_BE_JARED = \
+	Entity.rtmaude \
 	RTMaudeAdaptor.rtmaude
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+	
+EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+    doc \
+    'Entity$$1.class' \
+    'Entity$$2.class' \
+    'Entity$$3.class' \
+    $(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: all jars $(PTPACKAGE).jar
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

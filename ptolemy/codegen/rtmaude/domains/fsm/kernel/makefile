@@ -29,7 +29,7 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =        ptolemy/codegen/rtmaude/domains/fsm/kernel
 
 DIRS =      
 
@@ -47,9 +47,15 @@ PTPACKAGE =  kernel
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	DEDirector.java
+	AbstractActionsAttribute.java \
+	FSMActor.java \
+	FSMDirector.java \
+	Transition.java
 	
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	AbstractActionsAttribute.rtmaude \
+	FSMActor.rtmaude \
+	Transition.rtmaude
 	
 EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 
@@ -61,6 +67,8 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
     doc \
+    'AbstractActionsAttribute$$1.class' \
+    'FSMActor$$1.class' \
     $(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)

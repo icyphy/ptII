@@ -29,7 +29,7 @@
 #  PT_COPYRIGHT_VERSION_2
 #  COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/rtmaude/domains/de/kernel
+ME =        ptolemy/codegen/rtmaude/domains/sr/kernel
 
 DIRS =      
 
@@ -47,9 +47,9 @@ PTPACKAGE =  kernel
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	DEDirector.java
+	SRDirector.java
 	
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED =
 	
 EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 
