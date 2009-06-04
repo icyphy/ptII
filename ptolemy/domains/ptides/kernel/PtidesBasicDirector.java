@@ -31,21 +31,27 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
@@ -137,18 +143,6 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Dependency delayDependency(double delay, int index) {
         return SuperdenseDependency.valueOf(delay, index);
-    }
-
-    /** Return a causality interface for the composite actor that
-     *  contains this director. This base class returns an
-     *  instance of {@link CausalityInterfaceForComposites}, but
-     *  subclasses may override this to return a domain-specific
-     *  causality interface.
-     *  @return A representation of the dependencies between input ports
-     *   and output ports of the container.
-     */
-    public CausalityInterface getCausalityInterface() {
-        return new PtidesCausalityInterface((Actor)getContainer(), defaultDependency());
     }
     
     /** Get the current microstep.
@@ -466,7 +460,7 @@ public class PtidesBasicDirector extends DEDirector {
         return new PtidesBasicReceiver();
     }
     
-    /** Uses the preinitilize() method in the super class.
+    /** Uses the preinitialize() method in the super class.
      *  However we use the DEListEventQueue instead of the calendar queue because we need
      *  to access to not just the first event in the event queue.
      */
@@ -474,6 +468,7 @@ public class PtidesBasicDirector extends DEDirector {
         super.preinitialize();
         // Initialize an event queue.
         _eventQueue = new DEListEventQueue();
+        _calculateMinDelayOffsets();
     }
 
     /** Return false if there are no more actors to be fired or the stop()
@@ -584,6 +579,139 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
+    
+    /** Causality analysis that happens at the initialization phase.
+     *  The goal is to annotate each port with a minDelay parameter,
+     *  which is the offset used for safe to process analysis.
+     *  
+     *  Start from each input port that is connected to the outside of the platform
+     *  (These input ports indicate sensors and network interfaces), and traverse
+     *  the graph until we reach the output port connected to the outside of
+     *  the platform (actuators). For each input port in between, first calcualte
+     *  the real time delay - model time delay from the sensor/network to the input
+     *  port. Then for each actor, calculate the minimum model time offset by
+     *  studying the real time delay - model time delay values at each of its input
+     *  ports. Finally annotate the offset as the minDelay.
+     *  @throws IllegalActionException 
+     */
+    protected void _calculateMinDelayOffsets() throws IllegalActionException {
+        
+        _clearMinDelayOffsets();
+        
+        // FIXME: If there are composite actors within the top level composite actor, 
+        // does this algorithm work? 
+        // initialize all port model delays to infinity.
+        HashMap portDelays = new HashMap<IOPort, SuperdenseDependency>();
+        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
+                portDelays.put(inputPort, SuperdenseDependency.OPLUS_IDENTITY);
+            }
+            for (TypedIOPort outputPort : (List<TypedIOPort>)(actor.outputPortList())) {
+                portDelays.put(outputPort, SuperdenseDependency.OPLUS_IDENTITY);
+            }
+        }
+
+        for (TypedIOPort inputPort : (List<TypedIOPort>)(((Actor)getContainer()).inputPortList())) {
+            SuperdenseDependency startDelay = SuperdenseDependency.valueOf(-_getRealTimeDelay(inputPort), 0);
+            portDelays.put(inputPort, startDelay);
+        }
+        // Now start from each sensor (input port at the top level), traverse through all
+        // ports.
+        for (TypedIOPort startPort : (List<TypedIOPort>)(((TypedCompositeActor)getContainer()).inputPortList())) {
+            // Setup a local priority queue to store all reached ports
+            HashMap localPortDelays = new HashMap<IOPort, SuperdenseDependency>(portDelays);
+
+            PriorityQueue distQueue = new PriorityQueue<CausalityPort>();
+            distQueue.add(new CausalityPort(startPort, (SuperdenseDependency)localPortDelays.get(startPort)));
+
+            // Dijkstra's algorithm to find all shortest time delays.
+            while (!distQueue.isEmpty()) {
+                CausalityPort causalityPort = (CausalityPort)distQueue.remove();
+                IOPort port = (IOPort)causalityPort.port;
+                SuperdenseDependency prevDependency = (SuperdenseDependency)causalityPort.dependency;
+                Actor actor = (Actor)port.getContainer();
+                if (port.isInput() && port.isOutput()){
+                    throw new IllegalActionException("the causality analysis cannot deal with" +
+                    "port that are both input and output");
+                }
+                // we do not want to traverse to the outside of the platform.
+                if (actor != getContainer()) {
+                    if (port.isInput()) {
+                        Collection<IOPort> outputs = _finiteDependentPorts(port);
+                        for (IOPort outputPort : outputs) {
+                            SuperdenseDependency minimumDelay = (SuperdenseDependency)_getDependency(port, outputPort);
+                            // FIXME: what do we do with the microstep portion of the dependency?
+                            // need to make sure we did not visit this port before.
+                            SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency.oTimes(minimumDelay);
+                            if (((SuperdenseDependency)localPortDelays.get(outputPort)).compareTo(modelTime) > 0) {
+                                localPortDelays.put(outputPort, modelTime);
+                                distQueue.add(new CausalityPort(outputPort, modelTime));
+                            }
+                        }
+                    } else { // port is an output port
+                        for (IOPort sinkPort: (List<IOPort>)port.sinkPortList() ) {
+                            // we do not want to traverse to the outside of the platform.
+                            if (sinkPort.getContainer() != getContainer()) {
+                                // need to make sure we did not visit this port before.
+                                if (((SuperdenseDependency)localPortDelays.get(sinkPort)).compareTo(prevDependency) > 0) {
+                                    localPortDelays.put(sinkPort, prevDependency); 
+                                    distQueue.add(new CausalityPort(sinkPort, prevDependency));
+                                }
+                            }
+                        }
+                    }
+                } else if (port == startPort) {
+                    // This does not support input/output port, should it?
+                    // port is the input port we are starting from.
+                    for (IOPort sinkPort: (List<IOPort>)port.insideSinkPortList()) {
+                        if (((SuperdenseDependency)localPortDelays.get(sinkPort)).compareTo(prevDependency) > 0) {
+                            localPortDelays.put(sinkPort, prevDependency);  
+                            distQueue.add(new CausalityPort(sinkPort, prevDependency));
+                        }
+                    }
+                }
+            }
+            portDelays = localPortDelays;
+        }
+
+        // portDelay is the delays as calculated through shortest path algorithm. Now we
+        // need to use these delays to calculate the minDelay.
+        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
+            SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
+            TypedIOPort smallestDependencyPort = null;
+            SuperdenseDependency secondSmallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
+            List<TypedIOPort> connectedPortList = _connectedMinDelayPorts(actor.inputPortList(), portDelays);
+            if (connectedPortList.size() > 1) {
+                for (TypedIOPort inputPort : connectedPortList) {
+                    SuperdenseDependency dependency = (SuperdenseDependency) portDelays.get(inputPort);
+                    if (dependency.compareTo(smallestDependency) < 0) {
+                        secondSmallestDependency = smallestDependency;
+                        smallestDependency = dependency;
+                        smallestDependencyPort = inputPort;
+                    } else if (dependency.compareTo(secondSmallestDependency) < 0) {
+                        secondSmallestDependency = dependency;
+                    }
+                }
+                // The value stored in portDelay is now annotated in the model as a parameter.
+                for (TypedIOPort inputPort : connectedPortList) {
+                    Parameter parameter = (Parameter)(inputPort).getAttribute("minDelay");
+                    if (parameter == null) {
+                        try {
+                            parameter = new Parameter(inputPort, "minDelay");
+                        } catch (NameDuplicationException e) {
+                            throw new IllegalActionException("A minDelay parameter already exists");
+                        }
+                    }
+                    if (inputPort == smallestDependencyPort) {
+                        parameter.setToken(new DoubleToken(secondSmallestDependency.timeValue()));
+                    } else {
+                        parameter.setToken(new DoubleToken(smallestDependency.timeValue()));
+                    }
+                }
+            }
+        }
+    }
+    
     /** Clear any highlights on the specified actor.
      *  @param actor The actor to clear.
      *  @exception IllegalActionException If the animateExecution
@@ -596,6 +724,25 @@ public class PtidesBasicDirector extends DEDirector {
             MoMLChangeRequest request = new MoMLChangeRequest(this, (NamedObj)actor, completeMoML);
             Actor container = (Actor) getContainer();
             ((TypedCompositeActor)container).requestChange(request);
+        }
+    }
+
+    /** For each input port within the composite actor where this director resides,
+     *  if the input port has a minDelay parameter, set the value of that parameter
+     *  to Infinity (meaning events arriving at this port will always be safe to
+     *  process). If it does not have a minDelay parameter, then do nothing, because
+     *  _safeToProcess also interpret that as events are always safe to process in
+     *  that case.
+     *  @throws IllegalActionException 
+     */
+    protected void _clearMinDelayOffsets() throws IllegalActionException {
+        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
+                Parameter parameter = (Parameter)(inputPort).getAttribute("minDelay");
+                if (parameter != null) {
+                    parameter.setToken(new DoubleToken(Double.POSITIVE_INFINITY));
+                }
+            }
         }
     }
 
@@ -640,6 +787,84 @@ public class PtidesBasicDirector extends DEDirector {
         _eventQueue.put(newEvent);
     }
     
+    /** Return a collection of ports the given port is dependent on, within
+     *  the same actor.
+     *  This method delegates to the getDependency() method of the corresponding
+     *  causality interface the actor is associated with. If getDependency()
+     *  returns a dependency not equal to the oPlusIdentity, then the associated
+     *  port is added to the Collection.
+     *  The returned Collection has no duplicate entries.
+     *  @see #dependentPorts(IOPort)
+     * 
+     *  @param port The given port to find finite dependent ports.
+     *  @return Collection of finite dependent ports.
+     *  @throws IllegalActionException
+     */
+    protected static Collection<IOPort> _finiteDependentPorts(IOPort port)
+            throws IllegalActionException {
+        // FIXME: This does not support ports that are both input and output.
+        // Should it?
+        Collection<IOPort> result = new HashSet<IOPort>();
+        Actor actor = (Actor)port.getContainer();
+        CausalityInterface actorCausalityInterface;
+        if (actor instanceof AtomicActor) {
+            actorCausalityInterface = (DefaultCausalityInterface)actor.getCausalityInterface();
+        } else if (actor instanceof CompositeActor) {
+            actorCausalityInterface = (CausalityInterfaceForComposites)actor.getCausalityInterface();
+        } else {
+            throw new IllegalActionException(actor, "Actor is not a typed atomic or typed composite " +
+                        "actor, do not know how to deal with it.");
+        }
+        if (port.isInput()) {
+            List<IOPort> outputs = ((Actor)port.getContainer()).outputPortList();
+            for (IOPort output : outputs) {
+                Dependency dependency = actorCausalityInterface.getDependency(port, output);
+                if (dependency != null && dependency.compareTo(dependency.oPlusIdentity())!= 0) {
+                    result.add(output);
+                }
+            }
+        } else { // port is output port.
+            List<IOPort> inputs = ((Actor)port.getContainer()).inputPortList();
+            for (IOPort input : inputs) {
+                Dependency dependency = actorCausalityInterface.getDependency(input, port);
+                if (dependency != null && dependency.compareTo(dependency.oPlusIdentity())!= 0) {
+                    result.add(input);
+                }
+            }
+        }
+        return result;
+    }
+    
+    /** Return a collection of ports that are finite equivalent ports
+     *  of the input port.  
+     *  <p>
+     *  A finite equivalence class is defined as follows.
+     *  If input ports X and Y each have a dependency not equal to the
+     *  default depenency's oPlusIdentity() on any common port
+     *  or on two equivalent ports
+     *  or on the state of the associated actor, then they
+     *  are in a finite equivalence class.
+     *  The returned Collection has no duplicate entries.
+     *  If the port is not an input port, an exception
+     *  is thrown.
+     *  
+     *  @param input
+     *  @return Collection of finite equivalent ports.
+     *  @throws IllegalActionException
+     */
+    protected static Collection<IOPort> _finiteEquivalentPorts(IOPort input)
+            throws IllegalActionException {
+        Collection<IOPort> result = new HashSet<IOPort>();
+        // first get all outputs that are dependent on this input.
+        Collection<IOPort> outputs = _finiteDependentPorts(input);
+        // now for every input that is also dependent on the output, add
+        // it to the list of ports that are returned.
+        for (IOPort output : outputs) {
+            result.addAll(_finiteDependentPorts(output));
+        }
+        return result;
+    }
+
     /** Return the absolute deadline of this event, if this event is a trigger event.
      *  If this event is however a pure event, this event inherits the deadline of
      *  the first port on the same actor. If this actor does not have any port, then
@@ -682,6 +907,38 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
         return eventList;
+    }
+    
+    /** Get the dependency between the input and output ports. If the 
+     *  ports does not belong to the same actor, an exception is thrown.
+     *  Depending on the actor, the corresponding getDependency() method in
+     *  the actor's causality interface is called. Also, if the
+     *  output is null, super's getDependency() is called because super's
+     *  method uses this method to update the dependency in the system.
+     *  @param input The input port.
+     *  @param output The output port.
+     *  @return The dependency between the specified input port
+     *   and the specified output port.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  
+     *  FIXME: this is not correct because CausalityInterfaceForComposites
+     *  do not correct implement the case where there's a finite causality,
+     *  or DOES IT??
+     */
+    
+    protected static Dependency _getDependency(IOPort input, IOPort output)
+            throws IllegalActionException {
+        Actor actor = (Actor)input.getContainer();
+        if (output != null) {
+            Actor outputActor = (Actor)output.getContainer();
+            if (actor != outputActor) {
+                throw new IllegalActionException(input, output, "Cannot get dependency" +
+                        "from these two ports, becasue they do not belong" +
+                "to the same actor.");
+            }
+        }
+        CausalityInterface causalityInterface = actor.getCausalityInterface();
+        return causalityInterface.getDependency(input, output);
     }
     
     /** Return a MoML string describing the icon appearance for a Ptides
@@ -1075,7 +1332,8 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    /** If the destination port is the only input port of the actor, or if there doesn't exist
+    /** If the destination port is the only input port of the actor, or if the port
+     *  does not have a minDelay parameter, or if there doesn't exist
      *  a destination port (in case of pure event) then the event is
      *  always safe to process. Otherwise:
      *  If the current physical time has passed the timestamp of the event minus minDelay of
@@ -1451,6 +1709,29 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
     
+    /** Return a collection of input ports that belong to this actor, and
+     *  are traversed in the calculation of minDelay.
+     */
+    private List<TypedIOPort> _connectedMinDelayPorts(List<TypedIOPort> inputPortList,
+            HashMap<IOPort, SuperdenseDependency> portDelays) {
+        List result = new ArrayList<TypedIOPort>();
+        for (TypedIOPort port : inputPortList) {
+            // portDelays have dependencies initialized to oPlusIdentity.
+            // Thus if they are different, that means we have traversed
+            // to this port.
+            if (((SuperdenseDependency)portDelays.get(port)).compareTo(
+                    SuperdenseDependency.OPLUS_IDENTITY) != 0) {
+                result.add(port);
+            }
+        }
+        return result;
+    }
+
+    /** Return the actor associated with the events in the list. All events
+     *  within the list should be destined for the same actor.
+     *  @param currentEventList A list of events.
+     *  @return Actor associated with events in the list.
+     */
     private Actor _getActorFromEventList(List<DEEvent> currentEventList) {
         return currentEventList.get(0).actor();
     }
@@ -1499,6 +1780,47 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
+    
+    /** A structure that stores a port and a dependency associated with
+     *  that port. This structure is comparable, and it compares using
+     *  the dependency information.
+     */
+    public class CausalityPort implements Comparable {
+
+        private IOPort port;
+
+        private Dependency dependency;
+
+        public CausalityPort (IOPort port, Dependency dependency){
+            this.port = port;
+            this.dependency = dependency;
+        }
+
+        public IOPort getPort() {
+            return port;
+        }
+
+        public Dependency getDependency() {
+            return dependency;
+        }
+
+        public int compareTo(Object arg0) {
+            CausalityPort causalityPort = (CausalityPort) arg0;
+            if (this.dependency.compareTo(causalityPort.dependency) > 0)
+                return 1;
+            else if (this.dependency.compareTo(causalityPort.dependency) < 0)
+                return -1;
+            else
+                return 0;
+        }
+
+        public boolean equals(Object arg0) {
+            if (compareTo(arg0) == 0)
+                return true;
+            else
+                return false;
+        }
+    }
 
     /** A TimedEvent extended with an additional field to represent
      *  the remaining execution time (in physical time) for processing
