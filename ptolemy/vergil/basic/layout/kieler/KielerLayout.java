@@ -315,6 +315,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         _kieler2PtolemyDivaEdges = new HashMap<KEdge, Object>();
         _ptolemy2KielerPorts = new HashMap<Port, List<KPort>>();
         _kieler2PtolemyPorts = new HashMap<KPort, Port>();
+        _divaEdgeSource = new HashMap<Object, Object>();
+        _divaEdgeTarget = new HashMap<Object, Object>();
 
         // traverse ptolemy graph
         LayoutTarget target = this.getLayoutTarget();
@@ -379,6 +381,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 
                 // check if the node has ports
                 Iterator portIter = null;
+                // TODO: also add internal ports
                 if (semanticNode instanceof Relation) {
                     // if object is a relation vertex, it is itself kinda port
                     List relations = new ArrayList();
@@ -397,20 +400,20 @@ public class KielerLayout extends AbstractGlobalLayout {
                             // store Diva edge in corresponding map with no
                             // KEdge that will be created later
                             _ptolemyDiva2KielerEdges.put(divaEdge, null);
-
                         }
                     }
                 }
             }
 
             // create Kieler KEdges for Diva edges
+            _storeEndpoints();
             for (Object divaEdge : _ptolemyDiva2KielerEdges.keySet()) {
                 _createKEdge(divaEdge);
             }
         }
     }
 
-    /** Create a Kieler KEdge for a Ptolemy Diva edge object. The KEdge will be
+   /** Create a Kieler KEdge for a Ptolemy Diva edge object. The KEdge will be
      * setup between either two ports or relation vertices or mixed. Hence the
      * KEdge corresponds more likely a Ptolemy link than a relation.
      * Diva edges have no direction related to the flow of data in Ptolemy.
@@ -438,33 +441,50 @@ public class KielerLayout extends AbstractGlobalLayout {
             if (semObj instanceof Relation) {
                 rel = (Relation) semObj;
             }
-
-            Object sourceNode = edgeModel.getHead(divaEdge);
-            Object targetNode = edgeModel.getTail(divaEdge);
-            // directions of Diva Edges actually might differ actual Ptolemy
-            // model directions, so check those
-            KPort kRealSourcePort = _getSource(divaEdge, rel, aGraph, null);
-            KPort ksourcePort = this
-                    ._getPort(sourceNode, KPortType.OUTPUT, rel);
-
-            if (kRealSourcePort != ksourcePort) {
-                // swap source and target
-                Object temp = sourceNode;
-                sourceNode = targetNode;
-                targetNode = temp;
-            }
-
+//
+//            Object sourceNode = edgeModel.getHead(divaEdge);
+//            Object targetNode = edgeModel.getTail(divaEdge);
+//            // directions of Diva Edges actually might differ actual Ptolemy
+//            // model directions, so check those
+//            KPort kRealSourcePort = _getSource(divaEdge, rel, aGraph, null);
+//            KPort ksourcePort = this
+//                    ._getPort(sourceNode, KPortType.OUTPUT, rel);
+//
+//            if (kRealSourcePort != ksourcePort) {
+//                // swap source and target
+//                Object temp = sourceNode;
+//                sourceNode = targetNode;
+//                targetNode = temp;
+//            }
             // create KEdge
-            ksourcePort = this._getPort(sourceNode, KPortType.OUTPUT, rel);
-            KPort ktargetPort = this._getPort(targetNode, KPortType.INPUT, rel);
+//            ksourcePort = this._getPort(sourceNode, KPortType.OUTPUT, rel);
+//            KPort ktargetPort = this._getPort(targetNode, KPortType.INPUT, rel);
 
             KEdge kedge = KimlLayoutUtil.createInitializedEdge();
-            kedge.setSourcePort(ksourcePort);
-            ksourcePort.getEdges().add(kedge);
-            kedge.setTargetPort(ktargetPort);
-            ktargetPort.getEdges().add(kedge);
-            kedge.setSource(ksourcePort.getNode());
-            kedge.setTarget(ktargetPort.getNode());
+
+            Object source = _divaEdgeSource.get(divaEdge);
+            Object target = _divaEdgeTarget.get(divaEdge);
+            
+            KPort kSourcePort = this._getPort(source, KPortType.OUTPUT, rel);
+            if(kSourcePort != null){
+                kedge.setSourcePort(kSourcePort);
+                kSourcePort.getEdges().add(kedge);
+                kedge.setSource(kSourcePort.getNode());
+            }
+            else{
+                // edge is not connected to a port
+                kedge.setSource(_ptolemy2KielerNodes.get(source));
+            }
+            KPort kTargetPort = this._getPort(target, KPortType.INPUT, rel);
+            if(kTargetPort != null){
+                kedge.setTargetPort(kTargetPort);
+                kTargetPort.getEdges().add(kedge);
+                kedge.setTarget(kTargetPort.getNode());
+            }
+            else{
+             // edge is not connected to a port
+                kedge.setTarget(_ptolemy2KielerNodes.get(target));
+            }
 
             // add KEdge to map
             _ptolemyDiva2KielerEdges.put(divaEdge, kedge);
@@ -817,98 +837,6 @@ public class KielerLayout extends AbstractGlobalLayout {
     }
 
     /**
-     * Get the source Kieler KPort corresponding to the source Port
-     * of a Ptolemy Diva edge. That is either one of the end points of
-     * the diva edge, resp. its Kieler counterpart. Problem with Diva edges
-     * is that their direction may be different to the direction of the
-     * flow of data in Ptolemy. This method approximates the source wrt
-     * the dataflow by performing recursive tree searches beginning at the two
-     * endpoints of the diva edge. 
-     * 
-     * @param divaEdge
-     *          The diva edge to which its real source port shall be identified
-     * @param relation
-     *          The corresponding Ptolemy relation to that Diva edge.
-     * @param aGraph
-     *          The overall ActorGraphModel
-     * @param ignoreNode
-     *          A diva node that should be ignored during the tree search. Can be used
-     *          for recursive calls to avoid cycles. 
-     * @return
-     *          The KPort corresponding to one of the two end points of the
-     *          diva edge and laying in the direction of some Ptolemy source node. Might
-     *          return null if there is no source port connected, e.g. if considering
-     *          only relation vertices.
-     */
-    private KPort _getSource(Object divaEdge, Relation relation,
-            ActorGraphModel aGraph, Object ignoreNode) {
-        EdgeModel edgeModel = aGraph.getEdgeModel(divaEdge);
-        Object[] nodes = new Object[2];
-        nodes[0] = edgeModel.getHead(divaEdge);
-        nodes[1] = edgeModel.getTail(divaEdge);
-        // which of the two is actually first in data flow direction?
-
-        // see if you can find out anything about ports
-        for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i] instanceof Port) {
-                Port port = (Port) nodes[i];
-                NamedObj obj = port.getContainer();
-                if (obj instanceof Actor) {
-                    Actor actor = (Actor) obj;
-                    if (actor.outputPortList().contains(port)) {
-                        return _getPort(nodes[i], KPortType.OUTPUT, relation);
-                    } else if (actor.inputPortList().contains(port)) {
-                        ;
-                    }
-                    // then return the other one
-                    // FIXME: Vertices are no ports!
-                    return _getPort(nodes[(i + 1) % nodes.length],
-                            KPortType.OUTPUT, relation);
-                }
-            }
-            // the port is a node, e.g. an inner port
-            else {
-                Object semanticObject = aGraph.getSemanticObject(nodes[i]);
-                if (semanticObject instanceof Port) {
-                    Port innerPort = (Port) semanticObject;
-                    PtolemyModelUtil._isInput(innerPort);
-
-                    System.out.println();
-                }
-            }
-        }
-
-        // things get more complex if we have two relations...
-        // so here try to search recursively until you found any source
-
-        for (int i = 0; i < nodes.length; i++) {
-            // check only for vertices and if the node is not marked to be
-            // ignored (to avoid loops)
-            if (nodes[i] instanceof Vertex && nodes[i] != ignoreNode) {
-                // look at all edges to or from the vertex except our original
-                // one
-                Set<Object> edges = new HashSet<Object>();
-                edges.addAll(_getList(aGraph.outEdges(nodes[i])));
-                edges.addAll(_getList(aGraph.inEdges(nodes[i])));
-                edges.remove(divaEdge);
-                for (Object object : edges) {
-                    KPort foundSourcePort = _getSource(object, relation,
-                            aGraph, nodes[i]);
-                    if (foundSourcePort != null) {
-                        // yeah, somewhere along that edge we found a source
-                        return _getPort(nodes[i], KPortType.OUTPUT, relation);
-                    }
-                }
-            }
-        }
-
-        // if nothing was found yet, we could not determine whether the edge is
-        // connected to a source somewhere or not
-        return null;
-
-    }
-
-    /**
      * Transform a location from a Kieler node from Kieler coordinate system to
      * ptolemy coordinate system. That is Kieler gives locations to be the upper
      * left corner of an item and Ptolemy as the center point of the item.
@@ -967,6 +895,85 @@ public class KielerLayout extends AbstractGlobalLayout {
                         .getHeight()));
     }
 
+    /**
+     * Determine the direction of dataflow of all edges and store it in the local maps. 
+     * Iterate all edges and try to deduce the type of each edge's endpoints, i.e. whether it is an source or
+     * target. Do this in multiple iterations by first getting clear information from input and output ports and
+     * then propagate this information to the adjacent edges. Work only on the local maps, i.e. get the list of
+     * all edges of the _ptolemyDiva2KielerEdges map and store the source and target information in 
+     * _divaEdgeSource resp. _divaEdgeTarget.
+     */
+    private void _storeEndpoints() {
+        ActorGraphModel aGraph = (ActorGraphModel)this.getLayoutTarget().getGraphModel();
+        boolean allDirectionsSet = false;
+        Set edges = _ptolemyDiva2KielerEdges.keySet();
+        while( ! allDirectionsSet ){
+            allDirectionsSet = true;
+            for (Iterator edgeIter = edges.iterator(); edgeIter.hasNext();) {
+                Object edge = (Object) edgeIter.next();
+                EdgeModel edgeModel = aGraph.getEdgeModel(edge);
+                Object endpoint1 = edgeModel.getHead(edge);
+                Object endpoint2 = edgeModel.getTail(edge);
+                
+                // see if we have successfully looked at this edge before
+                if(_divaEdgeTarget.containsKey(edge) && _divaEdgeSource.containsKey(edge) )
+                    continue;
+                
+                // check whether endpoints are source or target ports
+                if(endpoint1 instanceof Port){
+                    if(PtolemyModelUtil._isInput((Port)endpoint1)){
+                        _divaEdgeTarget.put(edge, endpoint1);
+                        _divaEdgeSource.put(edge, endpoint2);
+                    }
+                    else{
+                        _divaEdgeTarget.put(edge, endpoint2);
+                        _divaEdgeSource.put(edge, endpoint1);
+                    }
+                }
+                else
+                if(endpoint2 instanceof Port){
+                    if(PtolemyModelUtil._isInput((Port)endpoint2)){
+                        _divaEdgeTarget.put(edge, endpoint2);
+                        _divaEdgeSource.put(edge, endpoint1);
+                    }
+                    else{
+                        _divaEdgeTarget.put(edge, endpoint1);
+                        _divaEdgeSource.put(edge, endpoint2);
+                    }
+                }
+                else
+                // see if one of the endpoints is source or target of other edges
+                if(_divaEdgeTarget.containsValue(endpoint1))
+                {
+                    _divaEdgeTarget.put(edge, endpoint2);
+                    _divaEdgeSource.put(edge, endpoint1);
+                }
+                else
+                if(_divaEdgeTarget.containsValue(endpoint2))
+                {
+                    _divaEdgeTarget.put(edge, endpoint1);
+                    _divaEdgeSource.put(edge, endpoint2);
+                }
+                else
+                if(_divaEdgeSource.containsValue(endpoint1))
+                {
+                    _divaEdgeTarget.put(edge, endpoint1);
+                    _divaEdgeSource.put(edge, endpoint2);
+                }
+                else
+                if(_divaEdgeSource.containsValue(endpoint2))
+                {
+                    _divaEdgeTarget.put(edge, endpoint2);
+                    _divaEdgeSource.put(edge, endpoint1);
+                }
+                else{
+                    // now we can't deduce any information about this edge
+                    allDirectionsSet = false;
+                }
+            }
+        }
+    }
+    
     // /////////////////////////////////////////////////////////////////
     // // private variables ////
 
@@ -998,7 +1005,17 @@ public class KielerLayout extends AbstractGlobalLayout {
      * With the flag set to true especially the Kieler graph structure will be written to
      * a file on harddisk in order to review the graph later on.
      */
-    private boolean _debug = false;
+    private boolean _debug = true;
+    
+    /**
+     * Storage of actual sources of diva edges corresponding to data flow.
+     */
+    private Map<Object, Object> _divaEdgeSource;
+    
+    /**
+     * Storage of actual targets of diva edges corresponding to data flow.
+     */
+    private Map<Object, Object> _divaEdgeTarget;
 
     /**
      * Map Kieler KEdges to Ptolemy Diva Edges.

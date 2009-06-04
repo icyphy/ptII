@@ -36,6 +36,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -277,12 +278,18 @@ public class PtolemyModelUtil {
      *          True if the port is an input port
      */
     protected static boolean _isInput(Port port) {
-        // FIXME: this does not work. A port has no input attribute
-        Attribute inputAttribute = port.getAttribute("input");
-        if (inputAttribute != null) {
-            return true;
+        if(port instanceof IOPort){
+            return ((IOPort)port).isInput();
         }
-        return true;
+        else{
+            NamedObj obj = port.getContainer();
+            if (obj instanceof Actor) {
+                Actor actor = (Actor) obj;
+                if (actor.inputPortList().contains(port)) 
+                    return true;
+            }
+        }
+        return false;
     }
 
     /**
