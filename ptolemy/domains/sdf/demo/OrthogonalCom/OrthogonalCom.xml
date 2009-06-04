@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 70.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[793, 539]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[903, 547]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
@@ -22,12 +22,7 @@
 code generation.  It produces data
 on standard out, so nothing much happens
 when it is run in the standard interpreted
-mode.
-To run the copernicus code generator,
-select MoreLibraries -> CodeGenerators ->
-Copernicus -> SDFCodeGenerator.
-
-See $PTII/doc/copernicus.htm for details.</text></svg></configure>
+mode.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -40,14 +35,14 @@ See $PTII/doc/copernicus.htm for details.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 1008, 655}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={257, 22, 903, 653}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{396.5, 269.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{451.5, 273.5}">
     </property>
     <entity name="bitSource" class="ptolemy.actor.lib.DiscreteRandomSource">
         <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
