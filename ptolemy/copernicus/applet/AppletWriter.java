@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -307,6 +308,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     jarFilesResults.append(",");
                 }
                 jarFilesResults.append(jarFileName);
+
+                jarFilesResults.append(_checkForJNLPExtensions(jarFileName));
 
                 // If the ptII/signed directory contains the jar file, then set
                 // signed to "signed/".  Otherwise, set signed to "".
@@ -708,13 +711,36 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
+            String className = object.getClass().getName();
             System.out.println("_allAtomicEntityJars: "
-                    + object.getClass().getName() + " "
+                    + className + " "
                     + _getDomainJar(object.getClass().getPackage().getName()));
 
-            // Add in the entity
-            results.put(object.getClass().getName(),
-                    _getDomainJar(object.getClass().getPackage().getName()));
+
+            if (className.contains("ptolemy.backtrack")) {
+                System.out.println("_allAtomicEntityJars backtrac: "
+                        + className + " "
+                        + "ptolemy/backtrack/backtrack.jar");
+                results.put(className,
+                        "ptolemy/backtrack/backtrack.jar"); 
+            } else if (className.contains("ptolemy.actor.lib.jai")) {
+                System.out.println("_allAtomicEntityJars JAI: "
+                        + className + " "
+                        + "ptolemy/actor/lib/jai/jai.jar");
+                results.put(className,
+                        "ptolemy/actor/lib/jai/jai.jar"); 
+            } else if (className.contains("ptolemy.actor.lib.jmf")) {
+                System.out.println("_allAtomicEntityJars JMF: "
+                        + className + " "
+                        + "ptolemy/actor/lib/jmf/jmf.jar");
+                results.put(className,
+                        "ptolemy/actor/lib/jmf/jmf.jar"); 
+
+            } else {
+                // Add in the entity
+                results.put(object.getClass().getName(),
+                        _getDomainJar(object.getClass().getPackage().getName()));
+            }
 
             if (object instanceof AtomicActor) {
                 // Add in the Managers.
@@ -765,6 +791,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
         }
         return results;
+    }
+
+    // Given a jar file, return the appropriate <extension .../> string, if any.
+    private static String _checkForJNLPExtensions(String jarFileName) {
+        if (jarFileName.contains("ptolemy/actor/lib/jai/jai.jar")) {
+            return "    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>";
+        } else if(jarFileName.contains("ptolemy/actor/lib/jmf/jmf.jar")) {
+            return "<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>";
+        }
+        return "";
     }
 
     // copy the model and remove the GeneratorTableau
@@ -1272,6 +1308,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 auxiliaryClassMap.put("gt jar needs ptera jar",
                         "ptolemy/domains/ptera/ptera.jar");
             }
+            auxiliaryClassMap.put("fullViewer needs both gt jar and ptera jar",
+                        gtJar);
+            auxiliaryClassMap.put("fullViewer needs vergil gt gt jar" ,"ptolemy/vergil/gt/gt.jar");
+
             auxiliaryClassMap.put("ptera jar needs vergil ptera jar",
                     "ptolemy/vergil/ptera/ptera.jar");
 
@@ -1317,6 +1357,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/sdf/lib/vq/vq.jar")) {
             auxiliaryClassMap.put("vq needs its data",
                     "ptolemy/domains/sdf/lib/vq/data/data.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/tm/tm.jar")) {
+            auxiliaryClassMap.put("TMDirectory needs de jar",
+                    "ptolemy/domains/de/de.jar");
         }
 
         boolean fixAuxiliaryJarFiles = _copyJarFiles(auxiliaryClassMap,
@@ -1462,21 +1507,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 outputStream = new FileOutputStream(jarFile);
                 jarOutputStream = new JarOutputStream(outputStream, new Manifest());
             } else {
-                // The jar file exists, so we read in the entries and write them
+                // One of the input jar files exist, so we read in the entries and write them
                 // to a temporary file.
                 renameJarFile = true;
-                if (jarFile.exists()) {
-                    inputStream = new FileInputStream(jarFile);
-                    jarInputStream = new JarInputStream(inputStream);
-                } else {
-                    // We check the optionalJarFile to handle the case where we
-                    // have a demo directory Foo, that has a Foo.jar file, but
-                    // there are multiple models in Foo, such as FooBar.xml.
-                    // If this is the case, then we want to read in Foo.jar and
-                    // generate FooBar.jar so that we get files like images etc.
-                    inputStream = new FileInputStream(optionalJarFile);
-                    jarInputStream = new JarInputStream(inputStream);
-                }
 
                 temporaryJarFileName = File.createTempFile("AppletWriter", ".jar");
                 System.out.println("Temporary jar file: " + temporaryJarFileName);
@@ -1514,28 +1547,42 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     }
                 }
             }
-            // Copy jar entries from the previous file.
+            // Copy jar entries from the previous file(s).
             if (renameJarFile) {
-                JarEntry inputEntry;
-                while ((inputEntry = jarInputStream.getNextJarEntry()) != null) {
-                    // Don't copy any entries that we have already added.
-                    boolean skip = false;
-                    for (int i = 0; i < jarFileNames.length; i++) {
-                        if (inputEntry.getName().equals(jarFileNames[i])) {
-                            skip = true;
-                            break;
+                if (optionalJarFile.exists()) {
+                    try {
+                        // We check the optionalJarFile to handle the case where we
+                        // have a demo directory Foo, that has a Foo.jar file, but
+                        // there are multiple models in Foo, such as FooBar.xml.
+                        // If this is the case, then we want to read in Foo.jar and
+                        // generate FooBar.jar so that we get files like images etc.
+                        inputStream = new FileInputStream(optionalJarFile);
+                        jarInputStream = new JarInputStream(inputStream);
+                        jarFileNames = _updateJar(jarOutputStream, jarInputStream, jarFileNames);
+                    } finally {
+                        if (jarInputStream != null) {
+                            try {
+                                jarInputStream.close();
+                            } catch (IOException ex) {
+                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+                            }
                         }
                     }
-                    if (skip || inputEntry.getName().startsWith("META-INF")) {
-                        continue;
+                }
+                if (jarFile.exists()) {
+                    try {
+                        inputStream = new FileInputStream(jarFile);
+                        jarInputStream = new JarInputStream(inputStream);
+                        jarFileNames = _updateJar(jarOutputStream, jarInputStream, jarFileNames);
+                    } finally {
+                        if (jarInputStream != null) {
+                            try {
+                                jarInputStream.close();
+                            } catch (IOException ex) {
+                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+                            }
+                        }
                     }
-
-                    jarOutputStream.putNextEntry(inputEntry);
-                    int read = 0;
-                    while ((read = jarInputStream.read(buffer)) > 0) {
-                        jarOutputStream.write(buffer, 0, read);
-                    }
-                    jarOutputStream.closeEntry();
                 }
             }
         } finally {
@@ -1562,6 +1609,41 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
         }
     }
+ 
+    /** Update a jar file and ignore filenames that are in jarFileNames.
+     *  @param jarOutputStream The Jar output stream to be written.   
+     *  @param jarInputStream The Jar output stream to be read.
+     *  @param jarFileNames  An array of file names that have been
+     *  already added to the jar file.
+     *  @return An array of jar file names that have already been
+     *  added to the jar file _and_ that were added by this method.
+     */
+    private String [] _updateJar(JarOutputStream jarOutputStream,
+            JarInputStream jarInputStream,
+            String [] jarFileNames) throws IOException { 
+        JarEntry inputEntry;
+        Set entriesAdded = new HashSet(Arrays.asList(jarFileNames));
+        byte buffer[] = new byte[1024];
+        while ((inputEntry = jarInputStream.getNextJarEntry()) != null) {
+            // Don't copy any entries that we have already added.
+            boolean skip = false;
+            if (entriesAdded.contains(inputEntry.getName())
+                    || inputEntry.getName().startsWith("META-INF")) {
+                continue;
+            }
+
+            entriesAdded.add(inputEntry.getName());
+
+            jarOutputStream.putNextEntry(inputEntry);
+            int read = 0;
+            while ((read = jarInputStream.read(buffer)) > 0) {
+                jarOutputStream.write(buffer, 0, read);
+            }
+            jarOutputStream.closeEntry();
+        }
+        return (String [])entriesAdded.toArray(new String[0]);
+    }
+
 
     // Return a Map that maps user specified classes to jar files.  
     // The contents of _jnlpClassesToJars property is read, which,
