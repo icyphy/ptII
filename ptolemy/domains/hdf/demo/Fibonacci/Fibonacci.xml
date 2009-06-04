@@ -128,6 +128,8 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 210.0]">
                 </property>
             </entity>
