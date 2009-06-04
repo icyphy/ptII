@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[688, 356]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[76, 152]">
     </property>
@@ -70,11 +70,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 220.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 154, 832, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 154, 688, 462}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.0, 178.0}">
     </property>
     <entity name="slow" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -99,9 +99,9 @@
     <entity name="Plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 278, 500, 344}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>

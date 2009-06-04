@@ -12,9 +12,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 22, 895, 755}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 22, 722, 752}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 645]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 646]">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -65,7 +65,7 @@ Receiver.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.0, 322.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.0, 323.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">

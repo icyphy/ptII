@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 39.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 22, 879, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 22, 666, 456}, maximized=false}">
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 35.0}">
@@ -137,8 +137,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0" max="1.0"/>
-<yRange min="1.0" max="1.0"/>
+<xRange min="1.0" max="40.0"/>
+<yRange min="0.0" max="2.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
             </configure>

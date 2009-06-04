@@ -26,13 +26,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 159, 762, 554}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 159, 574, 549}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[547, 438]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[574, 443]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.5, 219.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.0, 221.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple example illustrates modeling terrain effects. The TerrainProperty&#10;models an obstacle that attenuates the communication from the Sender &#10;to the Receiver if the communication path between them intersects with&#10;the terrain shape. When you run this model, the sender will emit a signal&#10;twice per second. The Receiver will move around the Sender and measure&#10;the received power. It then plots the received power on a polar plot.&#10;The plot shows that the receiver gets reduced power when the signal is&#10;shadowed by the terrain model, and that the power depends on how much of&#10;the obstacle is travered by the line-of-sight signal.">

@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 18, 1014, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 857, 723}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 612]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[857, 617]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.5, 306.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{428.5, 308.5}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
@@ -80,7 +80,7 @@
     <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 30, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 30, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -97,7 +97,7 @@
 <title>SequenceScope</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="50.0"/>
 <yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <wrap/>
 <default marks="pixels"/>

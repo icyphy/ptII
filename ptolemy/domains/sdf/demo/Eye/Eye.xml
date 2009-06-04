@@ -34,7 +34,7 @@
     </property>
     <property name="noise_standard_deviation" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 453]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -46,7 +46,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 31.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 817, 564}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 671, 559}, maximized=false}">
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -76,7 +76,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.5, 226.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -360,7 +360,7 @@
     <entity name="Scope" class="ptolemy.actor.lib.gui.SequenceScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={153, 407, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={153, 407, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -384,7 +384,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="32.0"/>
-<yRange min="-1.0625294225881727" max="1.061877305769911"/>
+<yRange min="-1.0564470897003109" max="1.0569913541263054"/>
 <noGrid/>
 <wrap/>
 <default marks="pixels"/>

@@ -4,7 +4,7 @@
 <entity name="SimpleTasks" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[668, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[720, 360]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 5.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -52,11 +52,11 @@ preemptive parameter to true or false.
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 255.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 22, 881, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 22, 720, 466}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.0, 180.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double click here before running the model,&#10;and when the model is run, the schedule will&#10;be plotted.">
@@ -121,7 +121,7 @@ preemptive parameter to true or false.
     <entity name="TimedPlotter: (p = high, t = 0)" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 377, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 377, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>

@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 2, 815, 748}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 659, 737}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 630]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 631]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 315.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.5, 315.5}">
     </property>
     <property name="SuppressDeadlockReporting" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -145,9 +145,9 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={817, 1, 150, 363}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={817, 22, 244, 336}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[244, 292]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="18">
         </property>
@@ -167,9 +167,9 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={817, 365, 150, 363}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={817, 365, 244, 336}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[244, 292]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="18">
         </property>
