@@ -53,6 +53,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JComponent;
 
@@ -867,12 +868,18 @@ public class Plot extends PlotBox {
         _formats.clear();
         _prevxpos.clear();
         _prevypos.clear();
+        _prevErasedxpos.clear();
+        _prevErasedypos.clear();
+        _lastPointWithExtraDot.clear();
 
         for (int i = 0; i < numSets; i++) {
             _points.add(new ArrayList<PlotPoint>());
             _formats.add(new Format());
             _prevxpos.add(_INITIAL_PREVIOUS_VALUE);
             _prevypos.add(_INITIAL_PREVIOUS_VALUE);
+            _prevErasedxpos.add(_INITIAL_PREVIOUS_VALUE);
+            _prevErasedypos.add(_INITIAL_PREVIOUS_VALUE);
+            _lastPointWithExtraDot.put(i, null);
         }
     }
 
@@ -1083,6 +1090,8 @@ public class Plot extends PlotBox {
             _formats.add(new Format());
             _prevxpos.add(_INITIAL_PREVIOUS_VALUE);
             _prevypos.add(_INITIAL_PREVIOUS_VALUE);
+            _prevErasedxpos.add(_INITIAL_PREVIOUS_VALUE);
+            _prevErasedypos.add(_INITIAL_PREVIOUS_VALUE);
         }
     }
 
@@ -1350,6 +1359,7 @@ public class Plot extends PlotBox {
      */
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst, Rectangle drawRectangle) {
+        // BRDebug System.err.println("_drawPlot(begin)");
         if (_graphics == null) {
             _graphics = graphics;
         } else if (graphics != _graphics) {
@@ -1360,9 +1370,15 @@ public class Plot extends PlotBox {
             _graphics = graphics;
             _prevxpos.clear();
             _prevypos.clear();
+            _prevErasedxpos.clear();
+            _prevErasedypos.clear();
+            _lastPointWithExtraDot.clear();
             for (int dataset = 0; dataset < _points.size(); dataset++) {
                 _prevxpos.add(_INITIAL_PREVIOUS_VALUE);
                 _prevypos.add(_INITIAL_PREVIOUS_VALUE);
+                _prevErasedxpos.add(_INITIAL_PREVIOUS_VALUE);
+                _prevErasedypos.add(_INITIAL_PREVIOUS_VALUE);
+                _lastPointWithExtraDot.put(dataset, null);
             }
         }
 
@@ -1378,9 +1394,43 @@ public class Plot extends PlotBox {
         // appear on top.
         for (int dataset = _bins.size() - 1; dataset >= 0; dataset--) {
             ArrayList<Bin> data = _bins.get(dataset);
+            
+            int numberOfBins = data.size();
 
-            for (int binnum = 0; binnum < data.size(); binnum++) {
+            for (int binnum = 0; binnum < numberOfBins; binnum++) {
                 _drawBin(graphics, dataset, binnum);
+            }
+            
+
+            if (_marks == 0 && numberOfBins > 0) {                
+                Bin bin = data.get(numberOfBins-1);
+
+                // We are going to add an extra dot for the last point.
+                // Every segment will be marked by two dots in case there
+                // are no marks.
+                // Typically at the end the plot is repaint and hence also the
+                // dot need to be added to close the last segment. However
+                // it might happen that points are added afterwards again and in this
+                // case the mark has to be removed again.
+                
+                boolean connectedFlag = getConnected();
+                ArrayList<PlotPoint> points = _points.get(dataset);
+                
+                int currentPointPosition = points.size() - 1;
+                PlotPoint lastPoint = points.get(currentPointPosition);
+                if (connectedFlag && lastPoint.connected) {
+                    // In case the point is not connected there is already a dot.
+                    _setColorForDrawing(graphics, dataset, false);
+                    long xpos = bin.xpos;
+                    long ypos = _lry - (long) ((lastPoint.y - _yMin) * _yscale);
+                    // BRDebug System.out.println("_drawPlot");
+                    _drawPoint(graphics, dataset, xpos, ypos, true, 2 /*dots*/);
+                    _resetColorForDrawing(graphics, false);
+                    
+                    // We keep track of the last dot that has been add to be able to
+                    // remove the dot again in case an extra point was added afterwards.
+                    _lastPointWithExtraDot.put(dataset, lastPoint);
+                }
             }
         }
 
@@ -2277,6 +2327,8 @@ public class Plot extends PlotBox {
         _bins.clear();
         _prevxpos.clear();
         _prevypos.clear();
+        _prevErasedxpos.clear();
+        _prevErasedypos.clear();
         _maxDataset = -1;
         _firstInSet = true;
         _sawFirstDataSet = false;
@@ -2318,6 +2370,8 @@ public class Plot extends PlotBox {
         points.clear();
 
         _points.set(dataset, points);
+        
+        _lastPointWithExtraDot.clear();
         repaint();
     }
 
@@ -2363,25 +2417,9 @@ public class Plot extends PlotBox {
      * when being used to write to the screen.
      */
     private void _drawBin(Graphics graphics, int dataset, int binIndex) {
-        if ((_pointsPersistence > 0) || (_xPersistence > 0.0)) {
-            // To allow erasing to work by just redrawing the points.
-            if (_background == null) {
-                // java.awt.Component.setBackground(color) says that
-                // if the color "parameter is null then this component
-                // will inherit the  background color of its parent."
-                graphics.setXORMode(getBackground());
-            } else {
-                graphics.setXORMode(_background);
-            }
-        }
-
-        // Set the color
-        if (_usecolor) {
-            int color = dataset % _colors.length;
-            graphics.setColor(_colors[color]);
-        } else {
-            graphics.setColor(_foreground);
-        }
+        // BRDebug System.out.println("_drawBin");
+        
+        _setColorForDrawing(graphics, dataset, false);
 
         if (_lineStyles) {
             int lineStyle = dataset % _LINE_STYLES_ARRAY.length;
@@ -2397,8 +2435,65 @@ public class Plot extends PlotBox {
         if (!bin.needReplot()) {
             return;
         }
-        
+
         boolean connectedFlag = getConnected();
+        
+        int startPosition = bin.nextPointToPlot();
+        int endPosition = bin.afterLastPointIndex();
+
+        ArrayList<PlotPoint> points = _points.get(dataset);
+        
+        // Check to see whether the dataset has a marks directive
+        int marks = _marks;
+
+        // Draw decorations that may be specified on a per-dataset basis
+        Format fmt = _formats.get(dataset);
+        
+        if (!fmt.marksUseDefault) {
+            marks = fmt.marks;
+        }
+
+        if (marks == 0 && endPosition > startPosition && startPosition > 0) {
+            PlotPoint previousPoint = points.get(startPosition-1);
+            if (!( connectedFlag && points.get(startPosition).connected)) {
+
+                // This point is not connected with the previous one.
+                // We want to put a dot each end of the at each segment.
+                // If the previous one was connected no dot was drawn.
+                // We will now add this extra dot for the previous point.
+
+                if (connectedFlag && previousPoint.connected) {
+                    if (_lastPointWithExtraDot.get(dataset) != previousPoint) {
+                        long prevypos = _prevypos.get(dataset);
+                        long prevxpos = _prevxpos.get(dataset);
+                        // BRDebug System.out.println("Plotting point:" + prevxpos + ", " + prevypos +  ", position :" + (startPosition-1) + ", previous");
+                        _drawPoint(graphics, dataset, prevxpos, prevypos, true, 2 /*dots*/);
+                     } else {
+                         // BRDebug System.out.println("Skipping point");
+                         
+                         // We already painted this dot in the _drawplot code. No need
+                         // to draw the same point again here.
+                         // Now reset the flag:
+                         _lastPointWithExtraDot.put(dataset, null);
+                     }
+                }
+            } else {
+                if (_lastPointWithExtraDot.get(dataset) == previousPoint) {
+                    long prevypos = _prevypos.get(dataset);
+                    long prevxpos = _prevxpos.get(dataset);
+                    // BRDebug System.err.println("Erasing point:" + prevxpos + ", " + prevypos +  ", position :" + (startPosition-1) + ", previous");
+                    
+                    // We keep track of the last dot that has been add to be able to
+                    // remove the dot again in case an extra point was added afterwards.
+                    // The erasing happens by drawing the point again with the same color (EXOR)
+                    
+                    _setColorForDrawing(graphics, dataset, true);
+                    _drawPoint(graphics, dataset, prevxpos, prevypos, true, 2 /*dots*/);
+                    _resetColorForDrawing(graphics, true);
+                    _setColorForDrawing(graphics, dataset, false);
+                }
+            }
+        }        
 
         if (connectedFlag && bin.needConnectionWithPreviousBin()) {
             Bin previousBin = bins.get(binIndex - 1);
@@ -2409,59 +2504,64 @@ public class Plot extends PlotBox {
             _drawLine(graphics, dataset, xpos, bin.minYPos(), xpos, bin.maxYPos(), true, _DEFAULT_WIDTH);
         }
 
-        // Draw decorations that may be specified on a per-dataset basis
-        Format fmt = _formats.get(dataset);
-
-        int startPosition = bin.nextPointToPlot();
-        int endPosition = bin.afterLastPointIndex();
-
-        long prevypos = _prevypos.get(dataset);
-        long prevxpos = _prevxpos.get(dataset);
-
-        ArrayList<PlotPoint> points = _points.get(dataset);
-
         if ((fmt.impulsesUseDefault && _impulses) || (!fmt.impulsesUseDefault && fmt.impulses)) {
+            long prevypos = _prevypos.get(dataset);
+            long prevxpos = _prevxpos.get(dataset);
+            
             for (int i = startPosition; i < endPosition; ++i) {
                 PlotPoint point = points.get(i);
                 long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                 if (prevypos != ypos || prevxpos != xpos) {
                     _drawImpulse(graphics, xpos, ypos, true);
+                    prevypos = ypos;
+                    prevxpos = xpos;
                 }
             }
         }
 
-        // Check to see whether the dataset has a marks directive
-        int marks = _marks;
 
-        if (!fmt.marksUseDefault) {
-            marks = fmt.marks;
-        }
-
-        for (int i = startPosition; i < endPosition; ++i) {
-            PlotPoint point = points.get(i);
-            if (marks != 0 || !(connectedFlag && point.connected )) {
-                long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
-                if (prevypos != ypos || prevxpos != xpos) {
-                    int updatedMarks = marks;
-                    if (!(connectedFlag && point.connected) && marks == 0) {
-                        updatedMarks = 1; // marking style: points   
+        {
+            long prevypos = _prevypos.get(dataset);
+            long prevxpos = _prevxpos.get(dataset);
+    
+            for (int i = startPosition; i < endPosition; ++i) {
+                PlotPoint point = points.get(i);            
+                
+                // I a point is not connected, we mark it with a dot.
+                if (marks != 0 || !(connectedFlag && point.connected)) {
+                    long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                    if (prevypos != ypos || prevxpos != xpos) {
+                        int updatedMarks = marks;
+                        if (!(connectedFlag && point.connected) && marks == 0) {
+                            updatedMarks = 2; // marking style: dots
+                        }
+                        // BRDebug System.out.println("Plotting point:" + xpos + ", " + ypos +  ", position :" + (i) + ", current");
+                        _drawPoint(graphics, dataset, xpos, ypos, true, updatedMarks);
+                        prevypos = ypos;
+                        prevxpos = xpos;
                     }
-                    _drawPoint(graphics, dataset, xpos, ypos, true, updatedMarks);
                 }
+                
+                
             }
         }
-
         if (_bars) {
+            long prevypos = _prevypos.get(dataset);
+            long prevxpos = _prevxpos.get(dataset);
             for (int i = startPosition; i < endPosition; ++i) {
                 PlotPoint point = points.get(i);
                 long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                 if (prevypos != ypos || prevxpos != xpos) {
                     _drawBar(graphics, dataset, xpos, ypos, true);
+                    prevypos = ypos;
+                    prevxpos = xpos;
                 }
             }
         }
 
         if (bin.errorBar()) {
+            long prevypos = _prevypos.get(dataset);
+            long prevxpos = _prevxpos.get(dataset);
             for (int i = startPosition; i < endPosition; ++i) {
                 PlotPoint point = points.get(i);
                 if (point.errorBar) {
@@ -2470,6 +2570,9 @@ public class Plot extends PlotBox {
                         _drawErrorBar(graphics, dataset, xpos, _lry
                                 - (long) ((point.yLowEB - _yMin) * _yscale), _lry
                                 - (long) ((point.yHighEB - _yMin) * _yscale), true);
+                        prevypos = ypos;
+                        prevxpos = xpos;
+
                     }
                 }
             }
@@ -2480,13 +2583,7 @@ public class Plot extends PlotBox {
 
         bin.resetDisplayStateAfterPlot();
 
-        // Restore the color, in case the box gets redrawn.
-        graphics.setColor(_foreground);
-
-        if ((_pointsPersistence > 0) || (_xPersistence > 0.0)) {
-            // Restore paint mode in case axes get redrawn.
-            graphics.setPaintMode();
-        }
+        _resetColorForDrawing(graphics, false);
     }
 
     /** Put a mark corresponding to the specified dataset at the
@@ -2506,6 +2603,8 @@ public class Plot extends PlotBox {
      */    
     private void _drawPoint(Graphics graphics, int dataset, long xpos,
             long ypos, boolean clip, final int marks) {
+        // BRDebug System.out.println("_drawPoint, " + xpos + ", " + ypos);
+        
         // If the point is not out of range, draw it.
         boolean pointinside = (ypos <= _lry) && (ypos >= _uly)
                 && (xpos <= _lrx) && (xpos >= _ulx);
@@ -2743,22 +2842,7 @@ public class Plot extends PlotBox {
         // Need to check that graphics is not null because plot may have
         // been dismissed.
         if (_showing && (graphics != null)) {
-            // Set the color
-            if ((_pointsPersistence > 0) || (_xPersistence > 0.0)) {
-                // To allow erasing to work by just redrawing the points.
-                if (_background == null) {
-                    graphics.setXORMode(getBackground());
-                } else {
-                    graphics.setXORMode(_background);
-                }
-            }
-
-            if (_usecolor) {
-                int color = dataset % _colors.length;
-                graphics.setColor(_colors[color]);
-            } else {
-                graphics.setColor(_foreground);
-            }
+            _setColorForDrawing(graphics, dataset, false);
             //First clear bin itself
             long minYPos = bin.minYPos();
             long maxYPos = bin.maxYPos();
@@ -2784,13 +2868,15 @@ public class Plot extends PlotBox {
             Format fmt = _formats.get(dataset);
 
             if ((fmt.impulsesUseDefault && _impulses) || (!fmt.impulsesUseDefault && fmt.impulses)) {
-                long prevypos = _INITIAL_PREVIOUS_VALUE;
+                long prevypos = _prevErasedypos.get(dataset);
+                long prevxpos = _prevErasedxpos.get(dataset);
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
-                    if (prevypos != ypos) {
+                    if (prevypos != ypos || prevxpos != xpos) {
                         _drawImpulse(graphics, xpos, ypos, true);
                         prevypos = ypos;
+                        prevxpos = xpos;
                     }
                 }
             }
@@ -2801,58 +2887,81 @@ public class Plot extends PlotBox {
             if (!fmt.marksUseDefault) {
                 marks = fmt.marks;
             }
-            
             {
-                long prevypos = _INITIAL_PREVIOUS_VALUE;
+                long prevypos = _prevErasedypos.get(dataset);
+                long prevxpos = _prevErasedxpos.get(dataset);
+
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
                     if (marks != 0 || !(connectedFlag && point.connected)) {
                         long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
-                        if (prevypos != ypos) {
+                        if (prevypos != ypos || prevxpos != xpos) {
                             int updatedMarks = marks;
                             if (!(connectedFlag && point.connected) && marks == 0) {
-                                updatedMarks = 1; // marking style: points   
-                            }                        
+                                updatedMarks = 2; // marking style: dots   
+                            }
+                            // BRDebug System.out.println("Erasing point:" + xpos + ", " + ypos +  ", position :" + (i) +", current");
+                            
                             _drawPoint(graphics, dataset, xpos, ypos, true, updatedMarks);
                             prevypos = ypos;
+                            prevxpos = xpos;
                         }
                     }
                 }
             }
+            
+            if (marks == 0 && endPosition > startPosition && endPosition < points.size()) {
+                PlotPoint point = points.get(endPosition - 1);
+                if (( connectedFlag && point.connected)) {
 
+                    // This point is not connected with the previous one.
+                    // We want to put a dot each end of the at each segment.
+                    // If the previous one was connected no dot was drawn.
+                    // We will now add this extra dot for the previous point.
+                    PlotPoint nextPoint = points.get(endPosition);
+                    if (!(connectedFlag && nextPoint.connected)) {
+                        long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                        // BRDebug System.out.println("Erasing point:" + xpos + ", " + ypos +  ", position :" + (endPosition-1) + ", previous");
+                        _drawPoint(graphics, dataset, xpos, ypos, true, 2 /*dots*/);
+                    }
+                }
+            }
+            
             if (_bars) {
-                long prevypos = _INITIAL_PREVIOUS_VALUE;
+                long prevypos = _prevErasedypos.get(dataset);
+                long prevxpos = _prevErasedxpos.get(dataset);
+
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
-                    if (prevypos != ypos) {
+                    if (prevypos != ypos || prevxpos != xpos) {
                         _drawBar(graphics, dataset, xpos, ypos, true);
                         prevypos = ypos;
+                        prevxpos = xpos;
                     }
                 }
             }
 
             if (bin.errorBar()) {
-                long prevypos = _INITIAL_PREVIOUS_VALUE;
+                long prevypos = _prevErasedypos.get(dataset);
+                long prevxpos = _prevErasedxpos.get(dataset);
+
                 for (int i = startPosition; i < endPosition; ++i) {
                     PlotPoint point = points.get(i);
-                    if (point.errorBar && prevypos != (_lry - (long) ((point.y - _yMin) * _yscale))) {
-
-                        _drawErrorBar(graphics, dataset, xpos, _lry
+                    if (point.errorBar) {
+                        long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                        if (prevypos != ypos || prevxpos != xpos) {
+                            _drawErrorBar(graphics, dataset, xpos, _lry
                                 - (long) ((point.yLowEB - _yMin) * _yscale), _lry
                                 - (long) ((point.yHighEB - _yMin) * _yscale), true);
+                            prevypos = ypos;
+                            prevxpos = xpos;
+                        }
                     }
                 }
             }
 
-
-            // Restore the color, in case the box gets redrawn.
-            graphics.setColor(_foreground);
-
-            if ((_pointsPersistence > 0) || (_xPersistence > 0.0)) {
-                // Restore paint mode in case axes get redrawn.
-                graphics.setPaintMode();
-            }
+            _resetColorForDrawing(graphics, false);
         }
 
         // The following is executed whether the plot is showing or not.
@@ -2865,7 +2974,7 @@ public class Plot extends PlotBox {
 
         if (nbrOfBins == 1) {
             //No bins left in the end
-            _prevxpos.set(dataset, _INITIAL_PREVIOUS_VALUE);
+            _prevxpos.set(dataset, _INITIAL_PREVIOUS_VALUE);            
             _prevypos.set(dataset, _INITIAL_PREVIOUS_VALUE);
         }
 
@@ -2899,6 +3008,10 @@ public class Plot extends PlotBox {
                 //      => the first point in the first bin (once this one has deleted) has to be the first point of all points
 
         }
+
+        _prevErasedxpos.set(dataset, xpos);
+        _prevErasedypos.set(dataset, bin.lastYPos());
+
         bins.remove(0);
     }
 
@@ -2991,6 +3104,21 @@ public class Plot extends PlotBox {
             return fmt.connected;
         }
     }
+    
+    /** Reset the color for drawing. This typically needs to happen after having drawn
+     *  a bin or erasing one.
+     *  @param graphics The graphics context.
+     *  @param forceExorWithBackground Restore the paint made back from exor mode
+     */
+    private void _resetColorForDrawing(Graphics graphics, boolean forceExorWithBackground) {
+        // Restore the color, in case the box gets redrawn.
+        graphics.setColor(_foreground);
+
+        if ((_pointsPersistence > 0) || (_xPersistence > 0.0) || forceExorWithBackground) {
+            // Restore paint mode in case axes get redrawn.
+            graphics.setPaintMode();
+        }
+    }
 
     /** Schedule a bin to be (re)drawn due to the addition of bin.
      */
@@ -3015,6 +3143,34 @@ public class Plot extends PlotBox {
         _needBinRedraw = true;
     }
 
+    /** Set the color for drawing. This typically needs to happen before drawing
+     *  a bin or erasing one.
+     *  @param graphics The graphics context.
+     *  @param dataset The index of the dataset.
+     *  @param forceExorWithBackground Force to go into exor mode.
+     */    
+    private void _setColorForDrawing(Graphics graphics, int dataset, boolean forceExorWithBackground) {
+        if ((_pointsPersistence > 0) || (_xPersistence > 0.0) || forceExorWithBackground) {
+            // To allow erasing to work by just redrawing the points.
+            if (_background == null) {
+                // java.awt.Component.setBackground(color) says that
+                // if the color "parameter is null then this component
+                // will inherit the  background color of its parent."
+                graphics.setXORMode(getBackground());
+            } else {
+                graphics.setXORMode(_background);
+            }
+        }
+
+        // Set the color
+        if (_usecolor) {
+            int color = dataset % _colors.length;
+            graphics.setColor(_colors[color]);
+        } else {
+            graphics.setColor(_foreground);
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -3067,10 +3223,10 @@ public class Plot extends PlotBox {
      */
     private static final Long _INITIAL_PREVIOUS_VALUE = Long.MIN_VALUE;
 
-    // The stroke to use for thin lines in the plot.
-    //private static final BasicStroke _thinStroke = new BasicStroke(
-    //        1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
-
+    // We keep track of the last dot that has been add to be able to
+    // remove the dot again in case an extra point was added afterwards.
+    private HashMap<Integer, PlotPoint> _lastPointWithExtraDot = new HashMap<Integer, PlotPoint>();
+    
     // A stroke of width 1.
     private static final BasicStroke _LINE_STROKE1 = new BasicStroke(1f,
             BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
@@ -3121,6 +3277,13 @@ public class Plot extends PlotBox {
     /** @serial Information about the previously plotted point. */
     private ArrayList<Long> _prevypos = new ArrayList<Long>();
 
+    /** @serial Information about the previously erased point. */
+    private ArrayList<Long> _prevErasedxpos = new ArrayList<Long>();
+
+    /** @serial Information about the previously erased point. */
+    private ArrayList<Long> _prevErasedypos = new ArrayList<Long>();
+
+    
     /** @serial Give the radius of a point for efficiency. */
     private int _radius = 3;
 
