@@ -18,7 +18,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 50.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -39,7 +39,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 115.0]">
         </property>
     </property>
     <property name="initialTheta_1_dot" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -58,7 +58,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 135.0]">
         </property>
     </property>
     <property name="length" class="ptolemy.data.expr.Parameter" value="8.0">
@@ -77,7 +77,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 70.0]">
         </property>
     </property>
     <property name="diameter" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -96,7 +96,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 90.0]">
         </property>
     </property>
     <property name="initialTheta2" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -115,7 +115,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 55.0]">
         </property>
     </property>
     <property name="initialTheta_2_dot" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -134,7 +134,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 75.0]">
         </property>
     </property>
     <property name="initialTheta3" class="ptolemy.data.expr.Parameter" value="0">
@@ -153,7 +153,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 105.0]">
         </property>
     </property>
     <property name="initialTheta_3_dot" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -172,7 +172,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 125.0]">
         </property>
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
@@ -182,21 +182,41 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 8, 1032, 746}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 1030, 738}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.254600858987">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.9014362373738, 306.360716540404}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 314.0}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Haiyang Zheng and Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 435.0}">
+        </property>
     </property>
     <entity name="ball 1" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 335.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 240.0]">
         </property>
         <property name="initialTheta" class="ptolemy.data.expr.Parameter" value="initialTheta1">
         </property>
@@ -943,7 +963,7 @@ transitions occur at the time of the collision.</text></svg></configure>
     <entity name="ball 3" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 240.0]">
         </property>
         <property name="initialTheta" class="ptolemy.data.expr.Parameter" value="initialTheta3">
         </property>
@@ -1688,7 +1708,7 @@ transitions occur at the time of the collision.</text></svg></configure>
     <entity name="ball 2" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 240.0]">
         </property>
         <property name="initialTheta" class="ptolemy.data.expr.Parameter" value="initialTheta2">
         </property>
@@ -2433,7 +2453,7 @@ transitions occur at the time of the collision.</text></svg></configure>
         <link port="state.theta" relation="thetaRelation"/>
     </entity>
     <entity name="Graphic Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 355.0]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -2983,27 +3003,27 @@ with the angle at which they hang given by inputs.</text></svg></configure>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{325.0, 270.0}">
+        <vertex name="vertex1" value="[270.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[315.0, 400.0]">
+        <vertex name="vertex1" value="[260.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[240.0, 325.0]">
+        <vertex name="vertex1" value="[185.0, 230.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[240.0, 345.0]">
+        <vertex name="vertex1" value="[185.0, 250.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[425.0, 325.0]">
+        <vertex name="vertex1" value="[370.0, 230.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[430.0, 345.0]">
+        <vertex name="vertex1" value="[375.0, 250.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
