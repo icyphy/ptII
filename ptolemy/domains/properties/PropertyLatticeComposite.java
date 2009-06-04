@@ -38,9 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+
+import ptolemy.graph.GraphStateException;
 
 public class PropertyLatticeComposite extends FSMActor {
 
@@ -67,32 +68,51 @@ public class PropertyLatticeComposite extends FSMActor {
 
         PropertyLattice lattice = new Lattice(elements);
 
-
-        if ((lattice.top() == null)) {
-            MessageHandler.error("Cannot find an unique top element.");
+        // 06/03/2009 Charles Shelton - Bug fixes for the isLattice() function:
+        // - Catch the exception from the directed acyclic graph _validate() method that checks for a cycle in the graph
+        // - LatticeProperty class is derived from the Property class and not the NamedObj class and cannot be cast to NamedObj
+        //   so replace all getName() calls with toString()
+        // - The elements list contains LatticeElement objects, not LatticeProperty objects, so the leastUpeperBound() method does not work.
+        //   use the list of LatticeProperty objects from the newly created Lattice object instead.
+        // - Added additional debug messages to provide both positive and negative feedback about the lattice.
+        
+        try {
+            if ((lattice.top() == null)) {
+                _debug("This is not a lattice.");
+                MessageHandler.error("Cannot find an unique top element.");
+                return false;
+            } else {
+                LatticeProperty top = (LatticeProperty) lattice.top();
+                _debug("Top is: " + top.toString());
+            }
+        } catch (GraphStateException e) {
+            _debug("This is not a lattice.");
+            MessageHandler.error("Proposed lattice has a cycle and is not a true lattice.");
             return false;
-        } else {
-            NamedObj top = (NamedObj) lattice.top();
-            _debug("Top is: " + top.getName());
         }
 
         if ((lattice.bottom() == null)) {
+            _debug("This is not a lattice.");
             MessageHandler.error("Cannot find an unique bottom element.");
             return false;
         } else {
-            NamedObj bottom = (NamedObj) lattice.bottom();
-            _debug("Bottom is: " + bottom.getName());
+            LatticeProperty bottom = (LatticeProperty) lattice.bottom();
+            _debug("Bottom is: " + bottom.toString());
         }
+        
+        
+        List<LatticeProperty> latticeProperties = ((Lattice) lattice).getLatticeProperties();
 
         // This is the same check done in ptolemy.graph.DirectedAcyclicGraph.
-        for (int i = 0; i < (elements.size() - 1); i++) {
-            for (int j = i + 1; j < elements.size(); j++) {
-                NamedObj lub = (NamedObj) lattice.leastUpperBound(elements.get(i), elements.get(j));
+        for (int i = 0; i < (latticeProperties.size() - 1); i++) {
+            for (int j = i + 1; j < latticeProperties.size(); j++) {
+                LatticeProperty lub = (LatticeProperty) lattice.leastUpperBound(latticeProperties.get(i), latticeProperties.get(j));
 
                 if (lub == null) {
                     // FIXME: add highlight color?
 
                     // The offending nodes.
+                    _debug("This is not a lattice.");
                     MessageHandler.error("\"" + elements.get(i).getName()
                             + "\" and \"" + elements.get(j).getName() + "\""
                             + " does not have an unique least upper bound (LUB).");
@@ -101,12 +121,12 @@ public class PropertyLatticeComposite extends FSMActor {
                 } else {
                     _debug("LUB(" + elements.get(i).getName()
                             + ", " + elements.get(j).getName() + "): "
-                            + lub.getName());
+                            + lub.toString());
                 }
-
-
             }
         }
+        
+        _debug("This is a correctly formed lattice.");
         return true;
     }
 
@@ -144,7 +164,14 @@ public class PropertyLatticeComposite extends FSMActor {
                 }
             }
         }
+        
+        
+        // 06/03/2009 Charles Shelton - Public method to access the list of LatticeProperty objects.
+        public List<LatticeProperty> getLatticeProperties() {
+            return _properties;
+        }
 
+        
         public Property getElement(String name)
         throws IllegalActionException {
             for (LatticeProperty property : _properties) {
