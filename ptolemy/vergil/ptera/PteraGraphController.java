@@ -141,8 +141,12 @@ public class PteraGraphController extends FSMGraphController {
             }
         }
 
-        GUIUtilities.addMenuItem(menu, _newEventAction);
-        GUIUtilities.addToolBarButton(toolbar, _newEventAction);
+        // Only include the port actions if there is an actor library.
+        // The ptinyViewer configuration uses this.
+        if (getConfiguration().getEntity("actor library") != null) {
+            GUIUtilities.addMenuItem(menu, _newEventAction);
+            GUIUtilities.addToolBarButton(toolbar, _newEventAction);
+        }
     }
 
     /** An action to create a new event. */
