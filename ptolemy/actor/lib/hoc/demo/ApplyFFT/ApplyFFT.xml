@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 884, 570}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 747, 569}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 460]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[747, 463]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.5, 230.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.5, 231.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the ApplyFunction and ApplyFunctionOverSequence actors.&#10;These apply a function defined in the expression language over either an&#10;individual input token or an array constructed from a sequence of input tokens.">

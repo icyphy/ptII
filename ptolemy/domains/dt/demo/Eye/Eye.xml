@@ -120,7 +120,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 360.0}">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 448]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -152,11 +152,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 420.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 817, 564}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 665, 554}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.5, 224.0}">
     </property>
     <entity name="Random Symbol Source" class="ptolemy.actor.lib.DiscreteRandomSource">
         <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
@@ -240,7 +240,7 @@
     <entity name="TimedScope1" class="ptolemy.actor.lib.gui.TimedScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 412, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 412, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -260,7 +260,7 @@
 <xLabel>time (in symbol intervals)</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="2.0"/>
-<yRange min="-1.2042060668279764" max="1.236155450652928"/>
+<yRange min="-1.1878445309237406" max="1.2440471185958795"/>
 <noGrid/>
 <wrap/>
 <default marks="pixels"/>
