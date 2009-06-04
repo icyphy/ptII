@@ -10,15 +10,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={287, 232, 829, 593}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 53, 712, 587}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[606, 479]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 481]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{303.0, 239.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.0, 240.5}">
     </property>
-    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="16">
+    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="12">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -62,7 +62,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ModelUpdater keeps track of the the number of waiting cars during execution. Initially it&#10;sets the servers to slow mode, spending 10.0+20.0*random() virtual seconds on each car. If&#10;the number of waiting cars exceeds 20, it turns the servers into fast mode, taking only 5.0+&#10;20.0*random() virtual seconds to serve a car. The servers are switched back to slow mode if&#10;the number of waiting cars drops below 10.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 310.0}">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -110,7 +110,7 @@
         </property>
     </entity>
     <entity name="PteraModalModel" class="ptolemy.domains.ptera.kernel.PteraModalModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 170.0}">
         </property>
         <port name="serversInput" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -129,7 +129,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="Queue" class="ptolemy.data.expr.Parameter" value="16">
+            <property name="Queue" class="ptolemy.data.expr.Parameter" value="12">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -167,7 +167,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 310.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={420, 196, 600, 507}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -314,7 +314,7 @@
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="10.0 + 20.0 * random()">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="5.0 + 20.0 * random()">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
@@ -424,7 +424,7 @@
         <link port="_Controller.queueOutput" relation="queueOutputRelation"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={442, 346, 516, 357}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={442, 346, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -435,8 +435,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="2000"/>
-<yRange min="0.0" max="23.0"/>
+<xRange min="0.0" max="1999.8415031946001"/>
+<yRange min="0.0" max="22.0"/>
 </plot>?>
         </configure>
     </entity>
