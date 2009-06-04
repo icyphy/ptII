@@ -2,6 +2,7 @@ $CLASSPATH/ptolemy/actor/gt/demo/GameOfLife/GameOfLife.xml
 $CLASSPATH/ptolemy/domains/dde/demo/LocalZeno/LocalZeno.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/Loop/Loop.xml
 $CLASSPATH/ptolemy/domains/ct/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml
+$CLASSPATH/ptolemy/domains/pn/demo/Stack/Stack.xml
 $CLASSPATH/ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TokenRing/TokenRing.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml
@@ -11,6 +12,7 @@ $CLASSPATH/ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.xml
 $CLASSPATH/ptolemy/domains/fsm/demo/ChainedTransitions/ChainedTransitions.xml
 $CLASSPATH/ptolemy/domains/gr/demo/Universe/Universe.xml
 $CLASSPATH/ptolemy/domains/de/demo/ModalModel/ModalModel.xml
+$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM.xml
 $CLASSPATH/ptolemy/domains/pn/demo/RemoveNilTokens/RemoveNilTokens.xml
 $CLASSPATH/ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl.xml
@@ -18,7 +20,6 @@ $CLASSPATH/ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml
 $CLASSPATH/ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml
 $CLASSPATH/ptolemy/domains/dt/demo/Eye/Eye.xml
 $CLASSPATH/ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.xml
-$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld-PtalonActor.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xml
 $CLASSPATH/ptolemy/domains/ct/demo/BouncingBall/BouncingBall.xml
 $CLASSPATH/ptolemy/domains/csp/demo/ResourcePool/ResourcePool.xml
@@ -74,7 +75,6 @@ $CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Helicopter/Helicopter.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml
-$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld-MultiInstanceComposite.xml
 $CLASSPATH/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/ct/demo/CartPendulum/CartPendulum.xml
 $CLASSPATH/ptolemy/domains/ct/demo/ComparedClocks/ComparedClocks.xml
@@ -84,6 +84,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/Transmission/EfficiencyCurve.xml
 $CLASSPATH/ptolemy/backtrack/demo/PrimeTest/PrimeTest.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml
 $CLASSPATH/ptolemy/domains/ct/demo/HybridPlant/DeterministicHybridPlant.xml
+$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldMultiInstanceComposite.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabCT/MatlabCT.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Satellite/Satellite.xml
@@ -112,6 +113,7 @@ $CLASSPATH/ptolemy/domains/gr/demo/Pong/Pong.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Switch/Switch.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Pendulum3D/Pendulum3D.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml
+$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldSDF.xml
 $CLASSPATH/ptolemy/domains/gr/demo/FurutaPendulum/FurutaPendulum.xml
 $CLASSPATH/ptolemy/domains/de/demo/AssemblyLine/AssemblyLine.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml
@@ -145,6 +147,7 @@ $CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.x
 $CLASSPATH/ptolemy/domains/wireless/demo/Collisions/Collisions.xml
 $CLASSPATH/ptolemy/domains/modal/demo/MultipleRuns/MultipleRuns.xml
 $CLASSPATH/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
+$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldPtalonActor.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Switch/Switch.xml
 $CLASSPATH/ptolemy/domains/tm/demo/Controllers/Controllers.xml
@@ -152,7 +155,6 @@ $CLASSPATH/ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradle.xml
 $CLASSPATH/ptolemy/domains/pn/demo/QR/QR.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml
-$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-sdf.xml
 $CLASSPATH/ptolemy/domains/modal/demo/Case/Case.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.xml
@@ -217,7 +219,6 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.xml
-$CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-fsm.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Gravitation/Gravitation.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml
