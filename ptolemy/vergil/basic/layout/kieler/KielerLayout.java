@@ -38,7 +38,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -201,9 +200,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         // make the hierarchichal node a child of the box node so that
         // the unconnected nodes will be placed around the other ones
         hierarchicalLayoutNode.setParent(boxLayoutNode);
-        LayoutOptions.setLayoutDirection(KimlLayoutUtil
-                .getShapeLayout(hierarchicalLayoutNode),
-                LayoutDirection.HORIZONTAL);
+        KShapeLayout layout = KimlLayoutUtil.getShapeLayout(hierarchicalLayoutNode);
+        LayoutOptions.setLayoutDirection(layout, LayoutDirection.HORIZONTAL);
+        LayoutOptions.setMinSpacing(layout, MIN_SPACING);
 
         // now read ptolemy model and fill the two subgraphs with the model infos
         _createGraph(composite, hierarchicalLayoutNode, boxLayoutNode);
@@ -378,6 +377,19 @@ public class KielerLayout extends AbstractGlobalLayout {
                     _kieler2ptolemyEntityNodes.put(kVertexNode,
                             (NamedObj) semanticNode);
                 }
+                
+                else if ( semanticNode instanceof Port){
+                    KNode kPortNode = _createKNodeForPort((Port) semanticNode);
+                    // add it to the graph
+                    kPortNode.setParent(hierarchicalLayoutNode);
+                    // setup Kieler ports for the KNode of the internal Ptolemy port
+                    //_createKPort(kPortNode, (Port)semanticNode);
+                    // store it in the maps
+                    _ptolemy2KielerNodes.put(node, kPortNode);
+                    _kieler2ptolemyDivaNodes.put(kPortNode, node);
+                    _kieler2ptolemyEntityNodes.put(kPortNode,
+                            (NamedObj) semanticNode);
+                }
 
                 // check if the node has ports
                 Iterator portIter = null;
@@ -413,7 +425,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
-   /** Create a Kieler KEdge for a Ptolemy Diva edge object. The KEdge will be
+ 
+
+/** Create a Kieler KEdge for a Ptolemy Diva edge object. The KEdge will be
      * setup between either two ports or relation vertices or mixed. Hence the
      * KEdge corresponds more likely a Ptolemy link than a relation.
      * Diva edges have no direction related to the flow of data in Ptolemy.
@@ -434,7 +448,6 @@ public class KielerLayout extends AbstractGlobalLayout {
         GraphModel model = this.getLayoutTarget().getGraphModel();
         if (model instanceof ActorGraphModel) {
             ActorGraphModel aGraph = (ActorGraphModel) model;
-            EdgeModel edgeModel = aGraph.getEdgeModel(divaEdge);
 
             Object semObj = aGraph.getSemanticObject(divaEdge);
             Relation rel = null;
@@ -543,6 +556,35 @@ public class KielerLayout extends AbstractGlobalLayout {
     }
 
     /**
+     * Create a Kieler KNode for a Ptolemy inner port. That is the graphical
+     * representation for a port of a CompositeActor if you see the contents
+     * of this CompositeActor. It is represented by a node where the connection
+     * may touch the node corresponding to its type (input, output, both) on the
+     * right, left or top.
+     * 
+     * For now this results a crude approximation of the node, because the figure
+     * of the original Ptolemy port cannot be obtained by the layout target. Hence
+     * we cannot ask the port for its original bounds.
+     * @param node the Ptolemy inner port.
+     * @return A new Kieler KNode corresponding to the Ptolemy inner port.
+     */
+    private KNode _createKNodeForPort(Port node) {
+        KNode knode = KimlLayoutUtil.createInitializedNode();
+        KShapeLayout layout = KimlLayoutUtil.getShapeLayout(knode);
+        //Rectangle2D bounds = this.getLayoutTarget().getBounds(node);
+        //Object object = this.getLayoutTarget().getVisualObject(node);
+        // FIXME: do not set the size to a constant! Set it to the actual size
+        //        of the port! Problem: Obtaining the inner port's figure from
+        //        the layout target alway results null. Hence we cannot ask
+        //        the port figure for its bounds.
+        layout.setHeight(DEFAULT_INNER_PORT_SIZE);
+        layout.setWidth(DEFAULT_INNER_PORT_SIZE);
+        LayoutOptions.setFixedSize(layout, true);
+        System.out.println();
+        return knode;
+    }
+    
+    /**
      * Create a Kieler KNode for a Ptolemy Vertex. Vertices
      * of Ptolemy can be handles as usual KNodes in Kieler (an alternative
      * would be to handle them as connection bendpoints). As Kieler
@@ -583,6 +625,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         return knode;
     }
 
+    
     /**
      * Create a Kieler KPort corresponding to a Ptolemy Port. Set the
      * size and position (relative to parent) and the direction of the 
@@ -723,7 +766,23 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
         kports.add(kport);
     }
-
+/*
+    private void _createKPortForPtolemyPort(KNode portKNode, Port ptolemyPort) {
+        if (ptolemyPort.linkedRelationList().size() > 1) {
+            // create a port for each incoming relation and set an order
+            List relations = ptolemyPort.linkedRelationList();
+            int maxIndex = relations.size() - 1;
+            for (int index = 0; index < relations.size(); index++) {
+                _createKPort(portKNode, portType, port, NO_RANK, index,
+                        maxIndex, DEFAULT_PORT_SIZE);
+            }
+        } else {
+            // if not a multiport, just create one port
+            _createKPort(knode, portType, port, NO_RANK, 0, 0, -1);
+        }
+    }
+*/
+    
     /**
      * Create Kieler ports (KPort) for a Kieler node (KNode) given a list of
      * Ptolemy Port objects and a port type (incoming, outgoing). The new KPorts
@@ -765,27 +824,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
-    /**
-     * Create a List from an Iterator. Small helper to be able to work with a list
-     * when only an iterator is available. A new List will be created containing
-     * all elements of the iterator. 
-     * However, use this method with care as it will iterate the iterator which might
-     * introduce some mode complexity.
-     * @param iter
-     *          The original Iterator.
-     * @return
-     *          A list containing all elements of the iterator.
-     */
-    private static List _getList(Iterator iter) {
-        List list = new ArrayList();
-        for (; iter.hasNext();) {
-            Object o = iter.next();
-            list.add(o);
-        }
-        return list;
-    }
-
-    /**
+     /**
      * Get a Kieler KPort for a corresponding Ptolemy object, i.e. a Port or
      * a relation Vertex. If the input is a Vertex, it is determined which of the
      * two KPorts of the corresponding KNode is returned (as in Kieler a Vertex
@@ -978,11 +1017,22 @@ public class KielerLayout extends AbstractGlobalLayout {
     // // private variables ////
 
     /**
+     * The default size used by Kieler for inner ports. 
+     */
+    private static final float DEFAULT_INNER_PORT_SIZE = 46.0f;
+
+    /**
      * Default size of a port that will be used in Kieler layout if no explicit size
      * (e.g. copied from Ptolemy port) is given.
      */
     private static final float DEFAULT_PORT_SIZE = 5.0f;
-
+    
+    /**
+     * Minimal distance between nodes. Changing this value will decrease the
+     * overall horizontal space consumed by the diagram.
+     */
+    private static final float MIN_SPACING = 8.0f;
+    
     /**
      * Offset between Kieler KPorts corresponding to a Ptolemy multiport.
      * I.e. the distance between multiple single KPorts.
