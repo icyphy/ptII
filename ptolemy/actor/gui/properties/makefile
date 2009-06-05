@@ -78,7 +78,8 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'Button$$1.class' \
 	'ComboBox$$Item$$1.class' \
-	'ComboBox$$Item.class'
+	'ComboBox$$Item.class' \
+	'GUIAction$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

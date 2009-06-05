@@ -90,7 +90,8 @@ JSRCS = \
 	PropertyTermFactory.java \
 	PropertyTermManager.java \
 	PropertyTermPartialEvaluator.java \
-	TypeProperty.java
+	TypeProperty.java \
+	TypePropertyBitAccurate.java
 
 EXTRA_SRCS =	$(JSRCS)
 

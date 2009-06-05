@@ -60,6 +60,7 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = \
 	IOPort.java \
+	Receiver.java \
 	TypedIOPort.java \
 	TypedCompositeActor.java
 

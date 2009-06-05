@@ -81,6 +81,7 @@ OPTIONAL_FILES = \
 	'CompositeEntity$$1.class' \
 	'CompositeEntity$$CountComparator.class' \
 	'CompositeEntity$$ContainedObjectsIterator.class' \
+	'CompositeEntity$$LinkRecord.class' \
 	'Entity$$ContainedObjectsIterator.class' \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR)

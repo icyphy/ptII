@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/token/firstValueToken
 
-DIRS =      actor domains kernel
+DIRS =      actor domains kernel test
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..

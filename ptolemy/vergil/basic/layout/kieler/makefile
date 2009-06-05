@@ -51,7 +51,9 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = \
 	HyperedgeConnectionTree.java \
 	HyperedgeConnectionTreeTest.java \
-	KielerLayout.java
+	KielerGraphUtil.java \
+	KielerLayout.java \
+	PtolemyModelUtil.java
 
 OTHER_FILES_TO_BE_JARED =
 

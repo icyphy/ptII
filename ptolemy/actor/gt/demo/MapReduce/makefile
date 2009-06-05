@@ -56,7 +56,9 @@ OTHER_FILES_TO_BE_JARED = \
 	ReadTest.map
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	MapReduceDDF.htm \
+	MapReduceDDF.jnlp
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -65,7 +67,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	MapReduceDDF.jar \
+	signed_MapReduceDDF.jar
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

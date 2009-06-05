@@ -60,6 +60,8 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
+	ExecDemos.htm \
+	ExecDemos.jnlp \
 	ExecHyVisualDemos.xml \
 	demo.txt \
 	rundemos.bat \
@@ -70,7 +72,9 @@ EXTRA_SRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = Demos
 
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	ExecDemos.jar \
+	signed_ExecDemos.jar
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars

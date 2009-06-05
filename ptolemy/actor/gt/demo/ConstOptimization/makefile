@@ -57,7 +57,11 @@ OTHER_FILES_TO_BE_JARED = \
 	ConstOptimizationDE.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	ConstOptimizationDDF.htm \
+	ConstOptimizationDDF.jnlp \
+	ConstOptimizationDE.htm \
+	ConstOptimizationDE.jnlp
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -66,7 +70,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	ConstOptimizationDDF.jar \
+	ConstOptimizationDE.jar \
+	signed_ConstOptimizationDDF.jar \
+	signed_ConstOptimizationDE.jar
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

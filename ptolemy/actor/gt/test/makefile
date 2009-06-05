@@ -101,8 +101,6 @@ EXTRA_SRCS = \
     Match2LevelHierarchyFlattening_succ2.xml \
     Match3ActorsRelationCollapsing_succ1.xml \
     Match3ActorsRelationCollapsing_fail2.xml \
-    GeneratedModel1.tcl \
-    GeneratedModel2.tcl \
     Match3Actors_rule.xml \
     MatchHierarchy2Actors_rule.xml \
     MatchHierarchy2Actors2Composites_rule.xml \
@@ -110,14 +108,7 @@ EXTRA_SRCS = \
     Match4ActorsSubclasses_rule.xml \
     Match2LevelHierarchyFlattening_rule.xml \
     Match3ActorsRelationCollapsing_rule.xml \
-    Match3Actors.tcl \
-    MatchHierarchy2Actors.tcl \
-    MatchHierarchy2Actors2Composites.tcl \
-    Match4Actors.tcl \
-    Match4ActorsSubclasses.tcl \
-    Match2LevelHierarchyFlattening.tcl \
-    Match3ActorsRelationCollapsing.tcl \
-    $(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+    $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
