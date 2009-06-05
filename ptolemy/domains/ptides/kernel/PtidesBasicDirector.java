@@ -794,7 +794,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  returns a dependency not equal to the oPlusIdentity, then the associated
      *  port is added to the Collection.
      *  The returned Collection has no duplicate entries.
-     *  @see #dependentPorts(IOPort)
+     *  @see #_finiteDependentPorts(IOPort)
      * 
      *  @param port The given port to find finite dependent ports.
      *  @return Collection of finite dependent ports.
