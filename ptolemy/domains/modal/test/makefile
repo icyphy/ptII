@@ -36,7 +36,10 @@ ME =		ptolemy/domains/modal/test
 ROOT =		../../../..
 
 # fsm.modal.ModalModel in auto/hde_sdf_fib_two_nums.xml requires DIVA_JAR
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# ABPTest.xml needs colt.
+# $PTII/configure sets PTCOLT_JARS to include $PTII/vendors/misc/colt/colt.jar
+# and $PTII/lib/ptcolt.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
