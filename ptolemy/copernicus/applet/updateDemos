@@ -2,7 +2,7 @@
 # $Id$
 # Script that updates the demos
 
-demos=`cd $PTII/ptolemy/configs/doc; make list_demos`
+demos=`cd $PTII/ptolemy/configs/doc; make listDemos`
 for demo in $demos
 do
      model=`basename $demo .xml` 
