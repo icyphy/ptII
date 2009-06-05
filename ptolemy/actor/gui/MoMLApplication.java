@@ -174,8 +174,30 @@ public class MoMLApplication implements ExecutionListener {
         // NOTE: This creates the only dependence on Swing in this
         // class.  Should this be left to derived classes?
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // Setting the look and feel causes problems with applets
+            // under JDK1.6.0_02 -> JDK1.6.0_13.
+            // The exception is: Exception in thread "AWT-EventQueue-1" java.security.AccessControlException: access denied (java.io.FilePermission C:\WINDOWS\Fonts\TAHOMA.TTF read)
+            // Unfortunately, it occurs well *after* the l&f is set.
+            String javaVersion = StringUtilities.getProperty("java.version");
+            boolean inApplet = false;
+            try {
+                StringUtilities.getProperty("HOME");
+            } catch (SecurityException ex) {
+                inApplet = true;
+            }
+
+            if (javaVersion.compareTo("1.6.0") > 0 
+                    && javaVersion.compareTo("1.6.0_14") < 0
+                    && inApplet) {
+                System.out.println("Warning: skipping setting the look and "
+                        + "feel in Java version " + javaVersion
+                        + " because it causes problems under applets under "
+                        + "Java 1.6.0_02 through 1.6.0_13.");
+            } else {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             // Ignore exceptions, which only result in the wrong look and feel.
         }
 
