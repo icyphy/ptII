@@ -197,7 +197,6 @@ public class MoMLApplication implements ExecutionListener {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }
         } catch (Exception e) {
-            e.printStackTrace();
             // Ignore exceptions, which only result in the wrong look and feel.
         }
 
