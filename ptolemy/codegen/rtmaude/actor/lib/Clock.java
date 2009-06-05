@@ -48,7 +48,7 @@ public class Clock extends Entity {
 
     /**
      * Constructor method for the Clock adapter.
-     * @param actor the associated actor
+     * @param component the associated actor
      */
     public Clock(ptolemy.actor.lib.Clock component) {
         super(component);

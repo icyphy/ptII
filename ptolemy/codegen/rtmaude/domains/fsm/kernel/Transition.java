@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
 * Generate RTMaude code for a Transition in DE domain.
 *
-* @see ptolemy.domains.fsm.kernel.Transitio
+* @see ptolemy.domains.fsm.kernel.Transition
 * @author Kyungmin Bae
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
