@@ -1558,6 +1558,16 @@ test SDFScheduler-14.4 {Multirate Scheduling tests} {
 test SDFScheduler-15.0 {Test the error message for Transparent PortParameters} {
     # See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4086
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The PortParameterTest.xml file has a TextAttribute, so we remove it.
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
     set toplevel [java::cast ptolemy.actor.CompositeActor \
 		     [$parser parseFile PortParameterTransparent.xml]]
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] \
