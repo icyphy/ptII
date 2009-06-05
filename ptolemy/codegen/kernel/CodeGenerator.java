@@ -57,6 +57,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
@@ -137,7 +138,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // FIXME: This should not be necessary, but if we don't
         // do it, then getBaseDirectory() thinks we are in the current dir.
-        codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+        try {
+            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+        } catch (IllegalActionException ex) {
+            _sandboxVariableCheck(ex);
+        }
+
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
 
@@ -583,7 +589,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (attribute == codeDirectory) {
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
-            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+            try {
+                codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+            } catch (IllegalActionException ex) {
+                _sandboxVariableCheck(ex);
+            }
         } else if (attribute == generatorPackage) {
             super.attributeChanged(attribute);
             _updateTarget();
@@ -2185,6 +2195,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return result;
     }
 
+    private void _sandboxVariableCheck(IllegalActionException ex) throws IllegalActionException{
+        if (ex.getCause() instanceof UndefinedConstantOrIdentifierException
+                && ((UndefinedConstantOrIdentifierException) (ex.getCause())).nodeName().equals("HOME")) {
+            System.out.println("Warning: Tried to set base directory of codeDirectory parameter to \"" + codeDirectory.getExpression()
+                    + "\", but $HOME is not defined.  "
+                    + "(-sandbox always causes this)");
+        } else {
+            throw ex;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
