@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     file:/Users/cxh/ptII/
+-->
+<!-- href is needed so that web start can cache the app and
+     it will appear in the desktop icon
+-->
+<jnlp codebase="file:/Users/cxh/ptII/"
+      href="file:/Users/cxh/ptII/ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.jnlp"> 
+  <information>
+	  <title>ImageReconstruction</title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description kind="tooltip">ImageReconstruction</description>
+	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <homepage href="file:/Users/cxh/ptII/"/>
+	  <offline-allowed/>
+  </information>
+  <security> 
+        <all-permissions/>
+  </security> 
+  <resources>
+        <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
+  	<j2se version="1.5+" max-heap-size="500m" />
+	<!-- Start Jars -->
+        <jar href="ptolemy/actor/lib/jai/demo/ImageReconstruction/signed_ImageReconstruction.jar"
+             size="2405"
+             main="true"/>
+        <jar href="signed/ptolemy/actor/lib/jai/jai.jar"
+             size="79359"
+             download="eager"/>
+        <jar href="signed/ptolemy/ptsupport.jar"
+             size="3369231"
+             download="eager"/>
+        <jar href="signed/ptolemy/data/data.jar"
+             size="418379"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/sdf/sdf.jar"
+             size="129535"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/modal/modal.jar"
+             size="156725"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/ct/ct.jar"
+             size="145022"
+             download="eager"/>
+        <jar href="signed/lib/diva.jar"
+             size="509849"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+             size="155952"
+             download="eager"/>
+        <jar href="signed/ptolemy/vergil/vergilApplet.jar"
+             size="872704"
+             download="eager"/>
+
+	<!-- End Jars -->
+  </resources>
+  <application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
+	<argument>-ptinyViewer</argument>
+	<argument>ImageReconstruction.xml</argument>
+  </application-desc>
+  <!-- Need to deal with Java 3D -->
+
+</jnlp>

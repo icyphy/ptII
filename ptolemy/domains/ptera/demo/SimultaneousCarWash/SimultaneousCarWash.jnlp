@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     file:/Users/cxh/ptII/
+-->
+<!-- href is needed so that web start can cache the app and
+     it will appear in the desktop icon
+-->
+<jnlp codebase="file:/Users/cxh/ptII/"
+      href="file:/Users/cxh/ptII/ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.jnlp"> 
+  <information>
+	  <title>SimultaneousCarWash</title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description kind="tooltip">SimultaneousCarWash</description>
+	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <homepage href="file:/Users/cxh/ptII/"/>
+	  <offline-allowed/>
+  </information>
+  <security> 
+        <all-permissions/>
+  </security> 
+  <resources>
+        <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
+  	<j2se version="1.5+" max-heap-size="500m" />
+	<!-- Start Jars -->
+        <jar href="ptolemy/domains/ptera/demo/SimultaneousCarWash/signed_SimultaneousCarWash.jar"
+             size="2410"
+             main="true"/>
+        <jar href="signed/ptolemy/domains/modal/modal.jar"
+             size="156800"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/ptera/ptera.jar"
+             size="121285"
+             download="eager"/>
+        <jar href="signed/ptolemy/ptsupport.jar"
+             size="3378548"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/de/de.jar"
+             size="74434"
+             download="eager"/>
+        <jar href="signed/ptolemy/data/data.jar"
+             size="418380"
+             download="eager"/>
+        <jar href="signed/ptolemy/actor/gt/gt.jar"
+             size="293079"
+             download="eager"/>
+        <jar href="signed/ptolemy/vergil/gt/gt.jar"
+             size="193334"
+             download="eager"/>
+        <jar href="signed/ptolemy/vergil/ptera/ptera.jar"
+             size="25445"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/modal/modal.jar"
+             size="156800"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/ct/ct.jar"
+             size="145024"
+             download="eager"/>
+        <jar href="signed/lib/diva.jar"
+             size="509852"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+             size="155951"
+             download="eager"/>
+        <jar href="signed/ptolemy/vergil/gt/gt.jar"
+             size="193334"
+             download="eager"/>
+
+	<!-- End Jars -->
+  </resources>
+  <application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
+	<argument>-fullViewer</argument>
+	<argument>SimultaneousCarWash.xml</argument>
+  </application-desc>
+  <!-- Need to deal with Java 3D -->
+
+</jnlp>
