@@ -83,7 +83,17 @@ public class MessageHandler {
         // throwable.printStackTrace();
         // System.out.println("------ called from:");
         // (new Exception()).printStackTrace();
-        _handler._error(info, throwable);
+        try {
+            _handler._error(info, throwable);
+        } catch (Throwable throwable2) {
+            // An applet was throwing an exception while handling
+            // the error - so we print the original message if _error() fails.
+            System.err.println("Internal Error, exception thrown while "
+                    + "handling error: \"" + info + "\"\n");
+            throwable.printStackTrace();
+            System.err.println("Internal Error:\n");
+            throwable2.printStackTrace();
+        }
     }
 
     /** Return the message handler instance that is used by the static
