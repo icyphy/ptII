@@ -145,6 +145,12 @@ public class BrowserTableau extends Tableau {
                 url = url.substring(0, url.length() - inBrowser.length());
             }
 
+            inBrowser = "%23in_browser";
+            if (url.endsWith(inBrowser)) {
+                // Strip off any trailing #in_browser, see HTMLViewer.
+                url = url.substring(0, url.length() - inBrowser.length());
+            }
+
             BrowserLauncher.openURL(url);
 
             try {
