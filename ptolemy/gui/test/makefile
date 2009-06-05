@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	GraphicalMessageHandlerApplet.java \
 	TopTest.java
 
 # Non-graphical Java tests written in Tcl
@@ -62,6 +63,7 @@ JGRAPHICAL_TESTS = \
 	Top.tcl
 
 EXTRA_SRCS = \
+	GraphicalMessageHandlerApplet.htm \
 	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
