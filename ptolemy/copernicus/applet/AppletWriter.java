@@ -309,7 +309,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
                 jarFilesResults.append(jarFileName);
 
-                jarFilesResults.append(_checkForJNLPExtensions(jarFileName));
+                jnlpJarFilesResults.append(_checkForJNLPExtensions(jarFileName));
 
                 // If the ptII/signed directory contains the jar file, then set
                 // signed to "signed/".  Otherwise, set signed to "".
@@ -317,7 +317,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 String signedJarFileName = _ptIIJarsPath + File.separator + "signed"
                     + File.separator + jarFileName;
                 if (new File(signedJarFileName).exists()) {
-                    signed = "signed" + File.separator;
+                    signed = "signed/";
                     sawSignedOnce = true;
                 } else {
                     if (new File(_ptIIJarsPath + File.separator + "signed").exists()) {
@@ -368,10 +368,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // If the ptII/signed directory contains the jar file, then set
                 // signed to "signed/".  Otherwise, set signed to "".
                 String signed =  "";
-                String signedJarFileName = _ptIIJarsPath + File.separator + "signed"
+                String signedJarFileName = _ptIIJarsPath + File.separator
+                    + "signed"
                     + File.separator + jarFileName;
                 if (new File(signedJarFileName).exists()) {;
-                    signed = "signed" + File.separator;
+                    signed = "signed/";
                 } else {
                     if (new File(_ptIIJarsPath + File.separator + "signed").exists()) {
                         sawSignedOnce = true;
@@ -384,7 +385,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         _signJarFile(_ptIIJarsPath + File.separator + jarFileName,
                                 _ptIIJarsPath + File.separator + "signed"
                                 + File.separator + jarFileName);
-                        signed = "signed" + File.separator;
+                        signed = "signed/";
                     } catch (Exception ex) {
                         throw new InternalErrorException(null, ex, "Failed to sign \""
                                 + _ptIIJarsPath + File.separator + jarFileName
@@ -795,12 +796,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     // Given a jar file, return the appropriate <extension .../> string, if any.
     private static String _checkForJNLPExtensions(String jarFileName) {
+        StringBuffer result = new StringBuffer();
         if (jarFileName.contains("ptolemy/actor/lib/jai/jai.jar")) {
-            return "    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>";
-        } else if(jarFileName.contains("ptolemy/actor/lib/jmf/jmf.jar")) {
-            return "<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>";
+            result.append("    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>\n");
         }
-        return "";
+        if(jarFileName.contains("ptolemy/actor/lib/jmf/jmf.jar")) {
+            result.append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
+        } 
+        if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {  
+            result.append("   <extension href=\"http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp\"/>\n");
+        }
+        return result.toString();
     }
 
     // copy the model and remove the GeneratorTableau
@@ -1500,6 +1506,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         FileOutputStream outputStream = null;
         JarInputStream jarInputStream = null;
         JarOutputStream jarOutputStream = null;
+        String outputJarFileName = jarFile.getCanonicalPath();
 
         try {
   
@@ -1513,6 +1520,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
                 temporaryJarFileName = File.createTempFile("AppletWriter", ".jar");
                 System.out.println("Temporary jar file: " + temporaryJarFileName);
+                outputJarFileName = temporaryJarFileName.getCanonicalPath();
                 outputStream = new FileOutputStream(temporaryJarFileName);
                 jarOutputStream = new JarOutputStream(outputStream, new Manifest());
             }
@@ -1560,11 +1568,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         jarInputStream = new JarInputStream(inputStream);
                         jarFileNames = _updateJar(jarOutputStream, jarInputStream, jarFileNames);
                     } finally {
+                        if (inputStream != null) {
+                            try {
+                                inputStream.close();
+                            } catch (IOException ex) {
+                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (1.1)");
+                            }
+                        }
                         if (jarInputStream != null) {
                             try {
                                 jarInputStream.close();
                             } catch (IOException ex) {
-                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (1.2)");
                             }
                         }
                     }
@@ -1575,11 +1590,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         jarInputStream = new JarInputStream(inputStream);
                         jarFileNames = _updateJar(jarOutputStream, jarInputStream, jarFileNames);
                     } finally {
+                        if (inputStream != null) {
+                            try {
+                                inputStream.close();
+                            } catch (IOException ex) {
+                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (2.1)");
+                            }
+                        }
                         if (jarInputStream != null) {
                             try {
                                 jarInputStream.close();
                             } catch (IOException ex) {
-                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (2.2)");
                             }
                         }
                     }
@@ -1590,17 +1612,40 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 try {
                     jarInputStream.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+                    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (3.1)");
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (3.1.5)");
                 }
             }
             if (jarOutputStream != null) {
                 try {
                     jarOutputStream.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+                    System.out.println("Failed to close \"" + outputJarFileName
+                            + "\" (3.3)");
                 }
             }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close outputStream: \"" + outputJarFileName + "\" (3.2)");
+                }
+            }
+
             if (renameJarFile) {
+                // Windows XP has a toy file system that requires
+                // that we *remove* the file before calling File.renameTo().
+                // Will this madness ever end?
+                if (!jarFile.delete()) {
+                    System.out.println("Warning: could not remove \""
+                            + jarFile.getCanonicalPath() + "\"");
+                }
                 if (!temporaryJarFileName.renameTo(jarFile)) {
                     throw new IOException("Failed to rename \""
                             + temporaryJarFileName + "\" to \""
