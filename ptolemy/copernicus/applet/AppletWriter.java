@@ -293,7 +293,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // This is the signed jar file that includes the .jnlp file
             // FIXME: what if we don't want a signed jar?
             jnlpJarFilesResults.insert(0, "        <jar href=\""
-                                       + _targetPath + "signed_" + _sanitizedModelName + ".jar\""
+                    + _targetPath + "signed_" + _sanitizedModelName + ".jar\""
                                        + _jarFileLengthAttribute(jnlpSourceFileName)
                                        + "\n             main=\"true\"/>\n");
 
@@ -640,13 +640,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (attributes.hasNext()) {
             Object object = attributes.next();
             String className = object.getClass().getName();
-            System.out.println("allAttributeJars1: " + object + " "
-                               + _getDomainJar(object
-                                       .getClass().getPackage().getName()));
-
+            if (_debug) {
+                System.out.println("allAttributeJars1: " + object + " "
+                        + _getDomainJar(object
+                                .getClass().getPackage().getName()));
+            }
             if (className.contains("ptolemy.codegen")) {
-                System.out.println("allAttributeJars2: " + object + " "
-                        + className + "ptolemy/codegen/codegen.jar");
+                if (_debug) {
+                    System.out.println("allAttributeJars2: " + object + " "
+                            + className + "ptolemy/codegen/codegen.jar");
+                }
                 results.put(className, "ptolemy/codegen/codegen.jar");
             } else {
                 results.put(object.getClass().getName(), 
@@ -662,7 +665,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             Object object = composites.next();
             if (object instanceof CompositeEntity) {
                 // FIXME: should we get the attributes inside atomic actors?
-                System.out.println("allAttributeJars2: " + object);
+                if (_debug) {
+                    System.out.println("allAttributeJars2: " + object);
+                }
                 results.putAll(_allAttributeJars((CompositeEntity)object));
 
             }
@@ -713,27 +718,34 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             String className = object.getClass().getName();
-            System.out.println("_allAtomicEntityJars: "
-                    + className + " "
-                    + _getDomainJar(object.getClass().getPackage().getName()));
-
+            if (_debug) {
+                System.out.println("_allAtomicEntityJars: "
+                        + className + " "
+                        + _getDomainJar(object.getClass().getPackage().getName()));
+            }
 
             if (className.contains("ptolemy.backtrack")) {
-                System.out.println("_allAtomicEntityJars backtrac: "
-                        + className + " "
-                        + "ptolemy/backtrack/backtrack.jar");
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars backtrac: "
+                            + className + " "
+                            + "ptolemy/backtrack/backtrack.jar");
+                }
                 results.put(className,
                         "ptolemy/backtrack/backtrack.jar"); 
             } else if (className.contains("ptolemy.actor.lib.jai")) {
-                System.out.println("_allAtomicEntityJars JAI: "
-                        + className + " "
-                        + "ptolemy/actor/lib/jai/jai.jar");
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars JAI: "
+                            + className + " "
+                            + "ptolemy/actor/lib/jai/jai.jar");
+                }
                 results.put(className,
                         "ptolemy/actor/lib/jai/jai.jar"); 
             } else if (className.contains("ptolemy.actor.lib.jmf")) {
-                System.out.println("_allAtomicEntityJars JMF: "
-                        + className + " "
-                        + "ptolemy/actor/lib/jmf/jmf.jar");
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars JMF: "
+                            + className + " "
+                            + "ptolemy/actor/lib/jmf/jmf.jar");
+                }
                 results.put(className,
                         "ptolemy/actor/lib/jmf/jmf.jar"); 
 
@@ -745,10 +757,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             if (object instanceof AtomicActor) {
                 // Add in the Managers.
-                System.out.println("_allAtomicEntityJars2: "
-                        + ((AtomicActor) object).getDirector().getClass().getName() + " "
-                        + _getDomainJar(((AtomicActor) object)
-                                .getDirector().getClass().getPackage().getName()));
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars2: "
+                            + ((AtomicActor) object).getDirector().getClass().getName() + " "
+                            + _getDomainJar(((AtomicActor) object)
+                                    .getDirector().getClass().getPackage().getName()));
+                }
 
                 results.put(((AtomicActor) object).getDirector().getClass()
                         .getName(), _getDomainJar(((AtomicActor) object)
@@ -768,12 +782,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (opaqueEntities.hasNext()) {
             ComponentEntity componentEntity = (ComponentEntity) opaqueEntities.next();
 
-            System.out.println("_deepOpaqueEntityJars: " + componentEntity.getClass().getName());
-
+            if (_debug) {
+                System.out.println("_deepOpaqueEntityJars: " + componentEntity.getClass().getName());
+            }
             if (componentEntity.getClass().getName().contains("ptolemy.actor.lib.jni")) {
 
-                System.out.println("_deepOpaqueEntityJars1: " + ((CompositeActor) componentEntity).getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getClass());
-
+                if (_debug) {
+                    System.out.println("_deepOpaqueEntityJars1: " + ((CompositeActor) componentEntity).getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getClass());
+                }
                 // This hack includes codegen.jar so that we can run codegen/demo/Butterfly/Butterfly.xml
                 results.put(((CompositeActor) componentEntity).getClass()
                         .getName(), "ptolemy/codegen/codegen.jar");
@@ -782,8 +798,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             if (componentEntity instanceof CompositeActor) {
                 // gt/demo/BouncingBallX2/BouncingBallX2.xml has an SDF director
                 // with no internal AtomicActors.
-                System.out.println("_deepOpaqueEntityJars2: " + ((CompositeActor) componentEntity).getDirector().getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getDirector()
+                if (_debug) {
+                    System.out.println("_deepOpaqueEntityJars2: " + ((CompositeActor) componentEntity).getDirector().getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getDirector()
                                 .getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getDirector().getClass());
+                }
                 results.put(((CompositeActor) componentEntity).getDirector().getClass()
                         .getName(), _getDomainJar(((CompositeActor) componentEntity)
                         .getDirector().getClass().getPackage().getName()));
@@ -870,15 +888,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             HashSet jarFilesThatHaveBeenRequired) throws IOException {
         File potentialSourceJarFile = new File(_ptIIJarsPath, jarFile);
 
-        System.out.println("AppletWriter cpjf: className: " + className
+        if (_debug) {
+            System.out.println("AppletWriter cpjf: className: " + className
                 + "\tpotentialSourceJarFile: " + potentialSourceJarFile);
-
+        }
         if (potentialSourceJarFile.exists()) {
-            System.out.println("AppletWriter cpjf: " + potentialSourceJarFile + " exists!");
+            if (_debug) {
+                System.out.println("AppletWriter cpjf: " + potentialSourceJarFile + " exists!");
+            }
             jarFilesThatHaveBeenRequired.add(jarFile);
 
             if (_codeBase.equals(".")) {
-                System.out.println("AppletWriter cpjf: codeBase = .");
+                if (_debug) {
+                    System.out.println("AppletWriter cpjf: codeBase = .");
+                }
                 // If the codeBase is equal to the current directory,
                 // we copy the jar file.
                 // Ptolemy II development trees will have jar files
@@ -1097,8 +1120,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     try {
                         out.close();
                     } catch (Throwable throwable) {
-                        System.out.println("Ignoring failure to close stream "
-                                + "on '" + destinationFile + "'");
+                        System.out.println("Ignoring failure to close "
+                                + "stream on '" + destinationFile + "'");
                         throwable.printStackTrace();
                     }
                 }
@@ -1108,8 +1131,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 try {
                     in.close();
                 } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on '" + sourceFile + "'");
+                    System.out.println("Warning: Ignoring failure to close "
+                            + "stream on '" + sourceFile + "'");
                     throwable.printStackTrace();
                 }
             }
@@ -1120,7 +1143,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      */
     private String _jarFileLengthAttribute(String fileName) throws IOException {
         File file = new File(fileName);
-        System.out.println("AppletWriter: " + fileName + " " + file.length());
+        //System.out.println("AppletWriter: " + fileName + " " + file.length());
         return "\n             size=\"" + file.length() + "\"";
     }
 
@@ -1741,6 +1764,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // are used.  Other values include "-fullViewer", which is selected
     // if gt is used in the model. 
     private String _configurationName = "-ptinyViewer";
+
+    private boolean _debug = false;
 
     // The path to the jar file containing the domain classes,
     // for example "ptolemy/domains/sdf/sdf.jar".

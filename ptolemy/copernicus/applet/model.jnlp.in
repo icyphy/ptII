@@ -7,8 +7,12 @@
 <!-- href is needed so that web start can cache the app and
      it will appear in the desktop icon
 -->
-<jnlp codebase="@ptIILocalURL@"
-      href="@ptIILocalURL@@targetPath@@sanitizedModelName@.jnlp"> 
+<!-- jnlp codebase="@ptIILocalURL@"
+     codebase="file:./../../../../../"
+      href="@ptIILocalURL@@targetPath@@sanitizedModelName@.jnlp" --> 
+<jnlp
+      codebase="file:./@codeBase@" 
+      href="@targetPath@@sanitizedModelName@.jnlp">
   <information>
 	  <title>@sanitizedModelName@</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
@@ -20,6 +24,7 @@
   <security> 
         <all-permissions/>
   </security> 
+
   <resources>
         <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
   	<j2se version="1.5+" max-heap-size="500m" />
@@ -27,10 +32,16 @@
 @jnlpJars@
 	<!-- End Jars -->
   </resources>
-  <application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
+  <!--application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
 	<argument>@configurationName@</argument>
 	<argument>@sanitizedModelName@.xml</argument>
-  </application-desc>
-  <!-- Need to deal with Java 3D -->
+  </application-desc -->
+  <applet-desc 
+         name="@sanitizedModelName@ Applet"
+         main-class="ptolemy.vergil.VergilApplet"
+         width="@vergilWidth@"
+         height="@vergilHeight@">
+   </applet-desc>
+
 
 </jnlp>

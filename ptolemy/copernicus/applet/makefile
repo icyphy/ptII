@@ -190,7 +190,8 @@ jnlpUpdateDemo:
 		-run 		 "false" \
 		-targetPath	 "$(TARGETPATH)" \
 		$(MODELPATH)
-	javaws -wait $(PTII)/$(TARGETPATH)/$(MODEL).jnlp
+	#javaws -wait $(PTII)/$(TARGETPATH)/$(MODEL).jnlp
+	$(ROOT)/bin/vergil $(PTII)/$(TARGETPATH)/$(MODEL).htm#in_browser
 
 # Run the OrthoComm demo
 ORTHOCOMMTARGETDIRECTORY = $(TARGETPATH)/ToplevelModel

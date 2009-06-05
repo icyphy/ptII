@@ -402,7 +402,7 @@ public class JarSigner {
         Enumeration allEntries = jarFile.entries();
         while (allEntries.hasMoreElements()) {
             JarEntry entry = (JarEntry) allEntries.nextElement();
-            System.out.println("JarSigner: entry: " + entry);
+            //System.out.println("JarSigner: entry: " + entry);
             if (!entry.getName().startsWith("META-INF")) {
                 _writeJarEntry(entry, jarFile, jos);
             }
