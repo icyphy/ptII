@@ -49,7 +49,7 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR 
-PTCLASSALLJARS = \ 
+PTCLASSALLJARS = \
 	expr/expr.jar
 
 JSRCS = 

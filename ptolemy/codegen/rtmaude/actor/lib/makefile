@@ -49,16 +49,16 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR 
-PTCLASSALLJARS = \ 
+PTCLASSALLJARS = \
 	gui/gui.jar 
-	
+
 JSRCS = \
 	Clock.java \
 	CurrentTime.java \
 	Pulse.java \
 	Ramp.java \
 	SetVariable.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	Clock.rtmaude \
 	CurrentTime.rtmaude \

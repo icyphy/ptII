@@ -49,13 +49,13 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR 
-PTCLASSALLJARS = \ 
-	kelnel/kernel.jar 
+PTCLASSALLJARS = \
+	kernel/kernel.jar 
 
 JSRCS = 
-	
+
 OTHER_FILES_TO_BE_JARED = 
-	
+
 EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -49,7 +49,7 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR 
-PTCLASSALLJARS = \ 
+PTCLASSALLJARS = \
 	util/util.jar 
 
 JSRCS = \
@@ -57,11 +57,11 @@ JSRCS = \
 	RTMaudeAdaptor.java \
 	RTMaudeCodeGenerator.java \
 	RTMaudeParseTreeCodeGenerator.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	Entity.rtmaude \
 	RTMaudeAdaptor.rtmaude
-	
+
 EXTRA_SRCS = $(JSRCS) $(OTHER FILES TO BE JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
