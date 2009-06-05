@@ -207,22 +207,34 @@ public class StringUtilities {
      *  non-zero values indicate an error.
      */
     public static void exit(int returnValue) {
-        if (StringUtilities.getProperty("ptolemy.ptII.doNotExit")
-                .length() > 0) {
-            return;
+        try {
+            if (StringUtilities.getProperty("ptolemy.ptII.doNotExit")
+                    .length() > 0) {
+                return;
+            }
+        } catch (SecurityException ex) {
+            System.out.println("Warning: failed to get property \""
+                    + "ptolemy.ptII.doNotExit\". "
+                    + "(-sandbox always causes this)");
         }
 
-        if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
-                .length() > 0) {
-            throw new RuntimeException("Normally, we would "
-                    + "exit here because Manager.exitAfterWrapup() "
-                    + "was called.  However, because the "
-                    + "ptolemy.ptII.exitAfterWrapup property "
-                    + "is set, we throw this exception instead.");
-        } else {
-            // Non-zero indicates a problem.
-            System.exit(returnValue);
+        try {
+            if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
+                    .length() > 0) {
+                throw new RuntimeException("Normally, we would "
+                        + "exit here because Manager.exitAfterWrapup() "
+                        + "was called.  However, because the "
+                        + "ptolemy.ptII.exitAfterWrapup property "
+                        + "is set, we throw this exception instead.");
+            } 
+        } catch (SecurityException ex) {
+            System.out.println("Warning: failed to get property \""
+                    + "ptolemy.ptII.exitAfterWrapup\". "
+                    + "(-sandbox always causes this)");
+            
         }
+        // Non-zero indicates a problem.
+        System.exit(returnValue);
     }
 
     /** Return a number of spaces that is proportional to the argument.
