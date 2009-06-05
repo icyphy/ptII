@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/ptalon/doc
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../..
 
 DIRS =
 
