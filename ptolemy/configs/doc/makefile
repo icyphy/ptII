@@ -144,11 +144,9 @@ check_applets:
 listDemos:
 	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
 
+# Open the demos 10 at a time, print statistics and close.
 demosStatistics:
-	set `$(MAKE) listDemos`; \
-	for x do \
-		$(ROOT)/bin/vergil -statistics -end $$x; \
-	done
+	$(MAKE) --no-print-directory listDemos | xargs -n 10 $(ROOT)/bin/vergil -statistics -exit
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
