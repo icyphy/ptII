@@ -147,7 +147,7 @@ listDemos:
 demosStatistics:
 	set `$(MAKE) listDemos`; \
 	for x do \
-		$(ROOT)/bin/vergil -statistics $$x; \
+		$(ROOT)/bin/vergil -statistics -end $$x; \
 	done
 
 # Get the rest of the rules
