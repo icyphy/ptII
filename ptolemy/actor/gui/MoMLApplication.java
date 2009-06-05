@@ -51,6 +51,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -215,6 +216,21 @@ public class MoMLApplication implements ExecutionListener {
 
         try {
             _parseArgs(args);
+
+            if (_statistics && !_run) {
+                Iterator models = models().iterator();
+
+                while (models.hasNext()) {
+                    NamedObj model = (NamedObj) models.next();
+                    if (model instanceof CompositeEntity) {
+                        System.out.println("Statistics for " + model.getFullName());
+                        System.out.println(((CompositeEntity)model).statistics(null));
+                    }
+                }
+                if (_exit) {
+                    StringUtilities.exit(0);
+                }
+            }
 
             // Run if -run argument was specified.
             if (_run) {
@@ -438,6 +454,11 @@ public class MoMLApplication implements ExecutionListener {
 
             if (model instanceof CompositeActor) {
                 CompositeActor actor = (CompositeActor) model;
+
+                if (_statistics) {
+                    System.out.println("Statistics for " + model.getFullName());
+                    System.out.println(((CompositeEntity)model).statistics(null));
+                }
 
                 // Create a manager if necessary.
                 Manager manager = actor.getManager();
@@ -860,6 +881,8 @@ public class MoMLApplication implements ExecutionListener {
     protected boolean _parseArg(String arg) throws Exception {
         if (arg.equals("-class")) {
             _expectingClass = true;
+        } else if (arg.equals("-exit")) {
+            _exit = true;
         } else if (arg.equals("-help")) {
             System.out.println(_usage());
 
@@ -872,6 +895,8 @@ public class MoMLApplication implements ExecutionListener {
         } else if (arg.equals("-runThenExit")) {
             _run = true;
             _exit = true;
+        } else if (arg.equals("-statistics")) {
+            _statistics = true;
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
@@ -1278,10 +1303,12 @@ public class MoMLApplication implements ExecutionListener {
 
     /** The command-line options that are either present or not. */
     protected String[][] _commandFlagsWithDescriptions = {
+        {"-exit", "Exit after generating statistics"},
         {"-help", "Print this help message"},
         {"-printPDF", "Print to a PDF printer"},
         {"-run", "Run the models"},
         {"-runThenExit", "Run the models, then exit after the models finish."},
+        {"-statistics", "Open the model, print statistics and exit."},
         {"-test", "Exit after two seconds."},
         {"-version", "Print version information."}};
 
@@ -1307,6 +1334,9 @@ public class MoMLApplication implements ExecutionListener {
 
     /** If true, then -run was specified on the command line. */
     protected boolean _run = false;
+
+    /** If true, then -statistics was specified on the command line. */
+    protected boolean _statistics = false;
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
