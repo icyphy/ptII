@@ -380,9 +380,13 @@ public class GeneratorAttribute extends SingletonAttribute implements
         if (!targetPathFile.isDirectory() || !targetPathFile.canWrite()) {
             // Make any directories
             if (!targetPathFile.mkdirs()) {
-                throw new IllegalActionException("'" + targetPathFile
+                throw new IllegalActionException("targetPathFile: '" + targetPathFile
                         + "' was not a " + "writable directory, and "
-                        + "mkdirs() failed");
+                        + "mkdirs() failed.  targetPath should be specified "
+                        + "as a relative path because targetPathFile is "
+                        + "created by combining ptIIUserDirectory (" 
+                        + ptIIUserDirectory  + ") and targetPath (" 
+                        + targetPath + ")");
             }
         }
 
