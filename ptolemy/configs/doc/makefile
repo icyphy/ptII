@@ -141,8 +141,14 @@ check_applets:
 	echo "These applets might be missing:"
 	ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}' | sed 's/.xml/.htm/'` 2>&1 | sed 's/ls: //' | grep "No such file" | $(GAWK) '{print $$1}'
 
-list_demos:
+listDemos:
 	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
+
+demosStatistics:
+	set `$(MAKE) listDemos`; \
+	for x do \
+		$(ROOT)/bin/vergil -statistics $$x; \
+	done
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
