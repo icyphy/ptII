@@ -208,6 +208,16 @@
                 </property>
             </port>
         </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-1.0, 11.0}">
+                </property>
+            </port>
+        </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -242,15 +252,15 @@
             <vertex name="vertex1" value="[220.0, 255.0]">
             </vertex>
         </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
-            <vertex name="vertex1" value="{86.0, 255.0}">
-            </vertex>
         </relation>
         <link port="port" relation="relation8"/>
         <link port="port2" relation="relation7"/>
-        <link port="port3" relation="relation3"/>
+        <link port="port3" relation="relation10"/>
         <link port="AddSubtract.plus" relation="relation5"/>
         <link port="AddSubtract.minus" relation="relation9"/>
         <link port="AddSubtract.output" relation="relation8"/>
@@ -267,7 +277,10 @@
         <link port="CurrentTime.output" relation="relation2"/>
         <link port="CurrentTime.trigger" relation="relation8"/>
         <link port="TimedDelay3.input" relation="relation"/>
-        <link port="TimedDelay3.output" relation="relation3"/>
+        <link port="TimedDelay3.output" relation="relation6"/>
+        <link port="Merge.input" relation="relation6"/>
+        <link port="Merge.input" relation="relation10"/>
+        <link port="Merge.output" relation="relation3"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
