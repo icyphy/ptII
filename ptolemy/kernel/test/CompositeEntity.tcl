@@ -1463,3 +1463,158 @@ test CompositeEntity-23.1 {compare deepEntityList and deepOpaqueEntityList} {
 	[listToNames [$e0 deepEntityList]] \
 	[listToNames [$e0 deepOpaqueEntityList]]
 } {{E1 E2 E5 E6 E8 E9} {E1 E2 E5 E6 E8 E9}}
+
+######################################################################
+####
+#
+test CompositeEntity-24.1 {Test exportMoML with level-crossing links} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set p [java::new ptolemy.kernel.ComponentPort $b P]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set r [java::new ptolemy.kernel.ComponentRelation $c R]
+    $p liberalLink $r
+    $a exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="B" class="ptolemy.kernel.CompositeEntity">
+        <port name="P" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <link port="B.P" relation="C.R"/>
+</entity>
+}
+
+test CompositeEntity-24.1.1 {Test exportMoML with level-crossing links} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set bC [java::new ptolemy.kernel.CompositeEntity $a BC]
+    set pC [java::new ptolemy.kernel.ComponentPort $bC P]
+    $bC setClassDefinition true
+    set b [java::cast ptolemy.kernel.CompositeEntity [$bC instantiate $a B]]
+    $b setClassName BC
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set r [java::new ptolemy.kernel.ComponentRelation $c R]
+    set p [java::cast ptolemy.kernel.ComponentPort [$b getPort P]]
+    $p liberalLink $r
+    $a exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <class name="BC" extends="ptolemy.kernel.CompositeEntity">
+        <port name="P" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </class>
+    <entity name="B" class="BC">
+    </entity>
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <link port="B.P" relation="C.R"/>
+</entity>
+}
+
+test CompositeEntity-24.1.2 {Test exportMoML with level-crossing links} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set bC [java::new ptolemy.kernel.CompositeEntity $a BC]
+    $bC setClassDefinition true
+    set pC [java::new ptolemy.kernel.ComponentPort $bC P]
+    set b [java::cast ptolemy.kernel.CompositeEntity [$bC instantiate $a B]]
+    $b setClassName BC
+    
+    set cC [java::new ptolemy.kernel.CompositeEntity $a CC]
+    $cC setClassDefinition true
+    set rC [java::new ptolemy.kernel.ComponentRelation $cC R]
+    set c [java::cast ptolemy.kernel.CompositeEntity [$cC instantiate $a C]]
+    $c setClassName CC
+
+    set p [java::cast ptolemy.kernel.ComponentPort [$b getPort P]]
+    set r [java::cast ptolemy.kernel.ComponentRelation [$c getRelation R]]
+    $p liberalLink $r
+    $a exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <class name="BC" extends="ptolemy.kernel.CompositeEntity">
+        <port name="P" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </class>
+    <class name="CC" extends="ptolemy.kernel.CompositeEntity">
+        <relation name="R" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </class>
+    <entity name="B" class="BC">
+    </entity>
+    <entity name="C" class="CC">
+    </entity>
+    <link port="B.P" relation="C.R"/>
+</entity>
+}
+
+test CompositeEntity-24.2 {Test exportMoML with level-crossing links} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set b [java::new ptolemy.kernel.CompositeEntity $c B]
+    set p [java::new ptolemy.kernel.ComponentPort $b P]
+    set r [java::new ptolemy.kernel.ComponentRelation $a R]
+    $p liberalLink $r
+    $a exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <entity name="B" class="ptolemy.kernel.CompositeEntity">
+            <port name="P" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+    </entity>
+    <relation name="R" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="C.B.P" insertAt="0" relation="R"/>
+</entity>
+}
+
+test CompositeEntity-24.3 {Test exportMoML with level-crossing links} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set r1 [java::new ptolemy.kernel.ComponentRelation $a R]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $c R]
+    $r1 link $r2
+    $a exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="A" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="C" class="ptolemy.kernel.CompositeEntity">
+        <relation name="R" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+    </entity>
+    <relation name="R" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link relation1="C.R" relation2="R"/>
+</entity>
+}
