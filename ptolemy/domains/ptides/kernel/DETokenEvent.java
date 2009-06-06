@@ -79,12 +79,20 @@ public class DETokenEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public DETokenEvent(IOPort ioPort, Time timeStamp, int microstep, int depth, 
+    public DETokenEvent(IOPort ioPort, int channel, Time timeStamp, int microstep, int depth, 
             Token token, Receiver receiver)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
+        _channel = channel;
         _token = token;
         _receiver = receiver;
+    }
+    
+    /** Return the channel
+     *  @return The channel.
+     */
+    public final int channel() {
+        return _channel;
     }
     
     /** Indicate whether some the super class returns they are equal
@@ -130,7 +138,7 @@ public class DETokenEvent extends DEEvent {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
                     + _token + ", dest = " + name + "."
-                    + _ioPort.getName() + ").";
+                    + _ioPort.getName() + "." + _channel + ").";
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
@@ -141,6 +149,9 @@ public class DETokenEvent extends DEEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+    
+    /** The channel this event is destined to */
+    private int _channel;
     
     /** The token associated with this event. */
     private Token _token;

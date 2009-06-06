@@ -5,6 +5,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEEvent;
@@ -276,8 +277,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
             if (port != null) {
                 Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
                 if (parameter != null) {
-                    DoubleToken token;
-                    token = (DoubleToken) parameter.getToken();
+                    DoubleToken token = ((DoubleToken)((ArrayToken)parameter.getToken())
+                            .arrayValue()[((DETokenEvent)event).channel()]);
                     Time waitUntilPhysicalTime = event.timeStamp().subtract(token.doubleValue());
                     if (_getPhysicalTime().subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0) {
                         return true;
