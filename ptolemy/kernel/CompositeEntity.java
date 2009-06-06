@@ -832,8 +832,7 @@ public class CompositeEntity extends ComponentEntity {
                 // suppress the export. This depends on the level of export
                 // because if both ends of the link are implied, then the
                 // link is implied.
-                if ((relation.getDerivedLevel() <= depth)
-                        && (port.getDerivedLevel() <= depth)) {
+                if (_commonImplier(relation, depth, port, depth)) {
                     continue;
                 }
 
@@ -914,12 +913,32 @@ public class CompositeEntity extends ComponentEntity {
                     // If both ends of the link are inherited objects, then
                     // suppress the export.  This depends on the level of export
                     // because if both ends of the link are implied, then the
-                    // link is implied.
-                    if ((relation.getDerivedLevel() <= depth)
-                            && (port.getDerivedLevel() <= (depth + 1))
+                    // link is implied. Note that we need for both the port
+                    // to be implied and the port's container to share a
+                    // common implier with the relation. We know that the port
+                    // is contained within its container, so we don't have to
+                    // check it separately for a common implier.
+                    if (port.getDerivedLevel() <= (depth + 1)
+                            && _commonImplier(relation, depth, port.getContainer(), depth)) {
+                        continue;
+                    }
+                    // Used to have the previous logic here, skipping the link export,
+                    // instead of the above.
+                    // But careful!  It may be that the both the relation and
+                    // the port are derived, but not from the same object.
+                    // This can happen with level-crossing links.
+                    // Check that the container above at which these two objects
+                    // are implied is the same container.
+                    // EAL 6/6/09
+                    /*
+                    int relationLevel = relation.getDerivedLevel();
+                    int portLevel = port.getDerivedLevel();
+                    if ((relationLevel <= depth)
+                            && (portLevel <= (depth + 1))
                             && ((port.getContainer()).getDerivedLevel() <= depth)) {
                         continue;
                     }
+                    */
 
                     // Apply filter.
                     if ((filter == null)
@@ -1003,8 +1022,7 @@ public class CompositeEntity extends ComponentEntity {
                     // suppress the export. This depends on the level of export
                     // because if both ends of the link are implied, then the
                     // link is implied.
-                    if ((relation.getDerivedLevel() <= depth)
-                            && (otherRelation.getDerivedLevel() <= depth)) {
+                    if (_commonImplier(relation, depth, otherRelation, depth)) {
                         continue;
                     }
 
@@ -2127,21 +2145,33 @@ public class CompositeEntity extends ComponentEntity {
         if (_levelCrossingLinks != null) {
             for (LinkRecord record : _levelCrossingLinks) {
                 if (record.port != null) {
-                    output.write(_getIndentPrefix(depth) 
-                            + "<link port=\""
-                            + record.port.getName(this)
-                            + "\" insertAt=\"" 
-                            + record.index
-                            + "\" relation=\"" 
-                            + record.relation1.getName(this)
-                            + "\"/>\n");
+                    // Do not export if the relation and port are derived and
+                    // share a common container that has the parent-child
+                    // relation that implies them.
+                    if (!_commonImplier(record.relation1, depth + _depthInside(record.relation1),
+                            record.port, depth + _depthInside(record.port))) {
+                        output.write(_getIndentPrefix(depth) 
+                                + "<link port=\""
+                                + record.port.getName(this)
+                                + "\" insertAt=\"" 
+                                + record.index
+                                + "\" relation=\"" 
+                                + record.relation1.getName(this)
+                                + "\"/>\n");
+                    }
                 } else {
-                    output.write(_getIndentPrefix(depth)
-                            + "<link relation1=\""
-                            + record.relation1.getName(this)
-                            + "\" relation2=\""
-                            + record.relation2.getName(this)
-                            + "\"/>\n");
+                    // Do not export if both relations are derived and
+                    // share a common container that has the parent-child
+                    // relation that implies them.
+                    if (!_commonImplier(record.relation1, depth + _depthInside(record.relation1),
+                            record.relation2, depth + _depthInside(record.relation2))) {
+                        output.write(_getIndentPrefix(depth)
+                                + "<link relation1=\""
+                                + record.relation1.getName(this)
+                                + "\" relation2=\""
+                                + record.relation2.getName(this)
+                                + "\"/>\n");
+                    }
                 }
             }
         }
@@ -2300,6 +2330,76 @@ public class CompositeEntity extends ComponentEntity {
             container = container.getContainer();
         }
         return null;
+    }
+    
+    /** Return true if the two specified objects are both derived,
+     *  it is the same container above them whose parent-child
+     *  relationship makes them derived, and that container
+     *  is no more than <i>depth1</i> and <i>depth2</i> above them,
+     *  respectively.
+     *  @param object1 The first object.
+     *  @param depth1 The depth of the first object.
+     *  @param object2 The second object.
+     *  @param depth2 The depth of the second object.
+     *  @return True if the two specified objects are both derived
+     *   at a common level no more than depth above them.
+     */
+    private boolean _commonImplier(NamedObj object1, int depth1,
+            NamedObj object2, int depth2) {
+        if (object1 == null || object2 == null) {
+            return false;
+        }
+        int object1Level = object1.getDerivedLevel();
+        int object2Level = object2.getDerivedLevel();
+        if (object1Level <= depth1 && object2Level <= depth2) {
+            NamedObj object1Container = object1;
+            while (object1Level > 0) {
+                object1Container = object1Container.getContainer();
+                object1Level--;
+                // It's not clear to me how this occur, but if relationCaontiner
+                // is null, then clearly there is no common container that
+                // implies the two objects.
+                if (object1Container == null) {
+                    return false;
+                }
+            }
+            NamedObj object2Container = object2;
+            while (object2Level > 0) {
+                object2Container = object2Container.getContainer();
+                object2Level--;
+                // It's not clear to me how this occur, but if relationCaontiner
+                // is null, then clearly there is no common container that
+                // implies the two objects.
+                if (object2Container == null) {
+                    return false;
+                }
+            }
+            if (object1Container == object2Container) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Return the depth of specified object inside this.
+     *  That is, return 0 if the specified object is this, 1 if this
+     *  contains it, 2 if this contains the container
+     *  of it, etc.
+     *  @param containee The object contained.
+     *  @return The depth of the containment, or -1 if the specified object
+     *   is not deeply contained by this.
+     */
+    private int _depthInside(NamedObj containee) {
+        int result = 0;
+        NamedObj candidate = containee;
+        while (candidate != null) {
+            if (candidate == this) {
+                return result;
+            }
+            result++;
+            candidate = candidate.getContainer();
+        }
+        return -1;
     }
     
     /** Record a level-crossing link with the least common container if there
