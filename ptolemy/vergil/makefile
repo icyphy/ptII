@@ -80,6 +80,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	MoMLViewerApplet.java  \
 	TypeAnimatorApplet.java \
+	VergilApplet.java \
 	VergilApplication.java \
 	VergilErrorHandler.java \
 	VergilInitializer.java
