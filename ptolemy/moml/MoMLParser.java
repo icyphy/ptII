@@ -5561,16 +5561,61 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private boolean _isLinkInClass(NamedObj context, Port port,
             Relation relation) {
-        boolean portIsInClass = (port.getContainer() == context) ? (port
-                .getDerivedLevel() < Integer.MAX_VALUE)
-                : ((port.getContainer()).getDerivedLevel() < Integer.MAX_VALUE);
-        return (portIsInClass && ((relation == null) || (relation
-                .getDerivedLevel() < Integer.MAX_VALUE)));
+        // If the context is the container of the port, then
+        // this is an inside link. In that case, even if this
+        // is a level-crossing link, the port itself has to be a
+        // derived object. Otherwise, we check to see whether the
+        // container of the port is a derived object.
+        int portContainerLevel = port.getContainer().getDerivedLevel();
+        boolean portIsInClass = (port.getContainer() == context)
+                ? (port.getDerivedLevel() < Integer.MAX_VALUE)
+                : (portContainerLevel < Integer.MAX_VALUE);
+        if (portIsInClass) {
+            if (relation == null) {
+                // Inserting a blank link in a multiport.
+                // NOTE: This used to return true, which would
+                // trigger an exception. But why would this be disallowed?
+                return false;
+            }
+            int relationLevel = relation.getDerivedLevel();
+            if (relationLevel < Integer.MAX_VALUE) {
+                // Check that the container above at which these two objects
+                // are implied is the same container.
+                NamedObj relationContainer = relation;
+                while (relationLevel > 0) {
+                    relationContainer = relationContainer.getContainer();
+                    relationLevel--;
+                    // It's not clear to me how this occur, but if relationCaontiner
+                    // is null, then clearly there is no common container that
+                    // implies the two objects.
+                    if (relationContainer == null) {
+                        return false;
+                    }
+                }
+                NamedObj portContainer = port.getContainer();
+                while (portContainerLevel > 0) {
+                    // It's not clear to me how this occur, but if relationCaontiner
+                    // is null, then clearly there is no common container that
+                    // implies the two objects.
+                    if (portContainer == null) {
+                        return false;
+                    }
+                    portContainer = portContainer.getContainer();
+                    portContainerLevel--;
+                }
+                if (relationContainer == portContainer) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /** Return true if the link between the specified relations
      *  is part of the class definition. It is part of the
-     *  class definition if both are derived objects.
+     *  class definition if both are derived objects, and the
+     *  container whose parent-child relationship makes them
+     *  derived is the same container.
      *  NOTE: This is not perfect, since a link could have been
      *  created between these elements in a subclass.
      *  @param context The context containing the link.
@@ -5580,8 +5625,41 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private boolean _isLinkInClass(NamedObj context, Relation relation1,
             Relation relation2) {
-        return ((relation1.getDerivedLevel() < Integer.MAX_VALUE) && (relation2
-                .getDerivedLevel() < Integer.MAX_VALUE));
+        // Careful: It is possible for both relations to be derived
+        // but the link not be defined within the same class definition.
+        int relation1Level = relation1.getDerivedLevel();
+        int relation2Level = relation2.getDerivedLevel();
+        if ((relation1Level < Integer.MAX_VALUE) 
+                && (relation2Level < Integer.MAX_VALUE)) {
+            // Check that the container above at which these two objects
+            // are implied is the same container.
+            NamedObj relation1Container = relation1;
+            while (relation1Level > 0) {
+                relation1Container = relation1Container.getContainer();
+                relation1Level--;
+                // It's not clear to me how this occur, but if relationCaontiner
+                // is null, then clearly there is no common container that
+                // implies the two objects.
+                if (relation1Container == null) {
+                    return false;
+                }
+            }
+            NamedObj relation2Container = relation2;
+            while (relation2Level > 0) {
+                relation2Container = relation2Container.getContainer();
+                relation2Level--;
+                // It's not clear to me how this occur, but if relationCaontiner
+                // is null, then clearly there is no common container that
+                // implies the two objects.
+                if (relation2Container == null) {
+                    return false;
+                }
+            }
+            if (relation1Container == relation2Container) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Return whether or not the given element name is undoable. NOTE: we need
