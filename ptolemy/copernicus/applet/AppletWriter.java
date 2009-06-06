@@ -290,6 +290,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             StringBuffer jnlpJarFilesResults = new StringBuffer();
 
 
+            // Include files like Foo/Foo.jar that include the model
+            // and gifs for use in old-style applets.
+            if (new File(jnlpUnsignedJarFileName).exists()) {
+                // Use this only in applets, we handle jnlp specially. 
+                jarFilesResults.append(_targetPath + _sanitizedModelName + ".jar");
+            }
+
+
             // This is the signed jar file that includes the .jnlp file
             // FIXME: what if we don't want a signed jar?
             jnlpJarFilesResults.insert(0, "        <jar href=\""
@@ -585,6 +593,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 CodeGeneratorUtilities.substitute(_templateDirectory
                         + "modelJnlp.htm.in", _substituteMap, _outputDirectory
                         + "/" + _sanitizedModelName + ".htm");
+            } else {
+                CodeGeneratorUtilities.substitute(_templateDirectory
+                        + "modelJnlp.htm.in", _substituteMap, _outputDirectory
+                        + "/" + _sanitizedModelName + "JNLP.htm");
             }
             CodeGeneratorUtilities.substitute(_templateDirectory
                     + "model.jnlp.in", _substituteMap, jnlpSourceFileName);

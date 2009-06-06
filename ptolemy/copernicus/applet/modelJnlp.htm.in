@@ -14,6 +14,9 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
 
 <CENTER>
 <!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
 <APPLET 
    code = "ptolemy.vergil.VergilApplet"
    codebase = "@codeBase@"
