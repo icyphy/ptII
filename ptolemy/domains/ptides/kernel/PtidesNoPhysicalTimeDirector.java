@@ -211,13 +211,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
                 } else {
                     result = false;
                 }
-            } else {
-//                if (events == null) {
-//                    events = new PriorityQueue<Tag>();
-//                }
-//                events.add(new Tag(event.timeStamp(), event.microstep()));
-//                _eventAtPort.put(port, events);
-            }
+            } 
         }
         
         // the event at this input port is the smallest among them all, so we take it
