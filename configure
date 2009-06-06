@@ -1937,8 +1937,8 @@ fi
 
 
 # Java does not find things in c:/program files/java
-{ echo "$as_me:$LINENO: checking if your path has 'program files/java' instead of 'Program Files/Java'" >&5
-echo $ECHO_N "checking if your path has 'program files/java' instead of 'Program Files/Java'... $ECHO_C" >&6; }
+{ echo "$as_me:$LINENO: checking if your path has 'program files/java' instead of 'Program Files/Java' " >&5
+echo $ECHO_N "checking if your path has 'program files/java' instead of 'Program Files/Java' ... $ECHO_C" >&6; }
 echo "$PATH" | egrep 'program files/java' > /dev/null
 status=$?
 if test "$status" -eq 0 ; then
