@@ -86,37 +86,6 @@ public class PtidesBasicDirector extends Director {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-    /** Generate the code for the firing of actors.
-     *  In this base class, it is attempted to fire all the actors once.
-     *  In subclasses such as the helpers for SDF and Giotto directors, the
-     *  firings of actors observe the associated schedule. In addition,
-     *  some special handling is needed, e.g., the iteration limit in SDF
-     *  and time advancement in Giotto.
-     *  @return The generated code.
-     *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating fire code for the actor.
-     */
-    /*
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment("The firing of the director."));
-
-        Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-
-            Actor actor = (Actor) actors.next();
-            code.append(_eol + "void* " +
-                    CodeGeneratorHelper.generateName((NamedObj) actor) + "(void* arg) {" + _eol);
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(helper.generateFireCode());
-            code.append(helper.generateTypeConvertFireCode());
-
-            //code.append("}" + _eol);
-        }
-        return code.toString();
-    }*/
 
     /** Generate the initialize code for the associated PtidesEmbedded director.
      *  @return The generated initialize code.
