@@ -66,7 +66,14 @@ MISC_FILES =    $(DIRS) \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	doc \
+	'PropertyDisplayActions$$ClearDisplay.class' \
+	'PropertyDisplayActions$$ClearProperty.class' \
+	'PropertyDisplayActions$$ConfigureHighlightAction.class' \
+	'PropertyDisplayActions$$EditHighlightDialog.class' \
+	'PropertyDisplayActions$$HighlighterController.class' \
+	'PropertyDisplayActions$$HighlightProperty.class' \
+	'PropertyDisplayActions$$ShowProperty.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

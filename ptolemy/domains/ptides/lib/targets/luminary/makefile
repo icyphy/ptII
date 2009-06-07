@@ -50,7 +50,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	GPInputDevice.java \
 	GPInputDeviceD.java \
-	GPOutputDevice.java
+	GPOutputDevice.java \
+	SongWrapper.java \
+	SpeakerOutputDevice.java
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

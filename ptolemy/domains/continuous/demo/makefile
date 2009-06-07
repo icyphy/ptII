@@ -35,7 +35,8 @@ ME =		ptolemy/domains/continuous/demo
 ROOT =		../../../..
 
 DIRS =		CarTracking ContinuousInsideDE \
-		LevelCrossingDetector Lorenz NewtonsCradle Sinusoid Switch
+		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
+		Lorenz NewtonsCradle Sinusoid Switch
 
 CLASSPATH =	$(ROOT)
 
@@ -53,6 +54,7 @@ PTCLASSALLJARS = \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
 	Lorenz/Lorenz.jar \
 	LevelCrossingDetector/LevelCrossingDetector.jar \
+	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
 	NewtonsCradle/NewtonsCradle.jar \
 	Sinusoid/Sinusoid.jar \
 	Switch/Switch.jar 

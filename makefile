@@ -121,7 +121,8 @@ MISC_FILES = \
 	bin \
 	config \
 	lib \
-	mk
+	mk \
+	ptKeystore.properties
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -235,6 +236,7 @@ cleanDerivedJavaFiles:
 
 CLEAN_SHIPPING_FILES = \
 		autom4te.cache \
+		com/jgoodies \
 		com/microstar/xml/SAXDriver.* \
 		diva/build.xml \
 		diva/canvas/tutorial/doc-files \
@@ -242,6 +244,7 @@ CLEAN_SHIPPING_FILES = \
 		jni/launcher/launcher.exe \
 		jni/launcher/launcher.dSYM \
 		jni/launcher/launcher \
+		org \
 		lib/cachedir \
 		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/gui/run \
@@ -250,6 +253,7 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
 		ptolemy/actor/lib/security/test/foo.keystore \
+		ptolemy/cg \
 		ptolemy/codegen/chaco \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \

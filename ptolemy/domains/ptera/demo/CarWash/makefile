@@ -49,6 +49,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	CarWash.xml \
+	CarWash_DE.htm \
+	CarWash_DE.jnlp \
 	CarWash_DE.xml
 
 EXTRA_SRCS = \

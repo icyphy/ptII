@@ -77,6 +77,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'Event$$EventParameter.class' \
 	'Event$$RefiringData.class' \
+	'Event$$1.class' \
 	'PteraDirector$$1.class' \
 	'PteraDirector$$TimedEvent.class' \
 	'SchedulingRelation$$1.class'

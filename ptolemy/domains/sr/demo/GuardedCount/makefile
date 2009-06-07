@@ -48,14 +48,16 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	GuardedCount.htm \
 	GuardedCount.xml \
-	GuardedCountTimed.xml \
-	GuardedCountTimed.htm \
-	GuardedCountVergil.htm
+	GuardedCountTimed.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	GuardedCount.htm \
+	GuardedCountTimed.htm \
+	GuardedCountTimed.jnlp \
+	GuardedCountVergil.htm
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

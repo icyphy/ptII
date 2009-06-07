@@ -62,7 +62,8 @@ OTHER_FILES_TO_BE_JARED = \
 	modelVergil.htm.in \
 	runCommandTemplate.txt
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
+	updateDemos
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

@@ -51,14 +51,17 @@ OTHER_FILES_TO_BE_JARED = \
 	CarLightNormal.xml \
 	PedestrianLightNormal.xml \
 	TrafficLight.xml \
-	TrafficLight.htm \
 	TrafficLight_StateCharts.pdf \
 	TrafficLight_StateCharts.png \
-	WirelessDeployment.htm \
 	WirelessDeployment.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	TrafficLight.htm \
+	WirelessDeployment.htm \
+	WirelessDeployment.jnlp
+
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

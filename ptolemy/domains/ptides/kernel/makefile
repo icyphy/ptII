@@ -56,6 +56,7 @@ JSRCS = \
 	PtidesBasicReceiver.java \
 	PtidesNoPhysicalTimeDirector.java \
 	PtidesPreemptiveEDFDirector.java \
+	PtidesTopLevelDirector.java \
 	Tag.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -72,7 +73,11 @@ OPTIONAL_FILES = \
 	'PtidesBasicDirector$$Tag.class' \
 	'PtidesNoPhysicalTimeDirector$$DoubleTimedEvent.class' \
 	'PtidesNoPhysicalTimeDirector$$RealTimeEvent.class' \
-	'PtidesNoPhysicalTimeDirector$$Tag.class' 
+	'PtidesNoPhysicalTimeDirector$$Tag.class' \
+	'PtidesBasicDirector$$DoubleTimedEvent.class' \
+	'PtidesBasicDirector$$PortDependency.class' \
+	'PtidesBasicReceiver$$Event.class' \
+	'PtidesBasicReceiver$$TagComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

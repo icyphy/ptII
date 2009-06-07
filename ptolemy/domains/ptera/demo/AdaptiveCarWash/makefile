@@ -48,6 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	AdaptiveCarWash_FSM.htm \
+	AdaptiveCarWash_FSM.jnlp \
 	AdaptiveCarWash_FSM.xml \
 	AdaptiveCarWash.xml
 

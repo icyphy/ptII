@@ -57,7 +57,10 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
-	ProgramCodeGenerator.java
+	CodeStream.java \
+	ProgramCodeGenerator.java \
+	ProgramCodeGeneratorAdapter.java \
+	ProgramCodeGeneratorAdapterStrategy.java
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -71,7 +74,13 @@ MISC_FILES =	procedural
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	'CodeStream$$1.class' \
+	'CodeStream$$CodeBlockTable.class' \
+	'CodeStream$$Signature.class' \
+	'ProgramCodeGeneratorAdapterStrategy$$1.class' \
+	'ProgramCodeGeneratorAdapterStrategy$$Channel.class' \
+	'ProgramCodeGeneratorAdapterStrategy$$VariableScope.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

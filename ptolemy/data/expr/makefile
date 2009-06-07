@@ -157,6 +157,8 @@ OPTIONAL_FILES =  \
 	JJMatrixParserState.class \
 	MatrixParser.jj \
 	MatrixParser.java \
+	'ASTPtProductNode$$1.class' \
+	'ASTPtProductNode$$FunctionTerm.class' \
 	'CachedMethod$$1.class' \
 	'CachedMethod$$2.class' \
 	'CachedMethod$$3.class' \

@@ -59,7 +59,7 @@ JSRCS = \
 	MultiplyDivide.java \
 	Scale.java \
 	Source.java
-	
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -69,7 +69,12 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	doc \
+	'MultiplyDivide$$DivideFunctionTerm.class' \
+	'MultiplyDivide$$FunctionTerm.class' \
+	'MultiplyDivide$$MultiplyFunctionTerm.class' \
+	'Scale$$InputFunctionTerm.class' \
+	'Scale$$OutputFunctionTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

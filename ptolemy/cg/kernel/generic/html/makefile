@@ -50,7 +50,8 @@ PTCLASSJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	HTMLCodeGenerator.java
+	HTMLCodeGenerator.java \
+	HTMLCodeGeneratorAdapter.java
 
 OTHER_FILES_TO_BE_JARED = 
 

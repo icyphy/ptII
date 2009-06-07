@@ -94,9 +94,15 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'Configure$$Listener.class' \
 	'Configure$$Query.class' \
+	'DebuggerParameter$$1.class' \
+	'DebuggerParameter$$Mode$$1.class' \
+	'DebuggerParameter$$Mode$$2.class' \
+	'DebuggerParameter$$Mode$$3.class' \
+	'DebuggerParameter$$Mode.class' \
 	'EventUtils$$1.class' \
 	'Plot$$1.class' \
 	'ReceiveInput$$InputListener.class' \
+	'Report$$1.class' \
 	'Report$$Mode$$1.class' \
 	'Report$$Mode$$2.class' \
 	'Report$$Mode$$3.class' \
@@ -108,6 +114,7 @@ OPTIONAL_FILES = \
 	'SetTableau$$TableauState$$2.class' \
 	'SetTableau$$TableauState$$3.class' \
 	'SetTableau$$TableauState.class' \
+	'SetTableau$$1.class' \
 	'TableauParameter$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
