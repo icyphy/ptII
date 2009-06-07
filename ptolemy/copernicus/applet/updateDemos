@@ -12,21 +12,53 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+     #echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
 
-     if [ -f  $modelPath/$model.htm ]; then
-         awk -v jnlpFile=$model.jnlp '{ if ($0 ~ /<!-- HTML CONVERTER -->/) {
-	        sawHTMLConverter = 1
-	        print "<!-- PT JNLP CONVERTER -->";
-                print "<a href=\"" jnlpFile "\">Run the demo using Web Start</a>";
-	    } else if ($0 ~ /<!-- \/HTML CONVERTER -->/) {
-	        sawHTMLConverter = 0 
-	        print "<!-- /PT JNLP CONVERTER -->";
-	    } else if (sawHTMLConverter == 0) {
-	        print $0
-            }  
+     #rm $modelPath/$model.htm
+     #svn update $modelPath/$model.htm
+     if [ -f  $modelPath/$model.htm -a -f $modelPath/${model}JNLP.htm ]; then
+         awk '{ if ($0 ~ /<!-- PT JNLP CONVERTER -->/) {
+                   exit;
+                } 
+                print $0
           }' $modelPath/$model.htm > /tmp/$model.htm
 
+
+	 awk '{if ($0 ~ /<!-- PT JNLP APPLET CONVERTER -->/) {
+                  sawJNLPAppletConverter = 1
+               }
+               if (sawJNLPAppletConverter == 1) {
+                  print $0
+               }
+               if ($0 ~ /<!-- \/PT JNLP APPLET CONVERTER -->/) {
+                  exit
+               }
+              }' $modelPath/${model}JNLP.htm >> /tmp/$model.htm
+
+         awk '{ if (sawJNLPConverter == 1) {
+                   print $0
+                }
+                if ($0 ~ /<!-- \/PT JNLP CONVERTER -->/) {
+                   sawJNLPConverter = 1;
+                } 
+           }' $modelPath/$model.htm >> /tmp/$model.htm
+
+
+#          awk -v jnlpFile=$model.jnlp '{ if ($0 ~ /<!-- HTML CONVERTER -->/) {
+# 	        sawHTMLConverter = 1
+# 	        print "<!-- PT JNLP CONVERTER -->";
+#                 print "<a href=\"" jnlpFile "\">Run the demo using Web Start</a>";
+# 	    } else if ($0 ~ /<!-- \/HTML CONVERTER -->/) {
+# 	        sawHTMLConverter = 0 
+# 	        print "<!-- /PT JNLP CONVERTER -->";
+# 	    } else if (sawHTMLConverter == 0) {
+# 	        print $0
+#             }  
+#           }' $modelPath/$model.htm > /tmp/$model.htm
+
           #diff /tmp/$model.htm $modelPath/$model.htm
+	  #cp /tmp/$model.htm $modelPath/$model.htm
+	  echo $modelPath/$model.htm
+	  
      fi
 done
