@@ -266,7 +266,6 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/codegen/kernel/newInterfaces \
 		ptolemy/codegen/kernel/test/substitute.out \
 		ptolemy/codegen/newinterface \
-		ptolemy/codegen/util \
 		ptolemy/codegen/vhdl \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
 		ptolemy/copernicus/jhdl \
