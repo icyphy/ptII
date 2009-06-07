@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/openRTOS/domains
 
-DIRS =      fsm giotto pn
+DIRS =      fsm giotto pn sdf
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../..
@@ -52,7 +52,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	fsm/fsm.jar \
 	giotto/giotto.jar \
-	pn/pn.jar
+	pn/pn.jar \
+	sdf/sdf.jar
 
 JSRCS =
 EXTRA_SRCS =    $(JSRCS)

@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Codegen C Domains Sr Lib Gui
+# Makefile for Java Ptolemy Codegen C Targets Mpi kernel
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
-# $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
+# $Id$
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,9 +29,9 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/c/domains/sr/lib/gui
+ME =        ptolemy/codegen/c/targets/mpi/kernel/parameterized
 
-DIRS =      
+DIRS =      directorFunctions
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../..
@@ -43,19 +43,18 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     gui
+PTPACKAGE =     parametrized
 
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	directorFunctions/directorFunctions.jar
 
-JSRCS = \
-	NonStrictDisplay.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -65,8 +64,7 @@ MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-    doc
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

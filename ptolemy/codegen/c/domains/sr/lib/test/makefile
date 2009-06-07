@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Small World Ptalon demo
+# Makefile for the Java classes used to test CGC actors
 #
-# @Authors: Christopher Hylands (makefile only)
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2005-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,11 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/ptalon/demo/SmallWorld
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/codegen/c/domains/sdf/lib/test
 
-# Root of the Java directory
-ROOT =		../../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -40,66 +41,53 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	SmallWorld
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	Initiator.xml \
-	ParameterSweepSmallWorldFSM.xml \
-	ParameterSweepSmallWorldSDF.xml \
-	RelayNode.xml \
-	SmallWorldMultiInstanceComposite.xml \
-	SmallWorldPtalonActor.xml \
-	SmallWorld.ptln \
-	SmallWorld.xml
+# Non-graphical Java tests written in Tcl
+JSIMPLE_TESTS = \
+	dummy.tcl
 
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	ParameterSweepSmallWorldFSM.htm \
-	ParameterSweepSmallWorldSDF.htm \
-	SmallWorldMultiInstanceComposite.htm
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) \
+	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =	alljtests.tcl \
+	auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	output \
-	doc
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
-all: jclass
-	@echo "To run all the demos, run 'make demo'"
+# to run 'make tests' to run the tests.
 
-install: all $(PTCLASSJAR)
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
-demo: demo_applet demo_ptolemy demo_vergil
+test_java: jclass
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer SmallWorld.htm
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" SmallWorld.xml
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_codegen
+	$(JTCLSH) alljtests.tcl
 
-demo_vergil:
-	"$(PTII)/bin/vergil" SmallWorld.xml
-
-diff:
-	diff dataOut0_0.txt output
-	diff dataOut1_0.txt output
-	diff dataOut0_1.txt output
-	diff dataOut1_1.txt output
-
-KRUFT = dataOut*.txt
+# 'make clean' removes $(KRUFT)
+KRUFT = 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

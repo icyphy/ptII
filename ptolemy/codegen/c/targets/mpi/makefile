@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/mpi
 
-DIRS =      actor domains
+DIRS =      actor domains kernel
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
@@ -51,11 +51,16 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
 	actor/actor.jar \
-	domains/domains.jar
+	domains/domains.jar \
+	kernel/kernel.jar
 
 JSRCS = \
 	MpiTarget.java
-EXTRA_SRCS =    $(JSRCS)
+
+OTHER_FILES_TO_BE_JARED = \
+	MpiTarget.c
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -64,7 +69,8 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	demo \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
