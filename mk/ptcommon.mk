@@ -644,7 +644,7 @@ checkjunk:
 		$(OPTIONAL_FILES) $(JSRCS) makefile SCCS CVS \
 		README.txt package.html \
 		$(JCLASS) $(OBJS) $(LIBR) $(PTDISTS) \
-		$(PTCLASSJAR) $(PTCLASSALLJAR) $(PTAUXALLJAR)
+		$(PTCLASSJAR) $(PTCLASSALLJAR) $(PTAUXALLJAR) signed_$(PTCLASSJAR) $(PTPACKAGE).jnlp $(PTPACKAGE).htm
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
