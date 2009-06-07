@@ -22,9 +22,27 @@ applet is displayed on a XGA screen-->
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
  -->
-<!-- PT JNLP CONVERTER -->
-<a href="FourierSeries.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer FourierSeries.xml">
+  <PARAM NAME = "NAME" VALUE = "FourierSeries" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "FourierSeries.xml" > \
+  <a href="FourierSeries.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
 The <a href="FourierSeriesVergil.htm">block diagram</a>
 for the model was constructed using the Ptolemy II schematic editor

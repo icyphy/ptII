@@ -19,9 +19,27 @@ applet is displayed on a XGA screen-->
      section is for IE, the second is for Netscape
  -->
 <h3>Play Original Speech</h3>
-<!-- PT JNLP CONVERTER -->
-<a href="SynthesizedVoice.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer SynthesizedVoice.xml">
+  <PARAM NAME = "NAME" VALUE = "SynthesizedVoice" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "SynthesizedVoice.xml" > \
+  <a href="SynthesizedVoice.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 
 <h3>Play Synthesized Speech</h3>
 <!-- PT JNLP CONVERTER -->

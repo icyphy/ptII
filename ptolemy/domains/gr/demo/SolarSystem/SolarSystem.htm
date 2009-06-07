@@ -27,9 +27,27 @@ applet is displayed on a XGA screen-->
         that causes XP to hang when exiting.  For details, see
         http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
  -->
-<!-- PT JNLP CONVERTER -->
-<a href="SolarSystem.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/gr/demo/SolarSystem/SolarSystem.jar,ptolemy/data/data.jar,ptolemy/domains/gr/gr.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/gr/demo/SolarSystem/SolarSystem.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer SolarSystem.xml">
+  <PARAM NAME = "NAME" VALUE = "SolarSystem" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "SolarSystem.xml" > \
+  <a href="SolarSystem.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
 This applet is implemented in MoML, as shown in a 
 The <a href="SolarSystemVergil.htm">Vergil block diagram</a>.

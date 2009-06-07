@@ -15,9 +15,27 @@ applet is displayed on a XGA screen-->
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape
  -->
-<!-- PT JNLP CONVERTER -->
-<a href="Sinusoid.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/continuous/demo/Sinusoid/Sinusoid.jar,ptolemy/domains/continuous/continuous.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/continuous/demo/Sinusoid/Sinusoid.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Sinusoid.xml">
+  <PARAM NAME = "NAME" VALUE = "Sinusoid" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Sinusoid.xml" > \
+  <a href="Sinusoid.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </center>
 <p>
 This model shows one way to generate a sinuoid using a marginally stable

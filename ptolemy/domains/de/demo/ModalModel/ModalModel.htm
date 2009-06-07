@@ -15,9 +15,27 @@ applet is displayed on a XGA screen-->
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape
  -->
-<!-- PT JNLP CONVERTER -->
-<a href="ModalModel.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/de/demo/ModalModel/ModalModel.jar,ptolemy/data/data.jar,ptolemy/domains/de/de.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/de/demo/ModalModel/ModalModel.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ModalModel.xml">
+  <PARAM NAME = "NAME" VALUE = "ModalModel" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "ModalModel.xml" > \
+  <a href="ModalModel.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </center>
 <P>
 This modal model has two modes, "clean" and "noisy".

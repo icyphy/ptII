@@ -13,9 +13,27 @@
 The ModelExecution model shown using Vergil, the Ptolemy II schematic editor:
 
 <CENTER>
-<!-- PT JNLP CONVERTER -->
-<a href="ModelExecution.jnlp">Run the demo using Web Start</a>.
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/actor/gt/demo/ModelExecution/ModelExecution.jar,ptolemy/actor/gt/gt.jar,ptolemy/vergil/ptera/ptera.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/ptera/ptera.jar,ptolemy/data/data.jar,ptolemy/domains/de/de.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/vergil/gt/gt.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/gt/gt.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/actor/gt/demo/ModelExecution/ModelExecution.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-fullViewer ModelExecution.xml">
+  <PARAM NAME = "NAME" VALUE = "ModelExecution" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "ModelExecution.xml" > \
+  <a href="ModelExecution.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
 </p>
 </BODY>

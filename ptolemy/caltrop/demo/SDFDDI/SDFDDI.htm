@@ -13,9 +13,27 @@
 The SDFDDI model shown using Vergil, the Ptolemy II schematic editor:
 
 <CENTER>
-<!-- PT JNLP CONVERTER -->
-<a href="SDFDDI.jnlp">Run the demo using Web Start</a>.
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../.."
+   archive = "ptolemy/caltrop/demo/SDFDDI/SDFDDI.jar,ptolemy/caltrop/caltrop.jar,lib/saxon8-dom.jar,lib/saxon8.jar,lib/java_cup.jar,ptolemy/data/data.jar,lib/ptCal.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/caltrop/demo/SDFDDI/SDFDDI.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer SDFDDI.xml">
+  <PARAM NAME = "NAME" VALUE = "SDFDDI" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "SDFDDI.xml" > \
+  <a href="SDFDDI.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
 </p>
 </BODY>

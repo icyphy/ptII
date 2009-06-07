@@ -25,9 +25,27 @@ The Barrier model shown using Vergil, the Ptolemy II schematic editor:
         that causes XP to hang when exiting.  For details, see
         http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
  -->
-<!-- PT JNLP CONVERTER -->
-<a href="Barrier.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/csp/demo/Barrier/Barrier.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/csp/csp.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/csp/demo/Barrier/Barrier.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Barrier.xml">
+  <PARAM NAME = "NAME" VALUE = "Barrier" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Barrier.xml" > \
+  <a href="Barrier.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
 </p>
 </BODY>

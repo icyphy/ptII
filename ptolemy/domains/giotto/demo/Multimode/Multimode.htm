@@ -18,9 +18,27 @@ is given below:
 <CENTER>
 <P>
 
-<!-- PT JNLP CONVERTER -->
-<a href="Multimode.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/giotto/demo/Multimode/Multimode.jar,ptolemy/domains/giotto/giotto.jar,ptolemy/data/data.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/giotto/demo/Multimode/Multimode.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Multimode.xml">
+  <PARAM NAME = "NAME" VALUE = "Multimode" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Multimode.xml" > \
+  <a href="Multimode.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
 This model contains three components, all of which have frequency one.
 The middle component is defined by the following FSM:

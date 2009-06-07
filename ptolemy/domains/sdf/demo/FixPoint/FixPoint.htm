@@ -12,9 +12,27 @@ fixed point, and then further quantizes the fixed point numbers.
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape
  -->
-<!-- PT JNLP CONVERTER -->
-<a href="FixPoint.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/sdf/demo/FixPoint/FixPoint.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/FixPoint/FixPoint.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer FixPoint.xml">
+  <PARAM NAME = "NAME" VALUE = "FixPoint" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "FixPoint.xml" > \
+  <a href="FixPoint.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </center>
 <P>
 The precision of the first fixed-point conversion is controlled by the

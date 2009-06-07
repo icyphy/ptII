@@ -13,9 +13,27 @@
 The VQSequenceDisplay model shown using Vergil, the Ptolemy II schematic editor:
 
 <CENTER>
-<!-- PT JNLP CONVERTER -->
-<a href="VQSequenceDisplay.jnlp">Run the demo using Web Start</a>.
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../../.."
+   archive = "ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jar,ptolemy/domains/sdf/lib/vq/vq.jar,ptolemy/data/data.jar,ptolemy/domains/sdf/lib/vq/data/data.jar,ptolemy/ptsupport.jar,ptolemy/actor/lib/jai/jai.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer VQSequenceDisplay.xml">
+  <PARAM NAME = "NAME" VALUE = "VQSequenceDisplay" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "VQSequenceDisplay.xml" > \
+  <a href="VQSequenceDisplay.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
 </p>
 </BODY>

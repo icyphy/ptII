@@ -13,9 +13,27 @@ This model illustrates a continuous-time model of the Ptolemaic universe mechani
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape
 -->
-<!-- PT JNLP CONVERTER -->
-<a href="Universe.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/gr/demo/Universe/Universe.jar,ptolemy/data/data.jar,ptolemy/domains/gr/gr.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/gr/demo/Universe/Universe.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer Universe.xml">
+  <PARAM NAME = "NAME" VALUE = "Universe" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Universe.xml" > \
+  <a href="Universe.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </center>
 <p>
 See the <a href="UniverseVergil.htm">block diagram definition</a>.
