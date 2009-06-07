@@ -116,6 +116,7 @@ jni/launcher/launcher
 jni/test/jni
 junk
 lib/cachedir
+lib/bsh-2.0b4.jar
 lib/javax.comm.properties
 lib/kepler-configs.jar
 lib/kepler-icons.jar
