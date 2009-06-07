@@ -233,8 +233,12 @@ public class StringUtilities {
                     + "(-sandbox always causes this)");
             
         }
-        // Non-zero indicates a problem.
-        System.exit(returnValue);
+
+        if (!inApplet()) {
+            // Only call System.exit if we are not in an applet.
+            // Non-zero indicates a problem.
+            System.exit(returnValue);
+        }
     }
 
     /** Return a number of spaces that is proportional to the argument.
@@ -473,6 +477,19 @@ public class StringUtilities {
         }
 
         return property;
+    }
+
+    /** Return true if we are in an applet.
+     *  True if we are running in an applet.   
+     */
+    public static boolean inApplet() {
+        boolean inApplet = false;
+        try {
+            StringUtilities.getProperty("HOME");
+        } catch (SecurityException ex) {
+            inApplet = true;
+        }
+        return inApplet;
     }
 
     /** Merge the properties in lib/ptII.properties with the current

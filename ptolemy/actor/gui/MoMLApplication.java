@@ -179,16 +179,9 @@ public class MoMLApplication implements ExecutionListener {
             // The exception is: Exception in thread "AWT-EventQueue-1" java.security.AccessControlException: access denied (java.io.FilePermission C:\WINDOWS\Fonts\TAHOMA.TTF read)
             // Unfortunately, it occurs well *after* the l&f is set.
             String javaVersion = StringUtilities.getProperty("java.version");
-            boolean inApplet = false;
-            try {
-                StringUtilities.getProperty("HOME");
-            } catch (SecurityException ex) {
-                inApplet = true;
-            }
-
             if (javaVersion.compareTo("1.6.0") > 0 
                     && javaVersion.compareTo("1.6.0_14") < 0
-                    && inApplet) {
+                    && StringUtilities.inApplet()) {
                 System.out.println("Warning: skipping setting the look and "
                         + "feel in Java version " + javaVersion
                         + " because it causes problems under applets under "
