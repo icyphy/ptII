@@ -233,11 +233,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             _piggybacks = new LinkedList<Executable>();
         }
         _piggybacks.add(piggyback);
-        NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
-            // We want to piggy back on a opaque CompositeActor
-            ((CompositeActor) container)._addDerivedPiggyback(piggyback);
-        }
     }
 
     /** Clone the actor into the specified workspace. The new object is
@@ -1231,6 +1226,18 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     piggyback.preinitialize();
                 }
             }
+
+            // Fill in derived piggy backs
+            if (_derivedPiggybacks == null) {
+                _derivedPiggybacks = new HashSet<Executable>();
+            } else {
+                _derivedPiggybacks.clear();
+            }
+            _getTransparentActorPiggybacks(_derivedPiggybacks, false);
+            if (_derivedPiggybacks.isEmpty()) {
+                _derivedPiggybacks = null;
+            }
+
             if (_derivedPiggybacks != null) {
                 // Invoke the preinitialize() method of each piggyback.
                 for (Executable piggyback : _derivedPiggybacks) {
@@ -1332,11 +1339,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (_piggybacks.size() == 0) {
                 _piggybacks = null;
             }
-        }
-        NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
-            // We need to remove the piggyback on the parent opaque CompositeActor
-            ((CompositeActor) container)._removeDerivedPiggyback(piggyback);
         }
     }
 
@@ -1677,32 +1679,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             int multiplicity) {
         _actorFiring(new FiringEvent(null, this, type, multiplicity));
     }
-
-
-    /** Add the specified object to the list of objects whose action
-     *  methods should be invoked upon invocation of the corresponding
-     *  actions methods of this object. The difference with addPiggyback
-     *  is that is called by contained transparent CompositeActors, that
-     *  need to communicate the piggyback to its containing opaque
-     *  CompositeActor.
-     *  @param piggyback The piggyback object.
-     *  @see #addPiggyback(Executable)
-     *  @see #_removeDerivedPiggyback(Executable)
-     *  @see #removePiggyback(Executable)
-     */
-     protected void _addDerivedPiggyback(Executable piggyback) {
-         if (isOpaque()) {
-             if (_derivedPiggybacks == null) {
-                 _derivedPiggybacks = new HashSet<Executable>();
-             }
-             _derivedPiggybacks.add(piggyback);
-         } else {
-             NamedObj container = getContainer();
-             if (container instanceof CompositeActor) {
-                 ((CompositeActor) container)._addDerivedPiggyback(piggyback);     
-             }             
-         }
-    }
      
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
@@ -1726,17 +1702,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
 
         super._addEntity(entity);
-        
-        // Get the derived piggybacks
-        if (entity instanceof CompositeActor && !entity.isOpaque()) {
-            if (_derivedPiggybacks == null) {
-                _derivedPiggybacks = new HashSet<Executable>();
-            }
-            ((CompositeActor) entity)._getTransparentActorPiggybacks(_derivedPiggybacks, true);
-            if (_derivedPiggybacks.isEmpty()) {
-                _derivedPiggybacks = null;
-            }
-        }
     }
 
     /** Add a port to this actor. This overrides the base class to
@@ -1811,35 +1776,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
-    /** Remove the specified object from the list of objects whose action
-     *  methods should be invoked upon invocation of the corresponding
-     *  actions methods of this object. If the specified object is not
-     *  on the list, do nothing. The difference with addPiggyback
-     *  is that is called by contained transparent CompositeActors, that
-     *  need to communicate the piggyback to its containing opaque
-     *  CompositeActor.
-     *  @param piggyback The piggyback object.
-     *  @see #addPiggyback(Executable)
-     *  @see #_addDerivedPiggyback(Executable)
-     *  @see #removePiggyback(Executable)
-     */
-    protected void _removeDerivedPiggyback(Executable piggyback) {
-        if (isOpaque()) {
-            if (_derivedPiggybacks != null) {
-                _derivedPiggybacks.remove(piggyback);
-                if (_derivedPiggybacks.size() == 0) {
-                    _derivedPiggybacks = null;
-                }
-            }
-        } else {
-            NamedObj container = getContainer();
-            if (container instanceof CompositeActor) {
-                ((CompositeActor) container)._removeDerivedPiggyback(piggyback);     
-            }                         
-        }
-        //TODO derived piggybacks
-    }
-
     /** Set the local director for execution of this CompositeActor.
      *  This should not be called be directly.  Instead, call setContainer()
      *  on the director.  This method removes any previous director
@@ -1874,56 +1810,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (executiveDirector != null) {
                 executiveDirector.invalidateSchedule();
             }
-        }
-        if (oldDirector == null && director != null) {
-            // This CompositeActor has become opaque. Hence we need to update
-            // the piggyback since these are work for opaque CompositeActor.
-            // What needs to be done is register the add piggyback at this level
-            // and remove them forom higher levels.
-            
-            // _piggybacks are no longer derived for higher levels.
-            NamedObj container = getContainer();
-            if (container instanceof CompositeActor) {
-                if (_piggybacks != null) {
-                    for (Executable piggyback : _piggybacks) {
-                        ((CompositeActor) container)._removeDerivedPiggyback(piggyback);
-                    }
-                }            
-            }
-            assert(_derivedPiggybacks == null);
-            Set<Executable> derivedPiggybacks = new HashSet<Executable>();
-            _getTransparentActorPiggybacks(derivedPiggybacks, false);
-            if (container instanceof CompositeActor) {
-                for (Executable piggyback : derivedPiggybacks) {
-                    ((CompositeActor) container)._removeDerivedPiggyback(piggyback);
-                }
-            }
-            if (!derivedPiggybacks.isEmpty()) {
-                _derivedPiggybacks = derivedPiggybacks;
-            }
-        } else if (oldDirector != null && director == null) {
-            // This CompositeActor has become transparent. Hence we need to update
-            // the piggyback since these are work for opaque CompositeActor.
-            
-            // All derived piggybacks should now become derived piggybacks from
-            // the container and all piggyback should become derived piggybacks from
-            // the container.
-            NamedObj container = getContainer();
-            if (container instanceof CompositeActor) {
-                if (_derivedPiggybacks != null) {
-                    for (Executable piggyback : _derivedPiggybacks) {
-                        // We want to piggy back on a opaque CompositeActor
-                        ((CompositeActor) container)._addDerivedPiggyback(piggyback);
-                    }
-                }
-                if (_piggybacks != null) {
-                    for (Executable piggyback : _piggybacks) {
-                        // We want to piggy back on a opaque CompositeActor
-                        ((CompositeActor) container)._addDerivedPiggyback(piggyback);
-                    }
-                }
-            }
-            _derivedPiggybacks = null;
         }
     }
 
