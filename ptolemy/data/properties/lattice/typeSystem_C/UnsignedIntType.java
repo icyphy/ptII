@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A base class representing a property.
 
  @author Thomas Mandl
- @version $Id: Dynamic.java,v 1.1 2007/06/26 16:48:54 mankit Exp $
+ @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)

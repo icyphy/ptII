@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.domains.continuous.lib.Integrator.
 
  @author Man-Kit Leung
- @version $Id: Integrator.java 53211 2009-04-24 02:59:19Z mankit $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

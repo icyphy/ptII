@@ -39,7 +39,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  A class that represents dynamic property in the flatUnitSystem lattice.
 
  @author Man-Kit Leung
- @version $Id: Unknown.java 53046 2009-04-10 23:04:25Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)

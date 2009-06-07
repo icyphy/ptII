@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.domains.modal.kernel.FSMActor.
 
  @author Man-Kit Leung
- @version $Id: FSMActor.java 53046 2009-04-10 23:04:25Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

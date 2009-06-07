@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.Const.
 
  @author Charles Shelton
- @version $Id: Const.java 53211 2009-04-24 02:59:19Z mankit $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
