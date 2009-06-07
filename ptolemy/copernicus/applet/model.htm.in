@@ -87,19 +87,19 @@ applet is displayed on a XGA screen-->
         ');
     else document.writeln('\
         <APPLET \
-            code = "ptolemy.actor.gui.MoMLApplet" \
-            codebase = "@codeBase@" \
-            archive = "@modelJarFiles@" \
-            width = "@appletWidth@" \
-            height = "@appletHeight@" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
+           code = "ptolemy.actor.gui.MoMLApplet" \
+           codebase = "@codeBase@" \
+           archive = "@modelJarFiles@" \
+           width = "@appletWidth@" \
+           height = "@appletHeight@" \
+           > \
+           <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
 	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
 	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "@sanitizedModelName@.xml" > \
-            <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
-        </APPLET> \
+           <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
+       </APPLET> \
         ');
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
