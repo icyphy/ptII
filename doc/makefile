@@ -878,8 +878,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/java/actor/lib/*.java \
 			../ptolemy/codegen/kernel/*.java \
 			../ptolemy/codegen/kernel/userMacro/*.java \
-			../ptolemy/codegen/vhdl/actor/lib/vhdl/*.java \
-			../ptolemy/codegen/vhdl/kernel/*.java \
 			../ptolemy/domains/curriculum/*.java \
 			../ptolemy/domains/ci/kernel/*.java \
 			../ptolemy/domains/ci/lib/*.java \

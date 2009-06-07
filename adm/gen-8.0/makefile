@@ -185,13 +185,16 @@ release_fortytwo_remote4_test:
 
 ####
 release_sisyphus:
-	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar
 
 release_sisyphus_setup:
-	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
 
 release_sisyphus_remote4_test:
-	make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar remote4_test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_Test
+
+release_sisyphus_update_ftp:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
 
 ####
 release_windows:

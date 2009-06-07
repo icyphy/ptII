@@ -64,8 +64,9 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	doc/doc.jar \
 	properties/properties.jar \
-	run/run.jar \
 	style/style.jar
+
+#	run/run.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

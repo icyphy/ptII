@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Codegen C Targets OpenRTOS Domains FSM
+# Makefile for Java Ptolemy Codegen C Targets OpenRTOS Domains SDF
 #
 # @Authors: Christopher Brooks
 #
@@ -43,7 +43,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     fsm
+PTPACKAGE =     sdf
 
 PTCLASSJAR =
 
