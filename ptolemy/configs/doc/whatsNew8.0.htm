@@ -3,7 +3,7 @@
 <!-- $Id$ -->
 <!--
 
-This file has pointers to tours of what's new in version 7.0
+This file has pointers to tours of what's new in version 8.0
 
 The version number should match
 ptolemy.kernel.attributes.VersionAttribute.CURRENT_VERSION
@@ -207,6 +207,13 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <h2><a name="features">Additional Features</a></h2>
 
 <ul>
+<li>Experiment graph layout support using <a href="http://rtsys.informatik.uni-kiel.de/trac/kieler/wiki/Releases/Layout">Kieler</a>, from University of Kiel.
+To invoke the layout tool, pass the <code>-layout</code> option
+to vergil: <code>$PTII/bin/vergil -layout</code>.  When
+invoked in this manner, the Vergil graph viewer has a button
+labeled "layout" in the toolbar which will layout the graph.
+  <br>Miro Spoenemann (University of Kiel), Hauke Fuhrmann (University of Kiel)
+
 <li>Vergil and Ptplot now handle an optional <code>-printPDF</code>
   command line argument.  This option finds the first printer with the
   string <code>PDF</code> in the name and then prints to that printer.
