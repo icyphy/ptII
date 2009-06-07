@@ -55,7 +55,7 @@ import ptolemy.moml.Vertex;
  * order to perform multiple changes at once for performance.
  * 
  * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
- * @version $Id: PtidesTopLevelDirector.java 54093 2009-06-02 16:16:05Z bldmastr $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
