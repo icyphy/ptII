@@ -890,34 +890,21 @@ that will have settings for the source location.  Instead, use <code>svn cp</cod
 See also <code>svn mv</code>.
 
 <h3><a name="#debugTclTests">Debugging Tcl Tests</a></h3>
+See <a href="testing.htm">Testing Ptolemy II</a> for details.
 <ol>
-<li> Go to Windows -&gt; Open Perspective -&gt; Java.
+<li> In Eclipse, go to Run -&gt; Debug Configurations
+<li> Select Java Application and then click the New icon.
+<li> In the Main tab, set the "Name:" to ptjacl, in "Main class:", enter <code>tcl.lang.Shell</code>.
+<li> <i>Optional:</i> In the Arguments tab, under "Program arguments", enter <code>alljtests.tcl</code> or any individual test tcl file. 
+(E.g. </code>SimpleDelay.tcl</code>).
+Or, leave the "Program arguments" field blank and when ptjacl is running (see below), enter text in to the Eclipse console. 
 
-<li> In Package Explorer, locate ptjacl.jar -&gt; tcl.lang -&gt;
-Shell.class -&gt;  Shell and highlight it.
-<blockquote>
-	For some reason Eclipse sometimes hides certain jar files.
-	In  this case you have to add new a Debug Configuration (in the
-	menu <i>Run -&gt; Debug Configurations...</i>) in Eclipse similar as
-	the decription in section <a href="#runningPtolemy">Running Ptolemy II</a>,
-	then  choose the ptII project as Project and use <i>tcl.lang.Shell</i>
-	as Main class. The remaining steps are described below.
-</blockquote>
-	
-
-<li> Go to Run -&gt; Debug...
-
-<li> Select Arguments tag.
-
-<li> In Program arguments, put alljtests.tcl or any individual test tcl file. 
- <br>(E.g. SimpleDelay.tcl)
-
-<li> In VM arguments, put <CODE>-Dptolemy.ptII.dir=<I>your PtII directory</I></CODE>
-<br>(E.g. <CODE>-Dptolemy.ptII.dir=c:\hyzheng\ptII</CODE>).<br /> In case your directory path contains
-spaces, you need to use quotes. (E.g. <CODE>-Dptolemy.ptII.dir="c:\my workspace\ptII"</CODE>).
+<li> <i>Optional:</i> In the Arguments tab, under "VM arguments", enter <CODE>-Dptolemy.ptII.dir=<I>your PtII directory</I></CODE>
+<br>(E.g. <CODE>-Dptolemy.ptII.dir=c:/hyzheng/ptII</CODE>).<br /> In case your directory path contains
+spaces, you need to use quotes. (E.g. <CODE>-Dptolemy.ptII.dir="c:/my workspace/ptII"</CODE>).
 
 
-<li> Select Local directory, browse to the directory containing the tcl 
+<li> In the "Working directory:" pane, select "Other:", browse to the directory containing the tcl 
 tests.
  <br> (E.g. <CODE>C:\hyzheng\ptII\ptolemy\domains\de\lib\test</CODE>)
 
