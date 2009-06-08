@@ -41,7 +41,7 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 210.0}">
             </property>
-            <property name="minDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{1.0}">
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -115,7 +115,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 135.890625}">
             </property>
-            <property name="minDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{1.0}">
             </property>
         </port>
         <entity name="Test" class="ptolemy.actor.lib.Test">
