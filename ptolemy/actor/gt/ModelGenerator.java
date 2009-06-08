@@ -115,9 +115,17 @@ public class ModelGenerator extends Source {
                 _parser.reset();
                 try {
                     entity = (Entity) _parser.parse(momlString);
-                } catch (Exception e) {
-                    throw new IllegalActionException(this,
-                            "Unable to parse moml.");
+                } catch (SecurityException ex) {
+                    // MoMLParser.parse(String) will fail in an unsigned applet.
+                    try {
+                        entity = (Entity) _parser.parse(null, momlString);
+                    } catch (Exception ex1) {
+                        throw new IllegalActionException(this, ex,
+                                "Unable to parse moml:\n" + momlString);
+                    }
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Unable to parse moml:\n" + momlString);
                 }
             } else {
                 if (_emptyModel == null) {
