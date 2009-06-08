@@ -31,6 +31,7 @@ import java.util.Set;
 
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -415,6 +416,25 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     protected String _generateFireCode() throws IllegalActionException {
         return _strategy._generateFireCode();
+    }
+    
+
+    /**
+     * Generate the type conversion statement for the particular offset of
+     * the two given channels. This assumes that the offset is the same for
+     * both channel. Advancing the offset of one has to advance the offset of
+     * the other.
+     * @param source The given source channel.
+     * @param sink The given sink channel.
+     * @param offset The given offset.
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable with the given offset.
+     * @exception IllegalActionException If there is a problem getting the
+     * adapters for the ports or if the conversion cannot be handled.
+     */
+    protected String _generateTypeConvertStatement(Channel source,
+            Channel sink, int offset) throws IllegalActionException {    
+        return _strategy._generateTypeConvertStatement(source, sink, offset);
     }
     
     ///////////////////////////////////////////////////////////////////

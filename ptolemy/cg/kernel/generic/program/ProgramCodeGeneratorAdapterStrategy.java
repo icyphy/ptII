@@ -375,6 +375,16 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return _generateBlockByName(_defaultBlocks[0]);
     }
 
+    /** Generate sanitized name for the given named object. Remove all
+     *  underscores to avoid conflicts with systems functions.
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The sanitized name.
+     */
+    final public static String generateSimpleName(NamedObj namedObj) {
+        String name = StringUtilities.sanitizeName(namedObj.getName());
+        return name.replaceAll("\\$", "Dollar");
+    }
+    
     /**
      * Generate the type conversion fire code. This method is called by the
      * Director to append necessary fire code to handle type conversion.
@@ -2132,7 +2142,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 DFUtilities.getTokenConsumptionRate(source.port));
 
         for (int offset = 0; offset < rate || (offset == 0 && rate == 0); offset++) {
-            statements.append(_generateTypeConvertStatement(
+            statements.append(_adapter._generateTypeConvertStatement(
                     source, sink, offset));
         }
         return processCode(statements.toString());
