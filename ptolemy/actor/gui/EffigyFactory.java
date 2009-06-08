@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.security.AccessControlException;
 import java.util.Iterator;
 
 import ptolemy.kernel.CompositeEntity;
@@ -124,7 +125,14 @@ public class EffigyFactory extends CompositeEntity {
         InputStream stream = null;
         try {
             stream = input.openStream();
+        } catch (AccessControlException ex) {
+            // Applets will throw this.
+            AccessControlException exception = new AccessControlException("Failed to open \""
+                    + input + "\"");
+            exception.initCause(ex);
+            throw exception;
         } catch (IOException ex) {
+
             // If we are running under Web Start, we
             // might have a URL that refers to another
             // jar file.
