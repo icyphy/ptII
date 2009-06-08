@@ -7,8 +7,12 @@
 <!-- href is needed so that web start can cache the app and
      it will appear in the desktop icon
 -->
-<jnlp codebase="file:/Users/cxh/ptII/"
-      href="file:/Users/cxh/ptII/ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.jnlp"> 
+<!-- jnlp codebase="file:/Users/cxh/ptII/"
+     codebase="file:./../../../../../"
+      href="file:/Users/cxh/ptII/ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.jnlp" --> 
+<jnlp
+      codebase="file:./../../../../.." 
+      href="ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.jnlp">
   <information>
 	  <title>MapReduceDDF</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
@@ -20,71 +24,93 @@
   <security> 
         <all-permissions/>
   </security> 
+
   <resources>
         <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
   	<j2se version="1.5+" max-heap-size="500m" />
 	<!-- Start Jars -->
         <jar href="ptolemy/actor/gt/demo/MapReduce/signed_MapReduceDDF.jar"
-             size="3256"
+             size="3653"
              main="true"/>
+        <jar href="signed/org/mlc/mlc.jar"
+             size="140808"
+             download="eager"/>
         <jar href="signed/ptolemy/domains/ptera/ptera.jar"
-             size="121282"
+             size="121273"
              download="eager"/>
         <jar href="signed/ptolemy/ptsupport.jar"
-             size="3369233"
-             download="eager"/>
-        <jar href="signed/ptolemy/domains/de/de.jar"
-             size="74415"
+             size="3379818"
              download="eager"/>
         <jar href="signed/ptolemy/data/data.jar"
-             size="418379"
+             size="418380"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/de/de.jar"
+             size="74431"
              download="eager"/>
         <jar href="signed/ptolemy/actor/gt/gt.jar"
-             size="289073"
+             size="288610"
              download="eager"/>
         <jar href="signed/ptolemy/domains/ddf/ddf.jar"
              size="28579"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/sdf/sdf.jar"
-             size="129535"
-             download="eager"/>
         <jar href="signed/ptolemy/actor/ptalon/antlr/antlr.jar"
-             size="458773"
+             size="458768"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/vergil.jar"
-             size="882349"
+             size="882390"
+             download="eager"/>
+        <jar href="signed/ptolemy/actor/gui/run/run.jar"
+             size="69670"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/ptera/ptera.jar"
-             size="25441"
+             size="25426"
              download="eager"/>
-        <jar href="signed/ptolemy/actor/ptalon/ptalon.jar"
-             size="119089"
+        <jar href="signed/com/jgoodies/jgoodies.jar"
+             size="93551"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/modal/modal.jar"
-             size="156725"
-             download="eager"/>
-        <jar href="signed/ptolemy/domains/ct/ct.jar"
-             size="145022"
-             download="eager"/>
-        <jar href="signed/lib/diva.jar"
-             size="509849"
-             download="eager"/>
-        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
-             size="155952"
+        <jar href="signed/ptolemy/domains/sdf/sdf.jar"
+             size="129522"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/gt/gt.jar"
-             size="192972"
+             size="193318"
              download="eager"/>
-        <jar href="signed/ptolemy/vergil/vergilApplet.jar"
-             size="872704"
+        <jar href="signed/ptolemy/actor/ptalon/ptalon.jar"
+             size="119077"
+             download="eager"/>
+        <jar href="signed/lib/bsh-2.0b4.jar"
+             size="300546"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/modal/modal.jar"
+             size="156800"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/ct/ct.jar"
+             size="145024"
+             download="eager"/>
+        <jar href="signed/lib/diva.jar"
+             size="509831"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+             size="155950"
+             download="eager"/>
+        <jar href="signed/ptolemy/vergil/gt/gt.jar"
+             size="193318"
+             download="eager"/>
+        <jar href="signed/ptolemy/vergil/vergil.jar"
+             size="882390"
              download="eager"/>
 
 	<!-- End Jars -->
   </resources>
-  <application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
+  <!--application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
 	<argument>-fullViewer</argument>
 	<argument>MapReduceDDF.xml</argument>
-  </application-desc>
-  <!-- Need to deal with Java 3D -->
+  </application-desc -->
+  <applet-desc 
+         name="MapReduceDDF Applet"
+         main-class="ptolemy.vergil.VergilApplet"
+         width="600"
+         height="1250">
+   </applet-desc>
+
 
 </jnlp>

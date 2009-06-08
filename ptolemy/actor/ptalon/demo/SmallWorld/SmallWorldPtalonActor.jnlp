@@ -9,14 +9,14 @@
 -->
 <!-- jnlp codebase="file:/Users/cxh/ptII/"
      codebase="file:./../../../../../"
-      href="file:/Users/cxh/ptII/ptolemy/actor/gt/demo/PublisherTest/PublisherTest.jnlp" --> 
+      href="file:/Users/cxh/ptII/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldPtalonActor.jnlp" --> 
 <jnlp
       codebase="file:./../../../../.." 
-      href="ptolemy/actor/gt/demo/PublisherTest/PublisherTest.jnlp">
+      href="ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldPtalonActor.jnlp">
   <information>
-	  <title>PublisherTest</title>
+	  <title>SmallWorldPtalonActor</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
-	  <description kind="tooltip">PublisherTest</description>
+	  <description kind="tooltip">SmallWorldPtalonActor</description>
 	  <icon href="doc/img/PtolemyIISmall.gif"/>
 	  <homepage href="file:/Users/cxh/ptII/"/>
 	  <offline-allowed/>
@@ -29,15 +29,9 @@
         <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
   	<j2se version="1.5+" max-heap-size="500m" />
 	<!-- Start Jars -->
-        <jar href="ptolemy/actor/gt/demo/PublisherTest/signed_PublisherTest.jar"
-             size="3092"
+        <jar href="ptolemy/actor/ptalon/demo/SmallWorld/signed_SmallWorldPtalonActor.jar"
+             size="2709"
              main="true"/>
-        <jar href="signed/org/mlc/mlc.jar"
-             size="140808"
-             download="eager"/>
-        <jar href="signed/ptolemy/domains/ptera/ptera.jar"
-             size="121273"
-             download="eager"/>
         <jar href="signed/ptolemy/ptsupport.jar"
              size="3379818"
              download="eager"/>
@@ -47,23 +41,8 @@
         <jar href="signed/ptolemy/data/data.jar"
              size="418380"
              download="eager"/>
-        <jar href="signed/ptolemy/actor/gt/gt.jar"
-             size="288610"
-             download="eager"/>
-        <jar href="signed/ptolemy/vergil/gt/gt.jar"
-             size="193318"
-             download="eager"/>
-        <jar href="signed/ptolemy/actor/gui/run/run.jar"
-             size="69670"
-             download="eager"/>
-        <jar href="signed/ptolemy/vergil/ptera/ptera.jar"
-             size="25426"
-             download="eager"/>
-        <jar href="signed/com/jgoodies/jgoodies.jar"
-             size="93551"
-             download="eager"/>
-        <jar href="signed/lib/bsh-2.0b4.jar"
-             size="300546"
+        <jar href="signed/ptolemy/domains/wireless/wireless.jar"
+             size="72011"
              download="eager"/>
         <jar href="signed/ptolemy/domains/modal/modal.jar"
              size="156800"
@@ -77,9 +56,6 @@
         <jar href="signed/ptolemy/domains/fsm/fsm.jar"
              size="155950"
              download="eager"/>
-        <jar href="signed/ptolemy/vergil/gt/gt.jar"
-             size="193318"
-             download="eager"/>
         <jar href="signed/ptolemy/vergil/vergil.jar"
              size="882390"
              download="eager"/>
@@ -87,11 +63,11 @@
 	<!-- End Jars -->
   </resources>
   <!--application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
-	<argument>-fullViewer</argument>
-	<argument>PublisherTest.xml</argument>
+	<argument>-ptinyViewer</argument>
+	<argument>SmallWorldPtalonActor.xml</argument>
   </application-desc -->
   <applet-desc 
-         name="PublisherTest Applet"
+         name="SmallWorldPtalonActor Applet"
          main-class="ptolemy.vergil.VergilApplet"
          width="600"
          height="1250">
