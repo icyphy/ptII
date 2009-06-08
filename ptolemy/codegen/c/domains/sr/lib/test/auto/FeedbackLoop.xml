@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FeedbackLoop" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1104, 18, 910, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 18, 910, 468}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 350]">
     </property>
@@ -32,28 +32,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 190.0}">
         </property>
     </property>
-    <entity name="NonStrictDisplay3" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 495, 330, 237}, maximized=false}">
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{510, 35}">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="output from Ramp">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 45.0]">
-        </property>
-    </entity>
+    </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 125.0}">
-        </property>
-    </entity>
-    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={486, 515, 330, 237}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="output from NonStrictDelay">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 165.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -73,21 +59,35 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 125.0]">
         </property>
     </entity>
-    <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 493, 330, 237}, maximized=false}">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="output from AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 55.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 45.0]">
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 4, 7, 11, 16, 22, 29, 37, 46, 56, 67, 79, 92, 106, 121, 137, 154, 172, 191}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 70.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 2, 4, 7, 11, 16, 22, 29, 37, 46, 56, 67, 79, 92, 106, 121, 137, 154, 172}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 155.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[290.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[380.0, 155.0]">
         </vertex>
     </relation>
@@ -97,13 +97,13 @@
         <vertex name="vertex1" value="{150.0, 110.0}">
         </vertex>
     </relation>
-    <link port="NonStrictDisplay3.input" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="NonStrictDisplay.input" relation="relation5"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="NonStrictDelay.input" relation="relation3"/>
     <link port="NonStrictDelay.output" relation="relation5"/>
-    <link port="NonStrictDisplay2.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="NonStrictTest3.input" relation="relation5"/>
 </entity>
