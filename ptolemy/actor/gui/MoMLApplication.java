@@ -522,7 +522,6 @@ public class MoMLApplication implements ExecutionListener {
             // processing absolute URLs this way.  Relative
             // URLs are opened as ordinary files.
             specURL = new URL(null, spec);
-
             // Make sure that the specURL actually exists
             InputStream urlStream = specURL.openStream();
             urlStream.close();
@@ -555,7 +554,6 @@ public class MoMLApplication implements ExecutionListener {
                 }
 
                 specURL = absoluteFile.getCanonicalFile().toURI().toURL();
-
                 //InputStream urlStream = specURL.openStream();
                 //urlStream.close();
                 return specURL;
@@ -991,12 +989,16 @@ public class MoMLApplication implements ExecutionListener {
 
                     try {
                         inURL = specToURL(arg);
-                    } catch (Exception ex) {
+                 } catch (Exception ex) {
                         try {
-                            inURL = new URL(new URL("file://./"), arg);
-                        } catch (Exception ex2) {
+                            // Create a File and get the URL so that commands like
+                            // $PTII/bin/vergil $PTII/doc/index.htm#in_browser work.
                             File inFile = new File(arg);
                             inURL = inFile.toURI().toURL();
+                        } catch (Exception ex2) {
+                            // FIXME: This is a fall back for relative filenames,
+                            // I'm not sure if it will ever be called.
+                            inURL = new URL(new URL("file://./"), arg);
                         }
                     }
 
