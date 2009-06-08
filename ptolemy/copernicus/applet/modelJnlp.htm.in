@@ -25,7 +25,7 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
    height = "@appletHeight@"
    >
   <PARAM name="jnlp_href" value="@targetPath@@sanitizedModelName@.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "@configurationName@ @sanitizedModelName@.xml">
+  <PARAM NAME = "commandLineArguments" VALUE = "@configurationName@ @targetPath@@sanitizedModelName@.xml">
   <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" >
   <PARAM NAME = "background" VALUE = "#ffffff" >
   <PARAM NAME = "controls" VALUE = "buttons" >

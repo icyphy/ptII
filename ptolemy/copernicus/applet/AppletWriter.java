@@ -1358,6 +1358,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             auxiliaryClassMap.put("ptera lib Plot needs DEDirector",
                     "ptolemy/domains/de/de.jar");
+
+            auxiliaryClassMap.put("Interfaces need gui run run jar",
+                    "ptolemy/actor/gui/run/run.jar");
+
+            auxiliaryClassMap.put("run needs jgoodies",
+                    "com/jgoodies/jgoodies.jar");
+
+            auxiliaryClassMap.put("run needs mlc",
+                    "org/mlc/mlc.jar");
+
+            auxiliaryClassMap.put("run needs bsh",
+                    "lib/bsh-2.0b4.jar");
+
             _configurationName = "-fullViewer";
         }
 

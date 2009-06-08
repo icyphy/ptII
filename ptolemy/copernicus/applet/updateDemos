@@ -12,16 +12,16 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     #echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
 
      #rm $modelPath/$model.htm
      #svn update $modelPath/$model.htm
      #if [ -f  $modelPath/$model.htm ]; then
-	 rm $modelPath/$model.htm
-	 svn update $modelPath/$model.htm
-	 sed -e "s@ptinyViewer [^>]*>@ptinyViewer $targetPath/$model.xml\">@" \
-	     -e "s@fullViewer [^>]*>@fullViewer $targetPath/$model.xml\">@" \
-	     $modelPath/$model.htm > /tmp/$model.htm 
+# 	 rm $modelPath/$model.htm
+# 	 svn update $modelPath/$model.htm
+# 	 sed -e "s@ptinyViewer [^>]*>@ptinyViewer $targetPath/$model.xml\">@" \
+# 	     -e "s@fullViewer [^>]*>@fullViewer $targetPath/$model.xml\">@" \
+# 	     $modelPath/$model.htm > /tmp/$model.htm 
 
 #     if [ -f  $modelPath/$model.htm -a -f $modelPath/${model}JNLP.htm ]; then
 #          awk '{ if ($0 ~ /<!-- PT JNLP CONVERTER -->/) {
@@ -63,10 +63,10 @@ do
 #             }  
 #           }' $modelPath/$model.htm > /tmp/$model.htm
 
-          diff /tmp/$model.htm $modelPath/$model.htm
-	  cp /tmp/$model.htm $modelPath/$model.htm
-	  ls -l /tmp/$model.htm $modelPath/$model.htm
-	  echo $modelPath/$model.htm
+#          diff /tmp/$model.htm $modelPath/$model.htm
+#	  cp /tmp/$model.htm $modelPath/$model.htm
+#	  ls -l /tmp/$model.htm $modelPath/$model.htm
+#	  echo $modelPath/$model.htm
 	  
      #fi
 done

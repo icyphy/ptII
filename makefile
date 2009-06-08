@@ -236,7 +236,6 @@ cleanDerivedJavaFiles:
 
 CLEAN_SHIPPING_FILES = \
 		autom4te.cache \
-		com/jgoodies \
 		com/microstar/xml/SAXDriver.* \
 		diva/build.xml \
 		diva/canvas/tutorial/doc-files \
@@ -244,10 +243,8 @@ CLEAN_SHIPPING_FILES = \
 		jni/launcher/launcher.exe \
 		jni/launcher/launcher.dSYM \
 		jni/launcher/launcher \
-		org \
 		lib/cachedir \
 		ptolemy/apps ptolemy/actor/lib/ptp \
-		ptolemy/actor/gui/run \
 		ptolemy/actor/gui/test/CustomQueryExample.tar.gz \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
