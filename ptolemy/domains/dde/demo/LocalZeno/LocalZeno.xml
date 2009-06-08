@@ -10,19 +10,35 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 55.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 0, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 1275, 826}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1062, 716]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{531.0, 358.0}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Default inferred width to 1"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225, 45}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the localization of Zeno conditions in the Distributed Discrete Event (DDE) domain. The demo consists of two&#10;topologically identical branches connected to a clock source actor. Each branch contains a feedback loop and is fed identical tokens from&#10;the clock source. As with all feedback loops in DDE (and DE) models, a positive time delay is necessary in feedback loops to prevent&#10;deadlock. If the time delay of a given loop is lower bounded by zero but can not be guaranteed to be greater than a fixed positive value,&#10;then a Zeno condition occurs in which time will cease to advance even though the actors of the feedback loop continue to execute without&#10;deadlocking.&#10;&#10;In centralized discrete event systems, Zeno conditions prevent progress in the entire simulation. This is true because the feedback cycle&#10;experiencing the Zeno condition prevents time from advancing in the entire model. In contrast, distributed systems localize Zeno conditions&#10;as much as possible based on the topology of the system. Thus, as shown in the demo above, a Zeno condition can exist in one section of a&#10;topology without impacting the entire system.&#10;&#10;In the above model, the bottom branch experiences a Zeno condition as soon as time advances to 45. This causes the the bottom branch to continue&#10;execution long after the top branch has ceased execution, even though the clock source sends identical data to both branches. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 400.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that for convenience the lower branch only approximates a&#10;Zeno condition. It has been deliberately designed to eventually&#10;end the Zeno condition and complete execution.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 340.0]">
         </property>
     </property>
     <entity name="Clock" class="ptolemy.domains.dde.demo.LocalZeno.ListenClock">
@@ -86,9 +102,9 @@
     <entity name="upperPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 503, 508, 255}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={805, 51, 485, 187}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 207]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[485, 143]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -99,17 +115,20 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>upperPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
 <xRange min="5.0" max="90.0"/>
 <yRange min="0.0" max="0.0"/>
+<default marks="dots"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="lowerPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 501, 482, 257}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={805, 242, 309, 183}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[474, 209]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[309, 139]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -120,8 +139,11 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>lowerPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
 <xRange min="5.0" max="50.0"/>
 <yRange min="0.0" max="0.0"/>
+<default marks="dots"/>
 </plot>?>
         </configure>
     </entity>
