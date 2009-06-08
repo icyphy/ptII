@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalTrafficLight" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 625}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1032, 767}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 515]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 634]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5416666666667, 241.6770833333333}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5416666666667, 301.1770833333333}">
     </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 45.0]">
@@ -212,9 +212,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Our design should make it impossible to have the car light and pedestrain&#10;light be green at the same time (this might lead to accidents). We can use&#10;Formal Model Converter to convert the Ptolemy II model into a Kripke structure&#10;and use model checking techniques to verify correctness.&#10;&#10;Specification (copy the formula below after double clicking the pink box):&#10;!EF ( TrafficLight.CarLightNormal.state = Cgrn &amp; TrafficLight.PedestrianLightNormal.state = Pgreen)    &#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Our design should make it impossible to have the car light and pedestrain&#10;light be green at the same time (this might lead to accidents). We can use&#10;the RTMaudeCodeGenerator to convert the Ptolemy II model into a&#10;Real-Time Maude model and then use the Real-Time Maude model-checker&#10;to verify correctness:&#10;&#10;- Double click on the RTMaudeCodeGenerator box.&#10;- Choose a &quot;codeDirectory&quot;: directory where the generated code will reside.&#10;- Unselect all options except &quot;generateComment&quot;.&#10;- Copy the following CTL formula in the &quot;Safety Property&quot; field:&#10;[] ~ ('HierarchicalTrafficLight | ('Pgrn = # 1, 'Cgrn = # 1) )&#10;The above formula states that it is never the case for both the pedestrian&#10;(&quot;Pgrn&quot;) and car (&quot;Cgrn&quot;) lights to be simultaneously green.&#10;- Copy the following CTL formula in the &quot;Alternation Property&quot; field:&#10;[]&lt;&gt; ('HierarchicalTrafficLight | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; ('HierarchicalTrafficLight | ('Pgrn = # 0, 'Cgrn = # 1))&#10;- Click &quot;Generate&quot;: you should obtain a new file &quot;HierarchicalTrafficLight.rtmaude&quot;&#10;- Copy the files &quot;ptolemy-base.maude&quot; and &quot;ptolemy-exp.maude&quot; from &quot;ptolemy\codegen\rtmaude&quot;&#10;to the same directory where the file &quot;HierarchicalTrafficLight.rtmaude&quot; resides.&#10;- Run Real-Time Maude by invoking: /myPath/myMaude real-time-maude.maude&#10;- Within Maude, issue: load HierarchicalTrafficLight.rtmaude&#10;- After a bunch of messages, you should get that both formulas check true.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 300.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -222,7 +222,11 @@
         </property>
     </property>
     <property name="RTMaudeCodeGenerator" class="ptolemy.codegen.rtmaude.kernel.RTMaudeCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="file:/Users/kquine/Projects/NAOMI/ptolemy-rtm/">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="file:/C:/Documents%20and%20Settings/owner/Desktop/">
+        </property>
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 250.0]">
         </property>
