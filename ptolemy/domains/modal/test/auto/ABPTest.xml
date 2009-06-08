@@ -188,7 +188,7 @@
             </property>
         </port>
         <entity name="uniform" class="ptolemy.actor.lib.Uniform">
-            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
             </property>
             <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="minimumDelay">
             </property>
@@ -492,6 +492,8 @@
             </property>
         </entity>
         <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+            </property>
             <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
             </property>
             <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="1.0 - lossProbability">
@@ -1013,7 +1015,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.325284090909, 193.0312499999999}">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="9">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="11">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1032,7 +1034,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, -35.0]">
                 </property>
             </property>
-            <property name="trying" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="trying" class="ptolemy.data.expr.Parameter" value="true">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1397,7 +1399,7 @@
         </port>
     </entity>
     <entity name="Message Generator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 115.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After a random delay, generate the&#10;next integer in a counting sequence.">
@@ -1501,6 +1503,8 @@
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
