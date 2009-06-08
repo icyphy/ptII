@@ -4,13 +4,13 @@
 <entity name="HierarchicalTrafficLight" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={354, 55, 1032, 842}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={354, 55, 1032, 713}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 709]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 580]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5416666666667, 338.6770833333333}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5416666666667, 274.1770833333333}">
     </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 45.0]">
@@ -112,7 +112,7 @@
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
         </property>
     </property>
-    <property name="Cred" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -131,7 +131,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 25.0]">
         </property>
     </property>
-    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -150,7 +150,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 45.0]">
         </property>
     </property>
-    <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -212,13 +212,13 @@
         </property>
     </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
-        <property name="target" class="ptolemy.data.expr.FileParameter" value="htl.rtmaude">
+        <property name="target" class="ptolemy.data.expr.FileParameter" value="test.kripke">
             <display name="Target File"/>
         </property>
-        <property name="modelType" class="ptolemy.data.expr.ChoiceParameter" value="Real-time Maude Translation(under SR or DE)">
+        <property name="modelType" class="ptolemy.data.expr.ChoiceParameter" value="Kripke Structures (Acceptable by NuSMV under SR)">
             <display name="Model Type"/>
         </property>
-        <property name="formula" class="ptolemy.data.expr.StringParameter" value="           [] ~ ('Train @ 'within /\ 'Gate @ 'open)">
+        <property name="formula" class="ptolemy.data.expr.StringParameter" value="!EF ( TrafficLight.CarLightNormal.state = Cgrn &amp; TrafficLight.PedestrianLightNormal.state = Pgreen)    ">
             <display name="Temporal Formula"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
@@ -229,7 +229,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Our design should make it impossible to have the car light and pedestrain&#10;light be green at the same time (this might lead to accidents). We can use&#10;Formal Model Converter to convert the Ptolemy II model into a model that&#10;can be fed into a model-checker to verify correctness.&#10;&#10;Using the Formal Model Converter with the model-checker NuSMV:&#10;&#10;- Follow the same instructions as for the RailroadControl demo, except that:&#10;- copy the following CTL formula in the Temporal Formula field:&#10;!EF ( TrafficLight.CarLightNormal.state = Cgrn &amp; TrafficLight.PedestrianLightNormal.state = Pgreen)    &#10;- unfortunately NuSMV (version 2.4.3) does not seem to be able to handle the fact that&#10;in the generated model (stored in toto.kripke, say), MODULE Clock() has a single&#10;state and this state is assigned to. To correct this: edit tot.kripke and remove&#10;the section ASSIGN from MODULE Clock(): i.e., remove all text from &quot;ASSIGN&quot; until the&#10;first &quot;esac;&quot;. Then NuSMV manages to check the model and finds the property to hold.&#10;&#10;Using the RTMaudeCodeGenerator with the model-checker Real-Time Maude:&#10;Open the model HierarchicalTrafficLight.xml under ptolemy/codegen/rtmaude/demo/&#10;and follow the instructions there.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Our design should make it impossible to have the car light and pedestrain&#10;light be green at the same time (this might lead to accidents). We can use&#10;Formal Model Converter to convert the Ptolemy II model into a model that&#10;can be fed into a model-checker to verify correctness.&#10;&#10;Using the Formal Model Converter with the model-checker NuSMV:&#10;&#10;- Follow the same instructions as for the RailroadControl demo, except that:&#10;- copy the following CTL formula in the Temporal Formula field:&#10;!EF ( TrafficLight.CarLightNormal.state = Cgrn &amp; TrafficLight.PedestrianLightNormal.state = Pgreen)    &#10;- unfortunately NuSMV (version 2.4.3) does not seem to be able to handle the fact that&#10;in the generated model (stored in toto.kripke, say), MODULE Clock() has a single&#10;state and this state is assigned to. To correct this: edit tot.kripke and remove&#10;the section ASSIGN from MODULE Clock(): i.e., remove all text from &quot;ASSIGN&quot; until the&#10;first &quot;esac;&quot;. Then NuSMV manages to check the model and finds the property to hold.&#10;&#10;Using the RTMaudeCodeGenerator with the model-checker Real-Time Maude:&#10;Open the model HierarchicalTrafficLight under ptolemy/codegen/rtmaude/demo/&#10;and follow the instructions there.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
         </property>
@@ -358,7 +358,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 180.0]">
         </property>
-        <property name="number" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="number" class="ptolemy.data.expr.Parameter" value="15">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>

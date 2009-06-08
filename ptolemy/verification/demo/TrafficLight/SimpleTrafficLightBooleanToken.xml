@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 270.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 280.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -236,7 +236,7 @@
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
     </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
-        <property name="target" class="ptolemy.data.expr.FileParameter" value="test.kripke">
+        <property name="target" class="ptolemy.data.expr.FileParameter" value="stlbt.kripke">
             <display name="Target File"/>
         </property>
         <property name="modelType" class="ptolemy.data.expr.ChoiceParameter" value="Kripke Structures (Acceptable by NuSMV under SR)">
