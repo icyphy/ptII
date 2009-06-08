@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.lib.Const;
@@ -44,9 +45,11 @@ import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.dde.kernel.DDEDirector;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
@@ -234,21 +237,21 @@ public class LocalZenoApplet extends PtolemyApplet {
         // Set up ports, relations and connections
         Relation clkRelation = toplevel.connect(_clock.output, _join1.input);
         _join2.input.link(clkRelation);
-
-        toplevel.connect(_join1.output, _fork1.input);
-        toplevel.connect(_fork1.output1, _rcvr1.input);
+                
+        _fixWidth(toplevel.connect(_join1.output, _fork1.input));        
+        _fixWidth(toplevel.connect(_fork1.output1, _rcvr1.input));
         toplevel.connect(_fork1.output2, _fBack1.input);
         toplevel.connect(_fBack1.output, _join1.input);
 
-        toplevel.connect(_join2.output, _fork2.input);
-        toplevel.connect(_fork2.output1, _rcvr2.input);
+        _fixWidth(toplevel.connect(_join2.output, _fork2.input));
+        _fixWidth(toplevel.connect(_fork2.output1, _rcvr2.input));
         toplevel.connect(_fork2.output2, _fBack2.input);
         toplevel.connect(_fBack2.output, _join2.input);
 
-        toplevel.connect(_fork1.output1, _upperTime.trigger);
+        _fixWidth(toplevel.connect(_fork1.output1, _upperTime.trigger));
         toplevel.connect(_upperTime.output, _upperPlotter.input);
 
-        toplevel.connect(_fork2.output1, _lowerTime.trigger);
+        _fixWidth(toplevel.connect(_fork2.output1, _lowerTime.trigger));
         toplevel.connect(_lowerTime.output, _lowerPlotter.input);
 
         //System.out.println(toplevel.exportMoML());
@@ -340,6 +343,16 @@ public class LocalZenoApplet extends PtolemyApplet {
             System.out.println(e);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _fixWidth(ComponentRelation connect) throws IllegalActionException {
+        if (connect instanceof IORelation) {
+            ((IORelation) connect).setWidth(1);
+        }        
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
