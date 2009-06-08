@@ -61,7 +61,7 @@ sensors.</text></svg></configure>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.5, 276.0}">
     </property>
-    <property name="RadioRange" class="ptolemy.data.expr.Parameter" value="50.0">
+    <property name="radioRange" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
