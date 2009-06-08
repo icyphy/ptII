@@ -40,9 +40,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 996, 738}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 27, 841, 734}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 628]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[841, 628]">
     </property>
     <property name="level1" class="ptolemy.data.expr.Parameter" value="0.5">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -126,7 +126,7 @@ from transient states.
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.5, 314.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{420.5, 314.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
