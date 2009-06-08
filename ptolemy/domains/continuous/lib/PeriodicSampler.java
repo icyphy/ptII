@@ -39,6 +39,7 @@ import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// PeriodicSampler
@@ -123,6 +124,26 @@ public class PeriodicSampler extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PeriodicSampler newObject = (PeriodicSampler) super.clone(workspace);
+        newObject.output.setWidthEquals(newObject.input, true);
+
+        return newObject;
+    }
 
     /** Generate an output if the current time is one of the sampling
      *  times. The value of the event is the value of the input signal at the
