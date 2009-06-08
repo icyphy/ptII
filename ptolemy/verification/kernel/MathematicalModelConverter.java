@@ -142,10 +142,10 @@ public class MathematicalModelConverter extends Attribute {
         case Kripke:
             if (_model instanceof CompositeActor)
                 systemDescription.append(
-                        SMVUtility.advancedGenerateSMVDescription(
+                        SMVUtility.generateSMVDescription(
                                 (CompositeActor) _model.clone(),
-                                inputTemporalFormula, formulaType,
-                                variableSpanSize));
+                                inputTemporalFormula, formulaType.toString(),
+                                String.valueOf(variableSpanSize)));
             else // FSMActor
                 systemDescription.append(
                         ((FmvAutomaton)_model.clone()).convertToSMVFormat(
@@ -323,7 +323,7 @@ public class MathematicalModelConverter extends Attribute {
 
         if (_model instanceof CompositeActor) {
             return SMVUtility.generateGraphicalSpecification(
-                    (CompositeActor) _model, formulaType);
+                    (CompositeActor) _model, formulaType.toString());
         } else {
             throw new IllegalActionException(
                     "SMVUtility.generateGraphicalSpec error:\nModel not instance of CompositeActor");
