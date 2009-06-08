@@ -47,6 +47,7 @@ import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
@@ -409,6 +410,9 @@ public class VergilApplication extends MoMLApplication {
 
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
 
+        if (doc == null) {
+            throw new InternalErrorException("Configuration does not have a directory.doc entity?");
+        }
         doc.identifier.setExpression(introURL.toExternalForm());
 
         return configuration;
