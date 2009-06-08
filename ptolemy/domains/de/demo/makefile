@@ -34,7 +34,7 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		AssemblyLine Clock HierarchicalModel \
+DIRS =		AssemblyLine Clock \
 		Inspection LongRuns ModalModel \
 		QueueAndServer TimingParadox RealTimeComposite \
 		SmartSender VariableDelay
@@ -53,7 +53,6 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	AssemblyLine/AssemblyLine.jar \
 	Clock/Clock.xml \
-	HierarchicalModel/HierarchicalModel.jar \
 	Inspection/Inspection.jar \
 	ModalModel/ModalModel.jar \
 	LongRuns/LongRuns.jar \
