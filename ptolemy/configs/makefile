@@ -80,6 +80,7 @@ OTHER_FILES_TO_BE_JARED = \
 	fmvTableauFactory.xml \
 	graphEffigyFactory.xml \
 	graphTableauFactory.xml \
+	graphTableauFactoryPtiny.xml \
 	gtActorLibrary.xml \
 	gtEffigyFactory.xml \
 	gtLibrary.xml \
