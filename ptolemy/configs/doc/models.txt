@@ -159,7 +159,6 @@ $CLASSPATH/ptolemy/domains/modal/demo/Case/Case.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Starmac/Starmac.xml
-$CLASSPATH/ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.xml
 $CLASSPATH/ptolemy/domains/fsm/demo/ABP/ABP.xml
 $CLASSPATH/ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.xml
 $CLASSPATH/ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.xml
