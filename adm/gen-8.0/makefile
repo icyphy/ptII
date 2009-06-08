@@ -1317,6 +1317,10 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/vhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/xslt \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/eclipse/ast \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
@@ -1404,10 +1408,6 @@ NONJSALLCOREDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	ptolemy/backtrack/util \
-	ptolemy/backtrack/xmlparser \
-	ptolemy/backtrack/eclipse/ast \
-	ptolemy/backtrack \
 	ptolemy/copernicus/interpreted \
 	ptolemy/copernicus/shallow \
 	ptolemy/kernel \
