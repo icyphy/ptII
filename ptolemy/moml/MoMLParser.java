@@ -5567,8 +5567,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // derived object. Otherwise, we check to see whether the
         // container of the port is a derived object.
         int portContainerLevel = port.getContainer().getDerivedLevel();
+        int portLevel = port.getDerivedLevel();
+        
+        // The decision is slightly different if the port is immediately
+        // contained by the context because in that case we presume
+        // it is an inside link. Since an inside link can only occur
+        // with a relation deeply contained by the container of the
+        // port, there is no need to check whether both the relation
+        // and the link are derived by the same container. If they are
+        // both derived, then they are both derived.
+        if (port.getContainer() == context) {
+            return (portLevel < Integer.MAX_VALUE
+                    && (relation == null
+                       || relation.getDerivedLevel() < Integer.MAX_VALUE));
+        }
         boolean portIsInClass = (port.getContainer() == context)
-                ? (port.getDerivedLevel() < Integer.MAX_VALUE)
+                ? (portLevel < Integer.MAX_VALUE)
                 : (portContainerLevel < Integer.MAX_VALUE);
         if (portIsInClass) {
             if (relation == null) {
@@ -5592,16 +5606,33 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         return false;
                     }
                 }
-                NamedObj portContainer = port.getContainer();
-                while (portContainerLevel > 0) {
-                    // It's not clear to me how this occur, but if relationCaontiner
-                    // is null, then clearly there is no common container that
-                    // implies the two objects.
-                    if (portContainer == null) {
-                        return false;
+                NamedObj portContainer = port;
+                // Handle inside links slightly differently from outside links.
+                if (port.getContainer() == context) {
+                    // Inside link.
+                    while (portLevel > 0) {
+                        portContainer = portContainer.getContainer();
+                        portLevel--;
+                        // It's not clear to me how this occur, but if relationCaontiner
+                        // is null, then clearly there is no common container that
+                        // implies the two objects.
+                        if (portContainer == null) {
+                            return false;
+                        }
                     }
-                    portContainer = portContainer.getContainer();
-                    portContainerLevel--;
+                } else {
+                    // Outside link.
+                    portContainer = port.getContainer();
+                    while (portContainerLevel > 0) {
+                        // It's not clear to me how this occur, but if relationCaontiner
+                        // is null, then clearly there is no common container that
+                        // implies the two objects.
+                        if (portContainer == null) {
+                            return false;
+                        }
+                        portContainer = portContainer.getContainer();
+                        portContainerLevel--;
+                    }
                 }
                 if (relationContainer == portContainer) {
                     return true;
