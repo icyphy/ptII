@@ -4,7 +4,7 @@
 <entity name="RemoveNilTokens" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 656}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 815, 653}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 546]">
     </property>
@@ -62,7 +62,7 @@
         </property>
     </entity>
     <entity name="Data without nil tokens" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={674, 526, 334, 241}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={674, 526, 334, 234}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
@@ -243,7 +243,7 @@
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 115.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -269,12 +269,24 @@
         </port>
     </entity>
     <entity name="Data with nil tokens" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 280, 334, 241}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 280, 334, 234}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 60.0]">
         </property>
+    </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{560, 220}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -298,6 +310,8 @@
         <vertex name="vertex1" value="[160.0, 160.0]">
         </vertex>
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Const.output" relation="relation3"/>
     <link port="Data without nil tokens.input" relation="relation5"/>
     <link port="Ramp.output" relation="relation4"/>
@@ -313,10 +327,12 @@
     <link port="BooleanSwitch.input" relation="relation8"/>
     <link port="BooleanSwitch.control" relation="relation6"/>
     <link port="BooleanSwitch.trueOutput" relation="relation"/>
+    <link port="BooleanSwitch.falseOutput" relation="relation10"/>
     <link port="Bernoulli.output" relation="relation7"/>
     <link port="Stop.input" relation="relation"/>
     <link port="Const2.output" relation="relation8"/>
     <link port="RemoveNilTokens.input" relation="relation9"/>
     <link port="RemoveNilTokens.output" relation="relation5"/>
     <link port="Data with nil tokens.input" relation="relation9"/>
+    <link port="Discard.input" relation="relation10"/>
 </entity>

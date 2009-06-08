@@ -82,7 +82,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {27, 155, 991, 553}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 155, 991, 551}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 444]">
     </property>
@@ -127,7 +127,7 @@
     <property name="model ID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
         <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Jun 2, 2009 3:01:52 PM">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 14, 2004 12:29:18 PM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Jun 8, 2009 8:42:05 AM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
@@ -285,7 +285,7 @@ transmitted by 1 hop.</text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 280.0]">
         </property>
     </entity>
     <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
@@ -390,10 +390,22 @@ transmitted by 1 hop.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 390.0]">
         </property>
     </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 245}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[590.0, 280.0]">
+        <vertex name="vertex1" value="[550.0, 280.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -414,6 +426,8 @@ transmitted by 1 hop.</text></svg></configure>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="in" relation="relation6"/>
     <link port="report" relation="relation13"/>
     <link port="out" relation="relation"/>
@@ -431,8 +445,10 @@ transmitted by 1 hop.</text></svg></configure>
     <link port="BooleanSwitch.input" relation="relation6"/>
     <link port="BooleanSwitch.control" relation="relation7"/>
     <link port="BooleanSwitch.trueOutput" relation="relation4"/>
+    <link port="BooleanSwitch.falseOutput" relation="relation9"/>
     <link port="SetVariable.input" relation="relation5"/>
     <link port="Const.output" relation="relation8"/>
     <link port="Const.trigger" relation="relation6"/>
     <link port="SingleEvent.output" relation="relation2"/>
+    <link port="Discard.input" relation="relation9"/>
 </class>
