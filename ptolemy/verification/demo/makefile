@@ -33,7 +33,7 @@
 
 ME =		ptolemy/verification/demo
 
-DIRS =		RailroadControl TrafficLight iRobotHillClimbing
+DIRS =		RailroadControl TrafficLight
 
 # Root of the Java directory
 ROOT =		../../..
@@ -54,8 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	RailroadControl/RailroadControl.jar \
-	TrafficLight/TrafficLight.jar \
-	iRobotHillClimbing/iRobotHillClimbing.jar
+	TrafficLight/TrafficLight.jar
 
 # Keep this list alphabetized.
 JSRCS =
@@ -69,8 +68,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES = \
 	RailroadControl \
-	TrafficLight \
-	iRobotHillClimbing
+	TrafficLight
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
