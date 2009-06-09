@@ -140,24 +140,22 @@ public class StaticSchedulingDirector extends Director {
     }
 
     /** Calculate the current schedule, if necessary, and iterate the
-     *  contained actors in the order given by the schedule.  No
-     *  internal state of the director is updated during fire, so it
-     *  may be used with domains that require this property, such as
-     *  CT. <p>
+     *  contained actors in the order given by the schedule.
      *  Iterating an actor involves calling the actor's iterate() method,
      *  which is equivalent to calling the actor's prefire(), fire() and
      *  postfire() methods in succession.  If iterate() returns NOT_READY,
      *  indicating that the actor is not ready to execute, then an
      *  IllegalActionException will be thrown. The values returned from
      *  iterate() are recorded and are used to determine the value that
-     *  postfire() will return at the end of the director's iteration. <p>
-     *
-     *  This method may be overridden by some domains to perform additional
-     *  domain-specific operations.
+     *  postfire() will return at the end of the director's iteration.
+     *  NOTE: This method does not conform with the strict actor semantics
+     *  because it calls postfire() of actors. Thus, it should not be used
+     *  in domains that require a strict actor semantics, such as SR or
+     *  Continuous.
      *  @exception IllegalActionException If any actor executed by this
-     *  actor return false in prefire.
+     *   actor return false in prefire.
      *  @exception InvalidStateException If this director does not have a
-     *  container.
+     *   container.
      */
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here because if you do then
