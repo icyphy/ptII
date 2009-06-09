@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="iRobotCreateCodeGenExperimental" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 85.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="691.0">
         </property>
@@ -20,13 +20,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 43, 936, 686}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 136, 934, 679}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 569]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.6966849662162, 234.3700380067568}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.5, 284.5}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -35,7 +35,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chihhong Patrick Cheng &amp; Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 525.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,7 +45,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For details regarding this example, please reference the technical report &#10;http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-41.html&#10;&#10;This is the implementation model of the model iRobotCreateVerification.xml. Perform &#10;code generation on the grey part, and we can have the control software installed to &#10;iRobot. The main difference between this model and iRobotCreateVerification.xml is &#10;that the director is different. In order to use SDF code generation, slight &#10;modifications must be made. Nevertheless, these modifications do not change the &#10;control logic. For example, we use EdgeLeft = 0 to represent NoEdgeLeft_isPresent, &#10;and EdgeLeft = 1 to represent EdgeLeft_isPresent. This is because SDF code generation &#10;requires a static firing of tokens, and for successful code gen, we need to make sure &#10;that at each iteration there is fixed number of tokens firing.&#10;&#10;Please put oi.h and iRobotFunctions.c into the ptolemy directory in order to code gen. &#10;After code gen, remove duplicate includes of iRobotFunctions.c. Also, please reorder &#10;the code of the function initialize() of the generated file such that the code in the &#10;right is in the front of the function. The result can be found in verification/demo/iRobotHillClimbing/iRobotExecution/iRobotCodeGenSDF.c&#10;&#10;         &#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 275.0]">
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
@@ -53,11 +53,11 @@
         </property>
         <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 130.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 60.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -67,7 +67,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="// Initialize the microcontroller&#10;initializeRobot();&#10;// Turn on the Create power if off&#10;powerOnRobot();&#10;// Start the open interface&#10;byteTx(CmdStart);&#10;// Change to 28800 baud&#10;baud28k();&#10;// Take full control of the Create&#10;byteTx(CmdFull);&#10;// Get rid of unwanted data in the serial port receiver&#10;flushRx();">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 320.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -75,11 +75,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After code generation, please use WinAVR for machine code compilation. &#10;An existing folder including all files is in the directory &#10;/ptolemy/verification/demo/iRobotHillClimbing/iRobotExecution&#10;&#10;Please rename makefile_iRobot into makefile for compilation.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 170.0]">
         </property>
     </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 55.0]">
+        </property>
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/verification/README.html">
+    </property>
     <entity name="iRobotSensorSignalProcessing" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 140.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -441,7 +447,7 @@
         <link port="BooleanToAnything2.output" relation="relation9"/>
     </entity>
     <entity name="iRobotActuator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 130.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -843,7 +849,7 @@
     <entity name="iRobotCtrl" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 140.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -3034,7 +3040,7 @@
         <link port="PowerOn.Initialize" relation="InitializeRelation"/>
     </entity>
     <entity name="AccelerometerSignalProcessing" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 220.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">

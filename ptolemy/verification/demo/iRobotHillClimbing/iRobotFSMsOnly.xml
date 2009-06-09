@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{392.1934121621621, 189.8673986486486}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.0, 273.0}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -19,15 +19,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee &amp; Chihhong Patrick Cheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[418.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 520.0]">
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 65.0]">
         </property>
     </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[158.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[88.0, 485.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,8 +37,16 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The desired behavior is to have the robot reach the flat surface.&#10;This property can be specified with CTL formula indicated as follows: &#10;AF (Slope.state = Goal)&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[253.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[183.0, 455.0]">
         </property>
+    </property>
+    <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+    </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 355.0}">
+        </property>
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/verification/README.html">
     </property>
     <entity name="Slope" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -46,7 +54,7 @@
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[358.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[288.0, 75.0]">
         </property>
         <property name="XPosition" class="ptolemy.data.expr.Parameter" value="20">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -3021,7 +3029,7 @@
     <entity name="iRobotCtrl" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 185.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
