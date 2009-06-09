@@ -4,7 +4,7 @@
 <entity name="iRobotFSMsOnly" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 22, 863, 656}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 23, 863, 656}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 546]">
     </property>
@@ -17,7 +17,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee &amp; Chihhong Patrick Cheng">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chihhong Patrick Cheng, iRobotHillClimbing model by Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 520.0]">
         </property>
