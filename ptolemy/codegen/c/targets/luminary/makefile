@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/targets/luminary
 
-DIRS =
+DIRS =		domains
 
 # Root of the Java directory
 ROOT =		../../../../..
