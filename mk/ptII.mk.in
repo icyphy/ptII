@@ -98,7 +98,7 @@ JSINSTRFLAGS = 	-IFLUSHCLASS=true
 # The 'jsrestore' command which uninstruments Java code.
 JSRESTORE =	jsrestore
 # The pathname to the JavaScope.zip file
-JSCLASSPATH = 	/users/ptdesign/vendors/sun/JavaScope/JavaScope.zip
+JSCLASSPATH = 	/usr/local/JavaScope/JavaScope.zip
 
 # KIELER_JAR is used in ptolemy/vergil/basic/layout/makefile for layout
 KIELER_JAR = $(PTII)/lib/kieler.jar
