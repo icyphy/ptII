@@ -31,8 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.gt;
 
 import java.io.File;
-import java.io.IOException;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -47,7 +45,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -182,14 +179,9 @@ public class ModelGenerator extends Source {
             String path = uri.getPath();
             if (path == null || uri.toString().startsWith("jar:")) {
                 // Probably a JarURL in Web Start
-                try {
-                    File temporaryFile = File.createTempFile(modelName, ".xml");
-                    temporaryFile.deleteOnExit();
-                    URI results = temporaryFile.toURI();
-                    return results;
-                } catch (IOException ex) {
-                    throw new InternalErrorException(this, ex, "Failed to create temporary file for " + modelName);
-                }
+                File file = new File(modelName + ".xml");
+                URI results = file.toURI();
+                return results;
             } else {
                 int pos = 0;
                 pos = path.lastIndexOf('/');
