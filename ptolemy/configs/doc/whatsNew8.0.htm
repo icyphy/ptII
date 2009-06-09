@@ -183,6 +183,34 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <ul>
 <li> UI Builder (jgoodies)
 <li> ptolemy.data.properties
+<li> New width inference algorithm
+<blockquote>Relations have a width specifying the number of channels of that relation.
+Having to explicitly specify this width can be a tedious job. To make it even
+worse, the addition of one relation to a multiport might result in a model
+builder needing to go through the model again to adapt widths. To cope
+with this you can now set the width to <em>Auto</em>. In this case the width of the relation
+is inferred from other relations or other ports with a graph algorithm. This
+algorithm removes a lot of restriction that were present in the previous implementation.
+In this implementation we tried to
+come up with a solution that can infer the width of all relations for most scenarios without
+imposing a large performance cost. The algorithm propagates the widths
+it knows and at multiports tries to infer the widths of other relations from
+these propagated widths.</blockquote>
+<blockquote>For certain actors there is a relation between the widths of the input ports
+and the widths of the output ports. To resolve this problem, <em>width constraints</em> on
+ports have been introduced. There exists two types of width constraints.
+The first one imposes an equality constraints between two different ports. With the second type of constraints you can set the width of a port equal to
+a certain parameter.
+</blockquote>
+<blockquote>
+The last step of the algorithm is a <em>consistency check</em> in which it is checked
+that the solution obtained by the width inference algorithm is a unique one.
+A non unique solution is treated as a error.
+</blockquote>
+<blockquote>
+In this release the default width has also been changed from <em>1</em> to <em>Auto</em>.
+</blockquote>
+</li>
 
 </ul>
 
