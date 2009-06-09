@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -118,7 +117,7 @@ public class TimeDelay extends Transformer {
     public TimeDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         delay = new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1.0");
@@ -249,11 +248,10 @@ public class TimeDelay extends Transformer {
                 _fireAt(currentTime);
             }
         }
-        
+
         // consume input
         if (input.hasToken(0)) {
-            _delayedOutputTokens
-                    .put(new TimedEvent(delayToTime, input.get(0)));
+            _delayedOutputTokens.put(new TimedEvent(delayToTime, input.get(0)));
             _fireAt(delayToTime);
         }
 

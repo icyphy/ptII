@@ -113,7 +113,7 @@ public class ResettableTimer extends Transformer {
         value = new Parameter(this, "value", new BooleanToken(true));
         preemptive = new Parameter(this, "preemptive", new BooleanToken(true));
         preemptive.setTypeEquals(BaseType.BOOLEAN);
-        
+
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeSameAs(value);
     }
@@ -125,7 +125,7 @@ public class ResettableTimer extends Transformer {
      *  This is a boolean that defaults to true.
      */
     public Parameter preemptive;
-    
+
     /** The value produced at the output.  This can have any type,
      *  and it defaults to a boolean token with value <i>true</i>.
      */
@@ -158,10 +158,11 @@ public class ResettableTimer extends Transformer {
         Time currentTime = director.getModelTime();
         int currentMicrostep = 0;
         if (director instanceof SuperdenseTimeDirector) {
-            currentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+            currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
         if (_debugging) {
-            _debug("Fire at time " + currentTime + ", microstep " + currentMicrostep);
+            _debug("Fire at time " + currentTime + ", microstep "
+                    + currentMicrostep);
         }
         int comparison = currentTime.compareTo(_pendingOutputTime);
         if (comparison == 0 && currentMicrostep == _pendingOutputMicrostep) {
@@ -176,15 +177,14 @@ public class ResettableTimer extends Transformer {
                 _debug("No pending requests.");
             }
             return;
-        } else if (!((BooleanToken)preemptive.getToken()).booleanValue()) {
+        } else if (!((BooleanToken) preemptive.getToken()).booleanValue()) {
             // Non-preemptive behavior. May need to catch up.
-            while (comparison > 0 
+            while (comparison > 0
                     || (comparison == 0 && currentMicrostep > _pendingOutputMicrostep)) {
                 // Current time has passed the pending output time.
                 if (_debugging) {
                     _debug("Time passed expected output time of "
-                            + _pendingOutputTime
-                            + ", microstep "
+                            + _pendingOutputTime + ", microstep "
                             + _pendingOutputMicrostep);
                 }
                 // May need to catch up.
@@ -200,10 +200,11 @@ public class ResettableTimer extends Transformer {
                 // NOTE: The following changes the state of the actor, but this is
                 // safe as long as time does not roll back upon re-activation in
                 // a modal model.
-                TimedEvent event = (TimedEvent)_pendingRequests.take();
+                TimedEvent event = (TimedEvent) _pendingRequests.take();
                 // Check for possible cancel event.
                 if (_pendingRequests.size() > 0) {
-                    TimedEvent possibleCancel = (TimedEvent)_pendingRequests.get();
+                    TimedEvent possibleCancel = (TimedEvent) _pendingRequests
+                            .get();
                     if (possibleCancel.contents == null) {
                         // Found a cancel event.
                         _pendingRequests.take();
@@ -214,7 +215,8 @@ public class ResettableTimer extends Transformer {
                 // The time stamp of the event is the time the input
                 // arrived, and its value is the value of the input.
                 // Calculate the time at which the first pending event should be produced.
-                double delayValue = ((DoubleToken)event.contents).doubleValue();
+                double delayValue = ((DoubleToken) event.contents)
+                        .doubleValue();
                 _pendingOutputTime = _pendingOutputTime.add(delayValue);
                 if (delayValue > 0) {
                     _pendingOutputMicrostep = 0;
@@ -222,7 +224,8 @@ public class ResettableTimer extends Transformer {
                     _pendingOutputMicrostep = currentMicrostep + 1;
                 }
                 comparison = currentTime.compareTo(_pendingOutputTime);
-                if (comparison == 0 && currentMicrostep == _pendingOutputMicrostep) {
+                if (comparison == 0
+                        && currentMicrostep == _pendingOutputMicrostep) {
                     // Next pending request matches current time.
                     if (_debugging) {
                         _debug("Time matches pending output. Sending output.");
@@ -255,19 +258,21 @@ public class ResettableTimer extends Transformer {
     public boolean postfire() throws IllegalActionException {
         Token inputToken = null;
         double delayValue = -1;
-        boolean isPreemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
+        boolean isPreemptive = ((BooleanToken) preemptive.getToken())
+                .booleanValue();
         Director director = getDirector();
         Time currentTime = director.getModelTime();
         int currentMicrostep = 0;
         if (director instanceof SuperdenseTimeDirector) {
-            currentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+            currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
         if (_debugging) {
-            _debug("Postfire at time " + currentTime + ", microstep " + currentMicrostep);
+            _debug("Postfire at time " + currentTime + ", microstep "
+                    + currentMicrostep);
         }
         // Since postfire concludes the iteration, discard pending data if it was produced
         // in fire().
-        if(currentTime.equals(_pendingOutputTime) 
+        if (currentTime.equals(_pendingOutputTime)
                 && currentMicrostep == _pendingOutputMicrostep) {
             _pendingOutputTime = Time.NEGATIVE_INFINITY;
             _pendingOutputMicrostep = 0;
@@ -280,7 +285,8 @@ public class ResettableTimer extends Transformer {
             }
             if (delayValue < 0) {
                 // Cancel the previous request.
-                if (!isPreemptive && _pendingRequests != null && _pendingRequests.size() > 0) {
+                if (!isPreemptive && _pendingRequests != null
+                        && _pendingRequests.size() > 0) {
                     // Append a cancel request to the event queue.
                     TimedEvent cancelEvent = new TimedEvent(currentTime, null);
                     _pendingRequests.put(cancelEvent);
@@ -307,20 +313,23 @@ public class ResettableTimer extends Transformer {
                 }
                 _fireAt(_pendingOutputTime);
                 if (_debugging) {
-                    _debug("Requesting refiring at " + _pendingOutputTime + ", microstep " + _pendingOutputMicrostep);
+                    _debug("Requesting refiring at " + _pendingOutputTime
+                            + ", microstep " + _pendingOutputMicrostep);
                 }
             } else {
                 // There is no input. If the pending output matches the current time
                 // but the current microstep is too small, request refiring at the current
                 // time.
-                if(currentTime.equals(_pendingOutputTime) 
+                if (currentTime.equals(_pendingOutputTime)
                         && currentMicrostep < _pendingOutputMicrostep) {
                     // The firing is in response to a previous request, but the microstep is too early.
                     // Note that this should not happen, but we are begin paranoid here.
                     if (_debugging) {
-                        _debug("Microstep is too early. Refire at " + currentTime + ", microstep " + _pendingOutputMicrostep);
+                        _debug("Microstep is too early. Refire at "
+                                + currentTime + ", microstep "
+                                + _pendingOutputMicrostep);
                     }
-                   _fireAt(currentTime);
+                    _fireAt(currentTime);
                 }
             }
         } else {
@@ -339,13 +348,15 @@ public class ResettableTimer extends Transformer {
                 }
                 _pendingRequests.put(new TimedEvent(currentTime, inputToken));
             }
-            while (_pendingRequests.size() > 0 && _pendingOutputTime == Time.NEGATIVE_INFINITY) {
+            while (_pendingRequests.size() > 0
+                    && _pendingOutputTime == Time.NEGATIVE_INFINITY) {
                 // Get the first pending request and schedule a future firing,
                 // but only if there isn't already one pending.
-                TimedEvent event = (TimedEvent)_pendingRequests.take();
+                TimedEvent event = (TimedEvent) _pendingRequests.take();
                 // Check for possible cancel event.
                 if (_pendingRequests.size() > 0) {
-                    TimedEvent possibleCancel = (TimedEvent)_pendingRequests.get();
+                    TimedEvent possibleCancel = (TimedEvent) _pendingRequests
+                            .get();
                     if (possibleCancel.contents == null) {
                         // Found a cancel event.
                         _pendingRequests.take();
@@ -353,7 +364,7 @@ public class ResettableTimer extends Transformer {
                         continue;
                     }
                 }
-                delayValue = ((DoubleToken)event.contents).doubleValue();
+                delayValue = ((DoubleToken) event.contents).doubleValue();
                 _pendingOutputTime = currentTime.add(delayValue);
                 if (delayValue != 0.0) {
                     _pendingOutputMicrostep = 0;
@@ -387,10 +398,10 @@ public class ResettableTimer extends Transformer {
 
     /** Pending output time. */
     private Time _pendingOutputTime;
-    
+
     /** Pending output microstep. */
     private int _pendingOutputMicrostep;
-    
+
     /** A local queue to store the pending requests. */
     private CalendarQueue _pendingRequests;
 }

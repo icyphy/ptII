@@ -136,7 +136,7 @@ public class DiscreteClock extends TimedSource {
     public DiscreteClock(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         period = new PortParameter(this, "period");
         period.setExpression("1.0");
         period.setTypeEquals(BaseType.DOUBLE);
@@ -196,7 +196,7 @@ public class DiscreteClock extends TimedSource {
      *  is what stops the clock.
      */
     public TypedIOPort stop;
-    
+
     /** The values that will be produced at the specified offsets.
      *  This parameter must contain an ArrayToken, and it defaults to
      *  {1}
@@ -248,7 +248,7 @@ public class DiscreteClock extends TimedSource {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -260,8 +260,8 @@ public class DiscreteClock extends TimedSource {
         try {
             ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             newObject._offsets = new double[offsetsValue.length()];
-            System.arraycopy(_offsets, 0, newObject._offsets,
-                         0, _offsets.length);
+            System.arraycopy(_offsets, 0, newObject._offsets, 0,
+                    _offsets.length);
             newObject.output.setTypeAtLeast(ArrayType
                     .elementType(newObject.values));
         } catch (IllegalActionException ex) {
@@ -291,19 +291,20 @@ public class DiscreteClock extends TimedSource {
             Time currentTime = director.getModelTime();
             int currentIndex = 0;
             if (director instanceof SuperdenseTimeDirector) {
-                currentIndex = ((SuperdenseTimeDirector)director).getIndex();
+                currentIndex = ((SuperdenseTimeDirector) director).getIndex();
             }
-            _debug("Called fire() at time (" + currentTime + ", " + currentIndex + ")");
+            _debug("Called fire() at time (" + currentTime + ", "
+                    + currentIndex + ")");
             if (_enabled && _triggered) {
                 _debug("Sending output data: " + _getValue(_phase));
             }
-       }
-        
+        }
+
         if (_enabled && _triggered) {
             output.send(0, _getValue(_phase));
         }
     }
-    
+
     /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
      *  request was skipped, and that current time has passed the
      *  requested time. A director calls this method when in a modal
@@ -321,8 +322,8 @@ public class DiscreteClock extends TimedSource {
             // The expected next output time has changed. Issue
             // a fireAt() request.
             if (_debugging) {
-                _debug("fireAtSkipped(): Requesting a refiring at " + _nextOutputTime
-                        + ", with index " + _nextOutputIndex);
+                _debug("fireAtSkipped(): Requesting a refiring at "
+                        + _nextOutputTime + ", with index " + _nextOutputIndex);
             }
             _fireAt(_nextOutputTime);
         }
@@ -336,7 +337,7 @@ public class DiscreteClock extends TimedSource {
      */
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         // Start cycles at the current time.
         // This is important in modal models that reinitialize the actor.
         Time currentTime = getDirector().getModelTime();
@@ -349,7 +350,7 @@ public class DiscreteClock extends TimedSource {
 
         // Enable without a trigger input on the first firing.
         _triggered = true;
-        
+
         if (_debugging) {
             _debug("In intialize, requesting firing at time " + _nextOutputTime);
         }
@@ -359,16 +360,17 @@ public class DiscreteClock extends TimedSource {
         Director director = getDirector();
         if (director instanceof SuperdenseTimeDirector) {
             if (_offsets[_phase] == 0.0) {
-                _nextOutputIndex = ((SuperdenseTimeDirector)director).getIndex();
+                _nextOutputIndex = ((SuperdenseTimeDirector) director)
+                        .getIndex();
             }
         }
-        
+
         if (_debugging) {
             _debug("Requesting a refiring at " + _nextOutputTime
                     + ", with index " + _nextOutputIndex);
         }
         _fireAt(_nextOutputTime);
-        
+
         // If the start port is connected, then start disabled.
         if (start.isOutsideConnected()) {
             _enabled = false;
@@ -385,7 +387,8 @@ public class DiscreteClock extends TimedSource {
         boolean result = super.postfire();
         _phase++;
         if (_phase >= _offsets.length) {
-            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
             _phase = 0;
             _cycleStartTime = _cycleStartTime.add(periodValue);
         }
@@ -396,15 +399,12 @@ public class DiscreteClock extends TimedSource {
             _nextOutputTime = nextOutputTime;
         }
         _fireAt(_nextOutputTime);
-        
+
         if (_debugging) {
-            _debug("Postfiring. Requesting refiring at ("
-                    + _nextOutputTime
-                    + ", "
-                    + _nextOutputIndex
-                    + ")");
+            _debug("Postfiring. Requesting refiring at (" + _nextOutputTime
+                    + ", " + _nextOutputIndex + ")");
         }
-        
+
         if (trigger.numberOfSources() > 0) {
             _triggered = false;
         }
@@ -424,13 +424,10 @@ public class DiscreteClock extends TimedSource {
             Time currentTime = director.getModelTime();
             int currentIndex = 0;
             if (director instanceof SuperdenseTimeDirector) {
-                currentIndex = ((SuperdenseTimeDirector)director).getIndex();
+                currentIndex = ((SuperdenseTimeDirector) director).getIndex();
             }
-            _debug("Called prefire() at time ("
-                    + currentTime
-                    + ", "
-                    + currentIndex
-                    + ")");
+            _debug("Called prefire() at time (" + currentTime + ", "
+                    + currentIndex + ")");
         }
         // Check the length of the values and offsets arrays.
         // This is done here because it cannot be done in
@@ -443,7 +440,7 @@ public class DiscreteClock extends TimedSource {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
         }
-        
+
         // Check the start input, to see whether everything needs to
         // be reset. This must be done in prefire() because if we need
         // to reinitialize, this will affect what prefire() returns.
@@ -468,10 +465,10 @@ public class DiscreteClock extends TimedSource {
                 _enabled = false;
             }
         }
-        
+
         // Update the period from the port parameter, if appropriate.
         period.update();
-        
+
         // Check the trigger input, if it is connected.
         // Make sure to read all channels from the trigger input.
         if (trigger.numberOfSources() > 0) {
@@ -505,15 +502,16 @@ public class DiscreteClock extends TimedSource {
             // the index.
             Director director = getDirector();
             if (director instanceof SuperdenseTimeDirector) {
-                int currentIndex = ((SuperdenseTimeDirector)director).getIndex();
+                int currentIndex = ((SuperdenseTimeDirector) director)
+                        .getIndex();
                 if (_nextOutputIndex > currentIndex) {
                     // We have not yet reached the requisite index.
                     // Request another firing at the current time.
                     _fireAt(currentTime);
                     if (_debugging) {
-                        _debug("Requesting firing at the current time. " +
-                        		"Prefire returns false. Index is " +
-                        		"too early to produce output.");
+                        _debug("Requesting firing at the current time. "
+                                + "Prefire returns false. Index is "
+                                + "too early to produce output.");
                     }
                     return false;
                 } else if (_nextOutputIndex == currentIndex) {
@@ -530,8 +528,8 @@ public class DiscreteClock extends TimedSource {
             } else {
                 // Director doesn't support superdense time. Agree to fire.
                 if (_debugging) {
-                    _debug("Prefire returns true. Time matches next output, " +
-                    		"and director does not support superdense time.");
+                    _debug("Prefire returns true. Time matches next output, "
+                            + "and director does not support superdense time.");
                 }
                 return true;
             }
@@ -556,7 +554,7 @@ public class DiscreteClock extends TimedSource {
         // This is safe even with the ContinuousDirector
         // because this actor sets breaks points with its fireAt() calls.
         _catchUp();
-        
+
         // We have now set _nextOutputTime and _nextOutputIndex to the
         // correct values. They may now match, or may be in the future.
         // Rather than repeat all the above logic, we just use a
@@ -584,23 +582,17 @@ public class DiscreteClock extends TimedSource {
         Time currentTime = director.getModelTime();
         int currentIndex = 0;
         if (director instanceof SuperdenseTimeDirector) {
-            currentIndex = ((SuperdenseTimeDirector)director).getIndex();
+            currentIndex = ((SuperdenseTimeDirector) director).getIndex();
         }
         boolean result = false;
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         while (_nextOutputTime.compareTo(currentTime) < 0
-                || (_nextOutputTime.compareTo(currentTime) == 0
-                        && _nextOutputIndex < currentIndex)) {
+                || (_nextOutputTime.compareTo(currentTime) == 0 && _nextOutputIndex < currentIndex)) {
             if (!result && _debugging) {
-                _debug("Skipped output(s). Catching up from time (" 
-                        + _nextOutputTime
-                        + ", "
-                        + _nextOutputIndex
-                        + ") to environment time (" 
-                        + currentTime
-                        + ", "
-                        + currentIndex
-                        + ")");
+                _debug("Skipped output(s). Catching up from time ("
+                        + _nextOutputTime + ", " + _nextOutputIndex
+                        + ") to environment time (" + currentTime + ", "
+                        + currentIndex + ")");
             }
 
             result = true;
@@ -637,7 +629,7 @@ public class DiscreteClock extends TimedSource {
         }
         return val.getElement(index);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
