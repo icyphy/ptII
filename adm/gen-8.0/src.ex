@@ -159,6 +159,7 @@ ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/configs/visualnc
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
+ptolemy/codgen/c/domains/ptides
 ptolemy/codegen/c/targets/arduino
 ptolemy/codegen/c/targets/iRobot
 ptolemy/codegen/c/targets/luminary
