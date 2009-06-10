@@ -334,7 +334,7 @@ public class ClassChanges implements MoMLFilter {
                           "ptolemy.codegen.c.actor.lib.jni.CodegenActor");
 
         _classChanges.put("ptolemy.codegen.kernel.Director",
-                          "ptolemy.codegen.actor.Director")
+                          "ptolemy.codegen.actor.Director");
 
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
