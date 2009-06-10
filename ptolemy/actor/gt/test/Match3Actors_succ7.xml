@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Match3Actors_succ7" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 122, 823, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 122, 1065, 532}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[852, 422]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{149.7929292929293, 252.9179292929293}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{426.0, 211.0}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -31,7 +31,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 190.0]">
         </property>
         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation5">
         </property>
@@ -39,7 +39,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/previous.gif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-111.0, 342.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[99.0, 212.0]">
         </property>
         <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -49,7 +49,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
     <property name="Image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/next.gif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-48.0, 342.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[162.0, 212.0]">
         </property>
         <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -59,7 +59,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
     <property name="Image3" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/previousfile.gif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[301.0, 342.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 210.0]">
         </property>
         <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -69,7 +69,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
     <property name="Image4" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/nextfile.gif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[362.0, 342.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 210.0]">
         </property>
         <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -93,7 +93,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 255.0]">
         </property>
         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation6">
         </property>
@@ -101,7 +101,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
     <property name="Image5" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/transform.gif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[138.0, 387.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 255.0]">
         </property>
         <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -112,7 +112,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:16; font-family:SansSerif; fill:red">Instruction:</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:16; font-family:SansSerif; fill:red">Instructions:</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -125,13 +125,13 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-136.0, 292.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[74.0, 162.0]">
         </property>
         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation5">
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 110.0]">
         </property>
         <port name="output1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -188,7 +188,7 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 115.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
