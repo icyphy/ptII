@@ -82,7 +82,7 @@ consistently.
 recognizing common design patterns in the models in a static analysis,
 replacing exiting design patterns with more efficient ones, and
 reusing design patterns by incorporating them into new models.
-
+<!-- FIXME: need more about design patterns, including links to models (see ptolemy/actor/designs) --> 
 <h4>References</h4>
 <ul>
 <li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley. UCB/EECS-2009-77. May 2009.
@@ -152,6 +152,89 @@ Events may also have parameters, and the actual values for those parameters are 
   <li> <a href="../../../ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> </li>
 </ul>
 
+<h3><a name="causalityanalysis">Causality Analysis</a></h3>
+Ptolemy II 8.0 includes an update to our Causality Analysis framework.
+We identified performance problems with our current
+non-conservative causality analysis for modal models within
+discrete-event (DE) systems. In this scheme, causality analysis is
+performed on the entire model at run time each time there is a mode
+change in the model. This mechanism is far too costly. We are
+investigating techniques for performing the causality analysis in a
+compositional way for the various modes at compile
+time. Unfortunately, brute force solutions result in exponentially
+growing memory requirements for the results of the causality analysis.
+
+<p>We designed, implemented and reviewed an interface that defines a
+causality interfaces for actor networks as described in the paper
+"<a href="#ZhouLee:08:CausalityInterfaces">Causality Interfaces for Actor Networks</a>."
+
+<p>Causality interfaces are also described in Ye Zhou Ph.D. Thesis,
+"<a href="#Zhou:07:Interface">Interface Theories for Causality Analysis in Actor Networks.</a>"
+
+
+<p>Causality interfaces represent dependencies between input and output
+ports of an actor and can be used to perform scheduling or static
+analysis on actor models.  
+
+<p>This substantial new work helps address performance problems in
+large Discrete Event (DE) models.  The new work provides
+more efficient static analysis for directed cycles and scheduling.
+This work solved a bug concerning execution time with DE models
+that had many actors at one level of hierarchy.  The table
+below illustrates the improvement.
+<table>
+  <tr>
+   <th># of actors</th>
+   <th>Total execution time before</th>
+   <th>Total execution time after</th>   
+  <.tr>
+  <tr>
+    <td>100</td>
+   <td>~0.2 sec.</td>
+   <td>~0.2 sec.</td>
+ </tr>
+  <tr>
+    <td>600</td>
+   <td>149 sec.</td>
+   <td>0.7 sec.</td>
+ </tr>    
+</table>
+
+<p>    One of the challenges in complex, heterogeneous models is that
+   portions of the model have temporal behavior while other portions
+   are purely functional. We have reworked the interfaces that
+   hierarchically heterogeneous models in Ptolemy II present to one
+   another for managing the passage of time. This rework supports
+   much more robust multithreaded and distributed execution without
+   compromising temporal coherence. Concretely, we have defined a
+   formalism whereby a model requests temporal behavior of its
+   container in the hierarchy, and the container responds with an
+   indication of the extent to which it can honor the request.  If
+   the extent is sufficient for the application, then the models are
+   compatibly composed. Otherwise, they are not, and the model is
+   marked defective.
+<ul>
+<li><a href="ptdoc:ptolemy.actor.util.BooleanDependency">BooleanDependency</a>
+<li><a href="ptdoc:ptolemy.actor.util.BreakCausalityInterface">BreakCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.util.CausalityInterface">CausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.util.CausalityInterfaceForComposites">CausalityInterfaceForComposites</a>
+<li><a href="ptdoc:ptolemy.actor.util.DefaultCausalityInterface">DefaultCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.util.Dependency">Dependency</a>
+<li><a href="ptdoc:ptolemy.actor.util.RealDependency">RealDependency</a>
+<li><a href="ptdoc:ptolemy.actor.util.SuperdenseDependency">SuperdenseDependency</a>
+</ul>
+<h4>References</h4>
+<ul>
+<li><a name="ZhouLee:08:CausalityInterfaces">Ye Zhou</a>, Edward A. Lee. <a
+href="http://chess.eecs.berkeley.edu/pubs/473.html">Causality
+Interfaces for Actor Networks</a>, <i>ACM
+Transactions on Embedded Computing Systems (TECS)</i>,
+7(3):1-35, April 2008.
+<li><a name="Zhou:07:Interface">Ye Zhou</a>
+<a href="http://chess.eecs.berkeley.edu/pubs/302.html"><i>Interface Theories for Causality Analysis in Actor Networks</i></a>, PhD thesis,  University of
+California, Berkeley, May, 2007.
+</ul>
+
 <h3><a name="threadedcomposite">ThreadedComposite</a></h3>
  
 The ThreadedComposite actor supports execution of either an atomic actor
@@ -181,7 +264,6 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 <h2><a name="other">Other Key New Capabilities</a></h2>
 <ul>
-<li> UI Builder (jgoodies)
 <li> ptolemy.data.properties
 <li> New width inference algorithm
 <blockquote>Relations have a width specifying the number of channels of that relation.
@@ -216,10 +298,92 @@ In this release the default width has also been changed from <em>1</em> to <em>A
 
 <h2><a name="libraries">New and Enhanced Actor Libraries</a></h2>
 
-<!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII8.0.beta/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
+<!--grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII8.0.beta/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
+<li><a href="ptdoc:ptolemy.actor.gui.ArrayOfRecordsPane">ArrayOfRecordsPane</a>
 <ul>
-<li><i>New Continuous Time (CT) actors</i>:
+<li><i>New Domain Polymorphic actors</i>:
 <ul>
+
+<ul>
+<li><a href="ptdoc:ptolemy.actor.lib.DiscreteClock">DiscreteClock</a>
+<li><a href="ptdoc:ptolemy.actor.lib.ExecutionTime">ExecutionTime</a>
+<li><a href="ptdoc:ptolemy.actor.lib.GetCausalityInterface">GetCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.lib.MovingMaximum">MovingMaximum</a>
+<li><a href="ptdoc:ptolemy.actor.lib.ResettableTimer">ResettableTimer</a>
+<li><a href="ptdoc:ptolemy.actor.lib.TimeDelay">TimeDelay</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.ArrowKeyProbe">ArrowKeyProbe</a>
+</ul>
+
+<li><i>Database actors</i>
+Ptolemy II 8.0 includes actors that access a database.  We have included a sample application,
+  <a href="../../domains/space/demo/DOPCenter/DOPCenter.xml>DOPCenter</a>, which we use
+  to manage the seating in the <a href="http://embedded.eecs.berkeley.edu/dopcenter">Donald O. Pederson Center</a>
+<ul>
+<li><a href="ptdoc:ptolemy.actor.lib.database.ArrayOfRecordExporter">ArrayOfRecordsExporter</a>
+<li><a href="ptdoc:ptolemy.actor.lib.database.ArrayOfRecordRecorder">ArrayOfRecordsRecorder</a>
+<li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseInsert">DatabaseInsert</a>
+<li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseManager">DatabaseManager</a>
+<li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseQuery">DatabaseQuery</a>
+<li><a href="ptdoc:ptolemy.actor.lib.database.DatabaseQuery">DatabaseSelect</a>
+<li><a href="ptdoc:ptolemy.actor.lib.database.SQLSelect">SQLSelect</a>
+</ul>
+<li><a href="ptdoc:ptolemy.actor.lib.DiscreteClock">DiscreteClock</a>
+<li><a href="ptdoc:ptolemy.actor.lib.ExecutionTime">ExecutionTime</a>
+<li><a href="ptdoc:ptolemy.actor.lib.GetCausalityInterface">GetCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.actor.lib.MovingMaximum">MovingMaximum</a>
+<li><a href="ptdoc:ptolemy.actor.lib.ResettableTimer">ResettableTimer</a>
+<li><a href="ptdoc:ptolemy.actor.lib.TimeDelay">TimeDelay</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.ArrowKeyProbe">ArrowKeyProbe</a>
+</ul>
+
+</ul>
+
+<li>Codegen
+<ul>
+<li><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">CodegenActor</a>
+<li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCFileActor">EmbeddedCFileActor</a>
+<li>The code generator has been extended so that Java code may be generated for a model.
+  <!-- FIXME: need demos -->
+  <ul>
+  <li><a href="../../codeDoc/ptolemy/actor/lib/embeddedJava/package-summary.html">ptolemy.actor.lib.embeddedJava</a>
+  <li><a href="../../codeDoc/ptolemy/codegen/java/actor/package-summary.html">ptolemy.codegen.java.actor</a>
+  <li><a href="../../codeDoc/ptolemy/codegen/java/kernel/package-summary.html">ptolemy.codegen.java.kernel</a>
+  <li><a href="../../codeDoc/ptolemy/codegen/java/domains/package-summary.html">ptolemy.codegen.java.domains</a>
+  </ul> 
+
+  <ul>
+    <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Interpolator">Interpolator</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.OrderedMerge">OrderedMerge</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.conversions.StringToUnsignedByteArray">StringToUnsignedByteArray</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.gui.TimedPlotter">TimedPlotter</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.hoc.MultiCompositePort">MultiCompositePort</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.hoc.RefinementPort">RefinementPort</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.domains.fsm.modal.ModalPort">ModalPort</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.domains.fsm.modal.RefinementPort">RefinementPort</a>
+    <li><a href="ptdoc:ptolemy.codegen.c.domains.fsm.modal.TransitionRefinementPort">TransitionRefinementPort</a>
+    <li><a href="ptdoc:Only in ...dists.ptII7.0.1.ptolemy.codegen.kernel.Director">Director</a>
+    <li><a href="ptdoc:ptolemy.codegen.kernel.PortCodeGenerator">PortCodeGenerator</a>
+</ul>
+
+</ul>
+
+<li><i>New Parameters<i> 
+<ul>
+<li><a href="ptdoc:ptolemy.actor.parameters.Priority">Priority</a>
+</ul>
+
+<li><i>New Continuous actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.ContinuousMerge">ContinuousMerge</a>
+<li><a href="ptdoc:ptolemy.domains.continuous.lib.PeriodicSampler">PeriodicSampler</a>
+</ul>
+
+<li><i>New Discrete Event (DE) actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.domains.de.lib.AverageOverTime">AverageOverTime</a>
+<li><a href="ptdoc:ptolemy.domains.de.lib.SharedQueue">SharedQueue</a>
+<li><a href="ptdoc:ptolemy.domains.de.lib.TestActorPortDepth">TestActorPortDepth</a>
+<li><a href="ptdoc:ptolemy.domains.de.lib.TimeCompare">TimeCompare</a>
 </ul>
 
 <li><i>New Synchronous Dataflow (SDF) actors</i>:
@@ -249,11 +413,211 @@ labeled "layout" in the toolbar which will layout the graph.
   Adobe Acrobat be installed, or some other method of printing to PDF.
   Unfortunately, the location of the resulting PDF file is not easily
   controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
+<li>The Model Transformation facility (GT) has been substantially updated to support
+  Ptera.
+<br>New GT classes include:
+<ul>
+<li><a href="ptdoc:ptolemy.actor.gt.AttributeMatcher">AttributeMatcher</a>
+<li><a href="ptdoc:ptolemy.actor.gt.Checkable">Checkable</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ContainerIgnoringAttribute">ContainerIgnoringAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.CreationAttribute">CreationAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.GTAttribute">GTAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.GTCompositeActor">GTCompositeActor</a>
+<li><a href="ptdoc:ptolemy.actor.gt.IgnoringAttribute">IgnoringAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.IterativeParameter">IterativeParameter</a>
+<li><a href="ptdoc:ptolemy.actor.gt.MatchingAttribute">MatchingAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.MoMLGenerator">MoMLGenerator</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ModalModelMatcher">ModalModelMatcher</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ModelCombine">ModelCombine</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ModelExecutor">ModelExecutor</a>
+<li><a href="ptdoc:ptolemy.actor.gt.NegationAttribute">NegationAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.OptionAttribute">OptionAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.PreservationAttribute">PreservationAttribute</a>
+<li><a href="ptdoc:ptolemy.actor.gt.TransformationListener">TransformationListener</a>
+<li><a href="ptdoc:ptolemy.actor.gt.TransformationMode">TransformationMode</a>
+<li><a href="ptdoc:ptolemy.actor.gt.TransitionMatcher">TransitionMatcher</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ValueIterator">ValueIterator</a>
+<li><a href="ptdoc:ptolemy.actor.gt.data.SequentialTwoWayHashMap">SequentialTwoWayHashMap</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ingredients.criteria.GuardCriterion">GuardCriterion</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ingredients.criteria.NameCriterion">NameCriterion</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ingredients.criteria.StateTypeCriterion">StateTypeCriterion</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.BooleanOperationElement">BooleanOperationElement</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.PortCreationOperation">PortCreationOperation</a>
+<li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.PortRemovalOperation">PortRemovalOperation</a>
+<li><a href="ptdoc:ptolemy.actor.gt.util.RecursiveFileFilter">RecursiveFileFilter</a>
+<li><a href="ptdoc:ptolemy.actor.gui.ArrayOfRecordsPane">ArrayOfRecordsPane</a>
 </ul>
 
+<li><a href="ptdoc:ptolemy.actor.LazyTypedCompositeActor">LazyTypedCompositeActor</a>
+<li><a href="ptdoc:ptolemy.actor.RelationWidthInference">RelationWidthInference</a>
+<li><a href="ptdoc:ptolemy.actor.SuperdenseTimeDirector">SuperdenseTimeDirector</a>
 
+<li><a href="ptdoc:ptolemy.actor.gui.ArrayOfRecordsPane">ArrayOfRecordsPane</a>
+<li><a href="ptdoc:ptolemy.actor.gui.CustomQueryBoxParameter">CustomQueryBoxParameter</a>
+<li><a href="ptdoc:ptolemy.actor.gui.ModelRepaintController">ModelRepaintController</a>
+<li><a href="ptdoc:ptolemy.actor.gui.TopPack">TopPack</a>
+<li><a href="ptdoc:ptolemy.actor.gui.style.HiddenStyle">HiddenStyle</a>
+
+<li><a href="ptdoc:ptolemy.data.AbsentToken">AbsentToken</a>
+<li><a href="ptdoc:ptolemy.data.OrderedRecordToken">OrderedRecordToken</a>
+<li><a href="ptdoc:ptolemy.data.expr.ChoiceParameter">ChoiceParameter</a>
+<li><a href="ptdoc:ptolemy.data.expr.ContainmentExtender">ContainmentExtender</a>
+<li><a href="ptdoc:ptolemy.data.type.ObjectType">ObjectType</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.kernel.ConfigurableEntity">ConfigurableEntity</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.kernel.Configurer">Configurer</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.kernel.ContainmentExtender">ContainmentExtender</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.kernel.FSMCausalityInterface">FSMCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.kernel.RefinementActor">RefinementActor</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.modal.MirrorCausalityInterface">MirrorCausalityInterface</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.modal.RefinementExtender">RefinementExtender</a>
+<li><a href="ptdoc:ptolemy.domains.fsm.modal.RefinementSuggestion">RefinementSuggestion</a>
+<li><a href="ptdoc:ptolemy.gui.PtGUIUtilities">PtGUIUtilities</a>
+<li><a href="ptdoc:ptolemy.gui.QueryChooser">QueryChooser</a>
+<li><a href="ptdoc:ptolemy.gui.QueryChooserHelper">QueryChooserHelper</a>
+<li><a href="ptdoc:ptolemy.gui.SettableQueryChooser">SettableQueryChooser</a>
+<li><a href="ptdoc:ptolemy.gui.UndeferredGraphicalMessageHandler">UndeferredGraphicalMessageHandler</a>
+<li><a href="ptdoc:ptolemy.gui.UndoListener">UndoListener</a>
+<li><a href="ptdoc:ptolemy.kernel.undo.UndoActionsList">UndoActionsList</a>
+<li><a href="ptdoc:ptolemy.kernel.util.DecoratedAttribute">DecoratedAttribute</a>
+<li><a href="ptdoc:ptolemy.kernel.util.Decorator">Decorator</a>
+<li><a href="ptdoc:ptolemy.kernel.util.DropTargetHandler">DropTargetHandler</a>
+<li><a href="ptdoc:ptolemy.kernel.util.LazyComposite">LazyComposite</a>
+<li><a href="ptdoc:ptolemy.kernel.util.StaticResources">StaticResources</a>
+<li><a href="ptdoc:ptolemy.moml.ConvertToLazy">ConvertToLazy</a>
+
+
+<li><a href="ptdoc:ptolemy.vergil.actor.lib.MonitorReceiverAttribute">MonitorReceiverAttribute</a>
+<li><a href="ptdoc:ptolemy.vergil.actor.lib.MonitorReceiverContents">MonitorReceiverContents</a>
+<li><a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">DependencyHighlighter</a>
+<li><a href="ptdoc:ptolemy.vergil.icon.DesignPatternIcon">DesignPatternIcon</a>
+<li><a href="ptdoc:ptolemy.vergil.icon.TableIcon">TableIcon</a>
+<li><a href="ptdoc:ptolemy.vergil.kernel.ListenToAction">ListenToAction</a>
+<li><a href="ptdoc:ptolemy.vergil.kernel.attributes.ArrowAttribute">ArrowAttribute</a>
+<li><a href="ptdoc:ptolemy.vergil.kernel.attributes.UpdateAnnotations">UpdateAnnotations</a>
+<li><a href="ptdoc:ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory">ArrayOfRecordsConfigureFactory</a>
+<li><a href="ptdoc:ptolemy.vergil.toolbox.MenuItemListener">MenuItemListener</a>
+<li><a href="ptdoc:ptolemy.vergil.toolbox.RadioMenuActionFactory">RadioMenuActionFactory</a>
+
+<li> Lazy
+  <ul>
+    <li><a href="ptdoc:ptolemy.moml.filter.LazyTypedCompositeActorChanges">LazyTypedCompositeActorChanges</a>
+  </ul>
+</ul>
+
+<h2><a name="worksinprogress">Works in Progress</a></h2>
+<ul>
+<li> The experimental UI build in
+  <a href="../../codeDoc/ptolemy/actor/gui/run/package-summary.html">ptolemy.actor.gui.runJava</a>
+<li> The applet code generator has been extended to generate Web Start JNLP files.
+This work is still in progress
+  <ul>
+ <li><a href="ptdoc:ptolemy.copernicus.applet.JarSigner">JarSigner</a>
+ </ul>
+</ul>
 <h2><a name="bugs">Bug fixes</a></h2>
+<ul>
+  <li>Various classes were moved to make the dependencies between packages cleaner.  In general, the
+  <a href="ptdoc:ptolemy.moml.filter.ClassChanges">ptolemy.moml.filter.ClassChanges</a> to handle the changes
+  that will appear in MoML files.
+<table>
+  <tr>
+    <th>Old Class</th><th>New Class</th>
+  </tr>
 
+  <tr>
+   <td>ptolemy.actor.gui.DependencyHighlighter</td>
+   <td><a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">ptolemy.vergil.basic.DependencyHighlighter</a></td>
+  <tr>
+
+  </tr> 
+    <td>ptolemy.actor.lib.CodegenActor</td>
+    <td><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">ptolemy.actor.lib.jni.CodegenActor</a></td>
+  <tr>
+
+  </tr> 
+    <tr>ptolemy.actor.lib.gui.LEDMatrix</td>
+    <td><a href="ptdoc:ptolemy.vergil.actor.lib.LEDMatrix">ptolemy.vergil.actor.lib.LEDMatrix</a></td>
+  <tr>
+
+  <tr>
+   <td>ptolemy.actor.lib.gui.ModelDisplay</td>
+   <td><a href="ptdoc:ptolemy.vergil.actor.lib.ModelDisplay">ptolemy.vergil.actor.lib.ModelDisplay</a></td>
+  </tr> 
+
+  <tr>
+   <td>ptolemy.codegen.c.actor.lib.CodegenActor was moved to</td>
+   <td><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">ptolemy.actor.lib.jni.CodegenActor</a></td>
+  <tr>
+
+  </tr> 
+    <td>ptolemy.codegen.c.actor.lib.gui.LEDMatrix</td>
+    <td><a href="ptdoc:ptolemy.codegen.c.vergil.actor.lib.LEDMatrix">ptolemy.codegen.c.vergil.actor.lib.LEDMatrix</a></td>
+  <tr>
+
+  </tr> 
+    <td>ptolemy.codegen.kernel.Director</td>
+    <td><a href="ptdoc:ptolemy.codegen.actor.Director">ptolemy.codegen.actor.Director</a></td>
+  </tr> 
+
+  <tr>
+   <td>ptolemy.domains.curriculum.DependencyHighlighter was moved to</td>
+   <td><a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">vergil.actor.basic.DependencyHighlighter</a></a>
+  </tr>
+
+  <tr>
+   <td>ptolemy.domains.sr.lib.AbsentToken</td>
+   <td><a href="ptdoc:ptolemy.data.AbsentToken">ptolemy.data.AbsentToken</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.domains.sr.lib.ButtonTime</td>
+   <td><a href="ptdoc:ptolemy.domains.sr.lib.gui.ButtonTime">ptolemy.domains.sr.lib.gui.ButtonTime</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.domains.sr.lib.NonStrictDisplay</td>
+  <td><a href="ptdoc:ptolemy.domains.sr.lib.gui.NonStrictDisplay">ptolemy.domains.sr.lib.gui.NonStrictDisplay</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.moml.SharedParameter</td>
+   <td><a href="ptdoc:ptolemy.actor.parameters.SharedParameter">ptolemy.actor.parameters.SharedParameter</a></td>
+  </tr>
+
+  <tr>
+   <td>ptolemy.vergil.kernel.ConfigureUnitsAction</td>
+   <td><a href="ptdoc:ptolemy.vergil.kernel.unit.ConfigureUnitsAction">ConfigureUnitsAction</a></td>
+  </tr>
+
+  <tr>
+  <td></td>
+  <td></td>
+</tr> 
+</table>   
+
+<li> Various classes were moved out of ptolemy.data.unit to ptolemy.moml.unit
+
+
+<li> A few features and classes were removed outright.
+<ul>
+ <li>ptolemy/copernicus/{java,c,actor} were removed because the Ptolemy kernel has evolved and maintaining Copernicus
+  was too timeconsuming.
+
+  <li>ptolemy.domains.continuous.lib.ZeroCrossingDetector was removed because it had cloning problems because
+  of how it extended a class and removed a parameter.
+
+  <li>ptolemy.domains.curriculum.DependencyHighlighter was removed, use
+<a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">ptolemy.vergil.basic.DependencyHighlighter</a> instead.
+
+  <li>
+  ptolemy.actor.util.FunctionDependency
+  <br>ptolemy.actor.util.FunctionDependencyOfAtomicActor,
+  <br>ptolemy.actor.util.FunctionDependencyOfCompositeActor,
+  <br>ptolemy.domains.fsm.kernel.FunctionDependencyOfFSMActor,
+  <br>ptolemy.domains.fsm.modal.FunctionDependencyOfModalModel
+  and
+  <br>ptolemy.domains.sr.lib.FunctionDependencyOfEnabledCompositeActor
+  <br>were removed as part of the <a =#"causalityanalysis">Causality Analysis</a> work.
 </body>
 </html>
 
