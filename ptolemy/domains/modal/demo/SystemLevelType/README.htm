@@ -1,0 +1,113 @@
+<html>
+<title>Interface Automata</title>
+<head>
+<body>
+<p>These models are interface automata. When you open the Graph
+menu, there are commands to compose them with other automata. 
+
+<P>For a description of Interface automata and Ptolemy II, see:
+
+<p>Edward A. Lee, Yuhong Xiong. <a
+href="http://chess.eecs.berkeley.edu/pubs/592.html#in_browser">A
+behavioral type system and its application in Ptolemy
+II</a>, <i>Formal Aspects of
+Computing</i>, 16(3):210-237, August 2003.
+
+<blockquote>
+Interface automata [deH01] have been introduced as
+              an interface theory [deH01a] capable of
+              functioning as a behavioral type system.
+              Behavioral type systems describe dynamic
+              properties of components and their compositions.
+              Like traditional (data) type systems, behavioral
+              type systems can be used to check compatibility of
+              components. In this paper, we use interface
+              automata to devise a behavioral type system for
+              Ptolemy II, leveraging the contravariant and
+              optimistic properties of interface automata to
+              achieve behavioral subtyping and polymorphism.
+              Ptolemy II is a software framework supporting
+              concurrent component composition according to
+              diverse models of computation. In this paper, we
+              focus on representing the communication protocols
+              used in component communication within the
+              behavioral type system. In building this type
+              system, we identify two key limitations in
+              interface automata formalisms; we overcome these
+              limitations with two extensions, transient states
+              and projection automata. In addition to static
+              type checking, we also propose to extend the use
+              of interface automata to the on-line reflection of
+              component states and to run-time type checking,
+              which enable dynamic component creation, morphing
+              application structure, and admission control. We
+              discuss the trade-offs in the design of behavioral
+              type systems.
+</blockquote>
+
+<br>[deH01] L. de Alfaro and T. A. Henzinger, “Interface Automata,” Proc. of the Joint 8th European Software
+Engineering Conference and 9th ACM SIGSOFT International Symposium on the Foundations of Software
+Engineering (ESEC/FSE 01), Austria, 2001.
+<br>[deH01a] L. de Alfaro and T. A. Henzinger, “Interface theories for component-based design,” in Proceedings of the
+First International Workshop on Embedded Software (EMSOFT), Lecture Notes in Computer Science 2211,
+Springer-Verlag, 2001, pp. 148-165.
+
+<p>These models are interface automaton models for some Ptolemy II
+components with respect to token passing. 
+
+
+<p>They are:
+<dl>
+<dt><a href="SDFActor.xml"><code>SDFActor.xml</code></a>
+<dd> An SDF sink actor. This actor does not call hasToken() before
+              calling get().
+<dt><a href="PolyActor.xml"><code>PolyActor.xml</code></a>
+<dd> A Polymorphic actor. This actor calls hasToken() before
+               calling get().
+<dt><a href="SDFDomain.xml"><code>SDFDomain.xml</code></a>
+<dd> The combination of SDF receiver and scheduler.
+<dt><a href="DEDomain.xml"><code>DEDomain.xml</code></a>
+<dd>The combination of DE  receiver and scheduler.
+</dl>
+
+<p>All the other automata are the compositions of two of the automata above.
+For example, <a href="SDFDomain_SDFActor.xml"><code>SDFDomain_SDFActor.xml</code></a>
+ is the composition of <a href="SDFDomain.xml"><code>SDFDomain.xml</code></a>
+and 
+<a href="SDFActor.xml"><code>SDFActor.xml</code></a>.
+These compositions are computed by the
+InterfaceAutomaton class, but the Vergil layout is done manually.
+
+<ul>
+<a href="CSPDomain.xml"><code>CSPDomain.xml</code></a>
+<a href="CSPDomain_PolyActor.xml"><code>CSPDomain_PolyActor.xml</code></a>
+<a href="CSPDomain_SDFActor.xml"><code>CSPDomain_SDFActor.xml</code></a>
+<a href="DEDomain.xml"><code>DEDomain.xml</code></a>
+<a href="DEDomain_PolyActor.xml"><code>DEDomain_PolyActor.xml</code></a>
+<a href="DEDomain_SDFActor.xml"><code>DEDomain_SDFActor.xml</code></a>
+<a href="DP.xml"><code>DP.xml</code></a>
+<a href="DummyDirector1.xml"><code>DummyDirector1.xml</code></a>
+<a href="DummyDirector1_SDFActor.xml"><code>DummyDirector1_SDFActor.xml</code></a>
+<a href="DummyDirector2.xml"><code>DummyDirector2.xml</code></a>
+<a href="DummyDirector2_SDFActor.xml"><code>DummyDirector2_SDFActor.xml</code></a>
+<a href="InterruptableWaitingThreadA.xml"><code>InterruptableWaitingThreadA.xml</code></a>
+<a href="Interrupter.xml"><code>Interrupter.xml</code></a>
+<a href="Monitor.xml"><code>Monitor.xml</code></a>
+<a href="PNDomain.xml"><code>PNDomain.xml</code></a>
+<a href="PNDomain_PolyActor.xml"><code>PNDomain_PolyActor.xml</code></a>
+<a href="PNDomain_SDFActor.xml"><code>PNDomain_SDFActor.xml</code></a>
+<a href="PolyActor.xml"><code>PolyActor.xml</code></a>
+<a href="SDFActor.xml"><code>SDFActor.xml</code></a>
+<a href="SDFDomain.xml"><code>SDFDomain.xml</code></a>
+<a href="SDFDomain_PolyActor.xml"><code>SDFDomain_PolyActor.xml</code></a>
+<a href="SDFDomain_SDFActor.xml"><code>SDFDomain_SDFActor.xml</code></a>
+<a href="ThreadA.xml"><code>ThreadA.xml</code></a>
+<a href="ThreadA_Monitor_ThreadB.xml"><code>ThreadA_Monitor_ThreadB.xml</code></a>
+<a href="ThreadB.xml"><code>ThreadB.xml</code></a>
+<a href="ThreadBNotifies.xml"><code>ThreadBNotifies.xml</code></a>
+<a href="Trigger.xml"><code>Trigger.xml</code></a>
+<a href="UNKNOWN.xml"><code>UNKNOWN.xml</code></a>
+</ul>
+
+</body>
+</html>

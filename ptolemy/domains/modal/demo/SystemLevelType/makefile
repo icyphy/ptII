@@ -86,6 +86,7 @@ DEMOS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DEMOS) \
+	README.htm \
 	README.txt
 
 EXTRA_SRCS = \
