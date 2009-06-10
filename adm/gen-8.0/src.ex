@@ -145,6 +145,7 @@ ptolemy/actor/lib/security/test/auto/foo.keystore
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/lib/test/Const.txt
 ptolemy/actor/lib/test/ReadFile1Output.txt
+ptolemy/actor/ptalon/demo/ptinyos
 ptolemy/actor/xslt
 ptolemy/apps
 ptolemy/automata
