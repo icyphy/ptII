@@ -1,0 +1,65 @@
+<html>
+<title>Interface Automata</title>
+<head>
+<body>
+<p>These models are interface automata. When you open the Graph
+menu, there are commands to compose them with other automata. 
+
+<p>These models are interface automaton models for some Ptolemy II
+components with respect to token passing. 
+
+<p>They are:
+<dl>
+<dt><a href="SDFActor.xml"><code>SDFActor.xml</code></a>
+<dd> An SDF sink actor. This actor does not call hasToken() before
+              calling get().
+<dt><a href="PolyActor.xml"><code>PolyActor.xml</code></a>
+<dd> A Polymorphic actor. This actor calls hasToken() before
+               calling get().
+<dt><a href="SDFDomain.xml"><code>SDFDomain.xml</code></a>
+<dd> The combination of SDF receiver and scheduler.
+<dt><a href="DEDomain.xml"><code>DEDomain.xml</code></a>
+<dd>The combination of DE  receiver and scheduler.
+</dl>
+
+<p>All the other automata are the compositions of two of the automata above.
+For example, <a href="SDFDomain_SDFActor.xml"><code>SDFDomain_SDFActor.xml</code></a>
+ is the composition of <a href="SDFDomain.xml"><code>SDFDomain.xml</code></a>
+and 
+<a href="SDFActor.xml"><code>SDFActor.xml</code></a>.
+These compositions are computed by the
+InterfaceAutomaton class, but the Vergil layout is done manually.
+
+<ul>
+<a href="CSPDomain.xml"><code>CSPDomain.xml</code></a>
+<a href="CSPDomain_PolyActor.xml"><code>CSPDomain_PolyActor.xml</code></a>
+<a href="CSPDomain_SDFActor.xml"><code>CSPDomain_SDFActor.xml</code></a>
+<a href="DEDomain.xml"><code>DEDomain.xml</code></a>
+<a href="DEDomain_PolyActor.xml"><code>DEDomain_PolyActor.xml</code></a>
+<a href="DEDomain_SDFActor.xml"><code>DEDomain_SDFActor.xml</code></a>
+<a href="DP.xml"><code>DP.xml</code></a>
+<a href="DummyDirector1.xml"><code>DummyDirector1.xml</code></a>
+<a href="DummyDirector1_SDFActor.xml"><code>DummyDirector1_SDFActor.xml</code></a>
+<a href="DummyDirector2.xml"><code>DummyDirector2.xml</code></a>
+<a href="DummyDirector2_SDFActor.xml"><code>DummyDirector2_SDFActor.xml</code></a>
+<a href="InterruptableWaitingThreadA.xml"><code>InterruptableWaitingThreadA.xml</code></a>
+<a href="Interrupter.xml"><code>Interrupter.xml</code></a>
+<a href="Monitor.xml"><code>Monitor.xml</code></a>
+<a href="PNDomain.xml"><code>PNDomain.xml</code></a>
+<a href="PNDomain_PolyActor.xml"><code>PNDomain_PolyActor.xml</code></a>
+<a href="PNDomain_SDFActor.xml"><code>PNDomain_SDFActor.xml</code></a>
+<a href="PolyActor.xml"><code>PolyActor.xml</code></a>
+<a href="SDFActor.xml"><code>SDFActor.xml</code></a>
+<a href="SDFDomain.xml"><code>SDFDomain.xml</code></a>
+<a href="SDFDomain_PolyActor.xml"><code>SDFDomain_PolyActor.xml</code></a>
+<a href="SDFDomain_SDFActor.xml"><code>SDFDomain_SDFActor.xml</code></a>
+<a href="ThreadA.xml"><code>ThreadA.xml</code></a>
+<a href="ThreadA_Monitor_ThreadB.xml"><code>ThreadA_Monitor_ThreadB.xml</code></a>
+<a href="ThreadB.xml"><code>ThreadB.xml</code></a>
+<a href="ThreadBNotifies.xml"><code>ThreadBNotifies.xml</code></a>
+<a href="Trigger.xml"><code>Trigger.xml</code></a>
+<a href="UNKNOWN.xml"><code>UNKNOWN.xml</code></a>
+</ul>
+
+</body>
+</html>
