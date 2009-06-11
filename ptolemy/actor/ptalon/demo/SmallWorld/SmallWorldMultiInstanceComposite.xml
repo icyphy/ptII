@@ -14,7 +14,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 25, 999, 729}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 25, 997, 723}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[784, 613]">
     </property>
@@ -464,7 +464,7 @@ it never receives the message.</text></svg></configure>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 86, 245, 353}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 86, 237, 342}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[237, 298]">
         </property>
@@ -558,7 +558,7 @@ it never receives the message.</text></svg></configure>
         <property name="nInstances" class="ptolemy.data.expr.Parameter" value="49">
         </property>
         <doc>Creates multiple instances of itself</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[319.0, 323.0]">
         </property>
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -614,7 +614,7 @@ it never receives the message.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 50.0}">
             </property>
         </property>
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
