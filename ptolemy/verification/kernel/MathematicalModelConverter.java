@@ -109,8 +109,8 @@ public class MathematicalModelConverter extends Attribute {
 
         buffer = new Parameter(this, "buffer");
         buffer.setTypeEquals(BaseType.INT);
-        buffer.setExpression("5");
-        buffer.setDisplayName("FSMActor Buffer Size");
+        buffer.setExpression("1");
+        buffer.setDisplayName("DelayedActor Buffer Size");
 
         _attachText("_iconDescription", "<svg>n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
@@ -133,7 +133,7 @@ public class MathematicalModelConverter extends Attribute {
 
     public StringBuffer generateCode(ModelType modelType,
             String inputTemporalFormula, FormulaType formulaType,
-            int variableSpanSize, int FSMBufferSize)
+            int variableSpanSize, int delayActorBufferSize)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         StringBuffer systemDescription = new StringBuffer("");
@@ -157,7 +157,7 @@ public class MathematicalModelConverter extends Attribute {
                     REDUtility.generateREDDescription(
                             (CompositeActor) _model.clone(),
                             inputTemporalFormula, formulaType,
-                            variableSpanSize, FSMBufferSize));
+                            variableSpanSize, delayActorBufferSize));
             break;
         case Maude:
             if (_model instanceof CompositeActor)
@@ -171,13 +171,6 @@ public class MathematicalModelConverter extends Attribute {
                                     (CompositeActor) _model,
                                     inputTemporalFormula));
                 }
-            /*
-            else // FSMActor
-                systemDescription.append(
-                        ((FmvAutomaton)_model).convertToSMVFormat(
-                            inputTemporalFormula, formulaType,
-                            variableSpanSize));
-            */
             break;
         }
 
@@ -197,7 +190,6 @@ public class MathematicalModelConverter extends Attribute {
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException, IOException {
         StringBuffer returnStringBuffer = new StringBuffer("");
-        // Perform deep traversal in order to generate .smv files.
         _codeFile = null;
 
         if (_model instanceof CompositeActor || _model instanceof FSMActor) {

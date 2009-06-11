@@ -37,11 +37,13 @@ import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.lib.Clock;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
@@ -82,9 +84,7 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * case in our context only happens when there is a timed delay actor with its
  * parameter equals to zero. For systems with super dense time tag with the
  * format (\tau, i), where i>0, the system can still be converted. However,
- * please note that the semantics is not preserved for complicated cases.
- * Our conversion concept is to use synchronizers "tick" for i=0, "tick+" for
- * i=1, and so on.
+ * please note that the semantics might no longer be preserved.
  *
  * Limitations: Simply following the statement in the technical report, we
  * restate limitations of the conversion. The designer must understand the
@@ -174,9 +174,9 @@ public class REDUtility {
      * @exception IllegalActionException
      */
     public static StringBuffer generateREDDescription(CompositeActor PreModel,
-            String pattern, FormulaType choice, int span, int bufferSizeFSM)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+            String pattern, FormulaType choice, int span,
+            int bufferSizeDelayActor) throws IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
         // returnREDFormat: Store StringBuffer format system description
         // acceptable by RED converted by Ptolemy II.
         StringBuffer returnREDFormat = new StringBuffer("");
@@ -256,8 +256,7 @@ public class REDUtility {
 
                 // Set up the return bean for data storage
                 REDSingleEntityBean bean = _translateFSMActor(
-                        (FSMActor) innerEntity, span, bufferSizeFSM,
-                        globalSynchronizerSet);
+                        (FSMActor) innerEntity, span, globalSynchronizerSet);
                 variableDefinition.append(bean._declaredVariables);
                 constantDefinition.append(bean._defineConstants);
                 Iterator<String> it = bean._clockSet.iterator();
@@ -283,11 +282,10 @@ public class REDUtility {
 
                 // Because for BoundedBufferNondeterministicDelay, the port name
                 // is not modifiable. Thus we need to offer a mechanism to
-                // understand
-                // the port name for the conjuncted signal.
+                // understand the port name for the conjuncted signal.
                 // For example, in Sec---->BBNondeterministicDelay, we would use
                 // Sec as the incoming signal name.
-                //
+
                 // Decide output signal name
                 String outputSignalName = null;
                 Iterator outputConnectedPortList = ((BoundedBufferNondeterministicDelay) innerEntity).output
@@ -321,7 +319,7 @@ public class REDUtility {
                     }
                 }
 
-                REDSingleEntityBean bean = _translateNondeterministicDelayedActor(
+                REDSingleEntityBean bean = _translateBBNondeterministicDelayedActor(
                         (BoundedBufferNondeterministicDelay) innerEntity,
                         inputSignalName, outputSignalName, numOfFSMActors);
                 variableDefinition.append(bean._declaredVariables);
@@ -381,7 +379,7 @@ public class REDUtility {
                     }
                 }
 
-                REDSingleEntityBean bean = _translateTimedDelayedActor(
+                REDSingleEntityBean bean = _translateBBTimedDelayedActor(
                         (BoundedBufferTimedDelay) innerEntity, inputSignalName,
                         outputSignalName, numOfFSMActors);
                 constantDefinition.append(bean._defineConstants);
@@ -400,13 +398,60 @@ public class REDUtility {
                     variableAndItsInitialCondition.add(variableInitialValues
                             .next());
                 }
+            } else if (innerEntity instanceof TimedDelay) {
+
+                // Decide the name of input and output signal
+                String outputSignalName = null;
+                Iterator outputConnectedPortList = ((TimedDelay) innerEntity).output
+                        .connectedPortList().iterator();
+
+                while (outputConnectedPortList.hasNext()) {
+                    String portName = ((Port) outputConnectedPortList.next())
+                            .getName();
+                    if (portName
+                            .equalsIgnoreCase(((TimedDelay) innerEntity).output
+                                    .getName().trim())) {
+                        continue;
+                    } else {
+                        outputSignalName = portName;
+                    }
+                }
+                String inputSignalName = null;
+                Iterator inputConnectedPortList = ((TimedDelay) innerEntity).input
+                        .connectedPortList().iterator();
+
+                while (inputConnectedPortList.hasNext()) {
+                    String portName = ((Port) inputConnectedPortList.next())
+                            .getName();
+                    if (portName
+                            .equalsIgnoreCase(((TimedDelay) innerEntity).input
+                                    .getName().trim())) {
+                        continue;
+                    } else {
+                        inputSignalName = portName;
+                    }
+                }
+
+                REDSingleEntityBean bean = _translateTimedDelayedActor(
+                        (TimedDelay) innerEntity, inputSignalName,
+                        outputSignalName, numOfFSMActors, bufferSizeDelayActor);
+                constantDefinition.append(bean._defineConstants);
+                variableDefinition.append(bean._declaredVariables);
+                processModuleNameList.add(bean._nameInitialState);
+                Iterator<String> clocks = bean._clockSet.iterator();
+                while (clocks.hasNext()) {
+                    globalClockSet.add(clocks.next());
+                }
+
+                moduleDefinition.append(bean._moduleDescription);
+
+                Iterator<String> variableInitialValues = bean._variableInitialDescriptionSet
+                        .iterator();
+                while (variableInitialValues.hasNext()) {
+                    variableAndItsInitialCondition.add(variableInitialValues
+                            .next());
+                }
             } else if (innerEntity instanceof Clock) {
-                // Add up the name for the process.
-                // Remember: we should use 1 as starting process (definition in
-                // RED)
-
-                // processModuleNameList.add(innerEntity.getName());
-
                 String outputSignalName = null;
                 Iterator outputConnectedPortList = ((Clock) innerEntity).output
                         .connectedPortList().iterator();
@@ -488,7 +533,7 @@ public class REDUtility {
                 if (it.hasNext()) {
                     returnREDFormat.append(sync + ", ");
                 } else {
-                    returnREDFormat.append(sync + ";\n ");
+                    returnREDFormat.append(sync + ";\n");
                 }
             }
         }
@@ -513,11 +558,11 @@ public class REDUtility {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 returnREDFormat.append("N_" + innerEntity.getName().trim()
-                        + ", N_" + innerEntity.getName().trim() + "_Plus, ");
+                        + ", ");
             }
         }
 
-        returnREDFormat.append("tick, tick_Plus ;\n ");
+        returnREDFormat.append("tick ;\n ");
 
         // Module description
         returnREDFormat
@@ -529,14 +574,17 @@ public class REDUtility {
         for (int i = 0; i < processModuleNameList.size(); i++) {
             returnREDFormat.append("    "
                     + processModuleNameList.get(i)._initialStateDescription
-                    + "[" + String.valueOf(i + 1) + "]" + " && " +"t[" + String.valueOf(i + 1) + "] == 0 && \n");
+                    + "[" + String.valueOf(i + 1) + "]" + " && " + "t["
+                    + String.valueOf(i + 1) + "] == 0 && \n");
         }
         for (int i = 0; i < processModulePortList.size(); i++) {
             returnREDFormat.append("    "
                     + processModulePortList.get(i)._initialStateDescription
                     + "["
                     + String.valueOf(processModuleNameList.size() + i + 1)
-                    + "]" + " && "+"t[" + String.valueOf(processModuleNameList.size() + i + 1) + "] == 0 && \n");
+                    + "]" + " && " + "t["
+                    + String.valueOf(processModuleNameList.size() + i + 1)
+                    + "] == 0 && \n");
         }
         // Set up all variables with their initial value.
         Iterator<String> ite = variableAndItsInitialCondition.iterator();
@@ -573,8 +621,7 @@ public class REDUtility {
      * return false. This is because our current conversion to CTA is only valid
      * when the director is DE.
      *
-     * @param model
-     *                Model used for testing.
+     * @param model Model used for testing.
      * @return a boolean value indicating if the director is DE.
      */
     public static boolean isValidModelForVerification(CompositeActor model) {
@@ -604,9 +651,7 @@ public class REDUtility {
         // BoundedBufferTimedDelay.
         // Thus we only need to use one.
         if (entity instanceof FSMActor) {
-
             HashSet<State> stateSet = new HashSet<State>();
-
             // initialize
             HashMap<String, State> frontier = new HashMap<String, State>();
 
@@ -657,7 +702,6 @@ public class REDUtility {
                         hasAnnotation = true;
                         // buffer.append(text);
                     }
-
                     // Retrieve the guardExpression for checking the existence
                     // of inner variables used in FmcAutomaton.
                     String guard = transition.getGuardExpression();
@@ -669,7 +713,6 @@ public class REDUtility {
                             String[] guardSplitExpression = guard.split("(&&)");
                             if (guardSplitExpression.length != 0) {
                                 for (int i = 0; i < guardSplitExpression.length; i++) {
-
                                     String subGuardCondition = guardSplitExpression[i]
                                             .trim();
                                     // Retrieve the left value of the
@@ -683,17 +726,11 @@ public class REDUtility {
                                     if (b == true) {
                                         String[] sigs = characterOfSubGuard[0]
                                                 .trim().split("_isPresent");
-
-                                        // When in a FSM, it has an edge showing
-                                        // XX_isPresent, we add up two
-                                        // synchronizers
-                                        // XX and ND_XX. XX is the signal from
-                                        // outside to the port, abd ND_XX
-                                        // represents
-                                        // the forwarded signal without delay.
+                                        // When in a FSM, it has an edge showing XX_isPresent, we add up 
+                                        // two synchronizers XX and ND_XX. XX is the signal from
+                                        // outside to the port, and ND_XX represents the forwarded signal without delay.
                                         if (returnVariableSet.contains(sigs[0]) == false) {
                                             returnVariableSet.add(sigs[0]);
-
                                         }
                                         if (returnVariableSet.contains("ND_"
                                                 + sigs[0]) == false) {
@@ -701,11 +738,8 @@ public class REDUtility {
                                             returnVariableSet.add("ND_"
                                                     + sigs[0]);
                                         }
-
                                     }
-
                                 }
-
                             }
                         }
 
@@ -715,16 +749,16 @@ public class REDUtility {
 
             }
 
-        } else if (entity instanceof BoundedBufferTimedDelay) {
+        } else if (entity instanceof TimedDelay) {
             String outputSignalName = null;
-            Iterator outputConnectedPortList = ((BoundedBufferTimedDelay) entity).output
+            Iterator outputConnectedPortList = ((TimedDelay) entity).output
                     .connectedPortList().iterator();
 
             while (outputConnectedPortList.hasNext()) {
                 String portName = ((Port) outputConnectedPortList.next())
                         .getName();
                 if (portName
-                        .equalsIgnoreCase(((BoundedBufferTimedDelay) entity).output
+                        .equalsIgnoreCase(((TimedDelay) entity).output
                                 .getName().trim())) {
                     continue;
                 } else {
@@ -732,14 +766,14 @@ public class REDUtility {
                 }
             }
             String inputSignalName = null;
-            Iterator inputConnectedPortList = ((BoundedBufferTimedDelay) entity).input
+            Iterator inputConnectedPortList = ((TimedDelay) entity).input
                     .connectedPortList().iterator();
 
             while (inputConnectedPortList.hasNext()) {
                 String portName = ((Port) inputConnectedPortList.next())
                         .getName();
                 if (portName
-                        .equalsIgnoreCase(((BoundedBufferTimedDelay) entity).input
+                        .equalsIgnoreCase(((TimedDelay) entity).input
                                 .getName().trim())) {
                     continue;
                 } else {
@@ -765,7 +799,6 @@ public class REDUtility {
             }
             returnVariableSet.add(outputSignalName);
         }
-
         return returnVariableSet;
     }
 
@@ -834,7 +867,16 @@ public class REDUtility {
                 // Retrieve the guardExpression for checking the existence
                 // of inner variables used in FmcAutomaton.
                 String guard = transition.getGuardExpression();
+
                 if ((guard != null) && !guard.trim().equals("")) {
+                    if (guard.trim().equalsIgnoreCase("true")) {
+                        /* NEW FEATURE: If the guard is true, then it can be enabled by any arrival of the signal*/
+                        for (int i = 0; i < actor.inputPortList().size(); i++) {
+                            returnVariableSet.add(((IOPort) actor
+                                    .inputPortList().get(i)).getName());
+                        }
+                        return returnVariableSet;
+                    }
                     if (hasAnnotation) {
                         // do nothing
                     } else {
@@ -1315,36 +1357,32 @@ public class REDUtility {
                         // a>-1 and a<5 happen simultaneously. Also we expect to
                         // constrain the way that an end user can do for writing
                         // codes. We do "not" expect him to write in the way
-                        // like
-                        // -1<a.
+                        // like -1<a.
                         //
                         // Also here we assume that every sub-guard expression
-                        // is
-                        // connected using && but not || operator. But it is
-                        // easy to
-                        // modify the code such that it supports ||.
+                        // is connected using && but not || operator. But it is
+                        // easy to modify the code such that it supports ||.
                         //
 
                         String guard = transition.getGuardExpression();
+                        
                         String outputAction = transition.outputActions
                                 .getExpression();
 
                         // variableUsedInTransitionSet: Store variable names
-                        // used in
-                        // this transition as preconditions. If in the guard
+                        // used in this transition as preconditions. If in the guard
                         // expression, we have X<3 && Y>5, then X and Y are used
-                        // as
-                        // variables in precondition and should be stored in the
+                        // as variables in precondition and should be stored in the
                         // set "variableUsedInTransitionSet".
-
-                        if ((guard != null) && !guard.trim().equals("")) {
+                        if ((guard != null)
+                                && guard.trim().equalsIgnoreCase("true")) {
+                            // Special case for true; in this way, the system must listen to all incoming ports
+                            // Since each incoming port is OK, it will turn to be separate transitions.
+                            bean._preCondition.append("true");
+                        } else if ((guard != null) && !guard.trim().equals("")) {
                             if (hasAnnotation) {
-                                // FIXME: (2007/12/14 Patrick.Cheng) Currently I
-                                // don't know the meaning of annotation. Do
-                                // nothing
-                                // currently.
-                            } else {
 
+                            } else {
                                 String[] guardSplitExpression = guard
                                         .split("(&&)");
 
@@ -1356,8 +1394,7 @@ public class REDUtility {
 
                                         // Retrieve the left value of the
                                         // inequality. Here we may still have
-                                        // two
-                                        // cases for the lValue:
+                                        // two cases for the lValue:
                                         // (1) XXX_isPresent (2) the normal case
                                         // (including "true").
                                         String[] characterOfSubGuard = subGuardCondition
@@ -1372,8 +1409,7 @@ public class REDUtility {
                                             // FIXME: (2008/02/07 Patrick.Cheng)
                                             // First case, synchronize usage.
                                             // Pgo_isPresent
-                                            // We add it into the list for
-                                            // transition.
+                                            // We add it into the list for transition.
                                             String[] signalName = characterOfSubGuard[0]
                                                     .trim().split("_isPresent");
                                             if (bean._signal.toString()
@@ -1381,7 +1417,6 @@ public class REDUtility {
                                                 bean._signal.append(" ?ND_"
                                                         + signalName[0]);
                                             } else {
-                                                // FIXME:
                                                 bean._signal.append("  ?ND_"
                                                         + signalName[0]);
                                             }
@@ -1392,12 +1427,9 @@ public class REDUtility {
                                             // name of the module.
 
                                             // Check if the right value exists.
-                                            // We
-                                            // need to ward off cases like
-                                            // "true".
+                                            // We need to ward off cases like "true".
                                             // This is achieved using try-catch
-                                            // and
-                                            // retrieve the rValue from
+                                            // and retrieve the rValue from
                                             // characterOfSubGuard[1].
                                             boolean parse = true;
                                             String rValue = null;
@@ -1411,24 +1443,19 @@ public class REDUtility {
                                                 if (Pattern.matches("^-?\\d+$",
                                                         rValue) == true) {
 
-                                                    // We need to understand
-                                                    // what is
+                                                    // We need to understand what is
                                                     // the operator of the value
-                                                    // in
-                                                    // order to reason the bound
-                                                    // of
-                                                    // the variable for suitable
+                                                    // in order to reason the bound
+                                                    // of the variable for suitable
                                                     // transition.
 
                                                     if (Pattern.matches(
                                                             ".*==.*",
                                                             subGuardCondition)) {
                                                         // equal than, restrict
-                                                        // the
-                                                        // set of all possible
+                                                        // the set of all possible
                                                         // values in the domain
-                                                        // into
-                                                        // one single value.
+                                                        // into one single value.
                                                         if (bean._preCondition
                                                                 .toString()
                                                                 .equalsIgnoreCase(
@@ -1583,7 +1610,6 @@ public class REDUtility {
 
                                                 }
                                             }
-
                                         }
                                     }
                                 }
@@ -1592,7 +1618,7 @@ public class REDUtility {
 
                         String setActionExpression = transition.setActions
                                 .getExpression();
-
+                        
                         if ((setActionExpression != null)
                                 && !setActionExpression.trim().equals("")) {
                             // Retrieve possible value of the variable
@@ -1602,6 +1628,7 @@ public class REDUtility {
                                 String[] characters = splitExpression[i]
                                         .split("=");
                                 if (characters.length >= 1) {
+                                    
                                     String lValue = characters[0].trim();
                                     String rValue = "";
                                     if (Pattern.matches("^-?\\d+$",
@@ -1616,27 +1643,18 @@ public class REDUtility {
                                                 + ";");
 
                                     } else {
-                                        // The right hand side is actually
-                                        // complicated
-                                        // expression which needs to be
-                                        // carefully
-                                        // Designed for accepting various
-                                        // expression.
-                                        // If we expect to do this, it is
-                                        // necessary
-                                        // to
-                                        // construct a parse tree and
-                                        // evaluate the value.
+                                        // The right hand side is actually complicated
+                                        // expression which needs to be carefully
+                                        // designed for accepting various expression.
+                                        // If we expect to do this, it is necessary
+                                        // to construct a parse tree and evaluate the value.
                                         // Currently let us assume that we are
-                                        // manipulating simple format
-                                        // a = a op constInt; or a = constInt;
-
+                                        // manipulating simple format a = a op constInt; 
+                                        // or a = constInt;
+                                        rValue = characters[1].trim();
                                         if (Pattern.matches(".*\\*.*", rValue)) {
-                                            // try {
-
                                             String[] rValueOperends = rValue
                                                     .split("\\*");
-
                                             bean._postCondition.append(actor
                                                     .getName()
                                                     + "_"
@@ -1648,13 +1666,10 @@ public class REDUtility {
                                                     + " * "
                                                     + rValueOperends[1].trim()
                                                     + ";");
-
                                         } else if (Pattern.matches(".*/.*",
                                                 rValue)) {
-                                            // try {
                                             String[] rValueOperends = rValue
                                                     .split("[/]");
-
                                             bean._postCondition.append(actor
                                                     .getName()
                                                     + "_"
@@ -1666,13 +1681,10 @@ public class REDUtility {
                                                     + " / "
                                                     + rValueOperends[1].trim()
                                                     + ";");
-
                                         } else if (Pattern.matches(".*\\+.*",
                                                 rValue)) {
-                                            // try {
                                             String[] rValueOperends = rValue
                                                     .split("\\+");
-
                                             bean._postCondition.append(actor
                                                     .getName()
                                                     + "_"
@@ -1686,10 +1698,8 @@ public class REDUtility {
                                                     + ";");
                                         } else if (Pattern.matches(".*\\-.*",
                                                 rValue)) {
-                                            // try {
                                             String[] rValueOperends = rValue
                                                     .split("\\-");
-
                                             bean._postCondition.append(actor
                                                     .getName()
                                                     + "_"
@@ -1702,7 +1712,6 @@ public class REDUtility {
                                                     + rValueOperends[1].trim()
                                                     + ";");
                                         }
-
                                     }
                                 }
                             }
@@ -1729,7 +1738,6 @@ public class REDUtility {
 
                                 }
                             }
-
                         }
                         returnList.add(bean);
                     }
@@ -2319,7 +2327,7 @@ public class REDUtility {
      * @exception IllegalActionException
      */
     private static REDSingleEntityBean _translateClockActor(Clock clockActor,
-            String outputSignalName, int numOfFSMActor)
+            String outputSignalName, int numOfListeningFSMActor)
             throws IllegalActionException {
 
         // REDSingleEntityBean returnBean = new REDSingleEntityBean();
@@ -2345,10 +2353,6 @@ public class REDUtility {
         double stopTime = ((DoubleToken) clockActor.stopTime.getToken())
                 .doubleValue();
         String sStopTime = String.valueOf(stopTime);
-        StringBuffer tickSignal = new StringBuffer("");
-        for (int i = 0; i < numOfFSMActor; i++) {
-            tickSignal.append("!tick");
-        }
 
         if ((numberOfCycles.equalsIgnoreCase("-1"))
                 || (numberOfCycles.equalsIgnoreCase("UNBOUNDED"))) {
@@ -2360,18 +2364,27 @@ public class REDUtility {
                 REDSingleEntityBean bean = new REDSingleEntityBean();
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_PERIOD "
-                        + String.valueOf((int)period) + "\n");
+                        + String.valueOf((int) period / 2) + "\n");
                 bean._clockSet.add(clockActor.getName().trim() + "_C1");
 
                 bean._moduleDescription.append("\n/* Process name: "
                         + clockActor.getName().trim() + " */\n");
                 bean._moduleDescription.append("mode "
                         + clockActor.getName().trim() + "_init ("
+                        + clockActor.getName().trim() + "_C1 == 0) { \n");
+                bean._moduleDescription.append("    when " + "!"
+                        + outputSignalName.trim() + " ("
+                        + clockActor.getName().trim() + "_C1 == 0) may "
+                        + clockActor.getName().trim() + "_C1 = 0 ; goto "
+                        + clockActor.getName().trim() + "_state;" + "\n");
+                bean._moduleDescription.append("}\n");
+                bean._moduleDescription.append("mode "
+                        + clockActor.getName().trim() + "_state ("
                         + clockActor.getName().trim() + "_C1 <= "
                         + clockActor.getName().trim() + "_PERIOD) { \n");
-                bean._moduleDescription.append("    when "
-                        + tickSignal.toString() + "!" + outputSignalName.trim()
-                        + " (" + clockActor.getName().trim() + "_C1 == "
+                bean._moduleDescription.append("    when " + "!"
+                        + outputSignalName.trim() + " ("
+                        + clockActor.getName().trim() + "_C1 == "
                         + clockActor.getName().trim() + "_PERIOD) may "
                         + clockActor.getName().trim() + "_C1 = 0 ; \n");
                 bean._moduleDescription.append("}\n");
@@ -2388,7 +2401,7 @@ public class REDUtility {
                 REDSingleEntityBean bean = new REDSingleEntityBean();
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_PERIOD "
-                        + String.valueOf(period) + " \n");
+                        + String.valueOf((int) period / 2) + " \n");
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_STOP_TIME "
                         + String.valueOf(stopTime) + "\n");
@@ -2399,22 +2412,33 @@ public class REDUtility {
                         + clockActor.getName().trim() + " */\n");
                 bean._moduleDescription.append("mode "
                         + clockActor.getName().trim() + "_init ("
+                        + clockActor.getName().trim() + "_C1 == 0"
+                        + clockActor.getName().trim() + "_C2 <= "
+                        + clockActor.getName().trim() + "_STOPTIME" + ") { \n");
+                bean._moduleDescription.append("    when " + "!"
+                        + outputSignalName.trim() + " ("
+                        + clockActor.getName().trim() + "_C1 == 0) may "
+                        + clockActor.getName().trim() + "_C1 = 0 ; goto "
+                        + clockActor.getName().trim() + "_state; \n");
+                bean._moduleDescription.append("}\n");
+                bean._moduleDescription.append("mode "
+                        + clockActor.getName().trim() + "_state ("
                         + clockActor.getName().trim() + "_C1 <= "
                         + clockActor.getName().trim() + "_PERIOD"
                         + clockActor.getName().trim() + "_C2 <= "
                         + clockActor.getName().trim() + "_STOPTIME" + ") { \n");
-                bean._moduleDescription.append("    when "
-                        + tickSignal.toString() + "!" + outputSignalName.trim()
-                        + " (" + clockActor.getName().trim() + "_C1 == "
+                bean._moduleDescription.append("    when " + "!"
+                        + outputSignalName.trim() + " ("
+                        + clockActor.getName().trim() + "_C1 == "
                         + clockActor.getName().trim() + "_PERIOD) may "
                         + clockActor.getName().trim() + "_C1 = 0 ;  \n");
                 bean._moduleDescription.append("    when ("
                         + clockActor.getName().trim() + "_C2 == "
                         + clockActor.getName().trim() + "_STOPTIME) may goto "
-                        + clockActor.getName().trim() + "_idol; \n");
+                        + clockActor.getName().trim() + "_idle; \n");
                 bean._moduleDescription.append("}\n");
                 bean._moduleDescription.append("mode "
-                        + clockActor.getName().trim() + "_idol (true) { \n");
+                        + clockActor.getName().trim() + "_idle (true) { \n");
                 bean._moduleDescription.append("}\n");
 
                 REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
@@ -2430,14 +2454,13 @@ public class REDUtility {
         } else {
             // We need to count on number of cycles.
             // We use a integer number to store the number of cycles
-            // When the system reaches the number, it would go to idol
+            // When the system reaches the number, it would go to idle
             // state.
             if (sStopTime.equalsIgnoreCase("Infinity")) {
-
                 REDSingleEntityBean bean = new REDSingleEntityBean();
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_PERIOD "
-                        + String.valueOf(period) + " \n");
+                        + String.valueOf((int) period / 2) + " \n");
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_STOP_CYCLE_COUNT "
                         + String.valueOf(numberOfCycles) + "\n");
@@ -2450,23 +2473,46 @@ public class REDUtility {
                         + clockActor.getName().trim() + " */\n");
                 bean._moduleDescription.append("mode "
                         + clockActor.getName().trim() + "_init ("
+                        + clockActor.getName().trim() + "_C1 == 0) { \n");
+                bean._moduleDescription
+                        .append("    when " + "!" + outputSignalName.trim()
+                                + " (" + clockActor.getName().trim()
+                                + "_C1 == 0 &&" + clockActor.getName().trim()
+                                + "_Cycle < " + clockActor.getName().trim()
+                                + "_STOP_CYCLE_COUNT" + ") may "
+                                + clockActor.getName().trim() + "_C1 = 0 ; "
+                                + clockActor.getName().trim() + "_Cycle = "
+                                + clockActor.getName().trim() + "_Cycle + 1;"
+                                + " goto " + clockActor.getName().trim()
+                                + "_state; \n");
+                bean._moduleDescription.append("    when  ("
+                        + clockActor.getName().trim() + "_Cycle == "
+                        + clockActor.getName().trim()
+                        + "_STOP_CYCLE_COUNT) may goto "
+                        + clockActor.getName().trim() + "_idle; \n");
+                bean._moduleDescription.append("}\n");
+
+                bean._moduleDescription.append("mode "
+                        + clockActor.getName().trim() + "_state ("
                         + clockActor.getName().trim() + "_C1 <= "
                         + clockActor.getName().trim() + "_PERIOD" + ") { \n");
-                bean._moduleDescription.append("    when "
-                        + tickSignal.toString() + "!" + outputSignalName.trim()
-                        + " (" + clockActor.getName().trim() + "_C1 == "
-                        + clockActor.getName().trim() + "_PERIOD) may "
-                        + clockActor.getName().trim() + "_C1 = 0 ; "
+                bean._moduleDescription.append("    when " + "!"
+                        + outputSignalName.trim() + " ("
+                        + clockActor.getName().trim() + "_C1 == "
+                        + clockActor.getName().trim() + "_PERIOD &&"
+                        + clockActor.getName().trim() + "_Cycle < "
+                        + clockActor.getName().trim() + "_STOP_CYCLE_COUNT"
+                        + ") may " + clockActor.getName().trim() + "_C1 = 0 ; "
                         + clockActor.getName().trim() + "_Cycle = "
                         + clockActor.getName().trim() + "_Cycle + 1;" + " \n");
                 bean._moduleDescription.append("    when  ("
                         + clockActor.getName().trim() + "_Cycle == "
                         + clockActor.getName().trim()
                         + "_STOP_CYCLE_COUNT) may goto "
-                        + clockActor.getName().trim() + "_idol; \n");
+                        + clockActor.getName().trim() + "_idle; \n");
                 bean._moduleDescription.append("}\n");
                 bean._moduleDescription.append("mode "
-                        + clockActor.getName().trim() + "_idol (true) { \n");
+                        + clockActor.getName().trim() + "_idle (true) { \n");
                 bean._moduleDescription.append("}\n");
 
                 REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
@@ -2484,7 +2530,7 @@ public class REDUtility {
                 REDSingleEntityBean bean = new REDSingleEntityBean();
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_PERIOD "
-                        + String.valueOf(period) + " \n");
+                        + String.valueOf((int) period / 2) + " \n");
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_STOP_CYCLE_COUNT "
                         + String.valueOf(numberOfCycles) + "\n");
@@ -2504,25 +2550,51 @@ public class REDUtility {
                         + clockActor.getName().trim() + "_init ("
                         + clockActor.getName().trim() + "_C1 <= "
                         + clockActor.getName().trim() + "_PERIOD" + ") { \n");
-                bean._moduleDescription.append("    when "
-                        + tickSignal.toString() + "!" + outputSignalName.trim()
-                        + " (" + clockActor.getName().trim() + "_C1 == "
-                        + clockActor.getName().trim() + "_PERIOD) may "
-                        + clockActor.getName().trim() + "_C1 = 0 ; "
+                bean._moduleDescription.append("    when " + "!"
+                        + outputSignalName.trim() + " ("
+                        + clockActor.getName().trim() + "_C1 == 0 &&"
+                        + clockActor.getName().trim() + "_Cycle < "
+                        + clockActor.getName().trim() + "_STOP_CYCLE_COUNT"
+                        + ") may " + clockActor.getName().trim() + "_C1 = 0 ; "
+                        + clockActor.getName().trim() + "_Cycle = "
+                        + clockActor.getName().trim() + "_Cycle + 1; goto "
+                        + clockActor.getName().trim() + "_state; \n");
+                bean._moduleDescription.append("    when  ("
+                        + clockActor.getName().trim() + "_Cycle == "
+                        + clockActor.getName().trim()
+                        + "_STOP_CYCLE_COUNT) may goto "
+                        + clockActor.getName().trim() + "_idle; \n");
+                bean._moduleDescription.append("    when ("
+                        + clockActor.getName().trim() + "_C2 == "
+                        + clockActor.getName().trim() + "_STOPTIME) may goto "
+                        + clockActor.getName().trim() + "_idle; \n");
+                bean._moduleDescription.append("}\n");
+
+                bean._moduleDescription.append("mode "
+                        + clockActor.getName().trim() + "_state ("
+                        + clockActor.getName().trim() + "_C1 <= "
+                        + clockActor.getName().trim() + "_PERIOD" + ") { \n");
+                bean._moduleDescription.append("    when " + "!"
+                        + outputSignalName.trim() + " ("
+                        + clockActor.getName().trim() + "_C1 == "
+                        + clockActor.getName().trim() + "_PERIOD &&"
+                        + clockActor.getName().trim() + "_Cycle < "
+                        + clockActor.getName().trim() + "_STOP_CYCLE_COUNT"
+                        + ") may " + clockActor.getName().trim() + "_C1 = 0 ; "
                         + clockActor.getName().trim() + "_Cycle = "
                         + clockActor.getName().trim() + "_Cycle + 1;" + " \n");
                 bean._moduleDescription.append("    when  ("
                         + clockActor.getName().trim() + "_Cycle == "
                         + clockActor.getName().trim()
                         + "_STOP_CYCLE_COUNT) may goto "
-                        + clockActor.getName().trim() + "_idol; \n");
+                        + clockActor.getName().trim() + "_idle; \n");
                 bean._moduleDescription.append("    when ("
                         + clockActor.getName().trim() + "_C2 == "
                         + clockActor.getName().trim() + "_STOPTIME) may goto "
-                        + clockActor.getName().trim() + "_idol; \n");
+                        + clockActor.getName().trim() + "_idle; \n");
                 bean._moduleDescription.append("}\n");
                 bean._moduleDescription.append("mode "
-                        + clockActor.getName().trim() + "_idol (true) { \n");
+                        + clockActor.getName().trim() + "_idle (true) { \n");
                 bean._moduleDescription.append("}\n");
 
                 REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
@@ -2542,23 +2614,15 @@ public class REDUtility {
     }
 
     private static REDSingleEntityBean _translateFSMActor(FSMActor actor,
-            int span, int bufferSize, HashSet<String> globalSynchronizerSet)
+            int span, HashSet<String> globalSynchronizerSet)
             throws IllegalActionException {
 
-        // FIXME: An experimental version dealing with the DE conversion
-        //        based on the analysis technique.
-
         REDSingleEntityBean bean = new REDSingleEntityBean();
-        //bean._defineConstants.append("#define " + actor.getName().trim()
-        //        + "_BUFFER_SIZE " + String.valueOf(bufferSize) + "\n");
-
         bean._moduleDescription.append("\n/* Process name: "
                 + actor.getName().trim() + " */\n");
 
         REDModuleNameInitialBean moduleNameInitialState = new REDModuleNameInitialBean();
         moduleNameInitialState._name = actor.getName();
-        //moduleNameInitialState._initialStateDescription = actor.getName()
-        //        + "_State_" + ((FSMActor) actor).getInitialState().getName();
         moduleNameInitialState._initialStateDescription = actor.getName()
                 + "_State_"
                 + ((FSMActor) actor).getInitialState().getName().trim()
@@ -2566,118 +2630,76 @@ public class REDUtility {
         bean._nameInitialState = moduleNameInitialState;
 
         // Determine the number of ports required and specify their names.
-        // Note that some input signals might be useless; this can be found
-        // in the mismatch of
+        // Note that some input signals might be useless; but if there exists 
+        // a transition which has the guard "true", then it should listen to 
+        // all input ports (when any input port receives a token, the transition 
+        // can be enabled).
         HashSet<String> guardSignalSet = _decideGuardSignalVariableSet(actor);
-        int guardSignalSetSize = guardSignalSet.size();
         Iterator<String> it = guardSignalSet.iterator();
         while (it.hasNext()) {
-            // FIXME: This is the old version (use the new version)
-            // mode CarLightNormal_Port_Sec (true) {
-            // when ?Sec (CarLightNormal_NumberOfSignals_Sec <
-            // CARLIGHTNORMAL_BUFFER_SIZE) may
-            // CarLightNormal_NumberOfSignals_Sec =
-            // CarLightNormal_NumberOfSignals_Sec + 1; goto
-            // CarLightNormal_Port_Sec;
-            // when !ND_Sec (CarLightNormal_NumberOfSignals_Sec > 0) may
-            // CarLightNormal_NumberOfSignals_Sec =
-            // CarLightNormal_NumberOfSignals_Sec - 1; goto
-            // CarLightNormal_Port_Sec;
-            // when ?Sec (CarLightNormal_NumberOfSignals_Sec ==
-            // CARLIGHTNORMAL_BUFFER_SIZE) may goto Buffer_Overflow;
-            // }
-            //
-            // FIXME: This is the new version (DE as a generalization of SR)
-            // mode CarLightNormal_Port_Sec_Sa (true) {
-            // when ?N_CarLightNormal_Plus (true) may;
-            // when ?N_CarLightNormal (true) may;
-            // when ?Sec ?N_CarLightNormal_Plus (true) may;
-            // when ?Sec !ND_Sec (true) may;
-            // when ?Sec ?N_CarLightNormal (true) may t = 0; goto CarLightNormal_Port_Sec_Sp;
-            // }
-            // mode CarLightNormal_Port_Sec_Sp (t==0) {
-            // when (t>0) may ; goto CarLightNormal_Port_Sec_Sa;
-            // when ?N_CarLightNormal_Plus (true) may; goto CarLightNormal_Port_Sec_Sa;
-            // when !ND_Sec (true) may; goto CarLightNormal_Port_Sec_Sa;
-            // when ?Sec ?N_CarLightNormal_Plus (true) may;
-            // when ?N_CarLightNormal (true) may;
-            // }
-            //
-            //
-
             String signalName = it.next();
             // Add this signal to the bean.
             REDModuleNameInitialBean nameInitialBean = new REDModuleNameInitialBean();
             nameInitialBean._name = actor.getName().trim() + "_Port_"
                     + signalName.trim();
             nameInitialBean._initialStateDescription = actor.getName().trim()
-                    + "_Port_" + signalName.trim() + "_Sa";
+                    + "_Port_" + signalName.trim() + "_TokenEmpty";
             bean._portSet.add(nameInitialBean);
 
-            // mode CarLightNormal_Port_Sec_Sa (true) {
+            // Empty means that the port does not contain any token; mode Port_TokenEmpty (true) {
             bean._moduleDescription.append("mode " + actor.getName().trim()
-                    + "_Port_" + signalName.trim() + "_Sa" + " ( true ) { \n");
-            //when ?N_CarLightNormal_Plus (true) may;
-            bean._moduleDescription.append("    when !N_"
-                    + actor.getName().trim() + "_Plus" + " (true) may ; \n");
-            //when ?N_CarLightNormal (true) may;
-            bean._moduleDescription.append("    when !N_"
-                    + actor.getName().trim() + " (true) may ; \n");
-            //when ?Sec ?N_CarLightNormal_Plus (true) may;
-            bean._moduleDescription.append("    when ?" + signalName.trim()
-                    + " !N_" + actor.getName().trim() + "_Plus"
-                    + " (true) may ; \n");
-            // when ?Sec !ND_Sec (true) may;
+                    + "_Port_" + signalName.trim() + "_TokenEmpty"
+                    + " ( true ) { \n");
+            /* All possible transitions in TokenEmpty are described as follows.
+             * (1) The token is received, and simultaneously it is consumed with the transition 
+             *     inside the FSM. In this way, it will remain empty status.
+             * (2) The token is received, and it is not consumed by the transition. In this way,
+             *     the system moves to the location "TokenOccupied".
+             * signalName.trim(): Signal from outside sending
+             * ND_signalName.trim(): Signal for the internal consumption of the FSMActor
+             * Note that all guard signal should be renamed as ND_signalName
+             * ND stands for non-delayed signals    
+             */
             bean._moduleDescription.append("    when ?" + signalName.trim()
                     + " !ND_" + signalName.trim() + " (true) may ; \n");
-            // when ?Sec ?N_CarLightNormal (true) may t = 0; goto CarLightNormal_Port_Sec_Sp;
             bean._moduleDescription.append("    when ?" + signalName.trim()
-                    + " !N_" + actor.getName().trim()
                     + " (true) may t = 0; goto " + actor.getName().trim()
-                    + "_Port_" + signalName.trim() + "_Sp" + ";\n");
-            // }
+                    + "_Port_" + signalName.trim() + "_TokenOccupied" + ";\n");
             bean._moduleDescription.append("} \n");
 
-            // mode CarLightNormal_Port_Sec_Sp (t==0) {
+            // Occupied means that the port contains the token; mode Port_TokenOccupied (t==0) {
             bean._moduleDescription.append("mode " + actor.getName().trim()
-                    + "_Port_" + signalName.trim() + "_Sp" + " ( t==0 ) { \n");
-            // when (t>0) may ; goto CarLightNormal_Port_Sec_Sa;
-            bean._moduleDescription.append("    when (t>0) may ; goto "
-                    + actor.getName().trim() + "_Port_" + signalName.trim()
-                    + "_Sa" + ";\n");
-            // when ?N_CarLightNormal_Plus (true) may; goto CarLightNormal_Port_Sec_Sa;
-            bean._moduleDescription.append("    when ?" + signalName.trim()
-                    + " !N_" + actor.getName().trim() + "_Plus"
-                    + " (true) may ; " + "goto " + actor.getName().trim()
-                    + "_Port_" + signalName.trim() + "_Sa" + ";\n");
-            // when !ND_Sec (true) may; goto CarLightNormal_Port_Sec_Sa;
+                    + "_Port_" + signalName.trim() + "_TokenOccupied"
+                    + " ( t==0 ) { \n");
+            /* All possible transitions in TokenOccupied are described as follows.
+             * (1) When another token is received, it remains in its state.
+             * (2) When a transition consumes the token, it moves back to empty.
+             * (3) When time elapses, it moves back to empty.
+             */
+
             bean._moduleDescription.append("    when !ND_" + signalName.trim()
                     + " (true) may ; goto " + actor.getName().trim() + "_Port_"
-                    + signalName.trim() + "_Sa" + ";\n");
-            // when ?Sec ?N_CarLightNormal_Plus (true) may;
-            bean._moduleDescription.append("    when ?" + signalName.trim()
-                    + " !N_" + actor.getName().trim() + "_Plus"
+                    + signalName.trim() + "_TokenEmpty" + ";\n");
+            bean._moduleDescription.append("    when  ?" + signalName.trim()
                     + " (true) may ; \n");
-            // when ?N_CarLightNormal (true) may;
-            bean._moduleDescription.append("    when !N_"
-                    + actor.getName().trim() + " (true) may ; \n");
-            // }
+             // FIXME: With the following line the system will         
+            bean._moduleDescription.append("/*    when (t>=0) may  goto "
+                    + actor.getName().trim() + "_Port_" + signalName.trim()
+                    + "_TokenEmpty" + "; */\n");
             bean._moduleDescription.append("} \n");
-
         }
 
         // Then we generate description regarding states.
         // Note that all guard signal should be renamed as ND_signalName
         // ND stands for non-delayed signals.
 
-        // Enumerate all states in the FmvAutomaton
+        // Enumerate all states in the FSMActor
         HashSet<State> frontier = null;
         frontier = _enumerateStateSet(actor);
 
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains inner variables.
-        //
-        HashSet<String> variableSet = null; // = new HashSet<String>();
+        HashSet<String> variableSet = null;
         HashMap<String, String> initialValueSet = null;
 
         // Enumerate all variables used in the Kripke structure
@@ -2689,7 +2711,6 @@ public class REDUtility {
             Iterator<String> variables = variableSet.iterator();
             while (variables.hasNext()) {
                 String variableName = variables.next();
-
                 VariableInfo individual = (VariableInfo) _variableInfo
                         .get(variableName);
                 if (individual != null) {
@@ -2705,370 +2726,240 @@ public class REDUtility {
                                 + variableName
                                 + " == "
                                 + initialValueSet.get(variableName) + " ");
-
                     }
-
                 }
-
             }
         }
 
-        // The following tries to generate the stationary move signal pair
-        StringBuffer stationarySignal = new StringBuffer("?tick");
-        StringBuffer stationarySignalPlus = new StringBuffer("?tick_Plus");
-        for (int i = 0; i < guardSignalSetSize; i++) {
-            stationarySignal.append("!N_" + actor.getName().trim());
-            stationarySignalPlus.append("!N_" + actor.getName().trim()
-                    + "_Plus");
-        }
-
         // Print out all these states
+        // Note that with model conversion, we need to create an additional initial state
+        // which changes every constraint of (t>0) in the edge to (t>=0). This is because
+        // for the initial state, it is OK to fire at time equals to 0.
         Iterator<State> ite = frontier.iterator();
         while (ite.hasNext()) {
-
             State state = (State) ite.next();
-            // if the state is the initial state, generate a new state
-            // with differences indicated in the EMSOFT paper.
             if (actor.getInitialState() == state) {
-                // NEW INITIAL STATE in CTA
-                // mode PedestrianLightNormal_State_Pgreen_Plum (true) {
                 bean._moduleDescription.append("mode " + actor.getName().trim()
                         + "_State_" + state.getName().trim() + "_Plum"
                         + " ( true ) { \n");
-
-                // generate the transition for the stationary move signal pair
-                bean._moduleDescription.append("    when " + stationarySignal
-                        + " (true) may  ;\n");
-                bean._moduleDescription.append("    when "
-                        + stationarySignalPlus + " (true) may  ;\n");
-
                 ArrayList<REDTransitionBean> transitionListWithinState = _generateTransition(
                         actor, state, variableSet, globalSynchronizerSet);
                 // Append each of the transition into the module description.
                 for (REDTransitionBean transition : transitionListWithinState) {
+                  
                     if (transition._postCondition.toString().trim()
                             .equalsIgnoreCase("")) {
                         if (transition._preCondition.toString().trim()
+                                .equalsIgnoreCase("true")) {
+                            /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                            Iterator<IOPort> it2 = actor.inputPortList().iterator();
+                            while (it2.hasNext()) {
+                                String signalName = it2.next().getName();
+                                
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString()
+                                        + "?ND_" + signalName.trim()
+                                        + " (t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
+                            }
+                        } else if (transition._preCondition.toString().trim()
                                 .equalsIgnoreCase("")) {
-                            bean._moduleDescription.append("    when ?tick "
+                            bean._moduleDescription.append("    when "
                                     + transition._signal.toString()
-                                    + " (true) may "
+                                    + " (t>=0) may "
                                     + transition._postCondition.toString()
-                                    + " t=0;" + " goto "
-                                    + transition._newState.toString() + " ;\n");
-                            bean._moduleDescription
-                                    .append("    when ?tick_Plus"
-                                            + transition._signal.toString()
-                                            + " (true) may "
-                                            + transition._postCondition
-                                                    .toString() + " goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                            // Original
-                            System.out.println("    when "
-                                    + transition._signal.toString()
-                                    + " (true) may "
-                                    + transition._postCondition.toString()
-                                    + " goto "
+                                    + " t=0; goto "
                                     + transition._newState.toString() + " ;\n");
                         } else {
-                            bean._moduleDescription.append("    when ?tick"
+                            bean._moduleDescription.append("    when "
                                     + transition._signal.toString() + " ("
                                     + transition._preCondition.toString()
-                                    + "  ) may "
+                                    + " && t>=0) may "
                                     + transition._postCondition.toString()
-                                    + " t=0;" + " goto "
-                                    + transition._newState.toString() + " ;\n");
-                            bean._moduleDescription
-                                    .append("    when ?tick_Plus"
-                                            + transition._signal.toString()
-                                            + " ("
-                                            + transition._preCondition
-                                                    .toString()
-                                            + ") may "
-                                            + transition._postCondition
-                                                    .toString() + " goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                            //Original
-                            System.out.println("    when "
-                                    + transition._signal.toString() + " ("
-                                    + transition._preCondition.toString()
-                                    + ") may "
-                                    + transition._postCondition.toString()
-                                    + " goto "
+                                    + " t=0; goto "
                                     + transition._newState.toString() + " ;\n");
                         }
-
                     } else if (transition._postCondition.toString().trim()
                             .endsWith(";")) {
                         if (transition._preCondition.toString().trim()
+                                .equalsIgnoreCase("true")) {
+                            /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                            Iterator<IOPort> it2 = actor.inputPortList().iterator();
+                            while (it2.hasNext()) {
+                                String signalName = it2.next().getName();
+                                
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString()
+                                        + "?" + signalName.trim()
+                                        + " (t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
+                            }
+                        } else if (transition._preCondition.toString().trim()
                                 .equalsIgnoreCase("")) {
-                            bean._moduleDescription.append("    when ?tick"
+                            bean._moduleDescription.append("    when "
                                     + transition._signal.toString()
-                                    + " (true) may "
+                                    + " (t>=0) may "
                                     + transition._postCondition.toString()
-                                    + " t=0;" + " goto "
-                                    + transition._newState.toString() + " ;\n");
-                            bean._moduleDescription
-                                    .append("    when ?tick_Plus"
-                                            + transition._signal.toString()
-                                            + " (true) may "
-                                            + transition._postCondition
-                                                    .toString() + " goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                            // original
-                            System.out.println("    when "
-                                    + transition._signal.toString()
-                                    + " (true) may "
-                                    + transition._postCondition.toString()
-                                    + " goto "
+                                    + " t=0; goto "
                                     + transition._newState.toString() + " ;\n");
                         } else {
-                            bean._moduleDescription.append("    when ?tick"
+                            bean._moduleDescription.append("    when "
                                     + transition._signal.toString() + " ("
                                     + transition._preCondition.toString()
-                                    + "  ) may "
+                                    + "&& t>=0 ) may "
                                     + transition._postCondition.toString()
-                                    + " goto "
-                                    + transition._newState.toString() + " ;\n");
-                            bean._moduleDescription
-                                    .append("    when ?tick_Plus"
-                                            + transition._signal.toString()
-                                            + " ("
-                                            + transition._preCondition
-                                                    .toString()
-                                            + ") may "
-                                            + transition._postCondition
-                                                    .toString() + " goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                            // original
-                            System.out.println("    when "
-                                    + transition._signal.toString() + " ("
-                                    + transition._preCondition.toString()
-                                    + ") may "
-                                    + transition._postCondition.toString()
-                                    + " goto "
+                                    + " t=0; goto "
                                     + transition._newState.toString() + " ;\n");
                         }
-
                     } else {
                         if (transition._preCondition.toString().trim()
+                                .equalsIgnoreCase("true")) {
+                            /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                            Iterator<IOPort> it2 = actor.inputPortList().iterator();
+                            while (it2.hasNext()) {
+                                String signalName = it2.next().getName();
+                                
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString()
+                                        + "?ND_" + signalName.trim()
+                                        + " (t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " ; t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
+                            }
+                        } else if (transition._preCondition.toString().trim()
                                 .equalsIgnoreCase("")) {
-                            bean._moduleDescription.append("    when ?tick"
+                            bean._moduleDescription.append("    when "
                                     + transition._signal.toString()
-                                    + " (true) may "
+                                    + " (t>=0) may "
                                     + transition._postCondition.toString()
-                                    + " ; goto "
-                                    + transition._newState.toString() + " ;\n");
-                            bean._moduleDescription
-                                    .append("    when ?tick_Plus"
-                                            + transition._signal.toString()
-                                            + " (true) may "
-                                            + transition._postCondition
-                                                    .toString() + " ; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                            // original
-                            System.out.println("    when "
-                                    + transition._signal.toString()
-                                    + " (true) may "
-                                    + transition._postCondition.toString()
-                                    + " ; goto "
+                                    + " ; t=0; goto "
                                     + transition._newState.toString() + " ;\n");
                         } else {
-                            bean._moduleDescription.append("    when ?tick"
+                            bean._moduleDescription.append("    when "
                                     + transition._signal.toString() + " ("
                                     + transition._preCondition.toString()
-                                    + " ) may "
+                                    + " && t>=0) may "
                                     + transition._postCondition.toString()
-                                    + " ; goto "
-                                    + transition._newState.toString() + " ;\n");
-                            bean._moduleDescription
-                                    .append("    when ?tick_Plus"
-                                            + transition._signal.toString()
-                                            + " ("
-                                            + transition._preCondition
-                                                    .toString()
-                                            + ") may "
-                                            + transition._postCondition
-                                                    .toString() + " ; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                            // original
-                            System.out.println("    when "
-                                    + transition._signal.toString() + " ("
-                                    + transition._preCondition.toString()
-                                    + ") may "
-                                    + transition._postCondition.toString()
-                                    + " ; goto "
+                                    + " ; t=0; goto "
                                     + transition._newState.toString() + " ;\n");
                         }
-
                     }
-
                 }
                 bean._moduleDescription.append("} \n");
             }
 
-            // mode PedestrianLightNormal_State_Pgreen (true) {
             bean._moduleDescription.append("mode " + actor.getName().trim()
                     + "_State_" + state.getName().trim() + " ( true ) { \n");
-
-            // generate the transition for the stationary move signal pair
-            bean._moduleDescription.append("    when " + stationarySignal
-                    + " (true) may  ;\n");
-            bean._moduleDescription.append("    when " + stationarySignalPlus
-                    + " (true) may  ;\n");
 
             ArrayList<REDTransitionBean> transitionListWithinState = _generateTransition(
                     actor, state, variableSet, globalSynchronizerSet);
             // Append each of the transition into the module description.
             for (REDTransitionBean transition : transitionListWithinState) {
+               
                 if (transition._postCondition.toString().trim()
                         .equalsIgnoreCase("")) {
                     if (transition._preCondition.toString().trim()
+                            .equalsIgnoreCase("true")) {
+                        /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                        Iterator<IOPort> it2 = actor.inputPortList().iterator();
+                        while (it2.hasNext()) {
+                            String signalName = it2.next().getName();
+                           
+                            bean._moduleDescription.append("    when " 
+                                    + transition._signal.toString()+ "?ND_"
+                                    + signalName.trim() + " (t>0) may "
+                                    + transition._postCondition.toString()
+                                    + "  t = 0; goto "
+                                    + transition._newState.toString() + " ;\n");
+                        }
+                    } else if (transition._preCondition.toString().trim()
                             .equalsIgnoreCase("")) {
-                        bean._moduleDescription.append("    when ?tick "
+                        bean._moduleDescription.append("    when "
                                 + transition._signal.toString() + " (t>0) may "
                                 + transition._postCondition.toString()
-                                + " t=0;" + " goto "
+                                + "  t = 0; goto "
                                 + transition._newState.toString() + " ;\n");
-                        bean._moduleDescription.append("    when ?tick_Plus"
-                                + transition._signal.toString()
-                                + " (true) may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
-                        // Original
-                        System.out.println("    when "
-                                + transition._signal.toString()
-                                + " (true) may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
                     } else {
-                        bean._moduleDescription.append("    when ?tick"
+                        bean._moduleDescription.append("    when "
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
-                                + " && t>0 ) may "
+                                + " && t>0) may "
                                 + transition._postCondition.toString()
-                                + " t=0;" + " goto "
+                                + "  t = 0; goto "
                                 + transition._newState.toString() + " ;\n");
-                        bean._moduleDescription.append("    when ?tick_Plus"
-                                + transition._signal.toString() + " ("
-                                + transition._preCondition.toString()
-                                + ") may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
-                        //Original
-                        System.out.println("    when "
-                                + transition._signal.toString() + " ("
-                                + transition._preCondition.toString()
-                                + ") may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
                     }
 
                 } else if (transition._postCondition.toString().trim()
                         .endsWith(";")) {
                     if (transition._preCondition.toString().trim()
+                            .equalsIgnoreCase("true")) {
+                        /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                        Iterator<IOPort> it2 = actor.inputPortList().iterator();
+                        while (it2.hasNext()) {
+                            String signalName = it2.next().getName();
+                            bean._moduleDescription.append("    when " 
+                                    + transition._signal.toString() + "?ND_"
+                                    + signalName.trim() + " (t>0) may "
+                                    + transition._postCondition.toString()
+                                    + " t = 0; goto "
+                                    + transition._newState.toString() + " ;\n");
+                        }
+                    } else if (transition._preCondition.toString().trim()
                             .equalsIgnoreCase("")) {
-                        bean._moduleDescription.append("    when ?tick"
+                        bean._moduleDescription.append("    when "
                                 + transition._signal.toString() + " (t>0) may "
                                 + transition._postCondition.toString()
-                                + " t=0;" + " goto "
+                                + " t = 0; goto "
                                 + transition._newState.toString() + " ;\n");
-                        bean._moduleDescription.append("    when ?tick_Plus"
-                                + transition._signal.toString()
-                                + " (true) may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
-                        // original
-                        System.out.println("    when "
-                                + transition._signal.toString()
-                                + " (true) may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
                     } else {
-                        bean._moduleDescription.append("    when ?tick"
+                        bean._moduleDescription.append("    when "
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
                                 + " && t>0 ) may "
                                 + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
-                        bean._moduleDescription.append("    when ?tick_Plus"
-                                + transition._signal.toString() + " ("
-                                + transition._preCondition.toString()
-                                + ") may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
-                        // original
-                        System.out.println("    when "
-                                + transition._signal.toString() + " ("
-                                + transition._preCondition.toString()
-                                + ") may "
-                                + transition._postCondition.toString()
-                                + " goto " + transition._newState.toString()
-                                + " ;\n");
+                                + " t = 0; goto "
+                                + transition._newState.toString() + " ;\n");
                     }
 
                 } else {
                     if (transition._preCondition.toString().trim()
+                            .equalsIgnoreCase("true")) {
+                        /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                        Iterator<IOPort> it2 = actor.inputPortList().iterator();
+                        while (it2.hasNext()) {
+                            String signalName = it2.next().getName();
+                            bean._moduleDescription.append("    when " 
+                                    + transition._signal.toString()+ "?ND_"
+                                    + signalName.trim() + " (t>0) may "
+                                    + transition._postCondition.toString()
+                                    + " ; t = 0; goto "
+                                    + transition._newState.toString() + " ;\n");
+                        }
+                    } else if (transition._preCondition.toString().trim()
                             .equalsIgnoreCase("")) {
-                        bean._moduleDescription.append("    when ?tick"
+                        bean._moduleDescription.append("    when "
                                 + transition._signal.toString() + " (t>0) may "
                                 + transition._postCondition.toString()
-                                + " ; goto " + transition._newState.toString()
-                                + " ;\n");
-                        bean._moduleDescription.append("    when ?tick_Plus"
-                                + transition._signal.toString()
-                                + " (true) may "
-                                + transition._postCondition.toString()
-                                + " ; goto " + transition._newState.toString()
-                                + " ;\n");
-                        // original
-                        System.out.println("    when "
-                                + transition._signal.toString()
-                                + " (true) may "
-                                + transition._postCondition.toString()
-                                + " ; goto " + transition._newState.toString()
-                                + " ;\n");
+                                + " ; t = 0; goto "
+                                + transition._newState.toString() + " ;\n");
                     } else {
-                        bean._moduleDescription.append("    when ?tick"
+                        bean._moduleDescription.append("    when "
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
-                                + "&& t>0 ) may "
+                                + " && t>0) may "
                                 + transition._postCondition.toString()
-                                + " ; goto " + transition._newState.toString()
-                                + " ;\n");
-                        bean._moduleDescription.append("    when ?tick_Plus"
-                                + transition._signal.toString() + " ("
-                                + transition._preCondition.toString()
-                                + ") may "
-                                + transition._postCondition.toString()
-                                + " ; goto " + transition._newState.toString()
-                                + " ;\n");
-                        // original
-                        System.out.println("    when "
-                                + transition._signal.toString() + " ("
-                                + transition._preCondition.toString()
-                                + ") may "
-                                + transition._postCondition.toString()
-                                + " ; goto " + transition._newState.toString()
-                                + " ;\n");
+                                + " ; t = 0; goto "
+                                + transition._newState.toString() + " ;\n");
                     }
-
                 }
-
             }
             bean._moduleDescription.append("} \n");
         }
@@ -3076,10 +2967,10 @@ public class REDUtility {
 
     }
 
-    private static REDSingleEntityBean _translateNondeterministicDelayedActor(
+    private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
             BoundedBufferNondeterministicDelay delayedActor,
-            String inputSignalName, String outputSignalName, int numOfFSMActor)
-            throws IllegalActionException {
+            String inputSignalName, String outputSignalName,
+            int numOfListeningFSMActor) throws IllegalActionException {
         // If we expect to convert a TimedDelayedActor into a timed automata,
         // we need to have the following information from the
         // BoundedBufferTimedDelay actor:
@@ -3097,35 +2988,10 @@ public class REDUtility {
         int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
                 .intValue();
 
-        StringBuffer tickSignal = new StringBuffer("");
-        StringBuffer tickSignalPlus = new StringBuffer("");
-        if (delay == 0) {
-            for (int i = 0; i < numOfFSMActor; i++) {
-                tickSignal.append("!tick_Plus");
-            }
-        } else {
-            for (int i = 0; i < numOfFSMActor; i++) {
-                tickSignal.append("!tick");
-            }
-        }
-        for (int i = 0; i < numOfFSMActor; i++) {
-            tickSignalPlus.append("!tick_Plus");
-        }
-
-        // /* Process name: TimedDelay1 */
-        // mode TimedDelay1_S0 (true) {
-        // when ?Pgo (true) may x1 = 0; goto TimedDelay1_S0;
-        // }
-        //
-        // mode TimedDelay1_S1 (TimedDelay1_C1 <= TIMEDDELAY1_DELAY) {
-        // when !D_Pgo (TimedDelay1_C1 == 1) may goto TimedDelay1_S1;
-        // when ?Pgo (true) may goto Buffer_Overflow;
-        // }
-
         REDSingleEntityBean bean = new REDSingleEntityBean();
 
         bean._defineConstants.append("#define " + delayedActor.getName().trim()
-                + "_DELAY " + String.valueOf((int)delay) + "\n");
+                + "_DELAY " + String.valueOf((int) delay) + "\n");
 
         REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
         innerBean._name = delayedActor.getName().trim();
@@ -3179,19 +3045,6 @@ public class REDUtility {
             if (charContent.length != 0) {
                 for (int i = charContent.length - 1; i >= 0; i--) {
                     if (charContent[i] == '0') {
-
-                        // We don't need to add clock constraints.
-
-                        // when ?inputSignal(TimedDelay2_Ci <=
-                        // TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto
-                        // TimedDelay2_SXX1;
-                        //
-                        // Note that we are not setting all clocks.
-                        // Instead, we would set up only one clock.
-                        // For example, in 1(C0)0(C1)0(C2), we would only set up
-                        // C2.
-                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not
-                        // C0.
                         if (clockAssigned == false) {
                             char[] newStateContent = content.toCharArray();
                             newStateContent[i] = '1';
@@ -3205,8 +3058,6 @@ public class REDUtility {
                         }
 
                     } else {
-                        // (charContent[i] == '1')
-                        // We need to add up clock constraints
                         if (StateClockConstraint.toString()
                                 .equalsIgnoreCase("")) {
                             StateClockConstraint
@@ -3222,28 +3073,15 @@ public class REDUtility {
                                             + delayedActor.getName().trim()
                                             + "_DELAY ");
                         }
-
-                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
-                        // goto TimedDelay2_S00;
                         char[] newStateContent = content.toCharArray();
                         newStateContent[i] = '0';
-                        StateTransitionCondition.append("    when "
-                                + tickSignal.toString() + "!"
+                        StateTransitionCondition.append("    when " + "!"
                                 + outputSignalName.trim() + " ("
                                 + delayedActor.getName().trim() + "_C"
                                 + String.valueOf(i) + " <= "
                                 + delayedActor.getName().trim() + "_DELAY && "
                                 + delayedActor.getName().trim() + "_C"
                                 + String.valueOf(i) + ">0) may goto "
-                                + delayedActor.getName().trim() + "_S"
-                                + String.valueOf(newStateContent) + "; \n");
-                        // FIXME: Based on the technical report, the following
-                        //        should be restricted.
-                        StateTransitionCondition.append("    when "
-                                + tickSignalPlus.toString() + "!"
-                                + outputSignalName.trim() + " ("
-                                + delayedActor.getName().trim() + "_C"
-                                + String.valueOf(i) + " == 0 ) may goto "
                                 + delayedActor.getName().trim() + "_S"
                                 + String.valueOf(newStateContent) + "; \n");
                         if (i == 0) {
@@ -3277,11 +3115,8 @@ public class REDUtility {
      * TimedDelay actor into the format of communicating timed automata (CTA)
      * acceptable by model checker RED.
      *
-     * @param delayedActor
-     *                actor which needs to be converted
-     * @param inputSignalName
-     *                The name of the input signal. This must be derived
-     *                externally.
+     * @param delayedActor actor which needs to be converted
+     * @param inputSignalName The name of the input signal. This must be derived externally.
      * @param outputSignalName
      *                The name of the output signal. This must be derived
      *                externally.
@@ -3289,9 +3124,9 @@ public class REDUtility {
      *         RED.
      * @exception IllegalActionException
      */
-    private static REDSingleEntityBean _translateTimedDelayedActor(
+    private static REDSingleEntityBean _translateBBTimedDelayedActor(
             BoundedBufferTimedDelay delayedActor, String inputSignalName,
-            String outputSignalName, int numOfFSMActor)
+            String outputSignalName, int numOfListeningFSMActor)
             throws IllegalActionException {
 
         // If we expect to convert a BoundedBufferTimedDelayedActor into a timed
@@ -3312,21 +3147,10 @@ public class REDUtility {
         int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
                 .intValue();
 
-        StringBuffer tickSignal = new StringBuffer("");
-        if (delay == 0) {
-            for (int i = 0; i < numOfFSMActor; i++) {
-                tickSignal.append("!tick_Plus");
-            }
-        } else {
-            for (int i = 0; i < numOfFSMActor; i++) {
-                tickSignal.append("!tick");
-            }
-        }
-
         REDSingleEntityBean bean = new REDSingleEntityBean();
 
         bean._defineConstants.append("#define " + delayedActor.getName().trim()
-                + "_DELAY " + String.valueOf((int)delay) + "\n");
+                + "_DELAY " + String.valueOf((int) delay) + "\n");
 
         REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
         innerBean._name = delayedActor.getName().trim();
@@ -3431,8 +3255,190 @@ public class REDUtility {
                         // goto TimedDelay2_S00;
                         char[] newStateContent = content.toCharArray();
                         newStateContent[i] = '0';
-                        StateTransitionCondition.append("    when "
-                                + tickSignal.toString() + "!"
+                        StateTransitionCondition.append("    when " + "!"
+                                + outputSignalName.trim() + " ("
+                                + delayedActor.getName().trim() + "_C"
+                                + String.valueOf(i) + " == "
+                                + delayedActor.getName().trim()
+                                + "_DELAY ) may goto "
+                                + delayedActor.getName().trim() + "_S"
+                                + String.valueOf(newStateContent) + "; \n");
+                        if (i == 0) {
+                            if (content.contains("0") == false) {
+                                // All true cases. then we need to represent one
+                                // case
+                                // for overflow.
+                                StateTransitionCondition
+                                        .append("    when ?"
+                                                + outputSignalName.trim()
+                                                + " (true) may goto Buffer_Overflow; \n");
+                            }
+                        }
+
+                    }
+                }
+                if (StateClockConstraint.toString().trim().equalsIgnoreCase("")) {
+                    bean._moduleDescription.append("true ) { \n");
+                } else {
+                    bean._moduleDescription.append(StateClockConstraint
+                            .toString()
+                            + " ) { \n");
+                }
+
+                bean._moduleDescription.append(StateTransitionCondition);
+                bean._moduleDescription.append("}\n");
+
+            }
+
+        }
+
+        return bean;
+    }
+
+    /**
+     * This is an utility function which performs the translation of a single
+     * TimedDelay actor into the format of communicating timed automata (CTA)
+     * acceptable by model checker RED.
+     *
+     * @param delayedActor actor which needs to be converted
+     * @param inputSignalName The name of the input signal. This must be derived externally.
+     * @param outputSignalName
+     *                The name of the output signal. This must be derived
+     *                externally.
+     * @param bufferSize The defined buffer size used in verification               
+     * @return description of the TimedDelayActor acceptable by model checker
+     *         RED.
+     * @exception IllegalActionException
+     */
+    private static REDSingleEntityBean _translateTimedDelayedActor(
+            TimedDelay delayedActor, String inputSignalName,
+            String outputSignalName, int numOfListeningFSMActor, int bufferSize)
+            throws IllegalActionException {
+
+        // If we expect to convert a TimedDelayedActor into a timed
+        // automata, we need to have the following information from the
+        // BoundedBufferTimedDelay actor:
+        // (1) delay time:
+        // (2) size of buffer:
+        //
+        // Also, we need to retrieve the information for the name of
+        // input and output signals. These (inputSignalName, outputSignalName)
+        // should be analyzed by callers and pass to this function.
+        //
+
+        // Retrieve parameters from clockActors
+        double delay = ((DoubleToken) delayedActor.delay.getToken())
+                .doubleValue();
+
+        REDSingleEntityBean bean = new REDSingleEntityBean();
+
+        bean._defineConstants.append("#define " + delayedActor.getName().trim()
+                + "_DELAY " + String.valueOf((int) delay) + "\n");
+
+        REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
+        innerBean._name = delayedActor.getName().trim();
+        // innerBean._initialStateDescription =
+        StringBuffer str = new StringBuffer(delayedActor.getName().trim()
+                + "_S");
+        for (int i = 0; i < bufferSize; i++) {
+            str.append("0");
+        }
+        innerBean._initialStateDescription = str.toString();
+        bean._nameInitialState = innerBean;
+
+        // Based on different buffer size, we need to generate the delayedActor
+        // which represents the buffer situation.
+        // For a delayedActor with buffer size 1, the we need two states:
+        // delayedActor_0 to represent no token.
+        // delayedActor_1 to represent one token.
+        //
+        // Also, clocks used by the system is related to the size of the buffer.
+        // We need to capture this behavior.
+        //
+        // Decide number of clocks used in the system.
+        for (int i = 0; i < bufferSize; i++) {
+            bean._clockSet.add(delayedActor.getName().trim() + "_C"
+                    + String.valueOf(i));
+
+        }
+
+        // Generate strings with arbitrary combination of 0 and 1s of fixed
+        // length bufferSize. For the case of buffer size is 3,
+        // then we generate 000, 001, 010, 011, 100, 101, 110, 111.
+        // These separate numbers would represent different states
+        // indicating the status of buffers.
+
+        ArrayList<String> initial = new ArrayList<String>();
+        initial.add("");
+        ArrayList<String> stringList = _enumerateString(bufferSize, initial);
+
+        // Generate the state based on the content in the stringList
+        bean._moduleDescription.append("\n/* Process name: "
+                + delayedActor.getName().trim() + " */\n");
+        for (String content : stringList) {
+
+            bean._moduleDescription.append("mode "
+                    + delayedActor.getName().trim() + "_S" + content.trim()
+                    + " (");
+            char[] charContent = content.toCharArray();
+
+            StringBuffer StateClockConstraint = new StringBuffer("");
+            StringBuffer StateTransitionCondition = new StringBuffer("");
+            boolean clockAssigned = false;
+
+            if (charContent.length != 0) {
+                for (int i = charContent.length - 1; i >= 0; i--) {
+                    if (charContent[i] == '0') {
+
+                        // We don't need to add clock constraints.
+
+                        // when ?inputSignal(TimedDelay2_Ci <=
+                        // TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto
+                        // TimedDelay2_SXX1;
+                        //
+                        // Note that we are not setting all clocks.
+                        // Instead, we would set up only one clock.
+                        // For example, in 1(C0)0(C1)0(C2), we would only set up
+                        // C2.
+                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not
+                        // C0.
+                        if (clockAssigned == false) {
+                            char[] newStateContent = content.toCharArray();
+
+                            newStateContent[i] = '1';
+                            StateTransitionCondition.append("    when ?"
+                                    + inputSignalName.trim() + " (true) may "
+                                    + delayedActor.getName().trim() + "_C"
+                                    + String.valueOf(i) + " = 0 ; goto "
+                                    + delayedActor.getName().trim() + "_S"
+                                    + String.valueOf(newStateContent) + "; \n");
+                            clockAssigned = true;
+                        }
+
+                    } else {
+                        // (charContent[i] == '1')
+                        // We need to add up clock constraints
+                        if (StateClockConstraint.toString()
+                                .equalsIgnoreCase("")) {
+                            StateClockConstraint
+                                    .append(" " + delayedActor.getName().trim()
+                                            + "_C" + String.valueOf(i) + "<= "
+                                            + delayedActor.getName().trim()
+                                            + "_DELAY ");
+                        } else {
+                            StateClockConstraint
+                                    .append(" && "
+                                            + delayedActor.getName().trim()
+                                            + "_C" + String.valueOf(i) + "<= "
+                                            + delayedActor.getName().trim()
+                                            + "_DELAY ");
+                        }
+
+                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
+                        // goto TimedDelay2_S00;
+                        char[] newStateContent = content.toCharArray();
+                        newStateContent[i] = '0';
+                        StateTransitionCondition.append("    when " + "!"
                                 + outputSignalName.trim() + " ("
                                 + delayedActor.getName().trim() + "_C"
                                 + String.valueOf(i) + " == "
