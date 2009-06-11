@@ -31,7 +31,7 @@ Continuous, ModalModel and GR.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, -25.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 711, 513}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 924, 517}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -550,7 +550,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="table_height / display_scale_factor">
             </property>
-            <property name="texture" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/gr/demo/Pong/gameover.gif">
+            <property name="texture" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/gr/demo/Pong/gameover.gif">
             </property>
             <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
             </property>
