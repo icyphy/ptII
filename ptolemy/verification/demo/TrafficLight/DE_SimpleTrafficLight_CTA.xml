@@ -237,7 +237,6 @@
             <display name="Model Type"/>
         </property>
         <property name="Formula Type" class="ptolemy.data.expr.ChoiceParameter" value="TCTL">
-            <display name="Formula Type"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 185.0]">
         </property>
@@ -247,7 +246,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="General Model Description:&#10;This model describes existing features for Ptolemy II to perform model-checking by translating &#10;the DE model to communicating timed automata.&#10;&#10;In this model, there are three real-time actors. The clock has the period with value 6. In this &#10;setting, the signal (alternating between 0 and 1) occurs with the period of 3. Two TimedDelay actors &#10;specify the fixed delay of the system.&#10;&#10;The behavior of the PedestrianLight should be noted. Although the first transition has the guard &#10;&quot;true&quot;, as shown in the plotter it will not be activated until time approaching 10. This is because &#10;the FSMActor always listens to its input port.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 210.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -265,7 +264,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution:&#10;For model checking, please download the model checker RED 7.0 from http://sourceforge.net/projects/redlib. &#10;Assume your converted file is TEST.d, and your generated specification is TEST.risk, with RED 7.0 installed, &#10;you may examine the result of verification by the following instruction: &quot;./red -Tr -C TEST.d TEST.risk&quot;&#10;&#10;Result:&#10;Interestingly, since the rate of the clock is slower than the worst case transmission time of Pgo and Pstop, &#10;the model guarantees the behavior of safety (both lights will not be green simultaneously). If you change the &#10;timing parameters (e.g., clock = 4 [offsets = 2.0; if you don't set this, results from simulation and &#10;verification differ], timedDelay = 1, timedDelay = 5), a counter-example will be shown.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution &amp; Results:&#10;For model checking, please download the model checker RED 7.0 from http://sourceforge.net/projects/redlib. &#10;Assume your converted file is TEST.d, and your generated specification is TEST.risk, with RED 7.0 installed, &#10;you may examine the result of verification by the following instruction: &quot;./red -Tr -C TEST.d TEST.risk&quot;&#10;Timed required for result generation may vary from 1 sec to 100 secs.&#10;&#10;Interestingly, since the rate of the clock is slower than the worst case transmission time of Pgo and Pstop, &#10;the model guarantees the behavior of safety (both lights will not be green simultaneously). If you change the &#10;timing parameters (e.g., clock = 4 [offsets = 2.0; if you don't set this, results from simulation and &#10;verification differ], timedDelay = 1, timedDelay = 5), a counter-example will be shown.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 355.0}">
         </property>
@@ -275,9 +274,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark:&#10;For the TimedDelay actor, the delay is fixed. This model can thus be simplified using &#10;SR modeling with counters. The power of timed automata and related theories lie in &#10;the modeling and the verification of &quot;reals&quot;. In Ptolemy II, you can find the actor &#10;&quot;BoundedBufferNondeterministicDelay&quot; from &quot;More Libraries -- Code Generators -- Verification&quot;. &#10;Note that the semantic of this actor is that it will fire the event in the time strictly &#10;smaller than the user-specified value. But unfortunately, currently these actors can not &#10;be executed under simulation mode.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark:&#10;For the TimedDelay actor, the delay is fixed. This model can thus be simplified using SR modeling &#10;with counters. The power of timed automata and related theories lie in the modeling and the &#10;verification of &quot;reals&quot;. In Ptolemy II, you can find the actor &quot;BoundedBufferNondeterministicDelay&quot; &#10;from &quot;More Libraries -- Code Generators -- Verification&quot;. Note that the semantic of this actor is &#10;that it will fire the event in the time strictly smaller than the user-specified value, which is&#10;much useful for the design and analysis of embedded systems. Unfortunately, currently these actors &#10;can not be executed under simulation mode.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 480.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 485.0]">
         </property>
     </property>
     <entity name="CarLightNormal" class="ptolemy.domains.fsm.kernel.FSMActor">
