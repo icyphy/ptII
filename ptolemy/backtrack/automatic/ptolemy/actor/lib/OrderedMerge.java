@@ -37,15 +37,18 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * This actor merges two monotonically nondecreasing streams of tokens into
  * one monotonically nondecreasing stream. On each firing, it reads data from
  * one of the inputs.  On the first firing, it simply records that token.
@@ -75,26 +78,44 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
+    // For the benefit of the DDF director, this actor sets
+    // consumption rate values.
     // Add an attribute to get the port placed on the bottom.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
-     * The first input port, which accepts any scalar token.
+    /**     
+     * If true, eliminate duplicate tokens in the output stream.
+     * This is a boolean that defaults to false.
+     */
+    public Parameter eliminateDuplicates;
+
+    /**     
+     * The first input port, which accepts any scalar token. 
      */
     public TypedIOPort inputA;
 
-    /**
+    /**     
+     * The token consumption rate for <i>inputA</i>. 
+     */
+    public Parameter inputA_tokenConsumptionRate;
+
+    /**     
      * The second input port, which accepts any scalar token with
      * the same type as the first input port.
      */
     public TypedIOPort inputB;
 
-    /**
-     * The output port, which has the same type as the input ports.
+    /**     
+     * The token consumption rate for <i>inputB</i>. 
+     */
+    public Parameter inputB_tokenConsumptionRate;
+
+    /**     
+     * The output port, which has the same type as the input ports. 
      */
     public TypedIOPort output;
 
-    /**
+    /**     
      * Output port indicating whether the output token came from
      * <i>inputA</i>.
      */
@@ -102,7 +123,32 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    // First firing.  Just record the token.
+    // The strategy here is to keep reading from the same
+    // port until its value is greater than or equal to the
+    // recorded token. When that occurs, output the recorded
+    // token, record the just-read input token, and start
+    // reading from the other input port.
+    // First firing or after a duplicate.  Just record the token.
+    // Swap ports.
+    // Logic is different if we have to eliminate duplicates.
+    // We are set to eliminate duplicates.
+    // Input is a duplicate of the recorded token.
+    // Produce the recorded token as output,
+    // discard the input token and continue reading from the
+    // same input port with no recorded token.
+    // Read from the same port again, so leave
+    // _tentativeNextPort alone.
+    // Token is the same as last produced.
+    // Do not send an output and leave everything the same
+    // Except there is no longer a recorded token.
+    // Not a duplicate.
+    // Produce the smaller output.
+    // Token was just read from _nextPort.
+    // Read from the same port again next time.
+    // Produce the smaller output.
+    // Recorded token was read from A.
+    // Swap ports.
+    // Not eliminating duplicates.
     // Produce the smaller output.
     // Token was just read from _nextPort.
     // Produce the smaller output.
@@ -113,37 +159,57 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
     // can extend this class.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The recorded token.
+    /**     
+     * The last produced token. Used to eliminate duplicates. 
      */
-    private ScalarToken _recordedToken = null;
+    private ScalarToken _lastProduced;
 
-    /**
-     * The port from which to read next.
+    /**     
+     * The port from which to read next. 
      */
     private TypedIOPort _nextPort = null;
 
-    /**
-     * Indicator of whether the _recordedToken was read from A.
+    /**     
+     * A final static IntToken with value 1. 
+     */
+    private final static IntToken _one = new IntToken(1);
+
+    /**     
+     * Indicator of whether the _recordedToken was read from A. 
      */
     private boolean _readFromA;
 
-    /**
-     * Tentative indicator of having read from A.
+    /**     
+     * The recorded token. 
+     */
+    private ScalarToken _recordedToken = null;
+
+    /**     
+     * The tentative last produced token. Used to eliminate duplicates. 
+     */
+    private ScalarToken _tentativeLastProduced;
+
+    /**     
+     * Tentative indicator of having read from A. 
      */
     private boolean _tentativeReadFromA;
 
-    /**
-     * The tentative recorded token.
+    /**     
+     * The tentative recorded token. 
      */
     private ScalarToken _tentativeRecordedToken = null;
 
-    /**
-     * The tentative port from which to read next.
+    /**     
+     * The tentative port from which to read next. 
      */
     private TypedIOPort _tentativeNextPort = null;
 
-    /**
+    /**     
+     * A final static IntToken with value 0. 
+     */
+    private final static IntToken _zero = new IntToken(0);
+
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -154,10 +220,19 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
      */
     public OrderedMerge(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        eliminateDuplicates = new Parameter(this, "eliminateDuplicates");
+        eliminateDuplicates.setTypeEquals(BaseType.BOOLEAN);
+        eliminateDuplicates.setExpression("false");
         inputA = new TypedIOPort(this, "inputA", true, false);
         inputB = new TypedIOPort(this, "inputB", true, false);
         inputB.setTypeSameAs(inputA);
         inputA.setTypeAtMost(BaseType.SCALAR);
+        inputA_tokenConsumptionRate = new Parameter(inputA, "tokenConsumptionRate");
+        inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        inputB_tokenConsumptionRate = new Parameter(inputB, "tokenConsumptionRate");
+        inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(inputA);
         selectedA = new TypedIOPort(this, "selectedA", false, true);
@@ -167,7 +242,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         _attachText("_iconDescription", "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "+"style=\"fill:blue\"/>\n"+"</svg>\n");
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the type constraints.
      * @param workspace The workspace for the new object.
@@ -183,7 +258,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * Read one token from the port that did not provide the recorded
      * token (or <i>inputA</i>, on the first firing), and output the
      * smaller of the recorded token or the newly read token.
@@ -204,41 +279,96 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
             if (_recordedToken == null) {
                 $ASSIGN$_tentativeRecordedToken(readToken);
                 $ASSIGN$_tentativeReadFromA(true);
-                $ASSIGN$_tentativeNextPort(inputB);
+                if (_nextPort == inputA) {
+                    $ASSIGN$_tentativeNextPort(inputB);
+                } else {
+                    $ASSIGN$_tentativeNextPort(inputA);
+                }
             } else {
-                if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
-                    output.send(0, readToken);
-                    if (_debugging) {
-                        _debug("Sent output token with value " + readToken);
-                    }
-                    if (_nextPort == inputA) {
-                        selectedA.send(0, BooleanToken.TRUE);
+                if (((BooleanToken)eliminateDuplicates.getToken()).booleanValue()) {
+                    if (readToken.equals(_recordedToken)) {
+                        output.send(0, _recordedToken);
+                        $ASSIGN$_tentativeLastProduced(_recordedToken);
+                        if (_debugging) {
+                            _debug("Sent output token with value " + _recordedToken+"\nDiscarded duplicate input.");
+                        }
+                        $ASSIGN$_tentativeRecordedToken(null);
+                        if (_readFromA) {
+                            selectedA.send(0, BooleanToken.TRUE);
+                        } else {
+                            selectedA.send(0, BooleanToken.FALSE);
+                        }
+                    } else if ((readToken.equals(_lastProduced))) {
+                        if (_debugging) {
+                            _debug("Discarded duplicate input " + readToken);
+                        }
                     } else {
-                        selectedA.send(0, BooleanToken.FALSE);
+                        if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
+                            output.send(0, readToken);
+                            $ASSIGN$_tentativeLastProduced(readToken);
+                            if (_debugging) {
+                                _debug("Sent output token with value " + readToken);
+                            }
+                            if (_nextPort == inputA) {
+                                selectedA.send(0, BooleanToken.TRUE);
+                            } else {
+                                selectedA.send(0, BooleanToken.FALSE);
+                            }
+                        } else {
+                            output.send(0, _recordedToken);
+                            $ASSIGN$_tentativeLastProduced(_recordedToken);
+                            if (_debugging) {
+                                _debug("Sent output token with value " + _recordedToken);
+                            }
+                            if (_readFromA) {
+                                selectedA.send(0, BooleanToken.TRUE);
+                            } else {
+                                selectedA.send(0, BooleanToken.FALSE);
+                            }
+                            $ASSIGN$_tentativeRecordedToken(readToken);
+                            $ASSIGN$_tentativeReadFromA((_nextPort == inputA));
+                            if (_nextPort == inputA) {
+                                $ASSIGN$_tentativeNextPort(inputB);
+                            } else {
+                                $ASSIGN$_tentativeNextPort(inputA);
+                            }
+                        }
                     }
                 } else {
-                    output.send(0, _recordedToken);
-                    if (_debugging) {
-                        _debug("Sent output token with value " + _recordedToken);
-                    }
-                    if (_readFromA) {
-                        selectedA.send(0, BooleanToken.TRUE);
+                    if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
+                        output.send(0, readToken);
+                        if (_debugging) {
+                            _debug("Sent output token with value " + readToken);
+                        }
+                        if (_nextPort == inputA) {
+                            selectedA.send(0, BooleanToken.TRUE);
+                        } else {
+                            selectedA.send(0, BooleanToken.FALSE);
+                        }
                     } else {
-                        selectedA.send(0, BooleanToken.FALSE);
-                    }
-                    $ASSIGN$_tentativeRecordedToken(readToken);
-                    $ASSIGN$_tentativeReadFromA((_nextPort == inputA));
-                    if (_nextPort == inputA) {
-                        $ASSIGN$_tentativeNextPort(inputB);
-                    } else {
-                        $ASSIGN$_tentativeNextPort(inputA);
+                        output.send(0, _recordedToken);
+                        if (_debugging) {
+                            _debug("Sent output token with value " + _recordedToken);
+                        }
+                        if (_readFromA) {
+                            selectedA.send(0, BooleanToken.TRUE);
+                        } else {
+                            selectedA.send(0, BooleanToken.FALSE);
+                        }
+                        $ASSIGN$_tentativeRecordedToken(readToken);
+                        $ASSIGN$_tentativeReadFromA((_nextPort == inputA));
+                        if (_nextPort == inputA) {
+                            $ASSIGN$_tentativeNextPort(inputB);
+                        } else {
+                            $ASSIGN$_tentativeNextPort(inputA);
+                        }
                     }
                 }
             }
         }
     }
 
-    /**
+    /**     
      * Initialize this actor to indicate that no token is recorded.
      * @exception IllegalActionException If a derived class throws it.
      */
@@ -246,9 +376,13 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         super.initialize();
         $ASSIGN$_nextPort(inputA);
         $ASSIGN$_recordedToken(null);
+        $ASSIGN$_lastProduced(null);
+        $ASSIGN$_tentativeLastProduced(null);
+        inputA_tokenConsumptionRate.setToken(_one);
+        inputB_tokenConsumptionRate.setToken(_zero);
     }
 
-    /**
+    /**     
      * Commit the recorded token.
      * @return True.
      * @exception IllegalActionException Not thrown in this base class.
@@ -257,13 +391,21 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         $ASSIGN$_recordedToken(_tentativeRecordedToken);
         $ASSIGN$_readFromA(_tentativeReadFromA);
         $ASSIGN$_nextPort(_tentativeNextPort);
+        $ASSIGN$_lastProduced(_tentativeLastProduced);
+        if (_nextPort == inputA) {
+            inputA_tokenConsumptionRate.setToken(_one);
+            inputB_tokenConsumptionRate.setToken(_zero);
+        } else {
+            inputA_tokenConsumptionRate.setToken(_zero);
+            inputB_tokenConsumptionRate.setToken(_one);
+        }
         if (_debugging) {
             _debug("Next port to read input from is " + _nextPort.getName());
         }
         return super.postfire();
     }
 
-    /**
+    /**     
      * Return the port that this actor will read from on the next
      * invocation of the fire() method. This will be null before the
      * first invocation of initialize().
@@ -273,11 +415,11 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         return _nextPort;
     }
 
-    private final ScalarToken $ASSIGN$_recordedToken(ScalarToken newValue) {
+    private final ScalarToken $ASSIGN$_lastProduced(ScalarToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_recordedToken.add(null, _recordedToken, $CHECKPOINT.getTimestamp());
+            $RECORD$_lastProduced.add(null, _lastProduced, $CHECKPOINT.getTimestamp());
         }
-        return _recordedToken = newValue;
+        return _lastProduced = newValue;
     }
 
     private final TypedIOPort $ASSIGN$_nextPort(TypedIOPort newValue) {
@@ -292,6 +434,20 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
             $RECORD$_readFromA.add(null, _readFromA, $CHECKPOINT.getTimestamp());
         }
         return _readFromA = newValue;
+    }
+
+    private final ScalarToken $ASSIGN$_recordedToken(ScalarToken newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_recordedToken.add(null, _recordedToken, $CHECKPOINT.getTimestamp());
+        }
+        return _recordedToken = newValue;
+    }
+
+    private final ScalarToken $ASSIGN$_tentativeLastProduced(ScalarToken newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_tentativeLastProduced.add(null, _tentativeLastProduced, $CHECKPOINT.getTimestamp());
+        }
+        return _tentativeLastProduced = newValue;
     }
 
     private final boolean $ASSIGN$_tentativeReadFromA(boolean newValue) {
@@ -321,9 +477,11 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _recordedToken = (ScalarToken)$RECORD$_recordedToken.restore(_recordedToken, timestamp, trim);
+        _lastProduced = (ScalarToken)$RECORD$_lastProduced.restore(_lastProduced, timestamp, trim);
         _nextPort = (TypedIOPort)$RECORD$_nextPort.restore(_nextPort, timestamp, trim);
         _readFromA = $RECORD$_readFromA.restore(_readFromA, timestamp, trim);
+        _recordedToken = (ScalarToken)$RECORD$_recordedToken.restore(_recordedToken, timestamp, trim);
+        _tentativeLastProduced = (ScalarToken)$RECORD$_tentativeLastProduced.restore(_tentativeLastProduced, timestamp, trim);
         _tentativeReadFromA = $RECORD$_tentativeReadFromA.restore(_tentativeReadFromA, timestamp, trim);
         _tentativeRecordedToken = (ScalarToken)$RECORD$_tentativeRecordedToken.restore(_tentativeRecordedToken, timestamp, trim);
         _tentativeNextPort = (TypedIOPort)$RECORD$_tentativeNextPort.restore(_tentativeNextPort, timestamp, trim);
@@ -354,11 +512,15 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord $RECORD$_recordedToken = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_lastProduced = new FieldRecord(0);
 
     private transient FieldRecord $RECORD$_nextPort = new FieldRecord(0);
 
     private transient FieldRecord $RECORD$_readFromA = new FieldRecord(0);
+
+    private transient FieldRecord $RECORD$_recordedToken = new FieldRecord(0);
+
+    private transient FieldRecord $RECORD$_tentativeLastProduced = new FieldRecord(0);
 
     private transient FieldRecord $RECORD$_tentativeReadFromA = new FieldRecord(0);
 
@@ -367,9 +529,11 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
     private transient FieldRecord $RECORD$_tentativeNextPort = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_recordedToken,
+            $RECORD$_lastProduced,
             $RECORD$_nextPort,
             $RECORD$_readFromA,
+            $RECORD$_recordedToken,
+            $RECORD$_tentativeLastProduced,
             $RECORD$_tentativeReadFromA,
             $RECORD$_tentativeRecordedToken,
             $RECORD$_tentativeNextPort

@@ -30,6 +30,7 @@
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -43,12 +44,12 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * A polymorphic distributor, which splits an input stream into a set of
  * output streams. The distributor has an input port and an output port,
  * the latter of which is a multiport.
@@ -86,13 +87,13 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
     // These parameters are required for SDF
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The number of tokens produced on each output channel on each firing.
      * This is an integer with default value 0.
      */
     public Parameter blockSize;
 
-    /**
+    /**     
      * The parameter controlling the input port consumption rate.
      * This is an integer, initially with value 0. Whenever a connection
      * is made to the output, the value of this parameter is changed to
@@ -100,7 +101,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      */
     public Parameter input_tokenConsumptionRate;
 
-    /**
+    /**     
      * The parameter specifying the output port production rate.
      * This is an integer, equal to the value of <i>blockSize</i>.
      */
@@ -118,7 +119,81 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
 
     private int _tentativeOutputPosition;
 
-    /**
+    /**     
+     * This class will set _port.getWidth() + " * blockSize" as expression
+     * of the parameter, but will only do it when the token is requested to
+     * delay the triggering of the width.
+     */
+    private static class WidthDependentParameter extends Parameter implements Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        private IOPort _port;
+
+        public WidthDependentParameter(NamedObj container, String name, Token token, IOPort port) throws IllegalActionException, NameDuplicationException  {
+            super(container, name, token);
+            $ASSIGN$_port(port);
+        }
+
+        public ptolemy.data.Token getToken() throws IllegalActionException  {
+            setExpression(_port.getWidth() + " * blockSize");
+            return super.getToken();
+        }
+
+        void setPort(IOPort port) {
+            $ASSIGN$_port(port);
+        }
+
+        private final IOPort $ASSIGN$_port(IOPort newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$_port.add(null, _port, $CHECKPOINT.getTimestamp());
+            }
+            return _port = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            _port = (IOPort)$RECORD$_port.restore(_port, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord $RECORD$_port = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$_port
+            };
+
+    }
+
+    /**     
      * Construct an actor in the specified container with the specified
      * name. Create ports and make the input port a multiport. Create
      * the actor parameters.
@@ -134,7 +209,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         blockSize = new Parameter(this, "blockSize");
         blockSize.setTypeEquals(BaseType.INT);
         blockSize.setExpression("1");
-        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate", new IntToken(0));
+        input_tokenConsumptionRate = new WidthDependentParameter(input, "tokenConsumptionRate", new IntToken(0), output);
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
@@ -146,7 +221,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         output.setMultiport(true);
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the base
      * class method and sets the public variables to point to the new ports.
      * @param workspace The workspace for the new object.
@@ -157,10 +232,11 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Distributor newObject = (Distributor)super.clone(workspace);
         newObject.input_tokenConsumptionRate = (Parameter)(newObject.input.getAttribute("tokenConsumptionRate"));
+        ((WidthDependentParameter)newObject.input_tokenConsumptionRate).setPort(newObject.output);
         return newObject;
     }
 
-    /**
+    /**     
      * Notify this entity that the links to the specified port have
      * been altered.  This sets the consumption rate of the input port
      * and notifies the director that the schedule is invalid, if there
@@ -171,18 +247,11 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
         if (port == output) {
-            try {
-                input_tokenConsumptionRate.setExpression(output.getWidth() + " * blockSize");
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex,
-                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
-                        "Width inference should already have been done.");
-            }
             $ASSIGN$_currentOutputPosition(0);
         }
     }
 
-    /**
+    /**     
      * Read at most <i>N</i> tokens from the input port, where <i>N</i>
      * is the width of the output port times the <i>blockSize</i> parameter.
      * Write <i>blockSize</i> tokens to each of the
@@ -208,7 +277,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         }
     }
 
-    /**
+    /**     
      * Begin execution by setting the current output channel to zero.
      * @exception IllegalActionException If there is no director.
      */
@@ -217,7 +286,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         $ASSIGN$_currentOutputPosition(0);
     }
 
-    /**
+    /**     
      * Update the output position to equal that determined by the most
      * recent invocation of the fire() method.  The output position is
      * the channel number of the output port to which the next input

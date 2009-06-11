@@ -44,8 +44,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * Split an input stream onto two output ports depending on a
  * boolean control input.  In an
  * iteration, if an input token is available at the <i>control</i> input,
@@ -62,7 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
  * there is no corresponding output channel).
  * Because tokens are
  * immutable, the same Token is sent to the output, rather than a copy.
- * The <i>input</i> port may receive Tokens of any type.</p>
+ * The <i>input</i> port may receive Tokens of any type.
  * <p>Note that the this actor may be used in Synchronous Dataflow (SDF)
  * models, but only under certain circumstances. Specifically, downstream
  * actors will be fired whether a token is sent to them or not.
@@ -81,26 +82,26 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
     // Put the control input on the bottom of the actor.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * Input that selects one of the other input ports.  The type is
      * boolean.
      */
     public TypedIOPort control;
 
-    /**
+    /**     
      * The input port.  The type can be anything. This is a multiport,
      * and input tokens on all channels are routed to corresponding
      * channels on the output port, if there are such channels.
      */
     public TypedIOPort input;
 
-    /**
+    /**     
      * Output for tokens on the true path.  The type is at least the
      * type of the input.
      */
     public TypedIOPort trueOutput;
 
-    /**
+    /**     
      * Output for tokens on the false path.  The type is at least the
      * type of the input.
      */
@@ -113,7 +114,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
     // The most recently read control token.
     private boolean _control = false;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -135,11 +136,35 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
         falseOutput.setTypeAtLeast(input);
         trueOutput.setMultiport(true);
         falseOutput.setMultiport(true);
+        trueOutput.setWidthEquals(input, true);
+        falseOutput.setWidthEquals(input, true);
         StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
-    /**
+    /**     
+     * Clone this actor into the specified workspace. The new actor is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * The result is a new actor with the same ports as the original, but
+     * no connections and no container.  A container must be set before
+     * much can be done with this actor.
+     * @param workspace The workspace for the cloned object.
+     * @exception CloneNotSupportedException If cloned ports cannot have
+     * as their container the cloned entity (this should not occur), or
+     * if one of the attributes cannot be cloned.
+     * @return A new ComponentEntity.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        BooleanSwitch newObject = (BooleanSwitch)super.clone(workspace);
+        newObject.trueOutput.setTypeAtLeast(newObject.input);
+        newObject.falseOutput.setTypeAtLeast(newObject.input);
+        newObject.trueOutput.setWidthEquals(newObject.input, true);
+        newObject.falseOutput.setWidthEquals(newObject.input, true);
+        return newObject;
+    }
+
+    /**     
      * Read a token from each input port.  If the token from the
      * <i>control</i> input is true, then output the token consumed from the
      * <i>input</i> port on the <i>trueOutput</i> port,
@@ -167,7 +192,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Initialize this actor so that the <i>falseOutput</i> is written
      * to until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.

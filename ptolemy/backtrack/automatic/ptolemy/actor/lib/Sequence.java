@@ -1,6 +1,6 @@
 /* A source of a sequence of events.
 
- Copyright (c) 2004-2009 The Regents of the University of California.
+ Copyright (c) 2004-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * This actor produces a sequence of values, optionally periodically repeating
  * them. The <i>values</i> parameter contains an ArrayToken that specifies the
  * sequence of values to produce at the output. If the <i>enable</i> input
@@ -78,27 +78,27 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
     // set type constraint
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The enable input port.  If this port is connected, then its
      * input will determine whether an output is produced in any
      * given firing. The type is boolean.
      */
     public TypedIOPort enable;
 
-    /**
+    /**     
      * A flag indicating whether to interpret the <i>values</i>
      * as an infinite sequence where the last value is repeated
      * forever. This is a boolean that defaults to false.
      */
     public Parameter holdLastOutput;
 
-    /**
+    /**     
      * The output port. The type is greater than or equal to the
      * types of the two input ports.
      */
     public TypedIOPort output;
 
-    /**
+    /**     
      * The flag that indicates whether the sequence needs to be
      * repeated. If this is false, then either the last value of the
      * sequence is repeatedly produced after the entire sequence
@@ -108,7 +108,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      */
     public Parameter repeat;
 
-    /**
+    /**     
      * The values that will be produced on the output.
      * This parameter is an array, with default value {1}.
      */
@@ -119,6 +119,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
     // Note that this will default to null if there is no initialValue set.
     // To repeatedly produce the last output.
     // To prevent overflow.
+    // No more outputs to produce.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The index of the next value to be produced.
@@ -127,7 +128,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
 
     private boolean _outputProduced;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -151,7 +152,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
         output.setTypeAtLeast(ArrayType.elementType(values));
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This overrides the
      * base class to handle type constraints.
      * @param workspace The workspace for the new object.
@@ -169,7 +170,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * If the <i>enable</i> input is connected, then if it has a true
      * token, produce the next output. If it is not connected, produce
      * the next output unconditionally. Whether it is connected is
@@ -187,7 +188,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Initialize the actor by resetting to the first output value.
      * @exception IllegalActionException If there is no director.
      */
@@ -197,12 +198,13 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
         super.initialize();
     }
 
-    /**
+    /**     
      * Update the state of the actor by moving to the next value
      * in the <i>values</i> array.
      * @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException  {
+        boolean result = super.postfire();
         if (_outputProduced) {
             $ASSIGN$_outputProduced(false);
             $ASSIGN$SPECIAL$_currentIndex(0, 1);
@@ -217,11 +219,12 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
                         $ASSIGN$_currentIndex(valuesArray.length() - 1);
                     } else {
                         $ASSIGN$_currentIndex(valuesArray.length());
+                        result = false;
                     }
                 }
             }
         }
-        return super.postfire();
+        return result;
     }
 
     private final int $ASSIGN$_currentIndex(int newValue) {

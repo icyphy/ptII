@@ -98,11 +98,37 @@
               </entity>
             </group>
           </entity>
+          <entity name="DomainSpecific" class="ptolemy.moml.EntityLibrary">
+            <group>
+              <entity name="ProcessNetworks" class="ptolemy.moml.EntityLibrary">
+                <group>
+                  <entity name="OrderedMerge" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMerge"/>
+                </group>
+              </entity>
+            </group>
+          </entity>
         </group>
       </group>
     </entity>
     <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
       <group>
+        <entity name="DesignPatterns" class="ptolemy.moml.EntityLibrary">
+          <entity name="DiscreteEvent" class="ptolemy.moml.EntityLibrary">
+            <entity name="DESourceSink" class="ptolemy.actor.TypedCompositeActor">
+              <entity name="PoissonClock" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock"/>
+              <entity name="Ramp" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp"/>
+            </entity>
+          </entity>
+          <entity name="DynamicDataFlow" class="ptolemy.moml.EntityLibrary">
+            <entity name="DDFRepeatForCount" class="ptolemy.actor.TypedCompositeActor">
+              <entity name="Ramp" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp"/>
+              <entity name="Switch" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSwitch"/>
+              <entity name="RepeatedAction" class="ptolemy.actor.TypedCompositeActor">
+                <entity name="Counter" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.Counter"/>
+              </entity>
+            </entity>
+          </entity>
+        </entity>
         <entity name="Esoteric" class="ptolemy.moml.EntityLibrary">
           <group>
             <entity name="OrderedMerge" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMerge"/>

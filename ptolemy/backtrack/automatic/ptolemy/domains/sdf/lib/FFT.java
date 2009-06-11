@@ -1,6 +1,6 @@
 /* An FFT.
 
- Copyright (c) 1998-2009 The Regents of the University of California.
+ Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,6 +36,7 @@ import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
-/**
+/** 
  * This actor calculates the Fast Fourier Transform of a sequence of
  * complex inputs.  The order of the FFT determines the number of tokens
  * that will be consumed and produced on each firing. The order is the
@@ -67,7 +68,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /**
+    /**     
      * The order of the FFT.  The type is IntToken, and the value should
      * be greater than zero.  The default value is an IntToken with value 8.
      */
@@ -86,7 +87,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
 
     private ComplexToken[] _outTokenArray;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -106,7 +107,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
         output_tokenProductionRate.setExpression("2^order");
     }
 
-    /**
+    /**     
      * Ensure that the order parameter is positive and recompute the
      * size of internal buffers.
      * @param attribute The attribute that has changed.
@@ -126,7 +127,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Consume the inputs and produce the outputs of the FFT filter.
      * @exception IllegalActionException If a runtime type error occurs.
      */
@@ -134,7 +135,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
         super.fire();
         Token[] inTokenArray = input.get(0, _transformSize);
         for (int i = 0; i < _transformSize; i++) {
-            $ASSIGN$_inComplexArray(i, ((ComplexToken)inTokenArray[i]).complexValue());
+            $ASSIGN$_inComplexArray(i, ((ScalarToken)inTokenArray[i]).complexValue());
         }
         Complex[] outComplexArray = SignalProcessing.FFTComplexOut($BACKUP$_inComplexArray(), _orderValue);
         for (int i = 0; i < _transformSize; i++) {
