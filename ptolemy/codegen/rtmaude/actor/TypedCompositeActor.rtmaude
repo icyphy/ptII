@@ -239,11 +239,28 @@ endtom)
   pr COMPOSITE-ACTOR .
   pr CHECK-ACTOR .
 
-  var CF ACTS : Configuration .  var O : Oid .  
-  var AI : ActorID .  var AP : ActorPattern .
+  var CF ACTS : Configuration .  var PO : Oid .  
+  var AI AI' : ActorID .  var AP : ActorPattern .
 
-  eq {< O : CompositeActor | innerActors : ACTS > CF} |= (O . AI) AP
+  eq {< PO : CompositeActor | innerActors : ACTS > CF} |= (PO . AI) AP
    = {ACTS} |= AI AP .   --- accessing inner actor,, ?
+   
+  --- formula convention with an actor scope
+  op _:_ : ActorID Formula -> Formula .
+  
+  vars F1 F2 : Formula .
+  
+  eq AI : True = True .
+  eq AI : False = False .
+  eq AI : (~ F1) = ~ (AI : F1) .
+  eq AI : (O F1) = O (AI : F1) .
+  eq AI : (F1 /\ F2) = (AI : F1) /\ (AI : F2) .
+  eq AI : (F1 \/ F2) = (AI : F1) \/ (AI : F2) .
+  eq AI : (F1 U F2) = (AI : F1) U (AI : F2) .
+  eq AI : (F1 R F2) = (AI : F1) R (AI : F2) .
+  
+  eq AI : (AI' AP) = (AI . AI') AP .
+  
 endtom)
 /**/
 

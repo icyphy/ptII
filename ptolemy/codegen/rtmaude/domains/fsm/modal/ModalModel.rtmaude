@@ -4,6 +4,9 @@ MODAL-MODEL/**/
 /***className***/
 ModalModel/**/
 
+/***checkModuleName***/
+CHECK-MODALMODEL-ACTOR/**/
+
 /***sharedBlock***/
 (tomod MODAL-MODEL is 
   inc COMPOSITE-ACTOR .
@@ -79,6 +82,18 @@ ModalModel/**/
     eq executeStep(ModalModel, < O : ModalModel | >, REST) 
      = executeStep(CompositeActor, < O : ModalModel | >, REST) .
   
+endtom)
+
+(tomod CHECK-MODALMODEL-ACTOR is
+  pr CHECK-FSM-ACTOR .
+  pr MODAL-MODEL .
+
+  var ACTS CF : Configuration .  vars O CO : Oid .
+  var L : Location . 
+
+  eq {< O : ModalModel | 
+        controller : CO, innerActors : ACTS > CF} |= O @ L 
+   = {ACTS} |= CO @ L .
 endtom)
 /**/
 

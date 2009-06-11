@@ -4,13 +4,13 @@
 <entity name="HierarchicalTrafficLight" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1032, 767}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 22, 1030, 704}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 634]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 594]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5416666666667, 301.1770833333333}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5416666666666, 281.1770833333334}">
     </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 45.0]">
@@ -222,17 +222,21 @@
         </property>
     </property>
     <property name="RTMaudeCodeGenerator" class="ptolemy.codegen.rtmaude.kernel.RTMaudeCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="file:/C:/Documents%20and%20Settings/owner/Desktop/">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="file:/Users/kquine/Projects/NAOMI/ptolemy-rtm/">
         </property>
-        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 250.0]">
         </property>
         <property name="Safety Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[] ~ ('HierarchicalTrafficLight | ('Pgrn = # 1, 'Cgrn = # 1) )">
         </property>
         <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[]&lt;&gt; ('HierarchicalTrafficLight | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; ('HierarchicalTrafficLight | ('Pgrn = # 0, 'Cgrn = # 1))">
+        </property>
+        <property name="Safety (by state prop)" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'HierarchicalTrafficLight : ([] ~ ('TrafficLight @ 'normal /\  'TrafficLight . 'normal : ('CarLightNormal @ 'Cgrn /\  'PedestrianLightNormal @ 'Pgreen)))">
         </property>
     </property>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
