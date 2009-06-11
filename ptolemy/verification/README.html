@@ -3,51 +3,10 @@
 <head>
 <!-- $Id$ -->
 
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-  
-  
-  
   
   
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
-
-
-
-
-
-
-
-
-  
-
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   
@@ -59,99 +18,34 @@
 <body>
 
 
-
-
-
-
-
-
-
-
-<h1><span lang="EN-US">Correctness Checking using
-Formal Verification</span></h1>
-
-
-
-
-
-
-
-
+<h1><span lang="EN-US">Correctness Checking using Formal Verification</span></h1>
 
 
 <span style="font-family: Arial;" lang="EN-US">This
 is an
 ongoing project which tries to equip Ptolemy II with abilities to test
 the correctness
-of a system using formal verification. Currently we develop a code
-generator to
-convert Ptolemy II models into files accepted by model checker</span><span style="font-family: Arial;" lang="EN-US"> <a href="http://www.kenmcmil.com/smv.html" target="_blank">SMV</a></span><span style="font-family: Arial;" lang="EN-US"> (also acceptable
-by <a href="http://www.kenmcmil.com/smv.html" target="_blank"></a></span><span style="font-family: Arial;" lang="EN-US"><a href="http://nusmv.irst.itc.it/" target="_blank"><span class="SpellE">NuSMV</span></a></span><span style="font-family: Arial;" lang="EN-US">).</span>
+of a system using formal verification. Currently we develop code
+generators to
+convert Ptolemy II models into files accepted by model-checkers such as</span><span style="font-family: Arial;" lang="EN-US"> <a href="http://www.kenmcmil.com/smv.html" target="_blank">SMV</a></span><span style="font-family: Arial;" lang="EN-US"> (or <a href="http://www.kenmcmil.com/smv.html" target="_blank"></a></span><span style="font-family: Arial;" lang="EN-US"><a href="http://nusmv.irst.itc.it/" target="_blank"><span class="SpellE">NuSMV</span></a></span><span style="font-family: Arial;" lang="EN-US">) or <a href="http://heim.ifi.uio.no/~peterol/RealTimeMaude/" target="_blank">Real Time Maude</a>.</span>
 <ul type="disc">
-
-
-
-
-
-
-
-
-
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_1">Demo 1: Traffic light example</a></span></li>
 
-
-
-
-
-
-
-
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_2">Demo 2: Generate the specification directly from the graph</a></span></li>
-
-
-
-
-
-
-
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_3">Demo 3: SMVLegacyCodeActor</a></span></li>
 
-
-
-
-
-
-
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#LargeExample">A larger example in robotic controller design (reactive control)</a><br>
-
-
-
-
-
-
 
     </span></li>
 
 
+ <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#DemoRTM">Demo: Generating Real Time Maude code</a>&nbsp;</span></li>
 
+  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#InstallSMV">Installing NuSMV</a>&nbsp;</span></li>
 
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Install">Install NuSMV and
-setup environment variables</a>&nbsp;</span></li>
-
-
-
-
-
-
-
+ <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#InstallRTM">Installing Real Time Maude</a>&nbsp;</span></li>
 
 
 
@@ -239,7 +133,7 @@ on the <span class="SpellE">MathematicalModelConverter</span>
 
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">A dialog box
-will appear, ask you to input temporal formula. Type&nbsp;<b style="">! EF (<span class="SpellE">CarLightNormal</span>.state
+will appear, asking you to input a temporal logic formula. Type&nbsp;<b style="">! EF (<span class="SpellE">CarLightNormal</span>.state
 = <span class="SpellE">Cgrn</span> &amp;&nbsp;<span class="SpellE">PedestrianLightNormal</span>.state
 = <span class="SpellE">Pgreen</span>)</b>.
 You may want to copy the above line; it would be a lot faster.<span style="">&nbsp; </span><o:p></o:p></span></li>
@@ -484,102 +378,29 @@ You may want to copy the above line; it would be a lot faster.<span style=""> Pe
 
 <h2><a name="LargeExample"><span lang="EN-US"></span></a>A larger example in robotic controller design (reactive control)</h2>
 
+<span style="font-family: Arial;" lang="EN-US">A relatively larger example can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="demo/iRobotHillClimbing/iRobotCreateVerification.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
+<span style="font-family: Arial;" lang="EN-US">
+Note that this model is not intended for simulation but only to illustrate the verification capability.
+</span>
 
+<h2><a name="DemoRTM"><span lang="EN-US"></span></a>Real Time Maude code generation and verification&nbsp;</h2>
 
+<span style="font-family: Arial;" lang="EN-US">An example that show the capability to generate models acceptable by the Real Time Maude tool, and how these models can be verified using this tool, can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
+<span style="font-family: Arial;" lang="EN-US">
+Note that this model is not intended for simulation but only to illustrate the verification capability.
+</span>
 
+<h2><a name="InstallSMV"><span lang="EN-US"></span></a>Installing
+NuSMV&nbsp;</h2>
 
+<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">Install
+NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/" target="_blank">website</a>.&nbsp;</span></p>
 
+<h2><a name="InstallRTM"><span lang="EN-US"></span></a>Installing
+Real Time Maude&nbsp;</h2>
 
-
-
-
-<span style="font-family: Arial;" lang="EN-US">A relatively larger example can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="demo/iRobotHillClimbing/iRobotCreateVerification.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>
-
-
-<h2><a name="Install"><span lang="EN-US"></span></a>Install
-NuSMV and set up environment variables&nbsp;</h2>
-
-
-
-
-
-
-
-
-
-
-<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">In
-our current Java implementation, we simply invoke a process to execute
-existing NuSMV and redirect the console into the Ptolemy window. Thus
-if you expect to use NuSMV in Ptolemy rather than generating codes only</span><span style="font-family: Arial;" lang="EN-US">,
-please follow&nbsp;instructions listed below (instructions are for
-Microsoft Windows OS; for linux users, please apply similar
-approaches).&nbsp;</span></p>
-
-
-
-
-
-
-
-
-
-
-<ol start="1" type="1">
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;"></span></code></a>Install
-NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/" target="_blank">website</a>.&nbsp;</span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Assume
-the installed NuSMV directory in your system is C:\Program
-Files\NuSMV\2.4.3,
-then set up the the environment variable "Path" by attaching "</span><span style="font-family: Arial;" lang="EN-US">C:\Program
-Files\NuSMV\2.4.3\bin</span><span style="font-family: Arial;" lang="EN-US">" (Control Panel &gt;&gt; System
-&gt;&gt; Advanced &gt;&gt;
-Environment Variable). &nbsp;Save your changes. <o:p></o:p></span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">That's all
-you need to do! Now you can invoke NuSMV within Ptolemy II
-software!&nbsp;<o:p></o:p></span></li>
-
-
-
-
-
-
-
-
-
-
-</ol>
-
+<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">Install
+Real Time Maude by downloading from its <a href="http://heim.ifi.uio.no/~peterol/RealTimeMaude/" target="_blank">website</a>.&nbsp;</span></p>
 
 
 
@@ -646,8 +467,8 @@ the DE domain, we are also performing preliminary experiments.
 Currently the DE conversion is under a main rewriting to the format of
 UPPAAL 3.0 (without GUI format; in UPPAAL 4.0 a converter is prebuilt).</span></li>
 
-  <li><span style="font-family: Arial;" lang="EN-US">We find some examples having problem executing under NuSMV while they are
-executable under SMV. &nbsp;Examples in the demo folder includes <a href="demo/iRobotHillClimbing/iRobotCreateVerification.xml">iRobotCreateVerification.xml</a> and <a href="demo/TrafficLight/HierarchicalTrafficLight.xml">HierarchicalTrafficLight.xml</a>. Our preminiary diagnosis is that there are small syntatic differences between SMV and NuSMV.
+  <li><span style="font-family: Arial;" lang="EN-US">We find some examples having minor problems executing under NuSMV while they are
+executable under SMV. These problems can be easily fixed: the instructions in the corresponding model files show how to do this. Our preminiary diagnosis is that there are small syntactic differences between SMV and NuSMV.
     </span></li>
 
 </ol>
