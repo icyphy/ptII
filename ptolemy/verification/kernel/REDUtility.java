@@ -2682,7 +2682,8 @@ public class REDUtility {
                     + signalName.trim() + "_TokenEmpty" + ";\n");
             bean._moduleDescription.append("    when  ?" + signalName.trim()
                     + " (true) may ; \n");
-             // FIXME: With the following line the system will         
+             // FIXME: With the following line the CTA will exhibit more 
+             // behavior then the Ptolemy system.
             bean._moduleDescription.append("/*    when (t>=0) may  goto "
                     + actor.getName().trim() + "_Port_" + signalName.trim()
                     + "_TokenEmpty" + "; */\n");
