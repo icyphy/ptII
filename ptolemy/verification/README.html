@@ -36,6 +36,9 @@ convert Ptolemy II models into files accepted by model-checkers such as</span><s
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_3">Demo 3: SMVLegacyCodeActor</a></span></li>
 
+  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#DemoRailroad">Another demo: Railroad control</a></span></li>
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#LargeExample">A larger example in robotic controller design (reactive control)</a><br>
 
     </span></li>
@@ -64,15 +67,6 @@ the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Limitations">Limitations</a>
     <o:p></o:p>&nbsp;<o:p></o:p></span></li>
 
-
-
-
-
-
-
-
-
-
 </ul>
 
 
@@ -88,30 +82,11 @@ the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
 :Traffic light example</span></a></h2>
 
 
-
-
-
-
-
-
-
-
 <ol start="1" type="1">
-
-
-
-
-
-
-
-
 
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Open <big><a href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLight.xml</span></code></a></big>
     <o:p></o:p></span></li>
-
-
-
 
 
 
@@ -124,27 +99,11 @@ on the <span class="SpellE">MathematicalModelConverter</span>
 (Pink color). <o:p></o:p></span></li>
 
 
-
-
-
-
-
-
-
-
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">A dialog box
 will appear, asking you to input a temporal logic formula. Type&nbsp;<b style="">! EF (<span class="SpellE">CarLightNormal</span>.state
 = <span class="SpellE">Cgrn</span> &amp;&nbsp;<span class="SpellE">PedestrianLightNormal</span>.state
 = <span class="SpellE">Pgreen</span>)</b>.
 You may want to copy the above line; it would be a lot faster.<span style="">&nbsp; </span><o:p></o:p></span></li>
-
-
-
-
-
-
-
-
 
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Press OK.
@@ -153,12 +112,6 @@ will be generated. You can thus save the file (use .smv as
 extension).&nbsp; Also you can only </span><span style="font-family: Arial;" lang="EN-US">check the
 generated .smv format by selecting </span><span style="font-family: Arial;" lang="EN-US">"Open
 Generated Format" in step 3. <o:p></o:p></span></li>
-
-
-
-
-
-
 
 
 
@@ -361,18 +314,13 @@ on the&nbsp;<span class="SpellE"></span></span><span style="font-family: Arial;"
 (Pink color).&nbsp;</span><span style="font-family: Arial;" lang="EN-US">Type <span style="font-weight: bold;">! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightSMV.state = Pgreen)</span>.
 You may want to copy the above line; it would be a lot faster.<span style=""> Perform the verification.</span></span></li>
 
-
-
-
-
-
-
-
 </ol>
 
 
 
+<h2><a name="DemoRailroad"><span lang="EN-US"></span></a>Another example: Railroad control</h2>
 
+<span style="font-family: Arial;" lang="EN-US">Another example can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="demo/RailroadControl/RailroadSystem.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/RailroadControl/RailroadSystem.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
 
 
 
@@ -385,10 +333,8 @@ Note that this model is not intended for simulation but only to illustrate the v
 
 <h2><a name="DemoRTM"><span lang="EN-US"></span></a>Real Time Maude code generation and verification&nbsp;</h2>
 
-<span style="font-family: Arial;" lang="EN-US">An example that show the capability to generate models acceptable by the Real Time Maude tool, and how these models can be verified using this tool, can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
-<span style="font-family: Arial;" lang="EN-US">
-Note that this model is not intended for simulation but only to illustrate the verification capability.
-</span>
+<span style="font-family: Arial;" lang="EN-US">An example that shows the capability to generate models acceptable by the Real Time Maude tool, and how these models can be verified using this tool, can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
+
 
 <h2><a name="InstallSMV"><span lang="EN-US"></span></a>Installing
 NuSMV&nbsp;</h2>
