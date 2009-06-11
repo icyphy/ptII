@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/demo
 
-DIRS =      simpleSpeaker
+DIRS =      Speaker
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../../..
@@ -43,13 +43,14 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     lib
+PTPACKAGE =     demo
 
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	Speaker/Speaker.xml
 
 JSRCS = \
 

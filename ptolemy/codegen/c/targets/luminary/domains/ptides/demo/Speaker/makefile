@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/demo/simpleSpeaker
+ME =        ptolemy/codegen/c/targets/luminary/domains/ptides/demo/Speaker
 
 DIRS =      
 
@@ -45,12 +45,11 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE =     ptides
 
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = 
 
-PTCLASSALLJARS = \
-	kernel/kernel.jar
+PTCLASSALLJARS =
 
 JSRCS =
 EXTRA_SRCS =    $(JSRCS)

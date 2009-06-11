@@ -49,9 +49,10 @@ PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	targets/targets.jar
 
-JSRCS = \
+JSRCS = 
 
 EXTRA_SRCS =    $(JSRCS)
 

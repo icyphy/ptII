@@ -50,7 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
-	targets/targets.jar
+	luminary/luminary.jar
 
 JSRCS =
 EXTRA_SRCS =    $(JSRCS)
