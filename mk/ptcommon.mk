@@ -660,7 +660,8 @@ checkjunk:
 ##############
 # Rules for cleaning
 
-CRUD=*.o *.so *~ *.bak ,* LOG* *.class \
+# .jstmp comes from failed JavaScope jsinstr invocations.
+CRUD=*.o *.so *~ *.bak ,* LOG* *.class *.jstmp \
 	config.cache config.log config.status manifest.tmp \
 	$(JCLASS) $(PTCLASSJAR) $(PTAUXJAR) \
 	$(PTCLASSALLJAR) $(PTAUXALLJAR) \
