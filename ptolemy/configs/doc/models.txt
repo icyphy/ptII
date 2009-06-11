@@ -56,6 +56,7 @@ $CLASSPATH/ptolemy/codegen/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/HocDE/HocDE.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml
+$CLASSPATH/ptolemy/verification/demo/RailroadControl/RailroadSystem.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Hysteresis/Hysteresis.xml
 $CLASSPATH/ptolemy/domains/ptera/demo/CarWash/CarWash_DE.xml
 $CLASSPATH/ptolemy/domains/de/demo/Clock/Clock.xml
@@ -183,6 +184,7 @@ $CLASSPATH/ptolemy/domains/sdf/demo/LogisticMap/LogisticMap.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ConcurrentChat.xml
 $CLASSPATH/ptolemy/domains/curriculum/demo/Curriculum/Curriculum.xml
+$CLASSPATH/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
 $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/PolyActor.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml
@@ -305,6 +307,7 @@ $CLASSPATH/ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Transmission/Transmission.xml
 $CLASSPATH/ptolemy/domains/ct/demo/SinuBouncingBall/SinuBouncingBall.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml
+$CLASSPATH/ptolemy/verification/demo/TrafficlLight/SimpleTrafficLight.xml
 $CLASSPATH/ptolemy/domains/fsm/demo/ModalBSC/ModalBSC.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/Eratosthenes/Eratosthenes.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
