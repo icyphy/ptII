@@ -53,7 +53,10 @@ test WatchDog-1.0 {create a 1 second watchDog} {
 	$watchDog setExitOnTimeOut false
 	sleep 2   
     } results
-    puts $results
+    # If we print the results, then the nightly build will see the ***
+    # and report an extraneous error in the email summary.
+    # Uncomment the next line for debugging only.
+    #puts $results
     list \
 	    [regexp "util.testsuite.WatchDog went off after 1000ms" \
 	    $results] \
