@@ -1831,19 +1831,22 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
 
             if (directoryFile == null) {
-                attribute = (DefaultDirectoryAttribute) pattern.getAttribute(
-                        "_defaultDirectory");
                 if (attribute == null) {
-                    try {
-                        attribute = new DefaultDirectoryAttribute(pattern,
+                    attribute =
+                        (DefaultDirectoryAttribute) pattern.getAttribute(
                                 "_defaultDirectory");
-                        attribute.setPersistent(false);
-                    } catch (KernelException e) {
-                        throw new KernelRuntimeException(e,
-                                "Unable to initialize DefaultDirectoryAttribute.");
+                    if (attribute == null) {
+                        try {
+                            attribute = new DefaultDirectoryAttribute(pattern,
+                                    "_defaultDirectory");
+                            attribute.setPersistent(false);
+                        } catch (KernelException e) {
+                            throw new KernelRuntimeException(e, "Unable to " +
+                                    "initialize DefaultDirectoryAttribute.");
+                        }
+                        attribute.directory.setBaseDirectory(URIAttribute
+                                .getModelURI(getModel()));
                     }
-                    attribute.directory.setBaseDirectory(URIAttribute
-                            .getModelURI(getModel()));
                 }
                 ComponentDialog dialog = new ComponentDialog(
                         TransformationEditor.this, "Select Model Directory",
@@ -2443,17 +2446,19 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
 
             if (modelURL == null) {
-                attribute = (DefaultModelAttribute) pattern.getAttribute(
-                        "_defaultModel");
                 if (attribute == null) {
-                    try {
-                        attribute = new DefaultModelAttribute(pattern,
-                                "_defaultModel");
-                        attribute.setDisplayName("DefaultModel");
-                        attribute.setPersistent(false);
-                    } catch (KernelException e) {
-                        throw new KernelRuntimeException(e,
-                                "Unable to initialize DefaultModelAttribute.");
+                    attribute = (DefaultModelAttribute) pattern.getAttribute(
+                            "_defaultModel");
+                    if (attribute == null) {
+                        try {
+                            attribute = new DefaultModelAttribute(pattern,
+                                    "_defaultModel");
+                            attribute.setDisplayName("DefaultModel");
+                            attribute.setPersistent(false);
+                        } catch (KernelException e) {
+                            throw new KernelRuntimeException(e, "Unable to " +
+                                    "initialize DefaultModelAttribute.");
+                        }
                     }
                 }
                 PtolemyQuery query = new PtolemyQuery(attribute);
