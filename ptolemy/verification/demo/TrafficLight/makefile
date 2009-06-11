@@ -54,7 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 	SimpleTrafficLightBooleanToken.xml \
 	SimpleTrafficLightGraphicalSpec.xml \
 	SimpleTrafficLightSMVModule.xml \
-	DE_SimpleTrafficLight.xml \
+	DE_SimpleTrafficLight_CTA.xml \
 	HierarchicalTrafficLight.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

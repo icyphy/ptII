@@ -237,7 +237,6 @@
             <display name="Model Type"/>
         </property>
         <property name="Formula Type" class="ptolemy.data.expr.ChoiceParameter" value="TCTL">
-            <display name="Formula Type"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 185.0]">
         </property>
@@ -255,7 +254,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Verification:&#10;To perform verification, double-click on the MathematicalModel &#10;converter. On model type, select &quot;Communicating Timed Automata&quot;, &#10;and set your target file with name in &quot;*.d&quot;, e.g., DE_model.d.&#10;The file itself is not difficult to understand, with detailed&#10;comments mentioning indexes of processes.&#10;&#10;Note that since since in timed automata, the number of states &#10;is finite, for TimedDelay actor abstraction must be performed&#10;to set the buffer size. This can be tuned with the parameter.&#10;&#10;In the following are some possible specification. Copy one &#10;line of the following to an empty file, and rename it as &quot;*.risk&quot;.&#10;&#10;/* Buffer overflow of the TimedDelay actor */&#10;Buffer_Overflow[4];&#10;/* Buffer overflow of the TimedDelay2 actor */&#10;Buffer_Overflow[5];&#10;/* The car light and the pedestrian light will not be green simultaneously */&#10;CarLightNormal_State_Cgrn[1] &amp;&amp; PedestrianLightNormal_State_Pgrn[2];&#10; ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Verification:&#10;To perform verification, double-click on the MathematicalModel &#10;converter. On model type, select &quot;Communicating Timed Automata&quot;, &#10;and set your target file with name in &quot;*.d&quot;, e.g., DE_model.d.&#10;The file itself is not difficult to understand, with detailed&#10;comments mentioning indexes of processes.&#10;&#10;Note that since since in timed automata, the number of states &#10;is finite, for TimedDelay actors abstraction must be performed&#10;to set the buffer size. This can be tuned with the parameter.&#10;&#10;In the following are some possible specification. Copy one &#10;line of the following to an empty file, and rename it as &quot;*.risk&quot;.&#10;&#10;/* Buffer overflow of the TimedDelay actor */&#10;Buffer_Overflow[4];&#10;/* Buffer overflow of the TimedDelay2 actor */&#10;Buffer_Overflow[5];&#10;/* The car light and the pedestrian light will not be green simultaneously */&#10;CarLightNormal_State_Cgrn[1] &amp;&amp; PedestrianLightNormal_State_Pgrn[2];&#10; ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 225.0]">
         </property>
@@ -265,7 +264,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution:&#10;For model checking, please download the model checker RED 7.0 from http://sourceforge.net/projects/redlib. &#10;&#10;Assume your converted file is TEST.d, and your generated specification is TEST.risk, with RED 7.0 installed, &#10;you may examine the result of verification by the following instruction: &quot;./red -Tr -C TEST.d TEST.risk&quot;&#10;&#10;Result:&#10;Interestingly, since the rate of the clock is slower than the worst case transmission time, the model &#10;guarantees the behavior of safety (both lights will not be green simultaneously). If you change the &#10;timing parameters (e.g., clock = 4, timedDelay = 1, timedDelay = 5), a counter-example will be shown.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution:&#10;For model checking, please download the model checker RED 7.0 from http://sourceforge.net/projects/redlib. &#10;&#10;Assume your converted file is TEST.d, and your generated specification is TEST.risk, with RED 7.0 installed, &#10;you may examine the result of verification by the following instruction: &quot;./red -Tr -C TEST.d TEST.risk&quot;&#10;&#10;Result:&#10;Interestingly, since the rate of the clock is slower than the worst case transmission time of Pgo and Pstop, &#10;the model guarantees the behavior of safety (both lights will not be green simultaneously). If you change the &#10;timing parameters (e.g., clock = 4, timedDelay = 1, timedDelay = 5), a counter-example will be shown.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 335.0]">
         </property>
@@ -275,7 +274,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark:&#10;For the TimedDelay actor, the delay is fixed. This model can thus be &#10;simplified using SR modeling with counters. The power of timed automata &#10;and related theories lie in the modeling and the verification of &quot;reals&quot;. &#10;In Ptolemy II, you can find the actor &quot;BoundedBufferNondeterministicDelay&quot; &#10;from &quot;More Libraries -- Code Generators -- Verification&quot;. Note that the &#10;semantic of this actor is that it will fire the event in the time &#10;strictly smaller than the user-specified value. But unfortunately, currently &#10;these actors can not be simulated.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark:&#10;For the TimedDelay actor, the delay is fixed. This model can thus be simplified using &#10;SR modeling with counters. The power of timed automata and related theories lie in &#10;the modeling and the verification of &quot;reals&quot;. In Ptolemy II, you can find the actor &#10;&quot;BoundedBufferNondeterministicDelay&quot; from &quot;More Libraries -- Code Generators -- Verification&quot;. &#10;Note that the semantic of this actor is that it will fire the event in the time strictly &#10;smaller than the user-specified value. But unfortunately, currently these actors can not &#10;be executed under simulation mode.&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 470.0]">
         </property>
