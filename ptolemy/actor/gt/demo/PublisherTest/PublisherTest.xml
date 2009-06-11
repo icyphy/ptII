@@ -4,13 +4,13 @@
 <entity name="PublisherTest" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 154, 734, 459}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 208, 893, 485}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 327]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 329]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{217.0, -60.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.5, -59.5}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute" value="../../../lib/test/auto/Publisher*.xml [...]">

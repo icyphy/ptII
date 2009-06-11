@@ -10,18 +10,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 4, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 981, 520}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[768, 410]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.0, 205.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in Java code.&#10;Double click on the actor to see how it works.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Bert Rodiers">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 335.0]">
         </property>
     </property>
     <entity name="EmbeddedJavaActor" class="ptolemy.actor.lib.embeddedJava.EmbeddedJavaActor">
@@ -34,6 +42,44 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 105.0]">
+        </property>
+        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
+                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.java">
+            </property>
+            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="target" class="ptolemy.data.expr.StringParameter" value="default">
+            </property>
+            <property name="_codeGeneratorGUIFactory" class="ptolemy.codegen.gui.CodeGeneratorGUIFactory">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -48,7 +94,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={680, 413, 330, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={680, 413, 322, 226}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
         </property>

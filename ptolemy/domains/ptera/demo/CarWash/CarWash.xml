@@ -47,13 +47,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 30.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={548, 343, 823, 646}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 128, 931, 647}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 532]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 536]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 266.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.0, 268.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -140,15 +140,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 255.0]">
             </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xRange min="0.0" max="2000"/>
-<yRange min="0.0" max="8.0"/>
-</plot>?>
-            </configure>
         </entity>
         <entity name="Stop" class="ptolemy.domains.ptera.lib.Stop">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
