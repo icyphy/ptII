@@ -47,6 +47,7 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
+	allDemos.tcl \
 	cloneTest.tcl \
 	configTest.tcl \
 	testDefs.tcl
@@ -64,7 +65,8 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+MODELS_TXT = ../doc/models.txt
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(MODELS_TXT) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -82,6 +84,9 @@ JCLASS =	$(JSRCS:%.java=%.class)
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
+
+$(MODELS_TXT): ../doc/completeDemos.htm
+	(cd ../doc; make models.txt)
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
