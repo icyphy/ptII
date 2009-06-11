@@ -7,73 +7,21 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Inaccessible static: engOutputBuffer */
-/* Inaccessible static: eng */
-/* Inaccessible static: engUserCount */
-/* Inaccessible static: errNotOpened */
 /*
  * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabCreateCellMatrix
- * Signature: (Ljava/lang/String;II)J
+ * Method:    ptmatlabEngOpen
+ * Signature: (Ljava/lang/String;)J
  */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateCellMatrix
-  (JNIEnv *, jobject, jstring, jint, jint);
-
-/*
- * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabCreateComplexMatrix
- * Signature: (Ljava/lang/String;[[Lptolemy/math/Complex;II)J
- */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateComplexMatrix
-  (JNIEnv *, jobject, jstring, jobjectArray, jint, jint);
-
-/*
- * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabCreateComplexMatrixOneDim
- * Signature: (Ljava/lang/String;[Lptolemy/math/Complex;I)J
- */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateComplexMatrixOneDim
-  (JNIEnv *, jobject, jstring, jobjectArray, jint);
-
-/*
- * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabCreateDoubleMatrix
- * Signature: (Ljava/lang/String;[[DII)J
- */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateDoubleMatrix
-  (JNIEnv *, jobject, jstring, jobjectArray, jint, jint);
-
-/*
- * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabCreateDoubleMatrixOneDim
- * Signature: (Ljava/lang/String;[DI)J
- */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateDoubleMatrixOneDim
-  (JNIEnv *, jobject, jstring, jdoubleArray, jint);
-
-/*
- * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabCreateString
- * Signature: (Ljava/lang/String;Ljava/lang/String;II)J
- */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateString
-  (JNIEnv *, jobject, jstring, jstring, jint, jint);
-
-/*
- * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabCreateStructMatrix
- * Signature: (Ljava/lang/String;[Ljava/lang/Object;II)J
- */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateStructMatrix
-  (JNIEnv *, jobject, jstring, jobjectArray, jint, jint);
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOpen
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     ptolemy_matlab_Engine
  * Method:    ptmatlabEngClose
- * Signature: (J)I
+ * Signature: (JJ)I
  */
 JNIEXPORT jint JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngClose
-  (JNIEnv *, jobject, jlong);
+  (JNIEnv *, jobject, jlong, jlong);
 
 /*
  * Class:     ptolemy_matlab_Engine
@@ -93,27 +41,83 @@ JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngGetArray
 
 /*
  * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabEngOpen
- * Signature: (Ljava/lang/String;)J
- */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOpen
-  (JNIEnv *, jobject, jstring);
-
-/*
- * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabEngOutputBuffer
- * Signature: (J[B)I
- */
-JNIEXPORT jint JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOutputBuffer
-  (JNIEnv *, jobject, jlong, jbyteArray);
-
-/*
- * Class:     ptolemy_matlab_Engine
  * Method:    ptmatlabEngPutArray
  * Signature: (JLjava/lang/String;J)I
  */
 JNIEXPORT jint JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngPutArray
   (JNIEnv *, jobject, jlong, jstring, jlong);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabEngOutputBuffer
+ * Signature: (JI)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOutputBuffer
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabCreateCellMatrix
+ * Signature: (Ljava/lang/String;II)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateCellMatrix
+  (JNIEnv *, jobject, jstring, jint, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabCreateString
+ * Signature: (Ljava/lang/String;Ljava/lang/String;II)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateString
+  (JNIEnv *, jobject, jstring, jstring, jint, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabCreateDoubleMatrixOneDim
+ * Signature: (Ljava/lang/String;[DI)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateDoubleMatrixOneDim
+  (JNIEnv *, jobject, jstring, jdoubleArray, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabCreateDoubleMatrix
+ * Signature: (Ljava/lang/String;[[DII)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateDoubleMatrix
+  (JNIEnv *, jobject, jstring, jobjectArray, jint, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabCreateComplexMatrixOneDim
+ * Signature: (Ljava/lang/String;[Lptolemy/math/Complex;I)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateComplexMatrixOneDim
+  (JNIEnv *, jobject, jstring, jobjectArray, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabCreateComplexMatrix
+ * Signature: (Ljava/lang/String;[[Lptolemy/math/Complex;II)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateComplexMatrix
+  (JNIEnv *, jobject, jstring, jobjectArray, jint, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabCreateStructMatrix
+ * Signature: (Ljava/lang/String;[Ljava/lang/Object;II)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateStructMatrix
+  (JNIEnv *, jobject, jstring, jobjectArray, jint, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabDestroy
+ * Signature: (JLjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_ptolemy_matlab_Engine_ptmatlabDestroy
+  (JNIEnv *, jobject, jlong, jstring);
 
 /*
  * Class:     ptolemy_matlab_Engine
@@ -133,19 +137,19 @@ JNIEXPORT jstring JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetClassName
 
 /*
  * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabGetComplexMatrix
- * Signature: (JII)[[Lptolemy/math/Complex;
- */
-JNIEXPORT jobjectArray JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetComplexMatrix
-  (JNIEnv *, jobject, jlong, jint, jint);
-
-/*
- * Class:     ptolemy_matlab_Engine
  * Method:    ptmatlabGetDimensions
  * Signature: (J)[I
  */
 JNIEXPORT jintArray JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetDimensions
   (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabGetComplexMatrix
+ * Signature: (JII)[[Lptolemy/math/Complex;
+ */
+JNIEXPORT jobjectArray JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetComplexMatrix
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     ptolemy_matlab_Engine
@@ -157,11 +161,11 @@ JNIEXPORT jobjectArray JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetDoubleMatri
 
 /*
  * Class:     ptolemy_matlab_Engine
- * Method:    ptmatlabGetFieldByNumber
- * Signature: (JIII)J
+ * Method:    ptmatlabGetLogicalMatrix
+ * Signature: (JII)[[I
  */
-JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetFieldByNumber
-  (JNIEnv *, jobject, jlong, jint, jint, jint);
+JNIEXPORT jobjectArray JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetLogicalMatrix
+  (JNIEnv *, jobject, jlong, jint, jint);
 
 /*
  * Class:     ptolemy_matlab_Engine
@@ -170,6 +174,14 @@ JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetFieldByNumber
  */
 JNIEXPORT jstring JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetFieldNameByNumber
   (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabGetFieldByNumber
+ * Signature: (JIII)J
+ */
+JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetFieldByNumber
+  (JNIEnv *, jobject, jlong, jint, jint, jint);
 
 /*
  * Class:     ptolemy_matlab_Engine
@@ -185,6 +197,14 @@ JNIEXPORT jint JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetNumberOfFields
  * Signature: (JI)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetString
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     ptolemy_matlab_Engine
+ * Method:    ptmatlabGetOutput
+ * Signature: (JI)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetOutput
   (JNIEnv *, jobject, jlong, jint);
 
 /*
@@ -219,6 +239,17 @@ JNIEXPORT void JNICALL Java_ptolemy_matlab_Engine_ptmatlabSetString
 JNIEXPORT void JNICALL Java_ptolemy_matlab_Engine_ptmatlabSetStructField
   (JNIEnv *, jobject, jstring, jlong, jstring, jint, jint, jlong);
 
+#ifdef __cplusplus
+}
+#endif
+#endif
+/* Header for class ptolemy_matlab_Engine_ConversionParameters */
+
+#ifndef _Included_ptolemy_matlab_Engine_ConversionParameters
+#define _Included_ptolemy_matlab_Engine_ConversionParameters
+#ifdef __cplusplus
+extern "C" {
+#endif
 #ifdef __cplusplus
 }
 #endif
