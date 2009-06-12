@@ -47,7 +47,6 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	allDemos.tcl \
 	cloneTest.tcl \
 	configTest.tcl \
 	testDefs.tcl
@@ -56,7 +55,8 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	allConfigs.tcl
+	allConfigs.tcl \
+	allDemos.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
