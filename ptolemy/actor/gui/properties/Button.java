@@ -29,10 +29,14 @@ package ptolemy.actor.gui.properties;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
+import ptolemy.data.expr.FileParameter;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -67,6 +71,7 @@ public class Button extends ActionGUIProperty {
     public Button(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        icon = new FileParameter(this, "icon");
     }
 
     /** Set a name to present to the user.
@@ -76,6 +81,28 @@ public class Button extends ActionGUIProperty {
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         ((JButton) getComponent()).setText(name);
+    }
+
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes. If the changed attribute
+     *  is {@link #preferredSize}, then the preferred size of the Swing
+     *  component in this GUI property is adjusted accordingly.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+
+        if (attribute == icon) {
+            URL url = icon.asURL();
+            if (url != null) {
+                ImageIcon imageIcon = new ImageIcon(url);
+                JButton button = (JButton) getComponent();
+                button.setIcon(imageIcon);
+            }
+        }
     }
 
     /** Create a new Java Swing component.
@@ -92,4 +119,8 @@ public class Button extends ActionGUIProperty {
         });
         return button;
     }
+
+    /** Icon for the button. Set an empty string to remove the icon.
+     */
+    public FileParameter icon;
 }
