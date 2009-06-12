@@ -314,6 +314,11 @@ public class CompositeEntity extends ComponentEntity {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
+            // NOTE: The following assumes we will not do an exportMoML()
+            // at the same time we are doing a clone(). Since clone() is used
+            // to instantiate objects, this seems safe. But the field below
+            // is shared with exportMoML().
+            _levelCrossingLinks = new LinkedList<LinkRecord>();
 
             CompositeEntity newEntity = (CompositeEntity) super
                     .clone(workspace);
@@ -345,7 +350,9 @@ public class CompositeEntity extends ComponentEntity {
                             // Create the link only if the corresponding
                             // relation has been created. This ensures
                             // that the link is created exactly once.
-                            Relation farRelation = newEntity.getRelation(((Nameable)link).getName());
+                            // Get the relation using a relative name
+                            // in case it's a level-crossing link.
+                            Relation farRelation = newEntity.getRelation(((Nameable)link).getName(this));
                             if (farRelation != null) {
                                 newRelation.link(farRelation);
                             }
@@ -405,6 +412,7 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentPort port = (ComponentPort) ports.next();
                     Enumeration linkedRelations = port.linkedRelations();
 
+                    int index = 0;
                     while (linkedRelations.hasMoreElements()) {
                         ComponentRelation rel = (ComponentRelation) linkedRelations
                                 .nextElement();
@@ -423,18 +431,47 @@ public class CompositeEntity extends ComponentEntity {
                             //                                                 + this);
                             //                             }
 
-                            ComponentRelation newRelation = newEntity
-                                    .getRelation(rel.getName());
                             Port newPort = newSubentity.getPort(port.getName());
 
-                            try {
-                                newPort.link(newRelation);
-                            } catch (IllegalActionException ex) {
-                                throw new CloneNotSupportedException(
-                                        "Failed to clone a CompositeEntity: "
-                                                + ex.getMessage());
+                            // This may be a level-crossing link, in which case we have to
+                            // defer it to the common container.
+                            if (rel.getContainer() == this) {
+                                // Not a level-crossing link.
+                                ComponentRelation newRelation = newEntity
+                                        .getRelation(rel.getName());
+                                try {
+                                    newPort.link(newRelation);
+                                } catch (IllegalActionException ex) {
+                                    throw new CloneNotSupportedException(
+                                            "Failed to clone a CompositeEntity: "
+                                                    + ex.getMessage());
+                                }
+                            } else {
+                                // It is a level-crossing link.
+                                // Find the common container.
+                                NamedObj container = _commonContainer(port, rel);
+                                if (container instanceof CompositeEntity) {
+                                    List<LinkRecord> linkRecords = ((CompositeEntity)container)._levelCrossingLinks;
+                                    if (linkRecords == null) {
+                                        throw new CloneNotSupportedException(
+                                                "Level crossing link goes outside of the class definition boundary: "
+                                                + port.getFullName()
+                                                + " and "
+                                                + rel.getFullName());
+                                    }
+                                    // NOTE: The record has the new port (after cloning), but
+                                    // the old relation (before cloning) because we can't be sure
+                                    // the new relation exists yet.
+                                    LinkRecord record = new LinkRecord();
+                                    record.port = newPort;
+                                    record.relation1 = rel;
+                                    record.relation2 = null;
+                                    record.index = index;
+                                    linkRecords.add(record);
+                                }
                             }
                         }
+                        index++;
                     }
                 }
             }
@@ -448,8 +485,10 @@ public class CompositeEntity extends ComponentEntity {
 
                 while (relations.hasNext()) {
                     Relation relation = (Relation) relations.next();
+                    // To support level-crossing links to the inside,
+                    // be sure to get the name of the relation relative to this.
                     ComponentRelation newRelation = newEntity
-                            .getRelation(relation.getName());
+                            .getRelation(relation.getName(this));
                     Port newPort = newEntity.getPort(port.getName());
 
                     try {
@@ -461,9 +500,34 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
             }
+            
+            // Finally, clone level-crossing links, if there are any.
+            if (_levelCrossingLinks != null) {
+                for (LinkRecord record : _levelCrossingLinks) {
+                    try {
+                    if (record.port != null) {
+                            String relationName = record.relation1.getName(this);
+                            Relation newRelation = newEntity.getRelation(relationName);
+                            if (newRelation == null) {
+                                throw new CloneNotSupportedException(
+                                        "Cloning level-crossing links failed. Relation missing: "
+                                        + relationName);
+                            }
+                            record.port.insertLink(record.index, newRelation);
+                        } else {
+                            record.relation1.link(record.relation2);
+                        }
+                    } catch (IllegalActionException ex) {
+                        throw new CloneNotSupportedException(
+                                "Cloning level-crossing links failed: " + ex);
+                    }
+                }
+            }
+
 
             return newEntity;
         } finally {
+            _levelCrossingLinks = null;
             workspace().doneReading();
         }
     }
