@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands Brooks (makefile only)
 #
-# @Copyright (c) 2003-2006 The Regents of the University of California.
+# @Copyright (c) 2003-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -44,7 +44,8 @@ DIRS = \
 	SmallWorld \
 	SmartParking \
 	TerrainModel \
-	WirelessSoundDetection
+	WirelessSoundDetection \
+	Zigbee
 
 # Directories we are not shipping yet
 # NOTE: If you add these to DIRS above, add them in alphabetical order
@@ -78,7 +79,8 @@ PTCLASSALLJARS = \
 	SmallWorld/SmallWorld.jar \
 	SmartParking/SmartParking.jar \
 	TerrainModel/TerrainModel.jar \
-	WirelessSoundDetection/WirelessSoundDetection.jar
+	WirelessSoundDetection/WirelessSoundDetection.jar \
+	Zigbee/Zigbee.jar
 
 # Not clear what this demo does
 #	Network/Network.jar
