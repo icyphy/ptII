@@ -206,6 +206,7 @@ CGPACKAGES = \
 # Codegen packages.  Use this command to update:
 # cd $PTII/ptolemy/codegen; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/codegen" dir}' | sed 's@/@.@g'
 CODEGENPACKAGES = \
+	$(PTCODEGEN_OPTIONAL_PACKAGES) \
 	ptolemy.codegen.actor \
 	ptolemy.codegen.c.actor \
 	ptolemy.codegen.c.actor.lib \
@@ -240,9 +241,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.kernel \
 	ptolemy.codegen.c.kernel.type.parameterizedTemplates \
 	ptolemy.codegen.c.kernel.type.polymorphic \
-	ptolemy.codegen.c.targets.arduino \
-	ptolemy.codegen.c.targets.luminary \
-	ptolemy.codegen.c.targets.luminary.domains.ptides.kernel \
 	ptolemy.codegen.c.targets.mpi \
 	ptolemy.codegen.c.targets.mpi.actor \
 	ptolemy.codegen.c.targets.mpi.domains.pn.kernel \
@@ -255,13 +253,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel \
 	ptolemy.codegen.c.targets.posix \
 	ptolemy.codegen.c.targets.posix.actor.lib.io \
-	ptolemy.codegen.c.targets.pret \
-	ptolemy.codegen.c.targets.pret.actor.lib.gui \
-	ptolemy.codegen.c.targets.pret.domains.fsm.kernel \
-	ptolemy.codegen.c.targets.pret.domains.giotto.kernel \
-	ptolemy.codegen.c.targets.win32 \
-	ptolemy.codegen.c.targets.win32.actor.lib.io \
-	ptolemy.codegen.c.targets.win32.domains.pn.kernel \
 	ptolemy.codegen.c.vergil.actor.lib \
 	ptolemy.codegen.chaco.kernel \
 	ptolemy.codegen.gui \
@@ -484,7 +475,6 @@ HYVISUAL_DOCS = \
 
 # PTIDES packages
 PTIDES_PACKAGES = \
-	ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
 	ptolemy.domains.ptides.lib.targets.luminary

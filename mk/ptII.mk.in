@@ -344,6 +344,10 @@ PTCHIC_DIR = @PTCHIC_DIR@
 # if the CaffeineMark Java Benchmark kit is found.
 PTCM_DIR =	@PTCM_DIR@
 
+# Optional codegen package that are in the devel tree, but not shipped.
+# Used in doc/makefile
+PTCODEGEN_OPTIONAL_PACKAGES =	@PTCODEGEN_OPTIONAL_PACKAGES@
+
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
 PTCOLT_DIR =    @PTCOLT_DIR@
 

@@ -1062,6 +1062,48 @@ else
 	<classpathentry kind=\"lib\" path=\"$CHIC_DIR/chic.jar\"/> "
 fi 
 
+
+case "`uname -s`" in
+   Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.carbon.macosx_
+  	   # Darwin has problems with echo -n?
+   	   PT_ECHO="/bin/echo -n"
+	   ;;
+   *)      PT_ECHO=echo
+  	   ;;
+esac
+
+#--------------------------------------------------------------------
+#       Codegen directories
+#       Check for various codegen directories that are in the devel
+#       tree, but not shipped.
+#--------------------------------------------------------------------
+set -x
+PTCODEGEN_OPTIONAL_PACKAGES=
+# We only need to look for if $PTII/ptolemy/codegen exists
+CODEGEN_USER_DIR="$PTII/ptolemy/codegen"
+if test ! -d "$CODEGEN_USER_DIR"; then
+    PT_MSG_STATUS([$CODEGEN_USER_DIR is not present,
+    so we need not check for optional codegen target packages for javadoc.])
+
+else
+    AC_MSG_CHECKING([for optional codegen packages on which to run javadoc])
+    codegendocpackages="ptolemy.codegen.c.targets.arduino ptolemy.codegen.c.targets.luminary ptolemy.codegen.c.targets.luminary.domains.ptides.kernel ptolemy.codegen.c.targets.pret ptolemy.codegen.c.targets.pret.actor.lib.gui ptolemy.codegen.c.targets.pret.domains.fsm.kernel ptolemy.codegen.c.targets.pret.domains.giotto.kernel ptolemy.codegen.c.targets.win32 ptolemy.codegen.c.targets.win32.actor.lib.io ptolemy.codegen.c.targets.win32.domains.pn.kernel ptolemy.codegen.c.targets.luminary.domains.ptides.lib.targets.luminary ptolemy.domains.giotto.cgc"
+    for package in $codegendocpackages
+    do
+        if test "${PTVERBOSE:-none}" = "none"; then
+            $PT_ECHO $ECHO_N "."
+	else
+            $PT_ECHO $ECHO_N "$package "
+        fi
+	path="${PTII}/`echo $package | sed 's@\.@/@g'`"
+	
+   	if test -d "${path}"; then
+	    PTCODEGEN_OPTIONAL_PACKAGES="$PTCODEGEN_OPTIONAL_PACKAGES $package"
+        fi
+    done
+fi 
+set +x
+
 #--------------------------------------------------------------------
 #       COLT is a 
 #       "Open Source Libraries for High Performance Scientific and Technical
@@ -1388,14 +1430,6 @@ changequote([, ])dnl
 	    eclipsejarpath=
 	    for jar in $jars
 	    do
-	    	case "`uname -s`" in
-		Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.carbon.macosx_
-			# Darwin has problems with echo -n?
-			PT_ECHO="/bin/echo -n"
-			;;
-		*)      PT_ECHO=echo
-			;;
-		esac
 	    	if test "${PTVERBOSE:-none}" = "none"; then
 	            $PT_ECHO $ECHO_N "."
 	        else
@@ -4054,6 +4088,10 @@ AC_SUBST(PTCHIC_DIR)
 # PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
 # if the CaffeineMark Java Benchmark kit is found
 AC_SUBST(PTCM_DIR)
+
+# Optional codegen package that are in the devel tree, but not shipped.
+# Used in doc/makefile
+AC_SUBST(PTCODEGEN_OPTIONAL_PACKAGES)
 
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
 AC_SUBST(PTCOLT_DIR)
