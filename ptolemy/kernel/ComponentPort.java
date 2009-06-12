@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -704,9 +705,11 @@ public class ComponentPort extends Port {
         }
     }
 
-    /** This method is identical to _checkLink(), except that it does
-     *  not throw an exception if the link crosses levels of the
-     *  hierarchy.  It is used in a "strategy pattern," where the link
+    /** Check the validity of a link.
+     *  If the link crosses levels of the hierarchy, then set
+     *  the container persistent to ensure that MoML is exported for
+     *  this link.
+     *  This is used in a "strategy pattern," where the link
      *  methods call it to check the validity of a link, and derived
      *  classes perform more elaborate checks.
      *  @param relation The relation to link to.
@@ -742,6 +745,26 @@ public class ComponentPort extends Port {
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
             relation._checkPort(this);
+            
+            // Superclass assures that the container is not null.
+            Nameable relationContainer = relation.getContainer();
+
+            if ((container != relationContainer)
+                    && (container.getContainer() != relationContainer)) {
+                // Link crosses levels of the hierarchy.
+                // Ensure that an export occurs.
+                // If it's an inside link, then make the container
+                // persistent. Otherwise, make the container's container
+                // persistent.
+                if (container.deepContains(relation)) {
+                    container.setPersistent(true);
+                } else {
+                    NamedObj containersContainer = container.getContainer();
+                    if (containersContainer != null) {
+                        containersContainer.setPersistent(true);
+                    }
+                }
+            }
         }
     }
 
@@ -773,17 +796,29 @@ public class ComponentPort extends Port {
      */
     protected void _checkLink(Relation relation) throws IllegalActionException {
         _checkLiberalLink(relation);
-        /* Removed to support models that have level crossing links in MoML.
-         * EAL 4/21/09.
         super._checkLink(relation);
-
         if (relation != null) {
             if (!(relation instanceof ComponentRelation)) {
                 throw new IllegalActionException(this, relation,
                         "Attempt to link to an incompatible relation "
-                                + "(expected ComponentRelation).");
+                        + "(expected ComponentRelation).");
             }
+            // Check that the container is not a class or that
+            // if it is, that this is an inside link.
+            Entity container = (Entity) getContainer();
+            // Superclass assures that the container is not null.
+            Nameable relationContainer = relation.getContainer();
+            if (container.isClassDefinition()
+                    && (container != relationContainer)) {
+                throw new IllegalActionException(this, relation,
+                        "Cannot establish a link to a port contained "
+                                + "by a class definition");
+            }
+        }
 
+        /* Removed to support models that have level crossing links in MoML.
+         * EAL 4/21/09.
+        if (relation != null) {
             Entity container = (Entity) getContainer();
 
             // Superclass assures that the container is not null.
@@ -794,19 +829,6 @@ public class ComponentPort extends Port {
                 throw new IllegalActionException(this, relation,
                         "Link crosses levels of the hierarchy");
             }
-
-            // Check that the container is not a class or that
-            // if it is, that this is an inside link.
-            if (container.isClassDefinition()
-                    && (container != relationContainer)) {
-                throw new IllegalActionException(this, relation,
-                        "Cannot establish a link to a port contained "
-                                + "by a class definition");
-            }
-
-            // Throw an exception if this port is not of an acceptable
-            // class for the relation.
-            relation._checkPort(this);
         }
         */
     }
