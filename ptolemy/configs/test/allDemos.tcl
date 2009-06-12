@@ -61,15 +61,19 @@ test allDemos-1.0 {} {
     close $file
     set models [split $modelsFileContents "\n"]
     foreach model $models {
+	if {[string length $model] < 1} {
+	    continue
+	}
 	regsub {\$CLASSPATH} $model {$PTII} modelPath
 	set modelPath [subst $modelPath]
 	set modelFile [java::new java.io.File $modelPath]
 	set modelPath [$modelFile getCanonicalPath]
-        puts $modelPath
+        puts "modelPath: $modelPath"
 
+	set startTime [java::call -noconvert System currentTimeMillis]
 	set toplevel [java::cast ptolemy.kernel.CompositeEntity \
 		[$parser parseFile $modelPath]]
-	puts "####$modelPath\n[$toplevel getFullName]\n[$toplevel statistics [java::null]]"
+	puts "####$modelPath\n[$toplevel getFullName][java::call ptolemy.actor.Manager timeAndMemory [$startTime longValue]]\n[$toplevel statistics [java::null]]"
 	$toplevel setContainer [java::null]
 	$parser reset
 	$parser purgeAllModelRecords
