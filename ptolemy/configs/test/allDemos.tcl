@@ -69,6 +69,9 @@ test allDemos-1.0 {} {
 
 	set toplevel [java::cast ptolemy.kernel.CompositeEntity \
 		[$parser parseFile $modelPath]]
-	puts "####$modelPath\n[$toplevel statistics [java::null]]"
+	puts "####$modelPath\n[$toplevel getFullName]\n[$toplevel statistics [java::null]]"
+	$toplevel setContainer [java::null]
+	$parser reset
+	$parser purgeAllModelRecords
     }
 } {}
