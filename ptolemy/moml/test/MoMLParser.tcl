@@ -4256,3 +4256,22 @@ Because:
 	error "--start--\n$result\n--end--\n\nwas not equal to\n\n--start#1--\n$result1\n--end--\n\nnor\n--start#2---\n$result2\n--end--\n\nor\n\n--start#3---\n$result3\n--end--\n\n or \n\n--start#4--\n$result4\n--end--\n"
     }
 } {}
+
+test MoMLParser-32.2 {parse a file with an relative name} {
+    java::call ptolemy.moml.MoMLParser purgeAllModelRecords
+    $parser reset
+    # This assumes that $PTII is a relative path
+    set relativePath [file join $PTII ptolemy/moml/test/ testdir.moml]
+    set toplevel [$parser parseFile $relativePath]
+    list [$toplevel getFullName] 
+} {.testdir}
+
+test MoMLParser-32.3 {parse a file with an absolute name} {
+    java::call ptolemy.moml.MoMLParser purgeAllModelRecords
+    $parser reset
+    # This assumes that $PTII is a relative path
+    set relativePath [file join $PTII ptolemy/moml/test/ testdir.moml]
+    set absolutePath [[java::new java.io.File $relativePath] getCanonicalPath]
+    set toplevel [$parser parseFile $absolutePath]
+    list [$toplevel getFullName] 
+} {.testdir}
