@@ -29,6 +29,7 @@ package ptolemy.moml;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -1560,7 +1561,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
-        File file = new File(new File(cwd), filename);
+        File file = new File(filename); 
+        if ( !file.exists()) {
+            file = new File(new File(cwd), filename);
+        }
+        if ( !file.exists()) {
+            throw new FileNotFoundException("Could not find file \""
+                    + filename + "\"");
+        }
         return parse(base, file.toURI().toURL());
     }
 
