@@ -7,10 +7,10 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 22, 918, 561}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 22, 926, 568}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[703, 454]">
     </property>
@@ -130,7 +130,63 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 420.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Object Tokens">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 105.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation">
+        </property>
+    </property>
+    <property name="Annotation_1_" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    P1 to P5 are parameters whose&#10;values are evaluated with object&#10;tokens. The values are shown in the&#10;display when the model is run.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 135.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation_1_2">
+        </property>
+    </property>
+    <property name="Annotation_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    Word &quot;this&quot; in an expression&#10;refers to the current model. Actors in&#10;the model can be referred to with&#10;their names.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 215.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation_1_2">
+        </property>
+    </property>
+    <property name="Annotation_1_3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    Dots (&quot;.&quot;) can be used to refer to&#10;objects within a certain context. For&#10;example, &quot;Test1&quot; in P2 is equivalent&#10;to &quot;this.Test1&quot;. &quot;Test2.output&quot; in P3&#10;refers to the output port of actor&#10;Test2.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 290.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation_1_2">
         </property>
     </property>
     <entity name="Test1" class="ptolemy.actor.lib.Const">
@@ -147,11 +203,11 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={529, 403, 334, 234}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={529, 403, 342, 243}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[508.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 280.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Const">
@@ -190,7 +246,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[113.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 320.0}">
         </property>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -220,23 +276,23 @@
         <link port="Test5.output" relation="relation"/>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[343.0, 170.0]">
+        <vertex name="vertex1" value="[280.0, 170.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[303.0, 220.0]">
+        <vertex name="vertex1" value="[255.0, 220.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[258.0, 270.0]">
+        <vertex name="vertex1" value="[235.0, 270.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[298.0, 320.0]">
+        <vertex name="vertex1" value="[255.0, 320.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[333.0, 380.0]">
+        <vertex name="vertex1" value="[275.0, 380.0]">
         </vertex>
     </relation>
     <link port="Test1.output" relation="relation6"/>
