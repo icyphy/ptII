@@ -35,6 +35,8 @@ import java.lang.ref.WeakReference;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
@@ -116,8 +118,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
     protected void _error(String info) {
         Object[] message = new Object[1];
         String string = info;
-        message[0] = StringUtilities.ellipsis(string,
-                StringUtilities.ELLIPSIS_LENGTH_SHORT);
+        message[0] = _messageComponent(StringUtilities.ellipsis(string,
+                        StringUtilities.ELLIPSIS_LENGTH_SHORT));
 
         Object[] options = { "Dismiss" };
 
@@ -158,8 +160,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
             string = throwable.getMessage();
         }
 
-        message[0] = StringUtilities.ellipsis(string,
-                StringUtilities.ELLIPSIS_LENGTH_SHORT);
+        message[0] = _messageComponent(StringUtilities.ellipsis(string,
+                        StringUtilities.ELLIPSIS_LENGTH_SHORT));
 
         Object[] options = { "Dismiss", "Display Stack Trace" };
 
@@ -181,8 +183,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
      */
     protected void _message(String info) {
         Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(info,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+        message[0] = _messageComponent(StringUtilities.ellipsis(info,
+                        StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "OK" };
 
@@ -215,8 +217,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         // into shorter new line separated strings.
         // Running vergil on a HSIF .xml file will create a line longer
         // than 80 characters
-        message[0] = StringUtilities.ellipsis(info,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+        message[0] = _messageComponent(StringUtilities.ellipsis(info,
+                        StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,
@@ -250,8 +252,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
     protected void _warning(String info, Throwable throwable)
             throws CancelException {
         Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(info,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+        message[0] = _messageComponent(StringUtilities.ellipsis(info,
+                        StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "OK", "Display Stack Trace", "Cancel" };
 
@@ -275,8 +277,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
      */
     protected boolean _yesNoQuestion(String question) {
         Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(question,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+        message[0] = _messageComponent(StringUtilities.ellipsis(question,
+                        StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "Yes", "No" };
 
@@ -303,8 +305,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
     protected boolean _yesNoCancelQuestion(String question)
             throws CancelException {
         Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(question,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+        message[0] = _messageComponent(StringUtilities.ellipsis(question,
+                        StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "Yes", "No", "Cancel" };
 
@@ -355,8 +357,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
             string = throwable.getMessage();
         }
 
-        message[0] = StringUtilities.ellipsis(string,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+        message[0] = _messageComponent(StringUtilities.ellipsis(string,
+                        StringUtilities.ELLIPSIS_LENGTH_LONG));
         message[1] = stext;
 
         // Show the MODAL dialog
@@ -369,4 +371,30 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
 
     /** The context. */
     protected static WeakReference _context = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Return an Object suitable for JOptionPane so that the user
+    // can select it.
+    // We return a JTextField that looks like a JLabel, but is
+    // selectable.  Many thanks to:
+    // http://www.rgagnon.com/javadetails/java-0296.html
+    private Object _messageComponent(String message) {
+        // It is nice if error messages have selectable text.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4147
+        Object result = message;
+        try {
+            JTextField textField = new JTextField(message);
+            textField.setEditable(false);
+            textField.setBorder(null);
+            textField.setForeground(UIManager.getColor("Label.foreground"));
+            textField.setBackground(UIManager.getColor("Label.background"));
+            textField.setFont(UIManager.getFont("Label.font"));
+            result = textField;
+        } catch (Exception ex) {
+            // Ignore, just return the string
+        }
+        return result;
+    }
 }
