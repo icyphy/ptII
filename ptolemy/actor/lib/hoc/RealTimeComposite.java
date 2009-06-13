@@ -145,6 +145,7 @@ import ptolemy.util.MessageHandler;
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.1
+ @deprecated Use {@link ptolemy.actor.lib.hoc.ThreadedComposite} instead
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)
  @deprecated Use ThreadedComposite instead.

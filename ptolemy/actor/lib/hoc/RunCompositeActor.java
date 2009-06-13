@@ -98,7 +98,6 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 4.0
  @see ModelReference
  @see ptolemy.actor.lib.SetVariable
- @deprecated Use {@link ptolemy.actor.lib.hoc.ThreadedComposite} instead
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
