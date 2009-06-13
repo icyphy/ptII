@@ -42,6 +42,7 @@ import javax.swing.JPopupMenu;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
@@ -49,6 +50,7 @@ import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.BasicGrabHandle;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
@@ -200,8 +202,22 @@ public class FigureAction extends AbstractAction {
 
                 // NOTE: _target may end up null here!
                 if (_target == null) {
-                    throw new InternalErrorException(
-                            "Internal error: Figure has no associated Ptolemy II object!");
+                    // On 5/29/09, Edward wrote:
+                    // "If you select a transition in an FSM, put the
+                    // mouse on the blue box that is the grab handle,
+                    // and hit Command-L (to look inside), you get an
+                    // ugly exception on the command line.
+                    // If you put the mouse on the transition but not
+                    // on the blue box, you correctly get a message
+                    // that there is no refinement."
+                    //
+                    // So, if the current figure is a BasicGrabHandle, we 
+                    // do not throw the exception
+                    if (! (layer.getCurrentFigure() instanceof BasicGrabHandle)) {
+                        throw new InternalErrorException(
+                                "Internal error: FigureLayer \"" + layer.getCurrentFigure()
+                                + "\" has no associated Ptolemy II object!");
+                    }
                 }
             } else {
                 _target = (NamedObj) model.getRoot();
