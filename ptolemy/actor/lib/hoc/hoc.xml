@@ -116,7 +116,8 @@
         </entity>
       </entity>
 
-      <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor"/>
+      <!--  Use ThreadedComposite instead of RunComposite
+         entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor"/ -->
       
       <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
         <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
