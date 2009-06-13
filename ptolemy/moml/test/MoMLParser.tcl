@@ -4275,3 +4275,13 @@ test MoMLParser-32.3 {parse a file with an absolute name} {
     set toplevel [$parser parseFile $absolutePath]
     list [$toplevel getFullName] 
 } {.testdir}
+
+test MoMLParser-32.4 {parse a file that does not exist} {
+    java::call ptolemy.moml.MoMLParser purgeAllModelRecords
+    $parser reset
+    # This assumes that $PTII is a relative path
+    catch {$parser parseFile "/This File Does Not Exist/Foo.xml"} errMsg
+    set cwd [java::call System getProperty {user.dir}]
+    regsub $cwd $errMsg {XXXCWDXXX} errMsg2
+    list $errMsg2
+} {{java.io.FileNotFoundException: Could not find file "/This File Does Not Exist/Foo.xml", also tried "XXXCWDXXX/This File Does Not Exist/Foo.xml"}}

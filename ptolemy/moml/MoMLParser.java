@@ -1567,7 +1567,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
         if ( !file.exists()) {
             throw new FileNotFoundException("Could not find file \""
-                    + filename + "\"");
+                    + filename + "\", also tried \"" + file + "\"");
         }
         return parse(base, file.toURI().toURL());
     }
