@@ -89,7 +89,7 @@ import ptolemy.kernel.util.Workspace;
  models in the same Java virtual machine, not just within a
  single model.
 
- @author Edward A. Lee, contributor: Christopher Brooks
+ @author Edward A. Lee, contributor: Christopher Brooks, Bert Rodiers
  @version $Id$
  @since Ptolemy II 4.1
  @Pt.ProposedRating Green (eal)
@@ -195,6 +195,30 @@ public class SharedParameter extends Parameter implements Initializable {
         registry.register(newObject);
         return newObject;
     }
+
+    /** Finalize this object.
+     *  Called by the garbage collector on an object when garbage collection
+     *  determines that there are no more references to the object.
+     *  @exception Throwable If the parent class throws this exception.
+     */
+    protected void finalize() throws Throwable
+    {
+        // Clean up register.
+        // If we has a element with no Workspace, we know it is cleaned up.
+        // Actually the call of this finalize is a result of this clean up,
+        // we are now searching and removing this cleanup up SharedParameterRegistry.
+        Iterator<SharedParameterRegistry> iterator = _REGISTRY.iterator();        
+        while (iterator.hasNext()) {
+            SharedParameterRegistry registry = iterator.next();
+            Workspace workspace = registry.workspace();
+            if (workspace == null) {
+                iterator.remove();
+                break;
+            }
+        }
+        super.finalize(); //not necessary if extending Object.        
+    }
+        
 
     /** Get the token contained by this variable.  The type of the returned
      *  token is always that returned by getType().  Calling this method
@@ -420,11 +444,10 @@ public class SharedParameter extends Parameter implements Initializable {
         super.setExpression(expression);
 
         if (!_suppressingPropagation) {
-            Iterator sharedParameters = sharedParameterSet().iterator();
+            Iterator<SharedParameter> sharedParameters = sharedParameterSet().iterator();
 
             while (sharedParameters.hasNext()) {
-                SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                        .next();
+                SharedParameter sharedParameter = sharedParameters.next();
 
                 if (sharedParameter != this) {
                     try {
@@ -463,11 +486,10 @@ public class SharedParameter extends Parameter implements Initializable {
         super.setToken(token);
 
         if (!_suppressingPropagation) {
-            Iterator sharedParameters = sharedParameterSet().iterator();
+            Iterator<SharedParameter> sharedParameters = sharedParameterSet().iterator();
 
             while (sharedParameters.hasNext()) {
-                SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                        .next();
+                SharedParameter sharedParameter = sharedParameters.next();
 
                 if (sharedParameter != this) {
                     try {
@@ -564,10 +586,9 @@ public class SharedParameter extends Parameter implements Initializable {
         }
 
         if (!_suppressingPropagation) {
-            Iterator sharedParameters = sharedParameterSet().iterator();
+            Iterator<SharedParameter> sharedParameters = sharedParameterSet().iterator();
             while (sharedParameters.hasNext()) {
-                SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                        .next();
+                SharedParameter sharedParameter = sharedParameters.next();
                 if (sharedParameter != this) {
                     try {
                         sharedParameter._suppressingPropagation = true;
@@ -653,11 +674,14 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     private static synchronized SharedParameterRegistry _getSharedParameterRegistry(
             Workspace workspace) {
-        SharedParameterRegistry result = _REGISTRY.get(workspace);
-        if (result == null) {
-            result = new SharedParameterRegistry();
-            _REGISTRY.put(workspace, result);
+        
+        for (SharedParameterRegistry registry : _REGISTRY) {
+            if (registry.workspace() == workspace) {
+                return registry;
+            }
         }
+        SharedParameterRegistry result = new SharedParameterRegistry(workspace);
+        _REGISTRY.add(result);
         return result;
     }
 
@@ -697,7 +721,7 @@ public class SharedParameter extends Parameter implements Initializable {
     private long _sharedParameterSetVersion = -1L;
 
     /** Registry by workspace. */
-    private static HashMap<Workspace, SharedParameterRegistry> _REGISTRY = new HashMap<Workspace, SharedParameterRegistry>();
+    private static List<SharedParameterRegistry> _REGISTRY = new LinkedList<SharedParameterRegistry>();
 
     /** Indicator to suppress propagation. */
     private boolean _suppressingPropagation = false;
@@ -705,13 +729,18 @@ public class SharedParameter extends Parameter implements Initializable {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Registery of shared parameters. This is a data structure
+    /** Registry of shared parameters. This is a data structure
      *  that registers all shared parameters in a workspace. This is
      *  more efficient than searching through a model to find all the
      *  shared parameters. It stores one collection of shared parameters
      *  for each name.
      */
-    private static class SharedParameterRegistry {
+    private static class SharedParameterRegistry {        
+        
+        public SharedParameterRegistry(Workspace workspace) {
+            _workspace = new WeakReference<Workspace>(workspace);   
+        }
+                
         /** Return all shared parameters with the specified name.
          *  This returns a collection of weak references.
          */
@@ -745,6 +774,13 @@ public class SharedParameter extends Parameter implements Initializable {
             }
         }
 
+        /** Return the workspace. */
+        public Workspace workspace() {
+            return _workspace.get();
+        }
+        
         private HashMap<String, Collection<WeakReference<SharedParameter>>> _sharedParametersByName = new HashMap<String, Collection<WeakReference<SharedParameter>>>();
+        
+        private WeakReference<Workspace> _workspace;
     }
 }
