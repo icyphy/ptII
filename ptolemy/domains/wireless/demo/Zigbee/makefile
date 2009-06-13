@@ -47,15 +47,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Zigbee.xml \
-	ZigbeeDeterministic.xml
+	Zigbee.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Zigbee.htm \
-	ZigbeeDeterministic.htm \
-	ZigbeeDeterministic.jnlp
+	Zigbee.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
