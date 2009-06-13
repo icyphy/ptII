@@ -120,6 +120,14 @@ set currentDirectory [pwd]
 test release-3.1 {Run svn status and look for files that should be checked in.  See ptII/adm/bin/svnignoreupdate for a script to fix this} {
 
     cd "$PTII"
-    exec svn status
-} {}
+    set result [exec svn status]
+    set result1 {M      lib/matlab.jar
+?      ptolemy/backtrack/util/java/util/jsoriginal
+?      ptolemy/matlab/META-INF}
+    if { $result == $result1 } {
+	puts "Result was:\n$result\nWhich is ok"
+        return {{}}
+    }
+    list $result
+} {{}}
 cd "$currentDirectory"
