@@ -196,30 +196,6 @@ public class SharedParameter extends Parameter implements Initializable {
         return newObject;
     }
 
-    /** Finalize this object.
-     *  Called by the garbage collector on an object when garbage collection
-     *  determines that there are no more references to the object.
-     *  @exception Throwable If the parent class throws this exception.
-     */
-    protected void finalize() throws Throwable
-    {
-        // Clean up register.
-        // If we has a element with no Workspace, we know it is cleaned up.
-        // Actually the call of this finalize is a result of this clean up,
-        // we are now searching and removing this cleanup up SharedParameterRegistry.
-        Iterator<SharedParameterRegistry> iterator = _REGISTRY.iterator();        
-        while (iterator.hasNext()) {
-            SharedParameterRegistry registry = iterator.next();
-            Workspace workspace = registry.workspace();
-            if (workspace == null) {
-                iterator.remove();
-                break;
-            }
-        }
-        super.finalize(); //not necessary if extending Object.        
-    }
-        
-
     /** Get the token contained by this variable.  The type of the returned
      *  token is always that returned by getType().  Calling this method
      *  will trigger evaluation of the expression, if the value has been
@@ -675,9 +651,16 @@ public class SharedParameter extends Parameter implements Initializable {
     private static synchronized SharedParameterRegistry _getSharedParameterRegistry(
             Workspace workspace) {
         
-        for (SharedParameterRegistry registry : _REGISTRY) {
-            if (registry.workspace() == workspace) {
+        Iterator<SharedParameterRegistry> iterator = _REGISTRY.iterator();        
+        while (iterator.hasNext()) {
+            SharedParameterRegistry registry = iterator.next();
+            Workspace registerWorkspace = registry.workspace();
+            if (registerWorkspace == workspace) {
                 return registry;
+            } else if (registerWorkspace == null){
+                // Clean up register.
+                // If we has a element with no Workspace, we know it is cleaned up.
+                iterator.remove();
             }
         }
         SharedParameterRegistry result = new SharedParameterRegistry(workspace);
