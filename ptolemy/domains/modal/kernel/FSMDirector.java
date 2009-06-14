@@ -588,6 +588,8 @@ public class FSMDirector extends Director implements
      *  one that implements SuperdenseTimeDirector, and returns current time with index
      *  0 otherwise.
      *  @return A superdense time index.
+     *  @see #setIndex(int)
+     *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getIndex() {
         Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
@@ -876,6 +878,8 @@ public class FSMDirector extends Director implements
      *  of the refinements of the current state, if any. This should only be
      *  called by an enclosing director.
      *  @exception IllegalActionException Not thrown in this base class.
+     *  @see #getIndex()
+     *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public void setIndex(int index) throws IllegalActionException {
         Actor[] actors = _controller.currentState().getRefinement();

@@ -1,7 +1,4 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
-
+/* A state controller associated with a graph controller.
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
 
@@ -55,6 +52,17 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 
+//////////////////////////////////////////////////////////////////////////
+//// HierarchicalModeController
+
+/** A state controller associated with a graph controller.
+
+    @author Patricia Derler
+    @version $Id$
+    @since Ptolemy II 8.0
+    @Pt.ProposedRating Red (eal)
+    @Pt.AcceptedRating Red (eal)
+ */   
 public class HierarchicalModeController extends StateController {
     /** Create a state controller associated with the specified graph
      *  controller.

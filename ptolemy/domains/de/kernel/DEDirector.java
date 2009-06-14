@@ -931,6 +931,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
     /** Return a superdense time index for the current time,
      *  where the index is equal to the microstep.
      *  @return A superdense time index.
+     *  @see #setIndex(int)
+     *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getIndex() {
         return _microstep;
@@ -1313,6 +1315,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
     /** Set the superdense time index. This should only be
      *  called by an enclosing director.
      *  @exception IllegalActionException Not thrown in this base class.
+     *  @see getIndex()
+     *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public void setIndex(int index) throws IllegalActionException {
         if (_debugging) {

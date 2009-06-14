@@ -1,6 +1,6 @@
 /* A top-level frame for editing the layout of a customizable run control panel.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -136,6 +136,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
 
     /** Return true if the frame has a container with the specified name.
      *  @param name The name of the container.
+     *  @return true if the frame has a container with the specified name.
      */
     public boolean hasContainer(String name) {
         return _constraintsManager.getContainerLayout(name) != null;

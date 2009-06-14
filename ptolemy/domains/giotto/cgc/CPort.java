@@ -48,10 +48,10 @@ import ptolemy.kernel.util.Settable;
  the value of the port
  until the container has fired and assigned it a value. The
  default value of this parameter is 0. It is constrained to
- have the same type as this port.
- <ul> The parameter <i>arrayLength</i>, which is used only if the type is
+ have the same type as this port.</li>
+ <li> The parameter <i>arrayLength</i>, which is used only if the type is
  an array. This specifies the length of the array. The default
- value of this parameter is 1.
+ value of this parameter is 1.</li>
  </ul>
 
  @author N.Vinay Krishnan, Edward A. Lee
@@ -112,10 +112,10 @@ public class CPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The initial value of the port */
+    /** The initial value of the port. */
     public Parameter initialOutputValue = null;
 
-    /** The length of the array if the type is an array */
+    /** The length of the array if the type is an array. */
     public Parameter arrayLength = null;
 
     ///////////////////////////////////////////////////////////////////

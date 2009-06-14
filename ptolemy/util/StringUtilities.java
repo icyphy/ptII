@@ -480,7 +480,7 @@ public class StringUtilities {
     }
 
     /** Return true if we are in an applet.
-     *  True if we are running in an applet.   
+     *  @return True if we are running in an applet.   
      */
     public static boolean inApplet() {
         boolean inApplet = false;

@@ -123,17 +123,21 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         }
     }
 
-    public String generatePreFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        return code.toString();
-    }
-
-
+    /** Generate the code for postfire().
+     *  @return In this baseclass, return the empty string.
+     */
     public String generatePostFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         return code.toString();
     }
 
+    /** Generate the code for prefire().
+     *  @return In this baseclass, return the empty string.
+     */
+    public String generatePreFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        return code.toString();
+    }
 
     public ptolemy.actor.Director getDirector() {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();

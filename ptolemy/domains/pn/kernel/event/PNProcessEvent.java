@@ -46,10 +46,10 @@ import ptolemy.kernel.util.InternalErrorException;
  @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (mudit)
- @Pt.AcceptedRating Red
+ @Pt.AcceptedRating Red (cxh)
  */
 public class PNProcessEvent {
-    /** Create a new event
+    /** Create a new event.
      *  @param actor The actor
      *  @param state The state of the actor, should be one of
      *  PROCESS_BLOCKED, PROCESS_FINISHED, PROCESS_PAUSED
@@ -65,7 +65,7 @@ public class PNProcessEvent {
      *  @param state The state of the actor, should be one of
      *  PROCESS_BLOCKED, PROCESS_FINISHED, PROCESS_PAUSED
      *  or PROCESS_RUNNING.
-     *  @param cause The cause.
+     *  @param cause The cause of the state.
      */
     public PNProcessEvent(Actor actor, int state, int cause) {
         _actor = actor;
@@ -81,6 +81,11 @@ public class PNProcessEvent {
         _cause = cause;
     }
 
+    /** Create a new event that corresponds to an exception
+     *  caught by the process.
+     *  @param actor The actor.
+     *  @param exception The exception.
+     */
     public PNProcessEvent(Actor actor, Exception exception) {
         _actor = actor;
         _state = PROCESS_FINISHED;
@@ -97,24 +102,37 @@ public class PNProcessEvent {
         return _actor;
     }
 
+    /** Return the cause of the blocking state,
+     *  @return an integer representing the cause of the blocking state.
+     */
     public int getBlockingCause() {
         return _cause;
     }
 
+    /** Return the current state.
+     *  @return an integer representing the current state.
+     */
     public int getCurrentState() {
         return _state;
     }
 
     /** Return the exception associated with the event.
+     *  @return The exception associated with the event.
      */
     public Exception getException() {
         return _exception;
     }
 
+    /** Return the cause of the finishing state.
+     *  @return an integer representing the cause of the finishing state
+     */ 
     public int getFinishingCause() {
         return _cause;
     }
 
+    /** Return the string value of this event.
+     *  @return The string value of this event.   
+     */
     public String toString() {
         String result;
         String state = null;
@@ -173,32 +191,43 @@ public class PNProcessEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                   public variables                  /////
-    // These are legitimate causes
+
+    /** A process is blocked on a delay. */
     public static final int BLOCKED_ON_DELAY = 111;
 
+    /** A process is blocked on a mutation. */
     public static final int BLOCKED_ON_MUTATION = 112;
 
+    /** A process is blocked on a read. */
     public static final int BLOCKED_ON_READ = 113;
 
+    /** A process is blocked on a write. */
     public static final int BLOCKED_ON_WRITE = 114;
 
+    /** A process finished abruptly. */
     public static final int FINISHED_ABRUPTLY = 734;
 
+    /** A process finished properly. */
     public static final int FINISHED_PROPERLY = 735;
 
+    /** A process finished with an exception. */
     public static final int FINISHED_WITH_EXCEPTION = 736;
 
     // These are legitimate states
+    /** The process is in the blocked state. */
     public static final int PROCESS_BLOCKED = 367;
 
+    /** The process is in the finished state. */
     public static final int PROCESS_FINISHED = 368;
 
+    /** The process is in the paused state. */
     public static final int PROCESS_PAUSED = 369;
 
+    /** The process is in the running state. */
     public static final int PROCESS_RUNNING = 370;
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private variables                 /////
+    ////                   private variables                      /////
     private Actor _actor = null;
 
     private int _cause = 0;

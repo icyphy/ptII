@@ -286,23 +286,25 @@ public class DEEvent implements Comparable {
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The destination actor.
+
+    /** The destination actor. */
     protected Actor _actor;
 
-    // The depth of this event.
+    /** The depth of this event. */
     protected int _depth;
 
-    // The destination IO port.
+    /** The destination IO port. */
     protected IOPort _ioPort;
 
-    // The microstep of this event.
+    /** The microstep of this event. */
     protected int _microstep;
 
-    // The priority of the event (used when the timestamp, depth and microstep
-    // cannot resolve a conflict.
+    /** The priority of the event (used when the timestamp, depth and
+     *  microstep cannot resolve a conflict.
+     */
     protected int _priority;
 
-    // The timestamp of the event.
+    /** The timestamp of the event. */
     protected Time _timestamp;
     
 

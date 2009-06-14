@@ -35,7 +35,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DiscreteClock
 
 /**
- This actor is identical to {@link ptolemy.actor.lib.DiscreteClock},
+ Produce a periodic signal, a sequence of events at regularly spaced
+ intervals.
+
+ <p>This actor is identical to {@link ptolemy.actor.lib.DiscreteClock},
  except that for backward compatibility the default valus of the parameters
  are changed to
  <ul>
@@ -43,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <li> offsets: {0.0, 1.0}
  <li> values {1, 0}
  </ul>
+ </p>
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$

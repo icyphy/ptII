@@ -735,5 +735,10 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The map of fields that has keys of type String and values of 
+     *  type token.   
+     *  Subclasses can use alternative Map implementations (for ordering).
+     */
     protected Map _fields = null;
 }

@@ -114,7 +114,7 @@ public class CActorBase extends TypedAtomicActor {
     public FileParameter source;
 
     /** The number of times this actor gets executed in one super-period
-     *  time frame specified by the Giotto director
+     *  time frame specified by the Giotto director.
      */
     public Parameter frequency;
 

@@ -469,18 +469,29 @@ public class JarSigner {
 
     /** A helper function that can take entries from one jar file and
      *  write it to another jar stream.
+     *
+     * @param jarEntry The entry in the jar file to be added to the
+     * jar output stream.
+     * @param jarFile The jar file that contains the jarEntry.
+     * @param jarOutputStream The output stream that the jarEntry from
+     * the jarFile to which to write.
+     * @exception IOException If there is a problem reading or writing
+     * the jarEntry.
      */
-    protected static void _writeJarEntry(JarEntry je, JarFile jarFile, JarOutputStream jos)
+    protected static void _writeJarEntry(JarEntry jarEntry, JarFile jarFile, JarOutputStream jarOutputStream) 
             throws IOException {
-        jos.putNextEntry(je);
+
+        jarOutputStream.putNextEntry(jarEntry);
         byte[] buffer = new byte[2048];
         int read = 0;
-        InputStream is = jarFile.getInputStream(je);
-        while ((read = is.read(buffer)) > 0) {
-            jos.write(buffer, 0, read);
+        try {
+            InputStream inputStream = jarFile.getInputStream(jarEntry);
+            while ((read = inputStream.read(buffer)) > 0) {
+                jarOutputStream.write(buffer, 0, read);
+            }
+        } finally {
+            jarOutputStream.closeEntry();
         }
-        jos.closeEntry();
-
     }
 
 

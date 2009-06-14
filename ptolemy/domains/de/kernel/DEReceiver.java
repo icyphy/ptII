@@ -166,9 +166,12 @@ public class DEReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The version of the workspace of container, used for
+     *  caching by _getDirector()
+     */
     protected long _directorVersion = -1;
 
-    // List for storing tokens.  Access with clear(), add(), and take().
+    /** List for storing tokens.  Access with clear(), add(), and take(). */
     protected LinkedList _tokens = new LinkedList();
     
     ///////////////////////////////////////////////////////////////////

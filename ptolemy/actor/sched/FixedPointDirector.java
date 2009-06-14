@@ -248,7 +248,9 @@ public class FixedPointDirector extends StaticSchedulingDirector
      *  The current index is a portion of the superdense time.
      *  Superdense time means that time is a real value and an index,
      *  allowing multiple sequential steps to occur at a fixed (real) time.
-     *  @return Index of the director.
+     *  @return the superdense time index
+     *  @see #setIndex(int)
+     *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getIndex() {
         return _index;
@@ -471,6 +473,8 @@ public class FixedPointDirector extends StaticSchedulingDirector
     /** Set the superdense time index. This should only be
      *  called by an enclosing director.
      *  @exception IllegalActionException Not thrown in this base class.
+     *  @see #getIndex()
+     *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public void setIndex(int index) throws IllegalActionException {
         if (_debugging) {

@@ -1,6 +1,4 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
+/* An attribute that creates a tableau to view a TDL model.
 
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -38,12 +36,40 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-public class TdlTableauFactory extends TableauFactory {
 
+//////////////////////////////////////////////////////////////////////////
+//// TdlTableauFactory
+
+/** An attribute that creates a tableau to view a Timing Description
+    Language (TDL) model.
+
+    @author Patricia Derler
+    @version $Id$
+    @since Ptolemy II 8.0
+    @Pt.ProposedRating Red (eal)
+    @Pt.AcceptedRating Red (eal)
+ */   
+public class TdlTableauFactory extends TableauFactory {
+    /** Create a factory with the given name and container.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public TdlTableauFactory(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /** Create a tableau for the specified effigy. The tableau will be
+     *  created with a new unique name with the specified effigy as its
+     *  container.
+     *  @param effigy The model effigy.
+     *  @return A tableau for the effigy, or null if one cannot be created.
+     *  @exception Exception If the factory should be able to create a
+     *   Tableau for the effigy, but something goes wrong.
+     */
     public Tableau createTableau(Effigy effigy) throws Exception {
         Configuration configuration = (Configuration) effigy.toplevel();
 
@@ -51,5 +77,4 @@ public class TdlTableauFactory extends TableauFactory {
         FSMActor controller = ((TDLModuleDirector) model.getDirector()).getController();
         return configuration.openModel(controller);
     }
-
 }

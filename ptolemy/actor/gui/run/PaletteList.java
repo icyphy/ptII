@@ -1,6 +1,6 @@
 /* A palette of objects that can be dropped into a customizable run control panel.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -76,7 +76,7 @@ import org.mlc.swing.layout.TransferableWrapper;
 //// PaletteList
 
 /**
-This is a customized version of the DndList class by
+A customized version of the DndList class by
 Michael Connor (mlconnor&#064;yahoo.com). The only reason for
 customization is to require a PtolemyFormEditor constructor argument.
 
@@ -89,6 +89,10 @@ customization is to require a PtolemyFormEditor constructor argument.
 public class PaletteList extends JList implements DragSourceListener,
         DragGestureListener {
 
+    /** Construct a PaletteList.
+     * @param editor The form editor
+     * @param listModel the list model
+     */
     public PaletteList(PtolemyFormEditor editor, ListModel listModel) {
         super(listModel);
         this.editor = editor;
@@ -111,15 +115,27 @@ public class PaletteList extends JList implements DragSourceListener,
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** In this derived class, do nothing.
+     *  @param dragSourceDropEvent Ignored.
+     */
     public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
     }
 
+    /** In this derived class, do nothing.
+     *  @param dragSourceDragEvent Ignored.
+     */
     public void dragEnter(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
+    /** In this derived class, do nothing.
+     *  @param dragSourceEvent Ignored.
+     */
     public void dragExit(java.awt.dnd.DragSourceEvent dragSourceEvent) {
     }
 
+    /** Start the drag.
+     *  @param dragGestureEvent the event
+     */
     public void dragGestureRecognized(DragGestureEvent event) {
         int dragIndex = locationToIndex(event.getDragOrigin());
         if (dragIndex >= 0) {
@@ -129,16 +145,29 @@ public class PaletteList extends JList implements DragSourceListener,
         }
     }
 
+    /** In this derived class, do nothing.
+     *  @param dragSourceDragEvent Ignored.
+     */
     public void dragOver(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
+    /** In this derived class, do nothing.
+     *  @param e Ignored.
+     */
     public void drop(java.awt.dnd.DropTargetDropEvent e) {
     }
 
+    /** In this derived class, do nothing.
+     *  @param dragSourceDragEvent Ignored.
+     */
     public void dropActionChanged(
             java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
+    /** Return the tool tip text for an event
+     *  @param evt The event 
+     *  @return The tool tip text, if any.
+     */
     public String getToolTipText(MouseEvent evt) {
         // return a tooltip for the specific entry in the list
         // Get item index
@@ -159,6 +188,7 @@ public class PaletteList extends JList implements DragSourceListener,
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The source of the drag. */
     protected DragSource fDragSource = null;
 
     ///////////////////////////////////////////////////////////////////

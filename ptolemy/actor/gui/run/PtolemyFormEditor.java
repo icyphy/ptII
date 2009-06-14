@@ -126,7 +126,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 //// PtolemyFormEditor
 
 /**
-This is a customized version of the FormEditor class by
+A customized version of the FormEditor class by
 Michael Connor (mlconnor&#064;yahoo.com).
 
 @see FormEditor
@@ -277,6 +277,7 @@ public class PtolemyFormEditor extends JPanel {
     /** Edit the component by presenting a dialog that infers the
      *  settable properties of the components.
      *  @param component The component.
+     *  @return true upon successful completion.
      */
     public boolean editComponent(Component component) {
         String name = _containerLayout.getComponentName(component);
@@ -449,7 +450,9 @@ public class PtolemyFormEditor extends JPanel {
         _suspendConstraintControlUpdates = false;
     }
 
-    /** Update the layout for the specified component. */
+    /** Update the layout for the specified component.
+     *  @param component  The component to have its layout updated.
+     */
     public void updateLayout(Component component) {
         if (_suspendConstraintControlUpdates) {
             return;
@@ -1240,10 +1243,13 @@ public class PtolemyFormEditor extends JPanel {
     /** The layout manager. */
     protected ContainerLayout _containerLayout;
 
+    /** The container. */
     protected Container _container;
 
+    /** The set of new components. */
     protected Set<Component> newComponents = new HashSet<Component>();
 
+    /** The top level component. */
     protected Component topComponent = null;
 
     ///////////////////////////////////////////////////////////////////

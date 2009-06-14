@@ -1,6 +1,6 @@
 /* A tableau for editing the layout of a customizable run panel.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,12 +37,11 @@ import ptolemy.kernel.util.NamedObj;
 //// LayoutTableau
 
 /**
- 
- FIXME: Customization
+   A run control pane for the model.
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 7.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)
  */
@@ -55,6 +54,7 @@ public class LayoutTableau extends Tableau {
      *  @param name The name of this tableau within the specified effigy.
      *  @exception IllegalActionException If the tableau is not acceptable
      *   to the specified container.
+     *  @param pane The pane whose layout is being edited.
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
