@@ -612,7 +612,6 @@ ALLPACKAGES = \
 	ptolemy.domains.ddf.lib \
 	ptolemy.domains.dt.kernel \
 	ptolemy.domains.fsm.kernel.fmv \
-	ptolemy.domains.giotto.cgc \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.modal.kernel.fmv \
