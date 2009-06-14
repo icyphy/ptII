@@ -363,7 +363,7 @@ public class FileUtilities {
                                         + name2
                                         + "' "
                                         + "This can happen if the file name "
-                                        + "is not absolute"
+                                        + "is not absolute "
                                         + "and is not present relative to the "
                                         + "directory in which the specified model "
                                         + "was read (which was '"
