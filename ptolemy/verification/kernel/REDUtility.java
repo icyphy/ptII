@@ -167,7 +167,7 @@ public class REDUtility {
      * @param choice Specify the type of formula: buffer overflow detection or
      *               general TCTL formula
      * @param span The size of the span used for domain analysis.
-     * @param bufferSizeDelayAction The buffer size of the TimedDelay actor.
+     * @param bufferSizeDelayActor The buffer size of the TimedDelay actor.
      * @return A Communicating Timed Automata system description of the original
      *         system
      * @exception IllegalActionException
