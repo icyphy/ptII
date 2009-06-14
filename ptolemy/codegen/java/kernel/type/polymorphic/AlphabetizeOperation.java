@@ -36,6 +36,16 @@ import java.util.TreeSet;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.util.FileUtilities;
 
+/**
+   A utility class for alphabetizing code blocks in a code template file.
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 8.0
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+
+*/
 public class AlphabetizeOperation {
 
     /**
