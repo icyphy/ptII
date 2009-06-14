@@ -1315,7 +1315,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
     /** Set the superdense time index. This should only be
      *  called by an enclosing director.
      *  @exception IllegalActionException Not thrown in this base class.
-     *  @see getIndex()
+     *  @see #getIndex()
      *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public void setIndex(int index) throws IllegalActionException {
