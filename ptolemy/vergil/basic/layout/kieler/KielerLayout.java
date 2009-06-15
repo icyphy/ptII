@@ -46,11 +46,13 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.graph.GraphInvalidStateException;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -538,22 +540,27 @@ public class KielerLayout extends AbstractGlobalLayout {
 
                 // check if the node has ports
                 Iterator portIter = null;
-                // TODO: also add internal ports
+                List portList = new ArrayList();
                 if (semanticNode instanceof Relation) {
                     // if object is a relation vertex, it is itself kinda port
-                    List relations = new ArrayList();
-                    relations.add(node);
-                    portIter = relations.iterator();
+                    portList.add(node);
+                    portIter = portList.iterator();
                 } else if (semanticNode instanceof Actor) {
                     portIter = aGraph.nodes(node);
+                } else if(semanticNode instanceof Port){ // internal ports
+                    portList.add(node);
+                    portIter = portList.iterator();
                 }
                 if (portIter != null) {
                     for (; portIter.hasNext();) {
                         Object divaPort = portIter.next();
                         // iterate all outgoing edges
-                        for (Iterator iterator3 = aGraph.outEdges(divaPort); iterator3
-                                .hasNext();) {
-                            Object divaEdge = iterator3.next();
+                        Iterator edgeIterator = aGraph.outEdges(divaPort);
+                        if(semanticNode instanceof Port){ // internal ports
+                            edgeIterator = aGraph.getExternalPortModel().outEdges(node);
+                        }
+                        for ( ;edgeIterator.hasNext();) {
+                            Object divaEdge = edgeIterator.next();
                             // store Diva edge in corresponding map with no
                             // KEdge that will be created later
                             _ptolemyDiva2KielerEdges.put(divaEdge, null);
@@ -605,25 +612,6 @@ public class KielerLayout extends AbstractGlobalLayout {
             if (semObj instanceof Relation) {
                 rel = (Relation) semObj;
             }
-            //
-            // Object sourceNode = edgeModel.getHead(divaEdge);
-            // Object targetNode = edgeModel.getTail(divaEdge);
-            // // directions of Diva Edges actually might differ actual Ptolemy
-            // // model directions, so check those
-            // KPort kRealSourcePort = _getSource(divaEdge, rel, aGraph, null);
-            // KPort ksourcePort = this
-            // ._getPort(sourceNode, KPortType.OUTPUT, rel);
-            //
-            // if (kRealSourcePort != ksourcePort) {
-            // // swap source and target
-            // Object temp = sourceNode;
-            // sourceNode = targetNode;
-            // targetNode = temp;
-            // }
-            // create KEdge
-            // ksourcePort = this._getPort(sourceNode, KPortType.OUTPUT, rel);
-            // KPort ktargetPort = this._getPort(targetNode, KPortType.INPUT,
-            // rel);
 
             KEdge kedge = KimlLayoutUtil.createInitializedEdge();
 
@@ -1087,24 +1075,27 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
         if (port != null) { // now we are safe to proceed
+            boolean outsideLink = true;
             List<Relation> linkedRelations = port.linkedRelationList();
+            if(linkedRelations.isEmpty() && port instanceof ComponentPort){
+                linkedRelations = ((ComponentPort)port).insideRelationList();
+                outsideLink = false;
+            }
             int index = linkedRelations.indexOf(oldRelation);
-            // this is a workaround due to a Ptolemy bug that causes multiports
-            // with more than 2 connected relations to mess up with MoMLChangeRequests
-            if(port.linkedRelationList().size() > 2){
-                port.unlink(index);
-                //_compositeActor.connectionsChanged(port);
-                port.insertLink(index, newRelation);
+            if(outsideLink){
+                _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor), index);
+                _ptolemyModelUtil._performChangeRequest(_compositeActor);
+                _ptolemyModelUtil._linkPort(port.getName(_compositeActor),
+                        "relation", newRelation.getName(_compositeActor), index);
             }
-            else{
-            // this does not work properly for 3 or more connected relations on a port
-            // relations sometimes get not linked in the MoML while in vergil the link
-            // still is visible
-            _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor), index);
-            _ptolemyModelUtil._performChangeRequest(_compositeActor);
-            _ptolemyModelUtil._linkPort(port.getName(_compositeActor),
-                    "relation", newRelation.getName(_compositeActor), index);
+            else{ // insideLink
+                if(port instanceof ComponentPort){
+                    // FIXME: is this also doable in MoMLChangeRequests?
+                    ((ComponentPort) port).unlinkInside(index);
+                    ((ComponentPort) port).insertInsideLink(index, newRelation);
+                }
             }
+            
         } else if (sourceRelation != null) {
             _ptolemyModelUtil._link("relation1", sourceRelation.getName(),
                     "relation2", newRelation.getName(_compositeActor));
@@ -1131,46 +1122,59 @@ public class KielerLayout extends AbstractGlobalLayout {
             for (Iterator edgeIter = edges.iterator(); edgeIter.hasNext();) {
                 Object edge = (Object) edgeIter.next();
                 EdgeModel edgeModel = aGraph.getEdgeModel(edge);
-                Object endpoint1 = edgeModel.getHead(edge);
-                Object endpoint2 = edgeModel.getTail(edge);
-
+                
+                Object simpleEndpoint1 = edgeModel.getHead(edge);
+                Object simpleEndpoint2 = edgeModel.getTail(edge);
+                Object endpoint1 = aGraph.getSemanticObject(simpleEndpoint1);
+                Object endpoint2 = aGraph.getSemanticObject(simpleEndpoint2);
+                
                 // see if we have successfully looked at this edge before
                 if (_divaEdgeTarget.containsKey(edge)
                         && _divaEdgeSource.containsKey(edge))
                     continue;
-
+                
                 // check whether endpoints are source or target ports
                 if (endpoint1 instanceof Port) {
-                    if (PtolemyModelUtil._isInput((Port) endpoint1)) {
-                        _divaEdgeTarget.put(edge, endpoint1);
-                        _divaEdgeSource.put(edge, endpoint2);
+                    boolean isInput1 = PtolemyModelUtil._isInput((Port) endpoint1);
+                    // check if we look at inner or outer ports
+                    if(simpleEndpoint1 instanceof Location)
+                        isInput1 = !isInput1;  // inner input port is regarded as output
+                    // set endpoints
+                    if (isInput1) {
+                        _divaEdgeTarget.put(edge, simpleEndpoint1);
+                        _divaEdgeSource.put(edge, simpleEndpoint2);
                     } else {
-                        _divaEdgeTarget.put(edge, endpoint2);
-                        _divaEdgeSource.put(edge, endpoint1);
+                        _divaEdgeTarget.put(edge, simpleEndpoint2);
+                        _divaEdgeSource.put(edge, simpleEndpoint1);
                     }
                 } else if (endpoint2 instanceof Port) {
-                    if (PtolemyModelUtil._isInput((Port) endpoint2)) {
-                        _divaEdgeTarget.put(edge, endpoint2);
-                        _divaEdgeSource.put(edge, endpoint1);
+                    boolean isInput2 = PtolemyModelUtil._isInput((Port) endpoint2);
+                    // check if we look at inner or outer ports
+                    if(simpleEndpoint2 instanceof Location)
+                        isInput2 = !isInput2;  // inner input port is regarded as output
+                    // set endpoints
+                    if (isInput2) {
+                        _divaEdgeTarget.put(edge, simpleEndpoint2);
+                        _divaEdgeSource.put(edge, simpleEndpoint1);
                     } else {
-                        _divaEdgeTarget.put(edge, endpoint1);
-                        _divaEdgeSource.put(edge, endpoint2);
+                        _divaEdgeTarget.put(edge, simpleEndpoint1);
+                        _divaEdgeSource.put(edge, simpleEndpoint2);
                     }
                 } else
                 // see if one of the endpoints is source or target of other
                 // edges
                 if (_divaEdgeTarget.containsValue(endpoint1)) {
-                    _divaEdgeTarget.put(edge, endpoint2);
-                    _divaEdgeSource.put(edge, endpoint1);
+                    _divaEdgeTarget.put(edge, simpleEndpoint2);
+                    _divaEdgeSource.put(edge, simpleEndpoint1);
                 } else if (_divaEdgeTarget.containsValue(endpoint2)) {
-                    _divaEdgeTarget.put(edge, endpoint1);
-                    _divaEdgeSource.put(edge, endpoint2);
+                    _divaEdgeTarget.put(edge, simpleEndpoint1);
+                    _divaEdgeSource.put(edge, simpleEndpoint2);
                 } else if (_divaEdgeSource.containsValue(endpoint1)) {
-                    _divaEdgeTarget.put(edge, endpoint1);
-                    _divaEdgeSource.put(edge, endpoint2);
+                    _divaEdgeTarget.put(edge, simpleEndpoint1);
+                    _divaEdgeSource.put(edge, simpleEndpoint2);
                 } else if (_divaEdgeSource.containsValue(endpoint2)) {
-                    _divaEdgeTarget.put(edge, endpoint2);
-                    _divaEdgeSource.put(edge, endpoint1);
+                    _divaEdgeTarget.put(edge, simpleEndpoint2);
+                    _divaEdgeSource.put(edge, simpleEndpoint1);
                 } else {
                     // now we can't deduce any information about this edge
                     allDirectionsSet = false;
