@@ -36,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -72,6 +73,7 @@ public class Button extends ActionGUIProperty {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         icon = new FileParameter(this, "icon");
+        tooltip = new StringParameter(this, "tooltip");
     }
 
     /** Set a name to present to the user.
@@ -103,6 +105,13 @@ public class Button extends ActionGUIProperty {
                 button.setIcon(imageIcon);
             }
         }
+        
+        if (attribute == tooltip){
+            String tooltipString = tooltip.stringValue();
+            JButton button = (JButton) getComponent();
+            button.setToolTipText(tooltipString);
+        }
+            
     }
 
     /** Create a new Java Swing component.
@@ -123,4 +132,8 @@ public class Button extends ActionGUIProperty {
     /** Icon for the button. Set an empty string to remove the icon.
      */
     public FileParameter icon;
+    
+    /** Tooltip for the button 
+     */
+    public StringParameter tooltip;
 }
