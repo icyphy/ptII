@@ -47,6 +47,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KGraphFactory;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KEdgeLayout;
@@ -81,6 +82,7 @@ public class KielerGraphUtil {
      */
     protected static KShapeLayout _getAbsoluteLayout(KNode node) {
         KShapeLayout klayout = KimlLayoutUtil.getShapeLayout(node);
+        //System.out.println("Relative Node Layout: "+klayout.getXpos()+" "+klayout.getYpos());
         KShapeLayout absoluteLayout = KLayoutDataFactory.eINSTANCE
                 .createKShapeLayout();
         absoluteLayout.setHeight(klayout.getHeight());
@@ -97,7 +99,42 @@ public class KielerGraphUtil {
         absoluteLayout.setYpos(klayout.getYpos() + offsetY);
         return absoluteLayout;
     }
+    
+    protected static KPoint _getAbsoluteKPoint(KPoint relativeKPoint, KNode parentNode) {
+        float offsetX = 0, offsetY = 0;
+        while (parentNode != null) {
+            KShapeLayout parentLayout = KimlLayoutUtil.getShapeLayout(parentNode);
+            offsetX += parentLayout.getXpos();
+            offsetY += parentLayout.getYpos();
+            parentNode = parentNode.getParent();
+        }
+        KPoint absoluteKPoint = KLayoutDataFactory.eINSTANCE.createKPoint();
+        absoluteKPoint.setX(relativeKPoint.getX() + offsetX);
+        absoluteKPoint.setY(relativeKPoint.getY() + offsetY);
+        return absoluteKPoint;
+    }
 
+    protected static KNode _getParent(KEdge edge){
+        KNode source = edge.getSource();
+        if(source != null)
+            return source.getParent();
+        else return null;
+    }
+    
+    protected static KPoint _getUpperLeftCorner(KNode parent){
+        float x=Float.MAX_VALUE, y=Float.MAX_VALUE;
+        for (KNode kNode : parent.getChildren()) {
+            KShapeLayout layout = KimlLayoutUtil.getShapeLayout(kNode);
+            if(layout.getXpos() < x) x = layout.getXpos();
+            if(layout.getYpos() < y) y = layout.getYpos();
+        }
+        
+        KPoint kPoint = KLayoutDataFactory.eINSTANCE.createKPoint();
+        kPoint.setX(x);
+        kPoint.setY(y);
+        return kPoint;
+    }
+    
     /**
      * Reposition a small object in a big object according to a given direction (NORTH, 
      * EAST, SOUTH, WEST). The small object will be aligned to the big object's 
