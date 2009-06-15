@@ -404,10 +404,6 @@ DIVAPACKAGES = \
 # Experimental packages that are not shipped
 EXPERIMENTALPACKAGES = 
 
-#	ptolemy.domains.rtp.kernel \
-#	ptolemy.domains.rtp.lib
-
-
 GRAPHTRANSFORMATIONPACKAGES = \
 	ptolemy.actor.gt \
 	ptolemy.actor.gt.controller \

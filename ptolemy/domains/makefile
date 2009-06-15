@@ -32,8 +32,7 @@
 ME =		ptolemy/domains
 
 # Domains we do not ship
-EXPERIMENTAL_DOMAINS = \
-		rtp 
+EXPERIMENTAL_DOMAINS =
 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
@@ -66,7 +65,6 @@ PTPACKAGE = 	domains
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
-# Don't include rtp/rtp.jar, it is not being shipped
 
 # PTGRDOMAIN_JAR is the name of the jar file that includes the GR
 # domain if Java 3D was found.  PTGRDOMAIN_JAR is set by configure.
