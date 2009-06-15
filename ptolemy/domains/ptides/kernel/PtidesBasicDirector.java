@@ -149,6 +149,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Get the current microstep.
+     *  @see #setMicrostep
      *  @return microstep of the current time.
      */
     public int getMicrostep() {
@@ -499,9 +500,9 @@ public class PtidesBasicDirector extends DEDirector {
     /** Override the base class to not set model time to that of the
      *  enclosing director. This method always returns true, deferring the
      *  decision about whether to fire an actor to the fire() method.
-     *  @return True.
+     *  @return True. 
      */
-    public boolean prefire() throws IllegalActionException {
+    public boolean prefire() {
         // Do not invoke the superclass prefire() because that
         // sets model time to match the enclosing director's time.
         if (_debugging) {
@@ -515,9 +516,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  only be used when events from outside of the platform arrive, and
      *  by coincidence the current model time is equal to the model time
      *  of the event. In which case the microstep should be set to 0.
-     *  @throws IllegalActionException
+     *  @see #getMicrostep
+     *  @param microstep An int specifying the microstep value.
      */
-    public void setMicrostep(int microstep) throws IllegalActionException {
+    public void setMicrostep(int microstep) {
         _microstep = microstep;
     }
 
@@ -548,6 +550,10 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Set the timestamp and microstep of the current time.
+     *  @param timestamp A Time object specifying the timestamp. 
+     *  @param microstep An int specifying the microstep.
+     *  @throws IllegalActionException if setModelTime() throws it.
+     *  @see #setModelTime(Time)
      */
     public void setTag(Time timestamp, int microstep) throws IllegalActionException {
         setModelTime(timestamp);
@@ -570,7 +576,7 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
-    /** The list of currently executing actors and their remaining execution time
+    /** The list of currently executing actors and their remaining execution time.
      */
     protected Stack<DoubleTimedEvent> _currentlyExecutingStack;
 
@@ -804,6 +810,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  port is disabled, do nothing.</p>
      *
      *  @param ioPort The destination IO port.
+     *  @param token The token associated with this event.
+     *  @param receiver The receiver the event is destined to. 
      *  @exception IllegalActionException If the time argument is not the
      *  current time, or the depth of the given IO port has not be calculated,
      *  or the new event can not be enqueued.
@@ -894,12 +902,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  If the port is not an input port, an exception
      *  is thrown.
      *  
-     *  @param input
+     *  @param input The input port.
      *  @return Collection of finite equivalent ports.
      *  @throws IllegalActionException
      */
     protected static Collection<IOPort> _finiteEquivalentPorts(IOPort input)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Collection<IOPort> result = new HashSet<IOPort>();
         // first get all outputs that are dependent on this input.
         Collection<IOPort> outputs = _finiteDependentPorts(input);
@@ -939,6 +947,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  passed in.
      *  <p>
      *  Notice these events should _NOT_ be taken out of the event queue.
+     *  @param event The reference event.
      *  @return List of events of the same tag.
      *  @throws IllegalActionException
      */
@@ -993,6 +1002,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the usual director green rectangle used by default for directors,
      *  but filled with red instead of green.
      *  @see VisibleAttribute
+     *  @param actorExecuting The actor that's exeucting.
      *  @return A MoML string.
      *  @exception IllegalActionException If the animateExecution parameter cannot
      *   be evaluated.
@@ -1019,10 +1029,11 @@ public class PtidesBasicDirector extends DEDirector {
         "  </property>";
     }
 
-    /** Returns the minDelay parameter
-     *  @param port
-     *  @return minDelay parameter
-     *  @throws IllegalActionException
+    /** Returns the minDelay parameter.
+     *  @param port The port where this minDelay parameter is associated to.
+     *  @param channel The channel where this minDelay parameter is associated to.
+     *  @return minDelay parameter.
+     *  @throws IllegalActionException if we cannot get minDelay parameter.
      */
     protected double _getMinDelay(IOPort port, int channel) throws IllegalActionException {
         Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
@@ -1033,7 +1044,6 @@ public class PtidesBasicDirector extends DEDirector {
             } else {
                 return Double.POSITIVE_INFINITY;
             }
-            //            return ((DoubleToken)parameter.getToken()).doubleValue();
         } else {
             return Double.POSITIVE_INFINITY;
         }
@@ -1315,8 +1325,8 @@ public class PtidesBasicDirector extends DEDirector {
         return director.getModelTime();
     }
 
-    /** Returns the realTimeDelay parameter
-     *  @param port
+    /** Returns the realTimeDelay parameter.
+     *  @param port The port the realTimeDelay is associated with.
      *  @return realTimeDelay parameter
      *  @throws IllegalActionException
      */
@@ -1329,8 +1339,8 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Returns the relativeDeadline parameter
-     *  @param port
+    /** Returns the relativeDeadline parameter.
+     *  @param port The port the relativeDeadline is associated with.
      *  @return relativeDeadline parameter
      *  @throws IllegalActionException
      */
@@ -1453,6 +1463,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Call fireAt() of the executive director, which is in charge of bookkeeping the
      *  physical time.
+     *  @param wakeUpTime The time to wake up.
      */
     protected void _setTimedInterrupt(Time wakeUpTime) {
         Actor container = (Actor) getContainer();
@@ -1867,10 +1878,10 @@ public class PtidesBasicDirector extends DEDirector {
 
         /** Construct a new event with the specified time stamp,
          *  destination actor, and execution time.
-         * @param timeStamp The time stamp.
-         * @param microstep The microstep.
-         * @param executingEvents The events to execute.
-         * @param executionTime The execution time of the actor.
+         *  @param timeStamp The time stamp.
+         *  @param microstep The microstep.
+         *  @param executingEvents The events to execute.
+         *  @param executionTime The execution time of the actor.
          */
         public DoubleTimedEvent(Time timeStamp, int microstep, Object executingEvents, Time executionTime) {
             super(timeStamp, executingEvents);
@@ -1878,12 +1889,13 @@ public class PtidesBasicDirector extends DEDirector {
             remainingExecutionTime = executionTime;
         }
 
+        /** Remaining execution time of the currently executing event. */
         public Time remainingExecutionTime;
 
+        /** Microstep of the executing event. */
         public int microstep;
 
-        public IOPort port;
-
+        /** Converts the executing event to a string. */
         public String toString() {
             return super.toString() + ", microstep = " + microstep
             + ", remainingExecutionTime = " + remainingExecutionTime;
@@ -1896,23 +1908,35 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public class PortDependency implements Comparable {
 
-        private IOPort port;
-
-        private Dependency dependency;
-
+        /** Construct a structure that holds a port and the associated dependency.
+         *  @param port The port.
+         *  @param dependency The Dependency.
+         */
         public PortDependency (IOPort port, Dependency dependency){
             this.port = port;
             this.dependency = dependency;
         }
 
+        /** The port. */
+        private IOPort port;
+
+        /** The dependency. */
+        private Dependency dependency;
+
+        /** Get method for the dependency. */
         public Dependency getDependency() {
             return dependency;
         }
 
+        /** Get method for the port. */
         public IOPort getPort() {
             return port;
         }
 
+        /** Compares this PortDependency with another. Compares the dependencies
+         *  of these two objects.
+         *  @param arg0 The object comparing to.
+         */
         public int compareTo(Object arg0) {
             PortDependency portDependency = (PortDependency) arg0;
             if (this.dependency.compareTo(portDependency.dependency) > 0)
@@ -1923,6 +1947,9 @@ public class PtidesBasicDirector extends DEDirector {
                 return 0;
         }
 
+        /** Checks if this PortDependency is the same as another.
+         *  @param arg0 The object checking against.
+         */
         public boolean equals(Object arg0) {
             if (compareTo(arg0) == 0)
                 return true;
@@ -1936,11 +1963,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  This object is used to hold sensor and actuation events.
      */
     public class RealTimeEvent implements Comparable {
-        public IOPort port;
-        public int channel;
-        public Token token;
-        public Time deliveryTime;
-
+        
+        /** Construct a structure that holds a real-time event. This event saves
+         *  the token to be transmitted, the port and channel this token should be deliverd
+         *  to, and the time this token should be delivered at.
+         *  @param port The destination port.
+         *  @param channel The destination channel.
+         *  @param token The token to be delivered.
+         *  @param timestamp The time of delivery of this token.
+         */
         public RealTimeEvent(IOPort port, int channel, Token token, Time timestamp) {
             this.port = port;
             this.channel = channel;
@@ -1948,6 +1979,22 @@ public class PtidesBasicDirector extends DEDirector {
             this.deliveryTime = timestamp;
         }
 
+        /** The port. */
+        public IOPort port;
+        
+        /** The channel. */
+        public int channel;
+        
+        /** The token. */
+        public Token token;
+        
+        /** The time of delivery. */
+        public Time deliveryTime;
+
+        /** Compares this RealTimeEvent with another. Compares the delivery
+         *  times of these two events.
+         *  @param other The object comparing to.
+         */
         public int compareTo(Object other) {
             return deliveryTime.compareTo(((RealTimeEvent)other).deliveryTime);
         }

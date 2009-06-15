@@ -40,10 +40,23 @@ import ptolemy.kernel.util.NameDuplicationException;
  * This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
  * 
- * @author elgeeko
+ * @author Jia Zou, Jeff C. Jensen
+ * @version $ld$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (jiazou)
+ * @Pt.AcceptedRating 
  *
  */
 public class GPOutputDevice extends ActuatorOutputDevice {
+    
+    /**
+     * Constructs a GPOutputDevice object.
+     *
+     * @param container The container.
+     * @param name The name of this actor within the container.
+     * @throws IllegalActionException if the super constructor throws it.
+     * @throws NameDuplicationException if the super constructor throws it.
+     */
     public GPOutputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -57,10 +70,13 @@ public class GPOutputDevice extends ActuatorOutputDevice {
 ///////////////////////////////////////////////////////////////////
 ////                       parameters                          ////
 
-    /** Which pad (A-G) and pin (0-7) of GPIO to use
+    /** Which pad (A-G) and pin (0-7) of GPIO to use.
      * FIXME: Verify user has set value between 0 and 7
      */
     public Parameter pin;
     
+    /** Which pad (A-G) of GPIO to use.
+     *  FIXME: Verify user has set value between A and H.
+     */ 
     public StringParameter pad;
 }

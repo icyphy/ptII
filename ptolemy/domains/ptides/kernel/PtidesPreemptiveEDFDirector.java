@@ -69,6 +69,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  passed in.
      *  <p>
      *  Notice these events should _NOT_ be taken out of the event queue.
+     *  @param event The reference event.
      *  @return List of events of the same tag.
      *  @throws IllegalActionException
      */
@@ -137,8 +138,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
     
     /** This method finds the event in the queue that is of the smallest deadline
      *  The event found is stored in _eventToProcess. It then stores the
-     *  index of the event in _peekingIndex. TIf no event is found, this method
-     *  returns false, otherwise it returns true.
+     *  index of the event in _peekingIndex. 
+     *  @return false if no event is found. returns false, otherwise returns true.
      *  @throws IllegalActionException
      */
     protected boolean _getSmallestDeadlineSafeEventFromQueue() throws IllegalActionException {
@@ -296,5 +297,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         }
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
+
+    /** The event to be processed next. */
     protected DEEvent _eventToProcess;
 }

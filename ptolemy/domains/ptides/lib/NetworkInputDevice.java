@@ -76,6 +76,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating 
  */
 public class NetworkInputDevice extends InputDevice {
+    
+    /**
+     * Constructs a NetworkInputDevice object.
+     *
+     * @param container The container.
+     * @param name The name of this actor within the container.
+     * @throws IllegalActionException if the super constructor throws it.
+     * @throws NameDuplicationException if the super constructor throws it.
+     */
     public NetworkInputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

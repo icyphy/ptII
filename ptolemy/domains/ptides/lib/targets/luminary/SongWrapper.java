@@ -38,10 +38,23 @@ import ptolemy.kernel.util.NameDuplicationException;
  * This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
  * 
- * @author elgeeko
+ * @author Jia Zou, Jeff C. Jensen
+ * @version $ld$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (jiazou)
+ * @Pt.AcceptedRating 
  *
  */
 public class SongWrapper extends LimitedFiringSource {
+    
+    /**
+     * Constructs a SongWrapper object.
+     *
+     * @param container The container.
+     * @param name The name of this actor within the container.
+     * @throws IllegalActionException if the super constructor throws it.
+     * @throws NameDuplicationException if the super constructor throws it.
+     */
     public SongWrapper(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {        
         super(container, name);

@@ -42,13 +42,20 @@ import ptolemy.actor.util.Time;
  */
 public class Tag implements Comparable{
 
-    /** Construct a Tag. */
+    /** Construct a Tag. 
+     *  @param timestamp The timestamp.
+     *  @param microstep The microstep.
+     */
     public Tag(Time timestamp, int microstep) {
         this.timestamp = timestamp;
         this.microstep = microstep;
     }
     
-    /** Compare a tag with another tag */
+    /** Compare a tag with another.
+     *  @param other The object comparing to.
+     *  @return The result of the comparison, which is a lexicographical order
+     *  with the timestamp as the first element and microstep as the second. 
+     */
     public int compareTo(Object other) {
         Tag tag2 = (Tag) other;
         if (timestamp.compareTo(tag2.timestamp) == 1) {

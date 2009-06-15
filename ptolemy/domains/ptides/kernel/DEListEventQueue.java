@@ -61,13 +61,13 @@ public class DEListEventQueue implements DEEventQueue {
         _listQueue = new LinkedList();
     }
     
-    /** Clear the event queue
+    /** Clear the event queue.
      */
     public void clear() {
         _listQueue.clear();
     }
 
-    /** Get the smallest event from the event queue */
+    /** Get the smallest event from the event queue. */
     public DEEvent get() throws InvalidStateException {
         DEEvent result = (DEEvent)_listQueue.getFirst();
         if (_debugging) {
@@ -76,7 +76,11 @@ public class DEListEventQueue implements DEEventQueue {
         return result;
     }
     
-    /** Get the event from the event queue that is pointed by the index */
+    /** Get the event from the event queue that is pointed by the index. 
+     *  @param index an int specifying the index.
+     *  @return a DEEvent object pointed to by the index.
+     *  @throws InvalidStateException if get() method of the queue throws it.
+     */
     public DEEvent get(int index) throws InvalidStateException {
         DEEvent result = (DEEvent)_listQueue.get(index);
         if (_debugging) {
@@ -85,7 +89,7 @@ public class DEListEventQueue implements DEEventQueue {
         return result;
     }
 
-    /** Check if the event queue is empty
+    /** Check if the event queue is empty.
      */
     public boolean isEmpty() {
         return _listQueue.isEmpty();
@@ -100,7 +104,7 @@ public class DEListEventQueue implements DEEventQueue {
         Collections.sort(_listQueue);
     }
 
-    /** Returns the size of this event queue
+    /** Returns the size of this event queue.
      */
     public int size() {
         return _listQueue.size();
@@ -159,12 +163,16 @@ public class DEListEventQueue implements DEEventQueue {
         return result;
     }
 
-    /** Return an array representation of this event queue */
+    /** Return an array representation of this event queue.
+     *  @return an array of Objects in the list.
+     */
     public Object[] toArray() {
         return _listQueue.toArray();
     }
 
-    /** Add a debugger listen for this event queue. */
+    /** Add a debugger listen for this event queue. 
+     *  @see #removeDebugListener
+     */
     public void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
@@ -178,7 +186,9 @@ public class DEListEventQueue implements DEEventQueue {
         _debugging = true;
     }
 
-    /** Remove the debugger listen for this event queue */
+    /** Remove the debugger listen for this event queue.
+     *  @see #addDebugListener
+     */
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;

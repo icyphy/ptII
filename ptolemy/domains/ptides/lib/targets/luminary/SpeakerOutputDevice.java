@@ -39,9 +39,22 @@ import ptolemy.kernel.util.NameDuplicationException;
  * allows for code generators to generate the actors.
  * 
  * @author Jia Zou, Isaac Liu
+ * @version $ld$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (jiazou)
+ * @Pt.AcceptedRating 
  *
  */
 public class SpeakerOutputDevice extends ActuatorOutputDevice {
+    
+    /**
+     * Constructs a SpeakerOutputDevice  object.
+     *
+     * @param container The container.
+     * @param name The name of this actor within the container.
+     * @throws IllegalActionException if the super constructor throws it.
+     * @throws NameDuplicationException if the super constructor throws it.
+     */
     public SpeakerOutputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

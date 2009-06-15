@@ -118,6 +118,7 @@ public class PtidesBasicReceiver extends DEReceiver {
     /** Actually put the token into this receiver. This method should be called
      *  by the director when to token is ready to be processed by the actor
      *  where this receier resides.
+     *  @param token The token to be put to this receiver.
      */
     public void putToReceiver(Token token) {
         _tokens.add(token);

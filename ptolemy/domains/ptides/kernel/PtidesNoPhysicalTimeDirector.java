@@ -94,7 +94,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
-    /** Enqueue event and keep track of what event is at which input port
+    /** Enqueue event and keep track of what event is at which input port.
      *  @param ioPort The port the event resides.
      *  @exception IllegalActionException
      */
@@ -112,6 +112,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  passed in.
      *  <p>
      *  Notice these events should _NOT_ be taken out of the event queue.
+     *  @param event The reference event.
      *  @return List of events of the same tag.
      *  @throws IllegalActionException
      */
@@ -231,6 +232,10 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         return result;
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
+
+    /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;
 
     ///////////////////////////////////////////////////////////////////
