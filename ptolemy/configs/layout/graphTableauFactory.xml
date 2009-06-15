@@ -14,11 +14,30 @@
           <property name="preferredSize" class="ptolemy.data.expr.Parameter" value="[10, 25]">
           </property>
         </property>
-        <property name="layoutButton" class="ptolemy.vergil.basic.layout.LayoutButton">
-          <display name="Layout">
-          </display>
-          <property name="icon" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/transform.gif">
-          </property>
+        <property name="placeAllButton" class="ptolemy.vergil.basic.layout.PlaceAllButton">
+          <display name="" />
+          <property name="icon" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/layout/img/placeall.gif"/>
+          <property name="tooltip" class="ptolemy.data.expr.StringParameter" value="Automatic layout. Places all items including attributes. No routing is done."/>
+        </property>
+        <property name="placeButton" class="ptolemy.vergil.basic.layout.PlaceButton">
+          <display name="" />
+          <property name="icon" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/layout/img/place.gif"/>
+          <property name="tooltip" class="ptolemy.data.expr.StringParameter" value="Automatic layout. Only places connected items. No routing is done."/>
+        </property>
+        <property name="placeAndRouteButton" class="ptolemy.vergil.basic.layout.PlaceAndRouteButton">
+          <display name="" />
+          <property name="icon" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/layout/img/placeandroute.gif"/>
+          <property name="tooltip" class="ptolemy.data.expr.StringParameter" value="Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL)"/>
+        </property>
+        <property name="removeVerticesButton" class="ptolemy.vergil.basic.layout.RemoveVerticesButton">
+          <display name="" />
+          <property name="icon" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/layout/img/removevertices.gif"/>
+          <property name="tooltip" class="ptolemy.data.expr.StringParameter" value="Remove unnecessary relation vertices."/>
+        </property>
+        <property name="hideVerticesButton" class="ptolemy.vergil.basic.layout.HideVerticesButton">
+          <display name="" />
+          <property name="icon" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/layout/img/hidevertices.gif"/>
+          <property name="tooltip" class="ptolemy.data.expr.StringParameter" value="Toggle hide/show unnecessary relation vertices."/>
         </property>
       </property>
     </configure>
