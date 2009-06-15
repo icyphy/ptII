@@ -1077,7 +1077,6 @@ esac
 #       Check for various codegen directories that are in the devel
 #       tree, but not shipped.
 #--------------------------------------------------------------------
-set -x
 PTCODEGEN_OPTIONAL_PACKAGES=
 # We only need to look for if $PTII/ptolemy/codegen exists
 CODEGEN_USER_DIR="$PTII/ptolemy/codegen"
@@ -1102,7 +1101,7 @@ else
         fi
     done
 fi 
-set +x
+
 
 #--------------------------------------------------------------------
 #       COLT is a 
