@@ -637,3 +637,77 @@ test ComponentPort-11.4 {test deepConnectedPortList} {
     listToFullNames [$p2 deepConnectedPortList]
 } {.E0.E1.P1 .E0.E3.P3 .E0.E4.E5.P5}
 
+######################################################################
+####
+#
+test ComponentPort-12.1 {Create a composite with three relations} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.kernel.CompositeEntity $w]
+    set e1 [java::new ptolemy.kernel.ComponentEntity $toplevel E1]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "P1"]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $toplevel "R1"]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $toplevel "R2"]
+    set r3 [java::new ptolemy.kernel.ComponentRelation $toplevel "R3"]
+    $p1 link $r1
+    $p1 link $r2
+    $p1 link $r3
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="E1" class="ptolemy.kernel.ComponentEntity">
+        <port name="P1" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="R1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="R2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="R3" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="E1.P1" relation="R1"/>
+    <link port="E1.P1" relation="R2"/>
+    <link port="E1.P1" relation="R3"/>
+</entity>
+}
+
+test ComponentPort-12.2 {Test unlink and insertLink} {
+    # Uses 12.1 above
+    # This illustrates a bug discovered by Hauke Fuhrmannn,
+    # where calling unlink and insertLink resulted in
+    # erroneous behavior.  The problem was in CrossRefList.
+    for {set i 0} {$i < 3} {incr i} {
+	set relationName "R[expr {$i + 1}]"
+	set relation [$toplevel getRelation $relationName]
+	#puts "Unlink $i"
+	$p1 {unlink int} $i
+	#puts [$e1 description]
+	#puts "Link: [$relation getName] at $i"
+	$p1 insertLink $i $relation
+	#puts [$e1 description]
+    }
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="E1" class="ptolemy.kernel.ComponentEntity">
+        <port name="P1" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="R1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="R2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="R3" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="E1.P1" relation="R1"/>
+    <link port="E1.P1" relation="R2"/>
+    <link port="E1.P1" relation="R3"/>
+</entity>
+}

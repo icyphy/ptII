@@ -274,6 +274,59 @@ test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
     
 } {{A2 A3} A2 A1 A1}
 
+
+######################################################################
+####
+#
+test CrossRefList-5.2.0 {Create a NamedObj linked to 4 other NamedObjs} {
+    set a [java::new ptolemy.kernel.util.NamedObj A]
+    set ca [java::new ptolemy.kernel.util.CrossRefList $a]
+    set b [java::new ptolemy.kernel.util.NamedObj B]
+    set cb [java::new ptolemy.kernel.util.CrossRefList $b]
+    set c [java::new ptolemy.kernel.util.NamedObj C]
+    set cc [java::new ptolemy.kernel.util.CrossRefList $c]
+    set d [java::new ptolemy.kernel.util.NamedObj D]
+    set cd [java::new ptolemy.kernel.util.CrossRefList $d]
+    set e [java::new ptolemy.kernel.util.NamedObj E]
+    set ce [java::new ptolemy.kernel.util.CrossRefList $e]
+    $ca insertLink 0 $cb
+    $ca insertLink 1 $cc
+    $ca insertLink 2 $cd
+    $ca insertLink 3 $ce
+    _testCrossRefListGetLinks $ca $ce
+} {{B C D E} A}
+
+test CrossRefList-5.2.1a {unlink at index 1} { 
+    $ca {unlink int} 1
+    _testCrossRefListGetLinks $ca $ce
+} {{B D E} A}
+
+test CrossRefList-5.2.1b {insert at index 1} { 
+    $ca insertLink 1 $cc
+    _testCrossRefListGetLinks $ca $ce
+} {{B C D E} A}
+
+test CrossRefList-5.2.2a {unlink at index 2} { 
+    $ca {unlink int} 2
+    _testCrossRefListGetLinks $ca $ce
+} {{B C E} A}
+
+test CrossRefList-5.2.2b {insert at index 2} { 
+    $ca insertLink 2 $cd
+    _testCrossRefListGetLinks $ca $ce
+} {{B C D E} A}
+
+test CrossRefList-5.2.3a {unlink at index 3} { 
+    $ca {unlink int} 3
+    # Note that use use $cd below because $e is not connected
+    _testCrossRefListGetLinks $ca $cd
+} {{B C D} A}
+
+test CrossRefList-5.2.3b {insert at index 3} { 
+    $ca insertLink 3 $ce
+    set r4 [_testCrossRefListGetLinks $ca $ce]
+} {{B C D E} A}
+
 ######################################################################
 ####
 #
