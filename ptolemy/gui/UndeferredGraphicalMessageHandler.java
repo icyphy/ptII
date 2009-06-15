@@ -384,17 +384,19 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         // It is nice if error messages have selectable text.
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4147
         Object result = message;
-        try {
-            JTextField textField = new JTextField(message);
-            textField.setEditable(false);
-            textField.setBorder(null);
-            textField.setForeground(UIManager.getColor("Label.foreground"));
-            textField.setBackground(UIManager.getColor("Label.background"));
-            textField.setFont(UIManager.getFont("Label.font"));
-            result = textField;
-        } catch (Exception ex) {
-            // Ignore, just return the string
-        }
+        // Unfortunately, this hack does not wrap text properly,
+        // so I'm commenting it out temporarily.
+//         try {
+//             JTextField textField = new JTextField(message);
+//             textField.setEditable(false);
+//             textField.setBorder(null);
+//             textField.setForeground(UIManager.getColor("Label.foreground"));
+//             textField.setBackground(UIManager.getColor("Label.background"));
+//             textField.setFont(UIManager.getFont("Label.font"));
+//             result = textField;
+//         } catch (Exception ex) {
+//             // Ignore, just return the string
+//         }
         return result;
     }
 }
