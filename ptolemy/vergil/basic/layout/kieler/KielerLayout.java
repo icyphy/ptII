@@ -238,6 +238,12 @@ public class KielerLayout extends AbstractGlobalLayout {
                     progressMonitor.subTask(10));
             // set initial position as the bounding box of the hierarchical node
             KPoint offset = KielerGraphUtil._getUpperLeftCorner(hierarchicalLayoutNode);
+
+            if(_debug){
+                System.out.println("Bounding Box coordinates: "+layout.getXpos()+" "+layout.getYpos());
+                System.out.println("Hierarchical offset:      "+offset.getX()+" "+offset.getY());
+            }
+            
             layout.setXpos(layout.getXpos() - offset.getX());
             layout.setYpos(layout.getYpos() - offset.getY());
             if (_doBoxLayout) {
@@ -517,6 +523,16 @@ public class KielerLayout extends AbstractGlobalLayout {
                     KNode kVertexNode = _createKNodeForVertex((Vertex) node);
                     // add it to the graph
                     kVertexNode.setParent(hierarchicalLayoutNode);
+                    
+                    // get check bounds for global bounding box
+                    KShapeLayout layout = KimlLayoutUtil
+                            .getShapeLayout(kVertexNode);
+                    if (layout.getXpos() < globalX)
+                        globalX = layout.getXpos();
+                    if (layout.getYpos() < globalY)
+                        globalY = layout.getYpos();
+
+                    
                     // store it in the maps
                     _ptolemy2KielerNodes.put(node, kVertexNode);
                     _kieler2ptolemyDivaNodes.put(kVertexNode, node);
@@ -531,6 +547,15 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // setup Kieler ports for the KNode of the internal Ptolemy
                     // port
                     // _createKPort(kPortNode, (Port)semanticNode);
+                    
+                 // get check bounds for global bounding box
+                    KShapeLayout layout = KimlLayoutUtil
+                            .getShapeLayout(kPortNode);
+                    if (layout.getXpos() < globalX)
+                        globalX = layout.getXpos();
+                    if (layout.getYpos() < globalY)
+                        globalY = layout.getYpos();
+                    
                     // store it in the maps
                     _ptolemy2KielerNodes.put(node, kPortNode);
                     _kieler2ptolemyDivaNodes.put(kPortNode, node);
@@ -719,8 +744,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         // of the port! Problem: Obtaining the inner port's figure from
         // the layout target alway results null. Hence we cannot ask
         // the port figure for its bounds.
-        layout.setHeight(DEFAULT_INNER_PORT_SIZE);
-        layout.setWidth(DEFAULT_INNER_PORT_SIZE);
+        layout.setHeight(DEFAULT_INNER_PORT_HEIGHT);
+        layout.setWidth(DEFAULT_INNER_PORT_WIDTH);
         LayoutOptions.setFixedSize(layout, true);
         return knode;
     }
@@ -738,31 +763,33 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @return An initialized KNode with one input and one output port
      */
     private KNode _createKNodeForVertex(Vertex vertex) {
-        KNode knode = KimlLayoutUtil.createInitializedNode();
+        KNode kNode = KimlLayoutUtil.createInitializedNode();
         // simulate vertex by node with size 0
-        KShapeLayout layout = KimlLayoutUtil.getShapeLayout(knode);
+        KShapeLayout layout = KimlLayoutUtil.getShapeLayout(kNode);
         layout.setHeight(1);
         layout.setWidth(1);
+        layout.setXpos((float)vertex.getLocation()[0]);
+        layout.setYpos((float)vertex.getLocation()[1]);
         LayoutOptions.setFixedSize(layout, true);
         // as Kieler so far only suport nodes WITH port constraints,
         // add dummy ports
-        KPort kinputport = KimlLayoutUtil.createInitializedPort();
-        KShapeLayout portLayout = KimlLayoutUtil.getShapeLayout(knode);
+        KPort kInputPort = KimlLayoutUtil.createInitializedPort();
+        KShapeLayout portLayout = KimlLayoutUtil.getShapeLayout(kInputPort);
         portLayout.setHeight(0);
         portLayout.setWidth(0);
         portLayout.setXpos(0);
         portLayout.setYpos(0);
-        kinputport.setType(KPortType.INPUT);
-        kinputport.setNode(knode);
-        KPort koutputport = KimlLayoutUtil.createInitializedPort();
-        portLayout = KimlLayoutUtil.getShapeLayout(knode);
+        kInputPort.setType(KPortType.INPUT);
+        kInputPort.setNode(kNode);
+        KPort kOutputPort = KimlLayoutUtil.createInitializedPort();
+        portLayout = KimlLayoutUtil.getShapeLayout(kOutputPort);
         portLayout.setHeight(0);
         portLayout.setWidth(0);
         portLayout.setXpos(0);
         portLayout.setYpos(0);
-        koutputport.setType(KPortType.OUTPUT);
-        koutputport.setNode(knode);
-        return knode;
+        kOutputPort.setType(KPortType.OUTPUT);
+        kOutputPort.setNode(kNode);
+        return kNode;
     }
 
     /**
@@ -907,23 +934,6 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
         kports.add(kport);
     }
-
-    /*
-        private void _createKPortForPtolemyPort(KNode portKNode, Port ptolemyPort) {
-            if (ptolemyPort.linkedRelationList().size() > 1) {
-                // create a port for each incoming relation and set an order
-                List relations = ptolemyPort.linkedRelationList();
-                int maxIndex = relations.size() - 1;
-                for (int index = 0; index < relations.size(); index++) {
-                    _createKPort(portKNode, portType, port, NO_RANK, index,
-                            maxIndex, DEFAULT_PORT_SIZE);
-                }
-            } else {
-                // if not a multiport, just create one port
-                _createKPort(knode, portType, port, NO_RANK, 0, 0, -1);
-            }
-        }
-    */
 
     /**
      * Create Kieler ports (KPort) for a Kieler node (KNode) given a list of
@@ -1077,11 +1087,12 @@ public class KielerLayout extends AbstractGlobalLayout {
         if (port != null) { // now we are safe to proceed
             boolean outsideLink = true;
             List<Relation> linkedRelations = port.linkedRelationList();
-            if(linkedRelations.isEmpty() && port instanceof ComponentPort){
+            int index = linkedRelations.indexOf(oldRelation);
+            if(index == -1 && port instanceof ComponentPort){
                 linkedRelations = ((ComponentPort)port).insideRelationList();
                 outsideLink = false;
+                index = linkedRelations.indexOf(oldRelation);
             }
-            int index = linkedRelations.indexOf(oldRelation);
             if(outsideLink){
                 _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor), index);
                 _ptolemyModelUtil._performChangeRequest(_compositeActor);
@@ -1187,9 +1198,14 @@ public class KielerLayout extends AbstractGlobalLayout {
     // // private variables ////
 
     /**
-     * The default size used by Kieler for inner ports.
+     * The default width used by Kieler for inner ports.
      */
-    private static final float DEFAULT_INNER_PORT_SIZE = 46.0f;
+    private static final float DEFAULT_INNER_PORT_WIDTH = 30.0f;
+    
+    /**
+     * The default height used by Kieler for inner ports.
+     */
+    private static final float DEFAULT_INNER_PORT_HEIGHT = 46.0f;
 
     /**
      * Default size of a port that will be used in Kieler layout if no explicit

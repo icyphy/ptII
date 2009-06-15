@@ -68,7 +68,6 @@ public class PtolemyModelUtil {
      */
     public PtolemyModelUtil() {
         _momlChangeRequest = new StringBuffer();
-        _nameSuffix = 0;
     }
 
     /**
@@ -93,10 +92,10 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Create a new MoMLChangeRequest to add a new Relation with a
-     * Vertex at a given position. The MoML code is appended to the
-     * field MoMLChangeRequest buffer to buffer multiple such
-     * requests. Don't actually execute the request.
+     * Create a new MoMLChangeRequest to add a new Relation with a Vertex at a
+     * given position. The MoML code is appended to the field MoMLChangeRequest
+     * buffer to buffer multiple such requests. Don't actually execute the
+     * request.
      * 
      * To flush the request, the method
      * {@link #_performChangeRequest(CompositeActor)} must be called.
@@ -123,17 +122,22 @@ public class PtolemyModelUtil {
 
     protected void _hideVertex(String relationName, String vertexName,
             boolean hide) {
+        String propertyString = "<property name=\"_hide\" class=\"ptolemy.data.expr.Parameter\" value=\""
+            + hide + "\"/>";
+        if( !hide )
+            propertyString = "<deleteProperty name=\"_hide\"/>";
+        
         String moml = "<relation name=\""
-                + relationName
-                + "\" >"
-                +
+                    + relationName
+                    + "\" >"
+                    +
 
-                "<vertex name=\""
-                + vertexName
-                + "\">"
-                + "<property name=\"_hide\" class=\"ptolemy.data.expr.Parameter\" value=\""
-                + hide + "\"/>" + "</vertex></relation>\n";
-        _momlChangeRequest.append(moml);
+                    "<vertex name=\""
+                    + vertexName
+                    + "\">"
+                    + propertyString
+                    + "</vertex></relation>\n";
+            _momlChangeRequest.append(moml);
     }
 
     /**
@@ -379,6 +383,10 @@ public class PtolemyModelUtil {
         if (namedObj instanceof Relation) {
             return true;
         }
+        if (namedObj instanceof Port) {
+            // assume all inner ports are connected
+            return true;
+        }
         // default to false
         return false;
     }
@@ -497,11 +505,9 @@ public class PtolemyModelUtil {
                             if (show)
                                 util._hideVertex(relation.getName(), vertex
                                         .getName(), false);
-                            // hide.setExpression("false");
                             else
                                 util._hideVertex(relation.getName(), vertex
                                         .getName(), true);
-                            util._performChangeRequest(parent);
                         } catch (Exception e) {
                             /* do nothing if there is already such attribute*/
                         }
@@ -510,6 +516,7 @@ public class PtolemyModelUtil {
 
             }
         }
+        util._performChangeRequest(parent);
     }
 
     public static void _showUnnecessaryRelationsToggle(CompositeActor parent) {
@@ -530,23 +537,6 @@ public class PtolemyModelUtil {
     }
 
     /**
-     * Create a unique name in the model nameset prefixed by the given prefix.
-     * This method actually does not guarantee this yet but tries brute force by
-     * adding some counting String. Problem with the uniqueName() method of
-     * CompositeActors is, that they will return always the same name while the
-     * corresponding objects are not yet added to the model, e.g. by buffering
-     * multiple relation creations in one MoMLChangeRequest which gets executed
-     * later.
-     * 
-     * @param prefix
-     * @return Unique name in the model context
-     */
-    private String _getUniqueName(String prefix) {
-        _nameSuffix++;
-        return prefix + "_k_" + _nameSuffix;
-    }
-
-    /**
      * StringBuffer for Requests of Model changes. In Ptolemy the main
      * infrastructure to do model changes is through XML change requests of the
      * XML representation. This field is used to collect all changes in one
@@ -554,10 +544,6 @@ public class PtolemyModelUtil {
      */
     private StringBuffer _momlChangeRequest;
 
-    /**
-     * Some Name suffix to compute unique names.
-     */
-    private int _nameSuffix = 0;
-
     private static boolean _hide = true;
+
 }
