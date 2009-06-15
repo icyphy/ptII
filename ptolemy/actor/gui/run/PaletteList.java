@@ -134,7 +134,7 @@ public class PaletteList extends JList implements DragSourceListener,
     }
 
     /** Start the drag.
-     *  @param dragGestureEvent the event
+     *  @param event The event that starts the drag if it has an index. 
      */
     public void dragGestureRecognized(DragGestureEvent event) {
         int dragIndex = locationToIndex(event.getDragOrigin());

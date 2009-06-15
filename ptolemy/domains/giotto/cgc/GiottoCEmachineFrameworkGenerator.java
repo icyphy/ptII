@@ -297,7 +297,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  of the "initialOutputValue" attribute of the port, if any.
      *  If the port does not have an "initialOutputValue" attribute, then
      *  the empty string is returned.
-     *  @param IllegalActionException If there is a problem reading the
+     *  @exception IllegalActionException If there is a problem reading the
      *  "initialOutputValue" attribute from the port.
      */
     protected String _getInitialValueString(TypedIOPort port)
@@ -316,8 +316,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  @param port The given port
      *  @return The value of the "arrayLength" attribute, or 1 if the port
      *  does not have an "arrayLength" attribute.
-     *  @param IllegalActionException If there is a problem reading the attribute
-     *  from the port.
+     *  @exception IllegalActionException If there is a problem
+     *  reading the attribute from the port.
      */
     protected String _getArrayLength(TypedIOPort port)
             throws IllegalActionException {
@@ -509,7 +509,6 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
      *  is illegal. From the output ports, it is easy to trace
      *  to get receivers for output delivery.
      *  @param model The model
-     *  @return The initialization code.
      *  @exception IllegalActionException If thrown while accessing ports
      *  or checking Giotto IDs.
      */

@@ -69,7 +69,6 @@ public interface SuperdenseTimeDirector {
     
     /** Set the superdense time index. This should only be
      *  called by an enclosing director.
-     *  @param index The superdense time index.
      *  @exception IllegalActionException If the specified index is invalid.
      *  @see #getIndex()
      */
