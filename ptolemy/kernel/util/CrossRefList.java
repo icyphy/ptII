@@ -274,22 +274,22 @@ public final class CrossRefList implements Serializable {
         return _size;
     }
 
-    /** Return a String represetation of this object.
-     *  For debugging use only.
-     *  @return A String representation of this object.
-     */
-    public String toString() {
-        StringBuffer results = new StringBuffer("container: " + _container 
-                + " size: " + _size
-                + "\n _headNode: "
-                + (_headNode == null ? "null" : _headNode.description())
-                + "\n _lastNode: "
-                + (_lastNode == null ? "null" : _lastNode.description()));
-        for (CrossRef p = _headNode; p != null; p = p._next) {
-            results.append("\n" + p.description());
-        }
-        return results.toString();
-    }
+//     /** Return a String represetation of this object.
+//      *  For debugging use only.
+//      *  @return A String representation of this object.
+//      */
+//     public String toString() {
+//         StringBuffer results = new StringBuffer("container: " + _container 
+//                 + " size: " + _size
+//                 + "\n _headNode: "
+//                 + (_headNode == null ? "null" : _headNode.description())
+//                 + "\n _lastNode: "
+//                 + (_lastNode == null ? "null" : _lastNode.description()));
+//         for (CrossRef p = _headNode; p != null; p = p._next) {
+//             results.append("\n" + p.description());
+//         }
+//         return results.toString();
+//     }
 
     /** Delete the link at the specified index.  If there is no such
      *  link, ignore.  Back references are likewise updated.
@@ -398,18 +398,18 @@ public final class CrossRefList implements Serializable {
      * refers to an element of a doubly-linked list.)
      */
     protected class CrossRef implements Serializable {
-        /** Return a String represetation of this object.
-         *  For debugging use only.
-         *  @return A String representation of this object.
-         */
-        public String description() {
-            return toString()
-                + "\n\t_far: " + _far 
-                + "\n\t_next: " + _next
-                + "\n\t_previous: " + _previous
-                + "\n\t_nearContainer(): " + _nearContainer()
-                + "\n\t_farContainer(): " + _farContainer();
-        }
+//         /** Return a String represetation of this object.
+//          *  For debugging use only.
+//          *  @return A String representation of this object.
+//          */
+//         public String description() {
+//             return toString()
+//                 + "\n\t_far: " + _far 
+//                 + "\n\t_next: " + _next
+//                 + "\n\t_previous: " + _previous
+//                 + "\n\t_nearContainer(): " + _nearContainer()
+//                 + "\n\t_farContainer(): " + _farContainer();
+//         }
 
         /** The far CrossRef. */
         protected CrossRef _far;
