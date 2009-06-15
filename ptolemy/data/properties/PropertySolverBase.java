@@ -59,6 +59,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -693,7 +694,22 @@ public abstract class PropertySolverBase extends Attribute {
                     filename
             };
 
-            int status = com.sun.tools.javac.Main.compile(args);
+            if (_executeCommands == null) {
+                // Append the results to a StringBuffer and to stderr/stdout.
+                _executeCommands = new StringBufferExec(true);
+            }
+
+            List commands = new LinkedList();
+
+            // Create the .class file.
+            commands.add("javac -classpath . " + filename + ".java");
+
+            _executeCommands.setWorkingDirectory(new File(ptRoot));
+            _executeCommands.setCommands(commands);
+            _executeCommands.start();
+            int status = _executeCommands.getLastSubprocessReturnCode();
+            
+            //int status = com.sun.tools.javac.Main.compile(args);
 
             switch (status) {
             case 0:  // OK
@@ -755,6 +771,8 @@ public abstract class PropertySolverBase extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
+
+    private StringBufferExec _executeCommands;
 
     /**
      * The expression parser.
