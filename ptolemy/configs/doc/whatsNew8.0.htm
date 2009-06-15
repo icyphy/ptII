@@ -512,13 +512,19 @@ the model execution, and to execute actors in the background.
 </ul>
 (Edward A. Lee)
 
-<h3>Lazy Composite
- <!-- FIXME: get desk from Rome report -->
+<h3>Lazy Opening of Composites
+
+LazyTypedCompositeActor is a replacement for TypedCompositeActor that does lazy evaluation, which means that he contents of a LazyTypedCompositeActor are not evaluated at runtime, instead they are evaluated at start up time.  LazyTypedCompositeActor was developed to improve the opening time of very large models. One issue is that this changes the results slightly because different results will occur if the results depend on the order in which actors are created. Unforuntately, the scheme we have for setting seeds in the random number generator "deterministically" has this property.
+
 <ul>
    <li><a href="ptdoc:ptolemy.kernel.util.LazyComposite">LazyComposite</a>
-   <li><a href="ptdoc:ptolemy.moml.filter.LazyTypedCompositeActorChanges">LazyTypedCompositeActorChanges</a>
-   <li><a href="ptdoc:ptolemy.moml.ConvertToLazy">ConvertToLazy</a>
+   <li><a href="ptdoc:ptolemy.actor.LazyTypedCompositeActor">LazyTypedCompositeActor</a>
+   <li><a href="ptdoc:ptolemy.moml.filter.LazyTypedCompositeActorChanges">LazyTypedCompositeActorChanges</a> - a MoMLFilter that may be used to convert models to use LazyTypedCompositeActor
+   <li><a href="ptdoc:ptolemy.moml.ConvertToLazy">ConvertToLazy</a> - A class that converts models to use LazyTypedCompositeActor 
 </ul>
+(Edward A. Lee, Christopher Brooks)
+
+
 </ul>
 
 <h3>printPDF</h3>
@@ -655,7 +661,18 @@ This work is still in progress
  </ul>
 </ul>
 <h2><a name="bugs">Bug fixes</a></h2>
+For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser">Ptolemy II Bugs<a>
+ <br>and
+ <a href="http://bugzilla.ecoinformatics.org/buglist.cgi?product=Kepler&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Kepler Bugs</a>
+
 <ul>
+ <li> Level-crossing links are now correctly exported
+   to MoML.  The way this works is that the lowest common
+   container of the objects being linked is responsible for
+   producing the MoML description of the link. This ensures
+   that when the MoML is encountered for creating the link,
+   that both objects being linked have already been created. 
+
   <li>Various classes were moved to make the dependencies between packages cleaner.  In general, the
   <a href="ptdoc:ptolemy.moml.filter.ClassChanges">ptolemy.moml.filter.ClassChanges</a> to handle the changes
   that will appear in MoML files.
