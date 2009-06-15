@@ -29,21 +29,19 @@ package ptolemy.data.properties.token.firstValueToken;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IOPortEvent;
 import ptolemy.actor.IOPortEventListener;
-import ptolemy.actor.TokenGotEvent;
-import ptolemy.actor.TokenGotListener;
 import ptolemy.data.Token;
 import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.data.properties.token.PropertyTokenHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class FirstTokenGotListener implements TokenGotListener, IOPortEventListener {
+public class FirstTokenGotListener implements IOPortEventListener {
 
     public FirstTokenGotListener(PropertyTokenSolver solver) {
         _solver = solver;
     }
 
-    public void tokenGotEvent(TokenGotEvent event) {
+    public void tokenGotEvent(IOPortEvent event) {
 
         IOPort port = event.getPort();
         Token token = event.getToken();

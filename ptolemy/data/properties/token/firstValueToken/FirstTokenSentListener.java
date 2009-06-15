@@ -29,15 +29,13 @@ package ptolemy.data.properties.token.firstValueToken;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IOPortEvent;
 import ptolemy.actor.IOPortEventListener;
-import ptolemy.actor.TokenSentEvent;
-import ptolemy.actor.TokenSentListener;
 import ptolemy.data.Token;
 import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.data.properties.token.PropertyTokenHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class FirstTokenSentListener implements TokenSentListener, IOPortEventListener {
+public class FirstTokenSentListener implements IOPortEventListener {
 
     private PropertyTokenSolver _solver;
 
@@ -45,7 +43,7 @@ public class FirstTokenSentListener implements TokenSentListener, IOPortEventLis
         _solver = solver;
     }
 
-    public void tokenSentEvent(TokenSentEvent event) {
+    public void tokenSentEvent(IOPortEvent event) {
 
         IOPort port = event.getPort();
         Token token = event.getToken();
@@ -61,7 +59,7 @@ public class FirstTokenSentListener implements TokenSentListener, IOPortEventLis
     }
 
     public void portEvent(IOPortEvent event) {
-        if (event.getEventType() != IOPortEvent.SEND) {
+        if (event.getEventType() != IOPortEvent.SEND_BEGIN) {
             return;
         }
 
