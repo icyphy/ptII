@@ -24,6 +24,7 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
     <ul>
     <li><a href="#modelTransformation">Model Transformation</a>
     <li><a href="#pteraDomain">Ptera Domain</a>
+    <li><a href="#continuousModal">Continuous and Modal Domains</a>
   </ul>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
@@ -236,15 +237,59 @@ Transactions on Embedded Computing Systems (TECS)</i>,
 California, Berkeley, May, 2007.
 </ul>
 
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="continuousModal">Continuous and Modal Domains</a></h3>
+<p>Ptolemy II 8.0 includes a substantial rework of modal models and
+the underlying finite state machine infrastructure to make them work
+predictably and consistently across domains.</p>
+
+<p>Ptolemy II 8.0 includes a new implementation of continuous-time models
+based on the semantics given in "<a href="#LeeZheng:07:Leveraging">Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>." In particular, the Continuous domain cleanly supports
+continuous-time models (using an ODE solver), discrete-event models,
+and arbitrary mixtures of the two, including signals that combine
+continuous-time segments with discrete events. It also interoperates
+cleanly with most other domains (pretty much all except PN and
+Rendezvous, for which there does not appear to be reasonable semantic
+model of such an interaction). Modal models are also cleanly supported
+with the Continuous domain, enabling hybrid system modeling with a
+rigorous semantics. The Continuous domain is expected to eventually
+replace CT.</p> 
+
+<h4>New Continuous and Modal Demonstrations</h4>
+<h5>Continuous</h5>
+<ul>
+<li><a href="../../domains/continuous/demo/CarTracking/CarTracking.xml">Car Tracking</a>
+<li><a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCr ossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a>
+</ul>
+
+<h4>Modal</h4>
+The Modal models below are copies of the FSM models with the same name but
+the Modal models use the continuous domain, whereas the FSM models use
+the ct domain.
+<ul>
+<li><a href="../../domains/modal/demo/ABP/ABP.xml">ABP</a>
+<li><a href="../../domains/modal/demo/Blending/Blending.xml">Blending</a>
+<li><a href="../../domains/modal/demo/Case/Case.xml">Case</a>
+<li><a href="../../domains/modal/demo/ChainedTransitions/ChainedTransitions.xml">Chaine dTransitions</a>
+<li><a href="../../domains/modal/demo/ModalBSC/ModalBSC.xml">ModalBSC</a>
+<li><a href="../../domains/modal/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a>
+<li><a href="../../domains/modal/demo/StateTracker/StateTracker.xml">StateTracker</a>
+
+<h4>References</h4>
+<ul>
+<li><a name="LeeZheng:07:Leveraging">Edward A. Lee, Haiyang Zheng</a>. <a
+href="http://chess.eecs.berkeley.edu/pubs/430.html#in_browser">Leveraging
+Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>, Proceedings of the
+7th ACM & IEEE international conference on Embedded
+software, Christoph M. Kirsch,  Reinhard Wilhelm (eds.),
+ACM, 114-123, 2007.
+
 
 <h2><a name="demos">New demonstrations</a></h2>
 <!-- grep "Only in" /tmp/pt78.diff | grep 8.0.beta | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII8.0.beta/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort -->
-
-<h3>Continuous</h3>
-<ul>
-<li><a href="../../domains/continuous/demo/CarTracking/CarTracking.xml">Car Tracking</a>
-<li><a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a>
-</ul>
 
 <h3>Discrete Event (DE)</h3>
 <ul>
