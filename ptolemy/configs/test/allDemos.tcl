@@ -42,20 +42,6 @@ if {[string compare test [info procs test]] == 1} then {
 # set VERBOSE 1
 
 test allDemos-1.0 {} {
-     set parser [java::new ptolemy.moml.MoMLParser]
-
-    # The list of filters is static, so we reset it in case there
-    # filters were already added.
-    $parser setMoMLFilters [java::null]
-
-    # Add backward compatibility filters
-    $parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-
-    # Filter out graphical classes while inside MoMLParser
-    # See ptII/util/testsuite/removeGraphicalClasses.tcl
-    removeGraphicalClasses $parser
-
     set file [open $PTII/ptolemy/configs/doc/models.txt]
     set modelsFileContents [read $file]
     close $file
@@ -64,6 +50,26 @@ test allDemos-1.0 {} {
 	if {[string length $model] < 1} {
 	    continue
 	}
+
+	# We create a new parser each time and avoid leaks,
+	# See ptdevel mail from 6/15/2009
+
+	set parser [java::new ptolemy.moml.MoMLParser]
+
+	# The list of filters is static, so we reset it in case there
+	# filters were already added.
+	$parser setMoMLFilters [java::null]
+
+	# Add backward compatibility filters
+	$parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+	# Filter out graphical classes while inside MoMLParser
+	# See ptII/util/testsuite/removeGraphicalClasses.tcl
+	removeGraphicalClasses $parser
+
+
+
 	regsub {\$CLASSPATH} $model {$PTII} modelPath
 	set modelPath [subst $modelPath]
 	set modelFile [java::new java.io.File $modelPath]
@@ -75,8 +81,14 @@ test allDemos-1.0 {} {
 		[$parser parseFile $modelPath]]
 	puts "####$modelPath\n[$toplevel getFullName] [java::call ptolemy.actor.Manager timeAndMemory [$startTime longValue]]\n[$toplevel statistics [java::null]]"
 	$toplevel setContainer [java::null]
-	$parser reset
-	$parser purgeAllModelRecords
+	$parser resetAll
+
+	# Bert Rodiers writes: "Another issues seems to be
+	# ptolemy.data.expr.CachedMethod. For example
+	# ParseTreeEvaluator uses this object which caches things in
+	# its static member, but the contents are never cleared."
+	java::call ptolemy.data.expr.CachedMethod clear
+
 	java::call System gc
     }
 } {}

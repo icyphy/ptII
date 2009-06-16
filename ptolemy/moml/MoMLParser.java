@@ -1594,6 +1594,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Purge all records of models opened. This is here
      *  for testing only.
      *  @see #purgeModelRecord(URL)
+     *  @see #resetAll()
      */
     public static void purgeAllModelRecords() {
         _imports = null;
@@ -1670,8 +1671,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         purgeModelRecord(file.toURI().toURL());
     }
 
-    /** Reset the MoML parser, forgetting about any previously parsed
-     *  models.
+    /** Reset the MoML parser.
+     *  Note that this method does not purge records of the models
+     *  that have been parsed.  To completely reset the MoMLParser,
+     *  see {@link resetAll()}.
+     *  @see #resetAll()
      *  @see #purgeModelRecord(String)
      *  @see #purgeAllModelRecords()
      */
@@ -1699,6 +1703,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Reset undo specific members
         _resetUndo();
+    }
+
+    /** Reset the MoML parser, forgetting about any previously parsed
+     *  models.  This method differs from {@link #reset()} in that
+     *  this method does as complete a reset of the MoMLParser
+     *  as possible.
+     *  @see #purgeModelRecord(String)
+     *  @see #purgeAllModelRecords()
+     */
+    public void resetAll() {
+        purgeAllModelRecords();
+        reset();
+        _workspace = new Workspace();
     }
 
     /** Resolve an external entity.  If the first argument is the
