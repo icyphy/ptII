@@ -795,10 +795,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     private void _updateSanitizedActorName() {
         _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
-        // Remove leading underscore
-        if (_sanitizedActorName.charAt(0) == '_') {
-            _sanitizedActorName = _sanitizedActorName.replaceFirst("_", "");
-        }
+        _sanitizedActorName = _sanitizedActorName.replace("_", "") + _version;
     }
 
     private Object _objectWrapper;
