@@ -1599,8 +1599,24 @@ public class CodeStream {
         ////                         public methods                    ////
 
         /**
+         * Compare this signature to the given object by comparing
+         * their string representation lexicographically. Each signature
+         * has an unique string representation (See {@link #toString()}).
+         * @param object The given object.
+         * @return A negative integer if this signature precedes the 
+         * given object, or a positive integer if the given object
+         * precedes this signature. Otherwise, it returns the value zero,
+         * which indicates that they are equal. 
+         */
+		public int compareTo(Object object) {
+		    return toString().compareTo(object.toString());
+		}
+
+		/**
          * Return true if the given object is equal to this signature.
          * @param object The given object.
+         * @return true if the given object is equal to this signature, 
+         *  otherwise false.
          */
         public boolean equals(Object object) {
             return object instanceof Signature
@@ -1640,10 +1656,6 @@ public class CodeStream {
          * The number of parameters.
          */
         public int numParameters;
-
-        public int compareTo(Object o) {
-            return toString().compareTo(o.toString());
-        }
     }
 
     /**
