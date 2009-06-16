@@ -386,7 +386,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
             try {
                 // Java 1.4, used by Kepler, requires the two arg invoke()
-                // Cast to Object() to supress Java 1.5 warning
+                // Cast to Object() to suppress Java 1.5 warning
                 _initializeMethod.invoke(_objectWrapper, (Object[]) null);
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
