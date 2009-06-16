@@ -85,24 +85,51 @@ public class Director extends CodeGeneratorHelper {
     ////                Public Methods                           ////
 
     /** Generate code for declaring read and write offset variables if needed.
-     *  It delegates to the helpers of contained actors.
-     *  @return The generated code.
-     *  @exception IllegalActionException If thrown while creating
-     *  offset variables.
-     */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(helperObject.createOffsetVariablesIfNeeded());
-        }
-        return code.toString();
-    }
+	 *  It delegates to the helpers of contained actors.
+	 *  @return The generated code.
+	 *  @exception IllegalActionException If thrown while creating
+	 *  offset variables.
+	 */
+	public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+	    StringBuffer code = new StringBuffer();
+	    Iterator actors = ((CompositeActor) _director.getContainer())
+	    .deepEntityList().iterator();
+	    while (actors.hasNext()) {
+	        Actor actor = (Actor) actors.next();
+	        CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+	        code.append(helperObject.createOffsetVariablesIfNeeded());
+	    }
+	    return code.toString();
+	}
 
-    /** Generate the code for the firing of actors.
+	/**
+	 * Generate the code for sending data to the specified port channel.
+	 * This returns an empty string. Subclasses may override this method
+	 * to generate domain-specific code for sending data.
+	 * @param port The specified port.
+	 * @param channel The specified channel.
+	 * @param dataToken The data to send.
+	 * @return An empty string in this base class.
+	 * @throws IllegalActionException Not thrown in this base class.
+	 */
+	public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
+	    return "";
+	}
+
+	/**
+	 * Generate the code for getting data from the specified port channel.
+	 * This returns an empty string. Subclasses may override this method
+	 * to generate domain-specific code for getting data.
+	 * @param port The specified port.
+	 * @param channel The specified channel.
+	 * @return An empty string in this base class.
+	 * @throws IllegalActionException Not thrown in this base class.
+	 */
+	public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
+	    return "";
+	}
+
+	/** Generate the code for the firing of actors.
      *  In this base class, it is attempted to fire all the actors once.
      *  In subclasses such as the helpers for SDF and Giotto directors, the
      *  firings of actors observe the associated schedule. In addition,
@@ -213,6 +240,7 @@ public class Director extends CodeGeneratorHelper {
      * @param port The referenced port.
      * @param channel The referenced port channel.
      * @param isWrite Whether to generate the write or read offset.
+     * @param helper The specified helper.
      * @return The expression that represents the offset in the generated
      * code.
      * @exception IllegalActionException If there is problems getting
@@ -442,19 +470,57 @@ public class Director extends CodeGeneratorHelper {
         return code.toString();
     }
 
+    /**
+     * Return an unique label for the given port channel referenced
+     * by the given helper. By default, this delegates to the helper to 
+     * generate the reference. Subclass may override this method
+     * to generate the desire label according to the given parameters.
+     * @param port The given port.
+     * @param channelAndOffset The given channel and offset.
+     * @param forComposite Whether the given helper is associated with
+     *  a CompositeActor
+     * @param isWrite The type of the reference. True if this is
+     *  a write reference; otherwise, this is a read reference.  
+     * @param helper The specified helper.
+     * @return an unique reference label for the given port channel.
+     * @throws IllegalActionException If the helper throws it while
+     *  generating the label.
+     */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
         return helper.getReference(port, channelAndOffset, forComposite, isWrite);
     }
 
+    /**
+     * Return an unique label for the given attribute referenced
+     * by the given helper. By default, this delegates to the helper to 
+     * generate the reference. Subclass may override this method
+     * to generate the desire label according to the given parameters.
+     * @param attribute The given attribute.
+     * @param channelAndOffset The given channel and offset.
+     * @param helper The specified helper.
+     * @return an unique label for the given attribute.
+     * @throws IllegalActionException If the helper throws it while
+     *  generating the label.
+     */
     public String getReference(Attribute attribute, String[] channelAndOffset,
             CodeGeneratorHelper helper) throws IllegalActionException {
         return helper.getReference(attribute, channelAndOffset);
     }
 
 
-    // See CodeGeneratorHelper._getReference(String, boolean)
+    /**
+     * Return the reference channels for the specified port channel.
+     * If the port channel is input or contained by an opaque CompositeActor, 
+     * then this will return a list containing the given port channel. 
+     * Otherwise, it returns a list of the connected sink channels.
+     * @param port The given port.
+     * @param channelNumber The given channel.
+     * @return The list of reference channels.
+     * @throws IllegalActionException If {@link #getSinkChannels(IOPort, int)}
+     *  throws it.
+     */
     public static List<Channel> getReferenceChannels(IOPort port, int channelNumber)
     throws IllegalActionException {
 
@@ -678,14 +744,6 @@ public class Director extends CodeGeneratorHelper {
      */
     protected static final String _INDENT4 = _getIndentPrefix(4);
 
-    public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
-        return "";
-    }
-
-    public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
-        return "";
-    }
-    
     /**
      * Determines the worst case execution time (WCET) seen by this
      * director. 
