@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SimplePassPointer" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SimplePassPointerTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -41,7 +41,7 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Teale Fristoe">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Teale Fristoe, Codegen Test: Christopher Brooks">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
@@ -55,7 +55,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates how a C style pointer may be passed between two&#10;EmbeddedCActors.&#10;&#10;To see the C code definition of each actor, right click and select&#10;&quot;Look Inside&quot;&#10;&#10;Note that each actor has  an &quot;ptr&quot; output port that passes a&#10;pointer.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 215.0]">
         </property>
     </property>
     <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
@@ -124,14 +124,6 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-    </entity>
-    <entity name="Display EmbeddedCActor Output" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 540, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 165.0]">
-        </property>
     </entity>
     <entity name="EmbeddedCActor2" class="ptolemy.actor.lib.jni.EmbeddedCActor">
         <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;/**/&#10;&#10;/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(ptr) = $ref(in);&#10;$ref(value) = *((int*) $ref(in));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
@@ -211,13 +203,79 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.5, 115.0]">
         </property>
     </entity>
-    <entity name="Display EmbeddedCActor2 Output" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={532, 541, 484, 208}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{199}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 190.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.5, 100.0]">
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{199}">
         </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="8">
+        </property>
+        <doc>Output a substring of an input string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 60.0]">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Memory @&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 60.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input.toString()">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 50.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="StringSubstring2" class="ptolemy.actor.lib.string.StringSubstring">
+        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="8">
+        </property>
+        <doc>Output a substring of an input string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Memory @&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input.toString()">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 155.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -227,19 +285,35 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="EmbeddedCActor.in" relation="relation3"/>
     <link port="EmbeddedCActor.ptr" relation="relation6"/>
-    <link port="EmbeddedCActor.value" relation="relation4"/>
-    <link port="Display EmbeddedCActor Output.input" relation="relation6"/>
-    <link port="Display EmbeddedCActor Output.input" relation="relation4"/>
+    <link port="EmbeddedCActor.value" relation="relation"/>
     <link port="EmbeddedCActor2.in" relation="relation6"/>
-    <link port="EmbeddedCActor2.ptr" relation="relation"/>
-    <link port="EmbeddedCActor2.value" relation="relation2"/>
+    <link port="EmbeddedCActor2.ptr" relation="relation5"/>
+    <link port="EmbeddedCActor2.value" relation="relation4"/>
     <link port="Const.output" relation="relation3"/>
-    <link port="Display EmbeddedCActor2 Output.input" relation="relation"/>
-    <link port="Display EmbeddedCActor2 Output.input" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="StringSubstring.input" relation="relation7"/>
+    <link port="StringSubstring.output" relation="relation2"/>
+    <link port="Test5.input" relation="relation2"/>
+    <link port="Expression.output" relation="relation7"/>
+    <link port="Expression.input" relation="relation5"/>
+    <link port="StringSubstring2.input" relation="relation9"/>
+    <link port="StringSubstring2.output" relation="relation8"/>
+    <link port="Test3.input" relation="relation8"/>
+    <link port="Expression2.output" relation="relation9"/>
+    <link port="Expression2.input" relation="relation6"/>
 </entity>
