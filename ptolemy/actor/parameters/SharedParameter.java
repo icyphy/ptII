@@ -660,7 +660,7 @@ public class SharedParameter extends Parameter implements Initializable {
             } else if (registerWorkspace == null){
                 // Clean up register.
                 // The workspace is a weak reference. If it is null, we know that the
-                // workspace is garbage collcted and hence we can remove the entry in the
+                // workspace is garbage collected and hence we can remove the entry in the
                 // list.
                 iterator.remove();
             }
