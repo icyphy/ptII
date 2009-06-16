@@ -90,7 +90,18 @@ public class PtidesBasicDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate the initialize code for the associated PtidesEmbedded director.
+    /** Generate the assembly file associated for this PtidyOS program.
+     *  Here we return an empty string, but the target specific adapter
+     *  should overwrite it.
+     *  @return The generated assembly file code.
+     *  @exception IllegalActionException
+     */
+    public StringBuffer generateAsseblyFile() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        return code;
+    }
+    
+    /** Generate the initialize code for the associated PtidesBasic director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating initialize code for the actor.

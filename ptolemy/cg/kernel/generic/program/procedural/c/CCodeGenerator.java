@@ -62,7 +62,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////CodeGenerator
+////CCodeGenerator
 
 /** Base class for C code generator.
  *

@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains
 
-DIRS =		sdf
+DIRS =		sdf ptides
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../..
@@ -53,7 +53,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	sdf/sdf.jar
+	sdf/sdf.jar \
+	ptides/ptides.jar
 
 # Keep this list alphabetized.
 JSRCS = 
@@ -65,7 +66,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	sdf
+MISC_FILES =	sdf ptides
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

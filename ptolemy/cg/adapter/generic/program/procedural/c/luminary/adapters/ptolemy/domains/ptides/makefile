@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen using C
+# Makefile for Ptolemy Classic style Codegen
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/kernel/generic/program/procedural/c
+ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides
 
-DIRS =		ptidyos
+DIRS =		kernel
 
 # Root of the Java directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,25 +45,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	c
+PTPACKAGE = 	ptides
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	ptidyos.jar
+PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = CCodeGenerator.java \
-	CCodeGeneratorAdapterStrategy.java \
-	CCodegenUtilities.java \
-	CParseTreeCodeGenerator.java
+JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = \
-	makefile.in \
-	jnimakefile.in
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -75,9 +69,7 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'CCodeGeneratorAdapter$$1.class' \
-        'CCodeGeneratorAdapterStrategy$$1.class' \
+	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
