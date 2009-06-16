@@ -45,7 +45,7 @@ include $(CONFIG)
 
 
 # Used to build jar files
-PTPACKAGE = 	doclet
+PTPACKAGE = 	doclets
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
