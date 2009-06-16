@@ -475,7 +475,7 @@ HYVISUAL_DOCS = \
 PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
-	ptolemy.domains.ptides.lib.targets.luminary \
+	ptolemy.domains.ptides.lib.targets.luminary
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
