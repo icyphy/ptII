@@ -52,6 +52,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	parameterizedTemplates/parameterizedTemplates.jar \
 	polymorphic/polymorphic.jar
 
 JSRCS =
