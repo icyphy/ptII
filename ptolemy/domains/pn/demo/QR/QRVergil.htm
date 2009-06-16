@@ -1,122 +1,115 @@
-<!-- : ptmkmodel,v 1.6 1999/06/13 21:47:21 cxh Exp $
+<!-- $Id$
   @author: Bart Kienhuis
  -->
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Process Network Demo</title>
+<title>Process Network QR Algorithm Demo</title>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>Process Network Demo</H1>
+<H1>Process Network QR Algorithm Demo</H1>
 <P>
-A process network description of the QR example is shown below:
 <CENTER>
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "600" \
-            height = "400"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/pn/pn.jar,ptolemy/domains/pn/demo/QR/QR.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "name" VALUE = "QR" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "QR.xml" > \
-            <a href="QR.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/pn/pn.jar,ptolemy/domains/pn/demo/QR/QR.jar" \
-            width = "600" \
-            height = "400" \
-            name = "QR" background = "#ffffff" modelURL = "QR.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="QR.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/pn/pn.jar,ptolemy/domains/pn/demo/QR/QR.jar" \
-            width = "600" \
-            height = "400" \
-            > \
-            <PARAM NAME = "name" VALUE = "QR" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "QR.xml" > \
-            <a href="QR.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/pn/demo/QR/QR.jar,ptolemy/domains/pn/demo/demo.jar,ptolemy/data/data.jar,ptolemy/domains/pn/pn.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/pn/demo/QR/QR.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/pn/demo/QR/QR.xml">
+  <PARAM NAME = "NAME" VALUE = "QR" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "QR.xml" > \
+  <a href="QR.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
-<p>
-In this description, the nodes ND_1,
-ND_2, ND_3, ND_4, and ND_5 describe processes and the edges between
-these nodes describe FIFO buffers that have a certain capacity. The
-processes read from these buffers using a blocking-read semantics. In
-the applet, we simulate this process network to get the value for the
-R matrix. The big difference between the Matlab program and the
-process network is that the process network executes in parallel
-whereas the Matlab description executes sequentially. </P>
 <P>
-In process <A HREF="ND_2.java">ND_2</A>, a large matrix is stored that
-contains 500 real data samples taken from 16 antennas. From this
-matrix, the process reads a number of samples (the number of
-antenna's) and sends these samples to either node <A
-HREF="ND_3.java">ND_3</A> or <A HREF="ND_4.java">ND_4</A>. This
-process is repeated a number of times, as many times as there will be
-a QR-update. Process ND_3 and process ND_4 read data from incoming
-edges and producing data on outgoing edges. After the numbers of
-QR-updates are done, the final matrix R is sent to process <A
-HREF="ND_5.java">ND_5</A>, which sends the matrix <I>R</I> to the
-Plotter and the StreamToMatrix actor. The latter one reconstructs from
-the incoming stream a matrix, which is sent to the MatrixViewer to be
-visualized. Process <A HREF="ND_1.java">ND_1</A> is used to properly
-initialize the process network by sending a specific number of zeros
-to either process ND_3 or process ND_4.
-</P>
+The above applet shows the result of a Process Network (PN) executing
+the QR-algorithm on a continuous stream of data that is coming from an
+array of antennas. Each execution of the algorithm on a new set of
+data from the antennas is called an update. The applet shows the
+matrix R in a <I>MatrixViewer</I>. This matrix is of size NxN, where N
+is the number of antenna's involved. The individual entries in the
+matrix are also shown in the <I>Plotter</I>. The matrix R is obtained
+after doing a certain number of QR-algorithm updates on a stream of
+data coming from the antenna array of a certain size.
+</p>
+
 <P>
-Process networks have the characteristic that they execute
-<I>deterministically</I>, which means that the computation of the
-result is independent of the scheduled order of the processes.
-Thus, the thread scheduling strategy used by the Java virtual machine
-to run the applet has no effect on the results of the run.
+In the demo, if we select 10 QR-updates for an array of 6 antenna's,
+the following R matrix must be found: </P>
+
+<PRE>
+# name: Rout
+# type: matrix
+# rows: 6
+# columns: 6
+
+270.843 206.234  60.482 -39.318 -89.100 -38.568
+  0.000 144.933 181.192 172.919 104.333  10.488
+  0.000   0.000  32.964  18.280  10.909   9.170
+  0.000   0.000   0.000  24.739   7.446   7.208
+  0.000   0.000   0.000   0.000  20.30   11.206
+  0.000   0.000   0.000   0.000   0.000   8.535
+</PRE>
+<P>
+
+The QR algorithm describes a linear algebra problem in which a matrix
+A can be written as a product of two matrices Q and R (A=QR). The
+matrix R is an upper triangular matrix and matrix Q is an orthogonal
+matrix. A program that does this QR transformation is given below in
+the Matlab programming language. The algorithm uses the Cordic
+functions <I>Vectorize </I>and <I>Rotate </I>to find the QR
+transform. If we execute this program in Matlab, we would find the
+same matrix R.</P>
+
+<PRE>
+%% Initialize Matrix r
+for j = 1:1:N,
+  for i = j:1:N,
+    [r(j,i)] = _ReadMatrix_Zeros_64x64();
+  end
+end
+
+%% Initialize Matrix x
+for k = 1:1:K,
+  for j = 1:1:N,
+    [x(k,j)] = _ReadMatrix_U_1000x16();
+  end
+end
+
+%% do the QR updates
+for k = 1:1:K,
+  for j = 1:1:N,
+    [r(j,j), x(k,j), t ] = Vectorize( r(j,j), x(k,j) );
+    for i = j+1:1:N,
+       [r(j,i), x(k,i), t] = Rotate( r(j,i), x(k,i), t );
+    end
+  end
+end
+
+%% After the K iterations, collect the values of the R Matrix
+for j = 1:1:N,
+  for i = j:1:N,
+    [ Sink(j,i) ] = Rout( r(j,i) );
+  end
+end
+</PRE>
+
+<P>
+However, we can also describe the same QR-algorithm as a <I>Process
+Network</I>, as shown in the <a href="QRVergil.htm">block diagram</a>.
 </P>
+<P></P>
 </BODY>
 </HTML>

@@ -1,6 +1,6 @@
-<!-- : $Id$
+<!-- $Id$
   @author: 
- -->
+-->
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -8,9 +8,14 @@
 <TITLE>DOPCenter</TITLE>
 </HEAD>
 <BODY>
-<H1>DOPCenter Space Management</H1>
-<CENTER>
+
+<H1>DOPCenter</H1>
+
+
 <P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
      For information about applets and Ptolemy, see
@@ -40,23 +45,23 @@
     if (_ie == true) document.writeln('\
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "817" \
-            height = "1425"  \
+            width = "1032" \
+            height = "966"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
-                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/domains/space/ojdbc6.jar,lib/diva.jar,ptolemy/domains/domains.jar,ptolemy/domains/space/space.jar,ptolemy/ptsupport.jar,lib/ptcolt.jar" > \
+                   VALUE = "ptolemy/actor/lib/database/ojdbc6.jar,lib/diva.jar,ptolemy/domains/domains.jar,ptolemy/domains/space/space.jar,ptolemy/ptsupport.jar,lib/ptcolt.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "DOPCenterViewer" > \
+            <PARAM NAME = "NAME" VALUE = "DOPCenter" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "DOPCenter.xml" > \
-	    <PARAM NAME = "controls" VALUE = "buttons" > \
-	    <PARAM NAME = "includeRunPanel" VALUE = "false" > \
             <a href="DOPCenter.xml">MoML specification for this model.</a> \
         </OBJECT> \
         ');
@@ -65,12 +70,12 @@
         <COMMENT> \
           <EMBED \
             type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "../../../../.." \
-            archive = "ptolemy/domains/space/ojdbc6.jar,lib/diva.jar,ptolemy/domains/domains.jar,ptolemy/domains/space/space.jar,ptolemy/ptsupport.jar,lib/ptcolt.jar" \
-            width = "817" \
-            height = "1425" \
-            NAME = "DOPCenterViewer" background = "#ffffff" modelURL = "DOPCenter.xml" controls = "buttons" includeRunPanel = "true"  \
+            archive = "ptolemy/actor/lib/database/ojdbc6.jar,lib/diva.jar,ptolemy/domains/domains.jar,ptolemy/domains/space/space.jar,ptolemy/ptsupport.jar,lib/ptcolt.jar" \
+            width = "1032" \
+            height = "966" \
+            NAME = "DOPCenter" background = "#ffffff" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "DOPCenter.xml"  \
             progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
@@ -82,23 +87,25 @@
         ');
     else document.writeln('\
         <APPLET \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "../../../../.." \
-            archive = "ptolemy/domains/space/ojdbc6.jar,lib/diva.jar,ptolemy/domains/domains.jar,ptolemy/domains/space/space.jar,ptolemy/ptsupport.jar,lib/ptcolt.jar" \
-            width = "817" \
-            height = "1425" \
+            archive = "ptolemy/actor/lib/database/ojdbc6.jar,lib/diva.jar,ptolemy/domains/domains.jar,ptolemy/domains/space/space.jar,ptolemy/ptsupport.jar,lib/ptcolt.jar" \
+            width = "1032" \
+            height = "966" \
             > \
-            <PARAM NAME = "NAME" VALUE = "DOPCenterViewer" > \
+            <PARAM NAME = "NAME" VALUE = "DOPCenter" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "DOPCenter.xml" > \
-	    <PARAM NAME = "controls" VALUE = "buttons" > \
-	    <PARAM NAME = "includeRunPanel" VALUE = "true" > \
             <a href="DOPCenter.xml">MoML specification for this model.</a> \
         </APPLET> \
         ');
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
+This applet is implemented in MoML, as shown in a 
+The <a href="DOPCenterVergil.htm">Vergil block diagram</a>.
 </p>
 </BODY>
 </HTML>

@@ -1,173 +1,77 @@
-<!-- : $Id$
-  @author: Christopher Hylands and Edward A. Lee
- -->
-<html>
-<head>
+<!-- $Id$-->
+<HTML>
+<HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Network Integration</title>
 <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
+<TITLE>Network Integration</TITLE>
+</HEAD>
+<BODY>
+
 <H1>Network Integration</H1>
-<P>
-The networked diagram model can be created in the Ptolemy II schematic editor
-called Vergil, as shown below:
-<CENTER>
-<P>
 
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
+The following plot shows the networked diagram for a received waveform
+for a baseband channel with additive Gaussian noise.
+<P>
+<font color="#cc0000">This applet will only work if this HTML file
+resides on the <code>http://ptolemy.eecs.berkeley.edu</code>
+web server.</font> See below for details.
 
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "600" \
-            height = "400"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "Vergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "model" VALUE = "Networked.xml" > \
-            <a href="Networked.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "600" \
-            height = "400" \
-            NAME = "Vergil" background = "#ffffff" model = "Networked.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="Networked.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "600" \
-            height = "400" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "Vergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "model" VALUE = "Networked.xml" > \
-            <a href="Networked.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
+
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../.."
+   archive = "ptolemy/moml/demo/Networked/Networked.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/moml/demo/Networked/Networked.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/moml/demo/Networked/Networked.xml">
+  <PARAM NAME = "NAME" VALUE = "Networked" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Networked.xml" > \
+  <a href="Networked.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
-<p>
-Vergil is in fact an editor for MoML, an XML schema used by Ptolemy II
-to represent models.  The XML for the networked diagram model is shown below:
-<CENTER>
+This model contains a component that is defined on the Ptolemy project
+website.  When you open the model, you will be alerted to the fact
+that it requires loading a model definition from a remote source.
+If you agree to proceed, then you will have a model with a remotely
+defined component.  The component itself is at
+<a href="http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml">
+http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
+You can open that definition by clicking on the hyperlink, or by
+using the "Open URL" command in the File menu.
+ <p>
+This applet will only work if this HTML file
+resides on the <code>http://ptolemy.eecs.berkeley.edu</code>
+web server.
+The reason is that the default applet security policy
+only permits connections to the machine where the applet originated.
+Thus, if this applet is on your local machine, you will get a
+SecurityException when the applet tries to connect to
+<code>http://ptolemy.eecs.berkeley.edu</code> to download part of 
+the model.
+ <br>This restriction applies only to running this model as an applet,
+the model will run without this restriction under vergil or Web Start.
+
 <P>
-
-
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "680" \
-            height = "300"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.gui.demo.ShowRawDocumentApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "MoML" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "source" VALUE = "Networked.xml" > \
-            <a href="Networked.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.gui.demo.ShowRawDocumentApplet" \
-            codebase = "../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "680" \
-            height = "300" \
-            NAME = "MoML" background = "#ffffff" source = "Networked.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="Networked.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.gui.demo.ShowRawDocumentApplet" \
-            codebase = "../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "680" \
-            height = "300" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "MoML" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "source" VALUE = "Networked.xml" > \
-            <a href="Networked.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-</CENTER>
-<p>
-</body>
-</html>
+The <a href="NetworkedVergil.htm">block diagram</a>
+for the model was constructed using the Ptolemy II schematic editor
+called Vergil.
+</p>
+<p></p>
+</BODY>
+</HTML>

@@ -1,107 +1,52 @@
-<!-- : $Id$
-  @author: Edward A. Lee
- -->
-<html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Fixed-Point FIR Filter</title>
+<!-- $Id$-->
+<HTML>
+<HEAD>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
+<TITLE>Fixed-Point FIR Filter</TITLE>
+<LINK href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</HEAD>
 <body>
 <H1>Fixed-Point FIR Filter</H1>
-<P>
-The fixed-point FIR filter model can be created in the Ptolemy II
-schematic editor called Vergil, as shown below:
-<CENTER>
-<P>
-
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "600" \
-            height = "350"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "FixFIRVergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "FixFIR.xml" > \
-            <a href="FixFIR.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "600" \
-            height = "350" \
-            NAME = "FixFIRVergil" background = "#ffffff" modelURL = "FixFIR.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="FixFIR.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "600" \
-            height = "350" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "FixFIRVergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "FixFIR.xml" > \
-            <a href="FixFIR.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-</CENTER>
-<P>
-An impulse is sent through three version of the FIR
-filter. The middle filter uses only double-precision floating point.
-The bottom filter operates on a stream of
-doubles but uses taps that have been quantized using the
-<code>quantize()</code> function in the expression language. This
-<code>quantize</code> function fits the coefficients of the FIR filter into an
-8 bit representation, of which 2 bits are used for the integer
-part. The upper filter operates on fix point tokens. This
-instance of the FIR filter uses fixed-point versions of the
-coefficients using the <code>fix()</code> function in the expression
-language. This function converts each tap value into a fix point
-representation using 6 bits of which 2 bits are used to represent the
-integer part.
 <p>
-</body>
-</html>
+This model illustrates fixed-point computation using the data-polymorphic
+FIR filter:
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+-->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/sdf/demo/FixFIR/FixFIR.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/FixFIR/FixFIR.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/sdf/demo/FixFIR/FixFIR.xml">
+  <PARAM NAME = "NAME" VALUE = "FixFIR" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "FixFIR.xml" > \
+  <a href="FixFIR.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</center>
+<p>
+This model exploits the fact that the FIR filter actor is data polymorphic
+to feed it fixed-point numbers and fixed-point coefficients.
+The magnitude transfer function is calculated for three scenarios.
+The "exact" scenario uses double-precision floating point computations
+throughout.  The "fixed point" scenario uses fixed-point computations,
+with 6 bits total, of which 2 bits are integer bits.  The "quantized
+coefficients" scenario quantizes the coefficients to 8 bits total,
+of which 2 are integer bits, but then
+performs all calculations using double-precision floating
+point. See the <a href="FixFIRVergil.htm">block diagram definition</a>.
+<p>
+</BODY>
+</HTML>

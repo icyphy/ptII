@@ -1,93 +1,42 @@
-<!-- : $Id$
-  @author: Edward A. Lee
- -->
-<html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>StickyMasses</title>
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<TITLE>StickyMasses</TITLE>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
+</HEAD>
 <body>
 <H1>StickyMasses Model</H1>
-<P>
-The universe example is defined by the following block diagram:
-<CENTER>
-<P>
-
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "650" \
-            height = "475"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/gr/gr.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "StickyMassesVergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "StickyMasses.xml" > \
-            <a href="StickyMasses.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/gr/gr.jar" \
-            width = "650" \
-            height = "475" \
-            NAME = "StickyMassesVergil" background = "#ffffff" modelURL = "StickyMasses.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="StickyMasses.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/gr/gr.jar" \
-            width = "650" \
-            height = "475" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "StickyMassesVergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "StickyMasses.xml" > \
-            <a href="StickyMasses.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-</CENTER>
-<P>
 <p>
-</body>
-</html>
+This model illustrates a continuous-time model of StickyMasses mechanics
+illustrated by a 3-D graphical animation:
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+-->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/gr/demo/StickyMasses/StickyMasses.jar,ptolemy/data/data.jar,ptolemy/domains/gr/gr.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/de/de.jar,ptolemy/ptsupport.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/gr/demo/StickyMasses/StickyMasses.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml">
+  <PARAM NAME = "NAME" VALUE = "StickyMasses" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "StickyMasses.xml" > \
+  <a href="StickyMasses.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</center>
+<p>
+See the <a href="StickyMassesVergil.htm">block diagram definition</a>.
+<p>
+</BODY>
+</HTML>

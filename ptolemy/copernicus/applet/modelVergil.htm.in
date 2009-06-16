@@ -1,6 +1,6 @@
-<!-- : $Id$
+<!-- $Id$
   @author: 
- -->
+-->
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -8,12 +8,14 @@
 <TITLE>@sanitizedModelName@</TITLE>
 </HEAD>
 <BODY>
-<H1>@sanitizedModelName@</H1>
-<P>
-The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic editor:
 
-<CENTER>
+<H1>@sanitizedModelName@</H1>
+
+
 <P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
      For information about applets and Ptolemy, see
@@ -43,23 +45,23 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
     if (_ie == true) document.writeln('\
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "@vergilWidth@" \
-            height = "@vergilHeight@"  \
+            width = "@appletWidth@" \
+            height = "@appletHeight@"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
-                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "@codeBase@" > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "@modelJarFiles@,@vergilJarFiles@" > \
+                   VALUE = "@modelJarFiles@" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@Viewer" > \
+            <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "@sanitizedModelName@.xml" > \
-	    <PARAM NAME = "controls" VALUE = "buttons" > \
-	    <PARAM NAME = "includeRunPanel" VALUE = "true" > \
             <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
         </OBJECT> \
         ');
@@ -68,12 +70,12 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
         <COMMENT> \
           <EMBED \
             type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "@codeBase@" \
-            archive = "@modelJarFiles@,@vergilJarFiles@" \
-            width = "@vergilWidth@" \
-            height = "@vergilHeight@" \
-            NAME = "@sanitizedModelName@Viewer" background = "#ffffff" modelURL = "@sanitizedModelName@.xml" controls = "buttons" includeRunPanel = "true"  \
+            archive = "@modelJarFiles@" \
+            width = "@appletWidth@" \
+            height = "@appletHeight@" \
+            NAME = "@sanitizedModelName@" background = "#ffffff" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "@sanitizedModelName@.xml"  \
             progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
@@ -85,23 +87,25 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
         ');
     else document.writeln('\
         <APPLET \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "@codeBase@" \
-            archive = "@modelJarFiles@,@vergilJarFiles@" \
-            width = "@vergilWidth@" \
-            height = "@vergilHeight@" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@Viewer" > \
+           code = "ptolemy.actor.gui.MoMLApplet" \
+           codebase = "@codeBase@" \
+           archive = "@modelJarFiles@" \
+           width = "@appletWidth@" \
+           height = "@appletHeight@" \
+           > \
+           <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "@sanitizedModelName@.xml" > \
-	    <PARAM NAME = "controls" VALUE = "buttons" > \
-	    <PARAM NAME = "includeRunPanel" VALUE = "true" > \
-            <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
-        </APPLET> \
+           <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
+       </APPLET> \
         ');
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
+This applet is implemented in MoML, as shown in a 
+The <a href="@sanitizedModelName@Vergil.htm">Vergil block diagram</a>.
 </p>
 </BODY>
 </HTML>

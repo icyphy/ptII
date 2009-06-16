@@ -1,5 +1,5 @@
-<!-- : $Id$
-  @author: Christopher Hylands and Edward A. Lee
+<!-- $Id$
+  @author: Edward A. Lee
  -->
 <html>
 <head>
@@ -8,91 +8,56 @@
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>Sketch Model Implementation</H1>
+<H1>Sketch</H1>
 <P>
-The <a href="Sketch.htm">sketch model</a> is implemented by a
-<a href="SketchApplet.java">custom applet</a>,
-which uses as a basis the block diagram shown below:
-<CENTER>
-<P>
-
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "550" \
-            height = "220"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "SketchVergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "Sketch.xml" > \
-            <a href="Sketch.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "550" \
-            height = "220" \
-            NAME = "SketchVergil" background = "#ffffff" modelURL = "Sketch.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="Sketch.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.vergil.MoMLViewerApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/sdf/sdf.jar" \
-            width = "550" \
-            height = "220" \
-            > \
-            <PARAM NAME = "NAME" VALUE = "SketchVergil" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "modelURL" VALUE = "Sketch.xml" > \
-            <a href="Sketch.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-</CENTER>
+Using the right mouse button, sketch a signal below.
+The signal is multiplied by a sine wave.
+<center>
+<!-- The HTML below is for the Java Plugin.
+	The first section is for IE,
+	the second is for appletviewer,
+	the third is for Netscape Communicator
+ -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/sdf/demo/Sketch/Sketch.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "400"
+   height = "650"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/Sketch/Sketch.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/sdf/demo/Sketch/Sketch.xml">
+  <PARAM NAME = "NAME" VALUE = "Sketch" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "Sketch.xml" > \
+  <a href="Sketch.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</center>
 <p>
+Notice that you can zoom in with the left mouse button
+and very precisely control the sketched curve.
+You can also update just portion of the curve by sketching over
+only a subset of the horizontal axis.
+<!-- FIXME: The following doesn't work.
+You can undo your updates by typing Control-Z (the undo history is infinite).
+You can redo what you have undone by typing Control-Y.  For undo and
+redo to work, you have to make sure the focus is in the plot window
+(clicking on the fill button will do this).
+-->
+<p>
+This model is implemented by a
+<a href="SketchApplet.java">custom applet</a>,
+which uses as a basis a <a href="SketchVergil.htm">block diagram</a>
+constructed in Vergil.
 The applet extends the Vergil implementation to make the
 sketched source and the plotter share the same graphical object
 on screen.
-<p></p>
 </body>
 </html>
