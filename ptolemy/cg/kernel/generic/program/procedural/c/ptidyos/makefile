@@ -55,7 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 # Keep this list alphabetized.
-JSRCS = PtidyOSCodeGenerator
+JSRCS = PtidyOSCodeGenerator.java
 
 OTHER_FILES_TO_BE_JARED =
 

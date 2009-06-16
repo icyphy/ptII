@@ -352,25 +352,12 @@ public class PtidesBasicDirector extends Director {
         }
     }
 
-    /** Update buffer sizes for each output port to the value specified by _outputPortBufferSize
-     *  Do not update the buffer sizes of the input ports, assuming they are 1.
-     *  @exception IllegalActionException If thrown while setting
-     *   buffer size.
-     *  @see #_outputPortBufferSize
-     */
-    protected void _updatePortBufferSize() throws IllegalActionException {
-        // TODO: Jeff look at this!
-        /*
-        for (Actor actor : (List<Actor>)((CompositeActor) _director.getContainer()).deepEntityList()) {
-            CodeGeneratorAdapter actorAdapter = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
-            for (IOPort outputPort : (List<IOPort>)actor.outputPortList()) {
-                for (int channel = 0; channel < outputPort.getWidth(); channel++) {
-                    actorAdapter.setBufferSize(outputPort, channel, _outputPortBufferSize);
-                }
-            }
-        }
-        */
-    }
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected variables                    ////
+    
+    /** A list that keeps track of all the supported devices in the code generator.
+    protected List<Actor> _supportedDevices;
+    
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////

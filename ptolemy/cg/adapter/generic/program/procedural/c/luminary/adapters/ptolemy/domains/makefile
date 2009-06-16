@@ -36,7 +36,7 @@ ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/
 DIRS =		ptides
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../..
+ROOT =		../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
