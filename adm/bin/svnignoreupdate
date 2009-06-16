@@ -4,6 +4,7 @@
 
 statusFile=/tmp/svnignoreupdate.statusFile.$$
 svnIgnoreFile=/tmp/svnignoreupdate.svnIgnoreFile.$$
+svnIgnoreJarFile=/tmp/svnignoreupdate.svnIgnoreJarFile.$$
 
 svn status | egrep '^\?' | awk '{print $2}' > $statusFile
 
@@ -13,7 +14,7 @@ do
     echo $classDir
     svn propget svn:ignore $classDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
     echo '*.class' >> $svnIgnoreFile
-    svn propset svn:ignore -F $svnIgnoreFile $classDir
+    #svn propset svn:ignore -F $svnIgnoreFile $classDir
 done
 
 alljtestsDirs=`egrep "alljtests.tcl$" $statusFile | xargs -n 1 dirname | sort | uniq`
@@ -22,7 +23,7 @@ do
     echo $alljtestsDir
     svn propget svn:ignore $alljtestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
     echo 'alljtests.tcl' >> $svnIgnoreFile
-    svn propset svn:ignore -F $svnIgnoreFile $alljtestsDir
+    #svn propset svn:ignore -F $svnIgnoreFile $alljtestsDir
 done
 
 
@@ -32,7 +33,29 @@ do
     echo $alljsimpletestsDir
     svn propget svn:ignore $alljsimpletestsDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
     echo 'alljsimpletests.tcl' >> $svnIgnoreFile
-    svn propset svn:ignore -F $svnIgnoreFile $alljsimpletestsDir
+    #svn propset svn:ignore -F $svnIgnoreFile $alljsimpletestsDir
+done
+
+jarDirs=`egrep "\.jar$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for jarDir in $jarDirs
+do
+    basedir=`basename $jarDir`
+    if [ -f $jarDir/${basedir}.jar ]; then
+	echo $jarDir
+	svn propget svn:ignore $jarDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+	if [ -f $svnIgnoreFile ]; then 
+	    cp $svnIgnoreFile $svnIgnoreJarFile
+        else
+	    rm $svnIgnoreJarFile
+	    touch $svnIgnoreJarFile
+        fi
+	echo "${basedir}.jar" >> $svnIgnoreFile
+	if [ -f $dirname/signed_${basedir}.jar ]; then
+	    echo 'signed_${basedir}.jar' >> $svnIgnoreFile
+        fi	    
+	diff $svnIgnoreJarFile $svnIgnoreFile
+	svn propset svn:ignore -F $svnIgnoreFile $jarDir
+    fi	
 done
 
 #rm -f $statusFile

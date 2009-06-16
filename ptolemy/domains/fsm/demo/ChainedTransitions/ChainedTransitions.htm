@@ -19,27 +19,82 @@ applet is displayed on a XGA screen-->
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
  -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/fsm/demo/ChainedTransitions/ChainedTransitions.jar,ptolemy/data/data.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/ptsupport.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "400"
-   height = "650"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/fsm/demo/ChainedTransitions/ChainedTransitions.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/fsm/demo/ChainedTransitions/ChainedTransitions.xml">
-  <PARAM NAME = "NAME" VALUE = "ChainedTransitions" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "ChainedTransitions.xml" > \
-  <a href="ChainedTransitions.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
+<!-- HTML CONVERTER -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; 
+    var _ns = false; 
+    var _ns6 = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+    <COMMENT>
+        <SCRIPT LANGUAGE="JavaScript1.1"><!--
+        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
+        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
+//--></SCRIPT>
+    </COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('\
+        <OBJECT \
+            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
+            width = "700" \
+            height = "650"  \
+            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
+            <PARAM NAME = "code" \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
+	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
+	    <PARAM NAME = "archive" \
+                   VALUE = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" > \
+            <PARAM NAME = "type" \
+                   VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
+            <PARAM NAME = "scriptable" VALUE = "false" > \
+            <PARAM NAME = "NAME" VALUE = "ChainedTransitions" > \
+	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
+	    <PARAM NAME = "modelURL" VALUE = "ChainedTransitions.xml" > \
+            <a href="ChainedTransitions.xml">MoML specification for this model.</a> \
+        </OBJECT> \
+        ');
+    else if (_ns == true || _ns6 == true)
+         document.writeln('\
+        <COMMENT> \
+          <EMBED \
+            type = "application/x-java-applet;version=1.4.2" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
+            width = "700" \
+            height = "650" \
+            NAME = "ChainedTransitions" background = "#ffffff" controls = "buttons, directorParameters" orientation = "vertical" modelURL = "ChainedTransitions.xml"  \
+            progressbar = "true" \
+            scriptable = "false" \
+            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
+              <NOEMBED> \
+              <a href="ChainedTransitions.xml">MoML specification for this model.</a> \
+              </NOEMBED> \
+           </EMBED> \
+        <COMMENT> \
+        ');
+    else document.writeln('\
+        <APPLET \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
+            width = "700" \
+            height = "650" \
+            > \
+            <PARAM NAME = "NAME" VALUE = "ChainedTransitions" > \
+	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
+	    <PARAM NAME = "modelURL" VALUE = "ChainedTransitions.xml" > \
+            <a href="ChainedTransitions.xml">MoML specification for this model.</a> \
+        </APPLET> \
+        ');
+//--></SCRIPT>
+<!-- /HTML CONVERTER -->
 </CENTER>
 
 <p>By chained transitions, it means that when a state is entered through

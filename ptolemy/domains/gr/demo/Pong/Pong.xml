@@ -1782,6 +1782,10 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{95.0, 310.0}">
+        </vertex>
+    </relation>
     <link port="Animation.x_position" relation="relation3"/>
     <link port="Animation.y_position" relation="relation5"/>
     <link port="Animation.PaddlePosition" relation="relation"/>

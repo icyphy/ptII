@@ -115,11 +115,11 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/matlabSunOS.jar \
 
 # Not all hosts have matlab
-#MATLAB_JARS =
-MATLAB_JARS = \
-	ptolemy/matlab/matlab.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar
+MATLAB_JARS =
+#MATLAB_JARS = \
+#	ptolemy/matlab/matlab.jar \
+#	ptolemy/matlab/demo/demo.jar \
+#	lib/matlab.jar
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \

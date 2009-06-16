@@ -35,7 +35,6 @@ DIRS = 		actors ddi util demo doc test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
-
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar
 
 # Get configuration info

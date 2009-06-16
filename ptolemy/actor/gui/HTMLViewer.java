@@ -41,6 +41,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Enumeration;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
@@ -53,6 +54,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 import javax.swing.text.html.StyleSheet;
+import javax.swing.text.Style;
 
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.StringAttribute;
@@ -414,43 +416,43 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  <a href="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801">open dialog, common places pane has white box instead of text</a>.
      */
     protected void _open() {
-            HTMLDocument doc = (HTMLDocument) pane.getDocument();
+        HTMLDocument doc = (HTMLDocument) pane.getDocument();
         StyleSheet styleSheet = doc.getStyleSheet();
 
 
         // Debugging code, useful for seeing what properties are set.
-//         Enumeration rules = styleSheet.getStyleNames();
-//         while (rules.hasMoreElements()) {
-//             String name = (String) rules.nextElement();
-//             Style rule = styleSheet.getStyle(name);
-//             System.out.println("    ruleSS1: " + name + " " + rule.getName() + ": " + rule.toString());
-//             Enumeration attributeNames = rule.getAttributeNames();
-//             while (attributeNames.hasMoreElements()) {
-//                 Object attributeName = attributeNames.nextElement();
-//                 System.out.println("      attrname: "
-//                         + attributeName + " " + attributeName.getClass()
-//                         + " getAttribute(): " + rule.getAttribute(attributeName)
-//                         + " class: " + rule.getAttribute(attributeName).getClass()
-//                                    );
+        Enumeration rules = styleSheet.getStyleNames();
+        while (rules.hasMoreElements()) {
+            String name = (String) rules.nextElement();
+            Style rule = styleSheet.getStyle(name);
+            System.out.println("    ruleSS1: " + name + " " + rule.getName() + ": " + rule.toString());
+            Enumeration attributeNames = rule.getAttributeNames();
+            while (attributeNames.hasMoreElements()) {
+                Object attributeName = attributeNames.nextElement();
+                System.out.println("      attrname: "
+                        + attributeName + " " + attributeName.getClass()
+                        + " getAttribute(): " + rule.getAttribute(attributeName)
+                        + " class: " + rule.getAttribute(attributeName).getClass()
+                                   );
 
-//             }
-//         }
+            }
+        }
 
-//         StyleSheet styleSheets[] = styleSheet.getStyleSheets();
-//         for ( int i = 0; i < styleSheets.length; i++) {
-//             System.out.println("  stylesSheet " + i + " "+ styleSheets[i]);
-//             rules = styleSheets[i].getStyleNames();
-//             while (rules.hasMoreElements()) {
-//                 String name = (String) rules.nextElement();
-//                 Style rule = styleSheets[i].getStyle(name);
-//                 System.out.println("    rule: " + rule.getName() + ": " + rule.toString());
-//                 Enumeration attributeNames = rule.getAttributeNames();
-//                 while (attributeNames.hasMoreElements()) {
-//                     System.out.println("      attrname: "
-//                             + attributeNames.nextElement());
-//                 }
-//             }
-//         }
+        StyleSheet styleSheets[] = styleSheet.getStyleSheets();
+        for ( int i = 0; i < styleSheets.length; i++) {
+            System.out.println("  stylesSheet " + i + " "+ styleSheets[i]);
+            rules = styleSheets[i].getStyleNames();
+            while (rules.hasMoreElements()) {
+                String name = (String) rules.nextElement();
+                Style rule = styleSheets[i].getStyle(name);
+                System.out.println("    rule: " + rule.getName() + ": " + rule.toString());
+                Enumeration attributeNames = rule.getAttributeNames();
+                while (attributeNames.hasMoreElements()) {
+                    System.out.println("      attrname: "
+                            + attributeNames.nextElement());
+                }
+            }
+        }
 
         Color background = null;
         try {
@@ -468,9 +470,13 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 // Get the color of the ToolBar shadow and use it.
                 Color shadow = UIManager.getColor("ToolBar.shadow");
                 String rgb = Integer.toHexString(shadow.getRGB());
-                styleSheet.addRule("BODY {background: #"
+                String rule = "body {background: #"
                         + rgb.substring(2, rgb.length())
-                        + ";}");
+                        + "}";
+                rule = "foo {thisisatest: bar}";
+                styleSheet.addRule(rule);
+                System.out.println("HTMLViewer: stylesheet: " 
+                        + styleSheet + " shadow: " + shadow + "\n rule: " + rule);
                 _HTMLEditorKit.setStyleSheet(styleSheet);
             } catch (Exception ex) {
                 System.err.println("Problem setting background color");
@@ -478,20 +484,20 @@ public class HTMLViewer extends TableauFrame implements Printable,
             }
             super._open();
         } finally {
-            try {
-                if (background != null) {
-                    // Restore the background color.
-                    String rgb = Integer.toHexString(background.getRGB());
-                    styleSheet.addRule("BODY {background: #"
-                            + rgb.substring(2, rgb.length())
-                            + ";}");
-                    _HTMLEditorKit.setStyleSheet(styleSheet);
-                }
-            } catch (Exception ex) {
-                System.out.println("Problem restoring background color.");
-                ex.printStackTrace();
-            }
-        }
+//             try {
+//                 if (background != null) {
+//                     // Restore the background color.
+//                     String rgb = Integer.toHexString(background.getRGB());
+//                     styleSheet.addRule("BODY {background: #"
+//                             + rgb.substring(2, rgb.length())
+//                             + ";}");
+//                     _HTMLEditorKit.setStyleSheet(styleSheet);
+//                 }
+//             } catch (Exception ex) {
+//                 System.out.println("Problem restoring background color.");
+//                 ex.printStackTrace();
+//             }
+         }
     }
 
     /** Set the scroller size.
