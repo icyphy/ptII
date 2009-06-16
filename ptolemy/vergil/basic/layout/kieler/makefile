@@ -49,8 +49,6 @@ PTPACKAGE = 	kieler
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
-	HyperedgeConnectionTree.java \
-	HyperedgeConnectionTreeTest.java \
 	KielerGraphUtil.java \
 	KielerLayout.java \
 	PtolemyModelUtil.java
