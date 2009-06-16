@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/domains/ptides/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib
 
 DIRS =		
 
@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AcutatorOutputDevice.java \
 	InputDevice.java \
 	OutputDevice.java \
 	SensorInputDevice.java
