@@ -1,0 +1,35 @@
+#!/bin/sh
+# Script that runs fixapplets on all the .htm files that contain applets
+
+printOnly=no
+if [ "$1" = "-n" ]; then
+    echo "$0: -n: Not updating files"
+    printOnly=yes
+    minusNFlag="-n"
+    shift
+fi
+
+ptii=`echo $PTII | sed 's@\\\@/@g'`
+
+#htmFiles=`"$PTII/adm/bin/ptIItxtfiles" | grep 'Vergil.htm$' | grep -v fixapplets | grep -v vendors`
+htmFiles=./ptolemy/domains/sdf/demo/Butterfly/ButterflyVergil.htm
+htmFiles=`cat /tmp/h`
+for file in $htmFiles
+do
+    dir=`dirname $file`
+    base=`basename $file`
+    htmlBase=`echo $base | sed 's@Vergil.htm@.htm@'` 
+    htmlFile=$dir/$htmlBase
+    if [ !  -f "$htmlFile" ]; then 
+	echo "$0: Danger! $htmlFile does not exist!"
+        continue
+    fi	
+    #diff $htmlFile $file
+    #svn diff -r '{2009-06-03}' $htmlFile
+    cp $htmlFile $file
+    svn update -r '{2009-06-03}' $htmlFile
+    mv $htmlFile /tmp/fixappletjnlp
+    svn update $htmlFile
+    mv /tmp/fixappletjnlp $htmlFile
+
+done

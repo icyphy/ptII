@@ -50,7 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 PTCLASSALLJARS = \
-	Speaker/Speaker.xml
+	Speaker/Speaker.jar
 
 JSRCS = \
 

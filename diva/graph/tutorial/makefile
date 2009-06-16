@@ -42,7 +42,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	graph
+PTPACKAGE = 	tutorial
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
