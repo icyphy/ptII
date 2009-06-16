@@ -1674,7 +1674,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Reset the MoML parser.
      *  Note that this method does not purge records of the models
      *  that have been parsed.  To completely reset the MoMLParser,
-     *  see {@link resetAll()}.
+     *  see {@link #resetAll()}.
      *  @see #resetAll()
      *  @see #purgeModelRecord(String)
      *  @see #purgeAllModelRecords()

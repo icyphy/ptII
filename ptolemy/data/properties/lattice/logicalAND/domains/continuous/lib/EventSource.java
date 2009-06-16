@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
- @deprecated Use {@link ptolemy.data.properties.lattice.logicalAND.domains.continuous.lib.DiscreteClock}
+ @deprecated Use {@link ptolemy.actor.lib.DiscreteClock}
 */
 public class EventSource extends AtomicActor {
 
