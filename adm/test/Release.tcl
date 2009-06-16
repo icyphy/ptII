@@ -108,8 +108,6 @@ ptolemy.domains.gr.lib.quicktime
 ptolemy.domains.gro
 ptolemy.domains.gro.kernel
 ptolemy.domains.gro.lib
-ptolemy.domains.rtp.kernel
-ptolemy.domains.rtp.lib
 ptolemy.domains.wireless.lib.network
 ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
