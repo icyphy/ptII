@@ -164,7 +164,7 @@ public class PaletteList extends JList implements DragSourceListener,
             java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
-    /** Return the tool tip text for an event
+    /** Return the tool tip text for an event.
      *  @param evt The event 
      *  @return The tool tip text, if any.
      */

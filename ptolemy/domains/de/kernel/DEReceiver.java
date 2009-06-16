@@ -167,7 +167,9 @@ public class DEReceiver extends AbstractReceiver {
     ////                         protected variables               ////
 
     /** The version of the workspace of container, used for
-     *  caching by _getDirector()
+     *  caching by _getDirector().
+     *  Derived classes that modify the cache may need to update
+     *  this variable.
      */
     protected long _directorVersion = -1;
 

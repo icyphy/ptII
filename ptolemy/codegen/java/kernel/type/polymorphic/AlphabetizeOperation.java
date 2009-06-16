@@ -1,7 +1,7 @@
 /* A tool for alphabetizing the code block files under
-   $CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic/.
+   $CLASSPATH/ptolemy/codegen/java/kernel/type/polymorphic/.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,14 +48,15 @@ import ptolemy.util.FileUtilities;
 */
 public class AlphabetizeOperation {
 
-    /**
+    /** Alphabetize all the blocks in the files in
+     *   $CLASSPATH/ptolemy/codegen/java/kernel/type/polymorphic/.
      * @param args Not used.
      */
     public static void main(String[] args) {
         // for every file in type/polymorphic/
         try {
             File directory = new File(FileUtilities.nameToURL(
-                    "$CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic",
+                    "$CLASSPATH/ptolemy/codegen/java/kernel/type/polymorphic",
                     null, null).getFile());
             for (File file : directory.listFiles()) {
                 String filename = file.getPath();

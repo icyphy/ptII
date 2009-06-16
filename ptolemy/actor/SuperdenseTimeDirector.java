@@ -61,7 +61,6 @@ href="http://chess.eecs.berkeley.edu/pubs/303.html#in_browser"><i>Operational Se
  */
 public interface SuperdenseTimeDirector {
     /** Return a superdense time index for the current time.
-     *  @param index The superdense time index.
      *  @return A superdense time object.
      *  @see #setIndex(int)
      */
