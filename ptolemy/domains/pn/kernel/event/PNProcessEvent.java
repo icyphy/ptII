@@ -96,13 +96,16 @@ public class PNProcessEvent {
     ///////////////////////////////////////////////////////////////////
     ////                    public methods                   /////
 
-    /** Return the actor corresponding to the process that generated the event.
+    /** Return the actor corresponding to the process that generated
+     *  the event.
+     *  @return the actor corresponding to the process that generated
+     *  the event.
      */
     public Actor getActor() {
         return _actor;
     }
 
-    /** Return the cause of the blocking state,
+    /** Return the cause of the blocking state.
      *  @return an integer representing the cause of the blocking state.
      */
     public int getBlockingCause() {

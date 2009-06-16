@@ -68,6 +68,8 @@ public interface SuperdenseTimeDirector {
     
     /** Set the superdense time index. This should only be
      *  called by an enclosing director.
+     *  @param index The index of the superdense time object.
+     *  Events that occur at the same time have different indicies.
      *  @exception IllegalActionException If the specified index is invalid.
      *  @see #getIndex()
      */

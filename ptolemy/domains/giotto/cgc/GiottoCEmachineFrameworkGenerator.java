@@ -107,7 +107,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     ////                         public methods                    ////
 
     /** Generate Giotto code for the given model and write into the file
-     *  model name.giotto in the directory specified by parameter "directory"
+     *  model name.giotto in the directory specified by parameter "directory".
      *  @param model The model for which the Giotto code is to be generated
      *  @param directory The directory into which the generated file
      *                   (model_name.giotto) is to be written
@@ -495,6 +495,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     /** Generate the various code strings for the framework C and Header code,
      *  as well as the strings for the task C and Header code.
      *  @param model The model for which to generate code.
+     *  @exception IllegalActionException If thrown while generating code
+     *  strings.
      */
     protected void _generateCodeStrings(TypedCompositeActor model)
             throws IllegalActionException {
@@ -738,9 +740,13 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
     /** Generate input driver implementation code.
      *  @param model The model for which to generate the input drivers code.
+     *  @exception IllegalActionException If thrown while determining if
+     *  an input driver is needed, if the input port is a multiport
+     *  or if thrown while getting the array length of the output port.
      */
     protected void _inputDriversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
+
         StringBuffer assgtStmtString;
         StringBuffer initStmtString = new StringBuffer(_tabChar
                 + "static int counter = 0;" + _endLine + _endLine);
