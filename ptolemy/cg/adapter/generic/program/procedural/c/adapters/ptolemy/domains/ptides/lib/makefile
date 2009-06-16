@@ -36,7 +36,7 @@ ME =		ptolemy/codegen/c/domains/ptides/lib
 DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
