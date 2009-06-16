@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/mpi
 
-DIRS =      actor domains kernel
+DIRS =      actor domains kernel test
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..

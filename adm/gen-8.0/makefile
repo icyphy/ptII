@@ -1346,6 +1346,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/targets/mpi \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/parameters \
