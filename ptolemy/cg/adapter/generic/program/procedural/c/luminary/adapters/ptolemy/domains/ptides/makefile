@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides
 
-DIRS =		kernel lib
+DIRS =		kernel
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..
