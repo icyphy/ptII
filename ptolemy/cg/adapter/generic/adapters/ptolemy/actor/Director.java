@@ -453,6 +453,17 @@ public class Director extends ProgramCodeGeneratorAdapter {
         return "";
     }
 
+    /**
+     * Return the reference channels for the specified port channel.
+     * If the port channel is input or contained by an opaque CompositeActor, 
+     * then this will return a list containing the given port channel. 
+     * Otherwise, it returns a list of the connected sink channels.
+     * @param port The given port.
+     * @param channelNumber The given channel.
+     * @return The list of reference channels.
+     * @throws IllegalActionException If {@link ProgramCodeGeneratorAdapterStrategy#getSinkChannels(IOPort, int)}
+     *  throws it.
+     */    
     // FIXME rodiers: Method only used for PN (in IOPort). Move to PNDirector?
     public static List<Channel> getReferenceChannels(IOPort port, int channelNumber)
     throws IllegalActionException {
