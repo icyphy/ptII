@@ -44,6 +44,6 @@ public class MajorOSName {
             arch = "Windows";
         }
 
-        System.out.print(arch);
+        System.out.print(arch.replace(" ", ""));
     }
 }
