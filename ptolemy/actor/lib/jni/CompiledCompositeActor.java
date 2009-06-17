@@ -779,6 +779,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     /** Initialize parameters.
      */
     private void _init() {
+        
+        this.setDisplayName("CCompiledCompositeActor");
 
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
