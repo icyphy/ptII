@@ -464,28 +464,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return (NamedObj) _object;
     }
 
-    /** Return the director.
-     *  @return The director.
-     */
-    public ptolemy.actor.Director getDirector() {
-        ptolemy.actor.Director director =
-            ((Actor) _object).getExecutiveDirector();
-
-        if (director == null) {
-            // getComponent() is at the top level. Use it's local director.
-            director = ((Actor) _object).getDirector();
-        }
-        return director;
-    }
-
-    /** Return the director adapter.
-     *  @return The director adapter.
-     *  @exception IllegalActionException If the director adapter class cannot be found.
-     */
-    public Director getDirectorAdapter() throws IllegalActionException {
-        return (Director) _getAdapter(getDirector());
-    }
-
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
      *  @param isStatic True if the method is static.
@@ -970,11 +948,10 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     // FIXME: documentation
     public String getReference(String name, boolean isWrite)
     throws IllegalActionException {
-        ptolemy.actor.Director director = getDirector();
+        ptolemy.actor.Director director = ((Actor) _object).getDirector();
         Director directorAdapter = (Director) _getAdapter(director);
         return directorAdapter.getReference(name, isWrite, _adapter);
     }
-
 
     /**
      * Generate the shared code. This is the first generate method invoked out

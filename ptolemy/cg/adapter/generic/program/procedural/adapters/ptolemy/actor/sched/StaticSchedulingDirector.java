@@ -885,7 +885,6 @@ public class StaticSchedulingDirector extends Director {
             }
         }
 
-
         /** Get the read offset of a channel of the port.
          *  @param channelNumber The number of the channel.
          *  @return The read offset.
