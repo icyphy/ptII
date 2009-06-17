@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -31,6 +30,7 @@ package ptolemy.data.properties.lattice;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -70,6 +70,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -736,25 +737,41 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
 
-    private void _addChoices() {
+    /** Add choices to the parameters.
+     *  @exception IllegalActionException If there is a problem
+     *  accessing files or parameters.
+     */
+    private void _addChoices() throws IllegalActionException {
         File file = null;
 
-        try {
-            file = new File(FileUtilities.nameToURL(
-                    "$CLASSPATH/ptolemy/data/properties/lattice",
-                    null, null).toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String latticePath = "$CLASSPATH/ptolemy/data/properties/lattice";
 
-        File[] lattices = file.listFiles();
-        for (int i = 0; i < lattices.length; i++) {
-            String latticeName = lattices[i].getName();
-            if (lattices[i].isDirectory() && !latticeName.equals("CVS") && !latticeName.equals(".svn")) {
-                propertyLattice.addChoice(latticeName);
+        // Use a FilenameFilter so that we can access files via
+        // Web Start.
+        try {
+            URI propertiesLatticeURI = new URI(FileUtilities.nameToURL(
+                            latticePath, null, null).toExternalForm()
+                    .replaceAll(" ", "%20"));
+            File propertiesLatticeDirectory = new File(propertiesLatticeURI);
+            LatticeDirectoryNameFilter filter = new LatticeDirectoryNameFilter();
+            File[] lattices = propertiesLatticeDirectory
+                    .listFiles(filter);
+            if (lattices == null) {
+                throw new InternalErrorException(this, null,
+                        "Failed to find directories in \""
+                        + propertiesLatticeDirectory
+                        + "\", the propertyLattice Parmeter cannot be set.");
+            } else {
+                for (int i = 0; i < lattices.length; i++) {
+                    String latticeName = lattices[i].getName();
+                    propertyLattice.addChoice(latticeName);
+                }
             }
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to find directories in \""
+                    + latticePath
+                    + "\", the propertyLattice Parmeter cannot be set.");
         }
 
         solvingFixedPoint.addChoice("least");
@@ -1221,5 +1238,37 @@ public class PropertyConstraintSolver extends PropertySolver {
 
     private boolean _logMode;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
+    /** Look for directories that do are not CVS or .svn.
+     */
+    static class LatticeDirectoryNameFilter implements FilenameFilter {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        /** Return true if the specified file names a directory
+         *  that is not named "CVS" or ".svn".
+         *  @param directory the directory in which the potential
+         *  directory was found.
+         *  @param name the name of the directory or file.
+         *  @return true if the file is a directory that
+         *  contains a file called configuration.xml
+         */
+        public boolean accept(File directory, String name) {
+            try {
+                File file = new File(directory, name);
+
+                if (!file.isDirectory()
+                        || file.getName().equals("CVS")
+                        || file.getName().equals(".svn")) {
+                    return false;
+                }
+            } catch (Exception ex) {
+                return false;
+            }
+
+            return true;
+        }
+    }
 }
