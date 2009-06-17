@@ -318,7 +318,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public StringParameter target;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                     private methods                       ////
 
     /** Generate code and append it to the given string buffer.
 
