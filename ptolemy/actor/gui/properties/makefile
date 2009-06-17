@@ -65,7 +65,8 @@ JSRCS = \
 	ToolBar.java
 
 # Files to be included in the jar file
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	README.html
 	
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

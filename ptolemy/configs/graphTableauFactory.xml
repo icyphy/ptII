@@ -25,4 +25,18 @@
     -->
   <!--property name="Tcl Shell"
             class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/-->
+  
+  <property name="Graph Editor"
+            class="ptolemy.vergil.actor.ActorGraphTableau$Factory">
+    <configure>
+      <property name="toolbar" class="ptolemy.actor.gui.properties.ToolBar">
+        <property name="Const" class="ptolemy.actor.gui.properties.Button">
+          <configure>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+            </entity>
+          </configure>
+        </property>
+      </property>
+    </configure>
+  </property>
 </property>
