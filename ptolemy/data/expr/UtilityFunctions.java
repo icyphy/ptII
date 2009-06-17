@@ -859,11 +859,13 @@ public class UtilityFunctions {
                     shortLibraryName = library;
                 } else {
                     if (!library.substring(index, index + 4).equals("/lib")) {
-                        if (osName.startsWith("Mac OS X")
-                                || osName.startsWith("Linux")) {
+                        if (osName.startsWith("Linux")) {
                             library = library.substring(index + 1);
                             shortLibraryName = library;
                         } else {
+                            // Under SunOS and Mac OS X, we add lib to
+                            // the path.  If we don't do this on the Mac,
+                            // then libptymatlab.dynlib will not be found.
                             shortLibraryName = "/lib"
                                     + library.substring(index + 1);
                             library = library.substring(0, index)

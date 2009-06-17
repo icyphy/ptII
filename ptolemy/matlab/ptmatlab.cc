@@ -52,9 +52,35 @@ typedef long long __int64;
 // version of the ptmatlab shared library to load...
 #define V5_COMPAT
 
+#define PT_NO_MXGETNAME
+#ifdef PT_NO_MXGETNAME
+#define mxGetName(a) "a"
+#endif
+
 #include <jni.h>
 #include "ptmatlab.h"
 #include "engine.h"
+
+// These defines were needed for Matlab r2009a under Mac OS X
+//#define PT_NO_ENGGETARRAY 
+//#define PT_NO_ENGPUTARRAY
+
+
+#ifdef PT_NO_ENGGETARRAY
+#ifndef PT_INCLUDE_MEX_H
+#define PT_INCLUDE_MEX_H
+#endif
+#endif
+
+#ifdef PT_NO_ENGPUTARRAY
+#ifndef PT_INCLUDE_MEX_H
+#define PT_INCLUDE_MEX_H
+#endif
+#endif
+
+#ifdef PT_INCLUDE_MEX_H
+#include "mex.h"
+#endif
 
 // The following test is a kludge for a missing #define in the matlab
 // include files that would allow engine interface C code to test which
@@ -155,7 +181,11 @@ extern "C"
       Engine *ep = (Engine*)(ptrlong) e;
     char debug = ptmatlabGetDebug(jni,obj);
     const char *str = jni->GetStringUTFChars(name, 0);
+#ifdef PT_NO_ENGGETARRAY 
+    mxArray *ma = engGetVariable(ep, str);
+#else
     mxArray *ma = engGetArray(ep, str);
+#endif
     if (debug > 1 && ma != NULL) {
         const int *dimArray = mxGetDimensions(ma);
         printf("ptmatlabEngGetArray(%s) %d x %d\n", str, dimArray[0], dimArray[1]);
@@ -175,10 +205,14 @@ extern "C"
     Engine *ep = (Engine*)(ptrlong) e;
     const char *str = jni->GetStringUTFChars(name, 0);
     mxArray *ma = (mxArray*)(ptrlong)pma;
+#ifdef PT_NO_ENGPUTARRAY
+    int retval = mexPutVariable("global", str, ma);
+#else
     mxSetName(ma, str);
     const int *dimArray = mxGetDimensions(ma);
     if (debug > 1) printf("ptmatlabEngPutArray(%s) %d x %d\n", str, dimArray[0], dimArray[1]);
     int retval = engPutArray(ep, ma);
+#endif
     jni->ReleaseStringUTFChars(name, str);
     return retval;
   }

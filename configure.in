@@ -2898,8 +2898,8 @@ changequote([, ])dnl
 	        AC_MSG_CHECKING([which major type of OS we are running under])
 		# Older versions of cygwin might not have env, but 1.1 does
 		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
-		    # Run it again and get the results
-		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
+		    # Run it again and get the results.  We get just the first word: Windows, Linux, Mac etc.
+		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName | awk '{print $1}'`
 		    PT_MSG_RESULT($MAJOR_OS_NAME)
 		else   
 		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MajorOSName' failed.
@@ -2945,6 +2945,7 @@ changequote([, ])dnl
 			;;
 		Darwin)
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/maci
+			PTMATLAB_CC_FLAGS="-DPT_NO_ENGGETARRAY -DPT_NO_ENGPUTARRAY" 
 			;;
 		*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
@@ -2974,7 +2975,7 @@ changequote([, ])dnl
 		    fi
                 else 
 		    if test $PTJNI_ARCHITECTURE = "darwin"; then
-		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx"
+		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		    else
 		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
 		        if test "`uname -m`" = "x86_64"; then
