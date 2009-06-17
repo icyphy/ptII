@@ -4,13 +4,13 @@
 <entity name="PNButterfly" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 26, 908, 642}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 73, 908, 631}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7643312101911">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.328125, 189.2266414141414}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.2032828282828, 183.2266414141414}">
     </property>
     <property name="CodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
@@ -39,7 +39,7 @@
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
-        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -303,7 +303,7 @@
         </property>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={303, 377, 508, 348}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
