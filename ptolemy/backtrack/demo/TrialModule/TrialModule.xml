@@ -4,13 +4,13 @@
 <entity name="TrialModule" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 103, 1035, 561}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 103, 1133, 642}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[822, 451]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[920, 532]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0847292687748">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{411.0, 225.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{441.0689481160286, 271.8240411931818}">
     </property>
     <property name="Rendezvous Director" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
@@ -27,7 +27,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 475.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses backtracking actors, which must&#10;be build before the model will run.  To build:&#10;  cd $PTII&#10;  ./configure&#10;  cd ptolemy/backtrack&#10;  make">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 410.0]">
         </property>
     </property>
     <entity name="Backtrack" class="ptolemy.backtrack.manual.ptolemy.actor.lib.Backtrack">

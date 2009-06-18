@@ -23,13 +23,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[182.125, 34.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 15, 1023, 747}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 47, 1165, 749}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 640]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[952, 639]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.0, 320.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{476.0, 319.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[67.125, 39.5]">
@@ -38,7 +38,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests whether a number, specified in the &quot;Number&quot; parameter, is prime or not. If it is, a true value is output to&#10;the Display; otherwise, false is output. The Ramp outputs an increasing sequence of numbers starting from 2. For each&#10;number, the Accumulator generates a sequence of its multiples, up to the value of the &quot;Number&quot; parameter. If the&#10;&quot;Number&quot; parameter can be divided by the accumulated value, then it is not prime. Otherwise, a signal is sent to the&#10;Backtrack actor to roll back the state of the Accumulator, which records the current accumulated value. The same signal&#10;is also sent to the Ramp to trigger the output of the next number.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[42.125, 499.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 475.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -47,6 +47,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[47.125, 619.5]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses backtracking actors, which must&#10;be build before the model will run.  To build:&#10;  cd $PTII&#10;  ./configure&#10;  cd ptolemy/backtrack&#10;  make">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 5.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
