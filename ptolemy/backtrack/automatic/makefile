@@ -79,7 +79,49 @@ MISC_FILES = \
 OPTIONAL_FILES = \
 	$(OTHER_JARS)
 
-JCLASS = $(JSRCS:%.java=%.class)
+# .java files that are created.  We need to list these separately so
+# that "make jclass" works.  Note that if source.lst is updated, then
+# this list should be updated as well.
+DERIVED_JSRCS = \
+	ptolemy/actor/lib/Accumulator.java \
+	ptolemy/actor/lib/ArrayPeakSearch.java \
+	ptolemy/actor/lib/Average.java \
+	ptolemy/actor/lib/BooleanSelect.java \
+	ptolemy/actor/lib/BooleanSwitch.java \
+	ptolemy/actor/lib/Commutator.java \
+	ptolemy/actor/lib/ComputeHistogram.java \
+	ptolemy/actor/lib/Counter.java \
+	ptolemy/actor/lib/DB.java \
+	ptolemy/actor/lib/Differential.java \
+	ptolemy/actor/lib/Distributor.java \
+	ptolemy/actor/lib/DoubleReader.java \
+	ptolemy/actor/lib/Gaussian.java \
+	ptolemy/actor/lib/GradientAdaptiveLattice.java \
+	ptolemy/actor/lib/IIR.java \
+	ptolemy/actor/lib/Interpolator.java \
+	ptolemy/actor/lib/LinearDifferenceEquationSystem.java \
+	ptolemy/actor/lib/Multiplexor.java \
+	ptolemy/actor/lib/OrderedMerge.java \
+	ptolemy/actor/lib/PhaseUnwrap.java \
+	ptolemy/actor/lib/PoissonClock.java \
+	ptolemy/actor/lib/Pulse.java \
+	ptolemy/actor/lib/Ramp.java \
+	ptolemy/actor/lib/RandomSource.java \
+	ptolemy/actor/lib/Recorder.java \
+	ptolemy/actor/lib/RecursiveLattice.java \
+	ptolemy/actor/lib/Select.java \
+	ptolemy/actor/lib/Sequence.java \
+	ptolemy/actor/lib/Sequencer.java \
+	ptolemy/actor/lib/SequentialClock.java \
+	ptolemy/actor/lib/Switch.java \
+	ptolemy/domains/sdf/lib/Autocorrelation.java \
+	ptolemy/domains/sdf/lib/Chop.java \
+	ptolemy/domains/sdf/lib/DelayLine.java \
+	ptolemy/domains/sdf/lib/FFT.java \
+	ptolemy/domains/sdf/lib/IFFT.java \
+	ptolemy/math/Interpolation.java 
+	
+JCLASS = $(JSRCS:%.java=%.class) $(DERIVED_JSRCS:%.java=%.class)
 
 # Backtrack.tcl runs "make backtrack" so that we can run the
 # tests from inside Eclipse
