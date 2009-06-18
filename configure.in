@@ -743,8 +743,10 @@ case "`uname -s`" in
      Darwin) 
          AC_MSG_WARN([Under Eclipse on Mac OS X, you must use Java 1.5
     within Eclipse. Note that the backtracking and other Eclipse code will
-    _not_ work on the Mac. For details, see
-    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac]) 
+    _not_ work on the Mac from within Eclipse. Backtracking will work 
+    on the Mac _outside_ of Eclipse. For details, see
+    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac and follow the
+    Problems with Eclipse and Ptolemy on the Mac link.])
         if test -d ptolemy/apps/eclipse/awt/; then
 	    AC_MSG_WARN([Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     is not supported.])
