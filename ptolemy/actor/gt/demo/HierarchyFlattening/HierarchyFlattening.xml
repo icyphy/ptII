@@ -4,7 +4,7 @@
 <entity name="HierarchyFlattening" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={425, 102, 654, 697}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 99, 867, 701}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 545]">
     </property>
@@ -19,8 +19,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 90.0}">
             </property>
         </property>
-        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
-            <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../test">
+        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute" value="$PTII/ptolemy/actor/gt/patterns/*_succ?.xml [...]">
+            <property name="directory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/gt/patterns">
                 <display name="Directory"/>
             </property>
             <property name="filter" class="ptolemy.data.expr.StringParameter" value="*_succ?.xml">
@@ -37,7 +37,7 @@
           </svg>
         </configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 65.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 65.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -84,8 +84,9 @@
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Click         button to match this pattern with all the models in
-directory ../../test/ (specified by the DefaultDirectory).</text></svg></configure>
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Click the          button above in the tool bar to match 
+this pattern with all the models in directory "../../patterns",
+which is specified by the DefaultDirectory parameter.</text></svg></configure>
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -98,13 +99,13 @@ directory ../../test/ (specified by the DefaultDirectory).</text></svg></configu
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -150.0]">
             </property>
         </property>
         <property name="Image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
             <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/gt/img/batchmatch.gif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[16.0, -138.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -150.0]">
             </property>
         </property>
         <property name="annotation4" class="ptolemy.kernel.util.Attribute">

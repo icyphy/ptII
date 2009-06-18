@@ -54,6 +54,7 @@ PTCLASSALLJARS = \
 	data/data.jar \
 	gui/gui.jar \
 	ingredients/ingredients.jar \
+	patterns/patterns.jar \
 	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

@@ -70,6 +70,9 @@ JGRAPHICAL_TESTS = \
     dummy.tcl
 
 EXTRA_SRCS = \
+    $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+
+PATTERNS = \
     Match3Actors_succ1.xml \
     Match3Actors_fail2.xml \
     Match3Actors_succ3.xml \
@@ -108,7 +111,7 @@ EXTRA_SRCS = \
     Match4ActorsSubclasses_rule.xml \
     Match2LevelHierarchyFlattening_rule.xml \
     Match3ActorsRelationCollapsing_rule.xml \
-    $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
