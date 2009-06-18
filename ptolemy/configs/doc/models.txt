@@ -71,6 +71,7 @@ $CLASSPATH/ptolemy/codegen/c/targets/mpi/demo/PNButterfly/PNButterfly.xml
 $CLASSPATH/ptolemy/codegen/c/targets/openRTOS/demo/ControlRobot/ControlRobot.xml
 $CLASSPATH/ptolemy/codegen/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/codegen/demo/Life/Life.xml
+$CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml
 $CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml
 $CLASSPATH/ptolemy/configs/doc/ClassesIllustrated.xml
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
