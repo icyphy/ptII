@@ -27,15 +27,12 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
@@ -153,6 +150,12 @@ public class Stop extends Sink {
         }
 
         if (result) {
+            // NOTE: This used to call stop() on the manager, but that's
+            // not the right thing to do. In particular, this could be
+            // used inside a RunCompositeActor, and it should only
+            // stop the inside execution, not the outside one.
+            getDirector().stop();
+            /*
             Nameable container = getContainer();
 
             if (container instanceof CompositeActor) {
@@ -169,6 +172,7 @@ public class Stop extends Sink {
                         "Cannot stop without a container that is a "
                                 + "CompositeActor.");
             }
+            */
         }
 
         return !result;
