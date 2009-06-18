@@ -2,7 +2,11 @@
 # $Id$
 # Script that updates the demos
 
-demos=`cd $PTII/ptolemy/configs/doc; make listDemos`
+demos=`cd $PTII/ptolemy/configs/doc; make listDemos |  grep -v /SystemLevelType/`
+
+# Create missing applets
+demos=`cd $PTII/ptolemy/configs/doc; make check_applets |  grep -v /SystemLevelType/ | sed 's/.htm$/.xml/'`
+
 for demo in $demos
 do
      model=`basename $demo .xml` 
