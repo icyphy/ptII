@@ -111,15 +111,15 @@ lib/joystickWindows.jar:
 NATIVE_SIGNED_LIB_JARS = \
 	lib/commWindows.jar \
 	lib/joystickWindows.jar \
-	lib/matlabWindows.jar \
+	lib/matlabMacOSX.jar \
 	lib/matlabSunOS.jar \
+	lib/matlabWindows.jar
 
 # Not all hosts have matlab
-MATLAB_JARS =
-#MATLAB_JARS = \
-#	ptolemy/matlab/matlab.jar \
-#	ptolemy/matlab/demo/demo.jar \
-#	lib/matlab.jar
+MATLAB_JARS = \
+	ptolemy/matlab/matlab.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
@@ -248,12 +248,18 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/comm/demo/demo.jar \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
+	ptolemy/actor/lib/jni/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	ptolemy/codegen/codegen.jar \
 	ptolemy/codegen/c/vergil/vergil.jar \
 	ptolemy/codegen/demo/demo.jar \
+	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
+	ptolemy/codegen/c/domains/pn/demo/demo.jar \
+	ptolemy/codegen/c/targets/mpi/demo/demo.jar \
+	ptolemy/codegen/c/targets/openRTOS/demo/demo.jar \
+	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
 	$(PTALON_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/data/type/demo/demo.jar \
@@ -384,10 +390,13 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
+	ptolemy/domains/modal/doc/doc.jar \
+	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	ptolemy/domains/psdf/doc/doc.jar \
 	lib/mapss.jar \
+	ptolemy/domains/sdf/lib/vq/vq.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
