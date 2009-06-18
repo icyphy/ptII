@@ -27,16 +27,22 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.domains.ptides.lib.InterruptDevice;
+import ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////
 //// PtidesBasicDirector
@@ -72,7 +78,6 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
         super(ptidesBasicDirector);
     }
 
-
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -81,10 +86,67 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
      *  should overwrite it.
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
+     *  // FIXME: all the GPInputDevices should be from cg, not from codegen!
      */
     public StringBuffer generateAsseblyFile() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        // FIXME: implement me!!
+        // Get all actors that are interruptDevices. Then for each of these actors,
+        // generate a name for it, and put the name along with this actor into a
+        // HashMap.
+        Map devices = new HashMap<Actor, String>();
+        for (Actor actor : (List<Actor>)((TypedCompositeActor)getComponent()).deepEntityList()) {
+            // If the input is a sensor device, then we need to use interrupts to trigger it.
+            // FIXME: what happens if there's a NetworkInputDevice?
+            if (actor instanceof InterruptDevice) {
+                devices.put(actor, new String("Sensing_" + 
+                        ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor)));
+            }
+        }
+        
+        // List of args used to get the template.
+        List args = new LinkedList();
+
+        // The first element in the args should be the externs. For each device in the set,
+        // we need to add an external method.
+        StringBuffer externs = new StringBuffer();
+        for (Actor actor : (Set<Actor>)devices.keySet()) {
+            externs.append("        EXTERN  " + devices.get(actor) + _eol);
+        }
+        args.add(externs.toString());
+                
+        // Now we create an array for each device. The length of the array should be the number of
+        // supported configurations in this device. For each actor that fits a device and
+        // a particular configuration, add it into the array associated with the device, 
+        // and the index of this actor should equal to the index of the configuration in
+        // supportedConfigurations().
+        int configurationSize = GPInputDevice.numSupportedConfigurations;
+        String[] GPHandlers = new String[configurationSize];
+        for (Actor actor : (Set<Actor>)devices.keySet()) {
+            if (actor instanceof GPInputDevice) {
+                GPInputDevice GPActor = (GPInputDevice)actor;
+                for (int i = 0; i < configurationSize; i++) {
+                    if (GPActor.pad.toString() == GPActor.supportedConfigurations().get(i)) {
+                        GPHandlers[i] = (String)devices.get(actor);
+                        break;
+                    }
+                }
+            } else {
+                throw new IllegalActionException((Actor)actor, "This actor is not an interrupt" +
+                		"device, cannot generate an ISR for it.");
+            }
+        }
+        for (int i = 0; i < configurationSize; i++) {
+            // If there is nothing in this array for this index, then we use IntDefaultHandler.
+            if (GPHandlers[i] == null) {
+                args.add("IntDefaultHandler");
+            } else {
+                args.add(GPHandlers[i]);
+            }
+        }
+        
+        // In the future if we add more devices, then it should be a derivation of the above code.
+        code.append(getStrategy().getCodeStream().getCodeBlock("assemblyFileBlock", args));
+
         return code;
     }
 
@@ -184,41 +246,6 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
     }
 
     /**
-     * Generate code for transferring tokens into a composite.
-     *
-
-     * @param inputPort The port to transfer tokens.
-     * @param code The string buffer that the generated code is appended to.
-     * @exception IllegalActionException If thrown while transferring tokens.
-     */
-    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
-        /* FIXME: So far, the only possible composition using PN
-         * is PN inside PN. In this case, we should generate one cross-level
-         * queue rather than two. This method override the base
-         * class method and generate no extra code.
-         */
-        return;
-    }
-
-    /**
-     * Generate code for transferring tokens outside of a composite.
-     *
-     * @param port The specified port.
-     * @param code The given code buffer.
-     *  @exception IllegalActionException Not thrown in this class.
-     */
-    public void generateTransferOutputsCode(IOPort port, StringBuffer code)
-    throws IllegalActionException {
-        /* FIXME: So far, the only possible composition using PN
-         * is PN inside PN. In this case, we should generate one cross-level
-         * queue rather than two. This method override the base
-         * class method and generate no extra code.
-         */
-        return;
-    }
-
-    /**
      * Generate variable initialization for the referenced parameters.
      * This overrides the super class method and returns an empty
      * string. It avoids generating any offset variables.
@@ -228,25 +255,6 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
     public String generateVariableInitialization()
     throws IllegalActionException {
         return "";
-    }
-
-    /**
-     * Return the buffer size to generate the variable for the
-     * specified port channel.
-     * This number dictates the size of the array generated for a variable
-     * associated with the port channel. This returns 1, since queuing
-     * is done using a separate structure.
-     * @param port The specified port
-     * @param channelNumber The specified channel number.
-     * @return The buffer size to generate the variable for the
-     *  specified port channel. In this case, it's 1.
-     * @exception IllegalActionException Not thrown in this class.
-     */
-    public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
-        // FIXME: Reference with offset larger than 1 will not work
-        // (e.g. $ref(port, 3)).
-        return 1;
     }
 
     /**
