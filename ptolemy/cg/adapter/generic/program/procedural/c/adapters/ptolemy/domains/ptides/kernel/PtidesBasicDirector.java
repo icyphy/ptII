@@ -353,13 +353,6 @@ public class PtidesBasicDirector extends Director {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-    
-    /** A list that keeps track of all the supported devices in the code generator.
-    protected List<Actor> _supportedDevices;
-    
-
-    ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
     /** fire methods for each actor.
