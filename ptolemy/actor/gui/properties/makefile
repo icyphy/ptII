@@ -66,8 +66,8 @@ JSRCS = \
 
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED = \
-	README.html
-	
+	package.html
+
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
