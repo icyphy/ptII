@@ -29,7 +29,14 @@ package ptolemy.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassUtilities
@@ -53,6 +60,47 @@ public class ClassUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the directories in a jar URI, relative to the jar entry, 
+     *  if any.   .
+     *  Jar URLS have several forms, the most common being:
+     *  <code>jar:file:///foo/bar.jar/!/bif/baz</code>, which means that
+     *  the jar file /foo/bar.jar has a directory or file name bif/baz.
+     *  If such a file is passed to this method, then any directories
+     *  in the jar file directory bif/baz will be returned.
+     *  @param jarURL The Jar URL for which we are to look for directories.
+     *  @return An list of Strings that name the directories
+     */
+    public static List jarURLDirectories(URL jarURL) 
+            throws IOException {
+        List directories = new LinkedList();
+        JarURLConnection connection = (JarURLConnection)(jarURL.openConnection());
+        String jarEntryName = connection.getEntryName();
+        if (jarEntryName.endsWith("/")) {
+            jarEntryName = jarEntryName.substring(0, jarEntryName.length() - 1);
+        }
+        JarFile jarFile = connection.getJarFile();
+        Enumeration entries = jarFile.entries();
+        while ( entries.hasMoreElements()) {
+            JarEntry entry = (JarEntry)entries.nextElement();
+            String name = entry.getName();
+            int jarEntryIndex = name.indexOf(jarEntryName + "/"); 
+            int jarEntrySlashIndex = jarEntryIndex + jarEntryName.length() + 1;
+            
+            int nextSlashIndex = name.indexOf("/", jarEntrySlashIndex);
+            int lastSlashIndex = name.indexOf("/", jarEntrySlashIndex);
+
+            if (jarEntryIndex > -1
+                    && jarEntrySlashIndex > -1
+                    && nextSlashIndex > -1
+                    && nextSlashIndex == lastSlashIndex
+                    && nextSlashIndex == name.length() - 1
+                    && entry.isDirectory() ) {
+                directories.add(name);
+            }
+        }
+        return directories;
+    }
 
     /** Lookup a jar URL and return the resource.
 
