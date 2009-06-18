@@ -95,6 +95,7 @@ PTAUXALLJAR =	libKore.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	$(PTAUXALLJARS) \
+	embeddedJava/embeddedJava.jar \
 	gui/gui.jar \
 	javasound/javasound.jar \
 	jni/jni.jar \
