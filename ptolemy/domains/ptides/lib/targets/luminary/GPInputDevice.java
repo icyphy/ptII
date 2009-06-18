@@ -28,8 +28,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.targets.luminary;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.SensorInputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating 
  *
  */
-public class GPInputDevice extends SensorInputDevice {
+public class GPInputDevice extends SensorInputDevice implements InterruptDevice{
     
     /**
      * Constructs a GPInputDevice object.
@@ -65,6 +69,7 @@ public class GPInputDevice extends SensorInputDevice {
         pin.setExpression("0");
         pad = new StringParameter(this, "pad");
         pad.setExpression("G");
+        numSupportedConfigurations = supportedConfigurations().size();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,4 +84,26 @@ public class GPInputDevice extends SensorInputDevice {
      *  FIXME: Verify user has set value between A and H.
      */ 
     public StringParameter pad;
+    
+    /** An integer that keeps track of the number of supported configurations
+     *  for this device.
+     */
+    public static int numSupportedConfigurations;
+
+    /** Return a list of supported configurations for this device.
+     *  The order of this list must be the same as the order in
+     *  of the argument list in the template in the code generator.
+     */
+    public List<String> supportedConfigurations() {
+        List supportedConfigurations = new LinkedList<String>();
+        supportedConfigurations.add("A");
+        supportedConfigurations.add("B");
+        supportedConfigurations.add("C");
+        supportedConfigurations.add("D");
+        supportedConfigurations.add("E");
+        supportedConfigurations.add("F");
+        supportedConfigurations.add("G");
+        supportedConfigurations.add("H");
+        return supportedConfigurations;
+    }
 }
