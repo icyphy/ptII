@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy II Python demo
+# Makefile for Java Ptolemy II Graph Transformation (gt) demos
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003-2009 The Regents of the University of California.
+# @Copyright (c) 2007-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
