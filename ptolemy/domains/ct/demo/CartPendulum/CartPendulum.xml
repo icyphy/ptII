@@ -1864,14 +1864,10 @@
         <vertex name="vertex1" value="[155.5, 165.0]">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="ModalModel.theta" relation="relation11"/>
     <link port="ModalModel.d" relation="relation12"/>
     <link port="Positions.input" relation="relation11"/>
     <link port="Positions.input" relation="relation12"/>
-    <link port="Positions.input" relation="relation"/>
-    <link port="Positions.input" relation="relation"/>
     <link port="animation.Theta" relation="relation11"/>
     <link port="animation.D" relation="relation12"/>
 </entity>
