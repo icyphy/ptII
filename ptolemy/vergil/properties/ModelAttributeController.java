@@ -98,11 +98,26 @@ public class ModelAttributeController extends AttributeController {
      */
     public static class Factory extends NodeControllerFactory {
 
+        /**
+         * Create a new factory with the specified name and container.
+         * @param container The specified container.
+         * @param name The specified name.
+         * @exception IllegalActionException If the attribute cannot be
+         * contained by the proposed container.
+         * @exception NameDuplicationException If the container already has an
+         * attribute with this name.
+         */
         public Factory(NamedObj container, String name)
                 throws NameDuplicationException, IllegalActionException {
             super(container, name);
         }
 
+        /**
+         * Create a new ModelAttributeController with the specified graph
+         * controller.
+         * @param controller The specified graph controller.
+         * @return A new ModelAttributeController.
+         */
         @Override
         public NamedObjController create(GraphController controller) {
             return new ModelAttributeController(controller);
