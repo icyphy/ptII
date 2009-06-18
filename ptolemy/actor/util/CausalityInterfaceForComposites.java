@@ -527,6 +527,10 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                     inputPortDepth = _portToDepth.get(inputPort);
                 }
                 // Record the maximum and continue to the next port.
+                if (inputPortDepth == null) {
+                    throw new InternalErrorException(_actor, null,
+                            "inputPortDepth is null?");
+                }
                 if (inputPortDepth.compareTo(maximumInputDepth) > 0) {
                     maximumInputDepth = inputPortDepth;
                 }
