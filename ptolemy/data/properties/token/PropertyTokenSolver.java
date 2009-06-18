@@ -183,26 +183,17 @@ public class PropertyTokenSolver extends PropertySolver {
     public StringParameter listeningMethod;
     public Parameter numberIterations;
 
-    private void _addChoices() {
+    /** Add choices to the parameters.
+     *  @exception IllegalActionException If there is a problem
+     *  accessing files or parameters.
+     */
+    private void _addChoices() throws IllegalActionException {
         File file = null;
 
-        try {
-            file = new File(FileUtilities.nameToURL(
-                    "$CLASSPATH/ptolemy/data/properties/token",
-                    null, null).toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        File[] lattices = file.listFiles();
-        for (int i = 0; i < lattices.length; i++) {
-            String latticeName = lattices[i].getName();
-            if (lattices[i].isDirectory() && !latticeName.equals("CVS") && !latticeName.equals(".svn")) {
-                useCase.addChoice(latticeName);
-            }
-        }
+        // Add all the subdirectories in token/ directory as
+        // choices.  Directories named "CVS" and ".svn" are skipped.
+        _addChoices(useCase,
+                "$CLASSPATH/ptolemy/data/properties/token");
 
         listeningMethod.addChoice("NONE");
         listeningMethod.addChoice("Input & Output Ports");

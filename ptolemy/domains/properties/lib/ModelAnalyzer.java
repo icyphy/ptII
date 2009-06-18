@@ -97,7 +97,10 @@ public class ModelAnalyzer extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelAnalyzer newObject = (ModelAnalyzer) super.clone(workspace);
-        newObject._analyzerWrapper = (AnalyzerAttribute)newObject._analyzerWrapper.getAttribute("_analyzerWrapper");
+        if (newObject._analyzerWrapper != null) { 
+            // FIXME: Why is this necessary?
+            newObject._analyzerWrapper = (AnalyzerAttribute)newObject._analyzerWrapper.getAttribute("_analyzerWrapper");
+        }
         return newObject;
     }
 

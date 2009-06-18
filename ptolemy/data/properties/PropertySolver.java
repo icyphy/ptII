@@ -26,6 +26,9 @@
  */
 package ptolemy.data.properties;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -46,6 +49,8 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -732,6 +737,98 @@ public abstract class PropertySolver extends PropertySolverBase {
         actionParameter.addChoice(CLEAR_ANNOTATION);
     }
 
+    /** Add choices to the parameter where the choices are subdirectories
+     *  of the directoryPath.  DirectoryPaths in the file system and
+     *  in Jar URLs are handled.
+     *  @param parameter The parameter to be updated with the subdirectories
+     *  @param directoryPath The directory to be searched for subdirectories.
+     *  @exception IllegalActionException If there is a problem reading the
+     *  directory as a file or JAR URL.
+     */   
+    protected void _addChoices(Parameter parameter, String directoryPath)
+            throws IllegalActionException {
+
+        // Use a FilenameFilter so that we can access files via
+        // Web Start.
+        try {
+            URI directoryURI = new URI(FileUtilities.nameToURL(
+                            directoryPath, null, null).toExternalForm()
+                    .replaceAll(" ", "%20"));
+            File directory = null;
+            try {
+                try {
+                    directory = new File(directoryURI);
+                } catch (Throwable throwable) {
+                    throw new InternalErrorException(this, throwable,
+                            "Failed to find directories in the URI: \""
+                            + directoryURI
+                            + "\"");
+                }
+                DirectoryNameFilter filter = new DirectoryNameFilter();
+                File[] directories = directory.listFiles(filter);
+                if (directories == null) {
+                    throw new InternalErrorException(this, null,
+                            "Failed to find directories in \""
+                            + directoryPath
+                            + "\"");
+                } else {
+                    for (int i = 0; i < directories.length; i++) {
+                        String directoryName = directories[i].getName();
+                        parameter.addChoice(directoryName);
+                    }
+                }
+            } catch (Throwable throwable) {
+                try {
+                    if (!directoryURI.toString().startsWith("jar:")) {
+                        throw throwable;
+                    } else {
+                        // We have a jar URL, we are probably in Web Start
+                        List<String> directories =  ClassUtilities.jarURLDirectories(
+                                directoryURI.toURL());
+                        for (String directoryFullPath : directories) {
+                            // Get the name of just the directory
+                            String directoryName = directoryFullPath;
+                            // System.out.println("PropertyConstraintSolver0: "
+                            //        + directoryName.lastIndexOf("/")
+                            //        + " " + directoryName.length()
+                            //        + " " + directoryName);
+                            if (directoryName.lastIndexOf("/") > -1) {
+                                if (directoryName.lastIndexOf("/")
+                                        == directoryName.length() - 1) {
+                                    // Remove the trailing /
+                                    directoryName = directoryName.substring(0,
+                                            directoryName.length() - 1);
+                                    //System.out.println("PropertyConstraintSolver1: "
+                                    //        + directoryName);
+                                }
+
+                                directoryName = directoryName
+                                    .substring(directoryName.lastIndexOf("/") + 1);
+                                //System.out.println("PropertyConstraintSolver2: "
+                                //    + directoryName);
+                            }
+                            //System.out.println("PropertyConstraintSolver3: "
+                            //        + directoryName);
+                            parameter.addChoice(directoryName);
+                        }
+                    } 
+                } catch (Throwable throwable2) {
+                    System.err.println("Tried to look in jarURL");
+                    throwable2.printStackTrace();
+                    throw new IllegalActionException(this, throwable,
+                            "Failed to process "
+                            + directoryURI);
+                }
+            }
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to find directories in \""
+                    + directoryPath
+                    + "\", the parameter \"" + parameter.getFullName()
+                    + "\"cannot be set.");
+        }
+    }
+
     /**
      * Record tracing statistics.
      * @exception IllegalActionException
@@ -986,5 +1083,40 @@ public abstract class PropertySolver extends PropertySolverBase {
       }
       _stats.put("# of trained resolution errors", errorCount + _sharedUtilities.getErrors().size());
   }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Look for directories that do are not CVS or .svn.
+     */
+    static class DirectoryNameFilter implements FilenameFilter {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        /** Return true if the specified file names a directory
+         *  that is not named "CVS" or ".svn".
+         *  @param directory the directory in which the potential
+         *  directory was found.
+         *  @param name the name of the directory or file.
+         *  @return true if the file is a directory that
+         *  contains a file called configuration.xml
+         */
+        public boolean accept(File directory, String name) {
+            try {
+                File file = new File(directory, name);
+
+                if (!file.isDirectory()
+                        || file.getName().equals("CVS")
+                        || file.getName().equals(".svn")) {
+                    return false;
+                }
+            } catch (Exception ex) {
+                return false;
+            }
+
+            return true;
+        }
+    }
   
 }

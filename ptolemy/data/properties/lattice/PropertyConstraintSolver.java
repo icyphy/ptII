@@ -30,7 +30,6 @@ package ptolemy.data.properties.lattice;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -744,35 +743,10 @@ public class PropertyConstraintSolver extends PropertySolver {
     private void _addChoices() throws IllegalActionException {
         File file = null;
 
-        String latticePath = "$CLASSPATH/ptolemy/data/properties/lattice";
-
-        // Use a FilenameFilter so that we can access files via
-        // Web Start.
-        try {
-            URI propertiesLatticeURI = new URI(FileUtilities.nameToURL(
-                            latticePath, null, null).toExternalForm()
-                    .replaceAll(" ", "%20"));
-            File propertiesLatticeDirectory = new File(propertiesLatticeURI);
-            LatticeDirectoryNameFilter filter = new LatticeDirectoryNameFilter();
-            File[] lattices = propertiesLatticeDirectory
-                    .listFiles(filter);
-            if (lattices == null) {
-                throw new InternalErrorException(this, null,
-                        "Failed to find directories in \""
-                        + propertiesLatticeDirectory
-                        + "\", the propertyLattice Parmeter cannot be set.");
-            } else {
-                for (int i = 0; i < lattices.length; i++) {
-                    String latticeName = lattices[i].getName();
-                    propertyLattice.addChoice(latticeName);
-                }
-            }
-        } catch (Exception ex) {
-            throw new InternalErrorException(this, ex,
-                    "Failed to find directories in \""
-                    + latticePath
-                    + "\", the propertyLattice Parmeter cannot be set.");
-        }
+        // Add all the subdirectories in lattice/ directory as
+        // choices.  Directories named "CVS" and ".svn" are skipped.
+        _addChoices(propertyLattice,
+                "$CLASSPATH/ptolemy/data/properties/lattice");
 
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
@@ -1237,38 +1211,4 @@ public class PropertyConstraintSolver extends PropertySolver {
     private List<String> _trainedConstraints = new LinkedList<String>();
 
     private boolean _logMode;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Look for directories that do are not CVS or .svn.
-     */
-    static class LatticeDirectoryNameFilter implements FilenameFilter {
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /** Return true if the specified file names a directory
-         *  that is not named "CVS" or ".svn".
-         *  @param directory the directory in which the potential
-         *  directory was found.
-         *  @param name the name of the directory or file.
-         *  @return true if the file is a directory that
-         *  contains a file called configuration.xml
-         */
-        public boolean accept(File directory, String name) {
-            try {
-                File file = new File(directory, name);
-
-                if (!file.isDirectory()
-                        || file.getName().equals("CVS")
-                        || file.getName().equals(".svn")) {
-                    return false;
-                }
-            } catch (Exception ex) {
-                return false;
-            }
-
-            return true;
-        }
-    }
 }
