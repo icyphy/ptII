@@ -46,17 +46,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[47.125, 619.5]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses backtracking actors, which must&#10;be build before the model will run.  To build:&#10;  cd $PTII&#10;  ./configure&#10;  cd ptolemy/backtrack&#10;  make">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 590.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
