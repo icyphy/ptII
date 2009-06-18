@@ -2910,6 +2910,8 @@ changequote([, ])dnl
 	    fi
 	    cd "$startdir"
 		MATLAB_USE_MSVC="no"
+		# These flags work for MacOSX r2009a, Linux r2008a, Windows r2008a
+		PTMATLAB_CC_FLAGS="-DPT_NO_ENGGETARRAY -DPT_NO_ENGPUTARRAY -DPT_NO_MXGETNAME" 
 		case "`uname -s`" in
 		Linux)
 		    if test "`uname -m`" = "x86_64"; then
@@ -2933,7 +2935,7 @@ changequote([, ])dnl
 			    MATLAB_LIBDIR=${MATLAB_DIR}/bin
 			    if test ! -f "$MATLAB_LIBDIR/libmx.so"; then
 			        MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol64
-				PTMATLAB_CC_FLAGS=-m64
+				PTMATLAB_CC_FLAGS="-m64 $PTMATLAB_CC_FLAGS"
                             fi
 			else     
 			    if test ! -f "$MATLAB_LIBDIR/libmx.so"; then
@@ -2945,7 +2947,6 @@ changequote([, ])dnl
 			;;
 		Darwin)
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/maci
-			PTMATLAB_CC_FLAGS="-DPT_NO_ENGGETARRAY -DPT_NO_ENGPUTARRAY -DPT_NO_MXGETNAME" 
 			;;
 		*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
@@ -2977,7 +2978,7 @@ changequote([, ])dnl
 		    if test $PTJNI_ARCHITECTURE = "darwin"; then
 		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		    else
-		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx -lmex"
 		        if test "`uname -m`" = "x86_64"; then
 		            PTMATLAB_LD_ARGS="$PTMATLAB_LD_ARGS -fPIC"
 		        fi

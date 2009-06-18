@@ -57,7 +57,8 @@ typedef long long __int64;
 #include "engine.h"
 
 // These defines were needed for Matlab r2009a under Mac OS X.
-// Under Mac OS X, $PTII/configure sets PTMATLAB_CC_FLAGS to these defines:
+// They also seem to work for r2008a under Linux and Windows
+// $PTII/configure sets PTMATLAB_CC_FLAGS to these defines:
 //#define PT_NO_ENGGETARRAY 
 //#define PT_NO_ENGPUTARRAY
 //#define PT_NO_MXGETNAME
