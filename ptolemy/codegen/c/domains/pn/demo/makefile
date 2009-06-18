@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/domains/pn/demo
 
-DIRS =      Gravitation
+DIRS =      Gravitation PNButterfly
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../..
@@ -47,8 +47,11 @@ PTPACKAGE =     demo
 
 PTCLASSJAR =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 PTCLASSALLJARS = \
-	Gravitation/Gravitation.jar
+	Gravitation/Gravitation.jar \
+	PNButterfly/PNButterfly.jar
 
 JSRCS =
 
