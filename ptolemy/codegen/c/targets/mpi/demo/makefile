@@ -47,6 +47,8 @@ PTPACKAGE =     demo
 
 PTCLASSJAR =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 PTCLASSALLJARS = \
 	PNButterfly/PNButterfly.jar
 
