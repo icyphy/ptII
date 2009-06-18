@@ -223,6 +223,14 @@ char* toString_Long(long long l) {
 }
 /**/
 
+/*** toString_Pointer() ***/
+char* toString_Pointer(void* p) {
+    char* string = (char*) malloc(sizeof(char) * 31);
+    sprintf(string, "Memory @ %.22o", (int) p);
+    return string;
+}
+/**/
+
 /*** toString_String() ***/
 char* toString_String(char* a) {
 	return (a);

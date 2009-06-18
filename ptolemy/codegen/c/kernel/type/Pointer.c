@@ -57,10 +57,7 @@ Token Pointer_print(Token thisToken, ...) {
 
 /***Pointer_toString***/
 Token Pointer_toString(Token thisToken, ...) {
-    char* string = (char*) malloc(sizeof(char) * 32);
-    sprintf(string, "Object at %.22o", (int) thisToken.payload.Pointer);
-
-    return String_new(string);
+    return $new(String($toString_Pointer(thisToken.payload.Pointer)));
 }
 /**/
 
