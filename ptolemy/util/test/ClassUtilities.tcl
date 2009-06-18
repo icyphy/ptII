@@ -64,8 +64,9 @@ test ClassUtilities-0.5.3 {jarURLDirectories with a directory that does not exis
     set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/notADirectory"]
 
     catch {java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL} errMsg
-    list $errMsg
-} {{java.io.FileNotFoundException: JAR entry notADirectory not found in /Users/cxh/ptII/ptolemy/util/test/../../../ptolemy/util/test/extractJarFileTest.jar}}
+    regsub "$PTII" $errMsg "xxxPTIIxxx" errMsg2
+    list $errMsg2
+} {{java.io.FileNotFoundException: JAR entry notADirectory not found in xxxPTIIxxx/ptolemy/util/test/extractJarFileTest.jar}}
 
 test ClassUtilities-1.1 {jarURLEntryResource} {
     # return null because the string does not contain !/
