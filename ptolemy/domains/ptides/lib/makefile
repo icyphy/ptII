@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActuatorOutputDevice.java \
 	InputDevice.java \
+	InterruptDevice.java \
 	NetworkInputDevice.java \
 	NetworkOutputDevice.java \
 	OutputDevice.java \
