@@ -1,3 +1,4 @@
+/* Static helper class to work with KIELER graph datastructures. */
 /*
 @Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -26,9 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/* Utilities class to work with the KIELER graph data structure.
- * 
- */
 package ptolemy.vergil.basic.layout.kieler;
 
 import java.awt.geom.Point2D;
@@ -47,7 +45,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphFactory;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KEdgeLayout;
@@ -62,7 +59,10 @@ import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
  * Static helper class to work with KIELER graph datastructures. 
  * 
  * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
- *
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class KielerGraphUtil {
 
@@ -74,8 +74,7 @@ public class KielerGraphUtil {
      * an absolute position of the top left corner of the node instead
      * of something relative to only its parent node.
      * 
-     * @param node
-     *          The KNode of which to retrieve the absolute layout.
+     * @param node The KNode of which to retrieve the absolute layout.
      * @return A shape layout containing the original size of the node
      *          and its location in absolute coordinates (not relative
      *          to its parent)
@@ -100,6 +99,14 @@ public class KielerGraphUtil {
         return absoluteLayout;
     }
     
+    /**
+     * Get the absolute position of a point, i.e. the absolute position instead
+     * of relative to the top left corner of the parent node.
+     *
+     * @param relativeKPoint Point with coordinates relative to its parent node. 
+     * @param parentNode Parent node of the point coordinates.
+     * @return Kieler KPoint with the absolute coordinates.
+     */
     protected static KPoint _getAbsoluteKPoint(KPoint relativeKPoint, KNode parentNode) {
         float offsetX = 0, offsetY = 0;
         while (parentNode != null) {
@@ -114,13 +121,30 @@ public class KielerGraphUtil {
         return absoluteKPoint;
     }
 
+    /**
+     * Get the parent node of an Kieler KEdge. That is the Kieler KNode that
+     * graphically contains the edge. In particular that is the parent node
+     * of the source node of the edge. If the source node is null, then the
+     * result is also null.
+     * @param edge The Kieler KEdge to determine the parent node.
+     * @return The parent Kieler KNode of the given edge or null if the source
+     *         of the edge is undefined.
+     */
     protected static KNode _getParent(KEdge edge){
         KNode source = edge.getSource();
         if(source != null)
             return source.getParent();
-        else return null;
+        return null;
     }
     
+    /**
+     * Get the upper left corner of the real bounding box of the contents of
+     * a given Kieler KNode. Calculate the minimal x and y coordinates of all
+     * nodes contained in the given node.
+     * @param parent The composite Kieler KNode that contains other nodes.
+     * @return The minimal x and y coordinates of all contained nodes. Might be
+     *         Float.MAX_VALUE, if the parent does not contain any children.
+     */
     protected static KPoint _getUpperLeftCorner(KNode parent){
         float x=Float.MAX_VALUE, y=Float.MAX_VALUE;
         for (KNode kNode : parent.getChildren()) {
@@ -139,15 +163,11 @@ public class KielerGraphUtil {
      * Reposition a small object in a big object according to a given direction (NORTH, 
      * EAST, SOUTH, WEST). The small object will be aligned to the big object's 
      * direction side and centered on the other coordinate.
-     * @param originalBounds
-     *          Big object's bounds
-     * @param shrunkBounds
-     *          Small object's bounds
-     * @param direction
-     *          Direction of the small object within the big object given by a SwingConstants
-     *          direction constant
+     * @param originalBounds Big object's bounds
+     * @param shrunkBounds Small object's bounds
+     * @param direction Direction of the small object within the big object given 
+     *          by a SwingConstants direction constant
      * @return  New location of the small object.
-     *          
      */
     protected static Point2D _shrinkCoordinates(Rectangle2D originalBounds,
             Rectangle2D shrunkBounds, int direction) {
@@ -180,10 +200,8 @@ public class KielerGraphUtil {
      * Debug output a KEdge to a String, i.e. will represent all bendpoints in
      * the String.
      * 
-     * @param edge 
-     *          The edge to be toStringed
-     * @return
-     *          A String representing the KEdge
+     * @param edge The edge to be toStringed
+     * @return A String representing the KEdge
      */
     protected static String _toString(KEdge edge) {
         StringBuffer string = new StringBuffer();
@@ -204,10 +222,8 @@ public class KielerGraphUtil {
      * whole subgraph starting with this node recursively and
      * also present all outgoing edges of all nodes.
      * 
-     * @param knode 
-     *          The node to be toStringed
-     * @return
-     *          A String representing the KNode
+     * @param knode The node to be toStringed
+     * @return A String representing the KNode
      */
     protected static String _toString(KNode knode) {
         return _toString(knode, 0);
@@ -218,13 +234,10 @@ public class KielerGraphUtil {
      * whole subgraph starting with this node recursively and
      * also present all outgoing edges of all nodes.
      * 
-     * @param knode 
-     *          The node to be toStringed
-     * @param level
-     *          Tree level of the currently processed element. Used for
+     * @param knode The node to be toStringed
+     * @param level Tree level of the currently processed element. Used for
      *          recursive operation.
-     * @return
-     *          A String representing the KNode
+     * @return A String representing the KNode
      */
     protected static String _toString(KNode knode, int level) {
         StringBuffer buffer = new StringBuffer();
@@ -254,8 +267,7 @@ public class KielerGraphUtil {
      * loading it elsewhere, e.g. a KIELER Graph viewer. The default filename
      * is kgraph.xmi and will be written to the current working directory.
      * 
-     * @param kgraph
-     *          The Kieler Graph datastructure given by its root KNode.
+     * @param kgraph The Kieler Graph datastructure given by its root KNode.
      */
     protected static void _writeToFile(KNode kgraph) {
         // Create a resource set.
