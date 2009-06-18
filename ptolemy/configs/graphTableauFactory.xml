@@ -26,7 +26,9 @@
   <!--property name="Tcl Shell"
             class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/-->
   
-  <property name="Graph Editor"
+  <!-- Below is an example that places a button in the tool bar.
+       See ptolemy/actor/gui/properties for details.  
+    <property name="Graph Editor"
             class="ptolemy.vergil.actor.ActorGraphTableau$Factory">
     <configure>
       <property name="toolbar" class="ptolemy.actor.gui.properties.ToolBar">
@@ -39,4 +41,5 @@
       </property>
     </configure>
   </property>
+  -->
 </property>
