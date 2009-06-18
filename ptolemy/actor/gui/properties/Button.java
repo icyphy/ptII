@@ -133,7 +133,7 @@ public class Button extends ActionGUIProperty {
      */
     public FileParameter icon;
     
-    /** Tooltip for the button 
+    /** Tooltip for the button.
      */
     public StringParameter tooltip;
 }
