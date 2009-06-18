@@ -140,8 +140,7 @@ update_clean:
 	rm -f $(DERIVED_FILES)
 
 check_applets:
-	echo "These applets might be missing:"
-	ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}' | sed 's/.xml/.htm/'` 2>&1 | sed 's/ls: //' | grep "No such file" | $(GAWK) '{print $$1}'
+	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}' | sed 's/.xml/.htm/'` 2>&1 | sed 's/ls: //' | grep "No such file" | $(GAWK) '{print $$1}' | sed 's@:@@'
 
 listDemos:
 	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
