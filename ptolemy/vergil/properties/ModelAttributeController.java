@@ -1,29 +1,25 @@
 /*
-
- Copyright (c) 1997-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
-
+ * 
+ * Copyright (c) 1997-2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ * 
  */
 
 package ptolemy.vergil.properties;
@@ -52,43 +48,59 @@ import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 
 /**
-
- @author Man-Kit Leung
- @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
+ * A controller that provides binding of an attribute and a refinement model.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class ModelAttributeController extends AttributeController {
 
+    /**
+     * Create a model attribute controller associated with the specified graph
+     * controller.
+     * @param controller The specified graph controller.
+     */
     public ModelAttributeController(GraphController controller) {
         this(controller, FULL);
     }
 
-    private LookInsideAction _lookInsideAction;
-
-    public ModelAttributeController(GraphController controller,
-            Access access) {
+    /**
+     * Create a model attribute controller associated with the specified graph
+     * controller.
+     * @param controller The associated graph controller.
+     * @param access The access level.
+     */
+    public ModelAttributeController(GraphController controller, Access access) {
         super(controller, access);
 
         _lookInsideAction = new LookInsideAction();
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _lookInsideAction));
+        _menuFactory
+                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
 
     }
 
+    /**
+     * Add hot keys to the look inside action in the given JGraph. It would be
+     * better that this method was added higher in the hierarchy.
+     * @param jgraph The JGraph to which hot keys are to be added.
+     */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
 
-    public static class Factory extends NodeControllerFactory {
+    private static class Factory extends NodeControllerFactory {
 
         public Factory(NamedObj container, String name)
                 throws NameDuplicationException, IllegalActionException {
             super(container, name);
         }
 
+        @Override
         public NamedObjController create(GraphController controller) {
             return new ModelAttributeController(controller);
         }
@@ -105,20 +117,22 @@ public class ModelAttributeController extends AttributeController {
                             .getMenuShortcutKeyMask()));
         }
 
+        @Override
         public void actionPerformed(ActionEvent event) {
             super.actionPerformed(event);
 
-            ModelAttribute attribute =
-                (ModelAttribute) getTarget();
+            ModelAttribute attribute = (ModelAttribute) getTarget();
             TableauFrame frame = (TableauFrame) getFrame();
             Configuration configuration = frame.getConfiguration();
             try {
                 CompositeEntity model = attribute.getContainedModel();
                 configuration.openInstance(model);
             } catch (Exception e) {
-                throw new InternalErrorException(null, e, "Unable to create " +
-                        "transformation editor for " + attribute.getName());
+                throw new InternalErrorException(null, e, "Unable to create "
+                        + "transformation editor for " + attribute.getName());
             }
         }
     }
+
+    private final LookInsideAction _lookInsideAction;
 }

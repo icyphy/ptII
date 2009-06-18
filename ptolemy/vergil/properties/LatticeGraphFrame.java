@@ -1,29 +1,26 @@
 /*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
-
-Copyright (c) 2009 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
+ * LatticeGraphFrame.java 53664 2009-05-12 20:20:58Z mankit $
+ * 
+ * Copyright (c) 2009 The Regents of the University of California. All rights
+ * reserved.
+ * 
+ * Permission is hereby granted, without written agreement and without license
+ * or royalty fees, to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, provided that the above copyright notice and
+ * the following two paragraphs appear in all copies of this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ */
 package ptolemy.vergil.properties;
 
 import java.awt.event.ActionEvent;
@@ -47,46 +44,57 @@ import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
 import diva.graph.GraphPane;
 
+/**
+ * This is a graph editor frame for lattice graphs. Given a composite entity and
+ * a tableau, it creates an editor and populates the menus and toolbar. This
+ * overrides the base class to associate with the editor an instance of
+ * LatticeGraphFrameController.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ */
+public class LatticeGraphFrame extends FSMGraphFrame implements ActionListener {
 
-public class LatticeGraphFrame extends FSMGraphFrame
-        implements ActionListener {
+    private static final String CHECK_LATTICE = "Check Lattice Graph";
 
-    private static final String CHECK_LATTICE = "Check Lattice";
-
-    /** Construct a frame associated with the specified FSM model.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  This is typically done by calling show() on the controlling tableau.
-     *  This constructor results in a graph frame that obtains its library
-     *  either from the model (if it has one) or the default library defined
-     *  in the configuration.
-     *  @see Tableau#show()
-     *  @param entity The model to put in this frame.
-     *  @param tableau The tableau responsible for this frame.
+    /**
+     * Construct a frame associated with the specified lattice graph. After
+     * constructing this, it is necessary to call setVisible(true) to make the
+     * frame appear. This is typically done by calling show() on the controlling
+     * tableau. This constructor results in a graph frame that obtains its
+     * library either from the model (if it has one) or the default library
+     * defined in the configuration.
+     * @see Tableau#show()
+     * @param entity The model to put in this frame.
+     * @param tableau The tableau responsible for this frame.
      */
     public LatticeGraphFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
-    /** Construct a frame associated with the specified FSM model.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  This is typically done by calling show() on the controlling tableau.
-     *  This constructor results in a graph frame that obtains its library
-     *  either from the model (if it has one), or the <i>defaultLibrary</i>
-     *  argument (if it is non-null), or the default library defined
-     *  in the configuration.
-     *  @see Tableau#show()
-     *  @param entity The model to put in this frame.
-     *  @param tableau The tableau responsible for this frame.
-     *  @param defaultLibrary An attribute specifying the default library
-     *   to use if the model does not have a library.
+    /**
+     * Construct a frame associated with the specified lattice model. After
+     * constructing this, it is necessary to call setVisible(true) to make the
+     * frame appear. This is typically done by calling show() on the controlling
+     * tableau. This constructor results in a graph frame that obtains its
+     * library either from the model (if it has one), or the <i>defaultLibrary</i>
+     * argument (if it is non-null), or the default library defined in the
+     * configuration.
+     * @see Tableau#show()
+     * @param entity The model to put in this frame.
+     * @param tableau The tableau responsible for this frame.
+     * @param defaultLibrary An attribute specifying the default library to use
+     * if the model does not have a library.
      */
     public LatticeGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
     }
 
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new LatticeGraphFrameController();
         _controller.setConfiguration(getConfiguration());
@@ -99,14 +107,16 @@ public class LatticeGraphFrame extends FSMGraphFrame
         return new FSMGraphPane(_controller, graphModel, entity);
     }
 
+    @Override
     protected JMenuItem[] _debugMenuItems() {
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
-                new JMenuItem(CHECK_LATTICE, KeyEvent.VK_D)
+            new JMenuItem(CHECK_LATTICE, KeyEvent.VK_D)
         };
         return debugMenuItems;
     }
 
+    @Override
     protected ActionListener _getDebugMenuListener() {
         DebugMenuListener debugMenuListener = new DebugMenuListener();
         return debugMenuListener;
@@ -130,8 +140,7 @@ public class LatticeGraphFrame extends FSMGraphFrame
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
 
-                    PropertyLatticeComposite lattice =
-                        (PropertyLatticeComposite) getModel();
+                    PropertyLatticeComposite lattice = (PropertyLatticeComposite) getModel();
 
                     tableau.setDebuggable(lattice);
 
