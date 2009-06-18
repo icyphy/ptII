@@ -10,18 +10,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 983, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 30, 1040, 518}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[768, 410]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[827, 408]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.0, 205.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.5, 204.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in Java code.&#10;It will multiple the incoming tokens with java.lang.Math.PI.&#10;If you select the EmbeddedJavaActor, click the right-mouse button&#10;and select Open Actor, you can inspect and change the code.&#10;The code is automatically recompiled when you run the model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 145.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,6 +33,7 @@
         </property>
     </property>
     <entity name="EmbeddedJavaActor" class="ptolemy.actor.lib.embeddedJava.EmbeddedJavaActor">
+        <display name="JavaCompiledCompositeActor"/>
         <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="embeddedJavaCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary Java code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;$ref(output) = java.lang.Math.PI * $ref(input);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
