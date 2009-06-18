@@ -93,7 +93,10 @@ public class ModelAttributeController extends AttributeController {
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
 
-    private static class Factory extends NodeControllerFactory {
+    /**
+     * A factory attribute that creates ModelAttributeControllers.
+     */
+    public static class Factory extends NodeControllerFactory {
 
         public Factory(NamedObj container, String name)
                 throws NameDuplicationException, IllegalActionException {
