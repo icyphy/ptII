@@ -646,15 +646,25 @@ install them
 <li> <a name="settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
 to the
 name of the directory where Ptolemy II is installed.
-Under Windows XP, you set the environment variable via
+  <p>Executive Summary: Under Windows, it is safest if you use forward slashes
+  in both the <code>Environment Variables</code> panel and when running
+  Cygwin bash.  In Cygwin bash, <b>don't</b> use <code>pwd</code>
+  to set your PTII variable.
+  <p>Under Windows XP, you set the environment variable via
 the Environment tab of the System control panel
 (<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
 <CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>)
- <p>The PTII value should be set using back slashes so that javac
+ <p>The PTII value <b>in the Environment tab</b> should be set
+  using back slashes so that javac
 gets the right path if you've installed Cygwin in a location
 other than <CODE>C:\</CODE> such as <CODE>C:\Cygwin</CODE>.
-
+  <br>You can also set the PTII value in the Environment tab
+  to use forward slashes, though there are some situations
+  (Cygwin installed other than c:\Cygwin) in
+  which this might cause problems.
+<br><b>Note that when setting PTII from Cygwin bash, you should use
+  forward slashes</b>.
 <BLOCKQUOTE>
 If you have installed Cygwin in c:/cygwin, and your Ptolemy II installation
 is in a directory outside of the c:/cygwin tree, then Cygwin may
@@ -698,9 +708,14 @@ is by typing <CODE>pwd</CODE>
 </BLOCKQUOTE>
 
 
- <p>An example PTII value would be:
+ <p>An example PTII value in the Environment Tab would be:
 <pre>
 c:\users\yourname\ptII
+</pre>
+
+ <p>An example PTII value inside Cygwin bash would be:
+<pre>
+export PTII=c:/users/yourname/ptII
 </pre>
 
 <blockquote>
