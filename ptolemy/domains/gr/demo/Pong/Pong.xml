@@ -50,7 +50,7 @@ Continuous, ModalModel and GR.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 295.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -1781,10 +1781,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{95.0, 310.0}">
-        </vertex>
     </relation>
     <link port="Animation.x_position" relation="relation3"/>
     <link port="Animation.y_position" relation="relation5"/>
