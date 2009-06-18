@@ -1,4 +1,4 @@
-2# Makefile for PtolemyII Finite State Machine Domain Demos
+# Makefile for PtolemyII Finite State Machine Domain Demos
 #
 # @Version: $Id$
 # @Author: Xiaojun Liu
