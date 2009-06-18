@@ -39,6 +39,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,7 +98,19 @@ public class TimedPlotter extends Plotter implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TimedPlotter newObject = (TimedPlotter) super.clone(workspace);
+        newObject._connected = new ArrayList<Boolean>();
+        return newObject;
+    }    
 
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
