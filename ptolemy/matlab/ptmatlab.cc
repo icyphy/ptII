@@ -210,7 +210,9 @@ extern "C"
     const char *str = jni->GetStringUTFChars(name, 0);
     mxArray *ma = (mxArray*)(ptrlong)pma;
 #ifdef PT_NO_ENGPUTARRAY
-    int retval = mexPutVariable("global", str, ma);
+    // Daniel Crawl says to use engPutVariable(), see
+    // http://www.mathworks.com/access/helpdesk/help/techdoc/index.html?/access/helpdesk/help/techdoc/rn/f34-998197.html
+    int retval = engPutVariable(ep, str, ma);
 #else
     mxSetName(ma, str);
     const int *dimArray = mxGetDimensions(ma);
