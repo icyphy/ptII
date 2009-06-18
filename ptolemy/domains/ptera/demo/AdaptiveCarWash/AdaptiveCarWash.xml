@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.0, 240.5}">
     </property>
-    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="16">
+    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="20">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -129,7 +129,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="Queue" class="ptolemy.data.expr.Parameter" value="16">
+            <property name="Queue" class="ptolemy.data.expr.Parameter" value="20">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -435,8 +435,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="1995.1616950405"/>
-<yRange min="0.0" max="21.0"/>
+<xRange min="0.0" max="1999.2783285383"/>
+<yRange min="0.0" max="22.0"/>
 </plot>?>
         </configure>
     </entity>
