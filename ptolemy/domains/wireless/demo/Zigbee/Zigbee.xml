@@ -168,7 +168,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 100, 1033, 232}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 100, 1025, 225}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1025, 181]">
         </property>
@@ -198,11 +198,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 70, NoH = 4, Requester = 12, Responder = 6, SeqN = 53}, Sender = 5, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 1}, Sender = 5, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="59">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -223,7 +223,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 1, NoH = 6, SeqN = 1}, {Dest = 1, Next = 1, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 5, NoH = 2, SeqN = 53}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 1, NoH = 6, SeqN = 1}, {Dest = 1, Next = 1, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -242,7 +242,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
             </property>
         </property>
-        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}}">
+        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
         </property>
         <port name="CommOut" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -2661,9 +2661,9 @@
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 340, 119, 346}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 340, 128, 339}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[111, 295]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 295]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
             </property>
@@ -2763,11 +2763,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 70, NoH = 4, Requester = 12, Responder = 6, SeqN = 53}, Sender = 5, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 1}, Sender = 5, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="59">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2788,7 +2788,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 27, NoH = 5, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 3, NoH = 3, SeqN = 53}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 27, NoH = 5, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2807,7 +2807,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
             </property>
         </property>
-        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}}">
+        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
         </property>
         <port name="CommOut" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -5226,9 +5226,9 @@
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 343, 119, 327}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 343, 128, 320}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[111, 276]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 276]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
             </property>
@@ -5328,11 +5328,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 80, NoH = 3, Requester = 12, Responder = 6, SeqN = 53}, Sender = 3, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 1}, Sender = 5, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="59">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -5353,7 +5353,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 53}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -5372,7 +5372,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
             </property>
         </property>
-        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}}">
+        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
         </property>
         <port name="CommOut" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -7791,9 +7791,9 @@
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 340, 119, 339}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 340, 128, 332}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[111, 288]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 288]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
             </property>
@@ -7893,11 +7893,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 80, NoH = 3, Requester = 12, Responder = 6, SeqN = 53}, Sender = 3, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 1}, Sender = 4, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="59">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -7918,7 +7918,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 53}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -7937,7 +7937,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
             </property>
         </property>
-        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}}">
+        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
         </property>
         <port name="CommOut" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -10356,9 +10356,9 @@
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 343, 119, 344}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 343, 128, 337}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[111, 293]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 293]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
             </property>
@@ -10458,11 +10458,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 53}, Sender = 4, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 1}, Sender = 4, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="54">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="55">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -12921,9 +12921,9 @@
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 343, 119, 330}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 343, 128, 323}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[111, 279]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 279]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
             </property>
@@ -13041,11 +13041,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 70, NoH = 4, Requester = 12, Responder = 6, SeqN = 53}, Sender = 1, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 1}, Sender = 1, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="59">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -13066,7 +13066,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 27, NoH = 5, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 3, NoH = 3, SeqN = 53}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 27, NoH = 5, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -13085,7 +13085,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
             </property>
         </property>
-        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}}">
+        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
         </property>
         <port name="CommOut" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -15504,9 +15504,9 @@
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 343, 119, 327}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 343, 128, 320}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[111, 276]">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 276]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
             </property>
