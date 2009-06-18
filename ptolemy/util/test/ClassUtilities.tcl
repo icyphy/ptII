@@ -39,6 +39,34 @@ if {[string compare test [info procs test]] == 1} then {
 # set VERBOSE 1
 
 
+test ClassUtilities-0.5 {jarURLDirectories with a directory} {
+    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/a"]
+
+    set r1 [java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL]
+    listToStrings $r1
+} {a/b/ a/c/}
+
+test ClassUtilities-0.5.1 {jarURLDirectories with a directory with a trailing /} {
+    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/a/"]
+
+    set r1 [java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL]
+    listToStrings $r1
+} {a/b/ a/c/}
+
+test ClassUtilities-0.5.2 {jarURLDirectories with a file} {
+    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/a/1"]
+
+    set r1 [java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL]
+    listToStrings $r1
+} {}
+
+test ClassUtilities-0.5.3 {jarURLDirectories with a directory that does not exist} {
+    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/notADirectory"]
+
+    catch {java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL} errMsg
+    list $errMsg
+} {{java.io.FileNotFoundException: JAR entry notADirectory not found in /Users/cxh/ptII/ptolemy/util/test/../../../ptolemy/util/test/extractJarFileTest.jar}}
+
 test ClassUtilities-1.1 {jarURLEntryResource} {
     # return null because the string does not contain !/
     set r1 [java::call ptolemy.util.ClassUtilities jarURLEntryResource "foo"]
