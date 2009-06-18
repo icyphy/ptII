@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	colt/colt.jar \
 	conversions/conversions.jar \
+	embeddedJava/embeddedJava.jar \
 	hoc/hoc.jar \
 	logic/logic.jar \
 	string/string.jar
