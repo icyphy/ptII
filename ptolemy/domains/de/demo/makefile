@@ -52,12 +52,12 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	AssemblyLine/AssemblyLine.jar \
-	Clock/Clock.xml \
+	Clock/Clock.jar \
 	Inspection/Inspection.jar \
-	ModalModel/ModalModel.jar \
 	LongRuns/LongRuns.jar \
-	RealTimeComposite/RealTimeComposite.jar \
+	ModalModel/ModalModel.jar \
 	QueueAndServer/QueueAndServer.jar \
+	RealTimeComposite/RealTimeComposite.jar \
 	SmartSender/SmartSender.jar \
 	TimingParadox/TimingParadox.jar \
 	VariableDelay/VariableDelay.jar
