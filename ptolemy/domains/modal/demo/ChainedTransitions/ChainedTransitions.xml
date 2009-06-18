@@ -4,7 +4,7 @@
 <entity name="ChainedTransitions" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+    <property name="Continuous Solver" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -25,7 +25,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="ExplicitRK23Solver">
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -286,7 +286,7 @@
             <link port="decreasing.outgoingPort" relation="relation6"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+            <property name="Refinement Solver" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -305,7 +305,7 @@
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="ExplicitRK23Solver">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
                 </property>
@@ -375,7 +375,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 145.0">
                 </property>
             </port>
-            <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialState">
                 </property>
                 <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -524,7 +524,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 125.0]">
             </property>
         </port>
-        <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
             </property>
             <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
