@@ -52,19 +52,15 @@ typedef long long __int64;
 // version of the ptmatlab shared library to load...
 #define V5_COMPAT
 
-#define PT_NO_MXGETNAME
-#ifdef PT_NO_MXGETNAME
-#define mxGetName(a) "a"
-#endif
-
 #include <jni.h>
 #include "ptmatlab.h"
 #include "engine.h"
 
-// These defines were needed for Matlab r2009a under Mac OS X
+// These defines were needed for Matlab r2009a under Mac OS X.
+// Under Mac OS X, $PTII/configure sets PTMATLAB_CC_FLAGS to these defines:
 //#define PT_NO_ENGGETARRAY 
 //#define PT_NO_ENGPUTARRAY
-
+//#define PT_NO_MXGETNAME
 
 #ifdef PT_NO_ENGGETARRAY
 #ifndef PT_INCLUDE_MEX_H
@@ -73,10 +69,18 @@ typedef long long __int64;
 #endif
 
 #ifdef PT_NO_ENGPUTARRAY
+
 #ifndef PT_INCLUDE_MEX_H
 #define PT_INCLUDE_MEX_H
 #endif
+
+#endif //PT_NO_ENGPUTARRAY
+
+
+#ifdef PT_NO_MXGETNAME
+#define mxGetName(a) "a"
 #endif
+
 
 #ifdef PT_INCLUDE_MEX_H
 #include "mex.h"
