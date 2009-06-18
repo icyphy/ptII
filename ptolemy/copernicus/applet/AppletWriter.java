@@ -594,9 +594,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         + "modelJnlp.htm.in", _substituteMap, _outputDirectory
                         + "/" + _sanitizedModelName + ".htm");
             } else {
-                CodeGeneratorUtilities.substitute(_templateDirectory
-                        + "modelJnlp.htm.in", _substituteMap, _outputDirectory
-                        + "/" + _sanitizedModelName + "JNLP.htm");
+                if ( !(new File(_outputDirectory + File.separator + _sanitizedModelName + "Vergil.htm").exists())) {
+                    CodeGeneratorUtilities.substitute(_templateDirectory
+                            + "modelJnlp.htm.in", _substituteMap, _outputDirectory
+                            + "/" + _sanitizedModelName + "Vergil.htm");
+                } else {
+                    CodeGeneratorUtilities.substitute(_templateDirectory
+                            + "modelJnlp.htm.in", _substituteMap, _outputDirectory
+                            + "/" + _sanitizedModelName + "JNLP.htm");
+                }
             }
             CodeGeneratorUtilities.substitute(_templateDirectory
                     + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
