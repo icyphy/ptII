@@ -152,6 +152,13 @@ public class TextEffigy extends Effigy {
                                 + "', base: '" + base
                                 + "' : openStream() threw a "
                                 + "NullPointerException");
+                    } catch (Exception ex) {
+                        IOException exception = new IOException(
+                                "Failed to open '" + in
+                                + "\", base: \"" + base
+                                + "\"");
+                        exception.initCause(ex);
+                        throw exception;
                     }
 
                     reader = new BufferedReader(new InputStreamReader(
