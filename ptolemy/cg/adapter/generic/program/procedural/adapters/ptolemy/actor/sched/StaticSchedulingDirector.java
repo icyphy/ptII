@@ -294,7 +294,6 @@ public class StaticSchedulingDirector extends Director {
         return code.toString();
     }
 
-
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -369,10 +368,21 @@ public class StaticSchedulingDirector extends Director {
                 + name);
     }
 
-    /** 
-     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
-     *  @return The reference to that parameter or port (a variable name,
-     *   for example).
+    /**
+     * Return an unique label for the given port channel referenced
+     * by the given helper. By default, this delegates to the helper to 
+     * generate the reference. Subclass may override this method
+     * to generate the desire label according to the given parameters.
+     * @param port The given port.
+     * @param channelAndOffset The given channel and offset.
+     * @param forComposite Whether the given helper is associated with
+     *  a CompositeActor
+     * @param isWrite The type of the reference. True if this is
+     *  a write reference; otherwise, this is a read reference.  
+     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     * @return an unique reference label for the given port channel.
+     * @throws IllegalActionException If the helper throws it while
+     *  generating the label.     
      */
     public String getReference(TypedIOPort port,
             String[] channelAndOffset,
@@ -1426,6 +1436,7 @@ public class StaticSchedulingDirector extends Director {
         /** Initialize the offsets.
          *  @param port The given port.
          *  @return The code to initialize the offsets.
+         *  @exception IllegalActionException Thrown if offsets can't be initialized.
          */
         public String initializeOffsets(IOPort port) throws IllegalActionException {
             return _getPortInfo(port).initializeOffsets();
@@ -1516,7 +1527,7 @@ public class StaticSchedulingDirector extends Director {
         private Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
     }
     
-    /** The meta information about the ports in the container */
+    /** The meta information about the ports in the container. */
     protected Ports _ports = new Ports();
     
 }
