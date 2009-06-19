@@ -1,6 +1,6 @@
 /* A code generation helper class for actor.lib.gui.Display
 
- @Copyright (c) 2005-2009 The Regents of the University of California.
+ @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 7.2
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
@@ -53,7 +53,7 @@ public class Display extends JavaCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,
-     * <code>printString</code>, or <code>printDouble</code> from Display.c,
+     * <code>printString</code>, or <code>printDouble</code> from Display.j,
      * replaces macros with their values and returns the results.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an

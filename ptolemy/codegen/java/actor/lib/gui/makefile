@@ -51,13 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Display.java \
-	PlotterBase.java \
-	SequencePlotter.java \
-	SequenceScope.java \
-	SliderSource.java \
-	TimedPlotter.java \
-	XYPlotter.java \
-	XYScope.java
+	SequencePlotter.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.c)
