@@ -15,10 +15,12 @@ Token toString_Token_Token(Token thisToken, Token... otherToken) {
         result.type = TYPE_String;
         return result;
 #endif
+#ifdef PTCG_TYPE_Array
      case TYPE_Array:
                result = Array_toString(thisToken);
                result.type = TYPE_String;
                return result;
+#endif
     default:
         throw new InternalError("toString_Token_Token_(): unsupported type: "
             + thisToken.type);
