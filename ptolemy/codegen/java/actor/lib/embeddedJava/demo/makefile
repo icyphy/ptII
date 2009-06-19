@@ -46,7 +46,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	CompiledCompositeActor/CompiledCOmpositeActor.jar \
+	CompiledCompositeActor/CompiledCompositeActor.jar \
         Scale/Scale.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
