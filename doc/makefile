@@ -192,6 +192,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
