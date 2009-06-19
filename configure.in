@@ -741,12 +741,19 @@ ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/kieler.jar"/>'
 
 case "`uname -s`" in
      Darwin) 
-         AC_MSG_WARN([Under Eclipse on Mac OS X, you must use Java 1.5
-    within Eclipse. Note that the backtracking and other Eclipse code will
-    _not_ work on the Mac from within Eclipse. Backtracking will work 
-    on the Mac _outside_ of Eclipse. For details, see
+         AC_MSG_WARN([Under Eclipse on Mac OS X, there are various
+    problems with Eclipse.	 
+    - To run Eclipse-3.4.0 on the Mac, you must use Java 1.5.  However,
+      You can still run Eclipse with 1.5 and have Eclipse invoke your
+      application with Java 1.6.  The problem is that Eclipse itself
+      must be run with Java 1.5.  This may change with Eclipse Galileo.
+    - Eclipse-3.4.0 has problems with Eclipse plugins on the Mac.
+      Note that the backtracking and other Eclipse code will
+      _not_ work on the Mac from within Eclipse. Backtracking will work 
+      on the Mac _outside_ of Eclipse.
+    For details, see
     http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac and follow the
-    Problems with Eclipse and Ptolemy on the Mac link.])
+    'Problems with Eclipse and Ptolemy on the Mac' link.])
         if test -d ptolemy/apps/eclipse/awt/; then
 	    AC_MSG_WARN([Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     is not supported.])
