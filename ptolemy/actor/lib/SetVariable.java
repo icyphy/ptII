@@ -63,20 +63,15 @@ import ptolemy.util.MessageHandler;
  If <i>delayed</i> is true, then the change to
  the value of the variable is implemented in a change request, and
  consequently will not take hold until the end of the current
- toplevel iteration.  This helps ensure that users of value of the
+ top-level iteration.  This helps ensure that users of value of the
  variable will see changes to the value deterministically
- (independent of the schedule of execution of the actors).
- There was a substantial performance penalty associated
- with this when running within Vergil because change requests
- triggered repainting the Vergil window. This is no long the case.
- The downside of this that parameters no longer are updated visually
- after they are changed by SetVariable. To circumvent this,
- RepaintController has been created, which can be found under
- Utilities in the library, and allows to specify when
- repaints should happen.
+ (independent of the schedule of execution of the actors),
+ assuming there is only a single instance of SetVariable writing
+ to the variable.
  </p><p>
  If <i>delayed</i> is false, then the change to the value of
- the variable is performed immediately.  This allows more frequent
+ the variable is performed immediately in the fire() method.
+ This allows more frequent
  reconfiguration, and can mimic the operation of PGM's graph
  variables. However, this can result in nondeterminism if
  the variable values are observed by any other actor in
@@ -84,12 +79,20 @@ import ptolemy.util.MessageHandler;
  actor without wiring, use the Publisher and Subscriber
  actors instead.
  </p><p>
- The <i>output</i> port produces the same token provided at
+ If <i>delayed</i> is false, then
+ the <i>output</i> port produces the same token provided at
  the <i>input</i> port when the actor fires, after the
  specified variable has been set. This can be used, even with
  <i>delayed</i> set to false, to ensure determinacy, by
  triggering downstream actions only after the variable has
  been set.
+ </p><p>
+ If <i>delayed</i> is true, then
+ the <i>output</i> port produces the current value
+ of the referenced variable. If the referenced variable
+ does not exist on the first firing, or is not an instance
+ of Variable, then no output is
+ produced on the first firing.
  </p><p>
  The variable can be either any attribute that implements
  the Settable interface. If it is in addition an instance of
@@ -98,11 +101,18 @@ import ptolemy.util.MessageHandler;
  the same as the type of the input. Otherwise, then input
  token is converted to a string and the setExpression() method
  on the variable is used to set the value.
-
- </p><p>The variable can occur anywhere in the hierarchy above
+ </p><p>
+ The variable can occur anywhere in the hierarchy above
  the current level.  If the variable is not found in the container,
  then the container of the container is checked until we reach the
- top level.</p>
+ top level. If still no variable is found, then a variable is
+ created in the container.
+ </p><p>
+ For efficiency, the variable update does not automatically
+ trigger a repaint in Vergil. If the variable value is being used
+ to create an animation in Vergil, then you should include in the model
+ an instance of RepaintController, which can be found under
+ Utilities in the library.
 
  @author Edward A. Lee, Steve Neuendorffer, Contributor: Blanc, Bert Rodiers
  @see Publisher
@@ -139,6 +149,21 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** Parameter that determines when reconfiguration occurs. */
+    public Parameter delayed;
+
+    /** The input port. */
+    public TypedIOPort input;
+
+    /** The output port. */
+    public TypedIOPort output;
+
+    /** The name of the variable in the container to set. */
+    public StringAttribute variableName;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    
     /** Do nothing.
      *  @param change The change that executed.
      */
@@ -154,6 +179,28 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     public void changeFailed(ChangeRequest change, java.lang.Exception exception) {
         _setFailed = true;
         MessageHandler.error("Failed to set variable.", exception);
+    }
+
+    /** Read at most one token from the input port and issue a change
+     *  request to update variables as indicated by the input.
+     *  @exception IllegalActionException If thrown reading the input.
+     */
+    public void fire() throws IllegalActionException {
+        if (!delayed.getToken().equals(BooleanToken.TRUE)) {
+            if (input.hasToken(0)) {
+                Token value = input.get(0);
+                _setValue(value);
+                output.send(0, value);
+            }
+        } else {
+            Attribute variable = getModifiedVariable();
+            if (variable instanceof Variable) {
+                Token previousToken = ((Variable) variable).getToken();
+                if (previousToken != null) {
+                    output.send(0, previousToken);
+                }
+            }
+        }
     }
 
     /**
@@ -218,9 +265,6 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         return _attribute;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Return a list of variables that this entity modifies.  The
      * variables are assumed to have a change context of the given
      * entity.
@@ -244,10 +288,10 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @exception IllegalActionException If thrown reading the input.
      */
     public boolean postfire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            final Token value = input.get(0);
+        if (delayed.getToken().equals(BooleanToken.TRUE)) {
+            if (input.hasToken(0)) {
+                final Token value = input.get(0);
 
-            if (delayed.getToken().equals(BooleanToken.TRUE)) {
                 // If the previous set failed, then return false.
                 // We cannot just proceed with another request because
                 // it will likely trigger the same exception again,
@@ -281,11 +325,6 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 request.setPersistent(false);
                 request.addChangeListener(this);
                 requestChange(request);
-            } else {
-                _setValue(value);
-            }
-            if (output.isOutsideConnected()) {
-                output.send(0, value);
             }
         }
 
@@ -311,42 +350,8 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         _setFailed = false;
     }
 
-    /** Parameter that determines when reconfiguration occurs. */
-    public Parameter delayed;
-
-    /** The input port. */
-    public TypedIOPort input;
-
-    /** The output port. */
-    public TypedIOPort output;
-
-    /** The name of the variable in the container to set. */
-    public StringAttribute variableName;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-//    /**Test based on the value of the new token whether
-//     * an update is necessary.
-//     * This method is conversative in that sense that it might say
-//     * that an update is necessary, while strictly it isn't. This for
-//     * example when it is difficult to determine whether something will
-//     * actually change (for example with expressions, where the expression
-//     * might remain the same, but the actual values might have changed).
-//     * @param newToken The new token.
-//     * @return True when an update needs to be done.
-//     */
-//    private boolean _updateNecessary(Token newToken) throws IllegalActionException {
-//        Attribute variable = getModifiedVariable();
-//
-//        if (variable instanceof Variable) {
-//            Token oldToken = ((Variable) variable).getToken();
-//
-//            return oldToken == null || !oldToken.equals(newToken);
-//        }
-//        return true;
-//    }
-
 
     /** Set the value of the associated container's variable.
      *  @param value The new value.
