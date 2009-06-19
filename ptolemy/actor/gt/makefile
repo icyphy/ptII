@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/gt
 
-DIRS = 		controller data gui ingredients test util demo doc
+DIRS = 		controller data gui ingredients test patterns util demo doc
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
