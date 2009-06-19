@@ -29,28 +29,21 @@ package ptolemy.vergil.basic.layout;
 
 import javax.swing.JFrame;
 
-import de.cau.cs.kieler.core.KielerException;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.basic.BasicLayoutTarget;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.properties.Button;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.basic.AbstractBasicGraphModel;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
 
 //////////////////////////////////////////////////////////////////////////
 //// LayoutButton
 
 /**
- * @author Thomas Huining Feng
+ * Toggle between showing and hiding of unnecessary relation vertices.
+ * 
+ * @author Hauke Fuhrmann
  * @version $Id: LayoutButton.java 53203 2009-04-24 00:27:45Z haf $
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (tfeng)
