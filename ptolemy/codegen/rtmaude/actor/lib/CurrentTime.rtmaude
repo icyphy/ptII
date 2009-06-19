@@ -10,17 +10,15 @@ CurrentTime/**/
 
   class CurrentTime .
     subclass CurrentTime < TimeActor .
+  eq ^ CurrentTime = Actor .
 
-  vars REST PORTS : Configuration .  vars O : Oid .  vars PI PI' : PortId .
+  vars PORTS : Configuration . vars PI PI' : PortId .
+  var O : Oid . var REST : ObjectConfiguration .
   var T : Time . var UPDATED : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
-
-  --- set each status of ports to 'unknown'
-  eq initActor(CurrentTime, < O : CurrentTime | >)
-   = initActor(Actor, < O : CurrentTime | >) .
 
   eq portFixPoints(UPDATED,
      < O : CurrentTime |
@@ -53,8 +51,5 @@ CurrentTime/**/
             < PI' : OutPort | status : absent >
             PORTS
     > REST) .
-
-  eq executeStep(CurrentTime, < O : CurrentTime | >, REST)
-   = executeStep(Actor, < O : CurrentTime | >, REST) .
 endtom)
 /**/

@@ -9,43 +9,45 @@ Clock/**/
   inc ACTOR .
 
   class Clock | period : VarId,
-	            offsets : VarId,
-	            values : VarId,
-	            index : Nat .
+                offsets : VarId,
+                values : VarId,
+                index : Nat .
     subclass Clock < Actor .
+  eq ^ Clock = Actor .
 
-  var NI : Nat .
-  vars REST PORTS : Configuration .  vars O : Oid .  vars PI : PortId .
+  vars PORTS : Configuration . vars PI : PortId .
+  var O : Oid . var REST : ObjectConfiguration .
   var AM : AssignMap . var MEM : Memory .
   var IP IO IV : VarId .  var VP VO VV : Value . var EP EO EV : Exp .
-  var UPDATED : Bool .
+  var UPDATED : Bool . var NI : Nat .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
   --- set each status of ports to 'unknown'
-  eq initActor(Clock, 
+  eq prefire(Clock, 
     < O : Clock | 
       period : IP,
-	  offsets : IO,
-	  values : IV,
-	  variables : (IP |-> EP ; IO |-> EO ; IV |-> EV ; AM)
+      offsets : IO,
+      values : IV,
+      variables : (IP |-> EP ; IO |-> EO ; IV |-> EV ; AM)
     >) 
-   = initActor(Actor, 
+   = prefire(^ Clock, 
     < O : Clock | 
-      store : eval(IP, k(EP)) ; eval(IO, k(EO)) ; eval(IV, k(EV))
+      store : IP |-> k(EP) ; IO |-> k(EO) ; IV |-> k(EV)
     >) .
 
   --- Note: Clock actors generate events "later" and hence
   --- do not generate output WHEN their ports are in unknown state
   eq portFixPoints(UPDATED,
      < O : Clock | 
-	status : enabled,
-	ports : < PI : OutPort | status : unknown > PORTS 
+      status : enabled,
+      ports : < PI : OutPort | status : unknown > PORTS 
      > REST)
    = portFixPoints(true,
-     < O : Clock | ports : < PI : OutPort | status : absent > PORTS > REST) .
+     < O : Clock | 
+      ports : < PI : OutPort | status : absent > PORTS > REST) .
 
   --- When should clock generate "next" event?? Maybe when it has something
   --- in its current output port??? 
@@ -55,36 +57,29 @@ Clock/**/
   ---FIXME: Offset could be Infinity
   ceq executeStep(Clock,
     < O : Clock | 
-	ports : < PI : OutPort | status : present >  PORTS, 
-	offsets : IO,
-	values : IV,
-	store : (IO |-> VO ; IV |-> VV ; MEM),
-	index : NI
-	> , REST) 
+      ports : < PI : OutPort | status : present > PORTS, 
+      offsets : IO,
+      values : IV,
+      store : (IO |-> VO ; IV |-> VV ; MEM),
+      index : NI
+    >) 
   = evt(event(O ! PI, VV(#(s NI))), toTime((VO(#(s NI))) - (VO(# NI))))
-    executeStep(Actor, < O : Clock | index : s(NI) >, REST)
+    executeStep(^ Clock, < O : Clock | index : s(NI) >)
    if ((# NI + # 1) lessThan (VO .. 'length(()) )) == # true .
 
   ceq executeStep(Clock,
     < O : Clock | 
-	ports : < PI : OutPort | status : present >  PORTS, 
-	period : IP,
-	offsets : IO,
-	values : IV,
-	store : (IP |-> VP ; IO |-> VO ; IV |-> VV ; MEM),
-	index : NI
-	> , REST) 
+      ports : < PI : OutPort | status : present >  PORTS, 
+      period : IP,
+      offsets : IO,
+      values : IV,
+      store : (IP |-> VP ; IO |-> VO ; IV |-> VV ; MEM),
+      index : NI
+    >) 
   = evt(event(O ! PI, VV(# 0)), toTime((VP - (VO(# NI))) + (VO(# 0))))
-    executeStep(Actor, < O : Clock | index : 0 >, REST)
+    executeStep(^ Clock, < O : Clock | index : 0 >)
    if ((# NI + # 1) equals (VO .. 'length(()) )) == # true 
     /\ (VP lessThan Infinity) == # true .
-
-  eq executeStep(Clock, 
-    < O : Clock | 
-	ports : < PI : OutPort | status : absent >  PORTS
-    >, REST) 
-  = executeStep(Actor, < O : Clock | >, REST) .
-
 endtom)
 /**/
 

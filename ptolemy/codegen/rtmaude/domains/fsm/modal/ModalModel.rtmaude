@@ -15,6 +15,7 @@ CHECK-MODALMODEL-ACTOR/**/
   class ModalModel | controller : Oid,
                      refinement : RefinementSet .
     subclass ModalModel < CompositeActor .
+  eq ^ ModalModel = CompositeActor .
   
   sort RefinementItem .
   op refine-state : Location Oid -> RefinementItem .
@@ -28,38 +29,40 @@ CHECK-MODALMODEL-ACTOR/**/
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  var O CO : Oid . var REFS : RefinementSet . var ACTS REST : Configuration .
+  var O CO : Oid . 
+  var ACTS REST : ObjectConfiguration .
+  var REFS : RefinementSet . 
   var STATE STATE' : Location .
   var ACTSTAT : ActorStatus .
-  var UPDATED FLAG : Bool .
+  var UPDATED UPDATED' FLAG : Bool .
 
   --- before fix-computation, refinement actors for current states
   --- are enabled, and the controller is disabled.
-  eq initActor(ModalModel,
+  eq prefire(ModalModel,
     < O : ModalModel |
-        controller : CO,
-        refinement : REFS,
-        innerActors :  
-        	< CO : FSM-Actor | 
-        		status : ACTSTAT,
-        		currState : STATE 
-        	> 
-        	ACTS
+      controller : CO,
+      refinement : REFS,
+      innerActors :  
+        < CO : FSM-Actor | 
+          status : ACTSTAT,
+          currState : STATE 
+        > 
+        ACTS
     >)
-   = initActor(CompositeActor,
+   = prefire(^ ModalModel,
     < O : ModalModel |
-        innerActors : 
-            < CO : FSM-Actor | 
-            	status : disabled 
-            > 
-        	setStateRefinement(STATE, REFS, ACTS)
+      innerActors : 
+        < CO : FSM-Actor | 
+          status : disabled 
+        > 
+        setStateRefinement(STATE, REFS, ACTS)
     >) .
 
   op setStateRefinement : Location RefinementSet Configuration -> Configuration .
   eq setStateRefinement(STATE, refine-state(STATE', O) REFS,
-    < O : Actor | status : ACTSTAT > REST)
-  = < O : Actor | status : if STATE == STATE' then enabled else disabled fi >
-    setStateRefinement(STATE, REFS, REST) .
+     < O : Actor | status : ACTSTAT > REST)
+   = < O : Actor | status : if STATE == STATE' then enabled else disabled fi >
+     setStateRefinement(STATE, REFS, REST) .
   eq setStateRefinement(STATE, empty, REST) = REST .
 
   ---Enable a controller. Before this,
@@ -67,20 +70,17 @@ CHECK-MODALMODEL-ACTOR/**/
   ---by the default Maude equation strategy (inner-most one reduced first)
   eq portFixPoints(UPDATED,
     < O : ModalModel |
-        controller : CO,
-        innerActors :
-            < CO : FSM-Actor | status : disabled > ACTS
+      controller : CO,
+      innerActors : portFixPoints(UPDATED',
+            < CO : FSM-Actor | status : disabled > ACTS)
     > REST)
    = portFixPoints(true,
     < O : ModalModel |
-        innerActors : 
-            < CO : FSM-Actor | status : enabled > ACTS
+      innerActors : portFixPoints(true,
+            < CO : FSM-Actor | status : enabled > ACTS)
     > REST) .
-    
+
   ---FIXME: 'controller ==> parent' connection should overwrite 
-  
-    eq executeStep(ModalModel, < O : ModalModel | >, REST) 
-     = executeStep(CompositeActor, < O : ModalModel | >, REST) .
   
 endtom)
 

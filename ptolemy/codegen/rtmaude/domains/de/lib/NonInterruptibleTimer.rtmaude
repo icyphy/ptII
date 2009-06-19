@@ -13,32 +13,33 @@ NonInterruptibleTimer/**/
         wait-queue : TimeList,
         output-value : VarId .
     subclass NonInterruptibleTimer < Actor .
+  eq ^ NonInterruptibleTimer = Actor .
 
   sort TimeList .
   subsort Time < TimeList .
   op emptyList : -> TimeList .
   op __ : TimeList TimeList -> TimeList [ctor assoc id: emptyList] .
 
-  vars REST PORTS : Configuration .  vars O : Oid .  vars PI PI' : PortId .
-  var PS : PortStatus .
+  vars PORTS : Configuration . vars PI PI' : PortId . var PS : PortStatus .
+  var REST : ObjectConfiguration . vars O : Oid .
   var V : Value .  vars T  : Time . vars TL UQ : TimeList .
-  vars UPDATED FLAG : Bool .
   var AM : AssignMap . var MEM : Memory .
   var VI : VarId . var NV : NumberValue . var E : Exp .
+  vars UPDATED FLAG : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
   --- set each status of ports to 'unknown'
-  eq initActor(NonInterruptibleTimer, 
+  eq prefire(NonInterruptibleTimer, 
     < O : NonInterruptibleTimer | 
       output-value : VI,
       variables : VI |-> E ; AM
     >)
-   = initActor(Actor, 
+   = prefire(^ NonInterruptibleTimer, 
      < O : NonInterruptibleTimer | 
-       store : eval(VI, k(E))
+       store : VI |-> k(E)
      >) .
 
   eq portFixPoints(UPDATED,
@@ -63,21 +64,18 @@ NonInterruptibleTimer/**/
             < 'input : InPort | status : PS, value : NV >
             < 'output : OutPort | status : present >
             PORTS)
-    >,
-    REST)
+    >)
   = if UQ =/= emptyList then
         evt(event(O ! 'output, V), first(UQ))
-        executeStep(Actor,
+        executeStep(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             wait-queue : rest(UQ)
-        >,
-        REST)
+        >)
     else
-        executeStep(Actor,
+        executeStep(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             processing : false
-        >,
-       REST)
+        >)
     fi
   if UQ := (if PS == present then (TL toTime(NV)) else TL fi) .
 
@@ -91,32 +89,19 @@ NonInterruptibleTimer/**/
             < 'input : InPort | status : present, value : NV >
             < 'output : OutPort | status : absent >
             PORTS)
-    >,
-    REST)
+    >)
   = if FLAG then
-        executeStep(Actor,
+        executeStep(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             wait-queue : (TL toTime(NV))
-        >,
-        REST)
+        >)
     else
         evt(event(O ! 'output, V), toTime(NV))
-        executeStep(Actor,
+        executeStep(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             processing : true
-        >,
-        REST)
+        >)
     fi .
-
-  eq executeStep(NonInterruptibleTimer,
-    < O : NonInterruptibleTimer |
-        ports : (
-            < 'input : InPort | status : absent >
-            < 'output : OutPort | status : absent >
-            PORTS)
-    >,
-    REST)
-  = executeStep(Actor, < O : NonInterruptibleTimer | >, REST) .
 
   op first : TimeList ~> Time .
   eq first(T TL) = T .

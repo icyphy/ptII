@@ -65,6 +65,7 @@ public class Transition extends RTMaudeAdaptor {
         String out = ((RTMaudeAdaptor) _getHelper(t.outputActions)).generateTermCode();
         
         return _generateBlockCode(defaultTermBlock,
+                t.getName(),
                 t.sourceState().getName(),
                 t.destinationState().getName(),
                 guard, out, set);

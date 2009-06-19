@@ -10,19 +10,12 @@ SingleEvent/**/
 
   class SingleEvent .
     subclass SingleEvent < Actor .
-
-  var REST : Configuration . var O : Oid .  var PI : PortId .
+  eq ^ SingleEvent = Actor .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  --- set each status of ports to 'unknown'
-  eq initActor(SingleEvent, < O : SingleEvent | >) 
-   = initActor(Actor, < O : SingleEvent | >) .
-
-  eq executeStep(SingleEvent, < O : SingleEvent | > , REST) 
-  = executeStep(Actor, < O : SingleEvent | > , REST) .
 endtom)
 /**/
 

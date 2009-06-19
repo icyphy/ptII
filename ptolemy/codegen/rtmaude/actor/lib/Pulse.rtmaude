@@ -13,9 +13,10 @@ Pulse/**/
         values : VarId,
         current-index : Nat .
     subclass Pulse < Actor .
+  eq ^ Pulse = Actor .
 
-  vars REST PORTS : Configuration .  vars O : Oid .  
-  vars PI PI' : PortId .
+  var O : Oid . var REST : ObjectConfiguration .
+  var PORTS : Configuration .  vars PI PI' : PortId .
   var AM : AssignMap . var MEM : Memory .
   var II IV : VarId .  var VI VV : Value . var EI EV : Exp .
   var V V' : Value . var VL VL' : ValueList .
@@ -26,52 +27,52 @@ Pulse/**/
 ---------------------------------------------------------------------
 
   --- set each status of ports to 'unknown'
-  eq initActor(Pulse, 
+  eq prefire(Pulse, 
     < O : Pulse | 
-	  indexes : II,
-	  values : IV,
-	  variables : (II |-> EI ; IV |-> EV ; AM)
+      indexes : II,
+      values : IV,
+      variables : (II |-> EI ; IV |-> EV ; AM)
     >) 
-   = initActor(Actor, 
+   = prefire(^ Pulse, 
     < O : Pulse | 
-      store : eval(II, k(EI)) ; eval(IV, k(EV))
+      store : II |-> k(EI) ; IV |-> k(EV)
     >) .
 
   eq portFixPoints(UPDATED,
      < O : Pulse |
-        status : enabled,
-        ports :
-            < PI : InPort | status : absent >
-            < PI' : OutPort | status : unknown >
-            PORTS
+       status : enabled,
+       ports :
+         < PI : InPort | status : absent >
+         < PI' : OutPort | status : unknown >
+         PORTS
      > REST)
    = portFixPoints(true,
      < O : Pulse |
-        ports :
-            < PI : InPort | >
-            < PI' : OutPort | status : absent >
-            PORTS
+       ports :
+         < PI : InPort | >
+         < PI' : OutPort | status : absent >
+         PORTS
      > REST) .
 
   eq portFixPoints(UPDATED,
      < O : Pulse |
-        status : enabled,
-        indexes : II,
-        values : IV,
-        current-index : N,
-        store : (II |-> VI ; IV |-> VV ; MEM),
-        ports :
-            < PI : InPort | status : present >
-            < PI' : OutPort | status : unknown >
-            PORTS
+       status : enabled,
+       indexes : II,
+       values : IV,
+       current-index : N,
+       store : (II |-> VI ; IV |-> VV ; MEM),
+       ports :
+         < PI : InPort | status : present >
+         < PI' : OutPort | status : unknown >
+         PORTS
      > REST)
    = portFixPoints(true,
      < O : Pulse |
-        ports :
-            < PI : InPort | >
-            < PI' : OutPort | status : present, 
-                              value : cMap(VI, VV, N) >
-            PORTS
+       ports :
+         < PI : InPort | >
+         < PI' : OutPort | status : present, 
+                           value : cMap(VI, VV, N) >
+         PORTS
      > REST) .
      
   op cMap : Value Value Nat -> Value .
@@ -82,20 +83,13 @@ Pulse/**/
 
   eq executeStep(Pulse,
     < O : Pulse |
-        current-index : N ,
-        ports : < PI : InPort | status : present > PORTS
-    > , REST)
-  = executeStep(Actor,
+      current-index : N ,
+      ports : < PI : InPort | status : present > PORTS
+    >)
+  = executeStep(^ Pulse,
     < O : Pulse |
-        current-index : s(N)
-    >, REST) .
-
-  eq executeStep(Pulse,
-    < O : Pulse |
-        ports : < PI : OutPort | status : absent >  PORTS
-    >, REST)
-  = executeStep(Actor, < O : Pulse | >, REST) .
-
+      current-index : s(N)
+    >) .
 endtom)
 /**/
 
