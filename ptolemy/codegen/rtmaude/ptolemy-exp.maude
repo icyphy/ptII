@@ -180,7 +180,7 @@ fmod K-COMPUTATION is
   op _->_ : KProper K -> KProper [ditto] .
 
   sort Computation .
-  op k : K -> Computation .
+  op k : K -> KResult .
 endfm
 
 --- A Ptolemy Exp environment is a map from
@@ -239,6 +239,8 @@ fmod PTOLEMY-STRICTNESS is
   var E1 E2 : Exp .  var P1 P2 : ProperExp .  var V1 V2 : Value .
   var EL EL' : ExpList . var ER : ExpRow . var EM EM' : Matrix .
   var PL : ProperExpList . var VL : ValueList .
+
+  eq k(V1) = V1 .
 
 --- binary and unary ops
   op []__ : BinaryOp Exp -> KProper .

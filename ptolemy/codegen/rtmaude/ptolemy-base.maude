@@ -8,6 +8,11 @@ load real-time-maude
 ---            Identifiers and Events         ---
 -------------------------------------------------
 
+--- Configuration modifier, for ACU matching of ObjectConfiguration
+(tomod NEW-CONFIG is
+  op none : -> EmptyConfiguration [ctor] . 
+endtom)
+
 --- id for actors and ports is defined here
 (omod IDENTIFIERS is
   pr PTOLEMY-ID .
@@ -39,6 +44,7 @@ endom)
   pr PTOLEMY-EXP .
   pr POSRAT-TIME-DOMAIN-WITH-INF .
   inc IDENTIFIERS .
+  inc NEW-CONFIG .
 
   --- Event, and Multisets of such basic events:
   sort Event Events .
@@ -61,7 +67,6 @@ endom)
   --- port should take.
   op event : EPortId Value -> Event [ctor] .
 
-  var REST : Configuration .
   vars EQ : EventQueue .  var EVENT : Event .  var EVTS : Events .
   var QUE : Oid . vars T T' : Time .  var N : Nat . 
 
@@ -119,10 +124,13 @@ endtom)
   class InOutPort .
     subclass InOutPort < InPort OutPort .
 
-  sort PortStatus .
-  ops unknown present absent : -> PortStatus [ctor] .
+  sort PortStatus DetPortStatus .
+  subsort DetPortStatus < PortStatus .
+  op unknown : -> PortStatus [ctor] .
+  ops present absent : -> DetPortStatus [ctor] .
 
-  var PI : PortId . var PS : PortStatus . var PORTS : Configuration .
+  var PI : PortId . var PORTS : Configuration .
+  var PS : PortStatus . 
 
   op clearPorts : Configuration -> Configuration .
   eq clearPorts(< PI : Port | status : PS > PORTS)
@@ -188,6 +196,8 @@ endom)
   --- we need to state that connections are also, e.g., objects:
 
   subsort Connection < Object .
+  op Connection : -> Cid .
+  eq class(C:Connection) = Connection .
 endom)
 
 -------------------------------------------------
@@ -203,61 +213,39 @@ endom)
   eq toTime(Infinity) = INF .	---FIXME
 endtom)
 
-(fmod ACTOR-PROCESS is
-  pr EXT-BOOL .
-  pr IDENTIFIERS .
-  pr EXP-ENVIRONMENT .
-  pr K-COMPUTATION .
-
-  var VI : VarId . var VM VM' : ValueMap . var V V' : Value .
-  var O : Oid . var C : Computation .  var CPS : ComputingSet .
-  
-  sort ComputingSet ComputingUnit .
-  subsort ComputingUnit < ComputingSet .
-  op none : -> ComputingSet [ctor] .
-  op `[_|_`] : VarId Computation -> ComputingUnit [ctor] .
-  op __ : ComputingSet ComputingSet -> ComputingSet [ctor assoc comm id: none] .
-
-  op _in_ : VarId ComputingSet -> Bool .
-  eq VI in ([VI | C] CPS) = true .
-  eq VI in CPS = false [owise] .
-
-  sort ActorProcess ActorProcessSet .
-  subsort ActorProcess < ActorProcessSet .
-  op none : -> ActorProcessSet .
-  op `{_:_/_`} : Oid ComputingSet ValueMap -> ActorProcess [ctor] .
-  op __ : ActorProcess ActorProcess -> ActorProcess [ctor assoc comm id: none] .
-
-  op _in_ : VarId ActorProcess -> Bool .
-  eq VI in {O : CPS / VM} = (VI in CPS) and-then (VI in VM) .
-endfm)
-
 (tomod ACTOR-BASE is
   pr IDENTIFIERS .
+  pr CONNECTIONS .
   pr EXP-ENVIRONMENT .
   pr K-COMPUTATION .
   pr EVENTS .
 
-  vars CF REST : Configuration .  var NCF NCF' : NEConfiguration .
-  var C : Cid . var QUE : Oid . var OBJ : Object . var M : Msg .
+  vars CF : Configuration .  var NCF NCF' : NEConfiguration .
+  var OC : ObjectConfiguration .
+  var M : Msg .
+  var C : Cid . var QUE : Oid . var OBJ : Object . 
   vars EQ : EventQueue .  var EVENT : Event .  var EVTS : Events .
   var VI : VarId . var V V' : Value . 
   vars MEM MEM' : Memory . var CP : Computation .
   var T : Time .
+  var KR : KResult .
 
   sort ActorStatus .
   ops enabled disabled : -> ActorStatus .
 
 --- memory item
-  sort MemoryItem Memory .
+  sorts MemoryItem MemoryId .
+  subsort VarId < MemoryId .
+  subsort ValueAssignment < MemoryItem .
+  op _|->_ : MemoryId KResult -> MemoryItem [ctor prec 80] .
+
+  sort Memory .
   subsort ValueMap MemoryItem < Memory .
-  op eval : VarId Computation -> MemoryItem .
   op _;_ : Memory Memory -> Memory [ditto] .
 
   --- check that a variable with a varId is defined in Memory
   op _in_ : VarId Memory -> Bool .
-  eq VI in ((VI |-> V) ; MEM) = true .
-  eq VI in (eval(VI, CP) ; MEM) = true .
+  eq VI in ((VI |-> KR) ; MEM) = true .
   eq VI in MEM = false [owise] .
 
   --- overwrite AssignMap to memory
@@ -267,25 +255,29 @@ endfm)
 
 *** delta function for configuration
   op delta : Configuration Time -> Configuration .
-  eq delta(none, T) = none .
   eq delta(NCF NCF', T) = delta(NCF, T) delta(NCF', T) .
-
-  eq delta(M:Msg, T) = M:Msg .
   eq delta(O:Object, T) = O:Object [owise] .
+  eq delta(M:Msg, T) = M:Msg .
+  eq delta(none, T) = none .
 
 *** The followings are steps for actor execution.
 *** Each step should be implemented for each actor, or
 *** the default operations (do nothing) will be taken.
 
+  sort Cid? .
+  subsort Cid < Cid? .
+  op ^_ : Cid -> Cid? .
+
 *** 1. preparing computation step.  (prefire)
-  op initActor : Cid Object -> Object [frozen (2)] .
-  eq initActor(C, OBJ) = OBJ [owise] .
+  op prefire : Cid Object -> Configuration [frozen (2)] .
+  eq prefire(Connection, OBJ) = OBJ .
+  eq prefire(C, OBJ) = prefire(^ C, OBJ) [owise] .
 
   --- functions for configuration level.
-  op initActors : Configuration -> Configuration [frozen (1)] .
-  eq initActors(OBJ REST) = initActor(class(OBJ), OBJ) initActors(REST) .
-  eq initActors(M REST) = initActors(REST) . --- clear redundant msgs
-  eq initActors(REST) = REST [owise] .
+  op prefireAll : Configuration -> Configuration [frozen (1)] .
+  eq prefireAll(OBJ CF) = prefire(class(OBJ), OBJ) prefireAll(CF) .
+  eq prefireAll(M:Msg CF) = prefireAll(CF) .
+  eq prefireAll(none) = none .
 
 *** 2. Compute fixed points for the various ports. (fire)
 
@@ -297,37 +289,31 @@ endfm)
   op top : Configuration -> Configuration [frozen (1)] .
 
   --- terminate portFixPoints if no change (determined at the top level)
-  eq top(portFixPoints(false, CF)) = portFinalize(CF) [owise] .
+  eq top(portFixPoints(false, OC)) = OC [owise] .
 
   --- If no change is possible, set flag to false
-  --- Note: redefined by composite actor for hierarchical model
-  ---  eq portFixPoints(true, CF) = portFixPoints(false, CF) [owise] .
-
-  --- Finish to calculate Fix point 
-  --- and set remaining 'unknown' ports to 'absent'
-  --- I assume that 'absent' ports cannot cause any changes to 'present'
-  --- If it can, 'portFixPorints' should be called again.
-  op portFinalize : Configuration -> Configuration [frozen (1)] .
-  eq portFinalize(CF) = CF [owise] .
+  eq portFixPoints(true, OC) = portFixPoints(false, OC) [owise] .
 
 *** 3. Generating events and updating states and variables. (post-fire)
   --- 1st argument : class id for hierarchical computation
   --- 2nd argument : Target object. since messages can be generated, 
   ---    Conf is used instead of Object 
   --- 3rd argument : rest configuration
-  op executeStep : Cid Configuration Configuration -> Configuration [frozen (2 3)].
-  eq executeStep(C, CF, REST) = CF executeStep(REST) [owise] .
-  eq executeStep(C, M CF, REST) = M executeStep(C, CF, REST) .
+  op executeStep : Cid NEConfiguration -> Configuration [frozen (2)].
+  eq executeStep(C, M CF) = M executeStep(C, CF) .
+  eq executeStep(Connection, CF) = CF .
+  eq executeStep(C, OBJ) = executeStep(^ C, OBJ) [owise] .
 
   op executeStep : Configuration -> Configuration [frozen (1)] .
-  eq executeStep(OBJ REST) = executeStep(class(OBJ), OBJ, REST) .
-  eq executeStep(REST) = REST [owise] .
+  eq executeStep(OBJ CF) = executeStep(class(OBJ), OBJ) executeStep(CF) .
+  eq executeStep(M CF) = M executeStep(CF) .
+  eq executeStep(none) = none .
+
 endtom)
 
 (tomod ACTOR is 
   pr ACTOR-BASE .
   pr CASTING-DEF .
-  pr CONNECTIONS .
   pr PORT-PARAMETERS .
   pr MULTI-PORTS .
   pr PTOLEMY-STRICTNESS .
@@ -337,11 +323,13 @@ endtom)
 		status : ActorStatus,		
 		store : Memory .		*** local memory
 
-  vars CF REST PORTS PORTS' : Configuration .  vars O O' : Oid .  
+  vars PORTS PORTS' : Configuration .  vars O O' : Oid .  
+  var REST : ObjectConfiguration .
   vars V V' : Value .  var VM VM' : ValueMap .  var VAL : AssignMap . 
-  var MEM MEM' : Memory . var VI CI : VarId . 
+  var MEM MEM' : Memory . var VI : VarId . var MI : MemoryId .
   vars E : Exp .  var EVTS : Events . 
-  vars PI PI' : PortId . var PS : PortStatus .  var EPIS EPIS' : EPortIdSet .
+  vars PI PI' : PortId . var EPIS EPIS' : EPortIdSet .
+  var PS : PortStatus .  var DPS : DetPortStatus .
   var CHS : ChannelSet .
   var UPDATED : Bool .
   var K : K .  var VIL : VarIdList . var VL : ValueList .
@@ -367,7 +355,7 @@ endtom)
 ---------------------------------------------------------------------
 
   --- in each new ports we must "reset" all ports to 'unknown'. 
-  eq initActor(Actor, < O : Actor | ports : PORTS >) 
+  eq prefire(Actor, < O : Actor | ports : PORTS >) 
    = < O : Actor | ports : clearPorts(PORTS) > .
 
   --- During fixpoint computation, variables and ports of an actor
@@ -379,11 +367,11 @@ endtom)
   eq portFixPoints(UPDATED,
     < O : Actor | 
 	status : enabled,
-        store : eval(CI, k(VI -> K)) ; VI |-> V ; MEM
+        store : MI |->  k(VI -> K) ; VI |-> V ; MEM
     > REST)
    = portFixPoints(true,
     < O : Actor | 
-        store : eval(CI, k(V -> K)) ; VI |-> V ; MEM
+        store : MI |-> k(V -> K) ; VI |-> V ; MEM
     > REST) .
 
   --- if the variable is not yet computed, it will computed
@@ -391,24 +379,13 @@ endtom)
     < O : Actor | 
 	status : enabled,
 	variables : VI |-> E ; VAL,
-	store : eval(CI, k(VI -> K)) ; MEM
+	store : MI |-> k(VI -> K) ; MEM
     > REST)
    = portFixPoints(true,
     < O : Actor | 
-	store : eval(VI, k(E)) ; eval(CI, k(VI -> K)) ; MEM
+	store : VI |-> k(E) ; MI |-> k(VI -> K) ; MEM
     > REST) 
   if not VI in MEM .
-
-  --- after computing a variable, the value will be written to memory
-  eq portFixPoints(UPDATED,
-    < O : Actor | 
-	status : enabled,
-	store : eval(CI, k(V)) ; MEM
-    > REST)
-   = portFixPoints(true,
-    < O : Actor | 
-	store : (CI |-> V) <+ MEM
-    > REST) .
 
  **** port variable ****
 
@@ -420,23 +397,12 @@ endtom)
   eq portFixPoints(UPDATED,
     < O : Actor | 
 	status : enabled,
-	ports : < PI : Port | status : present > PORTS,
-	store : eval(CI, k(isPresent(PI) -> K)) ; MEM
+	ports : < PI : Port | status : DPS > PORTS,
+	store : MI |-> k(isPresent(PI) -> K) ; MEM
     > REST)
    = portFixPoints(true,
     < O : Actor | 
-	store : eval(CI, k(# true -> K)) ; MEM
-    > REST) .
-
-  eq portFixPoints(UPDATED,
-    < O : Actor | 
-	status : enabled,
-	ports : < PI : Port | status : absent > PORTS,
-	store : eval(CI, k(isPresent(PI) -> K)) ; MEM
-    > REST)
-   = portFixPoints(true,
-    < O : Actor | 
-	store : eval(CI, k(# false -> K)) ; MEM
+	store : MI |-> k(# (DPS == present) -> K) ; MEM
     > REST) .
 
  **** closure(function) ****
@@ -451,31 +417,31 @@ endtom)
   eq portFixPoints(UPDATED,
     < O : Actor | 
 	status : enabled,
-	store : eval(CI, k((function(VIL) E)(VL) -> K)) ; MEM
+	store : MI |-> k((function(VIL) E)(VL) -> K) ; MEM
     > REST)
    = portFixPoints(true,
     < O : Actor | 
-	store : eval(CI, k(E -> restore(MEM) -> K)) ; (VIL |-> VL) <+ MEM
+	store : MI |-> k(E -> restore(MEM) -> K) ; (VIL |-> VL) <+ MEM
     > REST) .
 
   --- after computing a function, environments should be restored.
   eq portFixPoints(UPDATED,
     < O : Actor | 
 	status : enabled,
-	store : eval(CI, k(restore(VM') -> K)) ; MEM
+	store : MI |-> k(restore(VM') -> K) ; MEM
     > REST)
    = portFixPoints(true,
     < O : Actor | 
-	store : eval(CI, k(K)) ; VM' <+ MEM
+	store : MI |-> k(K) ; VM' <+ MEM
     > REST) .
 
  **** port ****
 
   --- deliver a value of ports to connected ports with the status 'unknown'
-  ceq portFixPoints(UPDATED,
+  eq portFixPoints(UPDATED,
     < O : Actor | 
 	status : enabled,
-	ports :  < PI : OutPort | status : PS, value : V > PORTS 
+	ports :  < PI : OutPort | status : DPS, value : V > PORTS 
     >
     (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
     < O' : Actor | 
@@ -487,10 +453,9 @@ endtom)
     < O : Actor | > 
     (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
     < O' : Actor | 
-	ports : < PI' : InPort | status : PS, value : V > PORTS' 
+	ports : < PI' : InPort | status : DPS, value : V > PORTS' 
     > 
-    REST)  
-   if PS =/= unknown .
+    REST) .
 
  **** multi port ****
 
@@ -508,7 +473,7 @@ endtom)
 	    > PORTS'
     > 
     REST)
-   = portFixPoints(UPDATED, 
+   = portFixPoints(true, 
     < O : Actor | > 
     (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
     < O' : Actor | 
@@ -520,10 +485,10 @@ endtom)
     REST)  
    if not (O ! PI) in CHS .
 
-  ceq portFixPoints(UPDATED,
+  eq portFixPoints(UPDATED,
     < O : Actor | 
 	status : enabled,
-	ports :  < PI : OutPort | status : PS, value : V > PORTS 
+	ports :  < PI : OutPort | status : DPS, value : V > PORTS 
     >
     (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
     < O' : Actor | 
@@ -534,30 +499,14 @@ endtom)
 	    > PORTS'
     > 
     REST)
-   = portFixPoints(UPDATED, 
+   = portFixPoints(true, 
     < O : Actor | > 
     (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
     < O' : Actor | 
 	ports : 
 	    < PI' : MultiInPort | 
-		channels : ([O ! PI,PS,V] ; CHS)
+		channels : ([O ! PI,DPS,V] ; CHS)
 	    > PORTS'
-    > 
-    REST)  
-   if PS =/= unknown .
-
-
-
-  --- Final step: change all 'unknown' to 'absent'
-  ---FIXME: error states should remain "unknown"
-  eq portFinalize(
-    < O : Actor | 
-	ports :  < PI : Port | status : unknown > PORTS 
-    >
-    REST) 
-  =  portFinalize(
-    < O : Actor | 
-	ports : < PI : Port | status : absent > PORTS 
     > 
     REST) .
 
@@ -568,13 +517,14 @@ endtom)
 	status : enabled,
 	ports : PORTS, variables : VAL, 
 	store : MEM 
-    >,
-    REST)
+    >)
   = < O : Actor | 
 	variables : updateParam(VAL, PORTS), 
 	store : emptyMap
-    >
-    executeStep(REST) .
+    > .
+
+  eq executeStep(Actor, < O : Actor | status : disabled >)
+   = < O : Actor | > .
 endtom)
 
 (tomod ACTOR-WITH-TIMER is
@@ -596,7 +546,7 @@ endtom)
 (tomod DE-DYNAMICS is 
   pr ACTOR .	--- module refactoring required
 
-  vars SYSTEM CF PORTS : Configuration .
+  vars SYSTEM PORTS : Configuration .
   var QUE O : Oid .
   var EVTS : Events .
   var NZT : NzTime .
@@ -631,11 +581,10 @@ endtom)
   --- execute a step:
   rl [executeStep] : 
 	{ SYSTEM < QUE : EventQUEUE | queue : (EVTS ; 0 ; 0) :: EVENTQUEUE > }
-  =>	{ executeStep(< QUE : EventQUEUE | queue : EVENTQUEUE >
-	    top(portFixPoints(true,
-		    releaseEvt(EVTS) initActors(SYSTEM)
-		))
-	) } .
+  =>	{ executeStep(
+	    top(portFixPoints(true, releaseEvt(EVTS) prefireAll(SYSTEM))))
+	 < QUE : EventQUEUE | queue : EVENTQUEUE >
+	} .
 
 endtom)
 
