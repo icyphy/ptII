@@ -883,7 +883,6 @@ untar:
 	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
-
 # Run this to copy the .exe
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
@@ -1402,6 +1401,15 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/verification \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/de/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/configs
 
