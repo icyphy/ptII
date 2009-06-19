@@ -101,6 +101,7 @@ public class PlaceAndRouteButton extends Button {
 			KielerLayout layout = new KielerLayout(layoutTarget);
 			layout.setModel((CompositeActor)_action.getModel());
 			layout.setApplyEdgeLayout(true);
+			layout.setTop(graphFrame);
 			
 			// perform layout
 			try{

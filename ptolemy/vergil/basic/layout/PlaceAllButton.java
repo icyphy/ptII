@@ -102,6 +102,7 @@ public class PlaceAllButton extends Button {
 			layout.setModel((CompositeActor)_action.getModel());
 			layout.setApplyEdgeLayout(false);
 			layout.setBoxLayout(true);
+			layout.setTop(graphFrame);
 			
 			// perform layout
 			try{

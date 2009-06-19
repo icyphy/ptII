@@ -38,6 +38,8 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -68,6 +70,8 @@ public class PtolemyModelUtil {
      */
     public PtolemyModelUtil() {
         _momlChangeRequest = new StringBuffer();
+        _uniqueCounter = 0;
+        _nameSet = new HashSet();
     }
 
     /**
@@ -184,6 +188,20 @@ public class PtolemyModelUtil {
     }
 
     /**
+     * Link a port with something else (port or relation) at a specific inside index.
+     * @param portName Name of the port to be linked.
+     * @param type2 Type of the second object, i.e. port or relation.
+     * @param name2 Name of the second object to be linked.
+     * @param insideIndex Index of the relation in the channel list of the first port. 
+     */
+    protected void _linkPortInside(String portName, String type2, String name2,
+            int insideIndex) {
+        String moml = "<link " + "port" + "=\"" + portName + "\" " + type2
+                + "=\"" + name2 + "\" insertInsideAt=\"" + insideIndex + "\"/>\n";
+        _momlChangeRequest.append(moml);
+    }
+    
+    /**
      * Remove a single relation.
      * @param relation Relation to be removed.
      * @param actor Parent actor of the relation.
@@ -191,39 +209,24 @@ public class PtolemyModelUtil {
     protected void _removeRelation(Relation relation, CompositeActor actor) {
         StringBuffer moml = new StringBuffer();
         moml.append("<deleteRelation name=\"" + relation.getName() + "\"/>\n");
-
-        moml.insert(0, "<group>");
-        moml.append("</group>");
-        MoMLChangeRequest request = new MoMLChangeRequest(this, actor, moml
-                .toString());
-        request.setUndoable(true);
-        actor.requestChange(request);
+       _momlChangeRequest.append(moml);
     }
 
     /**
      * Create a MoMLChangeRequest to remove a set of relations in a Ptolemy
-     * model object and schedule it immediately. As mixing creation of new
-     * relations and removing of old relation requests in the request buffer
-     * might cause name clashes, this request is not buffered but executed
-     * immediately.
+     * model object and schedule it immediately. 
      * 
      * @param relationSet Set of relation to be removed from the Ptolemy model
      * @param actor Parent actor of the relation set.
      */
-    protected void _removeRelations(Set<Relation> relationSet,
-            CompositeActor actor) {
+    protected void _removeRelations(Set<Relation> relationSet) {
         StringBuffer moml = new StringBuffer();
         for (Relation relation : relationSet) {
             // Delete the relation.
             moml.append("<deleteRelation name=\"" + relation.getName()
                     + "\"/>\n");
         }
-        moml.insert(0, "<group>");
-        moml.append("</group>");
-        MoMLChangeRequest request = new MoMLChangeRequest(this, actor, moml
-                .toString());
-        request.setUndoable(true);
-        actor.requestChange(request);
+        _momlChangeRequest.append(moml);
     }
 
     /**
@@ -257,7 +260,7 @@ public class PtolemyModelUtil {
                             Object o1 = linkedObjects.get(0);
                             Object o2 = linkedObjects.get(1);
                             if (o1 instanceof Port && o2 instanceof Port) {
-                                _removeRelationVertex(relation, parent);
+                                util._removeRelationVertex(relation);
                             } else if (o1 instanceof Relation
                                     && o2 instanceof Relation) {
                                 util._link("relation1", ((Relation) o1)
@@ -297,18 +300,16 @@ public class PtolemyModelUtil {
                         }
                     }
                 }
-
             }
         }
+        util._performChangeRequest(parent);
     }
 
     /**
      * Remove a vertex from a relation.
      * @param relation The relation to remove the vertex from.
-     * @param actor The parent composite actor of the relation.
      */
-    protected static void _removeRelationVertex(Relation relation,
-            CompositeActor actor) {
+    protected void _removeRelationVertex(Relation relation) {
         List<Vertex> vertices = relation
                 .attributeList(ptolemy.moml.Vertex.class);
         if (vertices != null && vertices.size() > 0) {
@@ -317,10 +318,7 @@ public class PtolemyModelUtil {
                     + "\" class=\"ptolemy.actor.TypedIORelation\">"
                     + "<deleteProperty name=\"" + vertex.getName() + "\"/>"
                     + "</relation>\n";
-            MoMLChangeRequest request = new MoMLChangeRequest(relation, actor,
-                    moml.toString());
-            request.setUndoable(true);
-            actor.requestChange(request);
+            _momlChangeRequest.append(moml);
         }
     }
 
@@ -375,6 +373,60 @@ public class PtolemyModelUtil {
         return relationGroups;
     }
 
+    /**
+     * Get a unique number. Subsequent calls to this method will
+     * return an increasing sequence of numbers. This can be used to suffix
+     * a NamedObj where the official getUniqueName() methods of the parent
+     * composite actors cannot be used (e.g. if to create multiple new objects
+     * in just one MoMLChangeRequest.
+     * 
+     * @return An integer where every following call will give a different one.
+     */
+    protected int _getUniqueNumber(){
+        _uniqueCounter++;
+        return _uniqueCounter;
+    }
+    
+    /**
+     * Get a unique String in the namespace of the given composite actor
+     * with the prefix that is also given. The idea is the same than the
+     * {@link CompositeEntity#uniqueName(String)} method of any 
+     * CompositeEntity. However, build a
+     * local cache of used names and add the names that get created
+     * by subsequent calls. I.e. multiple subsequent calls won't return
+     * the same name even when the name of a former call is not used yet
+     * in the composite actor.
+     * <p>
+     * The rationale is that for MoMLChangeRequests it is desireable to
+     * collect multiple changes (e.g. multiple object creations that all
+     * require a unique name).
+     * 
+     * @param actor CompositeActor in which to search for the names.
+     * @param prefix Given prefix that shall be suffixed to get a unique name.
+     * @return A unique name in the composite actor namespace.
+     */
+    protected String _getUniqueString(CompositeActor actor, String prefix){
+        // build name cache for the first time
+        if(_nameSet.isEmpty()){
+            for (Object attribute : actor.attributeList()) 
+                _nameSet.add(((Attribute)attribute).getName());
+            for (Iterator iter = actor.containedObjectsIterator(); iter.hasNext();){
+                Object containedObject = iter.next();
+                if(containedObject instanceof NamedObj)
+                    _nameSet.add(((NamedObj) containedObject).getName());
+            }
+        }
+        int counter = 2;
+        String candidate = prefix;
+        while(_nameSet.contains(candidate)){
+            candidate = _stripNumericSuffix(candidate);
+            candidate += counter;
+            counter ++;
+        }
+        _nameSet.add(candidate);
+        return candidate;
+    }
+    
     /**
      * Check whether the given Ptolemy model object has any connections, i.e. is
      * connected to any other components via some link.
@@ -567,6 +619,38 @@ public class PtolemyModelUtil {
         _hide = !_hide;
     }
 
+    /** Return a string that is identical to the specified string
+     *  except any trailing digits are removed.
+     *  @param string The string to strip of its numeric suffix.
+     *  @return A string with no numeric suffix.
+     */
+    protected static String _stripNumericSuffix(String string) {
+        int length = string.length();
+        char[] chars = string.toCharArray();
+
+        for (int i = length - 1; i >= 0; i--) {
+            char current = chars[i];
+
+            if (Character.isDigit(current)) {
+                length--;
+            } else {
+                //if (current == '_') {
+                //    length--;
+                //}
+                // Found a non-numeric, so we are done.
+                break;
+            }
+        }
+
+        if (length < string.length()) {
+            // Some stripping occurred.
+            char[] result = new char[length];
+            System.arraycopy(chars, 0, result, 0, length);
+            return new String(result);
+        } 
+        return string;
+    }
+    
     /**
      * Unlink a port at the given channel index.
      * @param portName Name of the Port.
@@ -579,6 +663,29 @@ public class PtolemyModelUtil {
     }
 
     /**
+     * Unlink a port at the given channel inside index.
+     * @param portName Name of the Port.
+     * @param insideIndex Index of the channel to be unlinked.
+     */
+    protected void _unlinkPortInside(String portName, int insideIndex) {
+        String moml = "<unlink " + "port" + "=\"" + portName + "\" insideIndex=\""
+                + insideIndex + "\"/>\n";
+        _momlChangeRequest.append(moml);
+    }
+    
+    /**
+     * Unlink two relations.
+     * @param relation1 Name of first relation to unlink.
+     * @param relation2 Name of second relation to unlink.
+     */
+    protected void _unlinkRelations(String relation1, String relation2) {
+        String moml = "<unlink " + "relation1" + "=\"" + relation1 + "\" relation2=\""
+                + relation2 + "\"/>\n";
+        _momlChangeRequest.append(moml);
+    }
+    
+    
+    /**
      * StringBuffer for Requests of Model changes. In Ptolemy the main
      * infrastructure to do model changes is through XML change requests of the
      * XML representation. This field is used to collect all changes in one
@@ -590,5 +697,15 @@ public class PtolemyModelUtil {
      * Toggle variable to set the hidden status of unnecessary relation vertices.
      */
     private static boolean _hide = true;
+    
+    /**
+     * Local cache of used names.
+     */
+    private Set<String> _nameSet;
+    
+    /**
+     * A unique number that is used to determine unique String names for relations.
+     */
+    private static int _uniqueCounter = 0;
 
 }

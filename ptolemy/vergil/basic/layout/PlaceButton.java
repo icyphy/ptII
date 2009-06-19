@@ -100,6 +100,7 @@ public class PlaceButton extends Button {
 			KielerLayout layout = new KielerLayout(layoutTarget);
 			layout.setModel((CompositeActor)_action.getModel());
 			layout.setApplyEdgeLayout(false);
+			layout.setTop(graphFrame);
 			
 			// perform layout
 			try{

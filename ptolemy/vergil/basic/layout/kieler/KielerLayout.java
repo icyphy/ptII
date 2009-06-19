@@ -35,6 +35,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,11 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.graph.GraphInvalidStateException;
+import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -184,12 +189,15 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     @Override
     public void layout(Object composite) {
+        long overallTime = System.currentTimeMillis();
+        String report;
         _ptolemyModelUtil = new PtolemyModelUtil();
 
-        if (true /*_doApplyEdgeLayout*/) {
+        report = "Removing unnecessary relation vertices... ";
+        _report(report);
             if (_debug) {
                 _time = System.currentTimeMillis();
-                System.out.print("Removing unnecessary relation vertices... ");
+                System.out.print(report);
             }
 
             PtolemyModelUtil._removeUnnecessaryRelations(this._compositeActor);
@@ -198,11 +206,12 @@ public class KielerLayout extends AbstractGlobalLayout {
                 System.out.println("done in "
                         + (System.currentTimeMillis() - _time) + "ms");
             }
-        }
         
+        report = "Creating Kieler KGraph from Ptolemy model... ";
+        _report(report);
         if(_debug){
             _time = System.currentTimeMillis();
-            System.out.print("Creating Kieler KGraph from Ptolemy model... ");
+            System.out.print(report);
         }
         
         // create a Kieler Graph
@@ -225,11 +234,13 @@ public class KielerLayout extends AbstractGlobalLayout {
         // infos
         _createGraph(composite, hierarchicalLayoutNode, boxLayoutNode);
 
+        report = "Performing layout... ";
+        _report(report);
         if (_debug) {
             System.out.println("done in "
                     + (System.currentTimeMillis() - _time) + "ms");
             _time = System.currentTimeMillis();
-            System.out.print("Performing layout... ");
+            System.out.print(report);
         }
 
         // create the layout providers which contains the actual layout
@@ -247,11 +258,6 @@ public class KielerLayout extends AbstractGlobalLayout {
             // set initial position as the bounding box of the hierarchical node
             KPoint offset = KielerGraphUtil._getUpperLeftCorner(hierarchicalLayoutNode);
 
-            if(_debug){
-                System.out.println("Bounding Box coordinates: "+layout.getXpos()+" "+layout.getYpos());
-                System.out.println("Hierarchical offset:      "+offset.getX()+" "+offset.getY());
-            }
-            
             layout.setXpos(layout.getXpos() - offset.getX());
             layout.setYpos(layout.getYpos() - offset.getY());
             if (_doBoxLayout) {
@@ -259,6 +265,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                         .subTask(10));
             }
 
+            report = "Applying layout to Ptolemy diagram... ";
+            
             // write to XML file for debugging layout
             // writing to file requires XMI resource factory
             if (_debug) {
@@ -266,7 +274,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                         + (System.currentTimeMillis() - _time) + "ms");
                 KielerGraphUtil._writeToFile(boxLayoutNode);
                 _time = System.currentTimeMillis();
-                System.out.print("Applying layout to Ptolemy diagram... ");
+                System.out.print(report);
             }
 
             // apply layout to ptolemy model. Will do so
@@ -280,8 +288,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                         + (System.currentTimeMillis() - _time) + "ms");
             }
 
-            // PtolemyModelUtil._showUnnecessaryRelations(this._compositeActor,
-            // true);
+            report = "Layout done in "+ (System.currentTimeMillis() - overallTime) +"ms.";
+            _report(report);
 
         } catch (KielerException e) {
             // throw some Ptolemy runtime exception for a Kieler exception
@@ -339,6 +347,14 @@ public class KielerLayout extends AbstractGlobalLayout {
     public void setModel(CompositeActor model) {
         this._compositeActor = model;
     }
+    
+    /**
+     * Set the Top window to enable status reports on the status bar.
+     * @param top The Top window
+     */
+    public void setTop(Top top){
+        this._top = top;
+    }
 
     /**
      * Apply precomputed routing of edges to the Ptolemy model by insertion of
@@ -346,15 +362,16 @@ public class KielerLayout extends AbstractGlobalLayout {
      * (bend point positions) and create a new relation with a vertex for
      * each bend point and interconnect them. 
      * Then replace the original relation with the new
-     * relation set. Delete the original relation. 
+     * relation set. Return the original relation if it is safe to delete it. 
      * 
      * @param kEdge The Kieler KEdge that hold the precomupted layout information,
      *              i.e. bend point positions
+     * @return The old Relation if it is safe to delete it.
      * @throws IllegalActionException Exception will be thrown if replacing of
      *              original relation is not possible, i.e. if unlink() or link()
      *              methods fail.
      */
-    private void _applyEdgeLayout(KEdge kEdge) throws IllegalActionException {
+    private Relation _applyEdgeLayout(KEdge kEdge) throws IllegalActionException {
         int count = 0;
         String previousRelation = null;
         Relation oldRelation = (Relation) this.getLayoutTarget()
@@ -367,19 +384,16 @@ public class KielerLayout extends AbstractGlobalLayout {
                     KielerGraphUtil._getParent(kEdge));
             
             // create new relation
-            String relationName = _ptolemyModelUtil._createRelationWithVertex(
-                    _compositeActor.uniqueName("relation"), kpoint.getX(),
+            String relationName = _ptolemyModelUtil._getUniqueString(_compositeActor, "relation");
+            relationName = _ptolemyModelUtil._createRelationWithVertex(relationName, kpoint.getX(),
                     kpoint.getY());
-            _ptolemyModelUtil._performChangeRequest(_compositeActor);
-            Relation newRelation = _compositeActor.getRelation(relationName);
             
             // we process the first bendpoint
             if (count == 0) { 
                 KPort kSourcePort = kEdge.getSourcePort();
                 KNode kNode = kEdge.getSource();
 
-                _replaceRelation(kSourcePort, kNode, newRelation, oldRelation);
-                _ptolemyModelUtil._performChangeRequest(_compositeActor);
+                _replaceRelation(kSourcePort, kNode, relationName, oldRelation);
             }
             
             // process all other bendpoints
@@ -387,7 +401,6 @@ public class KielerLayout extends AbstractGlobalLayout {
                 if (previousRelation != null)
                     _ptolemyModelUtil._link("relation1", previousRelation,
                             "relation2", relationName);
-                _ptolemyModelUtil._performChangeRequest(_compositeActor);
             }
             previousRelation = relationName;
             count++;
@@ -397,15 +410,13 @@ public class KielerLayout extends AbstractGlobalLayout {
         if (previousRelation != null) {
             KPort kTargetPort = kEdge.getTargetPort();
             KNode kNode = kEdge.getTarget();
-
-            Relation previousRelationRelation = _compositeActor.getRelation(previousRelation);
-            _replaceRelation(kTargetPort, kNode, previousRelationRelation, oldRelation);
-            _ptolemyModelUtil._performChangeRequest(_compositeActor);
+            _replaceRelation(kTargetPort, kNode, previousRelation, oldRelation);
         }
         // remove old relation if it is no longer connected
         if (oldRelation.linkedObjectsList().isEmpty()) {
-            _ptolemyModelUtil._removeRelation(oldRelation, _compositeActor);
+            return oldRelation;
         }
+        return null;
     }
 
     /**
@@ -462,11 +473,15 @@ public class KielerLayout extends AbstractGlobalLayout {
             
             // apply edge layout
             if (_doApplyEdgeLayout) {
+                Set<Relation> relationsToDelete = new HashSet<Relation>();
                 for (KEdge kedge : _kieler2PtolemyDivaEdges.keySet()) {
-                    _applyEdgeLayout(kedge);
+                    Relation oldRelation = _applyEdgeLayout(kedge);
+                    if(oldRelation != null)
+                        relationsToDelete.add(oldRelation);
                     //System.out.println("Edge apply: "+(System.currentTimeMillis()-time));
                     //time = System.currentTimeMillis();
                 }
+                _ptolemyModelUtil._removeRelations(relationsToDelete);
             }
         }
         // create change request and fire it
@@ -1110,13 +1125,13 @@ public class KielerLayout extends AbstractGlobalLayout {
      *              actor.
      * @param kNode Kieler KNode the port belongs to or---if it is an inner port---
      *              the inner port itself.
-     * @param newRelation The new relation that should be connected.
+     * @param newRelationName The new relation that should be connected.
      * @param oldRelation The old relation that should be replaced. It does not
      *              get deleted at this point.
      * @throws IllegalActionException Exception may be thrown if unlinking or
      *              linking of a relation fails.
      */
-    private void _replaceRelation(KPort kPort, KNode kNode, Relation newRelation,
+    private void _replaceRelation(KPort kPort, KNode kNode, String newRelationName,
             Relation oldRelation) throws IllegalActionException{
         Port port = null;
         Relation sourceRelation = null;
@@ -1142,24 +1157,34 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
             if(outsideLink){
                 _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor), index);
-                _ptolemyModelUtil._performChangeRequest(_compositeActor);
+                //_ptolemyModelUtil._performChangeRequest(_compositeActor);
                 _ptolemyModelUtil._linkPort(port.getName(_compositeActor),
-                        "relation", newRelation.getName(_compositeActor), index);
+                        "relation", newRelationName, index);
             }
             else{ // insideLink
                 if(port instanceof ComponentPort){
-                    // FIXME: is this also doable in MoMLChangeRequests?
-                    ((ComponentPort) port).unlinkInside(index);
-                    ((ComponentPort) port).insertInsideLink(index, newRelation);
+                    _ptolemyModelUtil._unlinkPortInside(port.getName(_compositeActor), index);
+                    _ptolemyModelUtil._linkPortInside(port.getName(_compositeActor), "relation", newRelationName, index);
                 }
             }
             
         } else if (sourceRelation != null) {
+            _ptolemyModelUtil._unlinkRelations(oldRelation.getName(_compositeActor), sourceRelation.getName(_compositeActor));
             _ptolemyModelUtil._link("relation1", sourceRelation.getName(),
-                    "relation2", newRelation.getName(_compositeActor));
+                    "relation2", newRelationName);
         }
     }
 
+    /**
+     * Report a message to the top window status handler if it is available.
+     * @param message The message to be reported.
+     */
+    private void _report(String message){
+        if(_top != null){
+            _top.report(message);
+        }
+    }
+    
     /**
      * Determine the direction of dataflow of all edges and store it in the
      * local maps. Iterate all edges and try to deduce the type of each edge's
@@ -1171,6 +1196,8 @@ public class KielerLayout extends AbstractGlobalLayout {
      * in _divaEdgeSource resp. _divaEdgeTarget.
      */
     private void _storeEndpoints() {
+        if(_debug)
+            System.out.print("Store endpoints");
         ActorGraphModel aGraph = (ActorGraphModel) this.getLayoutTarget()
                 .getGraphModel();
         boolean allDirectionsSet = false;
@@ -1179,6 +1206,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         while (!allDirectionsSet) {
             allDirectionsSet = true;
             progress = false;
+            if(_debug)
+                System.out.print(".");
             for (Iterator edgeIter = edges.iterator(); edgeIter.hasNext();) {
                 Object edge = edgeIter.next();
                 EdgeModel edgeModel = aGraph.getEdgeModel(edge);
@@ -1227,19 +1256,19 @@ public class KielerLayout extends AbstractGlobalLayout {
                 } else
                 // see if one of the endpoints is source or target of other
                 // edges
-                if (_divaEdgeTarget.containsValue(endpoint1)) {
+                if (_divaEdgeTarget.containsValue(simpleEndpoint1)) {
                     _divaEdgeTarget.put(edge, simpleEndpoint2);
                     _divaEdgeSource.put(edge, simpleEndpoint1);
                     progress = true;
-                } else if (_divaEdgeTarget.containsValue(endpoint2)) {
+                } else if (_divaEdgeTarget.containsValue(simpleEndpoint2)) {
                     _divaEdgeTarget.put(edge, simpleEndpoint1);
                     _divaEdgeSource.put(edge, simpleEndpoint2);
                     progress = true;
-                } else if (_divaEdgeSource.containsValue(endpoint1)) {
+                } else if (_divaEdgeSource.containsValue(simpleEndpoint1)) {
                     _divaEdgeTarget.put(edge, simpleEndpoint1);
                     _divaEdgeSource.put(edge, simpleEndpoint2);
                     progress = true;
-                } else if (_divaEdgeSource.containsValue(endpoint2)) {
+                } else if (_divaEdgeSource.containsValue(simpleEndpoint2)) {
                     _divaEdgeTarget.put(edge, simpleEndpoint2);
                     _divaEdgeSource.put(edge, simpleEndpoint1);
                     progress = true;
@@ -1247,15 +1276,20 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // now we can't deduce any information about this edge
                     allDirectionsSet = false;
                 }
-                
+                if(_debug && progress)
+                    System.out.print("o");
                 // guarantee progress by just setting the direction if it
                 // cannot be deduced
                 if( !edgeIter.hasNext() && !progress ){
                     _divaEdgeTarget.put(edge, simpleEndpoint1);
                     _divaEdgeSource.put(edge, simpleEndpoint2);
+                    if(_debug)
+                        System.out.print("O");
                 }
             }
         }
+        if(_debug)
+            System.out.println("done.");
     }
 
     // /////////////////////////////////////////////////////////////////
@@ -1306,7 +1340,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * structure will be written to a file on harddisk in order to review the
      * graph later on.
      */
-    private boolean _debug = false;
+    private boolean _debug = true;
 
     /**
      * Storage of actual sources of diva edges corresponding to data flow.
@@ -1378,5 +1412,10 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Variable to store time for statistics.
      */
     private long _time;
+    
+    /**
+     * Pointer to Top in order to report the current status.
+     */
+    private Top _top;
 
 }
