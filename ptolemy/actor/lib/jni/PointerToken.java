@@ -43,6 +43,11 @@ A token that contains the memory location of a C object.
 Used to maintain C objects between JNI calls.
 Attempts to access the object from Java will raise an IllegalActionException.
 
+<p>Note that this class assumes a 32-bit memory size so that
+an pointer may be held in an integer.  Actors that use this class
+are not likely to work on a 64-bit machine, see
+<a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285#in_browser">Bug 285 -  Codegen PointerTokens do not work on 64 bit Java because PointerToken assumes 32 bits</a>
+
 @author Teale Fristoe
 @version $Id$
 @since Ptolemy II 7.1
@@ -302,6 +307,11 @@ public class PointerToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // FIXME: This will not work on a 64-bit machine, see
+    // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285
+    // Bug 285 - Codegen PointerTokens do not work on 64 bit Java
+    // because PointerToken assumes 32 bits
 
     /** The memory address of the pointer.
      */
