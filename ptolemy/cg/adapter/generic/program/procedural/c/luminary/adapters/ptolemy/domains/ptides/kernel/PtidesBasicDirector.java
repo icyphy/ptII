@@ -86,7 +86,6 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
      *  should overwrite it.
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
-     *  // FIXME: all the GPInputDevices should be from cg, not from codegen!
      */
     public StringBuffer generateAsseblyFile() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -96,7 +95,6 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
         Map devices = new HashMap<Actor, String>();
         for (Actor actor : (List<Actor>)((TypedCompositeActor)getComponent()).deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
-            // FIXME: what happens if there's a NetworkInputDevice?
             if (actor instanceof InterruptDevice) {
                 devices.put(actor, new String("Sensing_" + 
                         ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor)));
