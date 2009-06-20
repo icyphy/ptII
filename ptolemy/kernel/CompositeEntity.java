@@ -871,6 +871,10 @@ public class CompositeEntity extends ComponentEntity {
 
         while (ports.hasNext()) {
             ComponentPort port = (ComponentPort) ports.next();
+            // Skip the port if it is not persistent.
+            if (port != null && !port.isPersistent()) {
+                continue;
+            }
             Iterator relations = port.insideRelationList().iterator();
 
             // The following variables are used to determine whether to
@@ -884,6 +888,11 @@ public class CompositeEntity extends ComponentEntity {
 
                 ComponentRelation relation = (ComponentRelation) relations
                         .next();
+                
+                // Skip the relation if it is not persistent.
+                if (relation != null && !relation.isPersistent()) {
+                    continue;
+                }
 
                 if (relation == null) {
                     // Gap in the links.  The next link has to use an
@@ -905,7 +914,7 @@ public class CompositeEntity extends ComponentEntity {
                         || (filter.contains(relation) && (filter.contains(port) || filter
                                 .contains(port.getContainer())))) {
                     // If the relation is not persistent, then do not export the link.
-                    if (!relation.isPersistent()) {
+                    if (relation != null && !relation.isPersistent()) {
                         continue;
                     }
                     // In order to support level-crossing links, consider the
@@ -949,10 +958,20 @@ public class CompositeEntity extends ComponentEntity {
 
         while (entities.hasNext()) {
             ComponentEntity entity = (ComponentEntity) entities.next();
+            
+            // Skip the entity if it is not persistent.
+            if (entity != null && !entity.isPersistent()) {
+                continue;
+            }
+
             ports = entity.portList().iterator();
 
             while (ports.hasNext()) {
                 ComponentPort port = (ComponentPort) ports.next();
+                // Skip the port if it is not persistent.
+                if (port != null && !port.isPersistent()) {
+                    continue;
+                }
                 Iterator relations = port.linkedRelationList().iterator();
 
                 // The following variables are used to determine whether to
@@ -966,6 +985,11 @@ public class CompositeEntity extends ComponentEntity {
 
                     ComponentRelation relation = (ComponentRelation) relations
                             .next();
+
+                    // Skip the relation if it is not persistent.
+                    if (relation != null && !relation.isPersistent()) {
+                        continue;
+                    }
 
                     if (relation == null) {
                         // Gap in the links.  The next link has to use an
@@ -1010,7 +1034,7 @@ public class CompositeEntity extends ComponentEntity {
                                     .contains(port) || filter.contains(port
                                     .getContainer())))) {
                         // If the relation is not persistent, then do not export the link.
-                        if (!relation.isPersistent()) {
+                        if (relation != null && !relation.isPersistent()) {
                             continue;
                         }
                         // In order to support level-crossing links,
@@ -1066,6 +1090,11 @@ public class CompositeEntity extends ComponentEntity {
         while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation) relations.next();
             visitedRelations.add(relation);
+            
+            // Skip the relation if it is not persistent.
+            if (relation != null && !relation.isPersistent()) {
+                continue;
+            }
 
             Iterator portsAndRelations = relation.linkedObjectsList()
                     .iterator();
@@ -1075,6 +1104,12 @@ public class CompositeEntity extends ComponentEntity {
 
                 if (portOrRelation instanceof Relation) {
                     Relation otherRelation = (Relation) portOrRelation;
+                    
+                    // Skip the relation if it is not persistent.
+                    if (otherRelation != null && !otherRelation.isPersistent()) {
+                        continue;
+                    }
+
 
                     // If we have visited the other relation already, then
                     // we have already represented the link. Skip this.
