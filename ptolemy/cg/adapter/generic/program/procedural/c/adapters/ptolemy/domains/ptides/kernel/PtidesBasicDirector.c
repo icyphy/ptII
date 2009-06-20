@@ -188,28 +188,49 @@ Event* peekEvent(unsigned int peekingIndex) {
 	return deadline;
 }
 
-void removeEvent(Event* thisEvent) {
-// we don't need to disable interrupts because this is called by fireActor,
-// which disables the interrupt.
-/* if removeDeadline removes events from both event queues, it should be ok, but my guess is that it's not exactly doing that for some reason, otherwise I couldn't have gotten that bug.... unless there's another reason for that bug...
- */
-	Event* current = DEADLINE_QUEUE_HEAD;
-	Event* prevDeadline = NULL;
-	while (current != thisEvent) {
-		prevDeadline = current;
-		current = current->nextEvent;
-        if (current == NULL) {
-            die("event not in queue.");
+int notSameTag(const Event* event1, const Event* event2) {
+    if (timeCompare(event1->tag.timestamp, event2->tag.timestamp) == EQUAL
+            && event1->tag.microstep == event2->tag.microstep) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+void removeAndPropagateSameTagEvents(int peekingIndex) {
+    int i;
+    Event* event = DEADLINE_QUEUE_HEAD;
+	Event* prevEvent = NULL;
+	Event* refEvent = NULL;
+	
+    if (peekingIndex == 0) {
+		DEADLINE_QUEUE_HEAD = event->nextEvent;
+	} else {
+        for (i = 0; i < peekingIndex; i++) {
+		    prevEvent = event;
+            event = event->nextEvent;
         }
 	}
-	
-    if (current == DEADLINE_QUEUE_HEAD) {
-		DEADLINE_QUEUE_HEAD = current->nextEvent;
-	} else {
-		prevDeadline->nextEvent = current->nextEvent;				
-	}
-	
-	freeEvent(thisEvent);
+    // propagate data, and remove it from the event queue.
+    propagateDataToken(event);
+	prevEvent->nextEvent = event->nextEvent;
+    refEvent = event;
+    // Now find the next event see we should process it at the same time.
+    while (true) {
+        event = event->next;
+        if (notSameTag(refEvent, event)) {
+            break;
+        } else {
+            // tags are the same, but only propagate if the destination
+            // actor for these two events are the same.
+            if (sameDestination(refEvent, event)) {
+                propagateDataToken(event);
+                prevEvent->nextEvent = event->nextEvent;
+            } else {
+                prevEvent = event;
+            }
+        }
+    }
 }
 
 Event* newEvent(void) {
@@ -306,6 +327,7 @@ void processEvents() {
                 // of the system know this decision by queuing the priority, and
                 // setting the tag of this event.
 				queuePriority(event);
+                removeAndPropagateSameTagEvents(peekingIndex);
                 setCurrentModelTag(event);
                 enableInterrupts();
                 // Execute the event. During
@@ -313,10 +335,6 @@ void processEvents() {
                 // be posted to the queue.
 				
                 fireActor(event);
-                //removeDeadline(peekingIndex);//removeEvent();	// need to find the event in the event queue and remove it
-				 // not sure if I'm removing are the right place.. it's possible I should remove after firing theactor
-			//	freeEvent(event);   // not used when doing EDF
-				//freeDeadline();
 				// After an actor fires, we not sure which event is safe to process,
 				// so we start examine the queue again start from the beginning.
 				peekingIndex = 0;
@@ -379,8 +397,6 @@ void fireActor(Event* currentEvent) {
 
 	if (currentEvent->fireMethod != NULL) 
 	{
-        propagateDataToken(currentEvent);
-
 	//	RIT128x96x4StringDraw("abouttofire...", 12, 72, 15);
 		(currentEvent->fireMethod)();
 
@@ -390,7 +406,7 @@ void fireActor(Event* currentEvent) {
 	}
 
 	disableInterrupts();
-	removeEvent(currentEvent);
+	freeEvent(currentEvent);
 
 	numStackedDeadline--;
 
