@@ -988,9 +988,4 @@
     <link port="ElementsToArray.input" relation="relation"/>
     <link port="ElementsToArray.output" relation="relation2"/>
     <link port="Test.input" relation="relation8"/>
-    <link port="BodyModels_1.positions" relation="relation8"/>
-    <link port="BodyModels_2.positions" relation="relation8"/>
-    <link port="BodyModels_3.positions" relation="relation8"/>
-    <link port="BodyModels_4.positions" relation="relation8"/>
-    <link port="BodyModels_5.positions" relation="relation8"/>
 </entity>
