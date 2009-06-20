@@ -1,0 +1,17 @@
+#!/bin/sh
+
+for file in $@
+do
+    echo $file
+    sed \
+	-e 's/\.fsm\./.modal./g' \
+	-e 's@/fsm/@/modal/@g' \
+	-e 's@/fsm$@/modal@g' \
+	-e 's@/fsm.jar@/modal.jar@g' \
+        $file > /tmp/fixfiles.tmp
+    diff $file /tmp/fixfiles.tmp
+    cp /tmp/fixfiles.tmp $file 
+
+done
+
+rm -f /tmp/fixfiles.tmp

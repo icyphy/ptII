@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen domains
+# Makefile for the FSM codegen demos
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2009 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,13 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/domains
+ME =		ptolemy/codegen/c/domains/modal/demo
 
-
-DIRS =		fsm hdf modal pn sdf sr giotto ptides de
+DIRS =		Mod4Counter
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -54,34 +53,24 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	fsm/fsm.jar \
-	hdf/hdf.jar \
-	modal/modal.jar \
-	pn/pn.jar \
-	giotto/giotto.jar \
-	sdf/sdf.jar \
-	sr/sr.jar \
-	ptides/ptides.jar \
-	de/de.jar
+	Mod4Counter/Mod4Counter.jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS:%.java=%.c)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	fsm hdf modal pn sdf sr giotto ptides de
-
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

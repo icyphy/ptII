@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen domains
+# Makefile for Ptolemy Classic style Codegen fsm kernel
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,13 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/domains
+ME =		ptolemy/codegen/c/domains/modal/kernel
 
-
-DIRS =		fsm hdf modal pn sdf sr giotto ptides de
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,42 +45,37 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	fsm/fsm.jar \
-	hdf/hdf.jar \
-	modal/modal.jar \
-	pn/pn.jar \
-	giotto/giotto.jar \
-	sdf/sdf.jar \
-	sr/sr.jar \
-	ptides/ptides.jar \
-	de/de.jar
+PTPACKAGE = 	kernel
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	FSMActor.java \
+	FSMDirector.java \
+	MultirateFSMDirector.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	FSMActor.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	fsm hdf modal pn sdf sr giotto ptides de
+MISC_FILES =	test
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'FSMActor$$1.class' \
+	'FSMActor$$PortScope.class' \
+	'FSMActor$$TransitionRetriever.class' \
+	'FSMDirector$$1.class' \
+	'FSMDirector$$2.class' \
+	'MultirateFSMDirector$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

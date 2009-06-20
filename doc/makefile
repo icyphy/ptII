@@ -233,6 +233,8 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.domains.fsm.modal \
 	ptolemy.codegen.c.domains.giotto.kernel \
 	ptolemy.codegen.c.domains.hdf.kernel \
+	ptolemy.codegen.c.domains.modal.kernel \
+	ptolemy.codegen.c.domains.modal.modal \
 	ptolemy.codegen.c.domains.pn.kernel \
 	ptolemy.codegen.c.domains.ptides.kernel \
 	ptolemy.codegen.c.domains.ptides.lib \
@@ -851,6 +853,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/c/domains/fsm/kernel/*.java \
 			../ptolemy/codegen/c/domains/fsm/modal/*.java \
 			../ptolemy/codegen/c/domains/hdf/kernel/*.java \
+			../ptolemy/codegen/c/domains/modal/kernel/*.java \
+			../ptolemy/codegen/c/domains/modal/modal/*.java \
 			../ptolemy/codegen/c/domains/sdf/kernel/*.java \
 			../ptolemy/codegen/c/domains/sdf/lib/*.java \
 			../ptolemy/codegen/c/kernel/*.java \

@@ -256,6 +256,7 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/codegen/c/vergil/vergil.jar \
 	ptolemy/codegen/demo/demo.jar \
 	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
+	ptolemy/codegen/c/domains/modal/demo/demo.jar \
 	ptolemy/codegen/c/domains/pn/demo/demo.jar \
 	ptolemy/codegen/c/targets/mpi/demo/demo.jar \
 	ptolemy/codegen/c/targets/openRTOS/demo/demo.jar \
