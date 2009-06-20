@@ -69,6 +69,10 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'BouncingBallApplet$$ParameterListener.class'
 
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user

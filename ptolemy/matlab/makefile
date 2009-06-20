@@ -84,8 +84,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 # the name of the library
 PTLIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
-# make clean removes $(KRUFT)
-KRUFT = matlabWindows.jar
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
 
 all: jclass
 

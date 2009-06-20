@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Java Ptolemy Codegen C Targets OpenRTOS Demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
-# @Version: $Id$
+# $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,67 +26,50 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/Starmac
+ME =        ptolemy/codegen/c/targets/openRTOS/demo
 
-# Root of the Java directory
-ROOT =		../../../../../
+DIRS =      ControlRobot
 
-CLASSPATH =	$(ROOT)
+# Root of the Ptolemy II directory
+ROOT =      ../../../../../..
+
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Starmac
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE =     demo
+
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+PTCLASSALLJARS = \
+	ControlRobot/ControlRobot.jar
 
 JSRCS =
 
-
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	Starmac.xml
-
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	Starmac.htm
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	$(PTCLASSJAR)
+    doc
 
-# Files to remove with 'make clean'
-KRUFT = \
-	*.jar
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: jclass jars
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer *.htm
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Spontaneous.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" Spontaneous.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

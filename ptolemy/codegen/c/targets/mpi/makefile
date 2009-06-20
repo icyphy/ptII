@@ -74,7 +74,6 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
 

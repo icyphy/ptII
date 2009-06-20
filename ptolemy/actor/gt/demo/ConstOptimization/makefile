@@ -77,6 +77,10 @@ OPTIONAL_FILES = \
 	signed_ConstOptimizationDE.jar
 
 
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass

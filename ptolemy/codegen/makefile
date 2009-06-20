@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen
 
-DIRS =		kernel actor c gui java chaco vhdl util test demo
+DIRS =		kernel actor c gui java chaco rtmaude vhdl util test demo
 
 # Root of the Java directory
 ROOT =		../..

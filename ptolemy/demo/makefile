@@ -76,6 +76,10 @@ OPTIONAL_FILES = \
 	ExecDemos.jar \
 	signed_ExecDemos.jar
 
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
+
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
 

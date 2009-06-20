@@ -73,6 +73,11 @@ OPTIONAL_FILES = \
 	output \
 	doc
 
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar \
+	dataOut*.txt
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
@@ -98,8 +103,6 @@ diff:
 	diff dataOut1_0.txt output
 	diff dataOut0_1.txt output
 	diff dataOut1_1.txt output
-
-KRUFT = dataOut*.txt
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

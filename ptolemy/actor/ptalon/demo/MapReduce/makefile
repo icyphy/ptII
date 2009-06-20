@@ -99,7 +99,8 @@ KRUFT = \
 	LinkGraph2.red \
 	ReadTest0.red \
 	ReadTest1.red \
-	ReadTest2.red 
+	ReadTest2.red \
+	*.jar
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -67,6 +67,10 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc
 
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass

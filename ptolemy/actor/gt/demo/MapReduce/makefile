@@ -71,6 +71,9 @@ OPTIONAL_FILES = \
 	MapReduceDDF.jar \
 	signed_MapReduceDDF.jar
 
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
