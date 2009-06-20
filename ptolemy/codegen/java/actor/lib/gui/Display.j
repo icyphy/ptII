@@ -1,7 +1,7 @@
 /***preinitBlock***/
 /**/
 
-/*** IntPrintBlock($name, $channel) ***/
+/*** IntegerPrintBlock($name, $channel) ***/
 System.out.println("$name: " + $ref(input#$channel));
 /**/
 
