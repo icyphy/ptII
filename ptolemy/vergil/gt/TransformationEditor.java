@@ -1868,8 +1868,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
 
             if (directoryFile != null && !directoryFile.exists()) {
-                MessageHandler.error("Directory " + directoryFile.getPath()
-                        + " does not exist.");
+                MessageHandler.error("Directory \"" + directoryFile.getPath()
+                        + "\" does not exist, "
+                        + "the value of the DefaultDirectoryAttribute parameter was \""
+                        + attribute.directory.getExpression() + "\"");
                 return null;
             }
 
