@@ -56,8 +56,7 @@ PTCLASSALLJARS = \
 	lib/lib.jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	Const.java
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = 
 
