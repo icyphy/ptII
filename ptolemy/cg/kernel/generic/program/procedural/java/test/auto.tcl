@@ -48,10 +48,8 @@ set oldIsRunningNightlyBuild \
      "ptolemy.ptII.isRunningNightlyBuild"]
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
 
-######################################################################
-#### 
-#
-test Auto-1.0 {Testing Scale_java} {
+
+proc test_cg {model} {
     set codeGeneratorPath "ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator"
     set workspace [java::new ptolemy.kernel.util.Workspace "workspace"]
     set parser [java::new ptolemy.moml.MoMLParser $workspace]
@@ -64,7 +62,7 @@ test Auto-1.0 {Testing Scale_java} {
     $parser addMoMLFilter [java::new \
 	    ptolemy.moml.filter.RemoveGraphicalClasses]
     set model1_0 \
-	 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile Repeat.xml]]
+	 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $model]]
     set manager [java::new ptolemy.actor.Manager $workspace "manager"]
     $model1_0 setManager $manager
     #$manager execute
@@ -73,9 +71,18 @@ test Auto-1.0 {Testing Scale_java} {
     set codeGenerator [java::cast ptolemy.cg.kernel.generic.GenericCodeGenerator [[$model1_0 attributeList [java::call java.lang.Class forName $codeGeneratorPath]] get 0]]
 
     list [$codeGenerator generateCode]
+}
 
+######################################################################
+#### 
+#
+test Auto-1.0 {Testing Repeat} {
+	test_cg Repeat.xml
 } {0}
 
+test Auto-2.0 {Testing Display} {
+	test_cg Display.xml
+} {0}
 
 
 # Reset the isRunningNightlyBuild property

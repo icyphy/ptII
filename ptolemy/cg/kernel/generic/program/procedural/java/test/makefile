@@ -58,6 +58,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	Display.xml \
 	Repeat.xml
 
 #$(JGRAPHICAL_TESTS)
