@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for adapter classes that match ptolemy.actor.lib.gui classes
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/gui
 
-DIRS =	gui	
+DIRS =		#test
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,20 +45,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = gui/gui.jar
+PTPACKAGE = 	gui
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AddSubtract.java \
-	Ramp.java \
-	Test.java
+	Display.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.j)
@@ -68,12 +60,12 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	
+MISC_FILES =	test
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
