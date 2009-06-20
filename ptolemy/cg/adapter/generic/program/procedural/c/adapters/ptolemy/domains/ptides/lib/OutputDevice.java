@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public abstract class OutputDevice extends ProgramCodeGeneratorAdapter {
 
     /**
-     * Construct a ActorTransmitter helper.
+     * Construct an OutputDevice helper.
      * @param actor The associated actor.
      */
     public OutputDevice(ptolemy.domains.ptides.lib.OutputDevice actor) {
