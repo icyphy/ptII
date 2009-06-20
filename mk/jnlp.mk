@@ -401,6 +401,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/verification/verification.jar \
+	ptolemy/verification/demo/demo.jar \
 	ptolemy/domains/ptera/ptera.jar \
 	ptolemy/domains/ptera/demo/demo.jar \
 	ptolemy/domains/ptera/doc/doc.jar \
