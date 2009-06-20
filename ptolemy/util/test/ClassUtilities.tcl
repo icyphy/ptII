@@ -38,34 +38,42 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# Make $PTII absolute.
+set PTIIAbsolute [[[[java::new java.io.File $PTII] getCanonicalFile] toURI] getPath]
+
+# Get rid of the trailing slash.
+set PTIIAbsolute [string range $PTIIAbsolute 0 [expr {[string length $PTIIAbsolute] - 2}]]
 
 test ClassUtilities-0.5 {jarURLDirectories with a directory} {
-    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/a"]
+    set jarURL [java::new java.net.URL "jar:file://$PTIIAbsolute/ptolemy/util/test/extractJarFileTest.jar!/a"]
 
     set r1 [java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL]
     listToStrings $r1
 } {a/b/ a/c/}
 
 test ClassUtilities-0.5.1 {jarURLDirectories with a directory with a trailing /} {
-    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/a/"]
+    set jarURL [java::new java.net.URL "jar:file://$PTIIAbsolute/ptolemy/util/test/extractJarFileTest.jar!/a/"]
 
     set r1 [java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL]
     listToStrings $r1
 } {a/b/ a/c/}
 
 test ClassUtilities-0.5.2 {jarURLDirectories with a file} {
-    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/a/1"]
+    set jarURL [java::new java.net.URL "jar:file://$PTIIAbsolute/ptolemy/util/test/extractJarFileTest.jar!/a/1"]
 
     set r1 [java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL]
     listToStrings $r1
 } {}
 
 test ClassUtilities-0.5.3 {jarURLDirectories with a directory that does not exist} {
-    set jarURL [java::new java.net.URL "jar:file://$PTII/ptolemy/util/test/extractJarFileTest.jar!/notADirectory"]
+    set jarURL [java::new java.net.URL "jar:file://$PTIIAbsolute/ptolemy/util/test/extractJarFileTest.jar!/notADirectory"]
 
     catch {java::call ptolemy.util.ClassUtilities jarURLDirectories $jarURL} errMsg
-    regsub "$PTII" $errMsg "xxxPTIIxxx" errMsg2
-    list $errMsg2
+    regsub -all {\\} $errMsg "/" errMsg2
+    regsub "$PTIIAbsolute" $errMsg2 "xxxPTIIxxx" errMsg3
+    # Under windows, we might have a leading slash
+    regsub [string range $PTIIAbsolute 1 [string length $PTIIAbsolute]] $errMsg3 "xxxPTIIxxx" errMsg4
+    list $errMsg4
 } {{java.io.FileNotFoundException: JAR entry notADirectory not found in xxxPTIIxxx/ptolemy/util/test/extractJarFileTest.jar}}
 
 test ClassUtilities-1.1 {jarURLEntryResource} {
