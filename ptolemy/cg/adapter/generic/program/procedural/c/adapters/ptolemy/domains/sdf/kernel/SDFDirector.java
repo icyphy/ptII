@@ -541,7 +541,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         }
 
         // Generate type convert variable declarations.
-        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration();
+        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
         if (typeConvertVariableDeclaration.length() > 1) {
             code.append(_eol
                     + codeGenerator.comment(name + "'s type convert variable declarations."));
@@ -635,15 +635,16 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }
     
     /** Generate type convert variable declarations.
+     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return a String that declares type convert variables.
      *  @exception IllegalActionException If thrown while
      *  getting port information.
      */
-    private String _generateTypeConvertVariableDeclaration()
+    private String _generateTypeConvertVariableDeclaration(ProgramCodeGeneratorAdapter target)
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> channels = getStrategy().getTypeConvertChannels().iterator();
+        Iterator<?> channels = target.getStrategy().getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
             Type portType = ((TypedIOPort) channel.port).getType();

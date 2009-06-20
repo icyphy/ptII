@@ -348,7 +348,7 @@ public class StaticSchedulingDirector extends Director {
 
                 String refType = getStrategy().codeGenType(port.getType());
 
-                return getStrategy()._generateTypeConvertMethod(result, castType, refType);
+                return getStrategy().generateTypeConvertMethod(result, castType, refType);
             }
         }
 
@@ -361,7 +361,7 @@ public class StaticSchedulingDirector extends Director {
             String result = _getReference(target,
                     attribute, channelAndOffset);
 
-            return getStrategy()._generateTypeConvertMethod(result, castType, refType);
+            return getStrategy().generateTypeConvertMethod(result, castType, refType);
         }
 
         throw new IllegalActionException(target.getComponent(), "Reference not found: "
@@ -447,7 +447,7 @@ public class StaticSchedulingDirector extends Director {
 
             Channel sourceChannel = new Channel(port, channelNumber);
 
-            List<Channel> typeConvertSinks = getStrategy()._getTypeConvertSinkChannels(sourceChannel);
+            List<Channel> typeConvertSinks = target.getStrategy().getTypeConvertSinkChannels(sourceChannel);
 
             List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
 

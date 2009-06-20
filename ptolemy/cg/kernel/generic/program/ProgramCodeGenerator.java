@@ -699,13 +699,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                 + "to be called.");
             }
              */
-            code+= directorAdapter.generateMainLoop(
+            code += directorAdapter.generateMainLoop(
             /*CodeGenerator.containsCode(_postfireCode)*/);
 
         } else {
             // Generate embedded code.
             ProgramCodeGeneratorAdapter compositeAdapter = (ProgramCodeGeneratorAdapter) getAdapter(model);
-            code+= compositeAdapter.generateFireCode();
+            code += compositeAdapter.generateFireCode();
         }
         
         

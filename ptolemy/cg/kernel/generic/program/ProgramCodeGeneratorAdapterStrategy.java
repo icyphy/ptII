@@ -88,7 +88,7 @@ import ptolemy.util.StringUtilities;
  *
  * <p>Subclasses should be sure to properly indent the code by
  * either using the code block functionality in methods like
- * {@link #_generateBlockCode(String)} or by calling
+ * {@link #generateBlockCode(String)} or by calling
  * {@link ptolemy.codegen.kernel.CodeStream#indent(String)},
  * for example:
  * <pre>
@@ -414,7 +414,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             if (!forComposite && source.port.isOutput() || forComposite
                     && source.port.isInput()) {
 
-                Iterator<Channel> sinkChannels = _getTypeConvertSinkChannels(source)
+                Iterator<Channel> sinkChannels = getTypeConvertSinkChannels(source)
                 .iterator();
 
                 while (sinkChannels.hasNext()) {
@@ -786,7 +786,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
-                    return _generateTypeConvertMethod("\""
+                    return generateTypeConvertMethod("\""
                             + parseTreeCodeGenerator
                             .escapeForTargetLanguage(variable
                                     .getExpression()) + "\"", castType,
@@ -827,7 +827,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 // we get into trouble because {0} is "false"?  sigh.
                 //    return "Array_new(1, 1, " + fireCode + ");";
                 //}
-                return _generateTypeConvertMethod(fireCode, castType,
+                return generateTypeConvertMethod(fireCode, castType,
                         codeGenType(variable.getType()));
 
             } else /* if (attribute instanceof Settable)*/{
@@ -866,7 +866,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                             .generateFireCode());
                     /////////////////////////////////////////////////////
 
-                    return _generateTypeConvertMethod(elementCode,
+                    return generateTypeConvertMethod(elementCode,
                             castType, codeGenType(element.getType()));
                 }
 
@@ -1369,6 +1369,39 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         }
         return lastModified;
     }
+    
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors adapters that have simple blocks
+     *  that do not take parameters or have widths.
+     *  @param blockName The name of the block.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the adapter .c file.
+     */
+    public String generateBlockCode(String blockName)
+            throws IllegalActionException {
+        // We use this method to reduce code duplication for simple blocks.
+        return generateBlockCode(blockName, new ArrayList<String>());
+    }    
+    
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors adapters that have simple blocks
+     *  that do not take parameters or have widths.
+     *  @param blockName The name of the block.
+     *  @param args The arguments for the block.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the adapter .c file.
+     */
+    public String generateBlockCode(String blockName, List<String> args)
+                throws IllegalActionException {
+        // We use this method to reduce code duplication for simple blocks.
+        _codeStream.clear();
+        _codeStream.appendCodeBlock(blockName, args);
+        return processCode(_codeStream.toString());
+    }
 
     /**
      * Generate a string that represents the offset for a dynamically determined
@@ -1393,6 +1426,29 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return channelOffset;
     }
 
+    /**
+     * Generate expression that evaluates to a result of equivalent
+     * value with the cast type.
+     * @param expression The given variable expression.
+     * @param castType The given cast type.
+     * @param refType The given type of the variable.
+     * @return The variable expression that evaluates to a result of
+     *  equivalent value with the cast type.
+     * @exception IllegalActionException
+     */
+    public String generateTypeConvertMethod(String expression, String castType,
+            String refType) throws IllegalActionException {
+
+        if (castType == null || refType == null || castType.equals(refType)) {
+            return expression;
+        }
+
+        expression = "$convert_" + refType + "_" + castType 
+        + "(" + expression + ")";
+        
+        return processCode(expression);
+    }
+    
     /** Generate sanitized name for the given named object. Remove all
      *  underscores to avoid conflicts with systems functions.
      *  @param namedObj The named object for which the name is generated.
@@ -1579,6 +1635,32 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return _portConversions.keySet();
     }
     
+    /**
+     * Generate a variable reference for the given channel. This varaible
+     * reference is needed for type conversion. The source adapter get this
+     * reference instead of using the sink reference directly.
+     * This method assumes the given channel is a source (output) channel.
+     * @param channel The given source channel.
+     * @return The variable reference for the given channel.
+     */
+    static public String getTypeConvertReference(Channel channel) {
+        return generateName(channel.port) + "_" + channel.channelNumber;
+    }
+
+    /**
+     * Get the list of sink channels that the given source channel needs to
+     * be type converted to.
+     * @param source The given source channel.
+     * @return List of sink channels that the given source channel needs to
+     * be type converted to.
+     */
+    public List<Channel> getTypeConvertSinkChannels(Channel source) {
+        if (_portConversions.containsKey(source)) {
+            return _portConversions.get(source);
+        }
+        return new ArrayList<Channel>();
+    }
+
     public static void main(String[] args) {
         selfTest();
     }
@@ -1595,41 +1677,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
-
-
-
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors adapters that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the adapter .c file.
-     */
-    protected String _generateBlockCode(String blockName)
-    throws IllegalActionException {
-        // We use this method to reduce code duplication for simple blocks.
-        return _generateBlockCode(blockName, new ArrayList<String>());
-    }
-
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors adapters that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @param args The arguments for the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the adapter .c file.
-     */
-    protected String _generateBlockCode(String blockName, List<String> args)
-    throws IllegalActionException {
-        // We use this method to reduce code duplication for simple blocks.
-        _codeStream.clear();
-        _codeStream.appendCodeBlock(blockName, args);
-        return processCode(_codeStream.toString());
-    }
 
     /**
      * Generate the fire code. This method is intended to be
@@ -1769,18 +1816,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     protected ProgramCodeGeneratorAdapter _getAdapter(NamedObj component)
     throws IllegalActionException {
         return (ProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(component);
-    }
-
-    /**
-     * Generate a variable reference for the given channel. This varaible
-     * reference is needed for type conversion. The source adapter get this
-     * reference instead of using the sink reference directly.
-     * This method assumes the given channel is a source (output) channel.
-     * @param channel The given source channel.
-     * @return The variable reference for the given channel.
-     */
-    static public String getTypeConvertReference(Channel channel) {
-        return generateName(channel.port) + "_" + channel.channelNumber;
     }
 
     /** Return the replacement string of the given macro. Subclass
@@ -2071,36 +2106,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     }
 
     /**
-     * Generate expression that evaluates to a result of equivalent
-     * value with the cast type.
-     * @param ref The given variable expression.
-     * @param castType The given cast type.
-     * @param refType The given type of the variable.
-     * @return The variable expression that evaluates to a result of
-     *  equivalent value with the cast type.
-     * @exception IllegalActionException
-     */
-    public String _generateTypeConvertMethod(String ref, String castType,
-            String refType) throws IllegalActionException {
-
-        if (castType == null || refType == null || castType.equals(refType)) {
-            return ref;
-        }
-
-        if (isPrimitive(castType)) {
-            ref = refType + "to" + castType + "(" + ref + ")";
-        } else if (isPrimitive(refType)) {
-            ref = "$new(" + refType + "(" + ref + "))";
-        }
-
-        if (!castType.equals("Token") && !isPrimitive(castType)) {
-            ref = "$typeFunc(TYPE_" + castType + "::convert(" + ref + "))";
-        }
-
-        return processCode(ref);
-    }
-
-    /**
      * Generate the type conversion statements for the two given channels.
      * @param source The given source channel.
      * @param sink The given sink channel.
@@ -2150,20 +2155,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         } while (position > 0 && code.charAt(position - 1) == '\\');
 
         return position;
-    }
-
-    /**
-     * Get the list of sink channels that the given source channel needs to
-     * be type converted to.
-     * @param source The given source channel.
-     * @return List of sink channels that the given source channel needs to
-     * be type converted to.
-     */
-    public List<Channel> _getTypeConvertSinkChannels(Channel source) {
-        if (_portConversions.containsKey(source)) {
-            return _portConversions.get(source);
-        }
-        return new ArrayList<Channel>();
     }
 
     /***
