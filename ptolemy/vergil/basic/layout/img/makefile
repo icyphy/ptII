@@ -1,8 +1,8 @@
-# Makefile for the Ptolemy II Layout tools
+# Makefile for Layout Buttons
 #
-# @Authors: Thomas Huining Feng
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 54441 2009-06-16 21:16:52Z cxh $
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,39 +29,33 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/vergil/basic/layout
+ME =            ptolemy/vergil/basic/layout/img
 
 # Root of the ptII directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		img kieler
+DIRS =
 
-# KIELER_JAR is set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(KIELER_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Used to build zip files
-PTPACKAGE = 	layout
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	img
+PTCLASSJAR =    $(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	img/img.jar \
-	kieler/kieler.jar
+JSRCS =
 
-JSRCS = \
-	HideVerticesButton.java \
-	PlaceAllButton.java \
-	PlaceAndRouteButton.java \
-	PlaceButton.java \
-	RemoveVerticesButton.java
-
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	hidevertices.gif \
+	placeall.gif \
+	placeall.png \
+	placeandroute.gif \
+	place.gif \
+	removevertices.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
