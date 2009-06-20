@@ -4260,8 +4260,16 @@ XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNa
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find c}
 
-    if { $result != $result1 && $result != $result2 && $result != $result3 && $result != $result4 && $result != $result5} {
-	error "--start--\n$result\n--end--\n\nwas not equal to\n\n--start#1--\n$result1\n--end--\n\nnor\n--start#2---\n$result2\n--end--\n\nor\n\n--start#3---\n$result3\n--end--\n\n or \n\n--start#4--\n$result4\n--end--\n\n or \n\n--start#4--\n$result5\n--end--\n"
+    set result6 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.AltFileNameExceptionTestFile
+Because:
+XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.xml at line 4 and column 47
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: }
+
+    if { $result != $result1 && $result != $result2 && $result != $result3 && $result != $result4 && $result != $result5 && $result != $result6} {
+	error "--start--\n$result\n--end--\n\nwas not equal to\n\n--start#1--\n$result1\n--end--\n\nnor\n--start#2---\n$result2\n--end--\n\nor\n\n--start#3---\n$result3\n--end--\n\n or \n\n--start#4--\n$result4\n--end--\n\n or \n\n--start#4--\n$result5\n--end--\n or \n\n--start#6--\n$result6\n--end--\n\n"
     }
 } {}
 
@@ -4290,6 +4298,12 @@ test MoMLParser-32.4 {parse a file that does not exist} {
     # This assumes that $PTII is a relative path
     catch {$parser parseFile "/This File Does Not Exist/Foo.xml"} errMsg
     set cwd [java::call System getProperty {user.dir}]
-    regsub $cwd $errMsg {XXXCWDXXX} errMsg2
-    list $errMsg2
+    # Sigh.  user.dir might be c:\ptII, but the error msg might be C:/ptII
+    set cwdUpCased [[[[java::new java.io.File $cwd] getCanonicalFile] toURI] getPath]
+    set cwdUpCased [string range $cwdUpCased 0 [expr {[string length $cwdUpCased] - 2}]]
+    regsub -all {\\} $errMsg {/} errMsg2
+    regsub $cwdUpCased $errMsg2 {XXXCWDXXX} errMsg3
+    # Under windows, we might have a leading slash
+    regsub [string range $cwdUpCased 1 [string length $cwdUpCased]] $errMsg3 {XXXCWDXXX} errMsg4
+    list $errMsg4
 } {{java.io.FileNotFoundException: Could not find file "/This File Does Not Exist/Foo.xml", also tried "XXXCWDXXX/This File Does Not Exist/Foo.xml"}}
