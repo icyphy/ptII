@@ -4,13 +4,13 @@
 <entity name="Curriculum" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1009, 752}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1065, 755}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[796, 642]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[852, 645]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{398.0, 321.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{426.0, 322.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Current EECS/COE requirements:&#10;- 120 units total&#10;- 30 units math &amp; science, including:&#10;  + 11 units science w/ Phys 7A/B&#10;  + Math 1A/B, 53, 54.&#10;  + Physics 7C or Chem 1A, 1B,&#10;   3AB, 4AB, 5, Bio 1A, 1B,&#10;   Astro 7A, MCB 32 or ...&#10;- EECS 20, 40, 61A, 61B, 61C">
@@ -202,6 +202,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 493.5]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Discrete Mathematics and Probability Theory">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
     </entity>
     <entity name="150" class="ptolemy.domains.curriculum.Course">
@@ -560,6 +562,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 423.5]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Programming">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
     </entity>
     <entity name="Or" class="ptolemy.domains.curriculum.Or">

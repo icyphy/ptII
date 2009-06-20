@@ -4,9 +4,9 @@
 <entity name="BlindCommunication" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 0, 880, 614}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1014, 617}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 507]">
     </property>
     <property name="order" class="ptolemy.data.expr.Parameter" value="11">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -54,7 +54,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.5, 249.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.5, 253.5}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AudioReader reads an input PSK signal and executes a sequence of &#10;signal analyses to determine the carrier, baud rate, and number of phase states.&#10;The resampler computes an unknown number of output samples, preventing &#10;static scheduling of the toplevel model.  Since the amount of processed &#10;data changes, the PhaseStatesEstimator model cannot be a synchronous &#10;dataflow model. In this model the PhaseStatesEstimator is quasi-statically &#10;scheduled using the Parameterized Synchronous Dataflow domain.">
