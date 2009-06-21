@@ -217,7 +217,6 @@ public class PtolemyModelUtil {
      * model object and schedule it immediately. 
      * 
      * @param relationSet Set of relation to be removed from the Ptolemy model
-     * @param actor Parent actor of the relation set.
      */
     protected void _removeRelations(Set<Relation> relationSet) {
         StringBuffer moml = new StringBuffer();
