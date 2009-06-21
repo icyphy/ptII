@@ -121,7 +121,7 @@
         </property>
         <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665, 50}">
         </property>
