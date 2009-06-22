@@ -30,10 +30,10 @@ typedef struct event {
         char char_Value;
     } Val;
     Tag tag;
+    uint32 depth;
     void (*fireMethod)();
-	struct event** sinkEvent;
-
-    int channelIndex;
+	
+    struct event** sinkEvent;
     Time deadline;
     Time offsetTime;
 
@@ -109,60 +109,63 @@ static Time ZERO_TIME = {0, 0};
 /*** FuncBlock ***/
 /* event memory manipulations*/
 
-void addEvent(Event* newEvent) {
-// now add event to the deadline queue
-    
+// this method compares events in lexicographical order based on:
+// deadline, timestamp, microstep, and depth.
+int compareEvents(Event* event1, Event* event2) {
+    int compare;
+    compare = timeCompare(event1->deadline, event2->deadline).
+    if (compare != 0) {
+        return compare;
+    } else {
+        compare = timeCompare(event1->timestamp, event2->timestamp);
+        if (compare != 0) {
+            return compare;
+        } else {
+            if (event1->microstep < event2->microstep) {
+                return -1;
+            } else if (event1->microstep > event2->microstep) {
+                return 1;
+            } else {
+                if (event1->depth < event2->depth) {
+                    return -1;
+                } else if (event1->depth > event2->depth) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    }
+}
 
+void addEvent(Event* newEvent) {
+    // now add event to the deadline queue
 	Event *compare_deadline;
 	Event *before_deadline;
+    int compare;
 
     disableInterrupts();
 
-    before_deadline  = DEADLINE_QUEUE_HEAD;
+    before_deadline  = NULL;
     compare_deadline = DEADLINE_QUEUE_HEAD;
 
-	/*Deadline *myNewDeadline = newDeadline();
-	myNewDeadline->myEvent = newEvent;
-	myNewDeadline->next = NULL;
-	myNewDeadline->deadline = newEvent->tag.timestamp + newEvent->atPort->containingActor->deadline;
-
-	timeAdd(&(newEvent->tag.timestamp), &(newEvent->atPort->containingActor->deadline), &tempTime);
-	timeSet(&(newEvent->deadline), &tempTime);
-	  */
-    
-	// timeAdd(newEvent->tag.timestamp, newEvent->atPort->containingActor->deadline, &(newEvent->deadline));
-	  
     while (1) {
+        // We've reached the end of the queue.
         if (compare_deadline == NULL) {
-			//RIT128x96x4StringDraw("ce==null",   12,90,15);
             break;
-		} else if (timeCompare(newEvent->deadline, compare_deadline->deadline) <= 0) {
-		    //RIT128x96x4StringDraw("opt2",   12,90,15);
+		} else if (compareEvents(newEvent, compare_deadline) <= 0) {
             break;
 		} else {
-            if (compare_deadline != before_deadline) {
-				//RIT128x96x4StringDraw("inifaddedEvent",   10,90,15);
-				before_deadline = before_deadline->nextEvent;
-				}
-			//RIT128x96x4StringDraw("lastelseaddedEvent",   12,90,15);
-			
-			compare_deadline = compare_deadline->nextEvent;
-			//RIT128x96x4StringDraw("22lastelseaddedEvent",   12,90,15);
-		//	break;
+		    before_deadline = compare_deadline;
+		    compare_deadline = compare_deadline->nextEvent;
         }
     }
-            
+
     newEvent->nextEvent = compare_deadline;
-	//RIT128x96x4StringDraw("check1addedEvent",   12,90,15);
-    if (compare_deadline == before_deadline) {
+    if (before_deadline == NULL) {
         DEADLINE_QUEUE_HEAD = newEvent;
-    }
-    else if (compare_deadline != before_deadline) {
+    } else {
         before_deadline->nextEvent = newEvent;
-    }
-    else {
-		RIT128x96x4StringDraw("diedinaddedEvent",   0,90,15);
-        die("");
     }
 
 	#ifdef LCD_DEBUG
@@ -305,14 +308,16 @@ void processEvents() {
 
 	disableInterrupts();
 
-    while (peekEvent(peekingIndex) != NULL) {
+    while (true) {
+	    event = peekEvent(peekingIndex);
+        if (event == NULL) {
+            break;
+        }
+        // If event queue is not empty, keep going.
 		whilecount++;
 		#ifdef LCD_DEBUG
 		debugMessageNumber("wc = ", whilecount);
 		#endif
-
-        // If event queue is not empty.
-		event = peekEvent(peekingIndex); //peakEventQueue(peakingPoint);
         
 		if (higherPriority(event) == TRUE) {
 	        safeToProcess(event, &processTime);
@@ -350,15 +355,11 @@ void processEvents() {
  					setTimedInterrupt(&processTime);
 				}
 				// this event is not safe to process, we look at the next one.
-				//peekingIndex++;
-                break;
-
-                //enableInterrupts();
+				peekingIndex++;
+                //break;
 
             }// end !(curentPhysicalTime >= processTime)
 		} else {
-			// DO not need to enable interrupt here, beacause it is enabled outside of the while loop
-			// enableInterrupts();
 			// This is the only place for us to break out of the while loop. The only other possibility
 			// is that we have looked all all events in the queue, and none of them are safe to process.
 			#ifdef LCD_DEBUG
@@ -397,23 +398,15 @@ void fireActor(Event* currentEvent) {
 
 	if (currentEvent->fireMethod != NULL) 
 	{
-	//	RIT128x96x4StringDraw("abouttofire...", 12, 72, 15);
-		(currentEvent->fireMethod)();
 
-	//	RIT128x96x4StringDraw("justFired", 12, 72, 15);
+	enableInterrupts();
+		(currentEvent->fireMethod)();
 	} else {
 		die("no such method, cannot fire\n");
 	}
 
-	disableInterrupts();
 	freeEvent(currentEvent);
-
 	numStackedDeadline--;
-
-	enableInterrupts();
-
-	//printf("done firing the actor\n");
-	//fireActorCount++;
 }
 
 /* determines whether the event to fire this current actor is of higher priority than

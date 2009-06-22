@@ -31,8 +31,11 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 import java.util.ArrayList;
 import java.util.List;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
@@ -58,7 +61,11 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
     public String generateCodeForPut(String token) throws IllegalActionException{
         TypedIOPort sinkPort = (TypedIOPort)getReceiver().getContainer();
         Type sinkType = sinkPort.getType();
-        
+        Actor actor = (Actor)sinkPort.getContainer();
+        Director director = actor.getDirector();
+        // Getting depth.
+        int depth = ((CausalityInterfaceForComposites)director.
+                getCausalityInterface()).getDepthOfActor(actor);
         // Getting deadline.
         Parameter relativeDeadline = (Parameter)sinkPort.getAttribute("relativeDeadline");
         String deadlineSecsString = null;
@@ -98,8 +105,7 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
         args.add(generateName(sinkPort.getContainer()));
         args.add("Event_Head_" + generateName(sinkPort) + "[" + 
                 sinkPort.getChannelForReceiver(getReceiver()) + "]");
-        args.add("");//timestamp
-        args.add("");//microstep
+        args.add(depth);//depth
         args.add(deadlineSecsString);//deadline
         args.add(deadlineNsecsString);
         args.add(offsetSecsString);//offsetTime

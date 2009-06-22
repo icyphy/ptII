@@ -1,11 +1,12 @@
 /*** createEvent($type, $convertedValue, $sinkFireName, $sinkPortName,
- $timestamp, $microstep, $relativeDeadlineSecs, $relativeDeadlineNsecs, 
+ $depth, $relativeDeadlineSecs, $relativeDeadlineNsecs, 
  $offsetTimeSecs, $offsetTimeNsecs) ***/
 {
 Time dummyTime;
 Event* event = newEvent();
 timeSet(currentModelTime, &(event->tag.timestamp));
 event->tag.microstep = currentMicrostep;
+event->depth = $depth;
 dummyTime.secs = $relativeDeadlineSecs;
 dummyTime.nsecs = $relativeDeadlineNsecs;
 timeAdd(event->tag.timestamp, dummyTime, &(event->deadline));
