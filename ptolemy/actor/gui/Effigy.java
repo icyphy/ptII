@@ -90,6 +90,9 @@ import ptolemy.util.StringUtilities;
  But in Ptolemy II, an entity name cannot have periods in it, and a URI
  typically does have periods in it.
 
+ <p> To determine the Effigy of a NamedObj, use
+ {@link ptolemy.actor.gui.Configuration#findEffigy(NamedObj)}.
+
  @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
  @since Ptolemy II 1.0
