@@ -145,6 +145,14 @@ public class RealDependency implements Dependency {
     public Dependency oTimesIdentity() {
         return OTIMES_IDENTITY;
     }
+    
+    /** Return a string representation in the form
+     *  "RealDependency(value)".
+     *  @return A string representation.
+     */
+    public String toString() {
+        return "RealDependency(_value)";
+    }
 
     /** Return the double value of the dependency.
      * @return The value of the dependency.

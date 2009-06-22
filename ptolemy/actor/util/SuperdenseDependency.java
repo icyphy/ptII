@@ -204,6 +204,14 @@ public class SuperdenseDependency implements Dependency {
         return _time;
     }
 
+    /** Return a string representation in the form
+     *  "SuperdenseDependency(_time, _index)".
+     *  @return A string representation.
+     */
+    public String toString() {
+        return "SuperdenseDependency(" + _time + ", " + _index + ")";
+    }
+    
     /** Return an instance of SuperdenseDependency with the specified
      *  time and index value. This is preferable to use over the constructor
      *  because it uses the same instances for the most common
