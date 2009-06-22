@@ -58,9 +58,11 @@ proc test_cg {model} {
     $parser setMoMLFilters [java::null]
     $parser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-
-    $parser addMoMLFilter [java::new \
-	    ptolemy.moml.filter.RemoveGraphicalClasses]
+	
+	# We don't want to remove graphical classes since we also want to test these.
+    # $parser addMoMLFilter [java::new \
+	#     ptolemy.moml.filter.RemoveGraphicalClasses]
+	
     set model1_0 \
 	 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $model]]
     set manager [java::new ptolemy.actor.Manager $workspace "manager"]
