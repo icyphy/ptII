@@ -577,9 +577,17 @@ public class StaticSchedulingDirector extends Director {
     
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-    
-    /** 
-     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+
+    /**
+     * Return an unique label for the given attribute referenced
+     * by the given helper. Subclass should override this method
+     * to generate the desire label according to the given parameters.
+     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     * @param attribute The given attribute.
+     * @param channelAndOffset The given channel and offset.
+     * @return an unique label for the given attribute.
+     * @throws IllegalActionException If the helper throws it while
+     *  generating the label.
      */
     protected String _getReference(ProgramCodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
         throws IllegalActionException {

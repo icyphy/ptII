@@ -114,6 +114,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     /** Set the component for which we are generating code.
      *  @param object The associated component.
+     *  @see #getComponent
      */
     public void setComponent(NamedObj object) {
         // FIXME: Why is this a namedObj when the analyzeActor()
@@ -164,6 +165,9 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         _codeGenerator._newTypesUsed.add(typeName);
     }
 
+    /** Add a function to the Set of function used thus far.
+     *  @param functionName A string naming the function.
+     */
     public void addFunctionUsed(String functionName) {
         _codeGenerator._typeFuncUsed.add(functionName);
     }
@@ -459,6 +463,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     /** Get the component associated with this adapter.
      *  @return The associated component.
+     *  @see #setComponent
      */
     public NamedObj getComponent() {
         return (NamedObj) _object;
@@ -942,10 +947,25 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      */
     final public String getReference(String name) throws IllegalActionException {
         boolean isWrite = false;
-        return getReference(name, isWrite);
+        return _adapter.getReference(name, isWrite);
     }
 
-    // FIXME: documentation
+
+    /** Return the reference to the specified parameter or port of the
+     *  associated actor. For a parameter, the returned string is in
+     *  the form "fullName_parameterName". For a port, the returned string
+     *  is in the form "fullName_portName[channelNumber][offset]", if
+     *  any channel number or offset is given.
+     *
+     *  FIXME: need documentation on the input string format.
+     *
+     *  @param name The name of the parameter or port
+     *  @param isWrite Whether to generate the write or read offset.
+     *  @return The reference to that parameter or port (a variable name,
+     *   for example).
+     *  @exception IllegalActionException If the parameter or port does not
+     *   exist or does not have a value.
+     */
     public String getReference(String name, boolean isWrite)
     throws IllegalActionException {
         ptolemy.actor.Director director = ((Actor) _object).getDirector();

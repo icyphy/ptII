@@ -328,9 +328,23 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     final public String getReference(String name) throws IllegalActionException {
         return _strategy.getReference(name);
-    }    
+    }
 
-    // FIXME: documentation
+    /** Return the reference to the specified parameter or port of the
+     *  associated actor. For a parameter, the returned string is in
+     *  the form "fullName_parameterName". For a port, the returned string
+     *  is in the form "fullName_portName[channelNumber][offset]", if
+     *  any channel number or offset is given.
+     *
+     *  FIXME: need documentation on the input string format.
+     *
+     *  @param name The name of the parameter or port
+     *  @param isWrite Whether to generate the write or read offset.
+     *  @return The reference to that parameter or port (a variable name,
+     *   for example).
+     *  @exception IllegalActionException If the parameter or port does not
+     *   exist or does not have a value.
+     */
     public String getReference(String name, boolean isWrite) 
             throws IllegalActionException {
         return _strategy.getReference(name, isWrite);
@@ -350,6 +364,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     
     /** Get the strategy associated with this adapter.
      *  @return The associated strategy.
+     *   @see #setStrategy
      */
     // TODO rodiers: do we want to have this public?
     public ProgramCodeGeneratorAdapterStrategy getStrategy() {
@@ -383,6 +398,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     /** Set the strategy for generating code for this adapter.
      * @param strategy The strategy.
+     * @see #getStrategy
      */ 
     final public void setStrategy(Object strategy) {
      _strategy = (ProgramCodeGeneratorAdapterStrategy) strategy;

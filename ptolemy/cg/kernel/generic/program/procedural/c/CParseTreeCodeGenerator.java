@@ -108,7 +108,12 @@ import ptolemy.util.StringUtilities;
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ParseTreeCodeGenerator {
 
-    public CParseTreeCodeGenerator(ProgramCodeGenerator generator) {
+    /**
+     * Create a CParseTreeCodeGenerator that is used by
+     * the given code generator to generate code for expressions.
+     * @param generator The given C code generator.
+     */    
+    public CParseTreeCodeGenerator(CCodeGenerator generator) {
         _generator = generator;
     }
 

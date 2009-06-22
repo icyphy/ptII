@@ -367,8 +367,16 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         return processCode(code.toString());
     }    
 
+
     /**
-     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     * Return an unique label for the given attribute referenced
+     * by the given helper.
+     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     * @param attribute The given attribute.
+     * @param channelAndOffset The given channel and offset.
+     * @return an unique label for the given attribute.
+     * @throws IllegalActionException If the helper throws it while
+     *  generating the label.
      */
     @Override
     protected String _getReference(ProgramCodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)

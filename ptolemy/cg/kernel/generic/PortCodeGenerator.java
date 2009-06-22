@@ -30,12 +30,16 @@ package ptolemy.cg.kernel.generic;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-/**
- * @author Man-kit Leung, Bert Rodiers
- * @version $Id$
- * @since Ptolemy II 7.1
- * @Pt.ProposedRating Red (cxh)
- * @Pt.AcceptedRating Red (cxh)
+//////////////////////////////////////////////////////////////////
+////PortCodeGenerator
+
+/** An interface for Port Adapters to generate port specific code.
+ *  All cg port adapter implementations should implement this interface.
+ *  @author Man-kit Leung, Bert Rodiers
+ *  @version $Id$
+ *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Red (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
  */
 
 public interface PortCodeGenerator {
@@ -62,6 +66,7 @@ public interface PortCodeGenerator {
      *  FIXME: potentially, we could also pass in a boolean that indicates whether
      *  the port the channel resides is a multiport, if it is, then only a static
      *  variable is needed instead of an array of length 1.
+     *  @exception IllegalActionException If code can't be generated.
      */
     public String generateHasTokenCode(String channel) throws IllegalActionException;
     
