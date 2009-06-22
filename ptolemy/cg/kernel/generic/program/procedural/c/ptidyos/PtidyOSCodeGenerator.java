@@ -29,8 +29,6 @@ package ptolemy.cg.kernel.generic.program.procedural.c.ptidyos;
 
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
