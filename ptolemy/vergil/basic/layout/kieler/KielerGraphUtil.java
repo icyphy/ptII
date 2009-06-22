@@ -167,30 +167,31 @@ public class KielerGraphUtil {
      * @param shrunkBounds Small object's bounds
      * @param direction Direction of the small object within the big object given 
      *          by a SwingConstants direction constant
+     * @param offset Offset of the lower bound of the port
      * @return  New location of the small object.
      */
     protected static Point2D _shrinkCoordinates(Rectangle2D originalBounds,
-            Rectangle2D shrunkBounds, int direction) {
-        double widthDiff = (originalBounds.getWidth() - shrunkBounds.getWidth()) / 2;
+            Rectangle2D shrunkBounds, int direction, float offset) {
+        double widthDiff = (originalBounds.getWidth() - shrunkBounds.getWidth()) ;
         double heightDiff = (originalBounds.getHeight() - shrunkBounds
-                .getHeight()) / 2;
+                .getHeight()) ;
         Point2D.Double location = new Point2D.Double();
         switch (direction) {
         case SwingConstants.NORTH:
-            location.x = originalBounds.getMinX() + widthDiff;
+            location.x = originalBounds.getMinX() + widthDiff - offset;
             location.y = originalBounds.getMinY();
             break;
         case SwingConstants.EAST:
             location.x = originalBounds.getMaxX() - widthDiff;
-            location.y = originalBounds.getMinY() + heightDiff;
+            location.y = originalBounds.getMinY() + offset;
             break;
         case SwingConstants.SOUTH:
-            location.x = originalBounds.getMinX() + widthDiff;
+            location.x = originalBounds.getMinX() + offset;
             location.y = originalBounds.getMaxY() - heightDiff;
             break;
         default:
             location.x = originalBounds.getMinX();
-            location.y = originalBounds.getMinY() + heightDiff;
+            location.y = originalBounds.getMinY() + heightDiff - offset;
             break;
         }
         return location;

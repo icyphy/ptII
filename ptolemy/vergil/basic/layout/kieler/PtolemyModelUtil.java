@@ -39,7 +39,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -214,7 +213,7 @@ public class PtolemyModelUtil {
 
     /**
      * Create a MoMLChangeRequest to remove a set of relations in a Ptolemy
-     * model object and schedule it immediately. 
+     * model object
      * 
      * @param relationSet Set of relation to be removed from the Ptolemy model
      */
@@ -287,11 +286,12 @@ public class PtolemyModelUtil {
                                             .linkedRelationList().indexOf(
                                                     relation);
                                     if (index >= 0) {
+                                        util._removeRelation(relation, parent);
+                                        util._performChangeRequest(parent);
                                         util._linkPort(connectedPort
                                                 .getName(parent), "relation",
                                                 connectedRelation.getName(),
                                                 index);
-                                        util._removeRelation(relation, parent);
                                         util._performChangeRequest(parent);
                                     }
                                 }
@@ -495,6 +495,7 @@ public class PtolemyModelUtil {
     protected void _performChangeRequest(CompositeActor actor) {
         _momlChangeRequest.insert(0, "<group>");
         _momlChangeRequest.append("</group>");
+        System.out.println(_momlChangeRequest);
         MoMLChangeRequest request = new MoMLChangeRequest(this, actor,
                 _momlChangeRequest.toString());
         request.setUndoable(true);
@@ -576,7 +577,7 @@ public class PtolemyModelUtil {
                 for (Vertex vertex : vertices) {
                     // ok, now we found a relation with a relation vertex...
                     List linkedObjects = relation.linkedObjectsList();
-                    if (linkedObjects.size() == 2) {
+                    if (linkedObjects.size() <= 2) {
                         // here we can hide this relation!
                         try {
                             // Parameter hide = new Parameter(vertex, "_hide");
@@ -585,7 +586,7 @@ public class PtolemyModelUtil {
                                     util._hideVertex(relation.getName(), vertex
                                         .getName(), false);
                                 else{/*nothing*/}
-                            else{
+                            else if(linkedObjects.size() == 2){ // only hide if exactly 2 linked objects
                                     util._hideVertex(relation.getName(), vertex
                                         .getName(), true);
                             }

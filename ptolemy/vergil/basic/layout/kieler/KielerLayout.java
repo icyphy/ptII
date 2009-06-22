@@ -46,9 +46,6 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.graph.GraphInvalidStateException;
 import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentPort;
@@ -910,7 +907,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             break;
         case SwingConstants.SOUTH:
             LayoutOptions.setPortSide(kportlayout, PortSide.SOUTH);
-            offsetX = -(index * MULTIPORT_OFFSET);
+            offsetX = (index * MULTIPORT_OFFSET);
             break;
         default:
             LayoutOptions.setPortSide(kportlayout, PortSide.WEST);
@@ -968,7 +965,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     shrunkPortBounds.setRect(x, y, size, size);
                     Point2D shrunkenLocation = KielerGraphUtil
                             ._shrinkCoordinates(newPortBounds,
-                                    shrunkPortBounds, direction);
+                                    shrunkPortBounds, direction, MULTIPORT_BOTTOM);
                     kportlayout.setXpos((float) shrunkenLocation.getX());
                     kportlayout.setYpos((float) shrunkenLocation.getY());
                     kportlayout.setWidth(size);
@@ -1322,6 +1319,11 @@ public class KielerLayout extends AbstractGlobalLayout {
      * the distance between multiple single KPorts.
      */
     private static final float MULTIPORT_OFFSET = 5.0f;
+    
+    /**
+     * Offset between bottom of Multiport to the first Kieler KPort
+     */
+    private static final float MULTIPORT_BOTTOM = 4.5f;
 
     /**
      * Identify that no rank is given to a port.
