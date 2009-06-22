@@ -114,6 +114,7 @@ public class ModelAttribute extends Attribute implements Configurable {
     /**
      * Return a clone of this model attribute. This also creates a clone for the
      * contained model.
+     * @param The workspace for the cloned object.
      * @return A clone.
      * @throws CloneNotSupportedException Thrown if an error occurs while
      * cloning the attribute or the contained model.
