@@ -467,6 +467,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Uses the preinitialize() method in the super class.
      *  However we use the DEListEventQueue instead of the calendar queue because we need
      *  to access to not just the first event in the event queue.
+     *  Also parameters minDelay is calculated here.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -855,7 +856,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @throws IllegalActionException
      */
     protected static Collection<IOPort> _finiteDependentPorts(IOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: This does not support ports that are both input and output.
         // Should it?
         Collection<IOPort> result = new HashSet<IOPort>();
@@ -967,18 +968,14 @@ public class PtidesBasicDirector extends DEDirector {
     /** Get the dependency between the input and output ports. If the 
      *  ports does not belong to the same actor, an exception is thrown.
      *  Depending on the actor, the corresponding getDependency() method in
-     *  the actor's causality interface is called. Also, if the
-     *  output is null, super's getDependency() is called because super's
-     *  method uses this method to update the dependency in the system.
+     *  the actor's causality interface is called. 
      *  @param input The input port.
      *  @param output The output port.
      *  @return The dependency between the specified input port
      *   and the specified output port.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the ports do not belong to the
+     *  same actor.
      *  
-     *  FIXME: this is not correct because CausalityInterfaceForComposites
-     *  do not correct implement the case where there's a finite causality,
-     *  or DOES IT??
      */
     protected static Dependency _getDependency(IOPort input, IOPort output)
     throws IllegalActionException {
@@ -1401,8 +1398,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  process, and we calculate the physical time when the event is safe to process and
      *  setup a timed interrupt.
      *
-     *  FIXME: assumes each input port is not multiport.
-     *
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException
@@ -1769,7 +1764,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
-
+    
     /** Return the actor associated with the events in the list. All events
      *  within the list should be destined for the same actor.
      *  @param currentEventList A list of events.
@@ -1786,7 +1781,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return The min delay associated with this port channel pair.
      *  @throws IllegalActionException
      */
-    private double _getMinDelayForPortChannel(IOPort inputPort, Integer channel, 
+    private static double _getMinDelayForPortChannel(IOPort inputPort, Integer channel, 
             Map<IOPort, Map<Integer, SuperdenseDependency>> inputModelTimeDelays) throws IllegalActionException {
         SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
         // for each port that's in the same equivalence class as the input port,
@@ -1807,13 +1802,12 @@ public class PtidesBasicDirector extends DEDirector {
         return smallestDependency.timeValue();
     }
 
-
     /** check if the port is a networkPort
      *  this method is default to return false, i.e., an output port to the outside of the
      *  platform is by default an actuator port.
      * @throws IllegalActionException 
      */
-    private boolean _isNetworkPort(IOPort port) throws IllegalActionException {
+    private static boolean _isNetworkPort(IOPort port) throws IllegalActionException {
         Parameter parameter = (Parameter)((NamedObj) port).getAttribute("networkPort");
         if (parameter != null) {
             return ((BooleanToken)parameter.getToken()).booleanValue();
@@ -1821,7 +1815,7 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
-    private void _setMinDelay(IOPort inputPort, double[] minDelays) throws IllegalActionException {
+    private static void _setMinDelay(IOPort inputPort, double[] minDelays) throws IllegalActionException {
         Parameter parameter = (Parameter)(inputPort).getAttribute("minDelay");
         if (parameter == null) {
             try {
