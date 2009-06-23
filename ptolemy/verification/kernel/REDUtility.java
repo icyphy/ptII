@@ -66,34 +66,41 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * This is an utility for Ptolemy model conversion. It performs a systematic
  * traversal of the system and convert the Ptolemy model into communicating
  * timed automata (CTA) with the format acceptable by model checker RED
- * (Regional Encoding Diagram Verification Engine). The conversion mechanism
- * is based on the technical report UCB/EECS-2008-41. Basically, here the DE
+ * (Regional Encoding Diagram Verification Engine, v.7.0). The conversion 
+ * mechanism roughly is based on the technical report UCB/EECS-2008-41 
+ * with some modifications. Basically, here the DE
  * domain can be viewed as a generalization of the SR domain, where each
  * "super dense" time tag in DE is now a tick in SR. Contrary to previous
- * implementation, now the token would not accumulate in the port of the
+ * incorrect implementation, now the token would not accumulate in the port of the
  * FSMActor - therefore buffer overflow property would no longer exist in
  * this implementation. Buffer overflow would only happens in the TimedDelay
  * or NondeterministicTimedDelay actor.
  *
- * However, in CTA the time is only "dense", and we are currently not able
- * to have an efficient methodology to understand how to represent super
- * dense time using dense time.
- *
- * Therefore for a successful conversion, we simply disallow a system to
+ * Note that for a successful conversion, we simply disallow a system to
  * have super dense time tag with the format (\tau, i), where i>0. In fact, the
  * case in our context only happens when there is a timed delay actor with its
  * parameter equals to zero. For systems with super dense time tag with the
  * format (\tau, i), where i>0, the system can still be converted. However,
  * please note that the semantics might no longer be preserved.
  *
- * Limitations: Simply following the statement in the technical report, we
- * restate limitations of the conversion. The designer must understand the
- * boundary of variable domain for the model under conversion.
- *
+ * One important feature in our converted model is the use of complementary
+ * edges. This is used to tackle the situation where the FSMActor must react
+ * to an arrival of token in the incoming port, but the token can not trigger
+ * any transition. For this case, the present token should turn to be absent
+ * as time advances. To avoid including any unnecessary behavior we add one
+ * "invalid" transition, mentioning that the FSMActor will perform a stable
+ * move, and at the same time the token will be bring to absent.
+ * 
  * For the tool RED, all time constants should be an integer. This is not a
  * problem because the unit is actually not specified by the timed automata.
  * Therefore, we expect users to use integer values to specify their delay
  * or period.
+ * 
+ * Limitations: Simply following the statement in the technical report, we
+ * restate limitations of the conversion. The designer must understand the
+ * boundary of variable domain for the model under conversion. Also, due to 
+ * the use of complementary edges, for verification complex guard conditions
+ * is not supported. It will soon be added.
  *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
@@ -120,7 +127,6 @@ public class REDUtility {
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
 
         if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
-
             Iterator it = (((CompositeActor) originalCompositeActor)
                     .entityList()).iterator();
             while (it.hasNext()) {
@@ -156,12 +162,6 @@ public class REDUtility {
      * state refinement exists. For a modalmodel with state refinement, we can
      * rewrite it into an equivalent FSMActor.
      *
-     * FIXME: (This can not be treated as a bug formally) The conversion of a
-     *         modalmodel with state refinement using the function
-     *         generateEquivalentSystemWithoutHierachy() will generate a model
-     *         where there is exclusive existence between two refinement state
-     *         machines.
-     *
      * @param PreModel The original model in Ptolemy II
      * @param pattern The temporal formula in TCTL
      * @param choice Specify the type of formula: buffer overflow detection or
@@ -176,14 +176,13 @@ public class REDUtility {
             String pattern, FormulaType choice, int span,
             int bufferSizeDelayActor) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
-        // returnREDFormat: Store StringBuffer format system description
-        // acceptable by RED converted by Ptolemy II.
+
         StringBuffer returnREDFormat = new StringBuffer("");
 
         // A pre-processing to generate equivalent system without hierarchy.
         CompositeActor model = generateEquivalentSystemWithoutHierachy(PreModel);
 
-        // The format of RED is roughly organized as follows:
+        // The format of RED 7.0 is roughly organized as follows:
         //
         // (1) Constant Value Definition (#define CLOCK 1)
         // (2) Process Count Definition (Process count = 8;)
@@ -192,7 +191,8 @@ public class REDUtility {
         // (5) Synchronizer Declaration (global synchronizer s;)
         // (6) Mode description
         // (7) Initial Condition (initially...)
-        // (8) Risk Condition (safety/risk/...)
+        // (8) Risk Condition (safety/risk/...): in 7.0 this has been removed out as
+        //     a separate file.
         //
         // Because in our conversion process, we analyze actors one by
         // one during iteration, thus we need to use different variables
@@ -491,7 +491,6 @@ public class REDUtility {
 
         // Lastly, combine the whole format based on the order of the
         // RED format.
-
         // First, attach a comment indicating the description.
         returnREDFormat.append("/*\n\n"
                 + "This file represents a Communicating Timed Automata (CTA)\n"
@@ -606,10 +605,10 @@ public class REDUtility {
         returnREDFormat.append("\n/*Specification */\n");
         if (choice == FormulaType.Buffer) {
             returnREDFormat
-                    .append("risk\nexists i:i>=1, (Buffer_Overflow[i]);\n\n");
+                    .append("/* In RED 7.0, specification must be placed in separated files. */\n/* risk\nexists i:i>=1, (Buffer_Overflow[i]);*/\n\n");
 
         } else {
-            returnREDFormat.append(pattern);
+            returnREDFormat.append("/* In RED 7.0, specification must be placed in separated files. */\n/*"+pattern+"*/\n");
 
         }
         return returnREDFormat;
@@ -737,6 +736,11 @@ public class REDUtility {
                                             returnVariableSet.add("ND_"
                                                     + sigs[0]);
                                         }
+                                        if (returnVariableSet.contains("Token"
+                                                + sigs[0] + "Consume") == false) {
+                                            returnVariableSet.add("Token"
+                                                    + sigs[0] + "Consume");
+                                        }
                                     }
                                 }
                             }
@@ -756,9 +760,8 @@ public class REDUtility {
             while (outputConnectedPortList.hasNext()) {
                 String portName = ((Port) outputConnectedPortList.next())
                         .getName();
-                if (portName
-                        .equalsIgnoreCase(((TimedDelay) entity).output
-                                .getName().trim())) {
+                if (portName.equalsIgnoreCase(((TimedDelay) entity).output
+                        .getName().trim())) {
                     continue;
                 } else {
                     outputSignalName = portName;
@@ -771,9 +774,8 @@ public class REDUtility {
             while (inputConnectedPortList.hasNext()) {
                 String portName = ((Port) inputConnectedPortList.next())
                         .getName();
-                if (portName
-                        .equalsIgnoreCase(((TimedDelay) entity).input
-                                .getName().trim())) {
+                if (portName.equalsIgnoreCase(((TimedDelay) entity).input
+                        .getName().trim())) {
                     continue;
                 } else {
                     inputSignalName = portName;
@@ -905,13 +907,9 @@ public class REDUtility {
 
                         }
                     }
-
                 }
-
             }
-
         }
-
         return returnVariableSet;
     }
 
@@ -1126,7 +1124,6 @@ public class REDUtility {
 
         }
 
-        //FIXME: 2008.04.04 Newly added feature: Retrieve the value from the initial parameter set.
         Iterator<String> initialValueIterator = _variableInfo.keySet()
                 .iterator();
         while (initialValueIterator.hasNext()) {
@@ -1297,10 +1294,8 @@ public class REDUtility {
      * a certain state in a certain actor. The output format is CTA acceptable
      * by model checker RED.
      *
-     * @param actor
-     *                Actor under analysis
-     * @param state
-     *                State under analysis
+     * @param actor Actor under analysis
+     * @param state State under analysis
      * @param variableSet
      * @param globalSynchronizerSet
      *                Set of useful synchronizers. There are some synchronizers
@@ -1324,10 +1319,13 @@ public class REDUtility {
                     Iterator transitions = outPort.linkedRelationList()
                             .iterator();
                     while (transitions.hasNext()) {
-
+                       
                         Transition transition = (Transition) transitions.next();
                         State destinationInThis = transition.destinationState();
                         REDTransitionBean bean = new REDTransitionBean();
+
+                        HashSet<String> usedSignalInTransition = new HashSet<String>();
+
                         bean._newState.append(actor.getName() + "_State_"
                                 + destinationInThis.getName());
 
@@ -1344,17 +1342,15 @@ public class REDUtility {
                             // buffer.append(text);
                         }
 
-                        // Retrieve the variable used in the Kripke structure.
+                        // Retrieve the variable used in the CTA.
                         // Also analyze the guard expression to understand the
                         // possible value domain for the value to execute.
                         //
                         // A guard expression would need to be separated into
                         // separate sub-statements in order to estimate the
-                        // boundary
-                        // of the variable. Note that we need to tackle cases
-                        // where
-                        // a>-1 and a<5 happen simultaneously. Also we expect to
-                        // constrain the way that an end user can do for writing
+                        // boundary of the variable. Note that we need to 
+                        // tackle cases where a>-1 and a<5 happen simultaneously. 
+                        // Also we expect to constrain the way that an end user can do for writing
                         // codes. We do "not" expect him to write in the way
                         // like -1<a.
                         //
@@ -1364,7 +1360,7 @@ public class REDUtility {
                         //
 
                         String guard = transition.getGuardExpression();
-                        
+
                         String outputAction = transition.outputActions
                                 .getExpression();
 
@@ -1373,11 +1369,13 @@ public class REDUtility {
                         // expression, we have X<3 && Y>5, then X and Y are used
                         // as variables in precondition and should be stored in the
                         // set "variableUsedInTransitionSet".
+
                         if ((guard != null)
                                 && guard.trim().equalsIgnoreCase("true")) {
                             // Special case for true; in this way, the system must listen to all incoming ports
                             // Since each incoming port is OK, it will turn to be separate transitions.
                             bean._preCondition.append("true");
+                            // For this condition, no complementary edges are needed.
                         } else if ((guard != null) && !guard.trim().equals("")) {
                             if (hasAnnotation) {
 
@@ -1404,11 +1402,11 @@ public class REDUtility {
                                         boolean b = Pattern.matches(
                                                 ".*_isPresent",
                                                 characterOfSubGuard[0].trim());
-                                        if (b == true) {
-                                            // FIXME: (2008/02/07 Patrick.Cheng)
+                                        if (b == true) {                                        
                                             // First case, synchronize usage.
                                             // Pgo_isPresent
                                             // We add it into the list for transition.
+
                                             String[] signalName = characterOfSubGuard[0]
                                                     .trim().split("_isPresent");
                                             if (bean._signal.toString()
@@ -1419,7 +1417,15 @@ public class REDUtility {
                                                 bean._signal.append("  ?ND_"
                                                         + signalName[0]);
                                             }
-
+                                            bean._signalSet.add(new String(
+                                                    "?ND_"
+                                                            + signalName[0]
+                                                                    .trim()));
+                                            // specify the fact that this transition has signal.
+                                            // if a transition does not have a signal, it can be triggered by "any" signal
+                                            bean._hasSignal = true;
+                                            usedSignalInTransition
+                                                    .add(signalName[0]);
                                         } else {
                                             // Split the expression, and rename
                                             // the variable by adding up the
@@ -1476,7 +1482,14 @@ public class REDUtility {
                                                                             + " == "
                                                                             + rValue);
                                                         }
-
+                                                        bean._complementedCondition
+                                                                .add(new String(
+                                                                        actor
+                                                                                .getName()
+                                                                                + "_"
+                                                                                + lValue
+                                                                                + " != "
+                                                                                + rValue));
                                                     } else if (Pattern.matches(
                                                             ".*!=.*",
                                                             subGuardCondition)) {
@@ -1501,6 +1514,14 @@ public class REDUtility {
                                                                             + " != "
                                                                             + rValue);
                                                         }
+                                                        bean._complementedCondition
+                                                                .add(new String(
+                                                                        actor
+                                                                                .getName()
+                                                                                + "_"
+                                                                                + lValue
+                                                                                + " == "
+                                                                                + rValue));
 
                                                     } else if (Pattern.matches(
                                                             ".*<=.*",
@@ -1526,6 +1547,14 @@ public class REDUtility {
                                                                             + " <= "
                                                                             + rValue);
                                                         }
+                                                        bean._complementedCondition
+                                                                .add(new String(
+                                                                        actor
+                                                                                .getName()
+                                                                                + "_"
+                                                                                + lValue
+                                                                                + " > "
+                                                                                + rValue));
                                                     } else if (Pattern.matches(
                                                             ".*>=.*",
                                                             subGuardCondition)) {
@@ -1551,7 +1580,14 @@ public class REDUtility {
                                                                             + " >= "
                                                                             + rValue);
                                                         }
-
+                                                        bean._complementedCondition
+                                                                .add(new String(
+                                                                        actor
+                                                                                .getName()
+                                                                                + "_"
+                                                                                + lValue
+                                                                                + " < "
+                                                                                + rValue));
                                                     } else if (Pattern.matches(
                                                             ".*>.*",
                                                             subGuardCondition)) {
@@ -1577,6 +1613,14 @@ public class REDUtility {
                                                                             + " > "
                                                                             + rValue);
                                                         }
+                                                        bean._complementedCondition
+                                                                .add(new String(
+                                                                        actor
+                                                                                .getName()
+                                                                                + "_"
+                                                                                + lValue
+                                                                                + " <= "
+                                                                                + rValue));
 
                                                     } else if (Pattern.matches(
                                                             ".*<.*",
@@ -1602,7 +1646,16 @@ public class REDUtility {
                                                                             + lValue
                                                                             + " < "
                                                                             + rValue);
+
                                                         }
+                                                        bean._complementedCondition
+                                                                .add(new String(
+                                                                        actor
+                                                                                .getName()
+                                                                                + "_"
+                                                                                + lValue
+                                                                                + " >= "
+                                                                                + rValue));
                                                     }
 
                                                 } else {
@@ -1617,7 +1670,7 @@ public class REDUtility {
 
                         String setActionExpression = transition.setActions
                                 .getExpression();
-                        
+
                         if ((setActionExpression != null)
                                 && !setActionExpression.trim().equals("")) {
                             // Retrieve possible value of the variable
@@ -1627,7 +1680,7 @@ public class REDUtility {
                                 String[] characters = splitExpression[i]
                                         .split("=");
                                 if (characters.length >= 1) {
-                                    
+
                                     String lValue = characters[0].trim();
                                     String rValue = "";
                                     if (Pattern.matches("^-?\\d+$",
@@ -1640,7 +1693,6 @@ public class REDUtility {
                                                 + " = "
                                                 + rValue
                                                 + ";");
-
                                     } else {
                                         // The right hand side is actually complicated
                                         // expression which needs to be carefully
@@ -1716,6 +1768,37 @@ public class REDUtility {
                             }
                         }
 
+                        /* Now generate the complementary edge which consumes token without moving */
+                        Iterator<IOPort> it2 = actor.inputPortList().iterator();
+                        while (it2.hasNext()) {
+                            String signal = it2.next().getName();
+                            if (usedSignalInTransition.contains(signal) == false) {
+                                /* Generate the complementary edge with stationary move */
+                                REDTransitionBean newBean = new REDTransitionBean();
+                                newBean._isComplementaryEdge = true;
+                                newBean._newState.append(actor.getName()
+                                        + "_State_"
+                                        + transition.sourceState().getName());
+                                // Port_" + signalName.trim() + "_TokenOccupied == true
+                                newBean._signal.append(" !Token"
+                                        + signal.trim() + "Consume");
+                                newBean._signalSet.add(new String("?ND_"
+                                        + signal).trim().trim());
+                                if ((guard != null)
+                                        && guard.trim()
+                                                .equalsIgnoreCase("true")) {
+                                    // Special case for true; in this way, the system must listen to all incoming ports
+                                    // Since each incoming port is OK, it will turn to be separate transitions.
+                                    newBean._preCondition.append("false");
+                                } else if ((guard != null)
+                                        && !guard.trim().equals("")) {
+                                }
+
+                                // Note that no postconditions are needed.
+                                returnList.add(newBean);
+                            } // End of if
+                        }
+
                         if ((outputAction != null)
                                 && !outputAction.trim().equals("")) {
                             String[] outputActionSplitExpression = outputAction
@@ -1734,11 +1817,46 @@ public class REDUtility {
                                             bean._signal.append("  !" + lValue);
                                         }
                                     }
-
                                 }
                             }
                         }
                         returnList.add(bean);
+                        // Add the bean to the returnList
+                    }
+                }
+            }
+        }
+
+        /* Last step: Finish the guard condition for each complemented edge. 
+         * Currently these edges are only with synchronizers. Conditions for 
+         * constraining is as follows. Pick the complemented edge, check the set of 
+         * synchronizers. Find all original edges using the same synchronizer,
+         * and conjunct with the negated condition. 
+         */
+
+        for (int i = 0; i < returnList.size(); i++) {
+            if (returnList.get(i)._isComplementaryEdge == true) {
+                /* Search for all edges, find all non-complementary edges, if their signal 
+                 * is the same as the signal in the current edge, add the complementary 
+                 * guard conditions.
+                 */
+                for (int j = 0; j < returnList.size(); j++) {
+                    if (returnList.get(j)._signalSet
+                            .equals(returnList.get(i)._signalSet)) {
+                        /* Add all negations of the guard in j to the guard of i*/
+                        for (int k = 0; k < returnList.get(j)._complementedCondition
+                                .size(); k++)
+                            if (returnList.get(i)._preCondition.toString()
+                                    .equalsIgnoreCase("")) {
+                                returnList.get(i)._preCondition
+                                        .append(returnList.get(j)._complementedCondition
+                                                .get(k));
+                            } else {
+                                returnList.get(i)._preCondition
+                                        .append(" && "
+                                                + returnList.get(j)._complementedCondition
+                                                        .get(k));
+                            }
                     }
                 }
             }
@@ -2677,15 +2795,52 @@ public class REDUtility {
              */
 
             bean._moduleDescription.append("    when !ND_" + signalName.trim()
-                    + " (true) may ; goto " + actor.getName().trim() + "_Port_"
-                    + signalName.trim() + "_TokenEmpty" + ";\n");
+                    + " (true) may Token" + signalName.trim()
+                    + "Occupied = false; goto " + actor.getName().trim()
+                    + "_Port_" + signalName.trim() + "_TokenEmpty" + ";\n");
             bean._moduleDescription.append("    when  ?" + signalName.trim()
                     + " (true) may ; \n");
-             // FIXME: With the following line the CTA will exhibit more 
-             // behavior then the Ptolemy system.
-            bean._moduleDescription.append("/*    when (t>=0) may  goto "
+
+            bean._moduleDescription.append("/*    when  (t>=0) may  goto "
                     + actor.getName().trim() + "_Port_" + signalName.trim()
                     + "_TokenEmpty" + "; */\n");
+
+            /*        Here an additional transition is added to replace the above
+             *        transition commented. 
+             *        
+             *        This transition is used to represent the case when a token 
+             *        is received in the port, but the FSMActor can not perform
+             *        any action. In this way, in the semantics the system 
+             *        should not do anything and let the time pass to the next 
+             *        instant. When time passes, the token should simultaneously 
+             *        disappear. 
+             *        
+             *        To have this feature, we have to enforce the FSMActor
+             *        to perform a "still move" if no possible actions can be taken.
+             *        We discuss all possible cases:
+             *        Case 1: when token is available, and the FSMActor can take the 
+             *                transition with the token, the port automata first moves 
+             *                itself to occupied location (with invariant 0), and 
+             *                performs the consumption process.
+             *        Case 2: when token is available, but the FSMActor can not take 
+             *                any action, the port automata first moves itself to 
+             *                occupied location (with invariant 0), and performs the 
+             *                consumption process accompanied by the "still move" transition.
+             *        
+             *        Note that the still move transition should be designed such that 
+             *        the guard condition is the negation of "disjunction". For example,
+             *        if we have two ports: Sec and Test. 
+             *        If a transition is of the following format : 
+             *        "if (Sec_isPresent && count < 6) then ..."
+             *        Then we add a still move using TokenTestConsume! synchronizer to the 
+             *        FSMActor: with the condition (TokenTestConsume! && count >= 6).
+             *                          
+             */
+            bean._moduleDescription.append("    when ?Token"
+                    + signalName.trim() + "Consume (t>=0) may  goto "
+                    + actor.getName().trim() + "_Port_" + signalName.trim()
+                    + "_TokenEmpty" + "; \n");
+
             bean._moduleDescription.append("} \n");
         }
 
@@ -2731,10 +2886,11 @@ public class REDUtility {
             }
         }
 
-        // Print out all these states
-        // Note that with model conversion, we need to create an additional initial state
-        // which changes every constraint of (t>0) in the edge to (t>=0). This is because
-        // for the initial state, it is OK to fire at time equals to 0.
+        /* Print out all these states
+         * Note that with model conversion, we need to create an additional initial state
+         * which changes every constraint of (t>0) in the edge to (t>=0). This is because
+         * for the initial state, it is OK to fire at time equals to 0.
+         */
         Iterator<State> ite = frontier.iterator();
         while (ite.hasNext()) {
             State state = (State) ite.next();
@@ -2746,112 +2902,170 @@ public class REDUtility {
                         actor, state, variableSet, globalSynchronizerSet);
                 // Append each of the transition into the module description.
                 for (REDTransitionBean transition : transitionListWithinState) {
-                  
-                    if (transition._postCondition.toString().trim()
-                            .equalsIgnoreCase("")) {
-                        if (transition._preCondition.toString().trim()
-                                .equalsIgnoreCase("true")) {
-                            /* When the precondition is true, then any arrival of tokens can trigger the transition. */
-                            Iterator<IOPort> it2 = actor.inputPortList().iterator();
-                            while (it2.hasNext()) {
-                                String signalName = it2.next().getName();
-                                
-                                bean._moduleDescription.append("    when "
-                                        + transition._signal.toString()
-                                        + "?ND_" + signalName.trim()
-                                        + " (t>=0) may "
-                                        + transition._postCondition.toString()
-                                        + " t=0; goto "
-                                        + transition._newState.toString()
-                                        + " ;\n");
-                            }
-                        } else if (transition._preCondition.toString().trim()
+                    // Evaluate whether the edge is a complementary edge. If so, its constraints should be
+                    // further restricted by those "non-complementary edges".
+                    if (transition._isComplementaryEdge == false) {
+                        if (transition._postCondition.toString().trim()
                                 .equalsIgnoreCase("")) {
-                            bean._moduleDescription.append("    when "
-                                    + transition._signal.toString()
-                                    + " (t>=0) may "
-                                    + transition._postCondition.toString()
-                                    + " t=0; goto "
-                                    + transition._newState.toString() + " ;\n");
-                        } else {
-                            bean._moduleDescription.append("    when "
-                                    + transition._signal.toString() + " ("
-                                    + transition._preCondition.toString()
-                                    + " && t>=0) may "
-                                    + transition._postCondition.toString()
-                                    + " t=0; goto "
-                                    + transition._newState.toString() + " ;\n");
-                        }
-                    } else if (transition._postCondition.toString().trim()
-                            .endsWith(";")) {
-                        if (transition._preCondition.toString().trim()
-                                .equalsIgnoreCase("true")) {
-                            /* When the precondition is true, then any arrival of tokens can trigger the transition. */
-                            Iterator<IOPort> it2 = actor.inputPortList().iterator();
-                            while (it2.hasNext()) {
-                                String signalName = it2.next().getName();
-                                
-                                bean._moduleDescription.append("    when "
-                                        + transition._signal.toString()
-                                        + "?" + signalName.trim()
-                                        + " (t>=0) may "
-                                        + transition._postCondition.toString()
-                                        + " t=0; goto "
-                                        + transition._newState.toString()
-                                        + " ;\n");
+                            if (transition._preCondition.toString().trim()
+                                    .equalsIgnoreCase("true")) {
+                                /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                                Iterator<IOPort> it2 = actor.inputPortList()
+                                        .iterator();
+                                while (it2.hasNext()) {
+                                    String signalName = it2.next().getName();
+
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + "?ND_"
+                                            + signalName.trim()
+                                            + " (t>=0) may "
+                                            + transition._postCondition
+                                                    .toString() + " t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                }
+                            } else if (transition._preCondition.toString()
+                                    .trim().equalsIgnoreCase("")) {
+                                if (transition._hasSignal == true) {
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + " (t>=0) may "
+                                            + transition._postCondition
+                                                    .toString() + " t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                } else {
+                                    // It can be triggered by any signal arrival
+                                }
+
+                            } else {
+                                if (transition._hasSignal == true) {
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + " ("
+                                            + transition._preCondition
+                                                    .toString()
+                                            + " && t>=0) may "
+                                            + transition._postCondition
+                                                    .toString() + " t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                } else {
+
+                                }
+
                             }
-                        } else if (transition._preCondition.toString().trim()
-                                .equalsIgnoreCase("")) {
-                            bean._moduleDescription.append("    when "
-                                    + transition._signal.toString()
-                                    + " (t>=0) may "
-                                    + transition._postCondition.toString()
-                                    + " t=0; goto "
-                                    + transition._newState.toString() + " ;\n");
+                        } else if (transition._postCondition.toString().trim()
+                                .endsWith(";")) {
+                            if (transition._preCondition.toString().trim()
+                                    .equalsIgnoreCase("true")) {
+                                /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                                Iterator<IOPort> it2 = actor.inputPortList()
+                                        .iterator();
+                                while (it2.hasNext()) {
+                                    String signalName = it2.next().getName();
+
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + "?"
+                                            + signalName.trim()
+                                            + " (t>=0) may "
+                                            + transition._postCondition
+                                                    .toString() + " t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                }
+                            } else if (transition._preCondition.toString()
+                                    .trim().equalsIgnoreCase("")) {
+                                if (transition._hasSignal == true) {
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + " (t>=0) may "
+                                            + transition._postCondition
+                                                    .toString() + " t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                } else {
+
+                                }
+
+                            } else {
+                                if (transition._hasSignal == true) {
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + " ("
+                                            + transition._preCondition
+                                                    .toString()
+                                            + "&& t>=0 ) may "
+                                            + transition._postCondition
+                                                    .toString() + " t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                } else {
+
+                                }
+
+                            }
                         } else {
-                            bean._moduleDescription.append("    when "
-                                    + transition._signal.toString() + " ("
-                                    + transition._preCondition.toString()
-                                    + "&& t>=0 ) may "
-                                    + transition._postCondition.toString()
-                                    + " t=0; goto "
-                                    + transition._newState.toString() + " ;\n");
+                            if (transition._preCondition.toString().trim()
+                                    .equalsIgnoreCase("true")) {
+                                /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                                Iterator<IOPort> it2 = actor.inputPortList()
+                                        .iterator();
+                                while (it2.hasNext()) {
+                                    String signalName = it2.next().getName();
+
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + "?ND_"
+                                            + signalName.trim()
+                                            + " (t>=0) may "
+                                            + transition._postCondition
+                                                    .toString()
+                                            + " ; t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                }
+                            } else if (transition._preCondition.toString()
+                                    .trim().equalsIgnoreCase("")) {
+                                if (transition._hasSignal == true) {
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + " (t>=0) may "
+                                            + transition._postCondition
+                                                    .toString()
+                                            + " ; t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                } else {
+
+                                }
+
+                            } else {
+                                if (transition._hasSignal == true) {
+                                    bean._moduleDescription.append("    when "
+                                            + transition._signal.toString()
+                                            + " ("
+                                            + transition._preCondition
+                                                    .toString()
+                                            + " && t>=0) may "
+                                            + transition._postCondition
+                                                    .toString()
+                                            + " ; t=0; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                                } else {
+
+                                }
+
+                            }
                         }
+
                     } else {
-                        if (transition._preCondition.toString().trim()
-                                .equalsIgnoreCase("true")) {
-                            /* When the precondition is true, then any arrival of tokens can trigger the transition. */
-                            Iterator<IOPort> it2 = actor.inputPortList().iterator();
-                            while (it2.hasNext()) {
-                                String signalName = it2.next().getName();
-                                
-                                bean._moduleDescription.append("    when "
-                                        + transition._signal.toString()
-                                        + "?ND_" + signalName.trim()
-                                        + " (t>=0) may "
-                                        + transition._postCondition.toString()
-                                        + " ; t=0; goto "
-                                        + transition._newState.toString()
-                                        + " ;\n");
-                            }
-                        } else if (transition._preCondition.toString().trim()
-                                .equalsIgnoreCase("")) {
-                            bean._moduleDescription.append("    when "
-                                    + transition._signal.toString()
-                                    + " (t>=0) may "
-                                    + transition._postCondition.toString()
-                                    + " ; t=0; goto "
-                                    + transition._newState.toString() + " ;\n");
-                        } else {
-                            bean._moduleDescription.append("    when "
-                                    + transition._signal.toString() + " ("
-                                    + transition._preCondition.toString()
-                                    + " && t>=0) may "
-                                    + transition._postCondition.toString()
-                                    + " ; t=0; goto "
-                                    + transition._newState.toString() + " ;\n");
-                        }
+
                     }
+
                 }
                 bean._moduleDescription.append("} \n");
             }
@@ -2863,7 +3077,7 @@ public class REDUtility {
                     actor, state, variableSet, globalSynchronizerSet);
             // Append each of the transition into the module description.
             for (REDTransitionBean transition : transitionListWithinState) {
-               
+
                 if (transition._postCondition.toString().trim()
                         .equalsIgnoreCase("")) {
                     if (transition._preCondition.toString().trim()
@@ -2872,9 +3086,9 @@ public class REDUtility {
                         Iterator<IOPort> it2 = actor.inputPortList().iterator();
                         while (it2.hasNext()) {
                             String signalName = it2.next().getName();
-                           
-                            bean._moduleDescription.append("    when " 
-                                    + transition._signal.toString()+ "?ND_"
+
+                            bean._moduleDescription.append("    when "
+                                    + transition._signal.toString() + "?ND_"
                                     + signalName.trim() + " (t>0) may "
                                     + transition._postCondition.toString()
                                     + "  t = 0; goto "
@@ -2905,7 +3119,7 @@ public class REDUtility {
                         Iterator<IOPort> it2 = actor.inputPortList().iterator();
                         while (it2.hasNext()) {
                             String signalName = it2.next().getName();
-                            bean._moduleDescription.append("    when " 
+                            bean._moduleDescription.append("    when "
                                     + transition._signal.toString() + "?ND_"
                                     + signalName.trim() + " (t>0) may "
                                     + transition._postCondition.toString()
@@ -2936,8 +3150,8 @@ public class REDUtility {
                         Iterator<IOPort> it2 = actor.inputPortList().iterator();
                         while (it2.hasNext()) {
                             String signalName = it2.next().getName();
-                            bean._moduleDescription.append("    when " 
-                                    + transition._signal.toString()+ "?ND_"
+                            bean._moduleDescription.append("    when "
+                                    + transition._signal.toString() + "?ND_"
                                     + signalName.trim() + " (t>0) may "
                                     + transition._postCondition.toString()
                                     + " ; t = 0; goto "
@@ -3539,6 +3753,10 @@ public class REDUtility {
         private StringBuffer _preCondition = new StringBuffer("");
         private StringBuffer _postCondition = new StringBuffer("");
         private StringBuffer _newState = new StringBuffer("");
+        private boolean _hasSignal = false;
+        private boolean _isComplementaryEdge = false;
+        private HashSet<String> _signalSet = new HashSet<String>();
+        private ArrayList<String> _complementedCondition = new ArrayList<String>();
 
     }
 }
