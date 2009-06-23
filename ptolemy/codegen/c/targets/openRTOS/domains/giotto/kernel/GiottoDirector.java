@@ -42,6 +42,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.kernel.ComponentCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -92,6 +93,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
+        code.append("//generate firecode in GiottoDirector called"+_eol);
         if(_isTopDirectorFSM())
         {
             code.append(_eol+"//should append fire code for Giotto inside fsm"+_eol);
@@ -170,8 +172,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }else{
             args.set(2, "tskIDLE_PRIORITY + (unsigned portCHAR)"+(_MAX_PRIORITY_LEVEL - _depthInGiottoHierarchy()));  // non top level scheduler so give priority one lower than the highest priority scheduling thread
         }
+        if(_isTopGiottoDirector()){
         code.append(_generateBlockCode("createTask", args));  //create the scheduler thread
-
+        }
         for(int frequencyValue : frequencies) {
 
             // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
@@ -357,7 +360,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             //code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
             //code.append("//sprintf(buff,\"f"+i+"thread %d\",count);"+_eol);
             //code.append("//RIT128x96x4StringDraw(buff, 0,_,15);"+_eol);
-            code.append("if(xSemaphoreTake($actorSymbol()_frequency"+i+"start,portMAX_DELAY)== pdTRUE){"+_eol);
+            code.append("     if(xSemaphoreTake($actorSymbol()_frequency"+i+"start,portMAX_DELAY)== pdTRUE){"+_eol);
             //code.append("if(xSemaphoreGive($actorSymbol()_frequency"+i+"start)){"+_eol);
             //code.append("//not able to release input ready semaphore");
             //code.append(_eol+"}"+_eol);
@@ -408,6 +411,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             throw new IllegalActionException("Unable to Schedule: Period of "+myPeriod+"(s) and WCET of "+myWCET+"(s)");
 
         }
+        
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+            System.out.println("Actor "+actor.getFullName()+" has priority "+_getPriority(actor));
+            
+        }
+        
 
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
         // Declare the thread handles.
@@ -436,11 +446,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         args.add("");
 
         int currentPriorityLevel = 1;
-        //if(_isTopGiottoDirector())
-        //{
+        if(_isTopGiottoDirector())
+        {
         args.set(0, "$actorSymbol()_scheduler");
         code.append(_generateBlockCode("declareTaskHandle", args));
-        // }
+        }
         for(int frequencyValue : frequencies) {
             // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
             //            frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
@@ -543,8 +553,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             outerActorFrequency =_getFrequency(myOuterActor);
             code.append(_eol+"// I think I'm inside actor: "+_director.getContainer().getFullName()+" it has frequency"+outerActorFrequency+_eol);
         }
-
+        if(_isTopGiottoDirector())
+        {
         code.append("static void $actorSymbol()_scheduler(void * pvParameters){"+_eol);
+        }
         code.append("portTickType xLastWakeTime;"+_eol);
         code.append("int schedTick;"+_eol);
         // code.append("char buff[50];"+_eol);
@@ -570,7 +582,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             ss0 = (Integer)myFrequencies[k];
             code.append("  char warn"+ss0+" = 0;"+_eol);
         }
-
+        if(!_isTopGiottoDirector()){
+        code.append("int i;"+_eol);
+        }
+        
         if(_isTopGiottoDirector())
         {
             code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
@@ -583,20 +598,24 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("schedTick = 0;"+_eol);
         //create warning variables
 
-
-
-        //take all the inputs for the frequency threads so that they can't start until they've gotten the go ahead from the scheduler
+       //take all the inputs for the frequency threads so that they can't start until they've gotten the go ahead from the scheduler
         code.append("//take semaphores"+_eol);
         int ss;
         for(int k = 0; k < _getAllFrequencies().size();k++){
             ss = (Integer)myFrequencies[k];
-            code.append("           if(xSemaphoreTake($actorSymbol()_frequency"+ss+"start,(portTickType)0) ==  pdTRUE){}"+_eol);
+            code.append("xSemaphoreTake($actorSymbol()_frequency"+ss+"start,(portTickType)0);"+_eol);
         }
         for(int k = 0; k < _getAllFrequencies().size();k++){
             ss = (Integer)myFrequencies[k];
-            code.append("           if(xSemaphoreTake($actorSymbol()_frequency"+ss+"done,(portTickType)0) ==  pdTRUE){}"+_eol);
+            code.append("xSemaphoreTake($actorSymbol()_frequency"+ss+"done,(portTickType)0);"+_eol);
         }
+        if(_isTopGiottoDirector())
+        {
         code.append("    for(;;){"+_eol);
+        }else{
+            //code.append("int i;"+_eol);
+            code.append("    for(i = 0;i < "+myLCM+";i++){"+_eol);   
+        }
         Arrays.sort(myFrequencies);
 
         int i = 0;
@@ -649,7 +668,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     _eol+
                     "}"+_eol);
 
-            code.append("}"+_eol);
+            code.append(_eol+"}"+_eol);
         }
 
         for(int k = 0; k < _getAllFrequencies().size();k++){
@@ -661,13 +680,93 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     _eol+"warn"+i+" = 0;"+_eol
                     +"}");// end if warn
 
-            code.append("}"+_eol);  // end if sched tick
+            code.append(_eol+"}"+_eol);  // end if sched tick
         }
 
 
 
 
         code.append("    }"+_eol);
+        if(!_isTopGiottoDirector()){
+        code.append("//should transfer code to outputs here"+_eol);
+        Actor actor = (Actor)_director.getContainer();
+        code.append("// in container "+actor.getFullName()+_eol);
+            {// move to output ports
+                List<IOPort> myOutputs = actor.outputPortList();
+                if(_debugging) {
+                    _debug("I have "+myOutputs.size()+" port(s) to send info to");
+                }
+                Iterator myItr = myOutputs.iterator();
+                IOPort port;
+                CodeGeneratorHelper myHelper;
+                String srcReference;
+                String sinkReference;
+                int ii = 0; //sink index counter
+                int j = 0; // src index counter
+                while(myItr.hasNext())
+                {
+                    port = (IOPort)myItr.next();
+                    List connectToMe = port.insideSourcePortList();//port.insidePortList();//port.deepInsidePortList();   and port.insidePortList() lists adder plus , as well as adder output
+
+                    //code.append("port: "+port.getFullName()+" has source(s)"+_eol);
+
+                    Iterator tome= connectToMe.iterator();
+                    while(tome.hasNext())
+                    {
+                        IOPort tempp = (IOPort)tome.next();
+
+                        // port is sink
+                        //tempp is source
+
+                        // System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
+                        String channelOffset [] = {"0","0"};
+                        if(_debugging) {
+                            _debug("the sender port is named "+tempp.getFullName()+" and the reciever is "+port.getFullName());
+                        }
+                        myHelper = (CodeGeneratorHelper)this._getHelper(tempp.getContainer());
+                        // temp+= _generateTypeConvertFireCode(false)+_eol;
+                        channelOffset[0] = Integer.valueOf(ii).toString();
+                        if(_debugging) {
+                            _debug("channel offset is "+channelOffset[0]);
+                        }
+                        srcReference = this.getReference((TypedIOPort)tempp,channelOffset,false,true,myHelper);
+                        if(_debugging) {
+                            _debug("after first call to getReference");
+                        }
+                        myHelper = (CodeGeneratorHelper)_getHelper(actor);
+                        channelOffset[0] = Integer.valueOf(j).toString();
+                        if(_debugging) {
+                            _debug("channel offset is "+channelOffset[0]);
+                        }
+                        sinkReference = this.getReference((TypedIOPort)port,channelOffset,false,true,myHelper);
+                        if(_debugging) {
+                            _debug("after second call to getReference");
+                        }
+                        j++;
+
+                        // temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol; 
+                        if(_debugging) {
+                            _debug("I think the source Reference is "+srcReference+" and it's display name is "+tempp.getDisplayName());
+                            _debug("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+                        }
+                        ArrayList args = new ArrayList();    
+                        args.add(sinkReference);
+                        args.add(srcReference);
+
+                        code.append(_generateBlockCode("updatePort", args)+_eol);
+                    }  //end while tome.hasNext()
+                    ii++;  // not sure if this is the correct place to increment i
+
+                }// end while myItr.hasNext()
+
+                //code.append(_eol+"//before call to fire functions for not fsm"+_eol);
+                //code.append(_eol+actorHelper.generateFireFunctionCode2());
+                //   System.out.println("after calling the generateFireCode on composite actor");
+                // end if not fsm
+            
+            
+            }
+        }
         code.append("      }"+_eol);
 
         return processCode(code.toString());
@@ -779,7 +878,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     /**
      * Generates the fire code for the director.
-     * In tis case the fire code is simply the OpenRTOS thread code
+     * In this case the fire code is simply the OpenRTOS thread code
      */
     protected String _generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
@@ -789,7 +888,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
         code.append("//Beginning of generateFireCode inside OpenRTOS GiottoDirector***************");
         //code.append("scheduler()");
-        if(!_isTopDirectorFSM()){
+        
+        if(_isTopGiottoDirector()){//if(!_isTopDirectorFSM()){
             //top director isn't fsm so close the method that would normally contain the fire code 
             //if the inline option was enabled and being used. Inline is invalid for giotto codegen
             code.append(_eol+"}"+_eol);
@@ -919,7 +1019,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             if(actor instanceof CompositeActor)
             {
                 System.out.println("I'm a composite actor with a director "+actor.getDirector().getFullName());
-                if(actor.getDirector().getFullName().contains("SDF")&&(!actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")))
+                if(actor.getDirector() instanceof ptolemy.domains.sdf.kernel.SDFDirector)//.getFullName().contains("SDF"))//&&(!actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")))
                 {
                     for (Actor actor1 : (List<Actor>) 
                             ((TypedCompositeActor) actor.getDirector().getContainer()).deepEntityList())
@@ -934,6 +1034,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                 }
             }
             
+            code.append(_eol+"// before method name in giotto director"+_eol);
+            
             code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"+ _eol);
 
             if(actor instanceof CompositeActor) {
@@ -942,7 +1044,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     _debug("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
                 }
                 
+                
                 if(actor.getClass().getName().contains("ptolemy.actor.lib.jni.EmbeddedCActor")){
+                    System.out.println("I have a jni actor "+actor.getClass().getName());
                     code.append(_eol+"//EmbeddedCActor"+_eol);
                     List<IOPort> myInputs = actor.inputPortList();
                     Iterator myItr = myInputs.iterator();
@@ -1022,8 +1126,17 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     code.append(_getActorName(actor)+"_EmbeddedActor();"+_eol);
                     //for now assume that there are no outputs to transfer out
                     // end if jni actor
-                } else if(!(actor.getDirector().getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector")){
+                } 
+                else if(actor.getDirector() instanceof ptolemy.domains.giotto.kernel.GiottoDirector){
+                    code.append(_eol+"//before call to fire functions for giotto actor"+_eol);
+                    code.append(_eol+actorHelper.generateFireFunctionCode2());
+                }
+                else if(!(actor.getDirector() instanceof ptolemy.domains.fsm.kernel.FSMDirector)){
                     //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
+                    // moving this code here is just a test
+                    code.append(_eol+"//before call to fire functions for not fsm"+_eol);
+                    code.append(_eol+actorHelper.generateFireFunctionCode2());
+                    // moving the above code here is just a test.
                     List<IOPort> myOutputs = actor.outputPortList();
                     if(_debugging) {
                         _debug("I have "+myOutputs.size()+" port(s) to send info to");
@@ -1091,8 +1204,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
                     }// end while myItr.hasNext()
 
-
-                    code.append(_eol+actorHelper.generateFireFunctionCode2());
+                    //code.append(_eol+"//before call to fire functions for not fsm"+_eol);
+                    //code.append(_eol+actorHelper.generateFireFunctionCode2());
                     //   System.out.println("after calling the generateFireCode on composite actor");
                     // end if not fsm
                 }else{
@@ -1424,12 +1537,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      private void _generateTransferInputsCode(IOPort source,StringBuffer code) throws IllegalActionException
      {
          //super.generateTransferInputsCode(source, code);
+         code.append(_eol+"// Giotto _genereateTransferInputsCode "+_eol);
 
      }
 
      private void _generateTransferOutputsCode(IOPort source,StringBuffer code) throws IllegalActionException
      {
          //super.generateTransferOutputsCode(source, code);
+         code.append(_eol+"//Giotto _generateTransferOutputsCode called here"+_eol);
 
      }
 
@@ -1636,6 +1751,38 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
              return ((IntToken) ((Variable) frequency).getToken()).intValue();
          }
      }
+     
+
+     /**
+      * Determines the true frequency of the actor , which can be used as it's priority
+      * I.E. If the actor has a frequency 1, and it is inside a composite actor at the top of the director chain with frequency2,
+      * the actor's true frequency is 1*2 = 2, which is the priority it should be given.
+      * @param actor
+      * @return
+      * @throws IllegalActionException
+      */
+     private int _getPriority(Actor actor) throws IllegalActionException {
+         Attribute frequency = ((Entity)actor).getAttribute("frequency");
+         int myFrequency = 0;
+         ptolemy.actor.Director director = ((TypedCompositeActor)
+                 _director.getContainer()).getDirector();
+         System.out.println("getPriority called on "+actor.getFullName());
+         if(director != null){
+             if (frequency == null)
+             {
+              myFrequency =  1;   
+             }else{
+                 myFrequency = ((IntToken) ((Variable) frequency).getToken()).intValue();
+                 myFrequency *= _getPriority((Actor)actor.getContainer());
+             }
+         }
+         else
+         {
+             System.out.println("director is now null");
+         }
+         return myFrequency;
+     }
+
 
      /**
       * Determines the period of this Giotto Director. If it is not the top most Giotto director
@@ -1815,12 +1962,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
          double actorFrequency =0;
          double actorWCET = 0;
          int actorCount = 0;
+         CodeGeneratorHelper  directorHelper;
          for (Actor actor : (List<Actor>) 
                  ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
              actorCount++;
              Attribute frequency = ((Entity)actor).getAttribute("frequency");
              ptolemy.actor.Director dd =actor.getDirector();
              Attribute WCET = ((Entity)actor).getAttribute("WCET");
+             
 
              if(actor instanceof CompositeActor)
              {
@@ -1829,6 +1978,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                      _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
                  }
                  Director dir = actor.getDirector();
+                 
+                 directorHelper = (CodeGeneratorHelper)_getHelper(actor.getDirector());
+                 System.out.println(dir.getFullName());
+                 System.out.println(directorHelper._getWCET());
                  ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(actor.getDirector());
                  //if(dir == null)
                  if(dir == null)
@@ -1841,7 +1994,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                  }
                  else
                  {
-                     double dummyWCET = df._getWCET();//dir._getWCET();
+                     double dummyWCET = directorHelper._getWCET();//df._getWCET();//dir._getWCET();
                      if(_debugging) {
                          _debug("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
                      }
