@@ -68,6 +68,9 @@ public abstract class HTMLCodeGeneratorAdapter {
         _component = component;
     }
 
+    /** Generate HTML code.
+     *  @return The generated HTML.
+     */
     abstract public String generateHTML() throws IllegalActionException;
     
     /** Get the code generator associated with this adapter class.
@@ -96,7 +99,11 @@ public abstract class HTMLCodeGeneratorAdapter {
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
+    
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line character so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
     protected final static String _eol;
     // FIXME rodiers: This is defined multiple times, in different root classes
     //              Not really what we want.

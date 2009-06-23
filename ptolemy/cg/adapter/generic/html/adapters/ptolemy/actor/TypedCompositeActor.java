@@ -53,6 +53,9 @@ public class TypedCompositeActor extends HTMLCodeGeneratorAdapter {
         super(component);
     }
 
+    /** Generate HTML code.
+     *  @return The generated HTML.
+     */
     public String generateHTML() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getComponent().getName() + " contains: ");
