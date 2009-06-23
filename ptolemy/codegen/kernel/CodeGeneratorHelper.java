@@ -3207,4 +3207,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
+    
+    public double _getWCET( ) throws IllegalActionException{
+       return 500.0; 
+    }
+    
 }
