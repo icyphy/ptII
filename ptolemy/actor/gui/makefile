@@ -83,6 +83,7 @@ JSRCS = \
 	ColorAttribute.java \
 	CompositeActorApplication.java \
 	CompositeActorSimpleApplication.java \
+	ConfigurationApplication.java \
 	CustomQueryBoxParameter.java \
 	Configuration.java \
 	ConfigurationEffigy.java \

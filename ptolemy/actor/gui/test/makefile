@@ -56,6 +56,7 @@ JSRCS = \
 # tests that use diva and graphical tests in general should go
 # under JGRAPHICAL tests.
 JSIMPLE_TESTS = \
+	ConfigurationApplication.tcl \
 	CheckModelSize.tcl \
 	Configuration.tcl \
 	EffigyFactory.tcl \
