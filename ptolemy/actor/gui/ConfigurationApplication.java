@@ -1106,42 +1106,12 @@ public class ConfigurationApplication implements ExecutionListener {
      *   an error.
      */
     protected void _parseArgs(String[] args) throws Exception {
-      //find any configs and process them first.  remove them from the
-        //args once they are processed.
-        boolean configExists = false;
-        String configurationPath = null;
-        int configurationIndex = -99;
-        for(int i=0; i<args.length; i++)
-        {
-          if(args[i].trim().equals("-conf"))
-          {
-            configurationPath = args[i + 1];
-            configurationIndex = i;
-            configExists = true;
-            break;
-          }
-        }
-        
-        if(configExists) {
-          //remove the config params from args
-          String[] newArgs = new String[args.length - 2];
-          int j = 0;
-          for(int i=0; i<args.length; i++)
-          {
-            if(i != configurationIndex && i != configurationIndex + 1)
-            {
-              newArgs[j] = args[i];
-              j++;
-            }
-          }
-          args = newArgs;
-          _configurationURL = specToURL(configurationPath);
-          _configuration = readConfiguration(_configurationURL);
-          
-        } else {  
+        if (args.length > 0) {
             _configuration = _createDefaultConfiguration();
+        } else {
+            _configuration = _createEmptyConfiguration();
         }
-        
+
         if (_configuration != null) {
             // If the configuration has a _classesToRemove attribute,
             // then set a MoMLFilter to remove those classes.  This
@@ -1155,6 +1125,7 @@ public class ConfigurationApplication implements ExecutionListener {
                 // FIXME: this could cause problem with RemoveGraphicalClasses
                 // elsewhere, but usually we run w/o _classesToRemove
                 RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
+
                 RemoveGraphicalClasses.clear();
                 // _classesToRemove is an array of Strings where each element
                 // names a class to be added to the MoMLFilter for removal.
@@ -1169,6 +1140,7 @@ public class ConfigurationApplication implements ExecutionListener {
             // If there is a "_removeGraphicalClasses" parameter, then
             // add RemoveGraphicalClasses to the list of MoMLFilters.
             Parameter removeGraphicalClassesParameter = (Parameter) _configuration.getAttribute("_removeGraphicalClasses");
+                
             if (removeGraphicalClassesParameter != null
                     && removeGraphicalClassesParameter.getValueAsString()
                     .equals("true")) {
@@ -1509,12 +1481,4 @@ public class ConfigurationApplication implements ExecutionListener {
 
     // URL from which the configuration was read.
     private static URL _initialSpecificationURL;
-    
-    // URL of the configuration to read.
-    // The URL may absolute, or relative to the Ptolemy II tree root.
-    // We use the URL instead of the string so that if the configuration
-    // is set as a command line argument, we can use the processed value
-    // from the command line instead of calling specToURL() again, which
-    // might be expensive.
-    private URL _configurationURL;
 }
