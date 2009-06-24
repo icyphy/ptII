@@ -153,7 +153,6 @@ public class Configuration extends CompositeEntity implements
         classesToRemove = new Parameter(this, "_classesToRemove",
                 new ArrayToken(BaseType.STRING));
         //classesToRemove.setTypeEquals(new ArrayType(BaseType.STRING));
-
         removeGraphicalClasses = new Parameter(this, "_removeGraphicalClasses",
                 BooleanToken.FALSE);
         removeGraphicalClasses.setTypeEquals(BaseType.BOOLEAN);
@@ -225,7 +224,16 @@ public class Configuration extends CompositeEntity implements
             if (removeGraphicalClassesFilter == null) {
                 // We did not find a RemoveGraphicalClasses, so create one.
                 removeGraphicalClassesFilter = new RemoveGraphicalClasses();
-                removeGraphicalClassesFilter.clear();
+                /*
+                  Since RemoveGraphicalClasses constructs it's filters in a 
+                  static block, if you call clear() here, it removes all
+                  previously added filters.  Either the classesToRemove
+                  functionality needs to use its own filter, or the 
+                  RemoveGraphicalClasses filter needs to not use a static
+                  block to add its default filters.
+                  -chad
+                */
+                //removeGraphicalClassesFilter.clear();
                 momlFilters.add(removeGraphicalClassesFilter);
             }
 

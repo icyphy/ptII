@@ -61,6 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
@@ -1038,11 +1039,25 @@ public class ConfigurationApplication implements ExecutionListener {
                         _parser.reset();
 
                         try {
-                            NamedObj toplevel = _parser.parse(base, inURL);
+                            /*NamedObj toplevel = _parser.parse(base, inURL);
 
                             if (toplevel instanceof Configuration) {
                                 _configuration = (Configuration) toplevel;
-                            }
+                            }*/
+                            
+                            /*
+                            If configuration is not set by the readConfiguration()
+                            method, the _applicationInitializer is never called
+                            which, for Kepler, results in no subsystems getting
+                            loaded.  The code here is almost identical to that
+                            in readConfiguration except for the loading of
+                            _applicationInitializer.
+                            -chad
+                            */
+                            
+                            _configuration = readConfiguration(inURL);
+                            
+                            
                         } catch (Exception ex) {
                             // Unfortunately, java.util.zip.ZipException
                             // does not include the file name.
