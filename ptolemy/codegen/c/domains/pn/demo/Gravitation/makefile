@@ -47,7 +47,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	GBody.xml \
 	Gravitation.xml
 
 EXTRA_SRCS = \

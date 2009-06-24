@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GBody" class="ptolemy.actor.TypedCompositeActor">
+<entity name="GBodyTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="numberOfBodies" class="ptolemy.data.expr.Parameter" value="6">
@@ -140,13 +140,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 996, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 658]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5, 329.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 319.5}">
     </property>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
         <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="numberOfBodies">
@@ -806,14 +806,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 225.0}">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 265, 330, 237}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[567.9921875, 587.234375]">
-        </property>
-    </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="initialPositions">
         </property>
@@ -825,6 +817,14 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0, 0.0, 0.0}}, {{0.0, 0.0, 0.0}}, {{1.25E-4, 1.25E-4, 1.0E-4}}, {{3.75E-4, 3.75E-4, 3.0E-4}}, {{7.5E-4, 7.5E-4, 6.0E-4}}, {{0.00125, 0.00125, 1.0E-3}}, {{0.001875, 0.001875, 0.0015}}, {{0.002625, 0.002625, 0.0021}}, {{0.0035, 0.0035, 0.0028}}, {{0.0045, 0.0045, 0.0036}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 575.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -901,6 +901,6 @@
     <link port="Scale2.output" relation="relation12"/>
     <link port="FIR.input" relation="relation8"/>
     <link port="FIR.output" relation="relation7"/>
-    <link port="Display.input" relation="relation15"/>
     <link port="Const.output" relation="relation"/>
+    <link port="Test.input" relation="relation4"/>
 </entity>
