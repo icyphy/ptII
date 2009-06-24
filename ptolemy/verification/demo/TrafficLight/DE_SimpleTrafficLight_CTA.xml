@@ -16,13 +16,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 578}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 578}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 455]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6434790294781">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7460067376295">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{583.8303228021978, 318.421875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{496.582185782967, 269.83203125}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -221,7 +221,6 @@
             <display name="Model Type"/>
         </property>
         <property name="Formula Type" class="ptolemy.data.expr.ChoiceParameter" value="TCTL">
-            <display name="Formula Type"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 185.0]">
         </property>

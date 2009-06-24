@@ -65,7 +65,8 @@ import ptolemy.verification.lib.SMVLegacyCodeActor;
  * 
  * FIXME: A new version for users to specify the integer bound without using
  * abstraction of "LS" and "GT" should be implemented to support complicated 
- * update functions.
+ * update functions. Note that this has already been implemented in REDUtility.java
+ * since the format of RED 7.0 does not support these features.
  * 
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher
  *         Brooks

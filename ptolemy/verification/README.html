@@ -2,479 +2,227 @@
 <html>
 <head>
 <!-- $Id$ -->
-
-
-
-  
-  
-  
-  
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
-
-
-  
-  
-  
-  
-  
-  
-  
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
   <title>Formal Verification</title>
   <link href="default.css" rel="stylesheet" type="text/css">
 </head>
-
-
 <body>
-
-
-
-
 <h1><span lang="EN-US">Correctness Checking using Formal Verification</span></h1>
-
-
-
-
 <span style="font-family: Arial;" lang="EN-US">This
 is an
 ongoing project which tries to equip Ptolemy II with abilities to test
 the correctness
 of a system using formal verification. Currently we develop code
 generators to
-convert Ptolemy II models into files accepted by model-checkers such as</span><span style="font-family: Arial;" lang="EN-US"> <a href="http://www.kenmcmil.com/smv.html" target="_blank">SMV</a></span><span style="font-family: Arial;" lang="EN-US"> (or </span><span style="font-family: Arial;" lang="EN-US"><a href="http://nusmv.irst.itc.it/" target="_blank"><span class="SpellE">NuSMV</span></a></span><span style="font-family: Arial;" lang="EN-US">), <a href="http://sourceforge.net/projects/redlib">REDLIB</a>, or <a href="http://heim.ifi.uio.no/%7Epeterol/RealTimeMaude/" target="_blank">Real Time Maude</a>.</span>
+convert Ptolemy II models into files accepted by model-checkers such as</span><span
+ style="font-family: Arial;" lang="EN-US"> <a
+ href="http://www.kenmcmil.com/smv.html" target="_blank">SMV</a></span><span
+ style="font-family: Arial;" lang="EN-US"> (or </span><span
+ style="font-family: Arial;" lang="EN-US"><a
+ href="http://nusmv.irst.itc.it/" target="_blank"><span class="SpellE">NuSMV</span></a></span><span
+ style="font-family: Arial;" lang="EN-US">), <a
+ href="http://sourceforge.net/projects/redlib">REDLIB</a>, or <a
+ href="http://heim.ifi.uio.no/%7Epeterol/RealTimeMaude/" target="_blank">Real
+Time Maude</a>.</span>
 <ul type="disc">
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_1">Demo 1: Traffic light example</a></span></li>
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_2">Demo 2: Generate the specification directly from the graph</a></span></li>
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_3">Demo 3: SMVLegacyCodeActor</a></span></li>
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#DemoRailroad">Another demo: Railroad control</a></span></li>
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#LargeExample">A larger example in robotic controller design (reactive control)</a><br>
-
-
-
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#Demo_1">Demo 1: Traffic light example</a></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#Demo_2">Demo 2: Generate the specification
+directly from the graph</a></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#Demo_3">Demo 3: SMVLegacyCodeActor</a></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#DemoRailroad">Another demo: Railroad control</a></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#LargeExample">A larger example in robotic
+controller design (reactive control)</a><br>
     </span></li>
-
-
-
-
- <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#DemoRTM">Demo: Generating Real Time Maude code</a>&nbsp;</span></li>
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#InstallSMV">Installing NuSMV</a>&nbsp;</span></li>
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#RED">Installing REDLIB (RED 7.0)</a><br>
-
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#DemoRTM">Demo: Generating Real Time Maude code</a>&nbsp;</span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#InstallSMV">Installing NuSMV</a>&nbsp;</span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#RED">Installing REDLIB (RED 7.0)</a><br>
     </span></li>
-
-
-
- <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#InstallRTM">Installing Real Time Maude</a>&nbsp;</span></li>
-
-
-
-
-
-  <li class="MsoNormal" style=""><a href="#Integration"><span style="font-family: Arial;" lang="EN-US">Integrating verification engines using
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#InstallRTM">Installing Real Time Maude</a>&nbsp;</span></li>
+  <li class="MsoNormal" style=""><a href="#Integration"><span
+ style="font-family: Arial;" lang="EN-US">Integrating verification
+engines using
 the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Limitations">Limitations</a>
-    <o:p></o:p>&nbsp;<o:p></o:p></span></li>
-
-
-
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US"><a href="#Limitations">Limitations</a> <o:p></o:p>&nbsp;<o:p></o:p></span></li>
 </ul>
-
-
-
-
-
-
-
-
-
-
-
-
 <h2><a name="Demo_1"><span lang="EN-US">Demo 1
 :Traffic light example</span></a></h2>
-
-
-
-
 <ol start="1" type="1">
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Open <big><a href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLight.xml</span></code></a></big>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Open <big><a
+ href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLight.xml</span></code></a></big>
     <o:p></o:p></span></li>
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Double click
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Double click
 on the <span class="SpellE">MathematicalModelConverter</span>
 (Pink color). <o:p></o:p></span></li>
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">A dialog box
-will appear, asking you to input a temporal logic formula. Type&nbsp;<b style="">! EF (<span class="SpellE">CarLightNormal</span>.state
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">A dialog box
+will appear, asking you to input a temporal logic formula. Type&nbsp;<b
+ style="">! EF (<span class="SpellE">CarLightNormal</span>.state
 = <span class="SpellE">Cgrn</span> &amp;&nbsp;<span class="SpellE">PedestrianLightNormal</span>.state
 = <span class="SpellE">Pgreen</span>)</b>.
-You may want to copy the above line; it would be a lot faster.<span style="">&nbsp; </span><o:p></o:p></span></li>
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Press OK.
+You may want to copy the above line; it would be a lot faster.<span
+ style="">&nbsp; </span><o:p></o:p></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Press OK.
 The code accepted by <span class="SpellE">NuSMV</span>
 will be generated. You can thus save the file (use .smv as
-extension).&nbsp; Also you can only </span><span style="font-family: Arial;" lang="EN-US">check the
-generated .smv format by selecting </span><span style="font-family: Arial;" lang="EN-US">"Open
+extension).&nbsp; Also you can only </span><span
+ style="font-family: Arial;" lang="EN-US">check the
+generated .smv format by selecting </span><span
+ style="font-family: Arial;" lang="EN-US">"Open
 Generated Format" in step 3. <o:p></o:p></span></li>
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Invoke <span class="SpellE">NuSMV</span> or SMV to see if the
-property is hold.&nbsp;</span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Now
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Invoke <span class="SpellE">NuSMV</span> or SMV to see
+if the
+property is hold. &nbsp;Note that you can also directly invoke the
+model checker directly in the MathematicalModelConverter actor (choose
+output type: Invoke NuSMV; provided that the path variable has been
+correctly set up).</span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Now
 modify the model by opening the&nbsp;PedestrianLightNormal actor,
 redirect the transition from Pgreen to Pred by creating a self loop in
 Pgreen (you can move the arrow pointed to Pred back to Pgreen). In this
 way, the model is no longer correct. Perform verification again, and
 the result would be false with a counter example.&nbsp;</span></li>
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">For models in the DE domain, an example with detailed instructions can be found in </span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="demo/TrafficLight/DE_SimpleTrafficLight_CTA.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/DE_SimpleTrafficLight_CTA.xml</span></code></a><code><span style="font-size: 10pt;">.</span></code></big><span style="font-family: Arial;" lang="EN-US">This example requires the installation of the real-time model checker RED 7.0.&nbsp;</span></li>
-
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">For models in the DE domain, an example with detailed
+instructions can be found in </span><span style="font-family: Arial;"
+ lang="EN-US"></span><big><a
+ href="demo/TrafficLight/DE_SimpleTrafficLight_CTA.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/DE_SimpleTrafficLight_CTA.xml</span></code></a><code><span
+ style="font-size: 10pt;">.</span></code></big><span
+ style="font-family: Arial;" lang="EN-US">This example requires the
+installation of the real-time model checker RED 7.0.&nbsp;</span></li>
 </ol>
-
-
-
-
-
-
-
-
-
-
-<h2><a name="Demo_2"><span lang="EN-US"></span></a>Demo 2: Generate the specification directly from the graph</h2>
-
-
-
-
-
-
-
-
-
-
-
-
+<h2><a name="Demo_2"><span lang="EN-US"></span></a>Demo 2: Generate the
+specification directly from the graph</h2>
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">In
 this demo, we are experimenting methods to alleviate designers' burden
 on writing the specification themselves. A simple solution is to
 generate the specification graphically. For reachability properties,
-this can be done easily by annotating properties on states.&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span></p>
-
-
-
-
-
-
-
-
-
-
-
-
+this can be done easily by annotating properties on states.&nbsp;</span><span
+ style="font-family: Arial;" lang="EN-US"></span></p>
 <ol start="1" type="1">
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Open <big><a href="demo/TrafficLight/SimpleTrafficLightGraphicalSpec.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLightGraphicalSpec.xml</span></code></a></big></span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">You
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Open <big><a
+ href="demo/TrafficLight/SimpleTrafficLightGraphicalSpec.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLightGraphicalSpec.xml</span></code></a></big></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">You
 can open the actors freely. Note that now the in FMVCarlightNormal, the
 state Cgrn is red, and so is the state Pgreen in
 FMVPedestrianLightNormal.&nbsp;</span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Double click
-on the&nbsp;<span class="SpellE"></span></span><span style="font-family: Arial;" lang="EN-US"><span class="SpellE">MathematicalModelConverter</span></span><span style="font-family: Arial;" lang="EN-US"><span class="SpellE"></span>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Double click
+on the&nbsp;<span class="SpellE"></span></span><span
+ style="font-family: Arial;" lang="EN-US"><span class="SpellE">MathematicalModelConverter</span></span><span
+ style="font-family: Arial;" lang="EN-US"><span class="SpellE"></span>
 (Pink color).</span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">A dialog box
-will appear, ask you to input temporal formula. This time, for the <span style="text-decoration: underline;">formula type</span>, choose <span style="font-style: italic; font-weight: bold;">Risk</span>,
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">A dialog box
+will appear, ask you to input temporal formula. This time, for the <span
+ style="text-decoration: underline;">formula type</span>, choose <span
+ style="font-style: italic; font-weight: bold;">Risk</span>,
 and you don't need to type the formula. The specification will be
 annotated automatically in the file based on red-labeled states.</span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">To
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">To
 generate an automaton with the ability to annotate risk/reachability
 properties, you can open an FMVAutomaton editor from File -- New --Fmv
 Automaton editor, or you can drag an instance in the graph editor (More
 Libraries -- CodeGenerators -- Verification -- FmvAutomaton).</span></li>
-
-
-
-
-
-
-
-
-
-
 </ol>
-
-
-
-
-
-
-
-
-
-
 <span style="font-family: Arial;" lang="EN-US"></span>
-<h2><a name="Demo_3"><span lang="EN-US"></span></a>Demo 3: SMVLegacyCodeActor</h2>
-
-
-
-
-
-
-
-
-
-
-
-
-<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">The SMVLegacyCodeActor can be viewed as a preliminary version of
+<h2><a name="Demo_3"><span lang="EN-US"></span></a>Demo 3:
+SMVLegacyCodeActor</h2>
+<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">The
+SMVLegacyCodeActor can be viewed as a preliminary version of
 code-generation helpers. The user can specify functionalities written
 in SMV, and the MathematicalModelConverter would append it to the
-generated file. In fact, a&nbsp;</span><span style="font-family: Arial;" lang="EN-US">code-generation
+generated file. In fact, a&nbsp;</span><span style="font-family: Arial;"
+ lang="EN-US">code-generation
 helper for a particular actor can be viewed as a template; the
 information for the actor and relevent ports is annotated to the
-template as the converted result.</span><span style="font-family: Arial;" lang="EN-US"></span></p>
-
-
-
-
-
-
-
-
-
-
+template as the converted result.</span><span
+ style="font-family: Arial;" lang="EN-US"></span></p>
 <ol>
-
-
-
-
-
-
-
-
-
-
-  <li><span style="font-family: Arial;" lang="EN-US">Open <big><a href="demo/TrafficLight/SimpleTrafficLightSMVModule.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLightSMVModule.xml</span></code></a></big></span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">You can open the PedestrianLightSMV actor, and you can find some code written in formats acceptable by SMV.&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span></li>
-
-
-
-
-
-
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Double click
-on the&nbsp;<span class="SpellE"></span></span><span style="font-family: Arial;" lang="EN-US"><span class="SpellE">MathematicalModelConverter</span></span><span style="font-family: Arial;" lang="EN-US"><span class="SpellE"></span>
-(Pink color).&nbsp;</span><span style="font-family: Arial;" lang="EN-US">Type <span style="font-weight: bold;">! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightSMV.state = Pgreen)</span>.
-You may want to copy the above line; it would be a lot faster.<span style=""> Perform the verification.</span></span></li>
-
-
-
+  <li><span style="font-family: Arial;" lang="EN-US">Open <big><a
+ href="demo/TrafficLight/SimpleTrafficLightSMVModule.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLightSMVModule.xml</span></code></a></big></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">You can open the PedestrianLightSMV actor, and you can
+find some code written in formats acceptable by SMV.&nbsp;</span><span
+ style="font-family: Arial;" lang="EN-US"></span></li>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;"
+ lang="EN-US">Double click
+on the&nbsp;<span class="SpellE"></span></span><span
+ style="font-family: Arial;" lang="EN-US"><span class="SpellE">MathematicalModelConverter</span></span><span
+ style="font-family: Arial;" lang="EN-US"><span class="SpellE"></span>
+(Pink color).&nbsp;</span><span style="font-family: Arial;" lang="EN-US">Type
+    <span style="font-weight: bold;">! EF (CarLightNormal.state = Cgrn
+&amp; PedestrianLightSMV.state = Pgreen)</span>.
+You may want to copy the above line; it would be a lot faster.<span
+ style=""> Perform the verification.</span></span></li>
 </ol>
-
-
-
-
-
-<h2><a name="DemoRailroad"><span lang="EN-US"></span></a>Another example: Railroad control</h2>
-
-
-
-<span style="font-family: Arial;" lang="EN-US">Another example can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="demo/RailroadControl/RailroadSystem.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/RailroadControl/RailroadSystem.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
-
-
-
-<h2><a name="LargeExample"><span lang="EN-US"></span></a>A larger example in robotic controller design (reactive control)</h2>
-
-
-
-<span style="font-family: Arial;" lang="EN-US">A relatively larger example can be found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="demo/iRobotHillClimbing/iRobotCreateVerification.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
-<span style="font-family: Arial;" lang="EN-US">
-Note that this model is not intended for simulation but only to illustrate the verification capability.
+<h2><a name="DemoRailroad"><span lang="EN-US"></span></a>Another
+example: Railroad control</h2>
+<span style="font-family: Arial;" lang="EN-US">Another example can be
+found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a
+ href="demo/RailroadControl/RailroadSystem.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/verification/demo/RailroadControl/RailroadSystem.xml</span></code></a></big><span
+ style="font-family: Arial;" lang="EN-US"></span>.
+<h2><a name="LargeExample"><span lang="EN-US"></span></a>A larger
+example in robotic controller design (reactive control)</h2>
+<span style="font-family: Arial;" lang="EN-US">A relatively larger
+example can be found in&nbsp;</span><span style="font-family: Arial;"
+ lang="EN-US"></span><big><a
+ href="demo/iRobotHillClimbing/iRobotCreateVerification.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml</span></code></a></big><span
+ style="font-family: Arial;" lang="EN-US"></span>.
+<span style="font-family: Arial;" lang="EN-US">Note that this model is
+not intended for simulation but only to illustrate the verification
+capability.
 </span>
-
-<h2><a name="DemoRTM"><span lang="EN-US"></span></a>Real Time Maude code generation and verification&nbsp;</h2>
-
-
-
+<h2><a name="DemoRTM"><span lang="EN-US"></span></a>Real Time Maude
+code generation and verification&nbsp;</h2>
 <span style="font-family: Arial;" lang="EN-US">An example that shows
 the capability to generate models acceptable by the Real Time Maude
 tool, and how these models can be verified using this tool, can be
-found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a href="../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml</span></code></a></big><span style="font-family: Arial;" lang="EN-US"></span>.
-
-
+found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a
+ href="../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml</span></code></a></big><span
+ style="font-family: Arial;" lang="EN-US"></span>.
 <h2><a name="InstallSMV"><span lang="EN-US"></span></a>Installing
 NuSMV&nbsp;</h2>
-
-
-
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">Install
-NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/" target="_blank">website</a>.&nbsp;</span></p>
-
+NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/"
+ target="_blank">website</a>.&nbsp;</span></p>
 <h2><a name="RED"></a>Installing REDLIB (RED 7.0)</h2>
-
-
-
-<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">Install RED 7.0 by downloading from its <a href="http://sourceforge.net/projects/redlib" target="_blank">website</a>.&nbsp;</span></p>
-
-
-
+<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">Install
+RED 7.0 by downloading from its <a
+ href="http://sourceforge.net/projects/redlib" target="_blank">website</a>.&nbsp;</span></p>
 <h2><a name="InstallRTM"><span lang="EN-US"></span></a>Installing
 Real Time Maude&nbsp;</h2>
-
-
-
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">Install
-Real Time Maude by downloading from its <a href="http://heim.ifi.uio.no/%7Epeterol/RealTimeMaude/" target="_blank">website</a>.&nbsp;</span></p>
-
-
-
-
-
-
-
-
-
-
-
-<h2 style="font-weight: bold;"><a name="Integration"><span lang="EN-US">Integrating verification engines using
+Real Time Maude by downloading from its <a
+ href="http://heim.ifi.uio.no/%7Epeterol/RealTimeMaude/" target="_blank">website</a>.&nbsp;</span></p>
+<h2 style="font-weight: bold;"><a name="Integration"><span lang="EN-US">Integrating
+verification engines using
 the&nbsp;EmbeddedCActor&nbsp;</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">To
 perform full integration of verification process, we also experiment
 how to embed verification engines into the Ptolemy II architecture.
@@ -485,60 +233,26 @@ Interface directly (it is relatively complicated for&nbsp;C++
 programmers to learn Java and JNI).&nbsp; Therefore, for researchers
 willing to use Ptolemy II as their front-end, this offers excellent
 guidance.&nbsp;</span> <span style="font-family: Arial;" lang="EN-US"></span></p>
-
-
-
-
-
-
-
-
-
-
-
-
 <h2><a name="Limitations"><span lang="EN-US">Limitations</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <ol>
-
-
-
   <li><span style="font-family: Arial;" lang="EN-US">This is a highly
 preliminary code generator facility, with many limitations. It is best
 viewed
-as a concept demonstration. Currently i</span><span style="font-family: Arial;" lang="EN-US">t
+as a concept demonstration. Currently i</span><span
+ style="font-family: Arial;" lang="EN-US">t
 may analyze a single FSMActor, and a system consisting of multiple
 FSMActors or ModalModels (with state or SR refinement&nbsp;)
 interacting with SMVLegacyCodeActors in the SR domain. For models in
-the DE domain, we are also performing preliminary experiments. </span><span style="font-family: Arial;" lang="EN-US"><big><a href="demo/TrafficLight/DE_SimpleTrafficLight_CTA.xml"><code><span style="font-size: 10pt;"></span></code></a></big></span></li>
-
-
-
+the DE domain, we are also performing preliminary experiments. </span><span
+ style="font-family: Arial;" lang="EN-US"><big><a
+ href="demo/TrafficLight/DE_SimpleTrafficLight_CTA.xml"><code><span
+ style="font-size: 10pt;"></span></code></a></big></span></li>
   <li><span style="font-family: Arial;" lang="EN-US">We find some
 examples having minor problems executing under NuSMV while they are
 executable under SMV. These problems can be easily fixed: the
 instructions in the corresponding model files show how to do this. Our
 preminiary diagnosis is that there are small syntactic differences
 between SMV and NuSMV. </span></li>
-
-
-
 </ol>
-
-
-
-
 </body>
 </html>
