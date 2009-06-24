@@ -72,7 +72,7 @@ all: jclass
 	@echo "To run the demo, run 'make run'"
 
 run:
-	"$(PTII)/bin/vergil" multipleActorsHierarchyLoopFSM.xml
+	"$(PTII)/bin/vergil" Sinewave.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

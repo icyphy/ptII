@@ -52,6 +52,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	BaseModel.xml \
 	Workflow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -72,7 +73,7 @@ all: jclass
 	@echo "To run the demo, run 'make run'"
 
 run:
-	"$(PTII)/bin/vergil" multipleActorsHierarchyLoopFSM.xml
+	"$(PTII)/bin/vergil" Workflow.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

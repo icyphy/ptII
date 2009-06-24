@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 255.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1003, 667}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1002, 654}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[787, 547]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8021507369982">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{389.9444444444447, 349.3745775291745}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.2276182432433, 199.8297086148649}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Man-Kit Leung&#10;&#10;This model demonstrates how to annotate/check multiple &#10;model files at a high level. It iterates through the model&#10;files from a given directory and performs property analysis. ">
@@ -332,7 +332,7 @@
     <entity name="ModelGenerator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 380.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 25, 1033, 716}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1023, 699}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 592]">
         </property>
@@ -350,7 +350,7 @@
             </property>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="/home/mankit/temp/BaseModel.xml">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="BaseModel.xml">
             </property>
             <property name="newline" class="ptolemy.data.expr.Parameter" value="property(&quot;line.separator&quot;)">
             </property>
@@ -372,9 +372,9 @@
         </property>
         <property name="repeatUntilFixpoint" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 460.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 94, 825, 579}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 104, 825, 560}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
         </property>
@@ -383,9 +383,7 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 214.0}">
         </property>
         <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-            <property name="Constraint1" class="ptolemy.actor.gt.Constraint">
-                <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="A.port.getAttribute(&quot;token::firstValueToken&quot;) != null">
-                </property>
+            <property name="Constraint1" class="ptolemy.actor.gt.Constraint" value="A.port.getAttribute(&quot;token::firstValueToken&quot;) != null">
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
@@ -412,21 +410,23 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[365.0, 115.0]">
+                <vertex name="vertex1" value="[360.0, 110.0]">
                 </vertex>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
-            <link port="A.port" relation="relation"/>
+		    <link port="A.port" relation="relation"/>
         </entity>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#FF0000"/><rect x="2" y="2" width="56" height="36"  style="fill:#C0C0C0"/><rect x="6" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="38" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="26" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="34" y2="30"  style="stroke:#404040"/><text x="16" y="14"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                <configure><svg><rect x="0" y="0" width="60" height="40" style="fill:#FF0000"></rect><rect x="2" y="2" width="56" height="36" style="fill:#C0C0C0"></rect><rect x="6" y="17" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><rect x="38" y="25" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><line x1="26" y1="22" x2="30" y2="22" style="stroke:#404040"></line><line x1="30" y1="22" x2="30" y2="30" style="stroke:#404040"></line><line x1="30" y1="30" x2="34" y2="30" style="stroke:#404040"></line><text x="16" y="14" style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
             </property>
             <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/false/&quot;_highlightColor&quot;/true/&quot;ptolemy.actor.gui.ColorAttribute&quot;/false/&quot;{1, 1, 0}&quot;)">
                 </property>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="A">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 210.0]">
                 </property>
                 <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -435,12 +435,14 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[270.0, 225.0]">
+                <vertex name="vertex1" value="[180.0, 230.0]">
                 </vertex>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
                 </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
-            <link port="A.port" relation="relation"/>
+		    <link port="A.port" relation="relation"/>
         </entity>
     </entity>
     <entity name="View" class="ptolemy.actor.gt.ModelView">
@@ -771,8 +773,6 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -781,6 +781,8 @@
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="View1.input" relation="relation3"/>
     <link port="View1.output" relation="relation10"/>
     <link port="ModelAnalyzer.input" relation="relation4"/>
@@ -788,8 +790,6 @@
     <link port="Original.input" relation="relation2"/>
     <link port="Original.output" relation="relation8"/>
     <link port="ModelGenerator.port_8" relation="relation2"/>
-    <link port="OptimizeOnce.modelInput" relation="relation5"/>
-    <link port="OptimizeOnce.modelOutput" relation="relation3"/>
     <link port="View.input" relation="relation6"/>
     <link port="View.output" relation="relation9"/>
     <link port="ModelAnalyzer2.input" relation="relation7"/>
@@ -799,6 +799,8 @@
     <link port="Sleep.output" relation="relation4"/>
     <link port="Sleep2.input" relation="relation9"/>
     <link port="Sleep2.output" relation="relation5"/>
+    <link port="OptimizeOnce.modelInput" relation="relation5"/>
+    <link port="OptimizeOnce.modelOutput" relation="relation3"/>
     <link port="Sleep3.input" relation="relation10"/>
     <link port="Sleep3.output" relation="relation7"/>
 </entity>
