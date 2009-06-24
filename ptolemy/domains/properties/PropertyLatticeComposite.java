@@ -203,7 +203,7 @@ public class PropertyLatticeComposite extends FSMActor {
 
         /**
          * Return a LatticeProperty that is labeled with the specified name.
-         * @param The specified name.
+         * @param name The specified name.
          * @return A LatticeProperty.
          */
         @Override

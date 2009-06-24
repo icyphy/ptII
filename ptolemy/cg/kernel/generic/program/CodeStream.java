@@ -1598,8 +1598,8 @@ public class CodeStream {
          * precedes this signature. Otherwise, it returns the value zero,
          * which indicates that they are equal. 
          */
-        public int compareTo(Object o) {
-            return toString().compareTo(o.toString());
+        public int compareTo(Object object) {
+            return toString().compareTo(object.toString());
         }
         
         /**
