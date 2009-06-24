@@ -163,6 +163,14 @@ to something safe to in an XML file.
  @see Configuration
  */
 public class ConfigurationApplication implements ExecutionListener {
+  
+    /**
+     * Empty constructor for subclasses to use
+     */
+    public ConfigurationApplication() {
+      
+    }
+    
     /** Parse the specified command-line arguments, instanting classes
      *  and reading files that are specified.
      *  @param args The command-line arguments.
@@ -236,7 +244,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     StringUtilities.exit(0);
                 }
             }
-
+            
             // Run if -run argument was specified.
             if (_run) {
                 if (_printPDF) {
@@ -277,6 +285,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     _printPDF();
                 }
             }
+            
         } catch (Throwable ex) {
             // Make sure that we do not eat the exception if there are
             // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
@@ -1054,7 +1063,7 @@ public class ConfigurationApplication implements ExecutionListener {
                             _applicationInitializer.
                             -chad
                             */
-                            
+                            System.out.println("reading configuration");
                             _configuration = readConfiguration(inURL);
                             
                             
