@@ -157,7 +157,6 @@ public class StaticSchedulingDirector extends Director {
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         Schedule schedule = director.getScheduler().getSchedule();
 
-        boolean isIDefined = false;
         Iterator<?> actorsToFire = schedule.firingIterator();
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
@@ -180,11 +179,7 @@ public class StaticSchedulingDirector extends Director {
 
                 int count = firing.getIterationCount();
                 if (count > 1) {
-                    if (!isIDefined) {
-                        code.append("int i;" + _eol);
-                        isIDefined = true;
-                    }
-                    code.append("for (i = 0; i < " + count
+                    code.append("for (int i = 0; i < " + count
                             + " ; i++) {" + _eol);
                 }
 
