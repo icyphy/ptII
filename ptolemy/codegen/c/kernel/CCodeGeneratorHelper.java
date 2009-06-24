@@ -1,29 +1,26 @@
-/* Base class for C code generator helper.
-
- Copyright (c) 2005-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
-
+/*
+ * Base class for C code generator helper.
+ * 
+ * Copyright (c) 2005-2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ * 
  */
 package ptolemy.codegen.c.kernel;
 
@@ -56,32 +53,33 @@ import ptolemy.util.StringUtilities;
 //// CCodeGeneratorHelper
 
 /**
- Base class for C code generator helper.
-
- <p>Actor helpers extend this class and optionally define the
- generateFireCode(),
- generateInitializeCode(), generatePrefireCode(),
- generatePostfireCode(), generatePreinitializeCode(), and
- generateWrapupCode() methods.
-
- <p> In derived classes, these methods,
- if present, make actor specific changes to the corresponding code.
- If these methods are not present, then the parent class will automatically
- read the corresponding .c file and substitute in the corresponding code
- block.  For example, generateInitializeCode() reads the
- <code>initBlock</code>, processes the macros and adds the resulting
- code block to the output.
-
- <p>For a complete list of methods to define, see
- {@link ptolemy.codegen.kernel.CodeGeneratorHelper}.
-
- <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
-
- @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
- @version $Id$
- @since Ptolemy II 6.0
- o @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (cxh)
+ * Base class for C code generator helper.
+ * 
+ * <p>
+ * Actor helpers extend this class and optionally define the generateFireCode(),
+ * generateInitializeCode(), generatePrefireCode(), generatePostfireCode(),
+ * generatePreinitializeCode(), and generateWrapupCode() methods.
+ * 
+ * <p>
+ * In derived classes, these methods, if present, make actor specific changes to
+ * the corresponding code. If these methods are not present, then the parent
+ * class will automatically read the corresponding .c file and substitute in the
+ * corresponding code block. For example, generateInitializeCode() reads the
+ * <code>initBlock</code>, processes the macros and adds the resulting code
+ * block to the output.
+ * 
+ * <p>
+ * For a complete list of methods to define, see
+ * {@link ptolemy.codegen.kernel.CodeGeneratorHelper}.
+ * 
+ * <p>
+ * For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
+ * 
+ * @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
+ * @version $Id$
+ * @since Ptolemy II 6.0 o
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
@@ -95,25 +93,30 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new parse tree code generator to use with expressions.
-     *  @return the parse tree code generator to use with expressions.
+    /**
+     * Return a new parse tree code generator to use with expressions.
+     * @return the parse tree code generator to use with expressions.
      */
+    @Override
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
         // if we could use the same CParseTreeCodeGenerator over and over.
         if (!(_parseTreeCodeGenerator instanceof CParseTreeCodeGenerator)) {
-            _parseTreeCodeGenerator = new CParseTreeCodeGenerator(_codeGenerator);
+            _parseTreeCodeGenerator = new CParseTreeCodeGenerator(
+                    _codeGenerator);
         }
         return _parseTreeCodeGenerator;
     }
 
-    /** Generate variable declarations for inputs and outputs and parameters.
-     *  Append the declarations to the given string buffer.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
+    /**
+     * Generate variable declarations for inputs and outputs and parameters.
+     * Append the declarations to the given string buffer.
+     * @return code The generated code.
+     * @exception IllegalActionException If the helper class for the model
+     * director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -122,7 +125,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
         if (referencedParameterDeclaration.length() > 1) {
             code.append(_eol
-                        + _codeGenerator.comment(name + "'s referenced parameter declarations."));
+                    + _codeGenerator.comment(name
+                            + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
 
@@ -130,7 +134,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         String inputVariableDeclaration = _generateInputVariableDeclaration();
         if (inputVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + _codeGenerator.comment(name + "'s input variable declarations."));
+                    + _codeGenerator.comment(name
+                            + "'s input variable declarations."));
             code.append(inputVariableDeclaration);
         }
 
@@ -138,7 +143,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         String outputVariableDeclaration = _generateOutputVariableDeclaration();
         if (outputVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + _codeGenerator.comment(name + "'s output variable declarations."));
+                    + _codeGenerator.comment(name
+                            + "'s output variable declarations."));
             code.append(outputVariableDeclaration);
         }
 
@@ -146,44 +152,49 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration();
         if (typeConvertVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + _codeGenerator.comment(name + "'s type convert variable declarations."));
+                    + _codeGenerator.comment(name
+                            + "'s type convert variable declarations."));
             code.append(typeConvertVariableDeclaration);
         }
 
         return processCode(code.toString());
     }
 
-    /** Get the code generator associated with this helper class.
-     *  @return The code generator associated with this helper class.
-     *  @see #setCodeGenerator(CodeGenerator)
+    /**
+     * Get the code generator associated with this helper class.
+     * @return The code generator associated with this helper class.
+     * @see #setCodeGenerator(CodeGenerator)
      */
+    @Override
     public CCodeGenerator getCodeGenerator() {
         return (CCodeGenerator) _codeGenerator;
     }
 
-
-    /** Get the files needed by the code generated from this helper class.
-     *  This base class returns an empty set.
-     *  @return A set of strings that are header files needed by the code
-     *  generated from this helper class.
-     *  @exception IllegalActionException Not Thrown in this base class.
+    /**
+     * Get the files needed by the code generated from this helper class. This
+     * base class returns an empty set.
+     * @return A set of strings that are header files needed by the code
+     * generated from this helper class.
+     * @exception IllegalActionException Not Thrown in this base class.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.addAll(_includeFiles);
         return files;
     }
 
-    /** Get the header files needed to compile with the jvm library.
-      *  @return A set of strings that are names of the header files
-      *   needed by the code generated for jvm library
-      *  @exception IllegalActionException Not Thrown in this subclass.
-      */
+    /**
+     * Get the header files needed to compile with the jvm library.
+     * @return A set of strings that are names of the header files needed by the
+     * code generated for jvm library
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
     public Set getJVMHeaderFiles() throws IllegalActionException {
         String javaHome = StringUtilities.getProperty("java.home");
 
         ExecuteCommands executeCommands = getCodeGenerator()
-            .getExecuteCommands();
+                .getExecuteCommands();
         if (executeCommands == null) {
             executeCommands = new StreamExec();
         }
@@ -209,10 +220,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         }
 
         String jreBinClientPath = javaHome + File.separator + "bin"
-            + File.separator + "client";
+                + File.separator + "client";
         executeCommands.stdout(_eol + _eol
-                + "CCodeGeneratorHelper: appended to path "
-                + jreBinClientPath);
+                + "CCodeGeneratorHelper: appended to path " + jreBinClientPath);
 
         executeCommands.appendToPath(jreBinClientPath);
 
@@ -221,20 +231,22 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
         }
 
-        if (!(new File(javaHome + "/include").isDirectory())) {
+        if (!new File(javaHome + "/include").isDirectory()) {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
-            File potentialJavaHomeParentFile = new File(javaHome).getParentFile();
+            File potentialJavaHomeParentFile = new File(javaHome)
+                    .getParentFile();
             // Loop through twice, once with the parent, once with
             // C:/Program Files/Java.  This is lame, but easy
             for (int loop = 2; loop > 0; loop--) {
                 // Get all the directories that have include/jni.h under them.
-                File [] jdkFiles = potentialJavaHomeParentFile.listFiles(
-                        new FileFilter() {
+                File[] jdkFiles = potentialJavaHomeParentFile
+                        .listFiles(new FileFilter() {
                             public boolean accept(File pathname) {
-                                return new File(pathname, "/include/jni.h").canRead();
+                                return new File(pathname, "/include/jni.h")
+                                        .canRead();
                             }
-                    });
+                        });
                 if (jdkFiles != null && jdkFiles.length >= 1) {
                     // Sort and get the last directory, which should
                     // be the most recent JDK.
@@ -243,7 +255,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                     break;
                 } else {
                     // Not found, please try again.
-                    potentialJavaHomeParentFile = new File("C:\\Program Files\\Java");
+                    potentialJavaHomeParentFile = new File(
+                            "C:\\Program Files\\Java");
                 }
             }
         }
@@ -262,58 +275,63 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         String jvmLoaderDirective = "-ljvm";
         String libjvmAbsoluteDirectory = "";
         if (platform.equals("win32")) {
-            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-                                          + platform + "\"");
+            getCodeGenerator().addInclude(
+                    "-I\"" + javaHome + "/include/" + platform + "\"");
 
             // The directive we use to find jvm.dll, which is usually in
             // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
             jvmLoaderDirective = "-ljvm";
 
-            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir")
+                    .replace('\\', '/');
             String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
-            libjvmAbsoluteDirectory = ptIIDir + "/"
-                + libjvmRelativeDirectory;
+            libjvmAbsoluteDirectory = ptIIDir + "/" + libjvmRelativeDirectory;
             String libjvmFileName = "libjvm.dll.a";
             String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
 
-            if ( !(new File(libjvmPath).canRead()) ) {
+            if (!new File(libjvmPath).canRead()) {
                 // If we are under WebStart or running from jar files, we
                 // will need to copy libjvm.dll.a from the jar file
                 // that gcc can find it.
                 URL libjvmURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
+                        .getResource(
+                                libjvmRelativeDirectory + "/" + libjvmFileName);
                 if (libjvmURL != null) {
                     String libjvmAbsolutePath = null;
                     try {
                         // Look for libjvm.dll.a in the codegen directory
-                        File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
+                        File libjvmFileCopy = new File(
+                                getCodeGenerator().codeDirectory.asFile(),
+                                "libjvm.dll.a");
 
                         if (!libjvmFileCopy.canRead()) {
                             // Create libjvm.dll.a in the codegen directory
                             FileUtilities.binaryCopyURLToFile(libjvmURL,
-                                                              libjvmFileCopy);
+                                    libjvmFileCopy);
                         }
 
                         libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
                         if (libjvmFileCopy.canRead()) {
-                            libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
-                                                                            '/');
-                            libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
-                                                                                       libjvmAbsolutePath.lastIndexOf("/"));
+                            libjvmAbsolutePath = libjvmAbsolutePath.replace(
+                                    '\\', '/');
+                            libjvmAbsoluteDirectory = libjvmAbsolutePath
+                                    .substring(0, libjvmAbsolutePath
+                                            .lastIndexOf("/"));
 
                             // Get rid of everything before the last /lib
                             // and the .dll.a
                             jvmLoaderDirective = "-l"
-                                + libjvmAbsolutePath.substring(
-                                                               libjvmAbsolutePath.lastIndexOf("/lib") + 4,
-                                                               libjvmAbsolutePath.length() - 6);
+                                    + libjvmAbsolutePath.substring(
+                                            libjvmAbsolutePath
+                                                    .lastIndexOf("/lib") + 4,
+                                            libjvmAbsolutePath.length() - 6);
 
                         }
                     } catch (Exception ex) {
-                        throw new IllegalActionException(getComponent(),
-                                                         ex, "Could not copy \"" + libjvmURL
-                                                         + "\" to the file system, path was: \""
-                                                         + libjvmAbsolutePath + "\"");
+                        throw new IllegalActionException(getComponent(), ex,
+                                "Could not copy \"" + libjvmURL
+                                        + "\" to the file system, path was: \""
+                                        + libjvmAbsolutePath + "\"");
                     }
                 }
             }
@@ -323,11 +341,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             }
         } else {
             // Solaris, Linux etc.
-            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-                                          + platform + "\"");
+            getCodeGenerator().addInclude(
+                    "-I\"" + javaHome + "/include/" + platform + "\"");
         }
-        getCodeGenerator().addLibrary(
-                "-L\"" + libjvmAbsoluteDirectory + "\"");
+        getCodeGenerator().addLibrary("-L\"" + libjvmAbsoluteDirectory + "\"");
         getCodeGenerator().addLibrary(jvmLoaderDirective);
 
         Set files = new HashSet();
@@ -338,10 +355,11 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate input variable declarations.
-     *  @return a String that declares input variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
+    /**
+     * Generate input variable declarations.
+     * @return a String that declares input variables.
+     * @exception IllegalActionException If thrown while getting port
+     * information.
      */
     protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
@@ -381,10 +399,11 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Generate output variable declarations.
-     *  @return a String that declares output variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
+    /**
+     * Generate output variable declarations.
+     * @return a String that declares output variables.
+     * @exception IllegalActionException If thrown while getting port
+     * information.
      */
     protected String _generateOutputVariableDeclaration()
             throws IllegalActionException {
@@ -398,7 +417,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
             // If either the output port is a dangling port or
             // the output port has inside receivers.
-            if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
+            if (!outputPort.isOutsideConnected()
+                    || outputPort.isInsideConnected()) {
                 code.append("static " + targetType(outputPort.getType()) + " "
                         + generateName(outputPort));
 
@@ -418,10 +438,11 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Generate referenced parameter declarations.
-     *  @return a String that declares referenced parameters.
-     *  @exception IllegalActionException If thrown while
-     *  getting modified variable information.
+    /**
+     * Generate referenced parameter declarations.
+     * @return a String that declares referenced parameters.
+     * @exception IllegalActionException If thrown while getting modified
+     * variable information.
      */
     protected String _generateReferencedParameterDeclaration()
             throws IllegalActionException {
@@ -446,18 +467,19 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     }
 
     /**
-     * Generate the type conversion statement for the particular offset of
-     * the two given channels. This assumes that the offset is the same for
-     * both channel. Advancing the offset of one has to advance the offset of
-     * the other.
+     * Generate the type conversion statement for the particular offset of the
+     * two given channels. This assumes that the offset is the same for both
+     * channel. Advancing the offset of one has to advance the offset of the
+     * other.
      * @param source The given source channel.
      * @param sink The given sink channel.
      * @param offset The given offset.
      * @return The type convert statement for assigning the converted source
-     *  variable to the sink variable with the given offset.
+     * variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
+    @Override
     protected String _generateTypeConvertStatement(Channel source,
             Channel sink, int offset) throws IllegalActionException {
 
@@ -475,12 +497,12 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         // The references are associated with their own helper, so we need
         // to find the associated helper.
         String sourcePortChannel = generateSimpleName(source.port) + "#"
-        + source.channelNumber + ", " + offset;
+                + source.channelNumber + ", " + offset;
         String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
-        String sinkPortChannel = generateSimpleName(sink.port) + "#" + sink.channelNumber
-        + ", " + offset;
+        String sinkPortChannel = generateSimpleName(sink.port) + "#"
+                + sink.channelNumber + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
         // the inside receiver of an output port.
@@ -497,23 +519,25 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         // to pay special attention. Directly calling getReference() will
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
-        if (sink.port.getContainer() instanceof ModalController) {
+        if (sink.port.getContainer() instanceof ModalController
+                || sink.port.getContainer() instanceof ptolemy.domains.modal.modal.ModalController) {
             sinkRef = generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }
         }
 
-        sourceRef = _generateTypeConvertMethod(
-                sourceRef, codeGenType(sinkType), codeGenType(sourceType));
-        
+        sourceRef = _generateTypeConvertMethod(sourceRef,
+                codeGenType(sinkType), codeGenType(sourceType));
+
         return sinkRef + " = " + sourceRef + ";" + _eol;
     }
 
-    /** Generate type convert variable declarations.
-     *  @return a String that declares type convert variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
+    /**
+     * Generate type convert variable declarations.
+     * @return a String that declares type convert variables.
+     * @exception IllegalActionException If thrown while getting port
+     * information.
      */
     protected String _generateTypeConvertVariableDeclaration()
             throws IllegalActionException {
@@ -544,14 +568,17 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Return the prototype for fire functions.
-     * @return The string"(void)" so as to avoid the avr-gcc 3.4.6
-     * warning: "function declaration isn't a prototype"
+    /**
+     * Return the prototype for fire functions.
+     * @return The string"(void)" so as to avoid the avr-gcc 3.4.6 warning:
+     * "function declaration isn't a prototype"
      */
+    @Override
     protected String _getFireFunctionArguments() {
         return "(void)";
     }
 
+    @Override
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         String result = super._replaceMacro(macro, parameter);
@@ -567,8 +594,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             TypedIOPort port = getPort(parameter);
 
             if (port == null) {
-                throw new IllegalActionException(parameter
-                        + " is not a port. $refinePrimitiveType macro takes in a port.");
+                throw new IllegalActionException(
+                        parameter
+                                + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (isPrimitive(port.getType())) {
                 return ".payload." + codeGenType(port.getType());
@@ -590,7 +618,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     ////                         private fields                    ////
 
     /** The set of header files that needed to be included. */
-    private Set _includeFiles = new HashSet();
+    private final Set _includeFiles = new HashSet();
 
     /** True if we have printed the JVM warning. */
     private boolean _printedJVMWarning;
