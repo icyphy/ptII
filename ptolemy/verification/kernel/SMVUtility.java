@@ -63,6 +63,10 @@ import ptolemy.verification.lib.SMVLegacyCodeActor;
  * traversal of the system and generate NuSMV (or Cadence SMV) acceptable files
  * for model checking.
  * 
+ * FIXME: A new version for users to specify the integer bound without using
+ * abstraction of "LS" and "GT" should be implemented to support complicated 
+ * update functions.
+ * 
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher
  *         Brooks
  * @version $Id$
@@ -566,7 +570,7 @@ public class SMVUtility {
                 // get transitionLabel, transitionName and relation
                 // name for later use. Retrieve the transition
 
-                boolean hasAnnotation = false;
+                //boolean hasAnnotation = false;
                 String text;
                 try {
                     text = transition.annotation.stringValue();
@@ -574,7 +578,7 @@ public class SMVUtility {
                     text = "Exception evaluating annotation: " + e.getMessage();
                 }
                 if (!text.trim().equals("")) {
-                    hasAnnotation = true;
+                    // hasAnnotation = true;
                     // buffer.append(text);
                 }
 

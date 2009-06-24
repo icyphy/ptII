@@ -70,26 +70,25 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * mechanism roughly is based on the technical report UCB/EECS-2008-41 
  * with some modifications. Basically, here the DE
  * domain can be viewed as a generalization of the SR domain, where each
- * "super dense" time tag in DE is now a tick in SR. Contrary to previous
- * incorrect implementation, now the token would not accumulate in the port of the
- * FSMActor - therefore buffer overflow property would no longer exist in
- * this implementation. Buffer overflow would only happens in the TimedDelay
- * or NondeterministicTimedDelay actor.
+ * "super dense" time tag in DE is now a tick in SR. The token would not 
+ * accumulate in the port of the FSMActor - therefore buffer overflow 
+ * property would no longer exist in this implementation. Buffer overflow 
+ * would only happens in the TimedDelay or NondeterministicTimedDelay actor.
  *
  * Note that for a successful conversion, we simply disallow a system to
- * have super dense time tag with the format (\tau, i), where i>0. In fact, the
- * case in our context only happens when there is a timed delay actor with its
+ * have super dense time tag with the format (\tau, i), where i>0. 
+ * In our context this only happens when there is a TimedDelay actor with its
  * parameter equals to zero. For systems with super dense time tag with the
  * format (\tau, i), where i>0, the system can still be converted. However,
  * please note that the semantics might no longer be preserved.
  *
- * One important feature in our converted model is the use of complementary
+ * One important feature in our converted model is the use of "complementary"
  * edges. This is used to tackle the situation where the FSMActor must react
  * to an arrival of token in the incoming port, but the token can not trigger
  * any transition. For this case, the present token should turn to be absent
  * as time advances. To avoid including any unnecessary behavior we add one
- * "invalid" transition, mentioning that the FSMActor will perform a stable
- * move, and at the same time the token will be bring to absent.
+ * "invalid" transition, mentioning that the FSMActor will perform a "stable"
+ * move, and at the same time the token will be bring to absent state.
  * 
  * For the tool RED, all time constants should be an integer. This is not a
  * problem because the unit is actually not specified by the timed automata.
@@ -207,8 +206,8 @@ public class REDUtility {
         HashSet<String> globalSynchronizerSet = new HashSet<String>(); // (5)
         HashSet<String> variableAndItsInitialCondition = new HashSet<String>(); // (7)
 
-        // We need to record the order of Modules and Ports; these will
-        // be processed later because the order decides the initial state
+        // We need to record the ordering of Modules and Ports; these will
+        // be processed later because the ordering decides the initial state
         // of each process.
         ArrayList<REDModuleNameInitialBean> processModuleNameList = new ArrayList<REDModuleNameInitialBean>();
         ArrayList<REDModuleNameInitialBean> processModulePortList = new ArrayList<REDModuleNameInitialBean>();
@@ -239,14 +238,6 @@ public class REDUtility {
         // If we place these two in the wrong order, it would always treat
         // BoundedBufferNondeterministicDelay as BoundedBufferTimedDelay.
         //
-        int numOfFSMActors = 0;
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            if (innerEntity instanceof FSMActor) {
-                numOfFSMActors++;
-            }
-        }
 
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
@@ -320,7 +311,7 @@ public class REDUtility {
 
                 REDSingleEntityBean bean = _translateBBNondeterministicDelayedActor(
                         (BoundedBufferNondeterministicDelay) innerEntity,
-                        inputSignalName, outputSignalName, numOfFSMActors);
+                        inputSignalName, outputSignalName);
                 variableDefinition.append(bean._declaredVariables);
                 constantDefinition.append(bean._defineConstants);
                 processModuleNameList.add(bean._nameInitialState);
@@ -380,7 +371,7 @@ public class REDUtility {
 
                 REDSingleEntityBean bean = _translateBBTimedDelayedActor(
                         (BoundedBufferTimedDelay) innerEntity, inputSignalName,
-                        outputSignalName, numOfFSMActors);
+                        outputSignalName);
                 constantDefinition.append(bean._defineConstants);
                 variableDefinition.append(bean._declaredVariables);
                 processModuleNameList.add(bean._nameInitialState);
@@ -433,7 +424,7 @@ public class REDUtility {
 
                 REDSingleEntityBean bean = _translateTimedDelayedActor(
                         (TimedDelay) innerEntity, inputSignalName,
-                        outputSignalName, numOfFSMActors, bufferSizeDelayActor);
+                        outputSignalName, bufferSizeDelayActor);
                 constantDefinition.append(bean._defineConstants);
                 variableDefinition.append(bean._declaredVariables);
                 processModuleNameList.add(bean._nameInitialState);
@@ -467,7 +458,7 @@ public class REDUtility {
                 }
 
                 REDSingleEntityBean bean = _translateClockActor(
-                        (Clock) innerEntity, outputSignalName, numOfFSMActors);
+                        (Clock) innerEntity, outputSignalName);
 
                 variableDefinition.append(bean._declaredVariables);
                 constantDefinition.append(bean._defineConstants);
@@ -489,8 +480,7 @@ public class REDUtility {
             }
         }
 
-        // Lastly, combine the whole format based on the order of the
-        // RED format.
+        // Lastly, combine the whole format based on the order of the RED format.
         // First, attach a comment indicating the description.
         returnREDFormat.append("/*\n\n"
                 + "This file represents a Communicating Timed Automata (CTA)\n"
@@ -498,7 +488,7 @@ public class REDUtility {
                 + "It is compatible with the format of the tool \"Regional\n"
                 + "Encoding Diagram\" (RED 7.0) which is an integrated \n"
                 + "symbolic TCTL model-checker/simulator.\n\n");
-        // Now retrieve the value in the processModuleNameList to understand
+        // Retrieve the value in the processModuleNameList to understand
         // the corresponding name in the process. Also in RED, the first process
         // starts at the number 1.
         for (int i = 0; i < processModuleNameList.size(); i++) {
@@ -601,14 +591,16 @@ public class REDUtility {
             }
         }
 
-        // Specification
+        // Specification: Deprecated in RED 7.0
         returnREDFormat.append("\n/*Specification */\n");
         if (choice == FormulaType.Buffer) {
             returnREDFormat
                     .append("/* In RED 7.0, specification must be placed in separated files. */\n/* risk\nexists i:i>=1, (Buffer_Overflow[i]);*/\n\n");
 
         } else {
-            returnREDFormat.append("/* In RED 7.0, specification must be placed in separated files. */\n/*"+pattern+"*/\n");
+            returnREDFormat
+                    .append("/* In RED 7.0, specification must be placed in separated files. */\n/*"
+                            + pattern + "*/\n");
 
         }
         return returnREDFormat;
@@ -635,7 +627,7 @@ public class REDUtility {
      * This private function is used to decide the set of global synchronizers
      * used in the entity. When we later return the set, the system would use
      * another set container to store the synchronizer to make sure that no
-     * duplication exists.
+     * duplication exists. 
      *
      * @param entity
      * @return
@@ -645,11 +637,9 @@ public class REDUtility {
             throws IllegalActionException {
         HashSet<String> returnVariableSet = new HashSet<String>();
 
-        // Note that BoundedBufferNondeterministicDelay extends
-        // BoundedBufferTimedDelay.
-        // Thus we only need to use one.
         if (entity instanceof FSMActor) {
             HashSet<State> stateSet = new HashSet<State>();
+
             // initialize
             HashMap<String, State> frontier = new HashMap<String, State>();
 
@@ -745,11 +735,8 @@ public class REDUtility {
                                 }
                             }
                         }
-
                     }
-
                 }
-
             }
 
         } else if (entity instanceof TimedDelay) {
@@ -809,8 +796,7 @@ public class REDUtility {
      * signal used by the guard expression would need to have a process
      * representing the port receiving the signal.
      *
-     * @param actor
-     *                The actor under analysis.
+     * @param actor The actor under analysis.
      * @return Set of signals used in guard expressions in the FSMActor.
      * @exception IllegalActionException
      */
@@ -871,7 +857,7 @@ public class REDUtility {
 
                 if ((guard != null) && !guard.trim().equals("")) {
                     if (guard.trim().equalsIgnoreCase("true")) {
-                        /* NEW FEATURE: If the guard is true, then it can be enabled by any arrival of the signal*/
+                        // If the guard is true, then it can be triggered by any arrival of the signal
                         for (int i = 0; i < actor.inputPortList().size(); i++) {
                             returnVariableSet.add(((IOPort) actor
                                     .inputPortList().get(i)).getName());
@@ -1200,7 +1186,7 @@ public class REDUtility {
 
             } catch (Exception ex) {
                 throw new IllegalActionException(
-                        "FmvAutomaton._decideVariableSet() clashes: "
+                        "REDUtility._decideVariableSet() clashes: "
                                 + ex.getMessage());
             }
         }
@@ -1213,8 +1199,7 @@ public class REDUtility {
      * the states. It seems to have a better way to do this (a mechanism to
      * enumerate using existing member functions).
      *
-     * @param actor
-     *                The actor under analysis
+     * @param actor The actor under analysis
      * @return The set of states of the FSMActor.
      * @exception IllegalActionException
      */
@@ -1255,7 +1240,7 @@ public class REDUtility {
             }
         } catch (Exception exception) {
             throw new IllegalActionException(
-                    "FmvAutomaton._EnumerateStateSet() clashes: "
+                    "REDUtility._EnumerateStateSet() clashes: "
                             + exception.getMessage());
 
         }
@@ -1268,8 +1253,7 @@ public class REDUtility {
      * would generate {00, 01, 10, 11}. This is designed to invoke recursively
      * to achieve this goal.
      *
-     * @param index
-     *                The size of the index.
+     * @param index The size of the index.
      * @param paraEnumerateString
      *                Existing strings that need to be attached.
      * @return An list of all possible combination for char 0 and 1 of size
@@ -1302,10 +1286,11 @@ public class REDUtility {
      *                which is not useful. They are not connected to/from a
      *                valid actor where analysis is possible.
      * @return A set of transition descriptions packed in a list.
+     * @throws IllegalActionException 
      */
     private static ArrayList<REDTransitionBean> _generateTransition(
             FSMActor actor, State state, HashSet<String> variableSet,
-            HashSet<String> globalSynchronizerSet) {
+            HashSet<String> globalSynchronizerSet) throws IllegalActionException {
 
         ArrayList<REDTransitionBean> returnList = new ArrayList<REDTransitionBean>();
 
@@ -1319,7 +1304,7 @@ public class REDUtility {
                     Iterator transitions = outPort.linkedRelationList()
                             .iterator();
                     while (transitions.hasNext()) {
-                       
+
                         Transition transition = (Transition) transitions.next();
                         State destinationInThis = transition.destinationState();
                         REDTransitionBean bean = new REDTransitionBean();
@@ -1402,7 +1387,7 @@ public class REDUtility {
                                         boolean b = Pattern.matches(
                                                 ".*_isPresent",
                                                 characterOfSubGuard[0].trim());
-                                        if (b == true) {                                        
+                                        if (b == true) {
                                             // First case, synchronize usage.
                                             // Pgo_isPresent
                                             // We add it into the list for transition.
@@ -1423,7 +1408,7 @@ public class REDUtility {
                                                                     .trim()));
                                             // specify the fact that this transition has signal.
                                             // if a transition does not have a signal, it can be triggered by "any" signal
-                                            bean._hasSignal = true;
+
                                             usedSignalInTransition
                                                     .add(signalName[0]);
                                         } else {
@@ -1659,7 +1644,8 @@ public class REDUtility {
                                                     }
 
                                                 } else {
-
+                                                    throw new IllegalActionException(
+                                                            "REDUtility._generateTransition() clashes: Currently verification only support simple guards.");
                                                 }
                                             }
                                         }
@@ -1667,7 +1653,6 @@ public class REDUtility {
                                 }
                             }
                         }
-
                         String setActionExpression = transition.setActions
                                 .getExpression();
 
@@ -1768,12 +1753,12 @@ public class REDUtility {
                             }
                         }
 
-                        /* Now generate the complementary edge which consumes token without moving */
+                        // Generate the complementary edge which consumes token and perform the still move.
                         Iterator<IOPort> it2 = actor.inputPortList().iterator();
                         while (it2.hasNext()) {
                             String signal = it2.next().getName();
                             if (usedSignalInTransition.contains(signal) == false) {
-                                /* Generate the complementary edge with stationary move */
+                                // Generate the complementary edge with stationary move 
                                 REDTransitionBean newBean = new REDTransitionBean();
                                 newBean._isComplementaryEdge = true;
                                 newBean._newState.append(actor.getName()
@@ -1796,7 +1781,7 @@ public class REDUtility {
 
                                 // Note that no postconditions are needed.
                                 returnList.add(newBean);
-                            } // End of if
+                            }
                         }
 
                         if ((outputAction != null)
@@ -1827,19 +1812,18 @@ public class REDUtility {
             }
         }
 
-        /* Last step: Finish the guard condition for each complemented edge. 
-         * Currently these edges are only with synchronizers. Conditions for 
-         * constraining is as follows. Pick the complemented edge, check the set of 
-         * synchronizers. Find all original edges using the same synchronizer,
-         * and conjunct with the negated condition. 
-         */
+        // Last step: Finish the guard condition for each complemented edge. 
+        // Currently these edges are only with synchronizers. Conditions for 
+        // constraining is as follows. Pick the complemented edge, check the set of 
+        // synchronizers. Find all original edges using the same synchronizer,
+        // and conjunct with the negated condition. 
 
         for (int i = 0; i < returnList.size(); i++) {
             if (returnList.get(i)._isComplementaryEdge == true) {
-                /* Search for all edges, find all non-complementary edges, if their signal 
-                 * is the same as the signal in the current edge, add the complementary 
-                 * guard conditions.
-                 */
+                // Search for all edges, find all non-complementary edges, if their signal 
+                // is the same as the signal in the current edge, add the complementary 
+                // guard conditions.
+
                 for (int j = 0; j < returnList.size(); j++) {
                     if (returnList.get(j)._signalSet
                             .equals(returnList.get(i)._signalSet)) {
@@ -1933,8 +1917,7 @@ public class REDUtility {
      * meaning that the current implementation is powerful enough to deal with
      * state refinement.
      *
-     * @param model
-     *                Whole System under analysis.
+     * @param model Whole System under analysis.
      * @return Equivalent FSMActor for later analysis.
      */
     private static FSMActor _rewriteModalModelWithStateRefinementToFSMActor(
@@ -2008,10 +1991,7 @@ public class REDUtility {
                             // Retrieve the actor.
                             TypedActor innerActor = actors[0];
                             if (innerActor instanceof FSMActor) {
-
-                                // This is what we want.
-                                // Retrieve all states and place into
-                                // returnFSMActor
+                                // Retrieve all states and place into returnFSMActor
                                 Iterator innerStates = ((FSMActor) innerActor)
                                         .entityList().iterator();
                                 while (innerStates.hasNext()) {
@@ -2021,11 +2001,8 @@ public class REDUtility {
                                         // We need to give it a new name based
                                         // on our criteria.
                                         // For example state S has refinement,
-                                        // then
-                                        // a state S' in the refinement should
-                                        // be
-                                        // renamed as S-S' for the analysis
-                                        // usage.
+                                        // then a state S' in the refinement should
+                                        // be renamed as S-S' for the analysis usage.
 
                                         State newState = (State) innerState
                                                 .clone();
@@ -2137,12 +2114,12 @@ public class REDUtility {
                             }
                         }
                     } else {
-                        /* This should not happen
-                         *
-                         */
-                    }
+                        // This should not happen
+                        throw new IllegalActionException(
+                                "REDUtility._rewriteModalModelWithStateRefinementToFSMActor() clashes: actors is null");
 
-                } // end of null refinement case
+                    }
+                }
             }
         }
 
@@ -2217,7 +2194,7 @@ public class REDUtility {
             } else if ((sActors == null) && (dActors != null)) {
                 // We need to retrieve the source and connect with
                 // the inner initial state of destination.
-                //
+
                 // First retrieve the inner model initial state of
                 // destination.
                 TypedActor dInnerActor = dActors[0];
@@ -2418,15 +2395,8 @@ public class REDUtility {
                         }
                     }
                 }
-
             }
-
         }
-
-        // } catch (Exception ex) {
-        // ex.printStackTrace();
-        // }
-
         return returnFSMActor;
     }
 
@@ -2435,17 +2405,13 @@ public class REDUtility {
      * clock actor into the format of communicating timed automata (CTA)
      * acceptable by model checker RED.
      *
-     * @param clockActor
-     *                The actor which requires to be converted.
-     * @param outputSignalName
-     *                The name of the output signal. This must be derived
-     *                externally.
+     * @param clockActor The actor which requires to be converted.
+     * @param outputSignalName The name of the output signal. This must be derived externally.
      * @return clock description acceptable by model checker RED.
      * @exception IllegalActionException
      */
     private static REDSingleEntityBean _translateClockActor(Clock clockActor,
-            String outputSignalName, int numOfListeningFSMActor)
-            throws IllegalActionException {
+            String outputSignalName) throws IllegalActionException {
 
         // REDSingleEntityBean returnBean = new REDSingleEntityBean();
 
@@ -2453,15 +2419,15 @@ public class REDUtility {
         // we need to have the following information from the clockActor:
         // (1) period:
         // (2) numberOfCycles: UNBOUNDED means no limit on it.
-        // If it is not unbounded, we need to set up a counter
-        // to set the number of emit signals
+        //     If it is not unbounded, we need to set up a counter
+        //     to set the number of emit signals
         // (3) stopTime: Infinity means the clock would not stop
         //
         // Also, we need to retrieve the information for the name of
         // the signal which the receiver receives.
         // This (outputSignalName) should be analyzed by callers and
         // pass to this function.
-        //
+
         // Retrieve parameters from clockActors
         double period = ((DoubleToken) clockActor.period.getToken())
                 .doubleValue();
@@ -2727,7 +2693,6 @@ public class REDUtility {
                 return bean;
             }
         }
-
     }
 
     private static REDSingleEntityBean _translateFSMActor(FSMActor actor,
@@ -2767,16 +2732,16 @@ public class REDUtility {
             bean._moduleDescription.append("mode " + actor.getName().trim()
                     + "_Port_" + signalName.trim() + "_TokenEmpty"
                     + " ( true ) { \n");
-            /* All possible transitions in TokenEmpty are described as follows.
-             * (1) The token is received, and simultaneously it is consumed with the transition 
-             *     inside the FSM. In this way, it will remain empty status.
-             * (2) The token is received, and it is not consumed by the transition. In this way,
-             *     the system moves to the location "TokenOccupied".
-             * signalName.trim(): Signal from outside sending
-             * ND_signalName.trim(): Signal for the internal consumption of the FSMActor
-             * Note that all guard signal should be renamed as ND_signalName
-             * ND stands for non-delayed signals    
-             */
+            // All possible transitions in TokenEmpty are described as follows.
+            // (1) The token is received, and simultaneously it is consumed with the transition 
+            //     inside the FSM. In this way, it will remain empty status.
+            // (2) The token is received, and it is not consumed by the transition. In this way,
+            //     the system moves to the location "TokenOccupied".
+            // signalName.trim(): Signal from outside sending
+            // ND_signalName.trim(): Signal for the internal consumption of the FSMActor
+            // Note that all guard signal should be renamed as ND_signalName
+            // ND stands for non-delayed signals    
+
             bean._moduleDescription.append("    when ?" + signalName.trim()
                     + " !ND_" + signalName.trim() + " (true) may ; \n");
             bean._moduleDescription.append("    when ?" + signalName.trim()
@@ -2788,11 +2753,10 @@ public class REDUtility {
             bean._moduleDescription.append("mode " + actor.getName().trim()
                     + "_Port_" + signalName.trim() + "_TokenOccupied"
                     + " ( t==0 ) { \n");
-            /* All possible transitions in TokenOccupied are described as follows.
-             * (1) When another token is received, it remains in its state.
-             * (2) When a transition consumes the token, it moves back to empty.
-             * (3) When time elapses, it moves back to empty.
-             */
+            // All possible transitions in TokenOccupied are described as follows.
+            // (1) When another token is received, it remains in its state.
+            // (2) When a transition consumes the token, it moves back to empty.
+            // (3) When time elapses, it moves back to empty.
 
             bean._moduleDescription.append("    when !ND_" + signalName.trim()
                     + " (true) may Token" + signalName.trim()
@@ -2805,37 +2769,36 @@ public class REDUtility {
                     + actor.getName().trim() + "_Port_" + signalName.trim()
                     + "_TokenEmpty" + "; */\n");
 
-            /*        Here an additional transition is added to replace the above
-             *        transition commented. 
-             *        
-             *        This transition is used to represent the case when a token 
-             *        is received in the port, but the FSMActor can not perform
-             *        any action. In this way, in the semantics the system 
-             *        should not do anything and let the time pass to the next 
-             *        instant. When time passes, the token should simultaneously 
-             *        disappear. 
-             *        
-             *        To have this feature, we have to enforce the FSMActor
-             *        to perform a "still move" if no possible actions can be taken.
-             *        We discuss all possible cases:
-             *        Case 1: when token is available, and the FSMActor can take the 
-             *                transition with the token, the port automata first moves 
-             *                itself to occupied location (with invariant 0), and 
-             *                performs the consumption process.
-             *        Case 2: when token is available, but the FSMActor can not take 
-             *                any action, the port automata first moves itself to 
-             *                occupied location (with invariant 0), and performs the 
-             *                consumption process accompanied by the "still move" transition.
-             *        
-             *        Note that the still move transition should be designed such that 
-             *        the guard condition is the negation of "disjunction". For example,
-             *        if we have two ports: Sec and Test. 
-             *        If a transition is of the following format : 
-             *        "if (Sec_isPresent && count < 6) then ..."
-             *        Then we add a still move using TokenTestConsume! synchronizer to the 
-             *        FSMActor: with the condition (TokenTestConsume! && count >= 6).
-             *                          
-             */
+            // Here an additional transition is added to replace the above
+            // transition commented. 
+            //        
+            // This transition is used to represent the case when a token 
+            // is received in the port, but the FSMActor can not perform
+            // any action. In this way, in the semantics the system 
+            // should not do anything and let the time pass to the next 
+            // instant. When time passes, the token should simultaneously 
+            // disappear. 
+            //        
+            // To have this feature, we have to enforce the FSMActor
+            // to perform a "still move" if no possible actions can be taken.
+            // We discuss all possible cases:
+            //        Case 1: when token is available, and the FSMActor can take the 
+            //                transition with the token, the port automata first moves 
+            //                itself to occupied location (with invariant 0), and 
+            //                performs the consumption process.
+            //        Case 2: when token is available, but the FSMActor can not take 
+            //                any action, the port automata first moves itself to 
+            //                occupied location (with invariant 0), and performs the 
+            //                consumption process accompanied by the "still move" transition.
+            //        
+            // Note that the still move transition should be designed such that 
+            // the guard condition is the negation of "disjunction". For example,
+            // if we have two ports: Sec and Test. 
+            // If a transition is of the following format : 
+            // "if (Sec_isPresent && count < 6) then ..."
+            // Then we add a still move using TokenTestConsume! synchronizer to the 
+            // FSMActor: with the condition (TokenTestConsume! && count >= 6).
+
             bean._moduleDescription.append("    when ?Token"
                     + signalName.trim() + "Consume (t>=0) may  goto "
                     + actor.getName().trim() + "_Port_" + signalName.trim()
@@ -2886,11 +2849,11 @@ public class REDUtility {
             }
         }
 
-        /* Print out all these states
-         * Note that with model conversion, we need to create an additional initial state
-         * which changes every constraint of (t>0) in the edge to (t>=0). This is because
-         * for the initial state, it is OK to fire at time equals to 0.
-         */
+        // Print out all these states
+        // Note that with model conversion, we need to create an additional initial state
+        // which changes every constraint of (t>0) in the edge to (t>=0). This is because
+        // for the initial state, it is OK to fire at time equals to 0.
+
         Iterator<State> ite = frontier.iterator();
         while (ite.hasNext()) {
             State state = (State) ite.next();
@@ -2927,33 +2890,25 @@ public class REDUtility {
                                 }
                             } else if (transition._preCondition.toString()
                                     .trim().equalsIgnoreCase("")) {
-                                if (transition._hasSignal == true) {
-                                    bean._moduleDescription.append("    when "
-                                            + transition._signal.toString()
-                                            + " (t>=0) may "
-                                            + transition._postCondition
-                                                    .toString() + " t=0; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                                } else {
-                                    // It can be triggered by any signal arrival
-                                }
+
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString()
+                                        + " (t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
 
                             } else {
-                                if (transition._hasSignal == true) {
-                                    bean._moduleDescription.append("    when "
-                                            + transition._signal.toString()
-                                            + " ("
-                                            + transition._preCondition
-                                                    .toString()
-                                            + " && t>=0) may "
-                                            + transition._postCondition
-                                                    .toString() + " t=0; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                                } else {
 
-                                }
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString() + " ("
+                                        + transition._preCondition.toString()
+                                        + " && t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
 
                             }
                         } else if (transition._postCondition.toString().trim()
@@ -2978,44 +2933,34 @@ public class REDUtility {
                                 }
                             } else if (transition._preCondition.toString()
                                     .trim().equalsIgnoreCase("")) {
-                                if (transition._hasSignal == true) {
-                                    bean._moduleDescription.append("    when "
-                                            + transition._signal.toString()
-                                            + " (t>=0) may "
-                                            + transition._postCondition
-                                                    .toString() + " t=0; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                                } else {
 
-                                }
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString()
+                                        + " (t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
 
                             } else {
-                                if (transition._hasSignal == true) {
-                                    bean._moduleDescription.append("    when "
-                                            + transition._signal.toString()
-                                            + " ("
-                                            + transition._preCondition
-                                                    .toString()
-                                            + "&& t>=0 ) may "
-                                            + transition._postCondition
-                                                    .toString() + " t=0; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                                } else {
-
-                                }
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString() + " ("
+                                        + transition._preCondition.toString()
+                                        + "&& t>=0 ) may "
+                                        + transition._postCondition.toString()
+                                        + " t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
 
                             }
                         } else {
                             if (transition._preCondition.toString().trim()
                                     .equalsIgnoreCase("true")) {
-                                /* When the precondition is true, then any arrival of tokens can trigger the transition. */
+                                // When the precondition is true, then any arrival of tokens can trigger the transition. 
                                 Iterator<IOPort> it2 = actor.inputPortList()
                                         .iterator();
                                 while (it2.hasNext()) {
                                     String signalName = it2.next().getName();
-
                                     bean._moduleDescription.append("    when "
                                             + transition._signal.toString()
                                             + "?ND_"
@@ -3029,43 +2974,27 @@ public class REDUtility {
                                 }
                             } else if (transition._preCondition.toString()
                                     .trim().equalsIgnoreCase("")) {
-                                if (transition._hasSignal == true) {
-                                    bean._moduleDescription.append("    when "
-                                            + transition._signal.toString()
-                                            + " (t>=0) may "
-                                            + transition._postCondition
-                                                    .toString()
-                                            + " ; t=0; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                                } else {
-
-                                }
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString()
+                                        + " (t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " ; t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
 
                             } else {
-                                if (transition._hasSignal == true) {
-                                    bean._moduleDescription.append("    when "
-                                            + transition._signal.toString()
-                                            + " ("
-                                            + transition._preCondition
-                                                    .toString()
-                                            + " && t>=0) may "
-                                            + transition._postCondition
-                                                    .toString()
-                                            + " ; t=0; goto "
-                                            + transition._newState.toString()
-                                            + " ;\n");
-                                } else {
-
-                                }
-
+                                bean._moduleDescription.append("    when "
+                                        + transition._signal.toString() + " ("
+                                        + transition._preCondition.toString()
+                                        + " && t>=0) may "
+                                        + transition._postCondition.toString()
+                                        + " ; t=0; goto "
+                                        + transition._newState.toString()
+                                        + " ;\n");
                             }
                         }
 
-                    } else {
-
                     }
-
                 }
                 bean._moduleDescription.append("} \n");
             }
@@ -3183,18 +3112,17 @@ public class REDUtility {
 
     private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
             BoundedBufferNondeterministicDelay delayedActor,
-            String inputSignalName, String outputSignalName,
-            int numOfListeningFSMActor) throws IllegalActionException {
+            String inputSignalName, String outputSignalName)
+            throws IllegalActionException {
         // If we expect to convert a TimedDelayedActor into a timed automata,
         // we need to have the following information from the
         // BoundedBufferTimedDelay actor:
         // (1) delay time:
         // (2) size of buffer:
-        //
+
         // Also, we need to retrieve the information for the name of
         // input and output signals. These (inputSignalName, outputSignalName)
         // should be analyzed by callers and pass to this function.
-        //
 
         // Retrieve parameters from clockActors
         double delay = ((DoubleToken) delayedActor.delay.getToken())
@@ -3270,7 +3198,6 @@ public class REDUtility {
                                     + String.valueOf(newStateContent) + "; \n");
                             clockAssigned = true;
                         }
-
                     } else {
                         if (StateClockConstraint.toString()
                                 .equalsIgnoreCase("")) {
@@ -3340,8 +3267,7 @@ public class REDUtility {
      */
     private static REDSingleEntityBean _translateBBTimedDelayedActor(
             BoundedBufferTimedDelay delayedActor, String inputSignalName,
-            String outputSignalName, int numOfListeningFSMActor)
-            throws IllegalActionException {
+            String outputSignalName) throws IllegalActionException {
 
         // If we expect to convert a BoundedBufferTimedDelayedActor into a timed
         // automata,
@@ -3526,7 +3452,7 @@ public class REDUtility {
      */
     private static REDSingleEntityBean _translateTimedDelayedActor(
             TimedDelay delayedActor, String inputSignalName,
-            String outputSignalName, int numOfListeningFSMActor, int bufferSize)
+            String outputSignalName, int bufferSize)
             throws IllegalActionException {
 
         // If we expect to convert a TimedDelayedActor into a timed
@@ -3753,7 +3679,7 @@ public class REDUtility {
         private StringBuffer _preCondition = new StringBuffer("");
         private StringBuffer _postCondition = new StringBuffer("");
         private StringBuffer _newState = new StringBuffer("");
-        private boolean _hasSignal = false;
+        // private boolean _hasSignal = false;
         private boolean _isComplementaryEdge = false;
         private HashSet<String> _signalSet = new HashSet<String>();
         private ArrayList<String> _complementedCondition = new ArrayList<String>();
