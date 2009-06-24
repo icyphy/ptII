@@ -38,7 +38,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
@@ -211,7 +210,7 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(CodeGeneratorHelper.generateName(_director
+        code.append(ProgramCodeGeneratorAdapterStrategy.generateName(_director
                 .getContainer()) + "();" + _eol);
 
         return code.toString();
