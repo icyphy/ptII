@@ -1318,8 +1318,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/eclipse/ast \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
-	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
-	$(REMOTE1PTIIDIST)/ptolemy/cg/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/kernel \
@@ -1364,6 +1362,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib/vhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
