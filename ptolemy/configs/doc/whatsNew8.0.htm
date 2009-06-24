@@ -343,8 +343,94 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 <h2><a name="other">Other Key New Capabilities</a></h2>
 <ul>
-<li> <!-- FIXME -->ptolemy.data.properties
- <br>(Jackie Man-kit Leung)
+
+<h3> Property System</h3>
+<ul>
+  <li> <a href="../../../ptolemy/data/properties/demo/CarTracking/CarTracking.xml">CarTracking</a> (Simple dimension analysis)</li>
+  <li> <a href="../../../ptolemy/data/properties/demo/ConstNonconst/ConstNonconst.xml">ConstNonconst</a> (Constant propagation)</li>
+  <li> <a href="../../../ptolemy/data/properties/demo/LogicalAND/LogicalAND.xml">LogicalAND</a> </li>
+  <li> <a href="../../../ptolemy/data/properties/demo/LogicalOrBackward/LogicalOrBackward.xml">LogicalOrBackward</a> </li>
+  <li> <a href="../../../ptolemy/data/properties/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> (With the ModelAnalysis workflow actor)</li>
+  <li> <a href="../../../ptolemy/data/properties/demo/Sinewave/Sinewave.xml">Sinewave</a> (With custom PropertyLattice)</li>
+  <li> <a href="../../../ptolemy/data/properties/demo/Workflow/Workflow.xml">Workflow</a> (Workflow combined with GT)</li>
+</ul>
+
+<p>The property system is designed the help model builders to extract 
+semantical information from a model. The information is often specific
+to some particular domain of knowledge. Thus, the analysis to infer this information
+requires the customizations specified by the model builder. The Ptolemy II property system allows
+a model builder to input the specifications for a particular analysis. It then
+automatically infers property values (semantical information) and check the consistency
+of these values in a model.
+
+
+<p>The property system is a generalization of the Ptolemy II type system.
+We consider each port as a taggable object that can be tagged with property 
+values. Given a specific ontology, the tool assigns one unique property value to
+each taggable object. To use the analysis tool, we pass to it as input a
+property lattice, a set of inequality constraints and solver parameters. The 
+property lattice defines the relationships and concepts within a
+particular ontology. The tool provides an simple editor for constructing,
+naming, and storing such lattices as persistent objects that can be reused 
+across multiple models. The set of inequality constraints is specified 
+through property adapters which are actor-specific objects. The property solver 
+instantiates the adaptor objects required in the model and gathers from them 
+the set of constraints. The solver parameters allow configuration of the 
+solving strategy and the default constraints used by the solver if the 
+adaptors do not override them.
+
+
+<p>A property lattice is complete partial order (CPO) data structure. It consists 
+of properties and their relationships. A property is an element in the lattice, 
+and a relationship between two concepts is represented by a directed edge that 
+connects them. For example, a simple type lattice models the representation 
+relationship between different data types. Each child element is fully 
+expressible by its parent if there is an edge connecting 
+the two. For example, a edge going from Int to Double specifies that Int can be 
+converted losslessly to Double. An element may have multiple parents and children 
+as long as there is an unique least upper bound (LUB) element and a greatest 
+lower bound (GLB) element for every subset of elements.
+
+
+<p>The lattice specification can be generalized and used to specify a variety of 
+other relationships as well. For example, we can use a linear lattice to model
+the relationship between signal behaviors, 
+where we have Unknown (Bottom) -> Const -> Nonconst (Top).
+From an analysis perspective, their relationship is a subset relationship where 
+the parent contains more information than its child. These information are combined 
+during the analysis. In this case, every signal starts off with the property value 
+Unknown (the bottom value) which describes a signal to carry no known values. As 
+we traverse the model, we may discover more information. A signals may become 
+<i>Const</i> after we learn that it carries one known value, while tagging a signal with 
+<i>Nonconst</i> means it carries many values throughout its lifetime. The containment 
+relationship is a special case of the inheritance relationship popular in software 
+modeling.
+
+ 
+<p>The inference algorithm solves for the least solution that satisfies a set of 
+inequality constraints defined over a lattice. It 
+scales linearly with respects to the number of inequality constraints. The 
+inference solver systematically initializes and repeatedly updates property 
+variables until it finds a fixed-point solution. The process is equivalent to 
+performing fixed-point evaluation on a monotonic function. Thus, solution 
+uniqueness is guaranteed. In addition, the algorithm is decideable if we 
+restrict to using finite property lattices.
+
+ 
+<p>An inequality constraint describes the relationship between properties of taggable 
+objects. The inference engine infers the unspecified properties based on the set 
+of the constraints specific to the model. The meaning of these constraints is 
+coupled with the ontology definition. For example, in the type system lattice, a 
+constraint is used to express sub-typing relationship (e.g. Actor A's output type 
+is greater than or equal to its input type). A constraint is used to constrain the 
+value of a property variable, the property of a taggable object. We can add a 
+constraint to any taggable object through the PropertyConstraintHelper public interface 
+which provides the <i>setEquals()</i> and <i>setAtLeast()</i> methods.
+
+ <br>(Jackie Man-Kit Leung)
+ 
+ <p>
+ 
 <li> <!-- FIXME -->modal
  <br>(Edward A. Lee)
 
