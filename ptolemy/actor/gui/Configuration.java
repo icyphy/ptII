@@ -44,7 +44,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -236,8 +235,13 @@ public class Configuration extends CompositeEntity implements
                   RemoveGraphicalClasses filter needs to not use a static
                   block to add its default filters.
                   -chad
+                  
+                  Remark Bert Rodiers:
+                  If we don't call clear all graphical classes are always removed.
+                  This is not want we want since it makes most Ptolemy models unusable.
+                  Reverted this change temporarily until we have a definite fix.
                 */
-                //removeGraphicalClassesFilter.clear();
+                removeGraphicalClassesFilter.clear();
                 momlFilters.add(removeGraphicalClassesFilter);
             }
 
