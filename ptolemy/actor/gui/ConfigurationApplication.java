@@ -193,7 +193,7 @@ public class ConfigurationApplication implements ExecutionListener {
         // that if we get an error in parseArgs() we will get a graphical
         // stack trace.   Such an error could be caused by specifying a model
         // as a command line argument and the model has an invalid parameter.
-        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+        MessageHandler.setMessageHandler(new /*Graphical*/MessageHandler());
 
         // Even if the user is set up for foreign locale, use the US locale.
         // This is because certain parts of Ptolemy (like the expression

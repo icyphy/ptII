@@ -116,6 +116,7 @@ public class MoMLApplication extends ConfigurationApplication {
      */
     public MoMLApplication(String basePath, String[] args) throws Exception {
         super(basePath, args);
+        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
     }
 
     /** Set the look and feel to the native look and feel.
