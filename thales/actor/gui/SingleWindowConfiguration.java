@@ -60,10 +60,23 @@ import thales.vergil.SingleWindowApplication;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SingleWindowConfiguration extends Configuration {
-    /**
+    /** Construct an instance in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  Add the instance to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  Note that there is no constructor that takes a container
+     *  as an argument; a Configuration is always
+     *  a top-level entity (this is enforced by the setContainer()
+     *  method).
      * @param workspace
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this entity.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
-    public SingleWindowConfiguration(Workspace workspace) {
+    public SingleWindowConfiguration(Workspace workspace)
+	throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
