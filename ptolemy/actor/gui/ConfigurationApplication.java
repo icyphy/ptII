@@ -141,7 +141,7 @@ to something safe to in an XML file.
  Derived classes can specify a configuration that opens some
  welcome window, or a blank editor.
 
- <p> This class read the following parameters from the configuration
+ <p> This class read the following parameters from the configuration:
  <dl>
  <dt> <code>_applicationInitializer</code>
  <dd> A StringParameter that names a class to be instantiated.
@@ -151,29 +151,6 @@ to something safe to in an XML file.
          class="ptolemy.data.expr.StringParameter"
          value="org.kepler.gui.KeplerInitializer"/&lt;
 </pre> 
-
- <dt> <code>_classesToRemove</code>
-
- <dd> An Parameter that is an array of Strings where each element
- names a class to be removed.  Kepler uses this parameter to remove
- certain classes:
-
- <pre>
- &lt;property name="_classesToRemove" class="ptolemy.data.expr.Parameter"
-   value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;}"&gt;
-  	   &lt;doc&gt;An array of Strings, where each element names a class to be
-removed by the MoMLFilter.&lt;/doc&gt;
- &gt;/property&gt;
- </pre>
-
- <dt> <code>_removeGraphicalClasses</code>
-
- <dd> A Parameter that if set to true adds {@link
- ptolemy.moml.filter.RemoveGraphicalClasses} to the list of
- MoMLFilters.  Use this to run non-graphical classes.  Note that
- setting this parameter and using MoMLApplication is not likely to
- work as MoMLApplication sets the look and feel which invokes the
- graphical system.
 
  </dl>
 
@@ -1110,43 +1087,6 @@ public class ConfigurationApplication implements ExecutionListener {
             _configuration = _createDefaultConfiguration();
         } else {
             _configuration = _createEmptyConfiguration();
-        }
-
-        if (_configuration != null) {
-            // If the configuration has a _classesToRemove attribute,
-            // then set a MoMLFilter to remove those classes.  This
-            // is used by Ptiny and Kepler to avoid the Code Generator.
-            Parameter classesToRemoveParameter = (Parameter) _configuration.getAttribute("_classesToRemove");
-
-            if (classesToRemoveParameter != null) {
-                ArrayToken classesToRemoveToken = (ArrayToken) classesToRemoveParameter.getToken();
-                // We use RemoveGraphicalClasses here to remove these
-                // classes.
-                // FIXME: this could cause problem with RemoveGraphicalClasses
-                // elsewhere, but usually we run w/o _classesToRemove
-                RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
-
-                RemoveGraphicalClasses.clear();
-                // _classesToRemove is an array of Strings where each element
-                // names a class to be added to the MoMLFilter for removal.
-                for (int i = 0; i < classesToRemoveToken.length(); i++) {
-                    String classNameToRemove = ((StringToken) classesToRemoveToken
-                                                .getElement(i)).stringValue();
-                    filter.put(classNameToRemove, null);
-                }
-                MoMLParser.addMoMLFilter(filter);
-            }
-
-            // If there is a "_removeGraphicalClasses" parameter, then
-            // add RemoveGraphicalClasses to the list of MoMLFilters.
-            Parameter removeGraphicalClassesParameter = (Parameter) _configuration.getAttribute("_removeGraphicalClasses");
-                
-            if (removeGraphicalClassesParameter != null
-                    && removeGraphicalClassesParameter.getValueAsString()
-                    .equals("true")) {
-                RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
-                MoMLParser.addMoMLFilter(filter);
-            }
         }
 
         for (int i = 0; i < args.length; i++) {

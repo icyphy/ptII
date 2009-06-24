@@ -42,9 +42,15 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test ConfigurationApplication-1.0 {test reading MoML file} {
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::new java.util.LinkedList]
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    set filterSize [[java::call ptolemy.moml.MoMLParser getMoMLFilters] size]
     set cmdArgs [java::new {java.lang.String[]} 2 \
             {{ptolemy/actor/gui/test/testConfiguration.xml} {test.xml}}]
     set app [java::new ptolemy.actor.gui.ConfigurationApplication $cmdArgs]
-    list {}
-    # success is just not throwing an exception.
-} {{}}
+    set newFilterSize [[java::call ptolemy.moml.MoMLParser getMoMLFilters] size]
+
+    puts "test 1.0: filterSize: $filterSize, newFilterSize: $newFilterSize"
+    # There should be one more filter.
+    list [expr {$filterSize == $newFilterSize -1}]
+} {1}

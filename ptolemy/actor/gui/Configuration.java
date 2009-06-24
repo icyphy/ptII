@@ -39,7 +39,13 @@ import java.util.Set;
 
 import ptolemy.actor.ApplicationConfigurer;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
@@ -54,6 +60,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLFilter;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -138,13 +147,120 @@ public class Configuration extends CompositeEntity implements
      *  method).
      *  @param workspace The workspace that will list the entity.
      */
-    public Configuration(Workspace workspace) {
+    public Configuration(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _configurations.add(this);
+        classesToRemove = new Parameter(this, "_classesToRemove",
+                new ArrayToken(BaseType.STRING));
+        //classesToRemove.setTypeEquals(new ArrayType(BaseType.STRING));
+
+        removeGraphicalClasses = new Parameter(this, "_removeGraphicalClasses",
+                BooleanToken.FALSE);
+        removeGraphicalClasses.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+
+    /** A Parameter that is an array of Strings where each element
+     *  names a class to be removed.  The initial default value is
+     *  an array with an empty element.
+     *  <p> Kepler uses this parameter to remove certain classes:
+     *  <pre>
+     *  &lt;property name="_classesToRemove" class="ptolemy.data.expr.Parameter"
+     *  value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;}"&gt;
+     *      &lt;doc&gt;An array of Strings, where each element names a class
+     *  to removed by the MoMLFilter.&lt;/doc&gt;
+     *   &gt;/property&gt;
+     *  </pre>
+     */
+    public Parameter classesToRemove;
+    
+    /** A Parameter that if set to true adds {@link
+     * ptolemy.moml.filter.RemoveGraphicalClasses} to the list of
+     * MoMLFilters.  Use this to run non-graphical classes.  Note that
+     * setting this parameter and using MoMLApplication is not likely
+     * to work as MoMLApplication sets the look and feel which invokes
+     * the graphical system.  The initial value is a boolean with the
+     * value false, indicating that RemoveGraphicalClasses should not
+     * be added to the filter list.
+     */
+    public Parameter removeGraphicalClasses;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == classesToRemove) {
+            // FIXME: There is code duplication here, but
+            // combining the code caused problems because getting
+            // calling getToken() on the other attribute resulted in
+            // attributeChanged() being called for the other token
+            // which caused rentry problems.  Basically, we ended
+            // up with two RemoveGraphicalClasses filters in the list.
+
+            // We use RemoveGraphicalClasses to remove these classes.
+
+            // Find the RemoveGraphicalClasses element, if any.
+            RemoveGraphicalClasses removeGraphicalClassesFilter = null;
+            List momlFilters = MoMLParser.getMoMLFilters();
+            Iterator filters = momlFilters.iterator();
+            while (filters.hasNext()) {
+                MoMLFilter filter = (MoMLFilter)filters.next();
+                if (filter instanceof RemoveGraphicalClasses) {
+                    removeGraphicalClassesFilter = (RemoveGraphicalClasses)filter;
+                    break;
+                }
+            } 
+
+            // Get the token
+            ArrayToken classesToRemoveToken = (ArrayToken)classesToRemove.getToken();
+            if (removeGraphicalClassesFilter == null) {
+                // We did not find a RemoveGraphicalClasses, so create one.
+                removeGraphicalClassesFilter = new RemoveGraphicalClasses();
+                removeGraphicalClassesFilter.clear();
+                momlFilters.add(removeGraphicalClassesFilter);
+            }
+
+            // _classesToRemove is an array of Strings where each element
+            // names a class to be added to the MoMLFilter for removal.
+            for (int i = 0; i < classesToRemoveToken.length(); i++) {
+                String classNameToRemove = ((StringToken) classesToRemoveToken
+                        .getElement(i)).stringValue();
+                removeGraphicalClassesFilter.put(classNameToRemove, null);
+            }
+        
+            MoMLParser.setMoMLFilters(momlFilters);
+        } else if (attribute == removeGraphicalClasses) {
+
+            // Find the RemoveGraphicalClasses element, if any 
+            RemoveGraphicalClasses removeGraphicalClassesFilter = null;
+            List momlFilters = MoMLParser.getMoMLFilters();
+            Iterator filters = momlFilters.iterator();
+            while (filters.hasNext()) {
+                MoMLFilter filter = (MoMLFilter)filters.next();
+                if (filter instanceof RemoveGraphicalClasses) {
+                    removeGraphicalClassesFilter = (RemoveGraphicalClasses)filter;
+                    break;
+                }
+            } 
+            // Get the token
+            ArrayToken classesToRemoveToken = (ArrayToken)classesToRemove.getToken();
+            if (removeGraphicalClassesFilter == null) {
+                // We did not find a RemoveGraphicalClasses, so create one.
+                removeGraphicalClassesFilter = new RemoveGraphicalClasses();
+                momlFilters.add(removeGraphicalClassesFilter);
+            }
+        }
+        super.attributeChanged(attribute);
+    }
 
     /** Check the configuration for common style problems.
      *  @return HTML describing the problems
