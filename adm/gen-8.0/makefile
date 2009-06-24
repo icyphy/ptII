@@ -1499,6 +1499,15 @@ jsalldirs_check:
 	@sh $(PTIIHOME)/adm/bin/jsalldirs_check $(REMOTE1PTIIDIST) $(JSALLDIRS)
 
 # Remove the JavaScope instrumentation
+# Directories in which we should run jsrestore
+# We do this by running jsinstr instead of running make because some
+# of the backtrack directories do not have makefiles.
+JSCLEANUPDIRS = \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/actor/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/math \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib
+
 remote1distjsrestore:
 	@echo "#"
 	@echo "# Now running make jsrestore in $(REMOTE1PTIIDIST)"
@@ -1518,9 +1527,20 @@ remote1distjsrestore:
 		    fi ; \
 		done ; \
 	fi
-	( cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
-		echo making jsrestore in ptolemy/copernicus/applet ; \
-		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
+	set $(JSCLEANUPDIRS); \
+	for x do \
+	    if [ -w $$x ] ; then \
+		( cd $$x ; \
+		echo running jsrestore in $$x ; \
+		jsrestore *.java; \
+		if [ -d jsoriginal ]; then \
+			rm -f jsoriginal/README; \
+			rmdir jsoriginal; \
+		fi; \
+		rm -f *.class; \
+		);  \
+	    fi ; \
+	done ; \
 
 # Build the docs
 remote1doc:
