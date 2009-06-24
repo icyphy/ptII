@@ -146,6 +146,10 @@ public class Configuration extends CompositeEntity implements
      *  a top-level entity (this is enforced by the setContainer()
      *  method).
      *  @param workspace The workspace that will list the entity.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this entity.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public Configuration(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
