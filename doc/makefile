@@ -185,6 +185,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.cg.lib \
@@ -194,8 +195,10 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib \
 	ptolemy.cg.gui \
 	ptolemy.cg.kernel.generic \
 	ptolemy.cg.kernel.generic.html \
@@ -266,6 +269,7 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.java.actor.lib.colt \
 	ptolemy.codegen.java.actor.lib.conversions \
 	ptolemy.codegen.java.actor.lib.embeddedJava \
+	ptolemy.codegen.java.actor.lib.gui \
 	ptolemy.codegen.java.actor.lib.hoc \
 	ptolemy.codegen.java.actor.lib.logic \
 	ptolemy.codegen.java.actor.lib.string \
