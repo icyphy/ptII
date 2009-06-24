@@ -255,6 +255,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
             } else {
                 // FIXME: need to deal with other types
             }
+            
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 String portNameWithChannelNumber = portName;
                 if (outputPort.isMultiport()) {
@@ -571,7 +572,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
                 code.append("static ");
                 code.append(targetType(portType));
-                getStrategy();
+                //getStrategy();
                 code.append(" " + ProgramCodeGeneratorAdapterStrategy.getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
@@ -580,7 +581,8 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                         .getTokenConsumptionRate(channel.port));
 
                 if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
+                    //code.append("[" + bufferSize + "]");
+                    code.append("[] = new "+ targetType(portType) + "[" + bufferSize + "]");
                 }
                 code.append(";" + _eol);
             }
