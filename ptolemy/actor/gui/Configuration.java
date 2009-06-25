@@ -256,6 +256,10 @@ public class Configuration extends CompositeEntity implements
             MoMLParser.setMoMLFilters(momlFilters);
         } else if (attribute == removeGraphicalClasses) {
 
+            /* REMARK Bert Rodiers:
+             *  Put this section in comments temporarily since it breaks
+             *  existing Ptolemy models that have graphical classes. 
+             
             // Find the RemoveGraphicalClasses element, if any 
             RemoveGraphicalClasses removeGraphicalClassesFilter = null;
             List momlFilters = MoMLParser.getMoMLFilters();
@@ -274,6 +278,7 @@ public class Configuration extends CompositeEntity implements
                 removeGraphicalClassesFilter = new RemoveGraphicalClasses();
                 momlFilters.add(removeGraphicalClassesFilter);
             }
+            */
         }
         super.attributeChanged(attribute);
     }
