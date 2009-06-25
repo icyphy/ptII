@@ -30,7 +30,8 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $PTII/doc/coding/testing.html for more information.
+# This file is called _Configuration.tcl so that it runs first, before
+# other classes start messing with the filters
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
