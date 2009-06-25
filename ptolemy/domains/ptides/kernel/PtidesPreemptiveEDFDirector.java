@@ -97,7 +97,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
     protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
         if (events.get(0) != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
             throw new IllegalActionException("The event to get is not the event pointed " +
-                        "to by peeking index.");
+                        "to by peeking index." + ", size " + events.size() + ", peek " + _peekingIndex);
         }
         // take from the event queue all the events from the event queue starting
         // for _peekingIndex. Here we assume _peekingIndex is the index of the smallest
@@ -165,7 +165,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
 
             // The event from queue needs to be safe to process AND has smaller deadline.
             if (_safeToProcess(event)) {
-                Time absNextDeadline = event.timeStamp().add(_getRelativeDeadline(port));
+                Time absNextDeadline = _getAbsoluteDeadline(event);
                 if (absNextDeadline.compareTo(smallestDeadline) < 0) {
                     smallestDeadline = absNextDeadline;
                     _eventToProcess = event;

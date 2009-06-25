@@ -501,7 +501,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Override the base class to not set model time to that of the
      *  enclosing director. This method always returns true, deferring the
      *  decision about whether to fire an actor to the fire() method.
-     *  @return True. 
+     *  @return True.
      */
     public boolean prefire() {
         // Do not invoke the superclass prefire() because that
@@ -932,14 +932,8 @@ public class PtidesBasicDirector extends DEDirector {
     protected Time _getAbsoluteDeadline(DEEvent event) throws IllegalActionException {
         IOPort port = event.ioPort();    
         if (port == null) {
-            List<IOPort> inputPortList = event.actor().inputPortList();
-            if (inputPortList.size() == 0) {
-                throw new IllegalActionException("When getting the deadline for " +
-                        "a pure event at " + event.actor() + ", this actor" +
-                        "does not have an input port, thus" +
-                "unable to get relative deadline");
-            }
-            port = inputPortList.get(0);
+            // event is a pure event. So it always has the smallest deadline.
+            return Time.NEGATIVE_INFINITY;
         }
         return event.timeStamp().add(_getRelativeDeadline(port));
     }
@@ -1010,6 +1004,20 @@ public class PtidesBasicDirector extends DEDirector {
         "    <property name=\"height\" value=\"30\"/>" +
         "    <property name=\"fillColor\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>" +
         "  </property>";
+    }
+    
+    /** Returns the executionTime parameter.
+     *  @param port
+     *  @return executionTime parameter
+     *  @throws IllegalActionException
+     */
+    protected double _getExecutionTime(IOPort port) throws IllegalActionException {
+        Double result = PtidesActorProperties.getExecutionTime(port);
+        if (result != null) {
+            return result;
+        } else {
+            return PtidesActorProperties.getExecutionTime((Actor)port.getContainer());
+        }
     }
 
     /** Return a MoML string describing the icon appearance for an idle
@@ -1202,7 +1210,12 @@ public class PtidesBasicDirector extends DEDirector {
 
         Actor actorToFire = _getNextActorToFireForTheseEvents(eventsToProcess);
 
-        Time executionTime = new Time(this, PtidesActorProperties.getExecutionTime(actorToFire));
+        IOPort ioport = eventFromQueue.ioPort();
+        if (ioport == null) {
+            List<IOPort> inPortList = eventFromQueue.actor().inputPortList();
+            ioport = inPortList.get(0);
+        }
+        Time executionTime = new Time(this, _getExecutionTime(ioport));
 
         if (executionTime.compareTo(_zero) == 0 ) {
             // If execution time is zero, return the actor.
@@ -1333,20 +1346,6 @@ public class PtidesBasicDirector extends DEDirector {
             return ((DoubleToken)parameter.getToken()).doubleValue();
         } else {
             return 0.0;
-        }
-    }
-
-    /** Returns the relativeDeadline parameter.
-     *  @param port The port the relativeDeadline is associated with.
-     *  @return relativeDeadline parameter
-     *  @throws IllegalActionException
-     */
-    protected double _getRelativeDeadline(IOPort port) throws IllegalActionException {
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("relativeDeadline");
-        if (parameter != null) {
-            return ((DoubleToken)parameter.getToken()).doubleValue();
-        } else {
-            return Double.POSITIVE_INFINITY;
         }
     }
 
@@ -1802,6 +1801,20 @@ public class PtidesBasicDirector extends DEDirector {
         return smallestDependency.timeValue();
     }
 
+    /** Returns the relativeDeadline parameter.
+     *  @param port The port the relativeDeadline is associated with.
+     *  @return relativeDeadline parameter
+     *  @throws IllegalActionException
+     */
+    private double _getRelativeDeadline(IOPort port) throws IllegalActionException {
+        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("relativeDeadline");
+        if (parameter != null) {
+            return ((DoubleToken)parameter.getToken()).doubleValue();
+        } else {
+            return Double.NEGATIVE_INFINITY;
+        }
+    }
+    
     /** check if the port is a networkPort
      *  this method is default to return false, i.e., an output port to the outside of the
      *  platform is by default an actuator port.

@@ -147,6 +147,40 @@ public class PtidesActorProperties {
                     + ((NamedObj) actor).getAttribute("_executionTime"));
         }
     }
+    
+
+    /** Return the execution time of the port or the worst case
+     *  execution time if no execution time is specified, or
+     *  null if neither is specified.
+     *  @param actor The actor for which the execution time is
+     *   requested.
+     *  @return The execution time.
+     *  @exception IllegalActionException If there is an _executionTime
+     *   attribute, but either it is not a Parameter of type double
+     *   or it has as its value an expression that cannot be evaluated.
+     */
+    public static Double getExecutionTime(IOPort port)
+            throws IllegalActionException {
+        // FIXME: Make the other methods in this class look like this one.
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) port)
+                    .getAttribute("_executionTime");
+
+            if (parameter != null) {
+                DoubleToken token = (DoubleToken) parameter.getToken();
+
+                return token.doubleValue();
+            } else {
+                return getWCET(port);
+            }
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(port,
+                    "Actor has an attribute _executionTime, but "
+                    + "it is not a Parameter or its value is not"
+                    + " a double. It is: "
+                    + ((NamedObj) port).getAttribute("_executionTime"));
+        }
+    }
 
     /**
      * Return the worst case execution time of the actor or 0 if no worst case
@@ -180,6 +214,34 @@ public class PtidesActorProperties {
         }
     }
 
+    /**
+     * Return the worst case execution time of the port or null if no worst case
+     * execution time was specified.
+     *
+     * @param actor
+     *            The actor for which the worst case execution time is
+     *            requested.
+     * @return The worst case execution time.
+     */
+    public static Double getWCET(IOPort port) {
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) port)
+                    .getAttribute("WCET");
+
+            if (parameter != null) {
+                DoubleToken token = (DoubleToken) parameter.getToken();
+
+                return token.doubleValue();
+            } else {
+                return null;
+            }
+        } catch (ClassCastException ex) {
+            return null;
+        } catch (IllegalActionException ex) {
+            return null;
+        }
+    }
+    
     /**
      * Returns the priority of the actor. The priority is an int value. The
      * default return value is 0.
