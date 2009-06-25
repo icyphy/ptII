@@ -130,7 +130,7 @@ public class PtidesActorProperties {
         // FIXME: Make the other methods in this class look like this one.
         try {
             Parameter parameter = (Parameter) ((NamedObj) actor)
-                    .getAttribute("_executionTime");
+                    .getAttribute("executionTime");
 
             if (parameter != null) {
                 DoubleToken token = (DoubleToken) parameter.getToken();
@@ -164,7 +164,7 @@ public class PtidesActorProperties {
         // FIXME: Make the other methods in this class look like this one.
         try {
             Parameter parameter = (Parameter) ((NamedObj) port)
-                    .getAttribute("_executionTime");
+                    .getAttribute("executionTime");
 
             if (parameter != null) {
                 DoubleToken token = (DoubleToken) parameter.getToken();
