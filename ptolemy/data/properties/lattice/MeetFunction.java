@@ -1,35 +1,29 @@
-/* A class that represents a meet function term.
-
- Copyright (c) 1998-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
-
+/*
+ * A class that represents a meet function term.
+ * 
+ * Copyright (c) 1998-2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ * 
  */
 package ptolemy.data.properties.lattice;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -42,20 +36,18 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MeetFunction
 
 /**
- A class that represents the property term of a meet function.
- A meet function is defined to return the least upper bound values
- of all its inputs, assuming the inputs are elements from a common
- lattice.
-
- @author Man-Kit Leung
- @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
+ * A class that represents the property term of a meet function. A meet function
+ * is defined to return the least upper bound values of all its inputs, assuming
+ * the inputs are elements from a common lattice.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 
-public class MeetFunction
-    extends MonotonicFunction {
+public class MeetFunction extends MonotonicFunction {
 
     public MeetFunction(PropertyConstraintSolver solver, List<Object> objects) {
         this(solver, objects.toArray());
@@ -65,7 +57,7 @@ public class MeetFunction
         this(solver, objects.toArray());
     }
 
-    public MeetFunction(PropertyConstraintSolver solver, Object ... objects) {
+    public MeetFunction(PropertyConstraintSolver solver, Object... objects) {
         _solver = solver;
         for (Object object : objects) {
             _terms.add(_solver.getPropertyTerm(object));
@@ -83,57 +75,28 @@ public class MeetFunction
         _terms.addAll(variables);
     }
 
-
-    /** Return the function result.
-     *  @return A Property.
+    /**
+     * Return the function result.
+     * @return A Property.
      * @exception IllegalActionException
      */
+    @Override
     public Object getValue() throws IllegalActionException {
         Property meetValue = null;
         Property termValue = null;
 
-
-        Iterator iterator = _terms.iterator();
-
-        while (iterator.hasNext()) {
-
-            PropertyTerm term = (PropertyTerm) iterator.next();
-
+        for (PropertyTerm term : _terms) {
             if (term.isEffective()) {
                 termValue = (Property) term.getValue();
 
-                meetValue = (meetValue == null) ? termValue :
-                    _solver.getLattice().greatestLowerBound(meetValue, termValue);
+                meetValue = meetValue == null ? termValue : _solver
+                        .getLattice().greatestLowerBound(meetValue, termValue);
             }
         }
         return meetValue;
     }
 
-    /** Return the variables in this term. If the property of the input port
-     *  is a variable, return a one element array containing the
-     *  InequalityTerm of that port; otherwise, return an array of zero
-     *  length.
-     *  @return An array of InequalityTerm.
-     */
-    public InequalityTerm[] getVariables() {
-        ArrayList<InequalityTerm> result = new ArrayList<InequalityTerm>();
-
-        Iterator iterator = _terms.iterator();
-        while (iterator.hasNext()) {
-
-            PropertyTerm term = (PropertyTerm) iterator.next();
-
-            if (term.isSettable()) {
-                result.addAll(Arrays.asList(term.getVariables()));
-            }
-        }
-
-        InequalityTerm[] array = new InequalityTerm[result.size()];
-        System.arraycopy(result.toArray(), 0, array, 0, result.size() );
-
-        return  array;
-    }
-
+    @Override
     public InequalityTerm[] getConstants() {
         // Findbugs: Impossible cast from Object[] to
         // ptolemy.graph.InequalityTerm[] in
@@ -142,20 +105,18 @@ public class MeetFunction
         return new InequalityTerm[0];
     }
 
+    @Override
     public String toString() {
         String result = "meet(";
 
-        Iterator<PropertyTerm> terms = _terms.iterator();
-        while (terms.hasNext()) {
-            PropertyTerm term = terms.next();
+        for (PropertyTerm term : _terms) {
             if (term.isEffective()) {
                 result += term;
                 break;
             }
         }
 
-        while (terms.hasNext()) {
-            PropertyTerm term = terms.next();
+        for (PropertyTerm term : _terms) {
             if (term.isEffective()) {
                 result += " /\\ " + term;
             }
@@ -165,12 +126,7 @@ public class MeetFunction
     }
 
     public boolean isEffective() {
-        Iterator iterator = _terms.iterator();
-
-        while (iterator.hasNext()) {
-
-            PropertyTerm term = (PropertyTerm) iterator.next();
-
+        for (PropertyTerm term : _terms) {
             if (term.isEffective()) {
                 return true;
             }
@@ -186,16 +142,15 @@ public class MeetFunction
     ///////////////////////////////////////////////////////////////
     ////                       private inner variable          ////
 
-    private PropertyConstraintSolver _solver;
+    private final PropertyConstraintSolver _solver;
 
-    private List<PropertyTerm> _terms = new LinkedList<PropertyTerm>();
+    private final List<PropertyTerm> _terms = new LinkedList<PropertyTerm>();
 
     @Override
     protected InequalityTerm[] _getDependentTerms() {
-        // TODO Auto-generated method stub
-        return null;
+        InequalityTerm[] terms = new InequalityTerm[_terms.size()];
+        System.arraycopy(_terms.toArray(), 0, terms, 0, _terms.size());
+        return terms;
     }
 
 }
-
-
