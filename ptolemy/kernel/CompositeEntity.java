@@ -2433,8 +2433,9 @@ public class CompositeEntity extends ComponentEntity {
     
     /** Return true if the two specified objects are both derived,
      *  it is the same container above them whose parent-child
-     *  relationship makes them derived, and that container
-     *  is no more than <i>depth1</i> and <i>depth2</i> above them,
+     *  relationship makes them derived, or if one of the containers
+     *  contains the other, and those containers are
+     *  no more than <i>depth1</i> and <i>depth2</i> above them,
      *  respectively.
      *  @param object1 The first object.
      *  @param depth1 The depth of the first object.
@@ -2473,7 +2474,9 @@ public class CompositeEntity extends ComponentEntity {
                     return false;
                 }
             }
-            if (object1Container == object2Container) {
+            if (object1Container == object2Container
+                    || object1Container.deepContains(object2Container)
+                    || object2Container.deepContains(object1Container)) {
                 return true;
             }
         }
