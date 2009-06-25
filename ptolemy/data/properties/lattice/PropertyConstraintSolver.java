@@ -1,30 +1,27 @@
 /*
-Below is the copyright agreement for the Ptolemy II system.
+ * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
 
-Copyright (c) 2007-2009 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ * Copyright (c) 2007-2009 The Regents of the University of California. All
+ * rights reserved.
+ * 
+ * Permission is hereby granted, without written agreement and without license
+ * or royalty fees, to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, provided that the above copyright notice and
+ * the following two paragraphs appear in all copies of this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ */
 /**
- *
+ * 
  */
 package ptolemy.data.properties.lattice;
 
@@ -60,8 +57,6 @@ import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.Configurer;
-import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.domains.properties.kernel.PropertyLatticeAttribute;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
@@ -69,7 +64,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -91,7 +85,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @exception NameDuplicationException
      */
     public PropertyConstraintSolver(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         //latticeClassName = new StringParameter(this, "latticeClassName");
@@ -108,16 +102,19 @@ public class PropertyConstraintSolver extends PropertySolver {
         actorConstraintType = new StringParameter(this, "actorConstraintType");
         actorConstraintType.setExpression("out >= in");
 
-        connectionConstraintType = new StringParameter(this, "connectionConstraintType");
+        connectionConstraintType = new StringParameter(this,
+                "connectionConstraintType");
         connectionConstraintType.setExpression("sink >= src");
 
-        compositeConnectionConstraintType = new StringParameter(this, "compositeConnectionConstraintType");
+        compositeConnectionConstraintType = new StringParameter(this,
+                "compositeConnectionConstraintType");
         compositeConnectionConstraintType.setExpression("sink >= src");
 
         fsmConstraintType = new StringParameter(this, "fsmConstraintType");
         fsmConstraintType.setExpression("sink >= src");
 
-        expressionASTNodeConstraintType = new StringParameter(this, "expressionASTNodeConstraintType");
+        expressionASTNodeConstraintType = new StringParameter(this,
+                "expressionASTNodeConstraintType");
         expressionASTNodeConstraintType.setExpression("parent >= child");
 
         logMode = new Parameter(this, "logMode");
@@ -129,8 +126,10 @@ public class PropertyConstraintSolver extends PropertySolver {
         // In Windows, this should map to C:\temp\, /home/tmp/ in Linux.
         logDirectory.setExpression("$HOME\\temp\\ConstraintFiles");
 
-        trainedConstraintDirectory = new FileParameter(this, "Trained constraint directory");
-        trainedConstraintDirectory.setExpression("$CLASSPATH\\trainedConstraints");
+        trainedConstraintDirectory = new FileParameter(this,
+                "Trained constraint directory");
+        trainedConstraintDirectory
+                .setExpression("$CLASSPATH\\trainedConstraints");
 
         _addChoices();
 
@@ -140,54 +139,34 @@ public class PropertyConstraintSolver extends PropertySolver {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Properties</text></svg>");
 
-        new PropertySolverGUIFactory(
-                this, "_propertyConstraintSolverGUIFactory");
+        new PropertySolverGUIFactory(this,
+                "_propertyConstraintSolverGUIFactory");
 
     }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                     ports and parameters                  ////
-
-    /** The file parameter for the lattice description file.
-     */
-    public StringParameter propertyLattice;
-
-    /** Indicate whether to compute the least or greatest
-     *  fixed point solution.
-     */
-    public StringParameter solvingFixedPoint;
-
-    public StringParameter connectionConstraintType;
-
-    public StringParameter actorConstraintType;
-
-    public StringParameter compositeConnectionConstraintType;
-
-    public StringParameter expressionASTNodeConstraintType;
-
-    public StringParameter fsmConstraintType;
-
-    public Parameter logMode;
-
-    public FileParameter logDirectory;
-
-    public FileParameter trainedConstraintDirectory;
-
-    
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                     ports and parameters                  ////
+
+    /**
+     * 
+     */
+    public static enum ConstraintType {
+        EQUALS, NONE, NOT_EQUALS, SINK_EQUALS_GREATER, SINK_EQUALS_MEET, SINK_GREATER, SRC_EQUALS_GREATER, SRC_EQUALS_MEET, SRC_GREATER
+    }
 
     public void addAnnotated(Object object) {
         _annotatedObjects.add(object);
     }
 
-    /** React to a change in an attribute.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this class).
+    /**
+     * React to a change in an attribute.
+     * @param attribute The attribute that changed.
+     * @exception IllegalActionException If the change is not acceptable to this
+     * container (not thrown in this class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == propertyLattice) {
             _lattice = null;
         }
@@ -198,7 +177,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     public List<PropertyTerm> getAffectedTerms(PropertyTerm updateTerm)
-    throws IllegalActionException {
+            throws IllegalActionException {
         return _propertyTermManager.getAffectedTerms(updateTerm);
     }
 
@@ -209,43 +188,44 @@ public class PropertyConstraintSolver extends PropertySolver {
         return _constraintManager;
     }
 
+    @Override
     public String getExtendedUseCaseName() {
         return "lattice::" + getUseCaseName();
     }
 
     /**
-     * Returns the helper that contains property information for
-     * the given AST node.
+     * Returns the helper that contains property information for the given AST
+     * node.
      * @param node The given ASTPtRootNode.
      * @return The associated property constraint helper.
      */
-    public PropertyConstraintASTNodeHelper getHelper(
-            ASTPtRootNode node) throws IllegalActionException {
+    public PropertyConstraintASTNodeHelper getHelper(ASTPtRootNode node)
+            throws IllegalActionException {
 
         return (PropertyConstraintASTNodeHelper) _getHelper(node);
     }
 
     /**
-     * Returns the helper that contains property information for
-     * the given component.
+     * Returns the helper that contains property information for the given
+     * component.
      * @param component The given component
      * @return The associated property constraint helper.
      */
     public PropertyHelper getHelper(NamedObj component)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
-        return (PropertyHelper) _getHelper(component);
+        return _getHelper(component);
     }
 
     /**
-     * Return the property constraint helper associated with the
-     * given object.
+     * Return the property constraint helper associated with the given object.
      * @param object The given object.
      */
+    @Override
     public PropertyHelper getHelper(Object object)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
-        return (PropertyHelper) _getHelper(object);
+        return _getHelper(object);
     }
 
     /**
@@ -256,19 +236,20 @@ public class PropertyConstraintSolver extends PropertySolver {
 
         String propertyLatticeValue = propertyLattice.getExpression();
 
-        _lattice = PropertyLattice.getPropertyLattice(
-                propertyLatticeValue);
+        _lattice = PropertyLattice.getPropertyLattice(propertyLatticeValue);
 
         // FIXME: is this a good way to access the property lattice.
-        if (_lattice == null && propertyLatticeValue.startsWith(_USER_DEFINED_LATTICE)) {
-            String latticeName = propertyLatticeValue.replace(_USER_DEFINED_LATTICE, "");
+        if (_lattice == null
+                && propertyLatticeValue.startsWith(_USER_DEFINED_LATTICE)) {
+            String latticeName = propertyLatticeValue.replace(
+                    _USER_DEFINED_LATTICE, "");
 
             // FIXME: need to handle the case if we cannot find
             // the specified PropertyLatticeAttribute.
             // Otherwise, this code throws a null pointer exception.
 
-            PropertyLatticeAttribute latticeAttribute = (PropertyLatticeAttribute)
-            ((CompositeEntity) getContainer()).getAttribute(latticeName);
+            PropertyLatticeAttribute latticeAttribute = (PropertyLatticeAttribute) ((CompositeEntity) getContainer())
+                    .getAttribute(latticeName);
 
             _lattice = latticeAttribute.getPropertyLattice();
             PropertyLattice.storeLattice(_lattice, latticeName);
@@ -278,13 +259,14 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                     public methods                        ////
 
     /**
      * Return the property value associated with the specified object.
      * @param object The specified object.
      * @return The property of the specified object.
      */
+    @Override
     public Property getProperty(Object object) {
         try {
             return (Property) getPropertyTerm(object).getValue();
@@ -292,7 +274,7 @@ public class PropertyConstraintSolver extends PropertySolver {
             return null;
         }
     }
-    
+
     /**
      * Return the property term from the given object.
      * @param object The given object.
@@ -310,6 +292,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         return _propertyTermManager;
     }
 
+    @Override
     public String getUseCaseName() {
         return getLattice().getName();
     }
@@ -319,20 +302,20 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     * Return true if the solver is in collect constraints mode;
-     * otherwise, return false.
-     * @return True if the solver is in collect constraints mode;
-     * otherwise, return false.
+     * Return true if the solver is in collect constraints mode; otherwise,
+     * return false.
+     * @return True if the solver is in collect constraints mode; otherwise,
+     * return false.
      */
     public boolean isCollectConstraints() {
         return action.getExpression().equals(COLLECT_CONSTRAINTS);
     }
 
     /**
-     * Return true if the solver is in initialization mode;
-     * otherwise, return false.
-     * @return True if the solver is in initialization mode;
-     * otherwise, return false.
+     * Return true if the solver is in initialization mode; otherwise, return
+     * false.
+     * @return True if the solver is in initialization mode; otherwise, return
+     * false.
      */
     public boolean isInitializeSolver() {
         return action.getExpression().equals(INITIALIZE_SOLVER);
@@ -342,38 +325,29 @@ public class PropertyConstraintSolver extends PropertySolver {
         return _logMode;
     }
 
-
     /**
-     * Override the base class method. Return true if the solver
-     * is in initialization mode; otherwise, return the result of
-     * the super method (default).
-     * @return True if the solver is in initialization mode;
-     * otherwise, return the result of the super method (default).
+     * Override the base class method. Return true if the solver is in
+     * initialization mode; otherwise, return the result of the super method
+     * (default).
+     * @return True if the solver is in initialization mode; otherwise, return
+     * the result of the super method (default).
      */
+    @Override
     public boolean isResolve() {
-        return isCollectConstraints() ||
-        isInitializeSolver() || super.isResolve();
+        return isCollectConstraints() || isInitializeSolver()
+                || super.isResolve();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    @Override
     public void reset() {
         super.reset();
         _propertyTermManager = null;
         _trainedConstraints.clear();
         _lattice = null;
     }
-
-//    /**
-//     * Return the property value associated with the given property lattice
-//     * and the given port.
-//     * @param object The given port.
-//     * @param lattice The given lattice.
-//     * @return The property value of the given port.
-//     * @exception IllegalActionException
-//     */
-//  public Property getProperty(Object object) {
-//  PropertyTerm term = (PropertyTerm) getPropertyTerm(object);
-//  return (Property) term.getValue();
-//  }
 
     public void setLogMode(boolean isLogMode) {
         _logMode = isLogMode;
@@ -382,6 +356,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     /**
      * Prepare for automatic testing.
      */
+    @Override
     public void setOptions(Map options) {
         super.setOptions(options);
 
@@ -398,11 +373,11 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-
     /**
      * Update the property.
      * @exception IllegalActionException
      */
+    @Override
     public void updateProperties() throws IllegalActionException {
         super.updateProperties();
 
@@ -411,7 +386,8 @@ public class PropertyConstraintSolver extends PropertySolver {
         helper = getHelper(_toplevel());
 
         if (isLogMode()) {
-            String constraintFilename = _getTrainedConstraintFilename() + "_resolved.txt";
+            String constraintFilename = _getTrainedConstraintFilename()
+                    + "_resolved.txt";
 
             if (super.isResolve()) {
 
@@ -436,26 +412,11 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-
-    /**
-    *
-    */
-   public static enum ConstraintType {
-       SRC_GREATER,
-       SRC_EQUALS_GREATER,
-       SINK_GREATER,
-       SINK_EQUALS_GREATER,
-       SRC_EQUALS_MEET,
-       SINK_EQUALS_MEET,
-       EQUALS,
-       NOT_EQUALS,
-       NONE
-   }
-
-   protected PropertyHelper _getHelper(Object component)
-    throws IllegalActionException {
+    @Override
+    protected PropertyHelper _getHelper(Object component)
+            throws IllegalActionException {
         PropertyHelper helper = null;
-        
+
         try {
             helper = super._getHelper(component);
         } catch (IllegalActionException ex) {
@@ -463,17 +424,17 @@ public class PropertyConstraintSolver extends PropertySolver {
 
         if (helper == null) {
             if (component instanceof FSMActor) {
-                helper = new PropertyConstraintFSMHelper(
-                        this, (FSMActor) component);
+                helper = new PropertyConstraintFSMHelper(this,
+                        (FSMActor) component);
             } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
-                helper = new PropertyConstraintModalFSMHelper(this, 
-                        (ptolemy.domains.modal.kernel.FSMActor) component);                
-            }else if (component instanceof CompositeEntity) {
-                helper = new PropertyConstraintCompositeHelper(
-                        this, (CompositeEntity) component);
+                helper = new PropertyConstraintModalFSMHelper(this,
+                        (ptolemy.domains.modal.kernel.FSMActor) component);
+            } else if (component instanceof CompositeEntity) {
+                helper = new PropertyConstraintCompositeHelper(this,
+                        (CompositeEntity) component);
             } else if (component instanceof ASTPtRootNode) {
-                helper = new PropertyConstraintASTNodeHelper(
-                        this, (ASTPtRootNode) component);
+                helper = new PropertyConstraintASTNodeHelper(this,
+                        (ASTPtRootNode) component);
             } else {
                 helper = new PropertyConstraintHelper(this, component);
             }
@@ -481,45 +442,58 @@ public class PropertyConstraintSolver extends PropertySolver {
         _helperStore.put(component, helper);
         return helper;
     }
+
     /**
-     * Return a new property term manager. Subclass can
-     * implements a its own manager and override this method
-     * to instantiate a instance of the new class.
+     * Return a new property term manager. Subclass can implements a its own
+     * manager and override this method to instantiate a instance of the new
+     * class.
      * @return A property term manager.
      */
     protected PropertyTermManager _getPropertyTermManager() {
-//      FIXME: doesn't work for other use-cases!
-//      return new StaticDynamicTermManager(this);
+        //      FIXME: doesn't work for other use-cases!
+        //      return new StaticDynamicTermManager(this);
         return new PropertyTermManager(this);
     }
 
+    @Override
+    protected void _initializeStatistics() {
+        super._initializeStatistics();
+        getStats().put("# of default constraints", 0);
+        getStats().put("# of composite default constraints", 0);
+        getStats().put("# of atomic actor default constraints", 0);
+        getStats().put("# of AST default constraints", 0);
+        getStats().put("# of generated constraints", 0);
+        getStats().put("# of trained constraints", 0);
+    }
+
     /**
-     * Resolve the property values for the toplevel
-     * entity that contains this solver, given the
-     * model analyzer that invokes this.
+     * Resolve the property values for the toplevel entity that contains this
+     * solver, given the model analyzer that invokes this.
      * @param analyzer The given model analyzer.
      */
-    protected void _resolveProperties(NamedObj analyzer)
-    throws KernelException {
+    @Override
+    protected void _resolveProperties(NamedObj analyzer) throws KernelException {
         super._resolveProperties(analyzer);
 
         NamedObj toplevel = _toplevel();
-        PropertyConstraintHelper toplevelHelper =
-            (PropertyConstraintHelper) getHelper(toplevel);
+        PropertyConstraintHelper toplevelHelper = (PropertyConstraintHelper) getHelper(toplevel);
 
         toplevelHelper.reinitialize();
 
-        toplevelHelper._addDefaultConstraints(
-                _getConstraintType(actorConstraintType.stringValue()));
+        toplevelHelper
+                ._addDefaultConstraints(_getConstraintType(actorConstraintType
+                        .stringValue()));
 
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelHelper._setConnectionConstraintType(
                 _getConstraintType(connectionConstraintType.stringValue()),
-                _getConstraintType(compositeConnectionConstraintType.stringValue()),
-                _getConstraintType(fsmConstraintType.stringValue()),
-                _getConstraintType(expressionASTNodeConstraintType.stringValue()));
+                _getConstraintType(compositeConnectionConstraintType
+                        .stringValue()), _getConstraintType(fsmConstraintType
+                        .stringValue()),
+                _getConstraintType(expressionASTNodeConstraintType
+                        .stringValue()));
 
         Writer writer = null;
 
@@ -534,24 +508,21 @@ public class PropertyConstraintSolver extends PropertySolver {
             // Collect and solve type constraints.
             List<Inequality> constraintList = toplevelHelper.constraintList();
 
-            /*       // FIXME: this is the iterative approach.
-    List constraintList = new ArrayList();
-    Iterator helpers = _helperStore.values().iterator();
-    while (helpers.hasNext()) {
-        PropertyConstraintHelper helper =
-            (PropertyConstraintHelper) helpers.next();
-
-        constraintList.addAll(helper.constraintList());
-    }
-//*/
+            /*
+             * // FIXME: this is the iterative approach. List constraintList =
+             * new ArrayList(); Iterator helpers =
+             * _helperStore.values().iterator(); while (helpers.hasNext()) {
+             * PropertyConstraintHelper helper = (PropertyConstraintHelper)
+             * helpers.next();
+             * 
+             * constraintList.addAll(helper.constraintList()); } //
+             */
 
             // NOTE: To view all property constraints, uncomment these.
-
             /*
-             Iterator constraintsIterator = constraintList.iterator();
-             while (constraintsIterator.hasNext()) {
-                 System.out.println(constraintsIterator.next().toString());
-             }
+             * Iterator constraintsIterator = constraintList.iterator(); while
+             * (constraintsIterator.hasNext()) {
+             * System.out.println(constraintsIterator.next().toString()); }
              */
 
             if (constraintList.size() > 0) {
@@ -566,31 +537,33 @@ public class PropertyConstraintSolver extends PropertySolver {
                 solver.addInequalities(constraints);
                 _constraintManager.setConstraints(constraintList);
 
-
-//              BEGIN CHANGE Thomas, 04/10/2008
+                //              BEGIN CHANGE Thomas, 04/10/2008
                 // Collect statistics.
-                getStats().put("# of generated constraints", constraintList.size());
-                getStats().put("# of property terms", _propertyTermManager.terms().size());
+                getStats().put("# of generated constraints",
+                        constraintList.size());
+                getStats().put("# of property terms",
+                        _propertyTermManager.terms().size());
 
                 // log initial constraints to file
                 File file = null;
                 Date date = new Date();
                 String timestamp = date.toString().replace(":", "_");
-                String logFilename = getContainer().getName() + "__" +
-                getUseCaseName() + "__" + timestamp.replace(" ", "_") + ".txt";
+                String logFilename = getContainer().getName() + "__"
+                        + getUseCaseName() + "__" + timestamp.replace(" ", "_")
+                        + ".txt";
 
                 if (super.isResolve() && isLogMode()) {
                     String directoryPath = logDirectory.getExpression();
-                    directoryPath += directoryPath.endsWith("/") ||
-                    directoryPath.endsWith("\\") ? "" : "/";
+                    directoryPath += directoryPath.endsWith("/")
+                            || directoryPath.endsWith("\\") ? "" : "/";
 
-                    if (directoryPath.startsWith(("$CLASSPATH"))) {
-                        URI directory = new File(URIAttribute.getModelURI(
-                                this)).getParentFile().toURI();
+                    if (directoryPath.startsWith("$CLASSPATH")) {
+                        URI directory = new File(URIAttribute.getModelURI(this))
+                                .getParentFile().toURI();
 
-                        file = FileUtilities.nameToFile(directoryPath.substring(11) +
-                                logFilename, directory);
-
+                        file = FileUtilities.nameToFile(directoryPath
+                                .substring(11)
+                                + logFilename, directory);
 
                     } else {
                         if (!logDirectory.asFile().exists()) {
@@ -611,21 +584,22 @@ public class PropertyConstraintSolver extends PropertySolver {
                         writer = new FileWriter(file);
 
                         writer.write(_getStatsAsString("\t"));
-                        writer.write(_getConstraintsAsLogFileString(constraintList, "I"));
+                        writer.write(_getConstraintsAsLogFileString(
+                                constraintList, "I"));
 
                     } catch (IOException ex) {
                         throw new PropertyResolutionException(this, ex,
-                                "Error writing to constraint log file \"" +
-                                file.getAbsolutePath() + "\".");
+                                "Error writing to constraint log file \""
+                                        + file.getAbsolutePath() + "\".");
                     }
                 }
 
                 // Record the initial constraints.
-// FIXME: merge comment: Jackies code is "if (super.isResolve() && isLogMode()) {"; why different?
-// FIXME: Charles Shelton 05/27/09 - We took the change that Jackie made to include the isLogMode() condition.
+                // FIXME: merge comment: Jackies code is "if (super.isResolve() && isLogMode()) {"; why different?
+                // FIXME: Charles Shelton 05/27/09 - We took the change that Jackie made to include the isLogMode() condition.
                 if (super.isResolve() && isLogMode()) {
-                    String constraintFilename =
-                        _getTrainedConstraintFilename() + "_initial.txt";
+                    String constraintFilename = _getTrainedConstraintFilename()
+                            + "_initial.txt";
 
                     // Populate the _trainedConstraints list.
                     _logHelperConstraints(toplevelHelper);
@@ -634,7 +608,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                     _updateConstraintFile(constraintFilename);
                 }
 
-//              END CHANGE Thomas, 04/10/2008
+                //              END CHANGE Thomas, 04/10/2008
 
                 if (!isCollectConstraints()) {
                     // Find the greatest solution (most general type)
@@ -648,12 +622,13 @@ public class PropertyConstraintSolver extends PropertySolver {
                 // log resolved constraints to file.
                 if (super.isResolve() && isLogMode()) {
                     try {
-                        writer.write(_getConstraintsAsLogFileString(constraintList, "R"));
+                        writer.write(_getConstraintsAsLogFileString(
+                                constraintList, "R"));
                         writer.close();
                     } catch (IOException ex) {
                         throw new PropertyResolutionException(this, ex,
-                                "Error writing to constraint log file \"" +
-                                file.getAbsolutePath() + "\".");
+                                "Error writing to constraint log file \""
+                                        + file.getAbsolutePath() + "\".");
                     }
                 }
 
@@ -670,15 +645,15 @@ public class PropertyConstraintSolver extends PropertySolver {
                         // Check if there exist an unacceptable term value.
                         boolean isAcceptable = true;
 
-                        InequalityTerm[] lesserVariables =
-                            inequality.getLesserTerm().getVariables();
+                        InequalityTerm[] lesserVariables = inequality
+                                .getLesserTerm().getVariables();
 
-                        InequalityTerm[] greaterVariables =
-                            inequality.getGreaterTerm().getVariables();
+                        InequalityTerm[] greaterVariables = inequality
+                                .getGreaterTerm().getVariables();
 
                         for (InequalityTerm variable : lesserVariables) {
-                            if (!variable.isValueAcceptable() &&
-                                    ((PropertyTerm) variable).isEffective()) {
+                            if (!variable.isValueAcceptable()
+                                    && ((PropertyTerm) variable).isEffective()) {
                                 unacceptable.add(inequality);
                                 isAcceptable = false;
                                 break;
@@ -688,8 +663,9 @@ public class PropertyConstraintSolver extends PropertySolver {
                         if (isAcceptable) {
                             // Continue checking for unacceptable terms.
                             for (InequalityTerm variable : greaterVariables) {
-                                if (!variable.isValueAcceptable() &&
-                                        ((PropertyTerm) variable).isEffective()) {
+                                if (!variable.isValueAcceptable()
+                                        && ((PropertyTerm) variable)
+                                                .isEffective()) {
                                     unacceptable.add(inequality);
                                     break;
                                 }
@@ -705,15 +681,15 @@ public class PropertyConstraintSolver extends PropertySolver {
                 if (conflicts.size() > 0) {
                     throw new PropertyResolutionException(this, toplevel(),
                             "Properties conflicts occurred in "
-                            + toplevel().getFullName()
-                            + " on the following inequalities:\n"
-                            + conflicts);
+                                    + toplevel().getFullName()
+                                    + " on the following inequalities:\n"
+                                    + conflicts);
                 }
                 if (unacceptable.size() > 0) {
                     throw new TypeConflictException(unacceptable,
                             "Properties resolved to unacceptable types in "
-                            + toplevel.getFullName()
-                            + " due to the following inequalities:");
+                                    + toplevel.getFullName()
+                                    + " due to the following inequalities:");
                 }
             }
         } catch (IllegalActionException ex) {
@@ -722,14 +698,14 @@ public class PropertyConstraintSolver extends PropertySolver {
             // transparent actor.
             throw new PropertyResolutionException(this, toplevel, ex,
                     "Property resolution failed because of an error "
-                    + "during property inference");
+                            + "during property inference");
         } finally {
             if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException ex) {
                     throw new PropertyResolutionException(this, toplevel(), ex,
-                                                          "Failed to close a file");
+                            "Failed to close a file");
                 }
             }
         }
@@ -740,13 +716,27 @@ public class PropertyConstraintSolver extends PropertySolver {
      *  @exception IllegalActionException If there is a problem
      *  accessing files or parameters.
      */
-    private void _addChoices() throws IllegalActionException {
+    private void _addChoices() {
         File file = null;
 
-        // Add all the subdirectories in lattice/ directory as
-        // choices.  Directories named "CVS" and ".svn" are skipped.
-        _addChoices(propertyLattice,
-                "$CLASSPATH/ptolemy/data/properties/lattice");
+        try {
+            file = new File(FileUtilities.nameToURL(
+                    "$CLASSPATH/ptolemy/data/properties/lattice", null, null)
+                    .toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        File[] lattices = file.listFiles();
+        for (File element : lattices) {
+            String latticeName = element.getName();
+            if (element.isDirectory() && !latticeName.equals("CVS")
+                    && !latticeName.equals(".svn")) {
+                propertyLattice.addChoice(latticeName);
+            }
+        }
 
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
@@ -757,9 +747,9 @@ public class PropertyConstraintSolver extends PropertySolver {
         actorConstraintType.addChoice("out == meet(in1, in2, ...)");
         actorConstraintType.addChoice("in == meet(out1, out2, ...)");
         actorConstraintType.addChoice("NONE");
-//      actorConstraintType.addChoice("in > out");
-//      actorConstraintType.addChoice("out > in");
-//      actorConstraintType.addChoice("out != in");
+        //      actorConstraintType.addChoice("in > out");
+        //      actorConstraintType.addChoice("out > in");
+        //      actorConstraintType.addChoice("out != in");
 
         connectionConstraintType.addChoice("src >= sink");
         connectionConstraintType.addChoice("sink >= src");
@@ -767,29 +757,32 @@ public class PropertyConstraintSolver extends PropertySolver {
         connectionConstraintType.addChoice("src == meet(sink1, sink2, ...)");
         connectionConstraintType.addChoice("sink == meet(src1, src2, ...)");
         connectionConstraintType.addChoice("NONE");
-//      connectionConstraintType.addChoice("src > sink");
-//      connectionConstraintType.addChoice("sink > src");
-//      connectionConstraintType.addChoice("sink != src");
+        //      connectionConstraintType.addChoice("src > sink");
+        //      connectionConstraintType.addChoice("sink > src");
+        //      connectionConstraintType.addChoice("sink != src");
 
         compositeConnectionConstraintType.addChoice("src >= sink");
         compositeConnectionConstraintType.addChoice("sink >= src");
         compositeConnectionConstraintType.addChoice("sink == src");
-        compositeConnectionConstraintType.addChoice("src == meet(sink1, sink2, ...)");
-        compositeConnectionConstraintType.addChoice("sink == meet(src1, src2, ...)");
+        compositeConnectionConstraintType
+                .addChoice("src == meet(sink1, sink2, ...)");
+        compositeConnectionConstraintType
+                .addChoice("sink == meet(src1, src2, ...)");
         compositeConnectionConstraintType.addChoice("NONE");
-//      compositeConnectionConstraintType.addChoice("src > sink");
-//      compositeConnectionConstraintType.addChoice("sink > src");
-//      compositeConnectionConstraintType.addChoice("sink != src");
+        //      compositeConnectionConstraintType.addChoice("src > sink");
+        //      compositeConnectionConstraintType.addChoice("sink > src");
+        //      compositeConnectionConstraintType.addChoice("sink != src");
 
         expressionASTNodeConstraintType.addChoice("child >= parent");
         expressionASTNodeConstraintType.addChoice("parent >= child");
         expressionASTNodeConstraintType.addChoice("parent == child");
         //expressionASTNodeConstraintType.addChoice("child == meet(parent1, parent2, ...)");
-        expressionASTNodeConstraintType.addChoice("parent == meet(child1, child2, ...)");
+        expressionASTNodeConstraintType
+                .addChoice("parent == meet(child1, child2, ...)");
         expressionASTNodeConstraintType.addChoice("NONE");
-//      expressionASTNodeConstraintType.addChoice("child > parent");
-//      expressionASTNodeConstraintType.addChoice("parent > child");
-//      expressionASTNodeConstraintType.addChoice("parent != child");
+        //      expressionASTNodeConstraintType.addChoice("child > parent");
+        //      expressionASTNodeConstraintType.addChoice("parent > child");
+        //      expressionASTNodeConstraintType.addChoice("parent != child");
 
         fsmConstraintType.addChoice("src >= sink");
         fsmConstraintType.addChoice("sink >= src");
@@ -797,24 +790,23 @@ public class PropertyConstraintSolver extends PropertySolver {
         fsmConstraintType.addChoice("src == meet(sink1, sink2, ...)");
         fsmConstraintType.addChoice("sink == meet(src1, src2, ...)");
         fsmConstraintType.addChoice("NONE");
-//      fsmConstraintType.addChoice("src > sink");
-//      fsmConstraintType.addChoice("sink > src");
-//      fsmConstraintType.addChoice("sink != src");
-
+        //      fsmConstraintType.addChoice("src > sink");
+        //      fsmConstraintType.addChoice("sink > src");
+        //      fsmConstraintType.addChoice("sink != src");
 
         action.addChoice(INITIALIZE_SOLVER);
         action.addChoice(COLLECT_CONSTRAINTS);
     }
 
     private void _checkMissingConstraints() {
-        String errorMessage = _eol + "Property \"" + getUseCaseName() +
-        "\" resolution failed." + _eol;
+        String errorMessage = _eol + "Property \"" + getUseCaseName()
+                + "\" resolution failed." + _eol;
 
         boolean hasError = false;
 
         for (String trainedValue : _trainedConstraints) {
-            errorMessage += "    Missing constraint: \""
-                + trainedValue + "\"." + _eol;
+            errorMessage += "    Missing constraint: \"" + trainedValue + "\"."
+                    + _eol;
 
             hasError = true;
         }
@@ -824,48 +816,89 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
+    //    /**
+    //     * Return the property value associated with the given property lattice
+    //     * and the given port.
+    //     * @param object The given port.
+    //     * @param lattice The given lattice.
+    //     * @return The property value of the given port.
+    //     * @exception IllegalActionException
+    //     */
+    //  public Property getProperty(Object object) {
+    //  PropertyTerm term = (PropertyTerm) getPropertyTerm(object);
+    //  return (Property) term.getValue();
+    //  }
+
     /**
      * @param inequality
      * @param annotation
      * @return
      * @exception IllegalActionException
      */
-    private List _getConstraintAsLogFileString(Inequality inequality, String annotation) throws IllegalActionException {
-        List <String>logConstraints = new LinkedList<String>();
+    private List _getConstraintAsLogFileString(Inequality inequality,
+            String annotation) throws IllegalActionException {
+        List<String> logConstraints = new LinkedList<String>();
 
         String output = "";
-        PropertyTerm lesserTerm = (PropertyTerm)inequality.getLesserTerm();
-        PropertyTerm greaterTerm = (PropertyTerm)inequality.getGreaterTerm();
+        PropertyTerm lesserTerm = (PropertyTerm) inequality.getLesserTerm();
+        PropertyTerm greaterTerm = (PropertyTerm) inequality.getGreaterTerm();
 
-        output = inequality.getHelper().getClass().getPackage().toString().replace("package ","") +
-        "\t" + inequality.getHelper().getClass().getSimpleName() +
-        "\t" + _getReducedFullName(inequality.getHelper().getComponent()) +
-        "\t" + (inequality.isBase() ? "base" : "not base") +
-        "\t" + _getConstraintLogString(lesserTerm, "") +
-        "\t" + "<=" +
-        "\t" + _getConstraintLogString(greaterTerm, "");
+        output = inequality.getHelper().getClass().getPackage().toString()
+                .replace("package ", "")
+                + "\t"
+                + inequality.getHelper().getClass().getSimpleName()
+                + "\t"
+                + _getReducedFullName(inequality.getHelper().getComponent())
+                + "\t"
+                + (inequality.isBase() ? "base" : "not base")
+                + "\t"
+                + _getConstraintLogString(lesserTerm, "")
+                + "\t"
+                + "<="
+                + "\t"
+                + _getConstraintLogString(greaterTerm, "");
         logConstraints.add(output);
 
         // also write variables of FunctionTerms to log-Files
         if (lesserTerm instanceof MonotonicFunction) {
             for (InequalityTerm variable : lesserTerm.getVariables()) {
-                output = inequality.getHelper().getClass().getPackage().toString().replace("package ","") +
-                "\t" + inequality.getHelper().getClass().getSimpleName() +
-                "\t" + _getReducedFullName(inequality.getHelper().getComponent()) +
-                "\t" + (inequality.isBase() ? "base" : "not base") +
-                "\t" + _getConstraintLogString((PropertyTerm)variable, "") +
-                "\t" + "MFV" +
-                "\t" + _getConstraintLogString(lesserTerm, _getReducedFullName(inequality.getHelper().getComponent()));
+                output = inequality.getHelper().getClass().getPackage()
+                        .toString().replace("package ", "")
+                        + "\t"
+                        + inequality.getHelper().getClass().getSimpleName()
+                        + "\t"
+                        + _getReducedFullName(inequality.getHelper()
+                                .getComponent())
+                        + "\t"
+                        + (inequality.isBase() ? "base" : "not base")
+                        + "\t"
+                        + _getConstraintLogString((PropertyTerm) variable, "")
+                        + "\t"
+                        + "MFV"
+                        + "\t"
+                        + _getConstraintLogString(lesserTerm,
+                                _getReducedFullName(inequality.getHelper()
+                                        .getComponent()));
                 logConstraints.add(output);
             }
             for (InequalityTerm constant : lesserTerm.getConstants()) {
-                output = inequality.getHelper().getClass().getPackage().toString().replace("package ","") +
-                "\t" + inequality.getHelper().getClass().getSimpleName() +
-                "\t" + _getReducedFullName(inequality.getHelper().getComponent()) +
-                "\t" + (inequality.isBase() ? "base" : "not base") +
-                "\t" + _getConstraintLogString((PropertyTerm)constant, "") +
-                "\t" + "MFC" +
-                "\t" + _getConstraintLogString(lesserTerm, _getReducedFullName(inequality.getHelper().getComponent()));
+                output = inequality.getHelper().getClass().getPackage()
+                        .toString().replace("package ", "")
+                        + "\t"
+                        + inequality.getHelper().getClass().getSimpleName()
+                        + "\t"
+                        + _getReducedFullName(inequality.getHelper()
+                                .getComponent())
+                        + "\t"
+                        + (inequality.isBase() ? "base" : "not base")
+                        + "\t"
+                        + _getConstraintLogString((PropertyTerm) constant, "")
+                        + "\t"
+                        + "MFC"
+                        + "\t"
+                        + _getConstraintLogString(lesserTerm,
+                                _getReducedFullName(inequality.getHelper()
+                                        .getComponent()));
                 logConstraints.add(output);
             }
         }
@@ -873,19 +906,25 @@ public class PropertyConstraintSolver extends PropertySolver {
         return logConstraints;
     }
 
-    private String _getConstraintLogString(PropertyTerm propertyTerm, String actorName) throws IllegalActionException {
+    private String _getConstraintLogString(PropertyTerm propertyTerm,
+            String actorName) throws IllegalActionException {
         if (propertyTerm instanceof LatticeProperty) {
-            return (propertyTerm.isEffective() ? "eff" : "ineff") +
-            "\t" +
-            "\t" + propertyTerm.getClass().getSuperclass().getSimpleName() +
-            "\t" + propertyTerm.toString() +
-            "\t" + propertyTerm.getValue();
+            return (propertyTerm.isEffective() ? "eff" : "ineff") + "\t" + "\t"
+                    + propertyTerm.getClass().getSuperclass().getSimpleName()
+                    + "\t" + propertyTerm.toString() + "\t"
+                    + propertyTerm.getValue();
         } else if (propertyTerm instanceof MonotonicFunction) {
-            return (propertyTerm.isEffective() ? "eff" : "ineff") +
-            "\t" + actorName +
-            "\t" + propertyTerm.getClass().getSuperclass().getSimpleName() +
-            "\t" + propertyTerm.getClass().toString().substring(propertyTerm.getClass().toString().lastIndexOf(".")) +
-            "\t" + propertyTerm.getValue();
+            return (propertyTerm.isEffective() ? "eff" : "ineff")
+                    + "\t"
+                    + actorName
+                    + "\t"
+                    + propertyTerm.getClass().getSuperclass().getSimpleName()
+                    + "\t"
+                    + propertyTerm.getClass().toString()
+                            .substring(
+                                    propertyTerm.getClass().toString()
+                                            .lastIndexOf(".")) + "\t"
+                    + propertyTerm.getValue();
         } else {
             Object object = propertyTerm.getAssociatedObject();
             String containerName = "";
@@ -893,21 +932,24 @@ public class PropertyConstraintSolver extends PropertySolver {
             if (object != null) {
                 if (object instanceof ASTPtRootNode) {
                     try {
-                        if ((((ASTPtRootNode)object).jjtGetParent() != null) &&
-                                !(((ASTPtRootNode)object).jjtGetParent() instanceof ASTPtAssignmentNode)) {
-                            containerName = _getReducedFullName(((ASTPtRootNode)object).jjtGetParent());
+                        if (((ASTPtRootNode) object).jjtGetParent() != null
+                                && !(((ASTPtRootNode) object).jjtGetParent() instanceof ASTPtAssignmentNode)) {
+                            containerName = _getReducedFullName(((ASTPtRootNode) object)
+                                    .jjtGetParent());
                         } else {
-                            containerName = _getReducedFullName(getHelper(object).getContainerEntity((ASTPtRootNode)object));
+                            containerName = _getReducedFullName(getHelper(
+                                    object).getContainerEntity(
+                                    (ASTPtRootNode) object));
                         }
                     } catch (IllegalActionException e) {
                         assert false;
                     }
                 }
-                return (propertyTerm.isEffective() ? "eff" : "ineff") +
-                "\t" + containerName +
-                "\t" + object.getClass().getSimpleName() +
-                "\t" + _getReducedFullName(object) +
-                "\t" + propertyTerm.getValue();
+                return (propertyTerm.isEffective() ? "eff" : "ineff") + "\t"
+                        + containerName + "\t"
+                        + object.getClass().getSimpleName() + "\t"
+                        + _getReducedFullName(object) + "\t"
+                        + propertyTerm.getValue();
             } else {
                 return "NO" + "\t" + "ASSOCIATED" + "\t" + "OBJECT";
             }
@@ -916,29 +958,29 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     private String _getConstraintsAsLogFileString(
-            List<Inequality> constraintList,
-            String annotation) throws IllegalActionException {
+            List<Inequality> constraintList, String annotation)
+            throws IllegalActionException {
 
         String output = "";
         for (Inequality inequality : constraintList) {
-            output += _getConstraintAsLogFileString(inequality, annotation) + _eol;
+            output += _getConstraintAsLogFileString(inequality, annotation)
+                    + _eol;
         }
 
         return output;
     }
 
     /**
-     *
+     * 
      * @param typeValue
      * @return
      * @exception IllegalActionException
      */
-    private ConstraintType _getConstraintType(String typeValue) throws IllegalActionException {
+    private ConstraintType _getConstraintType(String typeValue)
+            throws IllegalActionException {
         boolean isEquals = typeValue.contains("==");
-        boolean isSrc =
-            typeValue.startsWith("src") ||
-            typeValue.startsWith("in") ||
-            typeValue.startsWith("child");
+        boolean isSrc = typeValue.startsWith("src")
+                || typeValue.startsWith("in") || typeValue.startsWith("child");
         boolean isNotEquals = typeValue.contains("!=");
 
         boolean hasMeet = typeValue.contains("meet");
@@ -947,8 +989,8 @@ public class PropertyConstraintSolver extends PropertySolver {
             return ConstraintType.NONE;
         }
         if (hasMeet) {
-            return (isSrc) ? ConstraintType.SRC_EQUALS_MEET :
-                ConstraintType.SINK_EQUALS_MEET;
+            return isSrc ? ConstraintType.SRC_EQUALS_MEET
+                    : ConstraintType.SINK_EQUALS_MEET;
 
         } else if (isEquals) {
             return ConstraintType.EQUALS;
@@ -957,14 +999,14 @@ public class PropertyConstraintSolver extends PropertySolver {
             return ConstraintType.NOT_EQUALS;
 
         } else {
-            return (isSrc) ? ConstraintType.SRC_EQUALS_GREATER :
-                ConstraintType.SINK_EQUALS_GREATER;
+            return isSrc ? ConstraintType.SRC_EQUALS_GREATER
+                    : ConstraintType.SINK_EQUALS_GREATER;
         }
     }
 
     private String _getReducedFullName(Object object) {
         if (object instanceof NamedObj) {
-            String name = ((NamedObj)object).getFullName();
+            String name = ((NamedObj) object).getFullName();
             if (name.indexOf(".", 2) > 0) {
                 name = name.substring(name.indexOf(".", 2));
             } else {
@@ -980,25 +1022,27 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @return
      * @exception IllegalActionException
      */
-    private String _getTrainedConstraintFilename() throws IllegalActionException {
+    private String _getTrainedConstraintFilename()
+            throws IllegalActionException {
         // Make an unique file name from the toplevel container.
-        String constraintFilename =
-            _toplevel().getName() + "__" + getUseCaseName();
+        String constraintFilename = _toplevel().getName() + "__"
+                + getUseCaseName();
 
         String directoryPath = trainedConstraintDirectory.getExpression();
         directoryPath = directoryPath.replace("\\", "/");
-        directoryPath += directoryPath.endsWith("/") ||
-        directoryPath.endsWith("\\") ? "" : "/";
+        directoryPath += directoryPath.endsWith("/")
+                || directoryPath.endsWith("\\") ? "" : "/";
 
         File constraintFile;
-        if (directoryPath.startsWith(("$CLASSPATH"))) {
+        if (directoryPath.startsWith("$CLASSPATH")) {
 
             // FIXME: for a cloned URIAttribute, the URI is not set.
-            URI directory = new File(URIAttribute.getModelURI(
-                    this)).getParentFile().toURI();
+            URI directory = new File(URIAttribute.getModelURI(this))
+                    .getParentFile().toURI();
 
             constraintFile = FileUtilities.nameToFile(directoryPath
-                    .substring(11) + constraintFilename, directory);
+                    .substring(11)
+                    + constraintFilename, directory);
 
         } else {
             if (!trainedConstraintDirectory.asFile().exists()) {
@@ -1007,29 +1051,17 @@ public class PropertyConstraintSolver extends PropertySolver {
             constraintFile = FileUtilities.nameToFile(constraintFilename,
                     trainedConstraintDirectory.asFile().toURI());
         }
-        return constraintFile.getAbsolutePath().
-        replace("\\", "/").replaceAll("%5c", "/");
+        return constraintFile.getAbsolutePath().replace("\\", "/").replaceAll(
+                "%5c", "/");
     }
-
-    protected void _initializeStatistics() {
-        super._initializeStatistics();
-        getStats().put("# of default constraints", 0);        
-        getStats().put("# of composite default constraints", 0);      
-        getStats().put("# of atomic actor default constraints", 0);   
-        getStats().put("# of AST default constraints", 0);    
-        getStats().put("# of generated constraints", 0);
-        getStats().put("# of trained constraints", 0);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /**
-     *
+     * 
      * @param helper
      * @exception IllegalActionException
      */
-    private void _logHelperConstraints(PropertyConstraintHelper helper) throws IllegalActionException {
+    private void _logHelperConstraints(PropertyConstraintHelper helper)
+            throws IllegalActionException {
         List<Inequality>[] constraintSet = new List[2];
         constraintSet[0] = helper._ownConstraints;
         constraintSet[1] = helper._subHelperConstraints;
@@ -1038,19 +1070,19 @@ public class PropertyConstraintSolver extends PropertySolver {
             //String whichSet = (i == 0) ? " own " : " subHelper's ";
 
             for (Inequality constraint : constraintSet[i]) {
-                Iterator logConstraints = _getConstraintAsLogFileString(constraint, "").iterator();
+                Iterator logConstraints = _getConstraintAsLogFileString(
+                        constraint, "").iterator();
                 while (logConstraints.hasNext()) {
-                    _trainedConstraints.add((String)logConstraints.next());
+                    _trainedConstraints.add((String) logConstraints.next());
                 }
             }
         }
     }
 
     private void _readConstraintFile(String filename)
-        throws PropertyFailedRegressionTestException {
+            throws PropertyFailedRegressionTestException {
 
         File file = new File(filename);
-
 
         try {
             BufferedReader reader = null;
@@ -1064,7 +1096,8 @@ public class PropertyConstraintSolver extends PropertySolver {
                     line = reader.readLine();
                 }
 
-                getStats().put("# of trained constraints", _trainedConstraints.size());
+                getStats().put("# of trained constraints",
+                        _trainedConstraints.size());
             } finally {
                 if (reader != null) {
                     reader.close();
@@ -1072,21 +1105,22 @@ public class PropertyConstraintSolver extends PropertySolver {
             }
         } catch (Exception ex) {
             throw new PropertyFailedRegressionTestException(this,
-                    "Failed to open or read the constraint file \"" +
-                    filename + "\".");
+                    "Failed to open or read the constraint file \"" + filename
+                            + "\".");
         }
     }
 
-    private void _regressionTestConstraints(PropertyConstraintHelper helper) throws IllegalActionException {
+    private void _regressionTestConstraints(PropertyConstraintHelper helper)
+            throws IllegalActionException {
         Object object = helper.getComponent();
         if (!(object instanceof NamedObj)) {
             return;
         }
         NamedObj namedObj = (NamedObj) object;
 
-        String errorMessage = _eol + "Property \"" + getUseCaseName() +
-        "\" resolution failed for " + namedObj.getFullName() +
-        "'s helper." + _eol;
+        String errorMessage = _eol + "Property \"" + getUseCaseName()
+                + "\" resolution failed for " + namedObj.getFullName()
+                + "'s helper." + _eol;
 
         List<Inequality>[] constraintSet = new List[2];
         constraintSet[0] = helper._ownConstraints;
@@ -1095,17 +1129,19 @@ public class PropertyConstraintSolver extends PropertySolver {
         boolean hasError = false;
 
         for (int i = 0; i < 2; i++) {
-            String whichSet = (i == 0) ? " own " : " subHelper's ";
+            String whichSet = i == 0 ? " own " : " subHelper's ";
 
             for (Inequality constraint : constraintSet[i]) {
 
-                Iterator logConstraints = _getConstraintAsLogFileString(constraint, "").iterator();
+                Iterator logConstraints = _getConstraintAsLogFileString(
+                        constraint, "").iterator();
                 while (logConstraints.hasNext()) {
-                    String constraintString = (String)logConstraints.next();
+                    String constraintString = (String) logConstraints.next();
                     // Remove from the trained set so we can test for duplicates.
                     if (!_trainedConstraints.remove(constraintString)) {
-                        errorMessage += "    Extra" + whichSet +
-                        "constraint generated: \"" + constraintString + "\"." + _eol;
+                        errorMessage += "    Extra" + whichSet
+                                + "constraint generated: \"" + constraintString
+                                + "\"." + _eol;
 
                         hasError = true;
                     } else {
@@ -1122,16 +1158,16 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     * Log the trained constraints in a subdirectory under the
-     * specified logDirectory. The contraint file has an unique
-     * name consist of the name of toplevel container and this
-     * solver. If the constraint file already exists, an overwrite
-     * warning message is sent to the user.
+     * Log the trained constraints in a subdirectory under the specified
+     * logDirectory. The contraint file has an unique name consist of the name
+     * of toplevel container and this solver. If the constraint file already
+     * exists, an overwrite warning message is sent to the user.
      * @param filename
-     * @exception PropertyResolutionException Thrown if there is a
-     *  problem opening, writing, or closing the constraint file.
+     * @exception PropertyResolutionException Thrown if there is a problem
+     * opening, writing, or closing the constraint file.
      */
-    private void _updateConstraintFile(String filename) throws IllegalActionException {
+    private void _updateConstraintFile(String filename)
+            throws IllegalActionException {
         if (!super.isResolve() || !isLogMode()) {
             return;
         }
@@ -1140,17 +1176,17 @@ public class PropertyConstraintSolver extends PropertySolver {
             File constraintFile = new File(filename);
 
             if (constraintFile.exists()) {
-                if (_analyzer != null && ((Parameter) _analyzer.getAttribute(
-                        "overwriteConstraint")).getExpression().equals(
-                                "false")) {
+                if (_analyzer != null
+                        && ((Parameter) _analyzer
+                                .getAttribute("overwriteConstraint"))
+                                .getExpression().equals("false")) {
                     return;
                 }
                 // Ask user for a decision.
                 if (_analyzer == null && !isLogMode()) {
                     /*
-                        !MessageHandler.yesNoQuestion(
-                        "The constraint file \"" + filename + "\""
-                        + " exists. OK to overwrite?")) {
+                     * !MessageHandler.yesNoQuestion( "The constraint file \"" +
+                     * filename + "\"" + " exists. OK to overwrite?")) {
                      */
                     // Don't overwrite, do nothing and return.
                     return;
@@ -1174,41 +1210,70 @@ public class PropertyConstraintSolver extends PropertySolver {
 
         } catch (IOException ex) {
             throw new PropertyResolutionException(this, ex,
-                    "Failed to train the constraint log file \"" +
-                    filename + "\".");
+                    "Failed to train the constraint log file \"" + filename
+                            + "\".");
         }
     }
 
-    protected static final String _USER_DEFINED_LATTICE = "Attribute::";
+    public StringParameter actorConstraintType;
 
-    protected static final String INITIALIZE_SOLVER = "INITIALIZE_SOLVER";
+    public StringParameter compositeConnectionConstraintType;
 
-    protected static final String COLLECT_CONSTRAINTS = "COLLECT_CONSTRAINTS";
+    public StringParameter connectionConstraintType;
 
+    public StringParameter expressionASTNodeConstraintType;
+
+    public StringParameter fsmConstraintType;
+
+    public FileParameter logDirectory;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
+
+    public Parameter logMode;
+
+    /**
+     * The file parameter for the lattice description file.
+     */
+    public StringParameter propertyLattice;
+
+    /**
+     * Indicate whether to compute the least or greatest fixed point solution.
+     */
+    public StringParameter solvingFixedPoint;
+
+    public FileParameter trainedConstraintDirectory;
 
     /**
      * The set of Object that has been manually annotated.
      */
-    private HashSet<Object> _annotatedObjects = new HashSet<Object>();
+    private final HashSet<Object> _annotatedObjects = new HashSet<Object>();
 
-    private ConstraintManager _constraintManager =
-        new ConstraintManager(this);
+    private final ConstraintManager _constraintManager = new ConstraintManager(
+            this);
 
     /**
      * The property lattice for this constraint solver.
      */
     private PropertyLattice _lattice = null;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private boolean _logMode;
+
     private PropertyTermManager _propertyTermManager;
 
     /**
-     * The set of trained constraints. This set is populated from
-     * parsing the constraint file when training mode is off.
+     * The set of trained constraints. This set is populated from parsing the
+     * constraint file when training mode is off.
      */
-    private List<String> _trainedConstraints = new LinkedList<String>();
+    private final List<String> _trainedConstraints = new LinkedList<String>();
 
-    private boolean _logMode;
+    protected static final String _USER_DEFINED_LATTICE = "Attribute::";
+
+    protected static final String COLLECT_CONSTRAINTS = "COLLECT_CONSTRAINTS";
+
+    protected static final String INITIALIZE_SOLVER = "INITIALIZE_SOLVER";
+
 }
