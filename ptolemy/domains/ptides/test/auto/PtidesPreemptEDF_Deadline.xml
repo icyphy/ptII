@@ -4,10 +4,6 @@
 <entity name="PtidesPreemptEDF_Deadline" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={293, 396, 848, 449}, maximized=false}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 342]">
-    </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.5, 171.0}">
@@ -18,36 +14,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 210.0}">
-        </property>
-        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="minDelay = &#10;3.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 205.0}">
-            </property>
-        </property>
-        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WCET = 0.4">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 280.0}">
-            </property>
-        </property>
-        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="minDelay = &#10;1.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 125.0}">
-            </property>
-        </property>
-        <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WCET = 0.4">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 160.0]">
-            </property>
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 117, 815, 507}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -82,21 +54,21 @@
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{1.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="minus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="2.5">
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{2.5}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 255.0]">
             </property>
             <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.4">
@@ -104,6 +76,8 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                 </property>
             </port>
         </entity>
@@ -116,23 +90,35 @@
                 <property name="input"/>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
             </port>
         </entity>
         <entity name="Scale2" class="ptolemy.actor.lib.Scale">
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 135.0}">
             </property>
             <property name="WCET" class="ptolemy.data.expr.Parameter" value=".3">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="3.0">
+                </property>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
+            </port>
         </entity>
         <entity name="TimedDelay2" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="3.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 135.0}">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="3.0">
+                </property>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
+            </port>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 1, 1, 1, 1, 1, 1, 1}">
@@ -141,6 +127,12 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 245.0}">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
+            </port>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}">
@@ -149,11 +141,23 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 325.0}">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
+            </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 325.0]">
             </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
+            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -265,7 +269,7 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
             </property>
         </property>
         <vertex name="vertex1" value="[315.0, 210.0]">
