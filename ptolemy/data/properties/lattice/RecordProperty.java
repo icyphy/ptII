@@ -167,7 +167,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
          * (non-Javadoc)
          * @see ptolemy.data.properties.lattice.PropertyTerm#getConstants()
          */
-        @Override
+        // @Override
         public InequalityTerm[] getConstants() {
             // TODO Auto-generated method stub
             return null;
@@ -229,7 +229,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
          * (non-Javadoc)
          * @see ptolemy.data.properties.lattice.PropertyTerm#isEffective()
          */
-        @Override
+        // @Override
         public boolean isEffective() {
             return true;
         }
@@ -255,7 +255,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
          * (non-Javadoc)
          * @see ptolemy.data.properties.lattice.PropertyTerm#setEffective(boolean)
          */
-        @Override
+        // @Override
         public void setEffective(boolean isEffective) {
             // TODO Auto-generated method stub
 
