@@ -61,6 +61,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.RemoveClasses;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -208,77 +209,72 @@ public class Configuration extends CompositeEntity implements
             // which caused rentry problems.  Basically, we ended
             // up with two RemoveGraphicalClasses filters in the list.
 
-            // We use RemoveGraphicalClasses to remove these classes.
-
-            // Find the RemoveGraphicalClasses element, if any.
-            RemoveGraphicalClasses removeGraphicalClassesFilter = null;
+            // Find the RemoveClasses element, if any.
+            RemoveClasses removeClassesFilter = null;
             List momlFilters = MoMLParser.getMoMLFilters();
-            Iterator filters = momlFilters.iterator();
-            while (filters.hasNext()) {
-                MoMLFilter filter = (MoMLFilter)filters.next();
-                if (filter instanceof RemoveGraphicalClasses) {
-                    removeGraphicalClassesFilter = (RemoveGraphicalClasses)filter;
-                    break;
-                }
-            } 
+            if (momlFilters == null) {
+                momlFilters = new LinkedList();
+            } else {
+                Iterator filters = momlFilters.iterator();
+                while (filters.hasNext()) {
+                    MoMLFilter filter = (MoMLFilter)filters.next();
+                    if (filter instanceof RemoveClasses) {
+                        removeClassesFilter = (RemoveClasses)filter;
+                        break;
+                    }
+                } 
+            }
 
             // Get the token
             ArrayToken classesToRemoveToken = (ArrayToken)classesToRemove.getToken();
-            if (removeGraphicalClassesFilter == null) {
+            if (removeClassesFilter == null) {
                 // We did not find a RemoveGraphicalClasses, so create one.
-                removeGraphicalClassesFilter = new RemoveGraphicalClasses();
-                /*
-                  Since RemoveGraphicalClasses constructs it's filters in a 
-                  static block, if you call clear() here, it removes all
-                  previously added filters.  Either the classesToRemove
-                  functionality needs to use its own filter, or the 
-                  RemoveGraphicalClasses filter needs to not use a static
-                  block to add its default filters.
-                  -chad
-                  
-                  Remark Bert Rodiers:
-                  If we don't call clear all graphical classes are always removed.
-                  This is not want we want since it makes most Ptolemy models unusable.
-                  Reverted this change temporarily until we have a definite fix.
-                */
-                removeGraphicalClassesFilter.clear();
-                momlFilters.add(removeGraphicalClassesFilter);
+                removeClassesFilter = new RemoveClasses();
+                momlFilters.add(removeClassesFilter);
             }
+
+            // We always clear
+            removeClassesFilter.clear();
 
             // _classesToRemove is an array of Strings where each element
             // names a class to be added to the MoMLFilter for removal.
             for (int i = 0; i < classesToRemoveToken.length(); i++) {
                 String classNameToRemove = ((StringToken) classesToRemoveToken
                         .getElement(i)).stringValue();
-                removeGraphicalClassesFilter.put(classNameToRemove, null);
+                removeClassesFilter.put(classNameToRemove, null);
             }
         
             MoMLParser.setMoMLFilters(momlFilters);
         } else if (attribute == removeGraphicalClasses) {
-
-            /* REMARK Bert Rodiers:
-             *  Put this section in comments temporarily since it breaks
-             *  existing Ptolemy models that have graphical classes. 
-             
             // Find the RemoveGraphicalClasses element, if any 
             RemoveGraphicalClasses removeGraphicalClassesFilter = null;
             List momlFilters = MoMLParser.getMoMLFilters();
-            Iterator filters = momlFilters.iterator();
-            while (filters.hasNext()) {
-                MoMLFilter filter = (MoMLFilter)filters.next();
-                if (filter instanceof RemoveGraphicalClasses) {
-                    removeGraphicalClassesFilter = (RemoveGraphicalClasses)filter;
-                    break;
-                }
-            } 
-            // Get the token
-            ArrayToken classesToRemoveToken = (ArrayToken)classesToRemove.getToken();
-            if (removeGraphicalClassesFilter == null) {
-                // We did not find a RemoveGraphicalClasses, so create one.
-                removeGraphicalClassesFilter = new RemoveGraphicalClasses();
-                momlFilters.add(removeGraphicalClassesFilter);
+            if (momlFilters == null) {
+                momlFilters = new LinkedList();
+            } else {
+                Iterator filters = momlFilters.iterator();
+                while (filters.hasNext()) {
+                    MoMLFilter filter = (MoMLFilter)filters.next();
+                    if (filter instanceof RemoveGraphicalClasses) {
+                        removeGraphicalClassesFilter = (RemoveGraphicalClasses)filter;
+                        break;
+                    }
+                } 
             }
-            */
+            // Get the token
+            BooleanToken removeGraphicalClassesToken = (BooleanToken)removeGraphicalClasses.getToken();
+            if (removeGraphicalClassesToken.booleanValue()) {
+                if (removeGraphicalClassesFilter == null) {
+                    // We did not find a RemoveGraphicalClasses, so create one.
+                    removeGraphicalClassesFilter = new RemoveGraphicalClasses();
+                    momlFilters.add(removeGraphicalClassesFilter);
+                }
+            } else {
+                if (removeGraphicalClassesFilter != null) {
+                    momlFilters.remove(removeGraphicalClassesFilter);
+                }
+            }
+            MoMLParser.setMoMLFilters(momlFilters);
         }
         super.attributeChanged(attribute);
     }

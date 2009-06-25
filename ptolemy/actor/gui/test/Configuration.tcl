@@ -151,3 +151,137 @@ test UserActorLibrary-8.0 {isModifiable on a model with spaces in the name} {
     set effigy1 [$modelDirectory getEffigy foo]
     list [$effigy1 isModifiable]
 } {1}
+
+######################################################################
+####
+# 
+
+set removeClassesMoML {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="removeClassesMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 40.0]">
+        </property>
+    </property>
+    <property name="MyParameter" class="ptolemy.data.expr.Parameter"/>
+</entity>
+}
+
+test Configuration-9.0 {testConfiguration.xml has classesToRemove set to include removing StaticSchedulingCodeGenerator} {
+
+    # Make sure we have a RemoveClasses element
+    set sawRemoveClasses 0
+    set momlFilters [java::call ptolemy.moml.MoMLParser getMoMLFilters]
+    set filters [$momlFilters iterator]
+    while {[$filters hasNext] == 1} {
+	set filter [java::cast ptolemy.moml.MoMLFilter [$filters -noconvert next]]
+	if [java::instanceof $filter ptolemy.moml.filter.RemoveClasses] {
+	    set sawRemoveClasses 1
+	}
+    }
+    if {$sawRemoveClasses != 1} {
+	error "Failed to add RemoveClasses to MoMLFilters?"
+    }
+
+    set toplevel [$parser parse $removeClassesMoML]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="removeClassesMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="MyParameter" class="ptolemy.data.expr.Parameter">
+    </property>
+</entity>
+}}
+
+test Configuration-9.1 {set _classesToRemove to something new} {
+    set classesToRemove [java::field $configuration classesToRemove]
+    $classesToRemove setExpression "{\"foo.bar\", \"bif.baz\"}"
+    
+    # Make sure that Configuration.attributeChanged() is called
+    
+    $classesToRemove validate
+
+    # Reparse our same old example
+    set toplevel [$parser parse $removeClassesMoML]
+    set newMoML [$toplevel exportMoML]
+    # Note that we did not remove StateSchedulingCodeGenerator
+    list $newMoML
+
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="removeClassesMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="MyParameter" class="ptolemy.data.expr.Parameter">
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 40.0]">
+        </property>
+    </property>
+</entity>
+}}
+
+
+
+
+set removeGraphicalClassesMoML {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="removeGraphicalClassesMoML" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="SequencePlotter"
+	        class="ptolemy.actor.lib.gui.SequencePlotter"/>
+</entity>
+}
+
+test Configuration-10.0 {testConfiguration.xml has removeGraphicalClasses set to true} {
+    #[java::cast ptolemy.actor.TypedCompositeActor $toplevel] setContainer [java::null]
+    $parser resetAll
+    set toplevel2 [$parser parse $removeGraphicalClassesMoML]
+    set newMoML [$toplevel2 exportMoML]
+    # Note that we removed the SequenceActor is now a discard.
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="removeGraphicalClassesMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.Discard">
+    </entity>
+</entity>
+}}
+
+test Configuration-10.1 {testConfiguration.xml has removeGraphicalClasses set to true} {
+    #[java::cast ptolemy.actor.TypedCompositeActor $toplevel] setContainer [java::null]
+    set removeGraphicalClasses [java::field $configuration removeGraphicalClasses]
+    $removeGraphicalClasses setExpression "false"
+    
+    # Make sure that Configuration.attributeChanged() is called
+    
+    $removeGraphicalClasses validate
+    $parser resetAll
+    set toplevel2 [$parser parse $removeGraphicalClassesMoML]
+    set newMoML [$toplevel2 exportMoML]
+    # Note that we removed the SequenceActor is now a discard.
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="removeGraphicalClassesMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+    </entity>
+</entity>
+}}
+
