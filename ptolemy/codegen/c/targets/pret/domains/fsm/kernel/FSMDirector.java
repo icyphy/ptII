@@ -38,8 +38,6 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
-
 ////FSMDirector
 
 /**
@@ -52,7 +50,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */
-public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirector {
+public class FSMDirector extends
+        ptolemy.codegen.c.domains.fsm.kernel.FSMDirector {
 
     /** Construct the code generator helper associated with the given
      *  FSMDirector.
@@ -66,34 +65,38 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
     /** Generates the preInitialization code for the director.
      * @return string containing the preinitializaton code
      * */
-    public String generatePreinitializeCode()throws IllegalActionException{
+    public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        code.append(_eol+"//before call to generateActorCode"+_eol);
+        code.append(_eol + "//before call to generateActorCode" + _eol);
         code.append(_generateActorCode());
-        code.append(_eol+"//after call to generateActorCode"+_eol);
+        code.append(_eol + "//after call to generateActorCode" + _eol);
 
         return code.toString();
     }
+
     /**Generates the code to transfer outputs from a port to it's receiver
      * @param outputPort - the port generating output
      * @param code - StringBuffer the generated code should appended to.
      * */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-    throws IllegalActionException {
-        code.append(_eol+"//generate transferOutputsCode inside pret FSM  director called."+_eol);
-        super.generateTransferOutputsCode(outputPort,code);
+            throws IllegalActionException {
+        code
+                .append(_eol
+                        + "//generate transferOutputsCode inside pret FSM  director called."
+                        + _eol);
+        super.generateTransferOutputsCode(outputPort, code);
 
     }
 
     /**Generate code for all the actors associated with the given FSMDirector
      *@return String containing the actor code.
-     */    
-    private String _generateActorCode() throws IllegalActionException{
+     */
+    private String _generateActorCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
-        .getController();
+                .getController();
         //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
@@ -115,9 +118,9 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
 
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
-            Set<Actor> actorsSet= new HashSet();;
-            if(actors!= null)
-            {
+            Set<Actor> actorsSet = new HashSet();
+            ;
+            if (actors != null) {
                 for (int i = 0; i < actors.length; i++) {
                     actorsSet.add(actors[i]);
                 }
@@ -127,30 +130,19 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                 //for (int i = 0; i < actors.length; i++) {
                 Iterator actorIterator = actorsSet.iterator();
                 Actor actors2;
-                while(actorIterator.hasNext()){
-                    actors2 = (Actor)actorIterator.next();
+                while (actorIterator.hasNext()) {
+                    actors2 = (Actor) actorIterator.next();
                     CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors2);
                     //code.append("void "+_getActorName(actors2)+"(){");
                     //code.append(actorHelper.generateFireCode());
-                    code.append(actorHelper.generateFireFunctionCode());  
+                    code.append(actorHelper.generateFireFunctionCode());
                     code.append(actorHelper.generateTypeConvertFireCode());
                     //code.append(_eol+"}"+_eol);
-                }}
+                }
+            }
         }
 
         return code.toString();
-    }
-
-    /** Generates the name of an actor
-     * @param actor - The actor whose name is to be determined
-     * @return string with the actors full name
-     * */
-    private String _getActorName(Actor actor) {
-        String actorFullName = actor.getFullName();
-        actorFullName = actorFullName.substring(1,actorFullName.length());
-        actorFullName = actorFullName.replace('.', '_');
-        actorFullName = actorFullName.replace(' ', '_');
-        return actorFullName;
     }
 
 }

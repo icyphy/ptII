@@ -1290,7 +1290,8 @@ public class REDUtility {
      */
     private static ArrayList<REDTransitionBean> _generateTransition(
             FSMActor actor, State state, HashSet<String> variableSet,
-            HashSet<String> globalSynchronizerSet) throws IllegalActionException {
+            HashSet<String> globalSynchronizerSet)
+            throws IllegalActionException {
 
         ArrayList<REDTransitionBean> returnList = new ArrayList<REDTransitionBean>();
 
@@ -1829,7 +1830,7 @@ public class REDUtility {
                             .equals(returnList.get(i)._signalSet)) {
                         /* Add all negations of the guard in j to the guard of i*/
                         for (int k = 0; k < returnList.get(j)._complementedCondition
-                                .size(); k++)
+                                .size(); k++) {
                             if (returnList.get(i)._preCondition.toString()
                                     .equalsIgnoreCase("")) {
                                 returnList.get(i)._preCondition
@@ -1841,6 +1842,7 @@ public class REDUtility {
                                                 + returnList.get(j)._complementedCondition
                                                         .get(k));
                             }
+                        }
                     }
                 }
             }
@@ -2759,8 +2761,8 @@ public class REDUtility {
             // (3) When time elapses, it moves back to empty.
 
             bean._moduleDescription.append("    when !ND_" + signalName.trim()
-                    + " (true) may ; goto " + actor.getName().trim()
-                    + "_Port_" + signalName.trim() + "_TokenEmpty" + ";\n");
+                    + " (true) may ; goto " + actor.getName().trim() + "_Port_"
+                    + signalName.trim() + "_TokenEmpty" + ";\n");
             bean._moduleDescription.append("    when  ?" + signalName.trim()
                     + " (true) may ; \n");
 

@@ -86,7 +86,8 @@ public class HideVerticesButton extends Button {
         if (frame instanceof ActorGraphFrame && model instanceof CompositeActor) {
             //PtolemyModelUtil util = new PtolemyModelUtil();
             //util.unlinkTest((CompositeActor) model);
-            PtolemyModelUtil._showUnnecessaryRelationsToggle((CompositeActor)model);
+            PtolemyModelUtil
+                    ._showUnnecessaryRelationsToggle((CompositeActor) model);
         }
     }
 }

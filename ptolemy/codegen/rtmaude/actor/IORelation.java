@@ -62,33 +62,36 @@ public class IORelation extends RTMaudeAdaptor {
         StringBuffer rec = new StringBuffer();
 
         for (ptolemy.actor.IOPort pi : r.linkedSourcePortList()) {
-            if (rec.length() > 0)
+            if (rec.length() > 0) {
                 rec.append("\n");
-            rec.append(_generateBlockCode(
-                    this.defaultTermBlock,
+            }
+            rec.append(_generateBlockCode(this.defaultTermBlock,
                     generateEPortId(r.getContainer(), pi),
-                    new ListTerm<ptolemy.actor.IOPort>("noPort"," ; ",r.linkedDestinationPortList()) {
-                        public String item(ptolemy.actor.IOPort port) throws IllegalActionException {
+                    new ListTerm<ptolemy.actor.IOPort>("noPort", " ; ", r
+                            .linkedDestinationPortList()) {
+                        public String item(ptolemy.actor.IOPort port)
+                                throws IllegalActionException {
                             return generateEPortId(r.getContainer(), port);
                         }
-                    }.generateCode()
-                ));
+                    }.generateCode()));
         }
         return rec.toString();
     }
 
     private String generateEPortId(NamedObj container, ptolemy.actor.IOPort port)
-        throws IllegalActionException {
-        return _generateBlockCode("scopeBlock",
-                generateActorIdforPort(container, port), port.getName());
+            throws IllegalActionException {
+        return _generateBlockCode("scopeBlock", generateActorIdforPort(
+                container, port), port.getName());
     }
 
-    private String generateActorIdforPort(NamedObj container, ptolemy.actor.IOPort port) {
+    private String generateActorIdforPort(NamedObj container,
+            ptolemy.actor.IOPort port) {
         String actorId;
-        if (container.equals(port.getContainer().getContainer()))
+        if (container.equals(port.getContainer().getContainer())) {
             actorId = "'" + port.getContainer().getName();
-        else
+        } else {
             actorId = "parent";
+        }
         return actorId;
     }
 

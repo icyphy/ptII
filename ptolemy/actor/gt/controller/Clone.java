@@ -70,8 +70,8 @@ public class Clone extends GTEvent {
 
         ModelParameter modelParameter = getModelParameter();
         CompositeEntity oldModel = modelParameter.getModel();
-        boolean useMoml =
-            ((BooleanToken) this.useMoml.getToken()).booleanValue();
+        boolean useMoml = ((BooleanToken) this.useMoml.getToken())
+                .booleanValue();
         CompositeEntity model;
         if (useMoml) {
             String moml = oldModel.exportMoML();

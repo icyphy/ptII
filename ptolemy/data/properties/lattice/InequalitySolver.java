@@ -187,7 +187,8 @@ public class InequalitySolver {
      *  @exception IllegalActionException If testing any one of the
      *  inequalities throws an exception.
      */
-    public boolean solveGreatest(boolean initializeOnly) throws IllegalActionException {
+    public boolean solveGreatest(boolean initializeOnly)
+            throws IllegalActionException {
         return _solve(initializeOnly, false);
     }
 
@@ -218,7 +219,8 @@ public class InequalitySolver {
      *  @exception IllegalActionException If testing any one of the
      *  inequalities throws an exception.
      */
-    public boolean solveLeast(boolean initializeOnly) throws IllegalActionException {
+    public boolean solveLeast(boolean initializeOnly)
+            throws IllegalActionException {
         return _solve(initializeOnly, true);
     }
 
@@ -370,7 +372,8 @@ public class InequalitySolver {
     // The solver used by solveLeast() and solveGreatest().
     // If the argument is true, solve for the least solution;
     // otherwise, solve for the greatest solution.
-    private boolean _solve(boolean initializeOnly, boolean least) throws IllegalActionException {
+    private boolean _solve(boolean initializeOnly, boolean least)
+            throws IllegalActionException {
         // initialize all variables
         Object init = least ? _cpo.bottom() : _cpo.top();
 
@@ -411,7 +414,6 @@ public class InequalitySolver {
             }
         }
         //*****************************************************
-
 
         // initialize _NS(not satisfied) list; set _inCvar and _inserted flags.
         // Not Satisfied list.  Each entry is an Integer storing index to
@@ -472,7 +474,8 @@ public class InequalitySolver {
                     //        + "the inequalities are defined is not a lattice.");
 
                     // FIXME: Debugging warning:
-                    System.out.println("Setting term (" + updateTerm + ") to null");
+                    System.out.println("Setting term (" + updateTerm
+                            + ") to null");
                 }
 
                 try {
@@ -486,8 +489,8 @@ public class InequalitySolver {
                 ArrayList affected = _Clist.get(updateTerm);
 
                 //*****************************************************
-                Iterator terms =
-                    _solver.getAffectedTerms((PropertyTerm) updateTerm).iterator();
+                Iterator terms = _solver.getAffectedTerms(
+                        (PropertyTerm) updateTerm).iterator();
 
                 while (terms.hasNext()) {
                     affected.addAll(_Clist.get(terms.next()));

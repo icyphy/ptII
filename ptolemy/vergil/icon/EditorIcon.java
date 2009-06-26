@@ -299,7 +299,7 @@ public class EditorIcon extends Attribute {
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Failed to get the bounds of the background figure \""
-                    + (background == null ? "null" : background));
+                            + (background == null ? "null" : background));
         }
         CompositeFigure figure = new CompositeFigure(background);
 

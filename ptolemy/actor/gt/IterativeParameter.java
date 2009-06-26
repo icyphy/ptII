@@ -51,7 +51,7 @@ import ptolemy.vergil.gt.IterativeParameterIcon;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class IterativeParameter extends Parameter implements MatchCallback,
-ValueIterator {
+        ValueIterator {
 
     public IterativeParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -82,8 +82,8 @@ ValueIterator {
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        IterativeParameter newObject =
-            (IterativeParameter) super.clone(workspace);
+        IterativeParameter newObject = (IterativeParameter) super
+                .clone(workspace);
         newObject.setTypeAtLeast(newObject.initial);
         newObject.setTypeAtLeast(newObject.next);
         return newObject;
@@ -104,11 +104,11 @@ ValueIterator {
     public Token next() throws IllegalActionException {
         Object mode = this.mode.getChosenValue();
         if (mode == Mode.STOP_WHEN_MATCH && _foundMatch) {
-            throw new IllegalActionException("Stop because the last match " +
-                    "was successful.");
+            throw new IllegalActionException("Stop because the last match "
+                    + "was successful.");
         } else if (mode == Mode.STOP_WHEN_NOT_MATCH && !_foundMatch) {
-            throw new IllegalActionException("Stop because the last match " +
-                    "was not successful.");
+            throw new IllegalActionException("Stop because the last match "
+                    + "was not successful.");
         }
 
         Token nextToken = next.getToken();
@@ -135,8 +135,8 @@ ValueIterator {
     public class ConstraintViolationException extends IllegalActionException {
 
         ConstraintViolationException() {
-            super("Constraint " + constraint.getExpression() +
-                    " is not satisfied.");
+            super("Constraint " + constraint.getExpression()
+                    + " is not satisfied.");
         }
     }
 

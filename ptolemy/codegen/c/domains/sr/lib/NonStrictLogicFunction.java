@@ -43,7 +43,8 @@ public class NonStrictLogicFunction extends LogicFunction {
      * Construct a NonStrictLogicFunction helper.
      * @param actor The associated actor.
      */
-    public NonStrictLogicFunction(ptolemy.domains.sr.lib.NonStrictLogicFunction actor) {
+    public NonStrictLogicFunction(
+            ptolemy.domains.sr.lib.NonStrictLogicFunction actor) {
         super(actor);
     }
 }

@@ -202,7 +202,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         _initialize();
     }
 
-        ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                    public parameter                       ////
 
     /**
@@ -228,7 +228,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         super.attributeChanged(attribute);
         if (attribute == executionStrategy) {
             String strategy = ((StringToken) executionStrategy.getToken())
-            .stringValue();
+                    .stringValue();
             _chooseExecutionStrategy(strategy);
         } else {
             super.attributeChanged(attribute);
@@ -266,11 +266,12 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
         String strategy = null;
         try {
-           strategy = ((StringToken) executionStrategy.getToken()).stringValue();
+            strategy = ((StringToken) executionStrategy.getToken())
+                    .stringValue();
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                                             "Should not produce an exception,"
-                                             + " this is checked before.");
+                    "Should not produce an exception,"
+                            + " this is checked before.");
         }
         newObject._chooseExecutionStrategy(strategy);
         return newObject;
@@ -286,7 +287,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     public Dependency defaultDependency() {
         return RealDependency.OTIMES_IDENTITY;
     }
-
 
     /**
      * Return a real dependency representing a model-time delay of the
@@ -325,7 +325,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             }
         }
     }
-    
+
     /** Return a causality interface for the composite actor that
      *  contains this director. This class returns an
      *  instance of {@link TDLCausalityInterface}.
@@ -333,7 +333,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *   and output ports of the container.
      */
     public CausalityInterface getCausalityInterface() {
-        return new TDLCausalityInterface((Actor)getContainer(), defaultDependency());
+        return new TDLCausalityInterface((Actor) getContainer(),
+                defaultDependency());
     }
 
     /**
@@ -390,15 +391,17 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("--- fired: " + this.getContainer().getName() + " " + _currentPhysicalTime);
+            _debug("--- fired: " + this.getContainer().getName() + " "
+                    + _currentPhysicalTime);
         }
         List<TimedEvent> eventsToFire = null;
         TimedEvent event = null;
         boolean iterate = true;
         while (iterate) {
 
-            if (_stopRequested)
+            if (_stopRequested) {
                 return;
+            }
             _transferAllInputs();
             // take events out of the list of events in execution if the WCET
             // of the actor has passed
@@ -409,26 +412,29 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 if (time.equals(_currentPhysicalTime)) {
                     if (_debugging) {
                         _debug(" x " + _currentPhysicalTime + " "
-                            + _currentTime + " " + actorToFire);
+                                + _currentTime + " " + actorToFire);
                     }
                     _eventsInExecution.removeFirst();
                     _currentModelTime = eventInExecution.timeStamp;
-                    if (!_fireAtTheBeginningOfTheWcet(actorToFire))
+                    if (!_fireAtTheBeginningOfTheWcet(actorToFire)) {
                         _fireActorInZeroModelTime(actorToFire);
+                    }
 
                     // TODO do not transfer all outputs but only necessary ones
                     _transferAllOutputs();
                     displaySchedule(actorToFire, _currentPhysicalTime
                             .getDoubleValue(), ScheduleEventType.STOP);
-                    if (_eventsInExecution.size() > 0)
+                    if (_eventsInExecution.size() > 0) {
                         displaySchedule(
                                 (Actor) _eventsInExecution.getFirst().contents,
                                 _currentPhysicalTime.getDoubleValue(),
                                 ScheduleEventType.START);
-                    if (_eventsInExecution.size() > 0)
+                    }
+                    if (_eventsInExecution.size() > 0) {
                         _currentModelTime = _eventsInExecution.getFirst().timeStamp;
-                    else
+                    } else {
                         _currentModelTime = null;
+                    }
                 }
             }
 
@@ -439,8 +445,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             event = _executionStrategy.getNextEventToFire(_eventsInExecution,
                     eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
             if (_debugging) {
-                _debug(_currentPhysicalTime + " " + _currentTime + " "
-                    + event);
+                _debug(_currentPhysicalTime + " " + _currentTime + " " + event);
             }
             // start firing an actor defined by the previously selected event
             if (event != null) {
@@ -459,11 +464,12 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             eventsForActorAndTime.remove(time);
                         }
                     }
-                    if (_eventsInExecution.size() > 0)
+                    if (_eventsInExecution.size() > 0) {
                         displaySchedule(
                                 (Actor) _eventsInExecution.getFirst().contents,
                                 _currentPhysicalTime.getDoubleValue(),
                                 ScheduleEventType.STOP);
+                    }
                     displaySchedule(actorToFire, _currentPhysicalTime
                             .getDoubleValue(), ScheduleEventType.START);
                     if (_fireAtTheBeginningOfTheWcet(actorToFire)) {
@@ -489,11 +495,18 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 // not exactly respect the request to refire at the given time.
                 _fireContainerAt(nextRealTimeEventTime);
 
-                Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
-                while (executiveDirector != null && (executiveDirector.getContainer() != executiveDirector.toplevel()) )
-                    executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector();
-                if (executiveDirector == null)
-                    throw new IllegalActionException("This director can only be used as an embedded director.");
+                Director executiveDirector = ((Actor) getContainer())
+                        .getExecutiveDirector();
+                while (executiveDirector != null
+                        && (executiveDirector.getContainer() != executiveDirector
+                                .toplevel())) {
+                    executiveDirector = ((Actor) executiveDirector
+                            .getContainer()).getExecutiveDirector();
+                }
+                if (executiveDirector == null) {
+                    throw new IllegalActionException(
+                            "This director can only be used as an embedded director.");
+                }
                 _currentPhysicalTime = executiveDirector.getModelTime();
                 iterate = false;
             }
@@ -514,19 +527,21 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *                If event queue is not ready.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        if (((CompositeActor)getContainer()).entityList().contains(actor))  {
+        if (((CompositeActor) getContainer()).entityList().contains(actor)) {
             _enqueueEvent(actor, time);
         } else {
-            Actor containingActor = (Actor)actor.getContainer();
-            while (!((CompositeActor)getContainer()).entityList().contains(actor)) {
+            Actor containingActor = (Actor) actor.getContainer();
+            while (!((CompositeActor) getContainer()).entityList().contains(
+                    actor)) {
                 containingActor = (Actor) containingActor.getContainer();
             }
             _enqueueEvent(containingActor, time);
         }
-        Director executiveDirector = ((Actor)actor.getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) actor.getContainer())
+                .getExecutiveDirector();
 
         if (!(executiveDirector instanceof PtidesDirector)) {
-            return executiveDirector.fireAt((Actor)actor.getContainer(), time);
+            return executiveDirector.fireAt((Actor) actor.getContainer(), time);
         }
         return time;
     }
@@ -581,16 +596,22 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *            The time the actor is expected finish.
      */
     public void setFinishingTime(Actor actor, Time finishingTime) {
-        if (_finishingTimesOfActorsInExecution.get(actor) != null)
+        if (_finishingTimesOfActorsInExecution.get(actor) != null) {
             _finishingTimesOfActorsInExecution.remove(actor);
+        }
         _finishingTimesOfActorsInExecution.put(actor, finishingTime);
     }
 
     @Override
     public boolean prefire() throws IllegalActionException {
-        Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
-        while (executiveDirector != null && (executiveDirector.getContainer() != executiveDirector.toplevel()) )
-                executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
+        while (executiveDirector != null
+                && (executiveDirector.getContainer() != executiveDirector
+                        .toplevel())) {
+            executiveDirector = ((Actor) executiveDirector.getContainer())
+                    .getExecutiveDirector();
+        }
         _currentPhysicalTime = executiveDirector.getModelTime();
 
         executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
@@ -607,29 +628,35 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             List eventsToFire = _getNextEventsToFire();
             Time nextRealTimeEventTime = _getNextRealTimeEventTime(
                     eventsToFire, _eventsInExecution);
-            TimedEvent event = _executionStrategy.getNextEventToFire(_eventsInExecution,
-                    eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
+            TimedEvent event = _executionStrategy.getNextEventToFire(
+                    _eventsInExecution, eventsToFire, nextRealTimeEventTime,
+                    _currentPhysicalTime);
             // start firing an actor defined by the previously selected event
-            if (event != null)
+            if (event != null) {
                 return true;
-            if (!nextRealTimeEventTime.equals(Time.POSITIVE_INFINITY))
+            }
+            if (!nextRealTimeEventTime.equals(Time.POSITIVE_INFINITY)) {
                 // The following will throw an exception if the executive director
                 // does not exactly respect the fireAt() request.
                 _fireContainerAt(nextRealTimeEventTime);
+            }
             return false;
-        } else
+        } else {
             return super.prefire();
+        }
     }
 
     /**
      * Initialize variables.
      */
     public void preinitialize() throws IllegalActionException {
-        super.preinitialize();_eventQueues = new Hashtable<Actor, TreeSet<Time>>();
-        List<ComponentEntity> platforms = ((CompositeActor)getContainer()).entityList();
+        super.preinitialize();
+        _eventQueues = new Hashtable<Actor, TreeSet<Time>>();
+        List<ComponentEntity> platforms = ((CompositeActor) getContainer())
+                .entityList();
         for (ComponentEntity platform : platforms) {
             if (platform instanceof Actor) {
-                _eventQueues.put((Actor)platform, new TreeSet<Time>());
+                _eventQueues.put((Actor) platform, new TreeSet<Time>());
             }
         }
         _currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector()
@@ -747,16 +774,19 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             time = event._timeStamp;
                             t = event._token;
                         } else {
-                            time = ((Actor)((Actor)getContainer()).getContainer()).getDirector().getModelTime();
+                            time = ((Actor) ((Actor) getContainer())
+                                    .getContainer()).getDirector()
+                                    .getModelTime();
                             t = receivers[k][l].get();
                         }
-                        if (time.compareTo(_currentPhysicalTime) < 0)
+                        if (time.compareTo(_currentPhysicalTime) < 0) {
                             throw new IllegalActionException(
                                     "Network interface constraints violated at "
                                             + this.getContainer().getName()
                                             + ", tried to transfer event with timestamp "
                                             + time + " at physical time "
                                             + _currentPhysicalTime);
+                        }
                         // TODO implement the dynamic analysis too
                         if (!((isSafeToProcessStaticallyOnNetwork(time, port)) || (time
                                 .compareTo(_currentPhysicalTime) > 0))) {
@@ -825,10 +855,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     for (int k = 0; k < outReceivers.length; k++) {
                         for (int l = 0; l < outReceivers[k].length; l++) {
                             port.send(l, token);
-//                            PtidesPlatformReceiver outReceiver = (PtidesPlatformReceiver) outReceivers[k][l];
-//                            outReceiver.put(token,
-//                                    ((Actor) port.getContainer()).getDirector()
-//                                            .getModelTime());
+                            //                            PtidesPlatformReceiver outReceiver = (PtidesPlatformReceiver) outReceivers[k][l];
+                            //                            outReceiver.put(token,
+                            //                                    ((Actor) port.getContainer()).getDirector()
+                            //                                            .getModelTime());
                             displaySchedule((Actor) port.getContainer(),
                                     _currentPhysicalTime.getDoubleValue(),
                                     ScheduleEventType.TRANSFEROUTPUT);
@@ -880,8 +910,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      */
     private void _fireActorInZeroModelTime(Actor actorToFire)
             throws IllegalActionException {
-        if (actorToFire instanceof CompositeActor)
+        if (actorToFire instanceof CompositeActor) {
             actorToFire.getDirector().setModelTime(getModelTime());
+        }
         actorToFire.fire();
         actorToFire.postfire();
     }
@@ -898,8 +929,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * @return True if actor has to be fired at the beginning of the WCET.
      */
     private boolean _fireAtTheBeginningOfTheWcet(Actor actor) {
-        if (actor instanceof TDLModule)
+        if (actor instanceof TDLModule) {
             return true;
+        }
         return false;
     }
 
@@ -916,16 +948,18 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             TreeSet<Time> set = _eventQueues.get(actor);
             // don't take actor if it is already in execution
             for (TimedEvent event : _eventsInExecution) {
-                if (event.contents == actor)
+                if (event.contents == actor) {
                     continue;
+                }
             }
 
             // take pure events
             if (!set.isEmpty()) {
                 Time time = set.first();
                 _currentModelTime = time;
-                if (actor.prefire())
+                if (actor.prefire()) {
                     events.add(new TimedEvent(time, actor));
+                }
                 _currentModelTime = null;
             }
             // take trigger events
@@ -940,13 +974,19 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
                             Time time = receiver.getNextTime();
                             if (_debugging) {
-                                _debug(((Actor)getContainer()).getDirector().getModelTime() + " " + getModelTime() + " " + time + " " + actor);
+                                _debug(((Actor) getContainer()).getDirector()
+                                        .getModelTime()
+                                        + " "
+                                        + getModelTime()
+                                        + " "
+                                        + time
+                                        + " " + actor);
                             }
                             if (time != null
-                                    && (time.compareTo(((Actor)getContainer()).getDirector().getModelTime()) <= 0 ||
-                                            _allUpstreamEventsHaveHigherTimestamps(port,
-                                            port, new ArrayList(), new Time(
-                                                    this, 0.0), time))) {
+                                    && (time.compareTo(((Actor) getContainer())
+                                            .getDirector().getModelTime()) <= 0 || _allUpstreamEventsHaveHigherTimestamps(
+                                            port, port, new ArrayList(),
+                                            new Time(this, 0.0), time))) {
                                 if (_debugging) {
                                     _debug(actor.getFullName());
                                 }
@@ -954,11 +994,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                                 for (int k = 0; k < events.size(); k++) {
                                     TimedEvent event = events.get(k);
                                     if (event.contents == actor
-                                            && event.timeStamp.equals(time))
+                                            && event.timeStamp.equals(time)) {
                                         toRemove.add(event);
+                                    }
                                 }
-                                for (int k = 0; k < toRemove.size(); k++)
+                                for (int k = 0; k < toRemove.size(); k++) {
                                     events.remove(toRemove.get(k));
+                                }
                                 events.add(new TimedEvent(time, port));
                             }
                         }
@@ -969,8 +1011,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         }
         return events;
     }
-
-
 
     /**
      * Return time stamp of next event on that port or null if that port has no
@@ -989,8 +1029,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 if (recv[j] instanceof PtidesReceiver) {
                     PtidesReceiver receiver = (PtidesReceiver) recv[j];
                     if (receiver.getNextTime() != null
-                            && time.compareTo(receiver.getNextTime()) > 0)
+                            && time.compareTo(receiver.getNextTime()) > 0) {
                         time = receiver.getNextTime();
+                    }
                 }
             }
         }
@@ -1075,11 +1116,12 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *         eventTimeStamp.
      * @exception IllegalActionException
      */
-    private boolean _allUpstreamEventsHaveHigherTimestamps(IOPort port, IOPort currentPort,
-            Collection<IOPort> visitedPorts, Time delay, Time eventTimeStamp)
-            throws IllegalActionException {
-        if (visitedPorts == null)
+    private boolean _allUpstreamEventsHaveHigherTimestamps(IOPort port,
+            IOPort currentPort, Collection<IOPort> visitedPorts, Time delay,
+            Time eventTimeStamp) throws IllegalActionException {
+        if (visitedPorts == null) {
             visitedPorts = new ArrayList<IOPort>();
+        }
         visitedPorts.add(currentPort);
 
         CompositeActor cplatform = (CompositeActor) this.getContainer();
@@ -1088,49 +1130,69 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
         // min delay between sensor and port
         if (PtidesActorProperties.isSensor(currentActor)) {
-            TDLCausalityInterface causalityInterface = (TDLCausalityInterface) cplatform.getCausalityInterface();
-            RealDependency minimumDelay = (RealDependency) causalityInterface.getMinimumDelay(port);
-            return minimumDelay.value() == Double.MAX_VALUE || time.subtract(minimumDelay.value()).compareTo(_currentPhysicalTime) <= 0;
+            TDLCausalityInterface causalityInterface = (TDLCausalityInterface) cplatform
+                    .getCausalityInterface();
+            RealDependency minimumDelay = (RealDependency) causalityInterface
+                    .getMinimumDelay(port);
+            return minimumDelay.value() == Double.MAX_VALUE
+                    || time.subtract(minimumDelay.value()).compareTo(
+                            _currentPhysicalTime) <= 0;
         }
 
         if (currentPort.isInput()) {
 
-            if (port != currentPort && time != null && !time.equals(Time.POSITIVE_INFINITY)) {
+            if (port != currentPort && time != null
+                    && !time.equals(Time.POSITIVE_INFINITY)) {
                 if (time.add(delay).compareTo(eventTimeStamp) > 0) { // current port has an event with a time stamp that will occur at port at a later time than eventtimestamp
                     return true;
                 }
             }
-            Collection<IOPort> equivalentPorts = (currentActor.getCausalityInterface()).equivalentPorts(currentPort);
+            Collection<IOPort> equivalentPorts = (currentActor
+                    .getCausalityInterface()).equivalentPorts(currentPort);
             boolean allAreSafeToProcess = true;
             for (IOPort equivalentPort : equivalentPorts) {
                 Time eqtime = _getNextEventTimeStamp(equivalentPort);
-                if (eqtime == Time.POSITIVE_INFINITY ||
-                        (equivalentPort == port && eqtime.add(delay).compareTo(eventTimeStamp) < 0) ||
-                        (equivalentPort != port && eqtime.add(delay).compareTo(eventTimeStamp) <= 0)) { // search upstream
-                    Collection<IOPort> sourcePorts = equivalentPort.sourcePortList();
-                    if (sourcePorts.size() == 0)
+                if (eqtime == Time.POSITIVE_INFINITY
+                        || (equivalentPort == port && eqtime.add(delay)
+                                .compareTo(eventTimeStamp) < 0)
+                        || (equivalentPort != port && eqtime.add(delay)
+                                .compareTo(eventTimeStamp) <= 0)) { // search upstream
+                    Collection<IOPort> sourcePorts = equivalentPort
+                            .sourcePortList();
+                    if (sourcePorts.size() == 0) {
                         return false;
+                    }
                     for (IOPort sourcePort : sourcePorts) {
-                        allAreSafeToProcess = allAreSafeToProcess & _allUpstreamEventsHaveHigherTimestamps(port, sourcePort, visitedPorts,
-                                delay, eventTimeStamp);
+                        allAreSafeToProcess = allAreSafeToProcess
+                                & _allUpstreamEventsHaveHigherTimestamps(port,
+                                        sourcePort, visitedPorts, delay,
+                                        eventTimeStamp);
                     }
                 }
             }
             return allAreSafeToProcess;
         } else if (currentPort.isOutput()) {
             if (currentActor instanceof CompositeActor) {
-                CausalityInterface causalityInterface = currentActor.getCausalityInterface();
-                Collection<IOPort> deepInputPorts = currentPort.deepInsidePortList();
+                CausalityInterface causalityInterface = currentActor
+                        .getCausalityInterface();
+                Collection<IOPort> deepInputPorts = currentPort
+                        .deepInsidePortList();
                 for (IOPort inputPort : deepInputPorts) {
-                    delay = delay.add(((RealDependency) causalityInterface.getDependency(inputPort, currentPort)).value());
-                    return _allUpstreamEventsHaveHigherTimestamps(port, inputPort, visitedPorts, delay, eventTimeStamp);
+                    delay = delay.add(((RealDependency) causalityInterface
+                            .getDependency(inputPort, currentPort)).value());
+                    return _allUpstreamEventsHaveHigherTimestamps(port,
+                            inputPort, visitedPorts, delay, eventTimeStamp);
                 }
             } else {
-                CausalityInterface causalityInterface = currentActor.getCausalityInterface();
-                Collection<IOPort> inputPorts = causalityInterface.dependentPorts(currentPort);
+                CausalityInterface causalityInterface = currentActor
+                        .getCausalityInterface();
+                Collection<IOPort> inputPorts = causalityInterface
+                        .dependentPorts(currentPort);
                 for (IOPort inputPort : inputPorts) {
-                    delay = delay.add(((RealDependency) causalityInterface.getDependency(inputPort, currentPort)).value());
-                    return _allUpstreamEventsHaveHigherTimestamps(port, inputPort, visitedPorts, delay, eventTimeStamp);
+                    delay = delay.add(((RealDependency) causalityInterface
+                            .getDependency(inputPort, currentPort)).value());
+                    return _allUpstreamEventsHaveHigherTimestamps(port,
+                            inputPort, visitedPorts, delay, eventTimeStamp);
                 }
                 if (inputPorts.size() == 0) {
                     return false;

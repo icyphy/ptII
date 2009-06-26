@@ -35,8 +35,6 @@ import java.util.Set;
 
 import ptolemy.data.properties.Property;
 
-
-
 //////////////////////////////////////////////////////////////////////////
 ////PropertySet
 
@@ -83,7 +81,7 @@ public class PropertySet extends LatticeProperty implements Set {
         return _elements.containsAll(c);
     }
 
-    public boolean equals (Object object) {
+    public boolean equals(Object object) {
         if (object instanceof PropertySet) {
             return _elements.equals(((PropertySet) object)._elements);
         }

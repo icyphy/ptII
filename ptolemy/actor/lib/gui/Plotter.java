@@ -141,7 +141,6 @@ public class Plotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-
         if ((_frame == null) && (_container == null)) {
             // Need an effigy and a tableau so that menu ops work properly.
             Effigy containerEffigy = Configuration.findEffigy(toplevel());

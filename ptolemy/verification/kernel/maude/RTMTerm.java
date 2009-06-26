@@ -38,7 +38,9 @@ abstract public class RTMTerm {
 
     protected String front(int indent) {
         StringBuffer a = new StringBuffer("");
-        for (int i = 0; i < indent; i++ ) a.append(" ");
+        for (int i = 0; i < indent; i++) {
+            a.append(" ");
+        }
         return a.toString();
     }
 }

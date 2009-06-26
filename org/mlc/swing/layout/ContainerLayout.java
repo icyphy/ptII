@@ -79,11 +79,13 @@ public class ContainerLayout implements LayoutManager2 {
         StringTokenizer cols = new StringTokenizer(columnSpecs, ",", false);
         StringTokenizer rows = new StringTokenizer(rowSpecs, ",", false);
 
-        while (cols.hasMoreTokens())
+        while (cols.hasMoreTokens()) {
             this.columnSpecs.add(cols.nextToken());
+        }
 
-        while (rows.hasMoreTokens())
+        while (rows.hasMoreTokens()) {
             this.rowSpecs.add(rows.nextToken());
+        }
 
         formLayout = new FormLayout(columnSpecs, rowSpecs);
 
@@ -107,8 +109,9 @@ public class ContainerLayout implements LayoutManager2 {
 
         for (int index = 0; index < values.size(); index++) {
             buffer.append(values.get(index));
-            if (index < values.size() - 1)
+            if (index < values.size() - 1) {
                 buffer.append(",");
+            }
         }
 
         return buffer.toString();
@@ -192,8 +195,9 @@ public class ContainerLayout implements LayoutManager2 {
         StringBuffer buffer = new StringBuffer();
         for (Iterator i = columnSpecs.iterator(); i.hasNext();) {
             buffer.append(i.next());
-            if (i.hasNext())
+            if (i.hasNext()) {
                 buffer.append(",");
+            }
         }
 
         return buffer.toString();
@@ -203,8 +207,9 @@ public class ContainerLayout implements LayoutManager2 {
         StringBuffer buffer = new StringBuffer();
         for (Iterator i = rowSpecs.iterator(); i.hasNext();) {
             buffer.append(i.next());
-            if (i.hasNext())
+            if (i.hasNext()) {
                 buffer.append(",");
+            }
         }
 
         return buffer.toString();
@@ -239,8 +244,7 @@ public class ContainerLayout implements LayoutManager2 {
     }
 
     public CellConstraints removeCellConstraints(String name) {
-        CellConstraints constraints = componentConstraints
-                .remove(name);
+        CellConstraints constraints = componentConstraints.remove(name);
         return constraints;
     }
 
@@ -321,17 +325,19 @@ public class ContainerLayout implements LayoutManager2 {
     public Component getComponentByName(String name) {
         for (Component component : componentsToNames.keySet()) {
             String testName = componentsToNames.get(component);
-            if (testName.equals(name))
+            if (testName.equals(name)) {
                 return component;
+            }
         }
         return null;
     }
 
     public CellConstraints getComponentConstraints(Component component) {
         String name = componentsToNames.get(component);
-        if (name == null)
+        if (name == null) {
             throw new RuntimeException("Unable to find name for component "
                     + component);
+        }
         return componentConstraints.get(name);
     }
 
@@ -382,9 +388,10 @@ public class ContainerLayout implements LayoutManager2 {
     }
 
     public void addLayoutComponent(java.awt.Component comp, Object constraints) {
-        if (!(constraints instanceof String))
+        if (!(constraints instanceof String)) {
             throw new RuntimeException(
                     "The constraints must be a String name which should reference a CellConstraints entry in the xml file");
+        }
         String componentName = (String) constraints;
         CellConstraints cellConstraints = componentConstraints
                 .get(componentName);

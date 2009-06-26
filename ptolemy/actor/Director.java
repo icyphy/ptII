@@ -257,11 +257,12 @@ public class Director extends Attribute implements Executable {
      *   and output ports.
      */
     public Dependency defaultDependency() {
-        if (_isEmbedded())
+        if (_isEmbedded()) {
             return ((CompositeActor) getContainer()).getExecutiveDirector()
                     .defaultDependency();
-        else
+        } else {
             return BooleanDependency.OTIMES_IDENTITY;
+        }
     }
 
     /** Iterate all the deeply contained actors of the
@@ -458,7 +459,8 @@ public class Director extends Attribute implements Executable {
      *   and output ports of the container.
      */
     public CausalityInterface getCausalityInterface() {
-        return new CausalityInterfaceForComposites((Actor)getContainer(), defaultDependency());
+        return new CausalityInterfaceForComposites((Actor) getContainer(),
+                defaultDependency());
     }
 
     /** Return the current time value of the model being executed by this
@@ -690,7 +692,8 @@ public class Director extends Attribute implements Executable {
             // NOTE: Some (weird) directors pretend they are not embedded even
             // if they are (e.g. in Ptides), so we call _isEmbedded() to give
             // the subclass the option of pretending it is not embedded.
-            if (_isEmbedded() && (containersContainer instanceof CompositeActor)) {
+            if (_isEmbedded()
+                    && (containersContainer instanceof CompositeActor)) {
                 // The container is an embedded model.
                 Time currentTime = ((CompositeActor) containersContainer)
                         .getDirector().getModelTime();
@@ -1066,8 +1069,8 @@ public class Director extends Attribute implements Executable {
                 // use the most recently added one.
                 Director previous = null;
                 CompositeActor castContainer = (CompositeActor) oldContainer;
-                Iterator<?> directors = castContainer
-                        .attributeList(Director.class).iterator();
+                Iterator<?> directors = castContainer.attributeList(
+                        Director.class).iterator();
 
                 while (directors.hasNext()) {
                     Director altDirector = (Director) directors.next();
@@ -1205,7 +1208,8 @@ public class Director extends Attribute implements Executable {
     public String[] suggestedModalModelDirectors() {
         NamedObj container = getContainer();
         if (container instanceof Actor) {
-            Director executiveDirector = ((Actor)container).getExecutiveDirector();
+            Director executiveDirector = ((Actor) container)
+                    .getExecutiveDirector();
             if (executiveDirector != null) {
                 return executiveDirector.suggestedModalModelDirectors();
             }
@@ -1348,7 +1352,8 @@ public class Director extends Attribute implements Executable {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -1398,15 +1403,16 @@ public class Director extends Attribute implements Executable {
             Director director = container.getExecutiveDirector();
             if (director != null) {
                 if (_debugging) {
-                    _debug("**** Requesting that enclosing director refire me at " + time);
+                    _debug("**** Requesting that enclosing director refire me at "
+                            + time);
                 }
                 Time result = director.fireAt(container, time);
                 if (!result.equals(time)) {
                     throw new IllegalActionException(this,
                             "Director is unable to fire the actor at the requested time: "
-                            + time
-                            + ". It responds it will fire it at: "
-                            + result);
+                                    + time
+                                    + ". It responds it will fire it at: "
+                                    + result);
                 }
                 return result;
             }
@@ -1477,9 +1483,7 @@ public class Director extends Attribute implements Executable {
                         Token t = port.get(i);
 
                         if (_debugging) {
-                            _debug("Transferring input "
-                                    + t
-                                    + " from "
+                            _debug("Transferring input " + t + " from "
                                     + port.getName());
                         }
 
@@ -1535,9 +1539,7 @@ public class Director extends Attribute implements Executable {
                     Token t = port.getInside(i);
 
                     if (_debugging) {
-                        _debug(getName(), "transferring output "
-                                + t
-                                + " from "
+                        _debug(getName(), "transferring output " + t + " from "
                                 + port.getName());
                     }
 
@@ -1579,7 +1581,6 @@ public class Director extends Attribute implements Executable {
                 + "<rect x=\"-50\" y=\"-15\" " + "width=\"100\" height=\"30\" "
                 + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
-
 
     /** Create receivers for all contained actors.
      *  @exception IllegalActionException If any port of a contained

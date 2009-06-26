@@ -57,11 +57,11 @@ public class Boolean extends LatticeProperty implements TypeProperty {
     }
 
     public Token getMinValue() {
-       return new BooleanToken(false);
+        return new BooleanToken(false);
     }
 
     public boolean hasMinMaxValue() {
-       return true;
+        return true;
     }
 
     public boolean isInRange(Token token) {

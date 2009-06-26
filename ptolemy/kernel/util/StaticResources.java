@@ -135,7 +135,6 @@ public class StaticResources {
         return _displayTextBundle;
     }
 
-
     /**
      * Search the uiSettings resourcebundle for the property specified by the
      * key parameter. Return the String value of the property value specified.
@@ -215,7 +214,6 @@ public class StaticResources {
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
     ///////////////////////////////////////////////////////////////////
-
 
     // FIXME - get kepler-specific ref out of this path:
     /**

@@ -42,7 +42,7 @@ import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.Tableau;
-import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.LibraryAttribute;
 import diva.gui.GUIUtilities;
@@ -118,7 +118,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         _graphPanner.setCanvas(getJGraph());
         pack();
         show();
-        GraphicalMessageHandler.setContext(_previousDefaultContext);
+        UndeferredGraphicalMessageHandler.setContext(_previousDefaultContext);
         toFront();
         _getRightComponent().requestFocus();
     }
@@ -154,8 +154,9 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         _screen.setVisible(true);
 
         // Make the new screen the default context for modal messages.
-        _previousDefaultContext = GraphicalMessageHandler.getContext();
-        GraphicalMessageHandler.setContext(_screen);
+        _previousDefaultContext = UndeferredGraphicalMessageHandler
+                .getContext();
+        UndeferredGraphicalMessageHandler.setContext(_screen);
 
         // NOTE: As usual with swing, what the UI does is pretty
         // random, and doesn't correlate much with the documentation.
@@ -186,7 +187,6 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /**
      * Initialize this class.

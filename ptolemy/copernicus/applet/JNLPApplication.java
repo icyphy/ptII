@@ -69,4 +69,3 @@ public class JNLPApplication extends MenuApplication {
         MenuApplication.main(args);
     }
 }
-

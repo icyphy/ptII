@@ -91,7 +91,7 @@ public class PNDirector extends Director {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) _director
-        .getContainer();
+                .getContainer();
 
         code.append(_codeGenerator.comment("Create a thread for each actor."));
         code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
@@ -159,7 +159,8 @@ public class PNDirector extends Director {
      * @return the code for getting data from the specific port channel.
      * @exception IllegalActionException Not thrown here.
      */
-    public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
+    public String generateCodeForGet(IOPort port, int channel)
+            throws IllegalActionException {
 
         // getReadOffset()
         // incrementReadOffset()
@@ -173,7 +174,8 @@ public class PNDirector extends Director {
      * @return the code for sending data from the specific port channel.
      * @exception IllegalActionException Not thrown here.
      */
-    public String generateCodeForSend(IOPort port, int channel) throws IllegalActionException {
+    public String generateCodeForSend(IOPort port, int channel)
+            throws IllegalActionException {
         return "";
     }
 
@@ -226,8 +228,9 @@ public class PNDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(((CodeGeneratorHelper) _getHelper(_director
-                .getContainer())).generateFireCode());
+        code
+                .append(((CodeGeneratorHelper) _getHelper(_director
+                        .getContainer())).generateFireCode());
 
         return code.toString();
     }
@@ -266,7 +269,7 @@ public class PNDirector extends Director {
         _buffers.clear();
 
         List actorList = ((CompositeEntity) _director.getContainer())
-        .deepEntityList();
+                .deepEntityList();
 
         Iterator actors = actorList.iterator();
         while (actors.hasNext()) {
@@ -304,7 +307,7 @@ public class PNDirector extends Director {
      * @exception IllegalActionException Not thrown here.
      */
     public void generateTransferOutputsCode(IOPort port, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         code.append(_codeGenerator.comment("PNDirector: "
                 + "Transfer tokens to the outside."));
     }
@@ -321,14 +324,14 @@ public class PNDirector extends Director {
      *                If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         code.append(_codeGenerator.comment("PNDirector: "
                 + "Transfer tokens to the inside."));
 
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
-        .getContainer();
+                .getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         for (int i = 0; i < inputPort.getWidth(); i++) {
@@ -365,7 +368,7 @@ public class PNDirector extends Director {
      *                found.
      */
     public String generateVariableInitialization()
-    throws IllegalActionException {
+            throws IllegalActionException {
         return "";
     }
 
@@ -405,9 +408,9 @@ public class PNDirector extends Director {
      *  when getting the value from the parameter.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-        throws IllegalActionException {
+            throws IllegalActionException {
         IntToken sizeToken = (IntToken) ((ptolemy.domains.pn.kernel.PNDirector) _director).initialQueueCapacity
-        .getToken();
+                .getToken();
 
         // FIXME: Force buffer size to be at least 2.
         // We need to handle size 1 as special case.
@@ -438,12 +441,12 @@ public class PNDirector extends Director {
      *                If getting the rate or reading parameters throws it.
      */
     protected String _createDynamicOffsetVariables(IOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code
-        .append(_eol
-                + _codeGenerator
-                .comment("PN Director's offset variable declarations."));
+                .append(_eol
+                        + _codeGenerator
+                                .comment("PN Director's offset variable declarations."));
 
         int width;
         if (port.isInput()) {
@@ -495,10 +498,10 @@ public class PNDirector extends Director {
      * @exception IllegalActionException
      */
     private void _generateThreadFunctionCode(StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         List actorList = ((CompositeActor) _director.getContainer())
-        .deepEntityList();
+                .deepEntityList();
 
         // Generate the function for each actor thread.
         for (Actor actor : (List<Actor>) actorList) {
@@ -540,12 +543,12 @@ public class PNDirector extends Director {
 
                 // Generate a for loop if there is a firing count limit.
                 if (actor instanceof LimitedFiringSource) {
-                    int firingCount = ((IntToken) ((LimitedFiringSource) actor)
-                            .firingCountLimit.getToken()).intValue();
+                    int firingCount = ((IntToken) ((LimitedFiringSource) actor).firingCountLimit
+                            .getToken()).intValue();
 
                     if (firingCount != 0) {
-                        loopCode = "int i = 0;" + _eol +
-                        "for (; i < " + firingCount + "; i++) {" + _eol;
+                        loopCode = "int i = 0;" + _eol + "for (; i < "
+                                + firingCount + "; i++) {" + _eol;
                     }
                     pnPostfireCode = _eol;
                 }
@@ -580,7 +583,7 @@ public class PNDirector extends Director {
 
                     if (portCGHelper.checkRemote(forComposite, port)) {
                         pnPostfireCode += portHelper
-                        .updateConnectedPortsOffset(rate, _director);
+                                .updateConnectedPortsOffset(rate, _director);
                     }
                     if (port.isInput()) {
                         pnPostfireCode += portHelper.updateOffset(rate,
@@ -607,7 +610,7 @@ public class PNDirector extends Director {
             // need to be collected before generating their initialization.
             String initializeCode = helper.generateInitializeCode();
             String variableInitializeCode = helper
-            .generateVariableInitialization();
+                    .generateVariableInitialization();
             code.append(variableInitializeCode);
             code.append(initializeCode);
 
@@ -616,8 +619,7 @@ public class PNDirector extends Director {
     }
 
     private String _generateActorNameFileForDebugging() {
-        return CodeGeneratorHelper.generateName((NamedObj) _director) +
-        "_nameMapFile";
+        return CodeGeneratorHelper.generateName(_director) + "_nameMapFile";
     }
 
     /**
@@ -629,7 +631,7 @@ public class PNDirector extends Director {
      */
     private String _getActorThreadLabel(Actor actor) {
         return CodeGeneratorHelper.generateName((NamedObj) actor)
-        + "_ThreadFunction";
+                + "_ThreadFunction";
     }
 
     private HashSet<String> _buffers = new HashSet<String>();

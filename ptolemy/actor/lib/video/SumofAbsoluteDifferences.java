@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.video;
 
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntMatrixToken;
@@ -64,19 +63,22 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public SumofAbsoluteDifferences(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        previousImageBlock = new TypedIOPort(this,"previousImageBlock", true, false);
+        previousImageBlock = new TypedIOPort(this, "previousImageBlock", true,
+                false);
         previousImageBlock.setTypeEquals(BaseType.INT_MATRIX);
 
-        currentImageBlock = new TypedIOPort(this,"currentImageBlock", true, false);
+        currentImageBlock = new TypedIOPort(this, "currentImageBlock", true,
+                false);
         currentImageBlock.setTypeEquals(BaseType.INT_MATRIX);
 
-        sumAbsoluteDifference = new TypedIOPort(this,"sumAbsoluteDifference", false, true);
+        sumAbsoluteDifference = new TypedIOPort(this, "sumAbsoluteDifference",
+                false, true);
         sumAbsoluteDifference.setTypeEquals(BaseType.INT);
 
-        blockSize = new Parameter(this,"blockSize");
+        blockSize = new Parameter(this, "blockSize");
         blockSize.setExpression("16");
         blockSize.setTypeEquals(BaseType.INT);
 
@@ -106,7 +108,6 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
      */
     public Parameter blockSize;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -117,10 +118,13 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SumofAbsoluteDifferences newObject = (SumofAbsoluteDifferences) super.clone(workspace);
-        newObject.previousImageBlock.setTypeAtLeast(newObject.previousImageBlock);
+        SumofAbsoluteDifferences newObject = (SumofAbsoluteDifferences) super
+                .clone(workspace);
+        newObject.previousImageBlock
+                .setTypeAtLeast(newObject.previousImageBlock);
         newObject.currentImageBlock.setTypeAtLeast(newObject.currentImageBlock);
-        newObject.sumAbsoluteDifference.setTypeAtLeast(newObject.sumAbsoluteDifference);
+        newObject.sumAbsoluteDifference
+                .setTypeAtLeast(newObject.sumAbsoluteDifference);
         return newObject;
     }
 
@@ -142,24 +146,22 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        int i,j,sum = 0;
+        int i, j, sum = 0;
         IntMatrixToken previousImage;
         IntMatrixToken currentImage;
         if (previousImageBlock.hasToken(0)) {
-            previousImage = (IntMatrixToken)previousImageBlock.get(0);
+            previousImage = (IntMatrixToken) previousImageBlock.get(0);
         } else {
             return;
         }
         if (currentImageBlock.hasToken(0)) {
-            currentImage = (IntMatrixToken)currentImageBlock.get(0);
+            currentImage = (IntMatrixToken) currentImageBlock.get(0);
         } else {
             return;
         }
 
-        for (i=0; i<_blockSize; i++)
-        {
-            for (j=0; j<_blockSize; j++)
-            {
+        for (i = 0; i < _blockSize; i++) {
+            for (j = 0; j < _blockSize; j++) {
                 sum += Math.abs(previousImage.getElementAt(i, j)
                         - currentImage.getElementAt(i, j));
             }
@@ -171,7 +173,7 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
 
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _blockSize = ((IntToken)blockSize.getToken()).intValue();
+        _blockSize = ((IntToken) blockSize.getToken()).intValue();
 
     }
 
@@ -181,6 +183,5 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
     /** Description of the variable. */
 
     protected int _blockSize;
-
 
 }

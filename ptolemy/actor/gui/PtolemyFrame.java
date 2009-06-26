@@ -146,7 +146,8 @@ public abstract class PtolemyFrame extends TableauFrame {
         Effigy originalEffigy = super.getEffigy();
         if (originalEffigy instanceof PtolemyEffigy) {
             if (!getTableau().isMaster()
-                    && !originalEffigy.masterEffigy().equals(originalEffigy.topEffigy())) {
+                    && !originalEffigy.masterEffigy().equals(
+                            originalEffigy.topEffigy())) {
                 // The tableau is no longer the master, perhaps there
                 // was a deletion.  Hence, the original effigy should
                 // no longer be the associated effigy.
@@ -158,8 +159,9 @@ public abstract class PtolemyFrame extends TableauFrame {
                 // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=273
                 try {
                     PtolemyEffigy newEffigy = new PtolemyEffigy(
-                            (CompositeEntity)originalEffigy.getContainer(),
-                            originalEffigy.getContainer().uniqueName(_model.getName()));
+                            (CompositeEntity) originalEffigy.getContainer(),
+                            originalEffigy.getContainer().uniqueName(
+                                    _model.getName()));
                     newEffigy.setModel(_model);
                     newEffigy.setModified(originalEffigy.isModified());
                     getTableau().setContainer(newEffigy);

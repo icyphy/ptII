@@ -155,7 +155,8 @@ public class CopyCatIcon extends XMLIcon {
                     }
 
                     if (icon != null) {
-                        if (((BooleanToken)includeName.getToken()).booleanValue()) {
+                        if (((BooleanToken) includeName.getToken())
+                                .booleanValue()) {
                             result = icon.createFigure();
                         } else {
                             result = icon.createBackgroundFigure();
@@ -218,26 +219,23 @@ public class CopyCatIcon extends XMLIcon {
         // bounding box, which may be OK in this case.
         int numberOfEchos = 2;
         try {
-            numberOfEchos = ((IntToken)echos.getToken()).intValue();
+            numberOfEchos = ((IntToken) echos.getToken()).intValue();
         } catch (IllegalActionException ex) {
             // Ignore and use the default.
         }
         Rectangle2D bounds = result.getBounds();
         CompositeFigure composite = new CompositeFigure();
         for (int i = numberOfEchos; i > 0; i--) {
-            BasicRectangle rectangle = new BasicRectangle(
-                    bounds.getX() + 5.0*i - _MARGIN,
-                    bounds.getY() + 5.0*i - _MARGIN,
-                    bounds.getWidth() + 2 * _MARGIN,
-                    bounds.getHeight() + 2 * _MARGIN,
+            BasicRectangle rectangle = new BasicRectangle(bounds.getX() + 5.0
+                    * i - _MARGIN, bounds.getY() + 5.0 * i - _MARGIN, bounds
+                    .getWidth()
+                    + 2 * _MARGIN, bounds.getHeight() + 2 * _MARGIN,
                     echoBoxColor.asColor());
             composite.add(rectangle);
         }
         BasicRectangle rectangle3 = new BasicRectangle(bounds.getX() - _MARGIN,
-                bounds.getY() - _MARGIN,
-                bounds.getWidth() + _MARGIN * 2,
-                bounds.getHeight() + _MARGIN * 2,
-                Color.white);
+                bounds.getY() - _MARGIN, bounds.getWidth() + _MARGIN * 2,
+                bounds.getHeight() + _MARGIN * 2, Color.white);
         composite.add(rectangle3);
         composite.add(result);
         return composite;

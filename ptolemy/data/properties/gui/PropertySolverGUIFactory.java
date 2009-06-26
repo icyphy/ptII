@@ -35,7 +35,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ////PropertySolverGUIFactory
 
 /**
@@ -54,35 +53,35 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PropertySolverGUIFactory extends EditorFactory {
 
-        /** Construct a factory with the specified container and name.
-         *  @param container The container.
-         *  @param name The name of the factory.
-         *  @exception IllegalActionException If the factory is not of an
-         *   acceptable attribute for the container.
-         *  @exception NameDuplicationException If the name coincides with
-         *   an attribute already in the container.
-         */
-        public PropertySolverGUIFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
-                super(container, name);
-        }
+    /** Construct a factory with the specified container and name.
+     *  @param container The container.
+     *  @param name The name of the factory.
+     *  @exception IllegalActionException If the factory is not of an
+     *   acceptable attribute for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public PropertySolverGUIFactory(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-        /** Create an editor for configuring the specified object with the
-         *  specified parent window.
-         *  @param object The object to configure.
-         *  @param parent The parent window, or null if there is none.
-         */
-        public void createEditor(NamedObj object, Frame parent) {
-                // This is always used to configure the container, so
-                // we just use that.
-                PropertySolver solver = (PropertySolver) getContainer();
-                workspace().getWriteAccess();
-                solver.invokeSolver();
+    /** Create an editor for configuring the specified object with the
+     *  specified parent window.
+     *  @param object The object to configure.
+     *  @param parent The parent window, or null if there is none.
+     */
+    public void createEditor(NamedObj object, Frame parent) {
+        // This is always used to configure the container, so
+        // we just use that.
+        PropertySolver solver = (PropertySolver) getContainer();
+        workspace().getWriteAccess();
+        solver.invokeSolver();
         solver.resetAll();
-                workspace().doneWriting();
+        workspace().doneWriting();
 
-        }
+    }
 }

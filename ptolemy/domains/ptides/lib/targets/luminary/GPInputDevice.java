@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class GPInputDevice extends SensorInputDevice implements InterruptDevice{
+public class GPInputDevice extends SensorInputDevice implements InterruptDevice {
 
     /**
      * Constructs a GPInputDevice object.

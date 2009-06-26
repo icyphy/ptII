@@ -45,7 +45,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.cg.gui.CodeGeneratorGUIFactory;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -81,7 +80,8 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
  */
-public abstract class GenericCodeGenerator extends Attribute implements Decorator {
+public abstract class GenericCodeGenerator extends Attribute implements
+        Decorator {
 
     // Note: If you add publicly settable parameters, update
     // _commandFlags or _commandOptions.
@@ -96,11 +96,11 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public GenericCodeGenerator(NamedObj container, String name, String outputFileExtension)
-    throws IllegalActionException, NameDuplicationException {
+    public GenericCodeGenerator(NamedObj container, String name,
+            String outputFileExtension) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         _outputFileExtension = outputFileExtension;
-        
 
         // Note: If you add publicly settable parameters, update
         // _commandFlags or _commandOptions.
@@ -168,7 +168,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == codeDirectory) {
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
@@ -226,7 +226,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
 
             if (manager == null) {
                 CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                .toplevel();
+                        .toplevel();
                 manager = new Manager(toplevel.workspace(), "Manager");
                 toplevel.setManager(manager);
             }
@@ -240,8 +240,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
                 try {
                     long startTime = (new Date()).getTime();
                     manager.wrapup();
-                    _printTimeAndMemory(startTime,
-                            "CodeGenerator: "
+                    _printTimeAndMemory(startTime, "CodeGenerator: "
                             + "wrapup consumed: ");
                 } catch (RuntimeException ex) {
                     // The Exit actor causes Manager.wrapup() to throw this.
@@ -257,6 +256,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
         }
         return returnValue;
     }
+
     /** Return the copyright for this code.
      *  @return The copyright.
      */
@@ -311,7 +311,8 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    final public  Object getAdapter(Object component) throws IllegalActionException {
+    final public Object getAdapter(Object component)
+            throws IllegalActionException {
         return _getAdapter(component);
     }
 
@@ -329,58 +330,58 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
     public NamedObj getComponent() {
         return getContainer();
     }
-    
-   /** Return the name of the decorator.
-    * @return The name of the decorator.
-    */
-   public String getDecoratorName() {
-       return this.getFullName();
-   }
-   
-   /** Return the decorated attribute with the given name for the target NamedObj.
-    * If the attribute can't be found null be returned.
-    * @param target The NamedObj that will be decorated.
-    * @param name The name of the attribute.
-    * @return The attribute with the given name for the target NamedObj. 
-    */
-   public DecoratedAttribute getDecoratorAttribute(NamedObj target, String name){
-       List<DecoratedAttribute> attributes = getDecoratorAttributes(target);
-       for (DecoratedAttribute attribute : attributes) {
-           if (attribute.getAttribute().getName().equals(name)) {
-               return attribute;
-           }
-       }
-       return null;
-   }
 
-   /** Return the decorated attributes for the target NamedObj.
-    * @param target The NamedObj that will be decorated.
-    * @return A list of decorated attributes for the target NamedObj. 
-    */
-   public List<DecoratedAttribute> getDecoratorAttributes(NamedObj target){
-       if (_decoratedAttributes.containsKey(target)) {
-           return _decoratedAttributes.get(target);
-       } else {
-           CodeGeneratorAdapter adapter;
-           List<DecoratedAttribute> attributes = new LinkedList<DecoratedAttribute>();
-           try {
-               adapter = _getAdapter(target);
-           } catch (IllegalActionException e) {
-               // If no adapter, return empty list
-               return attributes;
-           }           
-           try {
-               attributes = adapter.createDecoratedAttributes(this);
-           } catch (IllegalActionException e) {
-               e.printStackTrace();
-           } catch (NameDuplicationException e) {
-               // TODO Auto-generated catch block
-               e.printStackTrace();
-           }
-           _decoratedAttributes.put(target, attributes);
-           return attributes;
-       }
-   }    
+    /** Return the name of the decorator.
+     * @return The name of the decorator.
+     */
+    public String getDecoratorName() {
+        return this.getFullName();
+    }
+
+    /** Return the decorated attribute with the given name for the target NamedObj.
+     * If the attribute can't be found null be returned.
+     * @param target The NamedObj that will be decorated.
+     * @param name The name of the attribute.
+     * @return The attribute with the given name for the target NamedObj. 
+     */
+    public DecoratedAttribute getDecoratorAttribute(NamedObj target, String name) {
+        List<DecoratedAttribute> attributes = getDecoratorAttributes(target);
+        for (DecoratedAttribute attribute : attributes) {
+            if (attribute.getAttribute().getName().equals(name)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
+    /** Return the decorated attributes for the target NamedObj.
+     * @param target The NamedObj that will be decorated.
+     * @return A list of decorated attributes for the target NamedObj. 
+     */
+    public List<DecoratedAttribute> getDecoratorAttributes(NamedObj target) {
+        if (_decoratedAttributes.containsKey(target)) {
+            return _decoratedAttributes.get(target);
+        } else {
+            CodeGeneratorAdapter adapter;
+            List<DecoratedAttribute> attributes = new LinkedList<DecoratedAttribute>();
+            try {
+                adapter = _getAdapter(target);
+            } catch (IllegalActionException e) {
+                // If no adapter, return empty list
+                return attributes;
+            }
+            try {
+                attributes = adapter.createDecoratedAttributes(this);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            _decoratedAttributes.put(target, attributes);
+            return attributes;
+        }
+    }
 
     /** Get the command executor, which can be either non-graphical
      *  or graphical.  The initial default is non-graphical, which
@@ -426,11 +427,11 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *   container with the same name.
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "CodeGenerator can only be contained"
-                    + " by CompositeEntity");
+                            + " by CompositeEntity");
         }
 
         super.setContainer(container);
@@ -476,26 +477,27 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
-    protected int _generateCode(StringBuffer code) throws KernelException
-    {
+    protected int _generateCode(StringBuffer code) throws KernelException {
         _codeFileName = _writeCode(code);
         return 0;
     }
-    
+
     /**
      * Get the code generator adapter associated with the given object.
      * @param object The given object.
      * @return The code generator adapter.
      * @exception IllegalActionException If the adapter class cannot be found.
      */
-    final protected CodeGeneratorAdapter _getAdapter(Object object) throws IllegalActionException {
+    final protected CodeGeneratorAdapter _getAdapter(Object object)
+            throws IllegalActionException {
         Class<?> adapterClassFilter = _getAdapterClassFilter();
         if (_adapterStore.containsKey(object)) {
             assert adapterClassFilter.isInstance(_adapterStore.get(object));
             return _adapterStore.get(object);
         }
 
-        ArrayList<String> packages = new ArrayList<String>(_generatorPackageListParser.generatorPackages());
+        ArrayList<String> packages = new ArrayList<String>(
+                _generatorPackageListParser.generatorPackages());
         //ArrayList<String> packagesWorkingSet = new ArrayList<String>(packagesToBacktrack);
 
         Class<?> componentClass = object.getClass();
@@ -506,7 +508,6 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
         //      First the different packages
         //      Secondly the hierarchy of the object
         //      Lastly for each package the hierarchy of the package
-
 
         while (adapterObject == null) {
             String className = componentClass.getName();
@@ -522,7 +523,8 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
                 for (int i = 0; i < packages.size(); ++i) {
                     String packageName = packages.get(i);
                     if (packageName.indexOf('.') != -1) {
-                        packageName = packageName.substring(0, packageName.lastIndexOf('.'));
+                        packageName = packageName.substring(0, packageName
+                                .lastIndexOf('.'));
                         packages.set(i, packageName);
                     } else {
                         packages.remove(i);
@@ -535,10 +537,11 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
                 String packageName = packages.get(i);
 
                 // FIXME rodiers: this mombo jumbo should probably move to a utility function
-                String adapterClassName = "ptolemy.cg.adapter." + packageName + ".adapters." + className;
+                String adapterClassName = "ptolemy.cg.adapter." + packageName
+                        + ".adapters." + className;
                 try {
-                    adapterObject = _instantiateAdapter(
-                            object, componentClass, adapterClassName);
+                    adapterObject = _instantiateAdapter(object, componentClass,
+                            adapterClassName);
                 } catch (IllegalActionException ex) {
                     // If adapter class cannot be found, get to next package
                     continue;
@@ -562,7 +565,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
     protected Class<?> _getAdapterClassFilter() {
         return CodeGeneratorAdapter.class;
     }
-    
+
     /**
      * Return the name of the output file.
      * @return The output file name.
@@ -602,7 +605,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
         // Reset the code file name so that getCodeFileName()
         // accurately reports whether code was generated.
         _codeFileName = null;
-        
+
         _adapterStore.clear();
     }
 
@@ -614,7 +617,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
         return null;
 
     }
-    
+
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and an extension that is the last package of
@@ -625,7 +628,8 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    protected String _writeCode(StringBuffer code) throws IllegalActionException {
+    protected String _writeCode(StringBuffer code)
+            throws IllegalActionException {
         // FIXME: ChacoCodeGenerator and VHDLCodeGenerator use this method directly.
         //             Is this what we want?
 
@@ -689,7 +693,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      */
     private CodeGeneratorAdapter _instantiateAdapter(Object component,
             Class<?> componentClass, String adapterClassName)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         Class<?> adapterClass = null;
 
@@ -703,37 +707,38 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
         Constructor<?> constructor = null;
 
         try {
-            constructor = adapterClass.getConstructor(
-                    new Class[] { componentClass });
+            constructor = adapterClass
+                    .getConstructor(new Class[] { componentClass });
 
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + adapterClassName
-                    + " which accepts an instance of "
-                    + component.getClass().getName()
-                    + " as the argument.");
+                            + " which accepts an instance of "
+                            + component.getClass().getName()
+                            + " as the argument.");
         }
 
         CodeGeneratorAdapter adapterObject = null;
 
         try {
-            adapterObject = (CodeGeneratorAdapter) constructor.newInstance(new Object[] { component });
+            adapterObject = (CodeGeneratorAdapter) constructor
+                    .newInstance(new Object[] { component });
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to create adapter class code generator for "
-                    + adapterClassName + ".");
+                            + adapterClassName + ".");
         }
 
         if (!_getAdapterClassFilter().isInstance(adapterObject)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
-                    + ". Its adapter class does not"
-                    + " implement " +_getAdapterClassFilter() + ".");
+                            + ". Its adapter class does not" + " implement "
+                            + _getAdapterClassFilter() + ".");
         }
 
         try {
             Class<?> strategyClass = _strategyClass();
-            if (strategyClass != null){
+            if (strategyClass != null) {
                 adapterObject.setStrategy(strategyClass.newInstance());
             }
         } catch (InstantiationException e) {
@@ -765,7 +770,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
                 // Use a MoMLChangeRequest so that visual rendition (if
                 // any) is updated and listeners are notified.
                 String moml = "<property name=\"" + name + "\" value=\""
-                + value + "\"/>";
+                        + value + "\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, model,
                         moml);
                 model.requestChange(request);
@@ -776,7 +781,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
                     // Use a MoMLChangeRequest so that visual rendition (if
                     // any) is updated and listeners are notified.
                     String moml = "<property name=\"" + name + "\" value=\""
-                    + value + "\"/>";
+                            + value + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             this, moml);
                     model.requestChange(request);
@@ -786,7 +791,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
 
             if (model instanceof CompositeActor) {
                 ptolemy.actor.Director director = ((CompositeActor) model)
-                .getDirector();
+                        .getDirector();
 
                 if (director != null) {
                     attribute = director.getAttribute(name);
@@ -797,7 +802,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
                         // visual rendition (if any) is
                         // updated and listeners are notified.
                         String moml = "<property name=\"" + name
-                        + "\" value=\"" + value + "\"/>";
+                                + "\" value=\"" + value + "\"/>";
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
                                 director, moml);
                         director.requestChange(request);
@@ -818,11 +823,13 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
     private static int generateCode(String[] args) throws Exception {
         try {
             if (args.length == 0) {
-                System.err.println("Usage: java -classpath $PTII "
-                        + "ptolemy.codegen.kernel.CodeGenerator model.xml "
-                        + "[model.xml . . .]" + _eol
-                        + "  The arguments name MoML files containing models."
-                        + "  Use -help to get a full list of command line arguments.");
+                System.err
+                        .println("Usage: java -classpath $PTII "
+                                + "ptolemy.codegen.kernel.CodeGenerator model.xml "
+                                + "[model.xml . . .]"
+                                + _eol
+                                + "  The arguments name MoML files containing models."
+                                + "  Use -help to get a full list of command line arguments.");
                 return -1;
             }
 
@@ -882,25 +889,26 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
                         parser.reset();
                         MoMLParser.purgeModelRecord(modelURL);
                         toplevel = (CompositeActor) parser
-                        .parse(null, modelURL);
+                                .parse(null, modelURL);
                     } catch (Exception ex) {
                         throw new Exception("Failed to parse \"" + args[i]
-                                                                        + "\"", ex);
+                                + "\"", ex);
                     }
 
                     // Get all instances of this class contained in the model
                     List<GenericCodeGenerator> codeGenerators = toplevel
-                    .attributeList(GenericCodeGenerator.class);
+                            .attributeList(GenericCodeGenerator.class);
 
                     // If the user called this with -generatorPackage ptolemy.codegen.java,
                     // the process that argument.  This is a bit hacky, but works.
                     String generatorPackageValue = "ptolemy.codegen.c";
                     int parameterIndex = -1;
-                    if ( (parameterIndex = _parameterNames.indexOf("generatorPackage")) != -1) {
-                        generatorPackageValue = _parameterValues.get(parameterIndex);
+                    if ((parameterIndex = _parameterNames
+                            .indexOf("generatorPackage")) != -1) {
+                        generatorPackageValue = _parameterValues
+                                .get(parameterIndex);
                     }
                     Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
-
 
                     if (codeGenerators.size() != 0) {
                         // Get the last CodeGenerator in the list, maybe
@@ -916,19 +924,20 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
 
                     if (codeGenerators.size() == 0 || codeGenerator == null) {
                         // Add a codeGenerator
-                        Constructor<?> codeGeneratorConstructor =
-                            generatorClass.getConstructor(new Class[] {
-                                    NamedObj.class,
-                                    String.class});
-                        codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor.newInstance(new Object [] {
-                                toplevel,
-                                "CodeGenerator_AutoAdded"});
+                        Constructor<?> codeGeneratorConstructor = generatorClass
+                                .getConstructor(new Class[] { NamedObj.class,
+                                        String.class });
+                        codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor
+                                .newInstance(new Object[] { toplevel,
+                                        "CodeGenerator_AutoAdded" });
                     }
 
                     codeGenerator._updateParameters(toplevel);
-                    Attribute generateEmbeddedCode = codeGenerator.getAttribute("generateEmbeddedCode");
+                    Attribute generateEmbeddedCode = codeGenerator
+                            .getAttribute("generateEmbeddedCode");
                     if (generateEmbeddedCode instanceof Parameter) {
-                        ((Parameter) generateEmbeddedCode).setExpression("false");
+                        ((Parameter) generateEmbeddedCode)
+                                .setExpression("false");
                     }
 
                     try {
@@ -947,7 +956,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
             }
             if (codeGenerator != null) {
                 return codeGenerator.getExecuteCommands()
-                .getLastSubprocessReturnCode();
+                        .getLastSubprocessReturnCode();
             }
             return -2;
         } catch (Throwable ex) {
@@ -974,9 +983,9 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
             return true;
         } else if (arg.equals("-version")) {
             System.out
-            .println("Version "
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + ", Build $Id$");
+                    .println("Version "
+                            + VersionAttribute.CURRENT_VERSION.getExpression()
+                            + ", Build $Id$");
 
             StringUtilities.exit(0);
             // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
@@ -1004,16 +1013,19 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
     private static Class<?> _getCodeGeneratorClass(String generatorPackageValue)
-    throws IllegalActionException {
-        String language = generatorPackageValue.substring(generatorPackageValue.lastIndexOf("."));
-        String capitalizedLanguage = language.substring(1,2).toUpperCase() + language.substring(2);
-        String codeGeneratorClassName = generatorPackageValue + ".kernel." + capitalizedLanguage
-        + "CodeGenerator";
+            throws IllegalActionException {
+        String language = generatorPackageValue.substring(generatorPackageValue
+                .lastIndexOf("."));
+        String capitalizedLanguage = language.substring(1, 2).toUpperCase()
+                + language.substring(2);
+        String codeGeneratorClassName = generatorPackageValue + ".kernel."
+                + capitalizedLanguage + "CodeGenerator";
         Class<?> result = null;
         try {
             result = Class.forName(codeGeneratorClassName);
         } catch (Throwable throwable) {
-            throw new IllegalActionException("Failed to find \"" + codeGeneratorClassName
+            throw new IllegalActionException("Failed to find \""
+                    + codeGeneratorClassName
                     + "\", generatorPackage parameter was \""
                     + generatorPackageValue + "\".");
 
@@ -1023,7 +1035,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-  
+
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
@@ -1033,7 +1045,6 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     public static final String INDENT2 = StringUtilities.getIndentPrefix(2);
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1046,7 +1057,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
-    
+
     /** Execute commands to run the generated code.
      */
     protected ExecuteCommands _executeCommands;
@@ -1073,30 +1084,32 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
 
     /** The command-line options that take arguments. */
     private static String[][] _commandOptions = {
-        { "-allowDynamicMultiportReferences",
-        "        true|false (default: false)" },
-        {
-            "-codeDirectory",
-        "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
-        { "-compile", "           true|false (default: true)" },
-        { "-compileTarget", "     <target to be run, defaults to empty string>" },
-        { "-generateComment", "   true|false (default: true)" },
-        { "-generatorPackage", "  <Java package of code generator, defaults to ptolemy.codegen.c>" },
-        { "-inline", "            true|false (default: false)" },
-        { "-measureTime", "       true|false (default: false)" },
-        { "-overwriteFiles", "    true|false (default: true)" },
-        { "-padBuffers", "        true|false (default: true)" },
-        { "-run", "               true|false (default: true)" },
-        { "-sourceLineBinding", " true|false (default: false)" },
-        { "-target", "            <target name, defaults to false>" },
-        { "-<parameter name>", "  <parameter value>" } };
+            { "-allowDynamicMultiportReferences",
+                    "        true|false (default: false)" },
+            {
+                    "-codeDirectory",
+                    "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+            { "-compile", "           true|false (default: true)" },
+            { "-compileTarget",
+                    "     <target to be run, defaults to empty string>" },
+            { "-generateComment", "   true|false (default: true)" },
+            { "-generatorPackage",
+                    "  <Java package of code generator, defaults to ptolemy.codegen.c>" },
+            { "-inline", "            true|false (default: false)" },
+            { "-measureTime", "       true|false (default: false)" },
+            { "-overwriteFiles", "    true|false (default: true)" },
+            { "-padBuffers", "        true|false (default: true)" },
+            { "-run", "               true|false (default: true)" },
+            { "-sourceLineBinding", " true|false (default: false)" },
+            { "-target", "            <target name, defaults to false>" },
+            { "-<parameter name>", "  <parameter value>" } };
 
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
 
     /** The decorated attributes for a certain NamedObj.*/
     private Map<NamedObj, List<DecoratedAttribute>> _decoratedAttributes = new HashMap<NamedObj, List<DecoratedAttribute>>();
-        
+
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
     /** List of parameter names seen on the command line. */
@@ -1110,8 +1123,7 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
      */
     private String _outputFileExtension;
 
-    class GeneratorPackageListParser
-    {
+    class GeneratorPackageListParser {
         public GeneratorPackageListParser() {
         }
 
@@ -1120,7 +1132,8 @@ public abstract class GenericCodeGenerator extends Attribute implements Decorato
             return _generatorPackages;
         }
 
-        private void _updateGeneratorPackageList() throws IllegalActionException {
+        private void _updateGeneratorPackageList()
+                throws IllegalActionException {
             String packageList = generatorPackageList.stringValue();
             String[] packages = packageList.split("; *");
             _generatorPackages = Arrays.asList(packages);

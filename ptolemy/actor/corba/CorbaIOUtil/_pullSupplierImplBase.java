@@ -66,6 +66,6 @@ public abstract class _pullSupplierImplBase extends
     private static String[] __ids = { "IDL:CorbaIOUtil/pullSupplier:1.0" };
 
     public String[] _ids() {
-        return (String[]) __ids.clone();
+        return __ids.clone();
     }
 } // class _pullSupplierImplBase

@@ -47,7 +47,6 @@ import ptolemy.data.expr.Token;
 import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 ////ParseTreePropertyInference
 
 /**
@@ -61,34 +60,35 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (mankit)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ParseTreeConstraintAnnotationEvaluator extends ParseTreeAnnotationEvaluator {
+public class ParseTreeConstraintAnnotationEvaluator extends
+        ParseTreeAnnotationEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         // FIXME: handle PropertySet element.
         throw _unsupportedVisitException("ASTPtArrayConstructNode");
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtBitwiseNode");
     }
 
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionApplicationNode");
     }
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionDefinitionNode");
     }
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionalIfNode");
     }
 
@@ -99,43 +99,43 @@ public class ParseTreeConstraintAnnotationEvaluator extends ParseTreeAnnotationE
         } catch (IllegalActionException ex) {
 
             // The label may be a lattice element name.
-            PropertyLattice lattice = ((PropertyConstraintHelper)
-                    _helper).getSolver().getLattice();
+            PropertyLattice lattice = ((PropertyConstraintHelper) _helper)
+                    .getSolver().getLattice();
 
-            _evaluatedObject = lattice.getElement(
-                    _getNodeLabel(node).toUpperCase());
+            _evaluatedObject = lattice.getElement(_getNodeLabel(node)
+                    .toUpperCase());
         }
 
         // FIXME: Not handling AST constraint yet.
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtLogicalNode");
     }
 
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtMatrixConstructNode");
     }
 
     public void visitPowerNode(ASTPtPowerNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtPowerNode");
     }
 
     public void visitProductNode(ASTPtProductNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtProductNode");
     }
 
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtRecordConstructNode");
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         ((ASTPtRootNode) node.jjtGetChild(0)).visit(this);
         Object leftChild = _evaluatedObject;
@@ -164,7 +164,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends ParseTreeAnnotationE
     }
 
     public void visitShiftNode(ASTPtShiftNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtShiftNode");
     }
 
@@ -173,14 +173,13 @@ public class ParseTreeConstraintAnnotationEvaluator extends ParseTreeAnnotationE
     }
 
     public void visitUnaryNode(ASTPtUnaryNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtUnaryNode");
     }
 
     public void visitUnionConstructNode(ASTPtUnionConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtUnionConstructNode");
     }
-
 
 }

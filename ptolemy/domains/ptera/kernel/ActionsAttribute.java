@@ -108,8 +108,6 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         super(workspace);
     }
 
-
-
     /** Execute this action.  For each destination identified in the
      *  action, compute the value in the action and perform the
      *  particular assignment.
@@ -129,7 +127,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
                 NamedObj nextDestination = (NamedObj) destinations.next();
 
                 // Need to get the next channel even if it's not used.
-                Integer channel = (Integer) channels.next();
+                Integer channel = channels.next();
                 ASTPtRootNode parseTree = (ASTPtRootNode) parseTrees.next();
                 Token token;
 
@@ -175,8 +173,8 @@ public class ActionsAttribute extends AbstractActionsAttribute {
                         if (channel == null) {
                             destination.setToken(token);
                         } else {
-                            ArrayToken array =
-                                (ArrayToken) destination.getToken();
+                            ArrayToken array = (ArrayToken) destination
+                                    .getToken();
                             Token[] tokens = array.arrayValue();
                             tokens[channel.intValue()] = token;
                             destination.setToken(new ArrayToken(tokens));
@@ -204,7 +202,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      *   does not have a destination with the specified name.
      */
     protected NamedObj _getDestination(String name)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Event event = (Event) getContainer();
 
         if (event == null) {
@@ -248,7 +246,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
             if (!(variable instanceof Variable)) {
                 throw new IllegalActionException(ptera, this,
                         "The attribute with name \"" + name + "\" is not "
-                        + "an instance of Variable.");
+                                + "an instance of Variable.");
             }
 
             return variable;
@@ -281,7 +279,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      *  attribute.
      */
     private Attribute _getAttribute(NamedObj container, String name)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Attribute attribute = container.getAttribute(name);
         if (attribute != null) {
             return attribute;
@@ -292,8 +290,8 @@ public class ActionsAttribute extends AbstractActionsAttribute {
             String componentName = name.substring(0, period);
             String nameWithinComponent = name.substring(period + 1);
             if (container instanceof PteraController) {
-                Entity entity =
-                    ((PteraController) container).getEntity(componentName);
+                Entity entity = ((PteraController) container)
+                        .getEntity(componentName);
                 if (entity instanceof Event) {
                     TypedActor[] refinements = ((Event) entity).getRefinement();
                     if (refinements != null) {

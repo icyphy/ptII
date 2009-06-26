@@ -61,7 +61,7 @@ public class Limiter extends AtomicActor {
 
         super(solver, actor, false);
         _actor = actor;
-   }
+    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, new FunctionTerm());
@@ -85,8 +85,7 @@ public class Limiter extends AtomicActor {
     // This class implements a monotonic function of the input port
     // type. The result of the function is the same as the input type
     // if is not Complex; otherwise, the result is Double.
-    private class FunctionTerm
-    extends MonotonicFunction {
+    private class FunctionTerm extends MonotonicFunction {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
@@ -96,20 +95,24 @@ public class Limiter extends AtomicActor {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            Property inputProperty = (Property) getSolver().getProperty(_actor.input);
-            if ((inputProperty == null) || (inputProperty == _lattice.getElement("UNKNOWN"))) {
+            Property inputProperty = getSolver().getProperty(_actor.input);
+            if ((inputProperty == null)
+                    || (inputProperty == _lattice.getElement("UNKNOWN"))) {
                 return inputProperty;
             }
 
-            if ((getSolver().getProperty(_actor.bottom) == _lattice.getElement("TRUE")) &&
-                (getSolver().getProperty(_actor.top) == _lattice.getElement("TRUE")) &&
-                (!((ScalarToken)_actor.bottom.getToken()).isLessThan(
-                  ((ScalarToken)_actor.top.getToken())).booleanValue())) {
+            if ((getSolver().getProperty(_actor.bottom) == _lattice
+                    .getElement("TRUE"))
+                    && (getSolver().getProperty(_actor.top) == _lattice
+                            .getElement("TRUE"))
+                    && (!((ScalarToken) _actor.bottom.getToken()).isLessThan(
+                            ((ScalarToken) _actor.top.getToken()))
+                            .booleanValue())) {
 
-                return(_lattice.getElement("TRUE"));
+                return (_lattice.getElement("TRUE"));
             }
 
-            return(getSolver().getProperty(_actor.input));
+            return (getSolver().getProperty(_actor.input));
         }
 
         public boolean isEffective() {
@@ -120,10 +123,7 @@ public class Limiter extends AtomicActor {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_actor.input)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_actor.input) };
         }
     }
 }
-

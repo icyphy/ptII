@@ -163,13 +163,13 @@ public class AbstractTextAttribute extends VisibleAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-             if (attribute == center) {
-             if (((BooleanToken) center.getToken()).booleanValue()) {
-                 _icon.setAnchor(SwingConstants.CENTER);
-             } else {
-                 _icon.setAnchor(SwingConstants.NORTH_WEST);
-             }
-         } else if (((attribute == fontFamily) || (attribute == textSize)
+        if (attribute == center) {
+            if (((BooleanToken) center.getToken()).booleanValue()) {
+                _icon.setAnchor(SwingConstants.CENTER);
+            } else {
+                _icon.setAnchor(SwingConstants.NORTH_WEST);
+            }
+        } else if (((attribute == fontFamily) || (attribute == textSize)
                 || (attribute == bold) || (attribute == italic))
                 && !_inAttributeChanged) {
             try {

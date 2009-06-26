@@ -763,16 +763,18 @@ public class Manager extends NamedObj implements Runnable {
                             + throwable);
 
                     if (_executionListeners == null) {
-                        System.err.println("No executionListeners? Error message was: " + errorMessage);
+                        System.err
+                                .println("No executionListeners? Error message was: "
+                                        + errorMessage);
                         throwable.printStackTrace();
                     } else {
                         ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
                                 .listIterator();
 
                         while (listeners.hasNext()) {
-                            WeakReference<ExecutionListener> reference = listeners.next();
-                            ExecutionListener listener = (ExecutionListener) reference
-                                    .get();
+                            WeakReference<ExecutionListener> reference = listeners
+                                    .next();
+                            ExecutionListener listener = reference.get();
 
                             if (listener != null) {
                                 listener
@@ -1280,13 +1282,13 @@ public class Manager extends NamedObj implements Runnable {
             // NOTE: Synchronizing here is not correct.
             // See Workspace.wait(Object)
             // synchronized (this) {
-                while ((getState() != IDLE) && (getState() != CORRUPTED)) {
-                    try {
-                        workspace().wait(this);
-                    } catch (InterruptedException ex) {
-                        break;
-                    }
+            while ((getState() != IDLE) && (getState() != CORRUPTED)) {
+                try {
+                    workspace().wait(this);
+                } catch (InterruptedException ex) {
+                    break;
                 }
+            }
             // }
         }
     }
@@ -1398,10 +1400,11 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_executionListeners != null) {
-            ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners.listIterator();
+            ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
+                    .listIterator();
 
             while (listeners.hasNext()) {
-                WeakReference<ExecutionListener> reference =  listeners.next();
+                WeakReference<ExecutionListener> reference = listeners.next();
                 ExecutionListener listener = reference.get();
 
                 if (listener != null) {
@@ -1421,7 +1424,8 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_executionListeners != null) {
-            ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners.listIterator();
+            ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
+                    .listIterator();
 
             while (listeners.hasNext()) {
                 WeakReference<ExecutionListener> reference = listeners.next();
@@ -1450,7 +1454,6 @@ public class Manager extends NamedObj implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     /**
      *  Infer the width of the relations for which no width has been
@@ -1517,7 +1520,6 @@ public class Manager extends NamedObj implements Runnable {
 
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

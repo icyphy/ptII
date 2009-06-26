@@ -71,15 +71,14 @@ public class PreemptivePlatformExecutionStrategy extends
      * event in the list should be fired next.
      *
      * @author Patricia Derler
-@version $Id$
-@since Ptolemy II 7.1
+    @version $Id$
+    @since Ptolemy II 7.1
      *
      */
     private static class WCETComparator implements Comparator {
 
         protected WCETComparator(Time physicalTime) {
         }
-
 
         /**
          * This compare method is used to sort all events.
@@ -94,20 +93,20 @@ public class PreemptivePlatformExecutionStrategy extends
         public int compare(Object arg0, Object arg1) {
             TimedEvent event1 = (TimedEvent) arg0;
             TimedEvent event2 = (TimedEvent) arg1;
-            Actor actor1 = event1.contents instanceof IOPort ?
-                    (Actor) ((IOPort) event1.contents).getContainer() :
-                        (Actor) event1.contents;
-            Actor actor2 = event2.contents instanceof IOPort ?
-                    (Actor) ((IOPort) event2.contents).getContainer() :
-                        (Actor) event2.contents;
+            Actor actor1 = event1.contents instanceof IOPort ? (Actor) ((IOPort) event1.contents)
+                    .getContainer()
+                    : (Actor) event1.contents;
+            Actor actor2 = event2.contents instanceof IOPort ? (Actor) ((IOPort) event2.contents)
+                    .getContainer()
+                    : (Actor) event2.contents;
             double wcet1 = PtidesActorProperties.getWCET(actor1);
             double wcet2 = PtidesActorProperties.getWCET(actor2);
             Time time1 = event1.timeStamp;
             Time time2 = event2.timeStamp;
-            boolean fireAtRT1 = PtidesActorProperties.mustBeFiredAtRealTime(
-                    event1.contents);
-            boolean fireAtRT2 = PtidesActorProperties.mustBeFiredAtRealTime(
-                    event2.contents);
+            boolean fireAtRT1 = PtidesActorProperties
+                    .mustBeFiredAtRealTime(event1.contents);
+            boolean fireAtRT2 = PtidesActorProperties
+                    .mustBeFiredAtRealTime(event2.contents);
             boolean fixedWCET1 = !(actor1 instanceof TDLModule);
             boolean fixedWCET2 = !(actor2 instanceof TDLModule);
             int index1 = -1;
@@ -115,8 +114,10 @@ public class PreemptivePlatformExecutionStrategy extends
             int priority1 = PtidesActorProperties.getPriority(actor1);
             int priority2 = PtidesActorProperties.getPriority(actor2);
 
-            CompositeActor compositeActor = (CompositeActor) actor1.getContainer();
-            CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) compositeActor.getCausalityInterface();
+            CompositeActor compositeActor = (CompositeActor) actor1
+                    .getContainer();
+            CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) compositeActor
+                    .getCausalityInterface();
             try {
                 index1 = causalityInterface.getDepthOfActor(actor1);
                 index2 = causalityInterface.getDepthOfActor(actor2);
@@ -124,8 +125,6 @@ public class PreemptivePlatformExecutionStrategy extends
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-
 
             if (priority1 != priority2) {
                 return priority2 - priority1;
@@ -136,12 +135,13 @@ public class PreemptivePlatformExecutionStrategy extends
                 return -1;
             }
             if (wcet1 == 0 && wcet2 == 0) {
-                if (fixedWCET1 && !fixedWCET2)
+                if (fixedWCET1 && !fixedWCET2) {
                     return -1;
-                else if (fixedWCET2 && !fixedWCET1)
+                } else if (fixedWCET2 && !fixedWCET1) {
                     return 1;
-                else
+                } else {
                     return index1 - index2;
+                }
             } else { // wcet1 > 0 && wcet2 > 0
                 if (fireAtRT1 && fireAtRT2) {
                     if (time1.compareTo(time2) < 0) {
@@ -200,12 +200,12 @@ public class PreemptivePlatformExecutionStrategy extends
         while (index < eventsToFire.size()) {
             event = eventsToFire.get(index);
 
-            Actor actorToFire = event.contents instanceof IOPort ?
-                    (Actor) ((IOPort) event.contents).getContainer() :
-                        (Actor) event.contents;
+            Actor actorToFire = event.contents instanceof IOPort ? (Actor) ((IOPort) event.contents)
+                    .getContainer()
+                    : (Actor) event.contents;
             if (actorsFiring.size() > 0
-                    && !_actorPreempts((Actor) actorsFiring.peek().contents, actorToFire,
-                            event.timeStamp, physicalTime)) {
+                    && !_actorPreempts((Actor) actorsFiring.peek().contents,
+                            actorToFire, event.timeStamp, physicalTime)) {
                 index++;
                 continue;
             }
@@ -213,8 +213,10 @@ public class PreemptivePlatformExecutionStrategy extends
             if (PtidesActorProperties.mustBeFiredAtRealTime(event.contents)) {
                 if (physicalTime.compareTo(event.timeStamp) > 0) {
                     _displaySchedule(actorToFire, event.timeStamp
-                            .getDoubleValue(), ScheduleEventType.MISSEDEXECUTION);
-                    throw new IllegalActionException("missed execution of " + event);
+                            .getDoubleValue(),
+                            ScheduleEventType.MISSEDEXECUTION);
+                    throw new IllegalActionException("missed execution of "
+                            + event);
                 } else if (physicalTime.compareTo(event.timeStamp) < 0) {
                     index++;
                     continue;
@@ -238,17 +240,18 @@ public class PreemptivePlatformExecutionStrategy extends
      * @return True if the currently executing actor can be preempted.
      */
     private boolean _actorPreempts(Actor currentlyExecuting,
-            Actor preemptingActor,
-            Time preemptingActorTime, Time physicalTime) {
-        boolean fireAtRT1 = PtidesActorProperties.mustBeFiredAtRealTime(
-                currentlyExecuting);
-        boolean fireAtRT2 = PtidesActorProperties.mustBeFiredAtRealTime(preemptingActor);
+            Actor preemptingActor, Time preemptingActorTime, Time physicalTime) {
+        boolean fireAtRT1 = PtidesActorProperties
+                .mustBeFiredAtRealTime(currentlyExecuting);
+        boolean fireAtRT2 = PtidesActorProperties
+                .mustBeFiredAtRealTime(preemptingActor);
         int prio1 = PtidesActorProperties.getPriority(currentlyExecuting);
         int prio2 = PtidesActorProperties.getPriority(preemptingActor);
         if (fireAtRT2 && PtidesActorProperties.getWCET(preemptingActor) == 0) {
             return true;
         }
-        if ((!fireAtRT1 && fireAtRT2 && preemptingActorTime.equals(physicalTime))
+        if ((!fireAtRT1 && fireAtRT2 && preemptingActorTime
+                .equals(physicalTime))
                 || fireAtRT1 && fireAtRT2 && prio2 > prio1) {
             return true;
         }
@@ -257,6 +260,5 @@ public class PreemptivePlatformExecutionStrategy extends
         }
         return false;
     }
-
 
 }

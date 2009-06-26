@@ -80,13 +80,13 @@ public class GuardCriterion extends Criterion {
         return super.isApplicable(object) && object instanceof Transition;
     }
 
-    public boolean match(NamedObj object)  {
+    public boolean match(NamedObj object) {
         Variable guardVariable = null;
         try {
-            guardVariable = new Variable(object, object.uniqueName(
-                            "guardVariable"));
+            guardVariable = new Variable(object, object
+                    .uniqueName("guardVariable"));
             String guard = ((Transition) object).guardExpression
-                            .getExpression();
+                    .getExpression();
             String guardTester = "(" + guard + ") == (" + _guardValue + ")";
             guardVariable.setExpression(guardTester);
             BooleanToken result = (BooleanToken) guardVariable.getToken();
@@ -94,14 +94,15 @@ public class GuardCriterion extends Criterion {
         } catch (Exception e) {
             return false;
         } finally {
-                if (guardVariable != null) {
-                        try {
-                                        guardVariable.setContainer(null);
-                                } catch (Exception e) {
-                            throw new InternalErrorException("Failed to set container of "
-                                                             + guardVariable + " to null");
-                                }
+            if (guardVariable != null) {
+                try {
+                    guardVariable.setContainer(null);
+                } catch (Exception e) {
+                    throw new InternalErrorException(
+                            "Failed to set container of " + guardVariable
+                                    + " to null");
                 }
+            }
         }
     }
 
@@ -124,9 +125,8 @@ public class GuardCriterion extends Criterion {
         }
     }
 
-    private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("GuardValue", false, false, true)
-    };
+    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
+            "GuardValue", false, false, true) };
 
     private String _guardValue;
 }

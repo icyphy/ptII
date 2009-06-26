@@ -31,6 +31,7 @@ public class PropertyableObject implements Propertyable {
     public PropertyableObject(Object object) {
         _object = object;
     }
+
     public void clearHighlight() {
         // Do nothing.
 

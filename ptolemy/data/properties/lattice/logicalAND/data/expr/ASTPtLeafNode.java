@@ -56,8 +56,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  throws it.
      */
     public ASTPtLeafNode(PropertyConstraintSolver solver,
-        ptolemy.data.expr.ASTPtLeafNode node)
-            throws IllegalActionException {
+            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
         super(solver, node, true);
     }
 
@@ -65,8 +64,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     ////                            public methods                 ////
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.data.expr.ASTPtLeafNode node =
-            (ptolemy.data.expr.ASTPtLeafNode) _getNode();
+        ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode();
 
         if (node.isConstant() || Constants.get(node.getName()) != null) {
             setEquals(node, _lattice.getElement("TRUE"));

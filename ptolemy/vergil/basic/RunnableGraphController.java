@@ -47,7 +47,7 @@ import ptolemy.actor.TypeConflictException;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -392,7 +392,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
                 // Top calls GraphicalMessageHandler.setContext().
                 // Instead, if the user runs the model, we should set the
                 // context to that window.
-                GraphicalMessageHandler.setContext(getFrame());
+                UndeferredGraphicalMessageHandler.setContext(getFrame());
                 _getManager().startRun();
             } catch (IllegalActionException ex) {
                 // Model may be already running. Attempt to resume.

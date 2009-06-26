@@ -108,24 +108,22 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
      */
     public void createEditor(NamedObj object, Frame parent) {
         try {
-            Parameter attributeToEdit = (Parameter)object
-                    .getAttribute(parameterName.getExpression(),
-                    Parameter.class);
+            Parameter attributeToEdit = (Parameter) object.getAttribute(
+                    parameterName.getExpression(), Parameter.class);
             if (attributeToEdit == null) {
-                MessageHandler.error(
-                        "No such parameter: "
+                MessageHandler.error("No such parameter: "
                         + parameterName.getExpression());
                 return;
             }
             Token value = attributeToEdit.getToken();
             if (!(value instanceof ArrayToken)) {
-                MessageHandler.error(
-                        "Parameter does not contain an array token: "
-                        + attributeToEdit.toString());
+                MessageHandler
+                        .error("Parameter does not contain an array token: "
+                                + attributeToEdit.toString());
                 return;
             }
             ArrayOfRecordsPane pane = new ArrayOfRecordsPane();
-            pane.display((ArrayToken)value, (ArrayToken)columns.getToken());
+            pane.display((ArrayToken) value, (ArrayToken) columns.getToken());
             new ComponentDialog(parent, object.getFullName(), pane);
         } catch (KernelException ex) {
             MessageHandler.error(

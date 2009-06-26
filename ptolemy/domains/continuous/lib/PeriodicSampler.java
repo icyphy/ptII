@@ -159,9 +159,8 @@ public class PeriodicSampler extends Transformer {
                     output.send(i, token);
 
                     if (_debugging) {
-                        _debug("Output: " + token
-                                + " to channel " + i + ", at: "
-                                + getDirector().getModelTime());
+                        _debug("Output: " + token + " to channel " + i
+                                + ", at: " + getDirector().getModelTime());
                     }
                 }
             }
@@ -182,7 +181,8 @@ public class PeriodicSampler extends Transformer {
      */
     public void fireAtSkipped(Time time) throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        double samplePeriodValue = ((DoubleToken)samplePeriod.getToken()).doubleValue();
+        double samplePeriodValue = ((DoubleToken) samplePeriod.getToken())
+                .doubleValue();
         while (_nextSamplingTime.compareTo(currentTime) < 0) {
             _nextSamplingTime = _nextSamplingTime.add(samplePeriodValue);
         }
@@ -229,7 +229,8 @@ public class PeriodicSampler extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         if (hasCurrentEvent()) {
-            double samplePeriodValue = ((DoubleToken)samplePeriod.getToken()).doubleValue();
+            double samplePeriodValue = ((DoubleToken) samplePeriod.getToken())
+                    .doubleValue();
             _nextSamplingTime = _nextSamplingTime.add(samplePeriodValue);
             if (_debugging) {
                 _debug("Request refiring at " + _nextSamplingTime);
@@ -238,7 +239,6 @@ public class PeriodicSampler extends Transformer {
         }
         return super.postfire();
     }
-
 
     /** Make sure the actor runs inside a Continuous domain.
      *  @exception IllegalActionException If the director is not

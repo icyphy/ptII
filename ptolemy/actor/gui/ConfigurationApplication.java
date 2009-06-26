@@ -39,17 +39,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
@@ -61,13 +57,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -188,7 +182,8 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public ConfigurationApplication(String basePath, String[] args) throws Exception {
+    public ConfigurationApplication(String basePath, String[] args)
+            throws Exception {
         _initializeApplication();
         _basePath = basePath;
 
@@ -236,8 +231,10 @@ public class ConfigurationApplication implements ExecutionListener {
                 while (models.hasNext()) {
                     NamedObj model = (NamedObj) models.next();
                     if (model instanceof CompositeEntity) {
-                        System.out.println("Statistics for " + model.getFullName());
-                        System.out.println(((CompositeEntity)model).statistics(null));
+                        System.out.println("Statistics for "
+                                + model.getFullName());
+                        System.out.println(((CompositeEntity) model)
+                                .statistics(null));
                     }
                 }
                 if (_exit) {
@@ -250,8 +247,9 @@ public class ConfigurationApplication implements ExecutionListener {
                 if (_printPDF) {
                     // Need to set background
                     PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(_configuration);
-                    preferences.backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
+                            .getPtolemyPreferencesWithinConfiguration(_configuration);
+                    preferences.backgroundColor
+                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
                 }
                 runModels();
 
@@ -471,7 +469,8 @@ public class ConfigurationApplication implements ExecutionListener {
 
                 if (_statistics) {
                     System.out.println("Statistics for " + model.getFullName());
-                    System.out.println(((CompositeEntity)model).statistics(null));
+                    System.out.println(((CompositeEntity) model)
+                            .statistics(null));
                 }
 
                 // Create a manager if necessary.
@@ -667,13 +666,13 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     protected String _configurationUsage(String commandTemplate,
             String[][] commandOptions, String[] commandFlags) {
-        String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
+        String[][] commandFlagsWithDescriptions = new String[commandFlags.length][2];
         for (int i = 0; i < commandFlags.length; i++) {
             commandFlagsWithDescriptions[i][0] = commandFlags[i];
             commandFlagsWithDescriptions[i][1] = "";
         }
         return _configurationUsage(commandTemplate, commandOptions,
-                                   commandFlagsWithDescriptions);
+                commandFlagsWithDescriptions);
     }
 
     /** Return a string summarizing the command-line arguments,
@@ -712,11 +711,11 @@ public class ConfigurationApplication implements ExecutionListener {
         // Print any command flags from this class first
         for (i = 0; i < _commandFlagsWithDescriptions.length; i++) {
             result.append(" " + _commandFlagsWithDescriptions[i][0] + "\t"
-                          + _commandFlagsWithDescriptions[i][1] + "\n");
+                    + _commandFlagsWithDescriptions[i][1] + "\n");
         }
         for (i = 0; i < commandFlagsWithDescriptions.length; i++) {
             result.append(" " + commandFlagsWithDescriptions[i][0] + "\t"
-                          + commandFlagsWithDescriptions[i][1] + "\n");
+                    + commandFlagsWithDescriptions[i][1] + "\n");
         }
 
         try {
@@ -823,7 +822,6 @@ public class ConfigurationApplication implements ExecutionListener {
         // Do nothing.
     }
 
-
     /** Return a default Configuration, or null to do without one.
      *  This configuration will be created before any command-line arguments
      *  are processed.  If there are no command-line arguments, then
@@ -874,11 +872,10 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    protected Tableau _openModel(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    protected Tableau _openModel(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         return _configuration.openModel(entity);
     }
-
 
     /** Open the specified URL.
      *  If a model with the specified identifier is present in the directory,
@@ -894,7 +891,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception Exception If the URL cannot be read.
      */
     protected Tableau _openModel(URL base, URL in, String identifier)
-    throws Exception {
+            throws Exception {
         return _configuration.openModel(base, in, identifier);
     }
 
@@ -1002,7 +999,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
                     try {
                         inURL = specToURL(arg);
-                 } catch (Exception ex) {
+                    } catch (Exception ex) {
                         try {
                             // Create a File and get the URL so that commands like
                             // $PTII/bin/vergil $PTII/doc/index.htm#in_browser work.
@@ -1036,7 +1033,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
                         //long startTime = (new Date()).getTime();
                         // Now defer to the model reader.
-                        /*Tableau tableau = */ _openModel(base, inURL, key);
+                        /*Tableau tableau = */_openModel(base, inURL, key);
 
                         // FIXME: If the -run option was given, then start a run.
                         // FIXME: If the -fullscreen option was given, open full screen.
@@ -1065,7 +1062,6 @@ public class ConfigurationApplication implements ExecutionListener {
                             */
                             System.out.println("reading configuration");
                             _configuration = readConfiguration(inURL);
-
 
                         } catch (Exception ex) {
                             // Unfortunately, java.util.zip.ZipException
@@ -1252,7 +1248,7 @@ public class ConfigurationApplication implements ExecutionListener {
             return;
         }
         ModelDirectory directory = (ModelDirectory) _configuration
-            .getEntity(Configuration._DIRECTORY_NAME);
+                .getEntity(Configuration._DIRECTORY_NAME);
         Iterator effigies = directory.entityList().iterator();
 
         while (effigies.hasNext()) {
@@ -1263,20 +1259,27 @@ public class ConfigurationApplication implements ExecutionListener {
                 JFrame frame = tableau.getFrame();
                 if (frame instanceof TableauFrame) {
                     // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
-                    if (!tableau.getFullName().equals(".configuration.directory.configuration.graphTableau")
-                        &&
-                        !tableau.getFullName().equals(".configuration.directory.UserLibrary.graphTableau")) {
+                    if (!tableau
+                            .getFullName()
+                            .equals(
+                                    ".configuration.directory.configuration.graphTableau")
+                            && !tableau
+                                    .getFullName()
+                                    .equals(
+                                            ".configuration.directory.UserLibrary.graphTableau")) {
                         try {
                             // Set the background to white
 
                             //frame.setBackground(java.awt.Color.WHITE);
                             //((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
                             PtolemyPreferences preferences = PtolemyPreferences
-                                .getPtolemyPreferencesWithinConfiguration(_configuration);
-                            preferences.backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
+                                    .getPtolemyPreferencesWithinConfiguration(_configuration);
+                            preferences.backgroundColor
+                                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
                             frame.repaint();
                         } catch (Exception ex) {
-                            System.out.println("Failed to set the background to white.");
+                            System.out
+                                    .println("Failed to set the background to white.");
                             ex.printStackTrace();
                         }
                         ((TableauFrame) frame).printPDF();
@@ -1321,14 +1324,15 @@ public class ConfigurationApplication implements ExecutionListener {
 
     /** The command-line options that are either present or not. */
     protected String[][] _commandFlagsWithDescriptions = {
-        {"-exit", "Exit after generating statistics"},
-        {"-help", "Print this help message"},
-        {"-printPDF", "Print to a PDF printer"},
-        {"-run", "Run the models"},
-        {"-runThenExit", "Run the models, then exit after the models finish."},
-        {"-statistics", "Open the model, print statistics and exit."},
-        {"-test", "Exit after two seconds."},
-        {"-version", "Print version information."}};
+            { "-exit", "Exit after generating statistics" },
+            { "-help", "Print this help message" },
+            { "-printPDF", "Print to a PDF printer" },
+            { "-run", "Run the models" },
+            { "-runThenExit",
+                    "Run the models, then exit after the models finish." },
+            { "-statistics", "Open the model, print statistics and exit." },
+            { "-test", "Exit after two seconds." },
+            { "-version", "Print version information." } };
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {

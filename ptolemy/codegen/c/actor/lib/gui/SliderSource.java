@@ -65,7 +65,8 @@ public class SliderSource extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
 
         ArrayList args = new ArrayList();
-        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir")
+                .replace('\\', '/');
         args.add(ptIIDir);
         code.append(_generateBlockCode("createJVMBlock", args));
 

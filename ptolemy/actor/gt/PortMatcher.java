@@ -53,7 +53,7 @@ public class PortMatcher extends TypedIOPort implements Checkable {
 
     public PortMatcher(PortCriterion criterion, ComponentEntity container,
             String name, boolean isInput, boolean isOutput)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
         _criterion = criterion;
     }
@@ -63,7 +63,7 @@ public class PortMatcher extends TypedIOPort implements Checkable {
     }
 
     public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         if (container == null && _criterion != null) {
             GTIngredientList list = _criterion.getOwner();
             GTIngredientsAttribute attribute = list.getOwner();
@@ -71,10 +71,9 @@ public class PortMatcher extends TypedIOPort implements Checkable {
             newList.remove(_criterion);
             String moml = "<property name=\"" + attribute.getName()
                     + "\" value=\""
-                    + StringUtilities.escapeForXML(newList.toString())
-                    + "\"/>";
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this, getContainer(), moml);
+                    + StringUtilities.escapeForXML(newList.toString()) + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    getContainer(), moml);
             request.setUndoable(true);
             attribute.requestChange(request);
             _criterion = null;

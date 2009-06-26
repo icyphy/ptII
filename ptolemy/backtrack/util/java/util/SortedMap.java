@@ -174,4 +174,3 @@ public interface SortedMap extends Map, Rollbackable {
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }
-

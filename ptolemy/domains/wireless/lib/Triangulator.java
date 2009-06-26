@@ -169,7 +169,7 @@ public class Triangulator extends TypedAtomicActor {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Triangulator newObject = (Triangulator)super.clone(workspace);
+        Triangulator newObject = (Triangulator) super.clone(workspace);
         newObject._locationsX = new double[3];
         newObject._locationsY = new double[3];
         newObject._times = new double[3];
@@ -269,7 +269,8 @@ public class Triangulator extends TypedAtomicActor {
             if (timeSpan > timeWindowValue) {
                 // We do not have enough data.
                 if (_debugging) {
-                    _debug("We do not have enough data: " + timeSpan + " > " + timeWindowValue);
+                    _debug("We do not have enough data: " + timeSpan + " > "
+                            + timeWindowValue);
                 }
                 return;
             }
@@ -347,7 +348,8 @@ public class Triangulator extends TypedAtomicActor {
                 - (t3 - result[2]));
 
         if (_debugging) {
-            _debug("tdiff1: " + tdiff1 + " tdiff2:" + tdiff2 + " tdiff3: " +  tdiff3);
+            _debug("tdiff1: " + tdiff1 + " tdiff2:" + tdiff2 + " tdiff3: "
+                    + tdiff3);
         }
         return tdiff1 + tdiff2 + tdiff3;
     }
@@ -431,7 +433,8 @@ public class Triangulator extends TypedAtomicActor {
             result[2] = (-eb + Math.sqrt(delta)) / ea / 2;
             result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
             result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
-            double tdiff1 = _checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v);
+            double tdiff1 = _checkResult(result, x1, y1, t1, x2, y2, t2, x3,
+                    y3, t3, v);
 
             // Solution #2
             double[] result2 = new double[3];
@@ -439,7 +442,8 @@ public class Triangulator extends TypedAtomicActor {
             result2[0] = (m_inv_b[0] * result2[2]) + m_inv_c[0];
             result2[1] = (m_inv_b[1] * result2[2]) + m_inv_c[1];
 
-            double tdiff2 = _checkResult(result2, x1, y1, t1, x2, y2, t2, x3, y3, t3, v);
+            double tdiff2 = _checkResult(result2, x1, y1, t1, x2, y2, t2, x3,
+                    y3, t3, v);
             if (_debugging) {
                 _debug("tdiff1: " + tdiff1 + " tdiff2: " + tdiff2);
             }
@@ -462,7 +466,7 @@ public class Triangulator extends TypedAtomicActor {
             result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
             result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
 
-            if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v) < _EPSILON*3) {
+            if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v) < _EPSILON * 3) {
                 return result;
             } else {
                 result[0] = Double.NEGATIVE_INFINITY;

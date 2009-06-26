@@ -112,21 +112,18 @@ public class AttributeOperation extends Operation {
             for (int i = 0; i < _valueParseTree.jjtGetNumChildren(); i++) {
                 ASTPtRootNode child = (ASTPtRootNode) _valueParseTree
                         .jjtGetChild(i);
-                if (!(child.isConstant()
-                        && child.getToken() instanceof StringToken)) {
+                if (!(child.isConstant() && child.getToken() instanceof StringToken)) {
                     ASTPtLeafNode newNode = _evaluate(child, evaluator, scope);
-                    buffer.append(
-                            _parseTreeWriter.parseTreeToExpression(newNode));
+                    buffer.append(_parseTreeWriter
+                            .parseTreeToExpression(newNode));
                 } else {
                     buffer.append(((StringToken) child.getToken())
                             .stringValue());
                 }
             }
             expression = buffer.toString();
-        } else if (!(_valueParseTree.isConstant()
-                && _valueParseTree.getToken() instanceof StringToken)) {
-            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator,
-                    scope);
+        } else if (!(_valueParseTree.isConstant() && _valueParseTree.getToken() instanceof StringToken)) {
+            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator, scope);
             expression = _parseTreeWriter.parseTreeToExpression(newRoot);
         } else {
             expression = _attributeValue.get();
@@ -241,8 +238,8 @@ public class AttributeOperation extends Operation {
     }
 
     protected void _reparse() throws IllegalActionException {
-        _valueParseTree = new PtParser().generateStringParseTree(_attributeValue
-                .get());
+        _valueParseTree = new PtParser()
+                .generateStringParseTree(_attributeValue.get());
     }
 
     private static final OperationElement[] _ELEMENTS = {

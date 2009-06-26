@@ -50,7 +50,8 @@ public class FirstTokenGotListener implements IOPortEventListener {
         }
 
         try {
-            ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
+            ((PropertyTokenHelper) _solver.getHelper(port.getContainer()))
+                    .setEquals(port, new PropertyToken(token));
         } catch (IllegalActionException e) {
             assert false;
         }
@@ -68,7 +69,8 @@ public class FirstTokenGotListener implements IOPortEventListener {
         }
 
         try {
-            ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
+            ((PropertyTokenHelper) _solver.getHelper(port.getContainer()))
+                    .setEquals(port, new PropertyToken(token));
         } catch (IllegalActionException e) {
             assert false;
         }

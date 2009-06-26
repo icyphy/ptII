@@ -107,8 +107,8 @@ public class Refinement extends CTCompositeActor implements RefinementActor {
     public void addRefinement(State state, String name, Entity template,
             String className, Configuration configuration)
             throws IllegalActionException {
-        throw new IllegalActionException(this, "Unable to create a " +
-                "refinement within a CompositeActor.");
+        throw new IllegalActionException(this, "Unable to create a "
+                + "refinement within a CompositeActor.");
     }
 
     /** Get the state in any ModalController within this ModalModel that has
@@ -122,8 +122,8 @@ public class Refinement extends CTCompositeActor implements RefinementActor {
     public State getRefinedState() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof ModalModel) {
-            List<?> controllers = ((ModalModel) container).entityList(
-                    ModalController.class);
+            List<?> controllers = ((ModalModel) container)
+                    .entityList(ModalController.class);
             for (Object controllerObject : controllers) {
                 ModalController controller = (ModalController) controllerObject;
                 List<?> states = controller.entityList(State.class);

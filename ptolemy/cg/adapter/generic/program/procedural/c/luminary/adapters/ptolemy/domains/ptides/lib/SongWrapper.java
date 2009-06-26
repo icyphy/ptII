@@ -44,7 +44,8 @@ public class SongWrapper extends ProgramCodeGeneratorAdapter {
      * Constructor method for the Const helper.
      * @param actor the associated actor
      */
-    public SongWrapper(ptolemy.domains.ptides.lib.targets.luminary.SongWrapper actor) {
+    public SongWrapper(
+            ptolemy.domains.ptides.lib.targets.luminary.SongWrapper actor) {
         super(actor);
     }
 }

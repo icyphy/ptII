@@ -58,12 +58,11 @@ public class Recorder extends Sink {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Recorder actor =
-            (ptolemy.actor.lib.Recorder) getComponent();
+        ptolemy.actor.lib.Recorder actor = (ptolemy.actor.lib.Recorder) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
 
-        if (((IntToken)actor.capacity.getToken()).intValue() > 0) {
+        if (((IntToken) actor.capacity.getToken()).intValue() > 0) {
             setEquals(actor.input, lattice.TRUE);
         } else {
             setEquals(actor.input, lattice.FALSE);

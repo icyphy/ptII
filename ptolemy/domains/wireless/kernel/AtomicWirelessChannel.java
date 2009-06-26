@@ -195,7 +195,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AtomicWirelessChannel newObject = (AtomicWirelessChannel)super.clone(workspace);
+        AtomicWirelessChannel newObject = (AtomicWirelessChannel) super
+                .clone(workspace);
         newObject._receiversInRangeCacheValid = false;
         newObject._listeningInputPorts = null;
         newObject._listeningInputPortsVersion = -1L;
@@ -210,7 +211,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         newObject._sendingInputPortsVersion = -1L;
         newObject._sendingOutputPorts = null;
         newObject._sendingOutputPortsVersion = -1L;
-        newObject._channelPort = (ChannelPort)newObject.getPort("_channelPort");
+        newObject._channelPort = (ChannelPort) newObject
+                .getPort("_channelPort");
         return newObject;
     }
 

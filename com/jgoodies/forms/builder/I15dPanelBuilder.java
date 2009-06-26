@@ -255,9 +255,10 @@ public class I15dPanelBuilder extends PanelBuilder {
      *     has been set
      */
     protected String getI15dString(String resourceKey) {
-        if (bundle == null)
+        if (bundle == null) {
             throw new IllegalStateException("You must specify a ResourceBundle"
                     + " before using the internationalization support.");
+        }
         try {
             return bundle.getString(resourceKey);
         } catch (MissingResourceException mre) {

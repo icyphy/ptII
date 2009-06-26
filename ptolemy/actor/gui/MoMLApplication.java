@@ -27,46 +27,9 @@
  */
 package ptolemy.actor.gui;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.net.URI;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.ExecutionListener;
-import ptolemy.actor.Manager;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.Documentation;
-import ptolemy.moml.ErrorHandler;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -144,7 +107,8 @@ public class MoMLApplication extends ConfigurationApplication {
                         + " because it causes problems under applets under "
                         + "Java 1.6.0_02 through 1.6.0_13.");
             } else {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                UIManager.setLookAndFeel(UIManager
+                        .getSystemLookAndFeelClassName());
             }
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.

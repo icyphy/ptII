@@ -51,7 +51,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-
 ////GiottoDirector
 
 //FIXME: This first draft of the GiottoDirector is simply a copy of the
@@ -74,7 +73,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @param giottoDirector The associated
      *  ptolemy.domains.giotto.kernel.GiottoDirector
      */
-    public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
+    public GiottoDirector(
+            ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
         super(giottoDirector);
     }
 
@@ -102,14 +102,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         if (_debugging) {
-        _debug("generateInitializeCode from Ptolemy Domains Giotto called");
+            _debug("generateInitializeCode from Ptolemy Domains Giotto called");
         }
         code.append(super.generateInitializeCode());
-        code.append("// should have initialize code here"+_eol);
-
+        code.append("// should have initialize code here" + _eol);
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
-        .getContainer();
+                .getContainer();
         CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
 
         // Generate code for creating external initial production.
@@ -128,8 +127,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         }
 
                         for (int k = 0; k < rate; k++) {
-                            code.append(containerHelper
-                                    .getReference(name + "," + k));
+                            code.append(containerHelper.getReference(name + ","
+                                    + k));
                             code.append(" = ");
                             code.append(containerHelper.getReference("@" + name
                                     + "," + k));
@@ -155,8 +154,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   or if there is a problem getting the buffer size of a port.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        if (_debugging)
-        {
+        if (_debugging) {
             _debug("generatePreInitializeCode from Ptolemy Domains Giotto called");
         }
         StringBuffer code = new StringBuffer();
@@ -168,7 +166,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
         _doubleFlag = false;
         _booleanFlag = false;
 
-
         return code.toString();
     }
 
@@ -179,10 +176,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
-        if (_debugging)
-        {
-        _debug("generateTransferInputsCode from Ptolemy Domains Giotto called");
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("generateTransferInputsCode from Ptolemy Domains Giotto called");
         }
         code.append(CodeStream.indent(_codeGenerator.comment("GiottoDirector: "
                 + "Transfer tokens to the inside.")));
@@ -191,17 +187,17 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 .getToken()).booleanValue();
 
         CompositeActor container = (CompositeActor) getComponent()
-        .getContainer();
+                .getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
-                .booleanValue()) {
+                && ((BooleanToken) _codeGenerator.generateEmbeddedCode
+                        .getToken()).booleanValue()) {
 
             // FindBugs wants this instanceof check.
             if (!(inputPort instanceof TypedIOPort)) {
                 throw new InternalErrorException(inputPort, null,
-                " is not an instance of TypedIOPort.");
+                        " is not an instance of TypedIOPort.");
             }
             Type type = ((TypedIOPort) inputPort).getType();
             String portName = generateSimpleName(inputPort);
@@ -210,15 +206,15 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 if (i < inputPort.getWidthInside()) {
 
                     String tokensFromOneChannel = "tokensFromOneChannelOf"
-                        + portName + i;
+                            + portName + i;
                     String pointerToTokensFromOneChannel = "pointerTo"
-                        + tokensFromOneChannel;
+                            + tokensFromOneChannel;
                     code.append("jobject "
                             + tokensFromOneChannel
                             + " = "
                             + CCodegenUtilities.jniGetObjectArrayElement(
                                     portName, String.valueOf(i), targetCpp)
-                                    + ";" + _eol);
+                            + ";" + _eol);
 
                     if (type == BaseType.INT) {
                         code.append("jint * "
@@ -226,7 +222,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
                                         tokensFromOneChannel, targetCpp) + ";"
-                                        + _eol);
+                                + _eol);
                     } else if (type == BaseType.DOUBLE) {
                         code.append("jdouble * "
                                 + pointerToTokensFromOneChannel
@@ -240,7 +236,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
                                         tokensFromOneChannel, targetCpp) + ";"
-                                        + _eol);
+                                + _eol);
                     } else if (type == BaseType.BOOLEAN) {
                         code.append("jboolean * "
                                 + pointerToTokensFromOneChannel
@@ -304,11 +300,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorHelper.getReference(
-                                "@" + name + "," + k));
+                        code.append(compositeActorHelper.getReference("@"
+                                + name + "," + k));
                         code.append(" = " + _eol);
-                        code.append(compositeActorHelper.getReference(
-                                name + "," + k));
+                        code.append(compositeActorHelper.getReference(name
+                                + "," + k));
                         code.append(";" + _eol);
                     }
                 }
@@ -329,10 +325,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-    throws IllegalActionException {
-        if (_debugging)
-        {
-        _debug("generateTransferOutputsCode from Ptolemy Domains Giotto called");
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("generateTransferOutputsCode from Ptolemy Domains Giotto called");
         }
         code.append(CodeStream.indent(_codeGenerator.comment("GiottoDirector: "
                 + "Transfer tokens to the outside.")));
@@ -342,18 +337,17 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 .getToken()).booleanValue();
 
         CompositeActor container = (CompositeActor) getComponent()
-        .getContainer();
+                .getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
-                .booleanValue()) {
+                && ((BooleanToken) _codeGenerator.generateEmbeddedCode
+                        .getToken()).booleanValue()) {
 
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();
 
-                code.append("jobjectArray tokensToAllOutputPorts;"
-                        + _eol);
+                code.append("jobjectArray tokensToAllOutputPorts;" + _eol);
                 code.append("jclass "
                         + _objClass
                         + " = "
@@ -371,14 +365,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
             // FindBugs wants this instanceof check.
             if (!(outputPort instanceof TypedIOPort)) {
                 throw new InternalErrorException(outputPort, null,
-                " is not an instance of TypedIOPort.");
+                        " is not an instance of TypedIOPort.");
             }
 
             Type type = ((TypedIOPort) outputPort).getType();
 
             int numberOfChannels = outputPort.getWidthInside();
-            code.append("jobjectArray " + tokensToThisPort + ";"
-                    + _eol);
+            code.append("jobjectArray " + tokensToThisPort + ";" + _eol);
 
             // Find jni classes and methods and initialize the jni array
             // for the given type.
@@ -389,7 +382,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
                             + ";" + _eol);
                     _intFlag = true;
                 }
-                code.append(tokensToThisPort + " = "
+                code.append(tokensToThisPort
+                        + " = "
                         + CCodegenUtilities.jniNewObjectArray(String
                                 .valueOf(numberOfChannels), _objClassI,
                                 targetCpp) + ";" + _eol);
@@ -439,20 +433,20 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 String tokensToOneChannel = "tokensToOneChannelOf" + portName;
                 if (i == 0) {
                     if (type == BaseType.INT) {
-                        code.append("jint " + tokensToOneChannel
-                                + "[" + rate + "];" + _eol);
+                        code.append("jint " + tokensToOneChannel + "[" + rate
+                                + "];" + _eol);
 
                     } else if (type == BaseType.DOUBLE) {
-                        code.append("jdouble " + tokensToOneChannel
-                                + "[" + rate + "];" + _eol);
+                        code.append("jdouble " + tokensToOneChannel + "["
+                                + rate + "];" + _eol);
 
                     } else if (type == PointerToken.POINTER) {
-                        code.append("jint " + tokensToOneChannel
-                                + "[" + rate + "];" + _eol);
+                        code.append("jint " + tokensToOneChannel + "[" + rate
+                                + "];" + _eol);
 
                     } else if (type == BaseType.BOOLEAN) {
-                        code.append("jboolean " + tokensToOneChannel
-                                + "[" + rate + "];" + _eol);
+                        code.append("jboolean " + tokensToOneChannel + "["
+                                + rate + "];" + _eol);
 
                     } else {
                         // FIXME: need to deal with other types
@@ -467,15 +461,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 // Assign each token to the array of jni objects
                 for (int k = 0; k < rate; k++) {
                     String portReference = compositeActorHelper
-                    .getReference("@" + portNameWithChannelNumber + ","
-                            + k);
+                            .getReference("@" + portNameWithChannelNumber + ","
+                                    + k);
                     if (type == PointerToken.POINTER) {
-                        code.append(tokensToOneChannel + "[" + k
-                                + "] = " + "(int) " + portReference + ";"
-                                + _eol);
+                        code.append(tokensToOneChannel + "[" + k + "] = "
+                                + "(int) " + portReference + ";" + _eol);
                     } else {
-                        code.append(tokensToOneChannel + "[" + k
-                                + "] = " + portReference + ";" + _eol);
+                        code.append(tokensToOneChannel + "[" + k + "] = "
+                                + portReference + ";" + _eol);
                     }
                 }
 
@@ -488,9 +481,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
                             + CCodegenUtilities.jniNewArray("Int", String
                                     .valueOf(rate), targetCpp) + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
-                            tokensToOneChannelArray, "0", String
-                            .valueOf(rate), tokensToOneChannel,
-                            targetCpp) + ";" + _eol);
+                            tokensToOneChannelArray, "0", String.valueOf(rate),
+                            tokensToOneChannel, targetCpp)
+                            + ";" + _eol);
 
                 } else if (type == BaseType.DOUBLE) {
                     code.append("jdoubleArray "
@@ -499,9 +492,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
                             + CCodegenUtilities.jniNewArray("Double", String
                                     .valueOf(rate), targetCpp) + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Double",
-                            tokensToOneChannelArray, "0", String
-                            .valueOf(rate), tokensToOneChannel,
-                            targetCpp) + ";" + _eol);
+                            tokensToOneChannelArray, "0", String.valueOf(rate),
+                            tokensToOneChannel, targetCpp)
+                            + ";" + _eol);
 
                 } else if (type == PointerToken.POINTER) {
                     code.append("jintArray "
@@ -510,9 +503,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
                             + CCodegenUtilities.jniNewArray("Int", String
                                     .valueOf(rate), targetCpp) + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
-                            tokensToOneChannelArray, "0", String
-                            .valueOf(rate), tokensToOneChannel,
-                            targetCpp) + ";" + _eol);
+                            tokensToOneChannelArray, "0", String.valueOf(rate),
+                            tokensToOneChannel, targetCpp)
+                            + ";" + _eol);
 
                 } else if (type == BaseType.BOOLEAN) {
                     code.append("jbooleanArray "
@@ -521,28 +514,29 @@ public class GiottoDirector extends StaticSchedulingDirector {
                             + CCodegenUtilities.jniNewArray("Boolean", String
                                     .valueOf(rate), targetCpp) + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Boolean",
-                            tokensToOneChannelArray, "0", String
-                            .valueOf(rate), tokensToOneChannel,
-                            targetCpp) + ";" + _eol);
+                            tokensToOneChannelArray, "0", String.valueOf(rate),
+                            tokensToOneChannel, targetCpp)
+                            + ";" + _eol);
                 } else {
                     // FIXME: need to deal with other types
                 }
 
                 code.append(CCodegenUtilities.jniSetObjectArrayElement(
                         tokensToThisPort, String.valueOf(i),
-                        tokensToOneChannelArray, targetCpp) + ";"
-                        + _eol);
+                        tokensToOneChannelArray, targetCpp)
+                        + ";" + _eol);
                 code.append(CCodegenUtilities.jniDeleteLocalRef(
-                        tokensToOneChannelArray, targetCpp) + ";"
-                        + _eol);
+                        tokensToOneChannelArray, targetCpp)
+                        + ";" + _eol);
             }
 
             code.append(CCodegenUtilities.jniSetObjectArrayElement(
-                    "tokensToAllOutputPorts", String
-                    .valueOf(_portNumber), tokensToThisPort,
-                    targetCpp) + ";" + _eol);
+                    "tokensToAllOutputPorts", String.valueOf(_portNumber),
+                    tokensToThisPort, targetCpp)
+                    + ";" + _eol);
             code.append(CCodegenUtilities.jniDeleteLocalRef(tokensToThisPort,
-                    targetCpp) + ";" + _eol);
+                    targetCpp)
+                    + ";" + _eol);
             _portNumber++;
 
         } else {
@@ -558,8 +552,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         code.append(CodeStream.indent(compositeActorHelper
                                 .getReference(name + "," + k)));
                         code.append(" =" + _eol);
-                        code.append(CodeStream.indent(compositeActorHelper.getReference("@" + name
-                                + "," + k)));
+                        code.append(CodeStream.indent(compositeActorHelper
+                                .getReference("@" + name + "," + k)));
                         code.append(";" + _eol);
                     }
                 }
@@ -584,7 +578,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   output.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Receiver[][] receivers;
 
         if (port.isInput()) {
@@ -595,7 +589,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         } else {
             // Findbugs: receivers could be null, so we throw an exception.
             throw new IllegalActionException(port,
-            "Port is neither an input nor an output.");
+                    "Port is neither an input nor an output.");
         }
 
         //try {
@@ -603,22 +597,22 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
         for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
             int copySize;
-//          int copySize = ((SDFReceiver) receivers[channelNumber][copy])
-//          .getCapacity();
+            //          int copySize = ((SDFReceiver) receivers[channelNumber][copy])
+            //          .getCapacity();
 
-//          if (copySize > size) {
-//          size = copySize;
-//          }
+            //          if (copySize > size) {
+            //          size = copySize;
+            //          }
 
             // When an output port of a composite actor is directly
             // connected to an input port of the same composite actor,
             // calling getCapacity() will return 0. Therefore we use
             // the rate to determine the buffer size.
-//          if (port.isOutput()) {
+            //          if (port.isOutput()) {
             copySize = DFUtilities.getRate(port);
             if (copySize > size) {
                 size = copySize;
-//              }
+                //              }
             }
         }
 
@@ -645,7 +639,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   reading parameters throws it.
      */
     protected String _createDynamicOffsetVariables(IOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
@@ -666,8 +660,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
                 helper
-                .setReadOffset(port, i, channelReadOffset + "[" + i
-                        + "]");
+                        .setReadOffset(port, i, channelReadOffset + "[" + i
+                                + "]");
             }
             channelReadOffset += "[" + width + "]";
             code.append("static int " + channelReadOffset + ";\n");
@@ -696,13 +690,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   reading parameters throws it.
      */
     protected String _createOffsetVariablesIfNeeded()
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor container = (CompositeActor) getComponent()
-        .getContainer();
+                .getContainer();
 
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-        .booleanValue();
+                .booleanValue();
         boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
                 .getToken()).booleanValue();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
@@ -744,11 +738,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
                     } else {
                         readTokens = DFUtilities.getRate(outputPort);
                         Iterator sourcePorts = outputPort
-                        .insideSourcePortList().iterator();
+                                .insideSourcePortList().iterator();
                         label1: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-//                          CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-//                          .getContainer());
+                            //                          CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+                            //                          .getContainer());
                             int width;
                             if (sourcePort.isInput()) {
                                 width = sourcePort.getWidthInside();
@@ -756,14 +750,15 @@ public class GiottoDirector extends StaticSchedulingDirector {
                                 width = sourcePort.getWidth();
                             }
                             for (int j = 0; j < width; j++) {
-                                Iterator channels = CodeGeneratorHelper.getSinkChannels(
-                                        sourcePort, j).iterator();
+                                Iterator channels = CodeGeneratorHelper
+                                        .getSinkChannels(sourcePort, j)
+                                        .iterator();
                                 while (channels.hasNext()) {
                                     Channel channel = (Channel) channels.next();
                                     if (channel.port == outputPort
                                             && channel.channelNumber == i) {
                                         writeTokens = DFUtilities
-                                        .getRate(sourcePort);
+                                                .getRate(sourcePort);
                                         break label1;
                                     }
                                 }
@@ -811,11 +806,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         // avoid using read and write offset variables.
                         if (inline) {
                             Variable firings = (Variable) ((NamedObj) actor)
-                            .getAttribute("firingsPerIteration");
+                                    .getAttribute("firingsPerIteration");
                             int firingsPerIteration = ((IntToken) firings
                                     .getToken()).intValue();
                             readTokens = DFUtilities.getRate(inputPort)
-                            * firingsPerIteration;
+                                    * firingsPerIteration;
                             writeTokens = readTokens;
 
                             // If each actor firing is wrapped in a
@@ -829,11 +824,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         } else {
                             readTokens = DFUtilities.getRate(inputPort);
                             Iterator sourcePorts = inputPort.sourcePortList()
-                            .iterator();
+                                    .iterator();
                             label2: while (sourcePorts.hasNext()) {
                                 IOPort sourcePort = (IOPort) sourcePorts.next();
-//                              CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-//                              .getContainer());
+                                //                              CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+                                //                              .getContainer());
                                 int width;
                                 if (sourcePort.isInput()) {
                                     width = sourcePort.getWidthInside();
@@ -841,15 +836,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
                                     width = sourcePort.getWidth();
                                 }
                                 for (int j = 0; j < width; j++) {
-                                    Iterator channels = CodeGeneratorHelper.getSinkChannels(
-                                            sourcePort, j).iterator();
+                                    Iterator channels = CodeGeneratorHelper
+                                            .getSinkChannels(sourcePort, j)
+                                            .iterator();
                                     while (channels.hasNext()) {
                                         Channel channel = (Channel) channels
-                                        .next();
+                                                .next();
                                         if (channel.port == inputPort
                                                 && channel.channelNumber == i) {
                                             writeTokens = DFUtilities
-                                            .getRate(sourcePort);
+                                                    .getRate(sourcePort);
                                             break label2;
                                         }
                                     }
@@ -863,8 +859,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
             }
             if (tempCode2.length() > 0) {
                 code.append("\n"
-                        + _codeGenerator.comment(generateSimpleName((NamedObj) actor)
-                                + "'s offset variables"));
+                        + _codeGenerator
+                                .comment(generateSimpleName((NamedObj) actor)
+                                        + "'s offset variables"));
                 code.append(tempCode2);
             }
         }
@@ -890,7 +887,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     protected String _createOffsetVariablesIfNeeded(IOPort port,
             int channelNumber, int readTokens, int writeTokens)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
@@ -922,7 +919,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
                 channelReadOffset
-                .append(CodeGeneratorHelper.generateName(port));
+                        .append(CodeGeneratorHelper.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
@@ -947,7 +944,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 }
                 channelWriteOffset.append("_writeOffset");
                 String channelWriteOffsetVariable = channelWriteOffset
-                .toString();
+                        .toString();
                 code.append("static int " + channelWriteOffsetVariable + ";\n");
                 // Now replace the concrete offset with the variable.
                 helper.setWriteOffset(port, channelNumber,
@@ -1011,7 +1008,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      * @exception IllegalActionException If thrown when getting the port's helper.
      */
     private int _padBuffer(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
 
@@ -1022,31 +1019,27 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return newBufferSize;
     }
 
+    /** Generate sanitized name for the given named object. Remove all
+     *  underscores to avoid conflicts with systems functions.
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The sanitized name.
+     */
+    private static String _generateDriverName(NamedObj namedObj) {
+        String name = StringUtilities.sanitizeName(namedObj.getFullName());
+        // FIXME: Assume that all objects share the same top level. In this case,
+        // having the top level in the generated name does not help to
+        // expand the name space but merely lengthen the name string.
+        //        NamedObj parent = namedObj.toplevel();
+        //        if (namedObj.toplevel() == namedObj) {
+        //            return "_toplevel_";
+        //        }
+        //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
+        if (name.startsWith("_")) {
+            name = name.substring(1, name.length());
+        }
+        return name.replaceAll("\\$", "Dollar") + "_driver";
 
-     /** Generate sanitized name for the given named object. Remove all
-      *  underscores to avoid conflicts with systems functions.
-      *  @param namedObj The named object for which the name is generated.
-      *  @return The sanitized name.
-      */
-     private static String _generateDriverName(NamedObj namedObj)
-     {
-         String name = StringUtilities.sanitizeName(namedObj.getFullName());
-         // FIXME: Assume that all objects share the same top level. In this case,
-         // having the top level in the generated name does not help to
-         // expand the name space but merely lengthen the name string.
-         //        NamedObj parent = namedObj.toplevel();
-         //        if (namedObj.toplevel() == namedObj) {
-         //            return "_toplevel_";
-         //        }
-         //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
-         if (name.startsWith("_")) {
-             name = name.substring(1, name.length());
-         }
-         return name.replaceAll("\\$", "Dollar")+"_driver";
-
-
-
-     }
+    }
 
     private int _portNumber = 0;
 

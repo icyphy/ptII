@@ -217,8 +217,6 @@ public class CacheAwareScheduler extends SDFScheduler {
             }
 
             record[i].toFire = _firingCount[i];
-            record[i].toProduce = _firingCount[i] * record[i].productionRate;
-            record[i].toConsume = _firingCount[i] * record[i].consumptionRate;
             record[i].produced = 0;
             record[i].consumed = 0;
             record[i].codeSize = _actorsRecord[i].codeSize;
@@ -974,10 +972,10 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  last actor in the n-actor chain has an order n-1.
      */
     private void _computeOrder() throws IllegalActionException {
-        Director director = (Director)getContainer();
-        CompositeActor composite = (CompositeActor)director.getContainer();
-        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites)
-                composite.getCausalityInterface();
+        Director director = (Director) getContainer();
+        CompositeActor composite = (CompositeActor) director.getContainer();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) composite
+                .getCausalityInterface();
         List<Actor> actors = causality.topologicalSort();
 
         // Allocate a new hash table with the equal to the
@@ -2108,12 +2106,6 @@ public class CacheAwareScheduler extends SDFScheduler {
 
             _actorsRecord[i].toFire = _firingCount[i];
 
-            _actorsRecord[i].toProduce = _firingCount[i]
-                    * _actorsRecord[i].productionRate;
-
-            _actorsRecord[i].toConsume = _firingCount[i]
-                    * _actorsRecord[i].consumptionRate;
-
             _actorsRecord[i].produced = 0;
             _actorsRecord[i].consumed = 0;
 
@@ -2335,8 +2327,6 @@ public class CacheAwareScheduler extends SDFScheduler {
             inputTokensAvailable = 0;
             consumptionRate = 0;
             productionRate = 0;
-            toConsume = 0;
-            toProduce = 0;
             toFire = 0;
             codeSize = 0;
         }
@@ -2374,16 +2364,8 @@ public class CacheAwareScheduler extends SDFScheduler {
         // The production rate of the actor.
         public int productionRate;
 
-        // To store the total tokens to be consumed by the actor. For source
-        // actors, this is zero.
-        public int toConsume;
-
         // To store the total no of times the actor is supposed to fire.
         public int toFire;
-
-        // To store the total tokens to be produced by the actor. For sink
-        // actors, this is zero.
-        public int toProduce;
     }
 
     ///////////////////////////////////////////////////////////////////

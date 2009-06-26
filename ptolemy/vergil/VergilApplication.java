@@ -334,15 +334,14 @@ public class VergilApplication extends MoMLApplication {
 
             EffigyFactory factory = null;
 
-            Parameter startupEffigyFactoryName = (Parameter)
-                    applicationBlankPtolemyEffigyAtStartup
-                            .getAttribute("_startupEffigyFactoryName");
+            Parameter startupEffigyFactoryName = (Parameter) applicationBlankPtolemyEffigyAtStartup
+                    .getAttribute("_startupEffigyFactoryName");
 
             // See if there's a startup name
             if (startupEffigyFactoryName != null) {
                 String startupName = startupEffigyFactoryName.getExpression();
-                EffigyFactory factoryContainer = (EffigyFactory)
-                    configuration.getEntity("effigyFactory");
+                EffigyFactory factoryContainer = (EffigyFactory) configuration
+                        .getEntity("effigyFactory");
 
                 // Make sure there is effigyFactory
                 if (factoryContainer == null) {
@@ -356,8 +355,8 @@ public class VergilApplication extends MoMLApplication {
                 Iterator factories = factoryList.iterator();
 
                 while (factories.hasNext()) {
-                    final EffigyFactory currentFactory = (EffigyFactory)
-                            factories.next();
+                    final EffigyFactory currentFactory = (EffigyFactory) factories
+                            .next();
                     if (currentFactory.getName().equals(startupName)) {
                         factory = currentFactory;
                     }
@@ -370,8 +369,8 @@ public class VergilApplication extends MoMLApplication {
                 }
 
             } else {
-                factory = new PtolemyEffigy.Factory(
-                        directory, directory.uniqueName("ptolemyEffigy"));
+                factory = new PtolemyEffigy.Factory(directory, directory
+                        .uniqueName("ptolemyEffigy"));
             }
             Effigy effigy = factory.createEffigy(directory, null, null);
             configuration.createPrimaryTableau(effigy);
@@ -411,7 +410,8 @@ public class VergilApplication extends MoMLApplication {
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
 
         if (doc == null) {
-            throw new InternalErrorException("Configuration does not have a directory.doc entity?");
+            throw new InternalErrorException(
+                    "Configuration does not have a directory.doc entity?");
         }
         doc.identifier.setExpression(introURL.toExternalForm());
 

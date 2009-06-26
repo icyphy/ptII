@@ -56,7 +56,8 @@ public class TdlTaskTableauFactory extends TableauFactory {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public TdlTaskTableauFactory(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public TdlTaskTableauFactory(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

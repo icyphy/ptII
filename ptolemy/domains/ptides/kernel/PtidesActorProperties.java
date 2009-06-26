@@ -142,12 +142,11 @@ public class PtidesActorProperties {
         } catch (ClassCastException ex) {
             throw new IllegalActionException(actor,
                     "Actor has an attribute _executionTime, but "
-                    + "it is not a Parameter or its value is not"
-                    + " a double. It is: "
-                    + ((NamedObj) actor).getAttribute("_executionTime"));
+                            + "it is not a Parameter or its value is not"
+                            + " a double. It is: "
+                            + ((NamedObj) actor).getAttribute("_executionTime"));
         }
     }
-
 
     /** Return the execution time of the port or the worst case
      *  execution time if no execution time is specified, or
@@ -176,9 +175,9 @@ public class PtidesActorProperties {
         } catch (ClassCastException ex) {
             throw new IllegalActionException(port,
                     "Actor has an attribute _executionTime, but "
-                    + "it is not a Parameter or its value is not"
-                    + " a double. It is: "
-                    + ((NamedObj) port).getAttribute("_executionTime"));
+                            + "it is not a Parameter or its value is not"
+                            + " a double. It is: "
+                            + ((NamedObj) port).getAttribute("_executionTime"));
         }
     }
 

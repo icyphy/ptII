@@ -70,8 +70,8 @@ public class ModelCombine extends Transformer {
     public void fire() throws IllegalActionException {
         Entity entity = ((ActorToken) input.get(0)).getEntity(new Workspace());
         for (int i = 1; i < input.getWidth(); i++) {
-            _merge(entity, ((ActorToken) input.get(i)).getEntity(
-                    new Workspace()));
+            _merge(entity, ((ActorToken) input.get(i))
+                    .getEntity(new Workspace()));
         }
         output.send(0, new ActorToken(entity));
     }
@@ -107,8 +107,8 @@ public class ModelCombine extends Transformer {
                 moml.append("\n");
                 moml.append(StringUtilities.getIndentPrefix(1));
                 moml.append("</group>");
-                MoMLChangeRequest request = new MoMLChangeRequest(this, entity1,
-                        moml.toString());
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        entity1, moml.toString());
                 request.execute();
             }
         }

@@ -324,9 +324,8 @@ public class SemanticHighlightings {
             Enumeration<String> keys = _METHODS.keys();
 
             while (keys.hasMoreElements()) {
-                String typeName = (String) keys.nextElement();
-                PtolemyMethod[] methods = (PtolemyMethod[]) _METHODS
-                        .get(typeName);
+                String typeName = keys.nextElement();
+                PtolemyMethod[] methods = _METHODS.get(typeName);
 
                 ITypeBinding type = binding.getDeclaringClass();
                 boolean classFound = false;

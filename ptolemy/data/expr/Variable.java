@@ -1082,7 +1082,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (_debugging) {
             _debug("setToken: " + token);
         }
-        if (_token != null && _token.equals(token) ) {
+        if (_token != null && _token.equals(token)) {
             return; // Nothing changed
         }
 
@@ -2274,7 +2274,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         NamedObj container = getContainer();
         while (container != null) {
             if (container instanceof InstantiableNamedObj) {
-                if (((InstantiableNamedObj) container).isWithinClassDefinition()) {
+                if (((InstantiableNamedObj) container)
+                        .isWithinClassDefinition()) {
                     return true;
                 }
                 // No need to continue since isWithinClassDefinition()

@@ -117,7 +117,7 @@ public class SemanticHighlightingPresenter implements
             }
 
             StyleRange[] array = new StyleRange[ranges.size()];
-            array = (StyleRange[]) ranges.toArray(array);
+            array = ranges.toArray(array);
             textPresentation.replaceStyleRanges(array);
         } else {
             for (; i < n; i++) {

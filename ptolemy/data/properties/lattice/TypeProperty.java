@@ -34,6 +34,8 @@ public interface TypeProperty {
     public boolean hasMinMaxValue();
 
     public Token getMaxValue();
+
     public Token getMinValue();
+
     public boolean isInRange(Token token) throws IllegalActionException;
 }

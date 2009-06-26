@@ -71,7 +71,7 @@ public class PropertyMoMLHandler extends Attribute {
      *   an attribute already in the container.
      */
     public PropertyMoMLHandler(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         showText = new Parameter(this, "showText");
@@ -99,7 +99,6 @@ public class PropertyMoMLHandler extends Attribute {
      */
     public Parameter highlight;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -124,7 +123,8 @@ public class PropertyMoMLHandler extends Attribute {
 
                     if (solver.isIdentifiable(attribute.getUseCaseIdentifier())) {
 
-                        String request = "<deleteProperty name=\"" + attribute.getName() + "\"/>";
+                        String request = "<deleteProperty name=\""
+                                + attribute.getName() + "\"/>";
                         request = _completeHierarchyInMoML(namedObj, request);
 
                         completeMoML.append(request);
@@ -190,10 +190,11 @@ public class PropertyMoMLHandler extends Attribute {
 
                     String attributeName = solver.getExtendedUseCaseName();
                     PropertyAttribute attribute = (PropertyAttribute) namedObj
-                    .getAttribute(attributeName);
+                            .getAttribute(attributeName);
 
                     if (attribute != null) {
-                        String request = "<deleteProperty name=\"" + attributeName + "\"/>";
+                        String request = "<deleteProperty name=\""
+                                + attributeName + "\"/>";
                         request = _completeHierarchyInMoML(namedObj, request);
 
                         completeMoML.append(request);
@@ -207,8 +208,8 @@ public class PropertyMoMLHandler extends Attribute {
         // Delete the trained exception attribute.
         Attribute trainedException = solver.getTrainedExceptionAttribute();
         if (trainedException != null) {
-            String request = "<deleteProperty name=\"" +
-            solver.getTrainedExceptionAttributeName() + "\"/>";
+            String request = "<deleteProperty name=\""
+                    + solver.getTrainedExceptionAttributeName() + "\"/>";
             request = _completeHierarchyInMoML(solver, request);
             completeMoML.append(request);
         }
@@ -235,9 +236,11 @@ public class PropertyMoMLHandler extends Attribute {
                 if (propertyable instanceof NamedObj) {
                     NamedObj namedObj = (NamedObj) propertyable;
 
-                    Property property = solver.getResolvedProperty(namedObj, false);
+                    Property property = solver.getResolvedProperty(namedObj,
+                            false);
 
-                    completeMoML.append(_getMoMLHighlightString(namedObj, property));
+                    completeMoML.append(_getMoMLHighlightString(namedObj,
+                            property));
                 }
             }
         } catch (IllegalActionException ex) {
@@ -264,9 +267,11 @@ public class PropertyMoMLHandler extends Attribute {
                 if (propertyable instanceof NamedObj) {
                     NamedObj namedObj = (NamedObj) propertyable;
 
-                    Property property = solver.getResolvedProperty(namedObj, false);
+                    Property property = solver.getResolvedProperty(namedObj,
+                            false);
 
-                    completeMoML.append(_getMoMLShowInfoString(namedObj, property));
+                    completeMoML.append(_getMoMLShowInfoString(namedObj,
+                            property));
                 }
             }
         } catch (IllegalActionException e) {
@@ -298,9 +303,9 @@ public class PropertyMoMLHandler extends Attribute {
             // change request.
             while (momlContainer.getContainer() != null) {
                 String type = momlContainer.getElementName();
-                request = "<" + type + " name=\"" + momlContainer.getName() +
-                "\" class=\"" + momlContainer.getClassName() + "\">" +
-                request + "</" + type + ">";
+                request = "<" + type + " name=\"" + momlContainer.getName()
+                        + "\" class=\"" + momlContainer.getClassName() + "\">"
+                        + request + "</" + type + ">";
 
                 momlContainer = momlContainer.getContainer();
             }
@@ -333,45 +338,45 @@ public class PropertyMoMLHandler extends Attribute {
         }
 
         if (property != null && property.getColor().length() > 0) {
-            request = "<property name=\"_highlightColor\" " +
-            "class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
-            property.getColor() + "\"/>";
+            request = "<property name=\"_highlightColor\" "
+                    + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                    + property.getColor() + "\"/>";
             request = _completeHierarchyInMoML(propertyable, request);
             return request;
         }
 
-
         //Highlight Propertyable namedObj's.
-        for (ColorAttribute colorAttribute : (List<ColorAttribute>)
-                attributeList(ColorAttribute.class)) {
+        for (ColorAttribute colorAttribute : (List<ColorAttribute>) attributeList(ColorAttribute.class)) {
 
             String colorAttrName = colorAttribute.getName();
             if (colorAttrName.endsWith("HighlightColor")) {
 
-                String propertyAttrName = colorAttrName
-                .substring(0, colorAttrName.length() - 14);
+                String propertyAttrName = colorAttrName.substring(0,
+                        colorAttrName.length() - 14);
 
                 Attribute attribute = getAttribute(propertyAttrName);
 
                 if (attribute != null && attribute instanceof StringAttribute) {
 
-                    String propertyToHighlight = ((StringAttribute) attribute).getExpression();
+                    String propertyToHighlight = ((StringAttribute) attribute)
+                            .getExpression();
 
                     if (propertyToHighlight.equals(propertyString)) {
 
-                        ColorAttribute highlightAttribute =
-                            (ColorAttribute) propertyable.getAttribute("_highlightColor");
+                        ColorAttribute highlightAttribute = (ColorAttribute) propertyable
+                                .getAttribute("_highlightColor");
 
                         if (property == null && highlightAttribute != null) {
                             // Remove the _highlightColor attribute if we don't have
                             // any property to display.
                             request = "<deleteProperty name=\"_highlightColor\"/>";
                         } else {
-                            request = "<property name=\"_highlightColor\" " +
-                            "class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
-                            colorAttribute.getExpression() + "\"/>";
+                            request = "<property name=\"_highlightColor\" "
+                                    + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                                    + colorAttribute.getExpression() + "\"/>";
                         }
-                        request = _completeHierarchyInMoML(propertyable, request);
+                        request = _completeHierarchyInMoML(propertyable,
+                                request);
                         return request;
                     }
                 }
@@ -391,7 +396,8 @@ public class PropertyMoMLHandler extends Attribute {
      * @param propertyable The given property-able object.
      * @param property The given property.
      */
-    private String _getMoMLShowInfoString(NamedObj propertyable, Property property) {
+    private String _getMoMLShowInfoString(NamedObj propertyable,
+            Property property) {
 
         String request;
         String propertyString;
@@ -407,8 +413,8 @@ public class PropertyMoMLHandler extends Attribute {
             propertyString = "";
         }
 
-        StringParameter showAttribute =
-            (StringParameter) propertyable.getAttribute("_showInfo");
+        StringParameter showAttribute = (StringParameter) propertyable
+                .getAttribute("_showInfo");
 
         if (property == null && showAttribute != null) {
             // Remove the showInfo attribute if we don't have
@@ -417,9 +423,8 @@ public class PropertyMoMLHandler extends Attribute {
 
         } else {
             // Update the _showInfo attribute.
-            request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\"" +
-            propertyString +
-            "\"/>";
+            request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
+                    + propertyString + "\"/>";
         }
 
         request = _completeHierarchyInMoML(propertyable, request);
@@ -437,6 +442,6 @@ public class PropertyMoMLHandler extends Attribute {
         NamedObj toplevel = toplevel();
         MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel, moml);
         request.setUndoable(true);
-        ((TypedCompositeActor)toplevel).requestChange(request);
+        ((TypedCompositeActor) toplevel).requestChange(request);
     }
 }

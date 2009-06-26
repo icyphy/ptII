@@ -54,9 +54,10 @@ public class InitModelWithContainer extends InitModel {
 
     protected CompositeEntity _getInitialModel() throws IllegalActionException {
         PteraController controller = (PteraController) getContainer();
-        PteraModalModel modalModel = (PteraModalModel) controller.getContainer();
-        CompositeEntity containingModel =
-            (CompositeEntity) modalModel.getContainer();
+        PteraModalModel modalModel = (PteraModalModel) controller
+                .getContainer();
+        CompositeEntity containingModel = (CompositeEntity) modalModel
+                .getContainer();
         if (containingModel == null) {
             return super._getInitialModel();
         } else {

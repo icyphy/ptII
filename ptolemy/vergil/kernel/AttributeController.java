@@ -79,8 +79,7 @@ public class AttributeController extends IconController {
         if (access == FULL) {
             // Add to the context menu, configure submenu.
             _renameAction = new RenameDialogAction("Rename");
-            _configureMenuFactory.addAction(_renameAction,
-                    "Customize");
+            _configureMenuFactory.addAction(_renameAction, "Customize");
 
             Action[] actions = { _getDocumentationAction,
                     new CustomizeDocumentationAction(),
@@ -106,7 +105,6 @@ public class AttributeController extends IconController {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -115,10 +113,10 @@ public class AttributeController extends IconController {
     *   most controllers
     *  @param jgraph The JGraph to which hot keys are to be added.
     */
-   public void addHotKeys(JGraph jgraph) {
-       super.addHotKeys(jgraph);
-       GUIUtilities.addHotKey(jgraph, _renameAction);
-   }
+    public void addHotKeys(JGraph jgraph) {
+        super.addHotKeys(jgraph);
+        GUIUtilities.addHotKey(jgraph, _renameAction);
+    }
 
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is
@@ -170,7 +168,6 @@ public class AttributeController extends IconController {
 
     /** The "get documentation" action. */
     private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

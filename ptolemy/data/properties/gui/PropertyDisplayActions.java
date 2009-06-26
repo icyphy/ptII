@@ -73,7 +73,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
      *   an attribute already in the container.
      */
     public PropertyDisplayActions(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -120,7 +120,6 @@ public class PropertyDisplayActions extends NodeControllerFactory {
         }
     }
 
-
     /** The action for the clear property command to be added
      *  to the context menu.
      */
@@ -139,7 +138,6 @@ public class PropertyDisplayActions extends NodeControllerFactory {
         }
     }
 
-
     /** The action for the highlight configure command to be added
      *  to the context menu.
      */
@@ -157,8 +155,8 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
 
-            NamedObj target = ((PropertySolver) PropertyDisplayActions
-                    .this.getContainer()).getMoMLHandler();
+            NamedObj target = ((PropertySolver) PropertyDisplayActions.this
+                    .getContainer()).getMoMLHandler();
 
             // Create a dialog for configuring the object.
             // First, identify the top parent frame.
@@ -166,7 +164,6 @@ public class PropertyDisplayActions extends NodeControllerFactory {
 
             _openDialog(parent, target);
         }
-
 
         /** Open an edit parameters dialog.  This is a modal dialog, so
          *  this method returns only after the dialog has been dismissed.
@@ -181,10 +178,9 @@ public class PropertyDisplayActions extends NodeControllerFactory {
         }
     }
 
-
     /** The edit highlight dialog.
      */
-    private static class EditHighlightDialog extends EditParametersDialog  {
+    private static class EditHighlightDialog extends EditParametersDialog {
 
         /** Construct a dialog with the specified owner and target.
          *  A "Commit" and a "Cancel" button are added to the dialog.
@@ -218,7 +214,8 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             _query.addLine("name", "Property Name", name);
 
             ComponentDialog dialog = new ComponentDialog(_owner,
-                    "Add a new parameter to " + _target.getFullName(), _query, null);
+                    "Add a new parameter to " + _target.getFullName(), _query,
+                    null);
 
             // If the OK button was pressed, then queue a mutation
             // to create the parameter.
@@ -227,17 +224,18 @@ public class PropertyDisplayActions extends NodeControllerFactory {
 
             if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
                 String moml = "<property name=\"" + newName + "\" value=\""
-                + "property value\" class=\""
-                + "ptolemy.kernel.util.StringAttribute" + "\"/>";
+                        + "property value\" class=\""
+                        + "ptolemy.kernel.util.StringAttribute" + "\"/>";
 
-                MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
-                        moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        _target, moml);
                 request.setUndoable(true);
                 _target.requestChange(request);
 
-                moml = "<property name=\"" + newName + "HighlightColor\" value=\""
-                + "{1.0, 0.0, 0.0, 1.0}\" class=\""
-                + "ptolemy.actor.gui.ColorAttribute" + "\"/>";
+                moml = "<property name=\"" + newName
+                        + "HighlightColor\" value=\""
+                        + "{1.0, 0.0, 0.0, 1.0}\" class=\""
+                        + "ptolemy.actor.gui.ColorAttribute" + "\"/>";
 
                 _target.addChangeListener(this);
 
@@ -249,7 +247,6 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             return dialog;
         }
     }
-
 
     /** The action for the highlight property command to be added
      *  to the context menu.
@@ -264,11 +261,11 @@ public class PropertyDisplayActions extends NodeControllerFactory {
 
             NamedObj container = getContainer();
             if (container instanceof PropertySolver) {
-                ((PropertySolver) container).getMoMLHandler().highlightProperties();
+                ((PropertySolver) container).getMoMLHandler()
+                        .highlightProperties();
             }
         }
     }
-
 
     /** The controller that adds commands to the context menu.
      */
@@ -281,22 +278,25 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             super(controller);
 
             ClearProperty clearProperty = new ClearProperty();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(clearProperty));
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(clearProperty));
 
             ClearDisplay clearDisplay = new ClearDisplay();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(clearDisplay));
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(clearDisplay));
 
             ShowProperty showProperty = new ShowProperty();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(showProperty));
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(showProperty));
 
             HighlightProperty highlightProperty = new HighlightProperty();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(highlightProperty));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    highlightProperty));
 
             ConfigureHighlightAction highlight = new ConfigureHighlightAction();
             _configureMenuFactory.addAction(highlight, "Configure");
         }
     }
-
 
     /** The action for the show property command to be added
      *  to the context menu.

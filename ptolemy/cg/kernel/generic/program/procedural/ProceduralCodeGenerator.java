@@ -42,7 +42,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-
 //////////////////////////////////////////////////////////////////////////
 ////ProceduralCodeGenerator
 
@@ -55,7 +54,7 @@ import ptolemy.kernel.util.Settable;
 *  @Pt.AcceptedRating red (rodiers)
 */
 public class ProceduralCodeGenerator extends ProgramCodeGenerator {
-    
+
     /** Create a new instance of the ProceduralCodeGenerator.
      *  @param container The container.
      *  @param name The name of the ProceduralCodeGenerator.
@@ -68,7 +67,8 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public ProceduralCodeGenerator(NamedObj container, String name, String outputFileExtension, String templateExtension)
+    public ProceduralCodeGenerator(NamedObj container, String name,
+            String outputFileExtension, String templateExtension)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension, templateExtension);
 
@@ -77,7 +77,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         compile.setExpression("true");
 
         compileTarget = new StringParameter(this, "compileTarget");
-        
+
         generateEmbeddedCode = new Parameter(this, "generateEmbeddedCode");
         generateEmbeddedCode.setTypeEquals(BaseType.BOOLEAN);
         generateEmbeddedCode.setExpression("true");
@@ -89,12 +89,12 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
+
     /** If true, then compile the generated code. The default
      *  value is a parameter with the value true.
      */
     public Parameter compile;
-   
+
     /** The name of compile target to be run if the <i>compile</i> parameter
      *  is true.  This is a string with a default value of the empty string,
      *  which means the first target in the makefile would be run.
@@ -102,7 +102,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  //      Nobody sets its value currently?
      */
     public StringParameter compileTarget;
-    
+
     /** If true, then generate code for that uses the reflection for Java
      *  and JNI for C and is embedded within the model 
      *  The default value is false and this parameter is not usually
@@ -113,7 +113,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  CompiledCompositeActors and C or Java code is being generated for the
      *  model.
      */
-    public Parameter generateEmbeddedCode;   
+    public Parameter generateEmbeddedCode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -147,10 +147,9 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
             _libraries.add(libraryCommand);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Reset the code generator.
      */
@@ -160,10 +159,10 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         _includes.clear();
         _libraries.clear();
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-        
+
     /** Set of include command line arguments where each element is
      *  a string, for example "-I/usr/local/include".
      */

@@ -53,7 +53,8 @@ public class BooleanSelect extends AtomicActor {
      * @exception IllegalActionException
      */
     public BooleanSelect(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.BooleanSelect actor) throws IllegalActionException {
+            ptolemy.actor.lib.BooleanSelect actor)
+            throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
@@ -73,4 +74,3 @@ public class BooleanSelect extends AtomicActor {
     private ptolemy.actor.lib.BooleanSelect _actor;
     private Lattice _lattice;
 }
-

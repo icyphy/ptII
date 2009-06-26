@@ -108,17 +108,19 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param timeDelay The time delay.
      *  @param index The superdense time index.
      */
-    public void declareDelayDependency(IOPort input, IOPort output, double timeDelay, int index) {
+    public void declareDelayDependency(IOPort input, IOPort output,
+            double timeDelay, int index) {
         if (_defaultDependency instanceof SuperdenseDependency) {
             if (timeDelay != 0.0 || index != 0) {
                 _removeDependency(input, output);
             }
             // Store the time delay.
-            Dependency dependency = SuperdenseDependency.valueOf(timeDelay, index);
+            Dependency dependency = SuperdenseDependency.valueOf(timeDelay,
+                    index);
             if (_delayDependencies == null) {
-                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+                _delayDependencies = new HashMap<IOPort, Map<IOPort, Dependency>>();
             }
-            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            Map<IOPort, Dependency> entry = new HashMap<IOPort, Dependency>();
             entry.put(output, dependency);
             _delayDependencies.put(input, entry);
         } else if (_defaultDependency instanceof RealDependency) {
@@ -128,9 +130,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
             // Store the time delay.
             Dependency dependency = RealDependency.valueOf(timeDelay);
             if (_delayDependencies == null) {
-                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+                _delayDependencies = new HashMap<IOPort, Map<IOPort, Dependency>>();
             }
-            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            Map<IOPort, Dependency> entry = new HashMap<IOPort, Dependency>();
             entry.put(output, dependency);
             _delayDependencies.put(input, entry);
         } else { // the dependency is a BooleanDependency.
@@ -338,7 +340,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
             throws IllegalActionException {
         // If there is a recorded delay dependency, return that.
         if (_delayDependencies != null) {
-            Map<IOPort,Dependency> entry = _delayDependencies.get(input);
+            Map<IOPort, Dependency> entry = _delayDependencies.get(input);
             if (entry != null) {
                 Dependency result = entry.get(output);
                 if (result != null) {
@@ -406,9 +408,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
             // Set time delay to infinity.
             Dependency dependency = SuperdenseDependency.OPLUS_IDENTITY;
             if (_delayDependencies == null) {
-                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+                _delayDependencies = new HashMap<IOPort, Map<IOPort, Dependency>>();
             }
-            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            Map<IOPort, Dependency> entry = new HashMap<IOPort, Dependency>();
             entry.put(outputPort, dependency);
             _delayDependencies.put(inputPort, entry);
         }
@@ -416,9 +418,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
             // Set time delay to infinity.
             Dependency dependency = RealDependency.OPLUS_IDENTITY;
             if (_delayDependencies == null) {
-                _delayDependencies = new HashMap<IOPort, Map<IOPort,Dependency>>();
+                _delayDependencies = new HashMap<IOPort, Map<IOPort, Dependency>>();
             }
-            Map<IOPort,Dependency> entry = new HashMap<IOPort,Dependency>();
+            Map<IOPort, Dependency> entry = new HashMap<IOPort, Dependency>();
             entry.put(outputPort, dependency);
             _delayDependencies.put(inputPort, entry);
         }
@@ -475,7 +477,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
     protected Dependency _defaultDependency;
 
     /** A record of delay dependencies from input to output, if any. */
-    protected Map<IOPort, Map<IOPort,Dependency>> _delayDependencies;
+    protected Map<IOPort, Map<IOPort, Dependency>> _delayDependencies;
 
     /** A record of removed dependencies from input to output, if any.
      *  In this case, if the dependency between the ports are anything

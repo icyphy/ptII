@@ -60,7 +60,7 @@ public class Conflict extends LatticeProperty implements TypeProperty {
     }
 
     public boolean hasMinMaxValue() {
-       return false;
+        return false;
     }
 
     public boolean isAcceptableSolution() {

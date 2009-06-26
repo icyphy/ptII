@@ -173,8 +173,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
             if (castPort.isOpaque()) {
                 Manager manager = getManager();
 
-                if (castPort.isOutput()
-                        && (getDirector() != null)
+                if (castPort.isOutput() && (getDirector() != null)
                         && (manager != null)
                         && (manager.getState() != Manager.IDLE)
                         && (manager.getState() != Manager.INFERING_WIDTHS)
@@ -191,8 +190,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                     }
                 }
 
-                if (castPort.isInput()
-                        && (getExecutiveDirector() != null)
+                if (castPort.isInput() && (getExecutiveDirector() != null)
                         && (manager != null)
                         && (manager.getState() != Manager.IDLE)
                         && (manager.getState() != Manager.INFERING_WIDTHS)
@@ -352,25 +350,6 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.
     private class IOMethodPort extends TypedIOPort implements Method {
-        /** Construct a port in the default workspace with an empty string
-         *  as its name. Increment the version number of the workspace.
-         *  The object is added to the workspace directory.
-         */
-        public IOMethodPort() {
-            super();
-        }
-
-        /** Construct a port in the specified workspace with an empty
-         *  string as a name. You can then change the name with setName().
-         *  If the workspace argument is null, then use the default workspace.
-         *  The object is added to the workspace directory.
-         *  Increment the version number of the workspace.
-         *  @param workspace The workspace that will list the port.
-         */
-        public IOMethodPort(Workspace workspace) {
-            super(workspace);
-        }
-
         /** Construct a port with the given name contained by the specified
          *  entity. The container argument must not be null, or a
          *  NullPointerException will be thrown.  This port will use the
@@ -540,10 +519,6 @@ public class ComponentActor extends TypedCompositeActor implements Component {
         public Receiver[][] getReceivers(IORelation relation, int occurrence)
                 throws IllegalActionException {
             return _insideReceivers;
-        }
-
-        public boolean isProvided() {
-            return _isProviedPort;
         }
 
         /** Override parent method to ensure compatibility of the relation

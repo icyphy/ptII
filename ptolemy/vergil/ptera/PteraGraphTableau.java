@@ -138,8 +138,8 @@ public class PteraGraphTableau extends FSMGraphTableau {
 
             if (model instanceof PteraModalModel) {
                 Configuration configuration = (Configuration) effigy.toplevel();
-                PteraController controller = (PteraController)
-                        ((PteraModalModel) model).getController();
+                PteraController controller = (PteraController) ((PteraModalModel) model)
+                        .getController();
                 tableau = configuration.openModel(controller);
                 tableau.setContainer(effigy);
 

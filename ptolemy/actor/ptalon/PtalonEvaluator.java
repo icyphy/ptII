@@ -150,7 +150,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             if (_getType(symbol).equals("import")) {
                 PtalonActor actor = new PtalonActor(_actor, uniqueName);
                 URL url = _imports.get(symbol);
-                actor.ptalonCodeLocation.setToken(new StringToken(url.toString()));
+                actor.ptalonCodeLocation.setToken(new StringToken(url
+                        .toString()));
                 actor.setNestedDepth(_actor.getNestedDepth() + 1);
                 _currentActorTree.assignPtalonParameters(actor);
                 _currentActorTree.makeConnections(actor);
@@ -178,7 +179,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     // The path will have $CLASSPATH in it so that this works
                     // in WebStart and the installer.
                     ptalonActor.ptalonCodeLocation.setToken(new StringToken(
-                                    _parameterToImport(actor)));
+                            _parameterToImport(actor)));
                     ptalonActor.setNestedDepth(_actor.getNestedDepth() + 1);
                     for (int i = 1; i < parsedExpression.length; i = i + 2) {
                         String lhs = parsedExpression[i];
@@ -576,8 +577,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      */
     private String _parameterToImport(String expression) {
         // Skip "ptalonActor:"
-        return  "$CLASSPATH/" + expression.substring(12).replace('.', '/')
-            + ".ptln";
+        return "$CLASSPATH/" + expression.substring(12).replace('.', '/')
+                + ".ptln";
     }
 
     // /////////////////////////////////////////////////////////////////

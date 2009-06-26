@@ -58,8 +58,8 @@ public interface PortCodeGenerator {
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
     public String generateSendCode(String channel, String dataToken)
-        throws IllegalActionException;
-        
+            throws IllegalActionException;
+
     /** Generate code for HasToken.
      *  @param channel The channel for which the get code is generated.
      *  @return The code that generates has token from the channel. 
@@ -68,6 +68,7 @@ public interface PortCodeGenerator {
      *  variable is needed instead of an array of length 1.
      *  @exception IllegalActionException If code can't be generated.
      */
-    public String generateHasTokenCode(String channel) throws IllegalActionException;
-    
+    public String generateHasTokenCode(String channel)
+            throws IllegalActionException;
+
 }

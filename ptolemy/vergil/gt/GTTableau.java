@@ -94,8 +94,8 @@ public class GTTableau extends Tableau {
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof GTCompositeActor
-                || !model.attributeList(Factory.class).isEmpty())) {
+        if (!(model instanceof GTCompositeActor || !model.attributeList(
+                Factory.class).isEmpty())) {
             throw new IllegalActionException(this,
                     "Cannot edit a model that is not a GTCompositeActor.");
         }
@@ -124,8 +124,8 @@ public class GTTableau extends Tableau {
                     + "GTCompositeActor.");
         }
 
-        ExtendedGraphFrame frame = new TransformationEditor(
-                model, this, defaultLibrary);
+        ExtendedGraphFrame frame = new TransformationEditor(model, this,
+                defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
@@ -225,8 +225,8 @@ public class GTTableau extends Tableau {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             Configuration configuration = (Configuration) effigy.toplevel();
-            ModalModelMatcher model =
-                (ModalModelMatcher) ((PtolemyEffigy) effigy).getModel();
+            ModalModelMatcher model = (ModalModelMatcher) ((PtolemyEffigy) effigy)
+                    .getModel();
             return configuration.openModel(model.getController());
         }
     }

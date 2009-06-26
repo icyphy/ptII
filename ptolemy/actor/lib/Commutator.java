@@ -137,7 +137,8 @@ public class Commutator extends Transformer implements SequenceActor {
         Commutator newObject = (Commutator) super.clone(workspace);
         newObject.output_tokenProductionRate = (Parameter) (newObject.output
                 .getAttribute("tokenProductionRate"));
-        ((WidthDependentParameter) newObject.output_tokenProductionRate).setPort(newObject.input);
+        ((WidthDependentParameter) newObject.output_tokenProductionRate)
+                .setPort(newObject.input);
         return newObject;
     }
 
@@ -220,7 +221,8 @@ public class Commutator extends Transformer implements SequenceActor {
      */
     private static class WidthDependentParameter extends Parameter {
         public WidthDependentParameter(NamedObj container, String name,
-                IOPort port) throws IllegalActionException, NameDuplicationException {
+                IOPort port) throws IllegalActionException,
+                NameDuplicationException {
             super(container, name);
             _port = port;
         }
@@ -229,6 +231,7 @@ public class Commutator extends Transformer implements SequenceActor {
             setExpression(_port.getWidth() + " * blockSize");
             return super.getToken();
         }
+
         void setPort(IOPort port) {
             _port = port;
         }

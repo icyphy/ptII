@@ -85,8 +85,7 @@ public class RecursiveFileFilter implements FilenameFilter {
     }
 
     public static File[] listFiles(File directory, boolean recursive,
-            boolean includeFiles, boolean includeDirectories,
-            String fileFilter) {
+            boolean includeFiles, boolean includeDirectories, String fileFilter) {
         RecursiveFileFilter filter = new RecursiveFileFilter(recursive,
                 includeFiles, includeDirectories, fileFilter);
         directory.list(filter);
@@ -97,8 +96,7 @@ public class RecursiveFileFilter implements FilenameFilter {
 
     private String _escape(String string) {
         String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
-        return escaped.replaceAll("\\\\\\*", ".*").replaceAll(
-                "\\\\\\?", ".?");
+        return escaped.replaceAll("\\\\\\*", ".*").replaceAll("\\\\\\?", ".?");
     }
 
     private final Pattern _ESCAPER = Pattern.compile("([^a-zA-z0-9])");
@@ -114,7 +112,7 @@ public class RecursiveFileFilter implements FilenameFilter {
     private boolean _recursive;
 
     private static class FileComparator implements Comparator<File>,
-    Serializable {
+            Serializable {
 
         public int compare(File file1, File file2) {
             return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());

@@ -75,15 +75,14 @@ public class PlotFormatter extends JPanel {
 
         _originalCaptions = plot.getCaptions();
         StringBuffer captionsString = new StringBuffer();
-        for (Enumeration captions = _originalCaptions.elements();
-             captions.hasMoreElements();) {
+        for (Enumeration captions = _originalCaptions.elements(); captions
+                .hasMoreElements();) {
             if (captionsString.length() > 0) {
                 captionsString.append('\n');
             }
             captionsString.append((String) captions.nextElement());
         }
-        _wideQuery.addTextArea("caption", "Caption",
-                captionsString.toString());
+        _wideQuery.addTextArea("caption", "Caption", captionsString.toString());
 
         _originalXLabel = plot.getXLabel();
         _wideQuery.addLine("xlabel", "X Label", _originalXLabel);
@@ -96,8 +95,8 @@ public class PlotFormatter extends JPanel {
         _wideQuery.addLine("yrange", "Y Range", "" + _originalYRange[0] + ", "
                 + _originalYRange[1]);
 
-        String[] marks = { "none", "points", "dots", "various",
-                           "bigdots", "pixels" };
+        String[] marks = { "none", "points", "dots", "various", "bigdots",
+                "pixels" };
         _originalMarks = "none";
 
         if (plot instanceof Plot) {
@@ -201,7 +200,7 @@ public class PlotFormatter extends JPanel {
                 } else if (name.equals("caption")) {
                     _plot.clearCaptions();
                     String newCaption = _wideQuery.getStringValue("caption");
-                    String [] captionsArray = newCaption.split("\\n");
+                    String[] captionsArray = newCaption.split("\\n");
                     for (int i = 0; i < captionsArray.length; i++) {
                         _plot.read("captions: " + captionsArray[i]);
                     }

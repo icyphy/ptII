@@ -142,7 +142,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class LazyTypedCompositeActor extends TypedCompositeActor implements LazyComposite {
+public class LazyTypedCompositeActor extends TypedCompositeActor implements
+        LazyComposite {
 
     // FIXME: Have to do ports and relations.  Only done attributes and entities.
 
@@ -242,7 +243,8 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         _cloning = true;
 
         try {
-            LazyTypedCompositeActor result = (LazyTypedCompositeActor) super.clone(workspace);
+            LazyTypedCompositeActor result = (LazyTypedCompositeActor) super
+                    .clone(workspace);
 
             // There may or may not be configure text, but it won't be the
             // same as what we are cloning (instantiating) from.
@@ -524,7 +526,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 if (!entity.isOpaque()) {
                     result.add(entity);
                     result.addAll(((CompositeEntity) entity)
-                                  .lazyAllCompositeEntityList());
+                            .lazyAllCompositeEntityList());
                 }
             }
             return result;
@@ -623,6 +625,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         populate();
         return super.newRelation(name);
     }
+
     /** Return the number of contained entities. This overrides the base class
      *  to first populate the actor, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
@@ -678,12 +681,13 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 // prototype.
                 List prototypes = getPrototypeList();
                 if (prototypes == null || prototypes.size() == 0) {
-                    throw new InternalErrorException(getFullName()
-                            + ": Object says it is derived but reports no prototypes!");
+                    throw new InternalErrorException(
+                            getFullName()
+                                    + ": Object says it is derived but reports no prototypes!");
                 }
                 // The prototype must have the same class as this.
-                LazyTypedCompositeActor prototype = (LazyTypedCompositeActor)
-                        prototypes.get(prototypes.size() - 1);
+                LazyTypedCompositeActor prototype = (LazyTypedCompositeActor) prototypes
+                        .get(prototypes.size() - 1);
                 prototype.populate();
                 return;
             }
@@ -712,7 +716,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 // something must also be a LazyTypedCompositeActor and
                 // it should be populated first.
                 if (getParent() != null) {
-                    ((LazyTypedCompositeActor)getParent()).populate();
+                    ((LazyTypedCompositeActor) getParent()).populate();
                 }
 
                 // We were getting ConcurrentModifications because
@@ -737,7 +741,8 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 List savedFilters = MoMLParser.getMoMLFilters();
                 try {
                     MoMLParser.setMoMLFilters(null);
-                    if ((_configureSource != null) && !_configureSource.equals("")) {
+                    if ((_configureSource != null)
+                            && !_configureSource.equals("")) {
                         URL xmlFile = new URL(_base, _configureSource);
                         parser.parse(xmlFile, xmlFile);
                     }
@@ -749,8 +754,8 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                         String trimmed = _configureText.trim();
 
                         if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-                            trimmed = trimmed.substring(2, trimmed.length() - 2)
-                                .trim();
+                            trimmed = trimmed
+                                    .substring(2, trimmed.length() - 2).trim();
 
                             if (trimmed.startsWith("moml")) {
                                 trimmed = trimmed.substring(4).trim();
@@ -925,7 +930,6 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
             port.exportMoML(output, depth);
         }
         //FIXME: end of duplicated code from Entity
-
 
         // Everything else is in a configure
 

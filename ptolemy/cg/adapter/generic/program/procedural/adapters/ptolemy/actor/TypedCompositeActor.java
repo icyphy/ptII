@@ -38,14 +38,13 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
@@ -59,7 +58,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (zgang)
  */
-public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
+public class TypedCompositeActor extends
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
 
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
@@ -85,7 +85,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             try {
-                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                        .getAdapter(actor);
                 adapterObject.analyzeTypeConvert();
             } catch (Throwable throwable) {
                 throw new IllegalActionException(actor, throwable,
@@ -114,13 +115,12 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getCodeGenerator().comment(2,
-                        "Fire Composite "
-                        + getComponent().getName()));
+                "Fire Composite " + getComponent().getName()));
 
         code.append(super._generateFireCode());
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
 
         Iterator<?> inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .inputPortList().iterator();
@@ -129,7 +129,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         StringBuffer tempCode = new StringBuffer();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            if (inputPort instanceof ParameterPort && inputPort.isOutsideConnected()) {
+            if (inputPort instanceof ParameterPort
+                    && inputPort.isOutsideConnected()) {
 
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();
@@ -142,8 +143,10 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
             }
         }
         if (tempCode.length() > 0) {
-            code.append(CodeStream.indent(getCodeGenerator().comment("Update "
-                    + getComponent().getName() + "'s port parameters")));
+            code.append(CodeStream.indent(getCodeGenerator()
+                    .comment(
+                            "Update " + getComponent().getName()
+                                    + "'s port parameters")));
             code.append(tempCode);
         }
 
@@ -186,7 +189,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(director);
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                director);
         code.append(directorAdapter.generateFireFunctionCode());
         if (!(compositeActor instanceof CompiledCompositeActor && ((BooleanToken) ((ProceduralCodeGenerator) getCodeGenerator()).generateEmbeddedCode
                 .getToken()).booleanValue())) {
@@ -214,9 +218,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         //initializeCode.append(super.generateInitializeCode());
 
-
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
 
         // Generate the initialize code by the director adapter.
         initializeCode.append(directorAdapter.generateInitializeCode());
@@ -235,8 +238,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
     @Override
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         directorAdapter.generateModeTransitionCode(code);
     }
 
@@ -252,12 +255,11 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(super.generatePostfireCode());
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         code.append(directorAdapter.generatePostfireCode());
         return processCode(code.toString());
     }
-
 
     /** Generate variable declarations for input ports, output ports and
      *  parameters if necessary, as well as for the director and the
@@ -268,11 +270,12 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
      *   the actor.
      */
     @Override
-    final public String generateVariableDeclaration() throws IllegalActionException {
+    final public String generateVariableDeclaration()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());        
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         code.append(directorAdapter.generateVariableDeclaration());
 
         return processCode(code.toString());
@@ -292,8 +295,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         //                + getComponent().getName()
         //                + "'s variable initialization."));
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         code.append(directorAdapter.generateVariableInitialization());
 
         return processCode(code.toString());
@@ -310,8 +313,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(super.generateWrapupCode());
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         code.append(directorAdapter.generateWrapupCode());
         return processCode(code.toString());
     }
@@ -346,13 +349,14 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
             files.addAll(adapterObject.getHeaderFiles());
         }
 
         // Get headers needed by the director adapter.
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         files.addAll(directorAdapter.getHeaderFiles());
 
         return files;
@@ -374,13 +378,14 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
             includeDirectories.addAll(adapterObject.getIncludeDirectories());
         }
 
         // Get include directories needed by the director adapter.
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         includeDirectories.addAll(directorAdapter.getIncludeDirectories());
 
         return includeDirectories;
@@ -401,13 +406,14 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
             libraries.addAll(adapterObject.getLibraries());
         }
 
         // Get libraries needed by the director adapter.
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         libraries.addAll(directorAdapter.getLibraries());
 
         return libraries;
@@ -427,8 +433,8 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         Set<Parameter> set = new HashSet<Parameter>();
         set.addAll(super.getModifiedVariables());
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         set.addAll(directorAdapter.getModifiedVariables());
         return set;
     }
@@ -467,13 +473,14 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
             sharedCode.addAll(adapterObject.getSharedCode());
         }
 
         // Get shared code used by the director adapter.
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         sharedCode.addAll(directorAdapter.getSharedCode());
 
         return sharedCode;
@@ -506,7 +513,6 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

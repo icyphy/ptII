@@ -156,6 +156,7 @@ public class BooleanSwitch extends TypedAtomicActor {
 
         return newObject;
     }
+
     /** Read a token from each input port.  If the token from the
      *  <i>control</i> input is true, then output the token consumed from the
      *  <i>input</i> port on the <i>trueOutput</i> port,

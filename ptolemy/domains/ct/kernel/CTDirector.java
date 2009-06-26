@@ -261,7 +261,8 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         }
 
         if (attribute == startTime) {
-            _startTimeValue = ((DoubleToken) startTime.getToken()).doubleValue();
+            _startTimeValue = ((DoubleToken) startTime.getToken())
+                    .doubleValue();
         } else if (attribute == stopTime) {
             _stopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
         } else if (attribute == initStepSize) {

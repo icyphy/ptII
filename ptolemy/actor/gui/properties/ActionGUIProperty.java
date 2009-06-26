@@ -50,8 +50,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class ActionGUIProperty extends GUIProperty
-        implements Configurable {
+public abstract class ActionGUIProperty extends GUIProperty implements
+        Configurable {
 
     /** Construct a GUI property with the given name contained by the specified
      *  entity. The container argument must not be null, or a

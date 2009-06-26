@@ -51,7 +51,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PropertyConstraintHelper
 
@@ -100,24 +99,24 @@ public class PropertyConstraintHelper extends PropertyHelper {
         _lattice = solver.getLattice();
     }
 
-//    /**
-//     * Return the helper of the container. If the container is
-//     * null (which means this is the toplevel), returns this.
-//     * @return The helper of the container. If the container is
-//     * null (which means this is the toplevel), returns this.
-//     * @exception IllegalActionException Thrown if an error occurs
-//     * when getting the helper.
-//     */
-//    private PropertyConstraintHelper _getContainerHelper()
-//            throws IllegalActionException {
-//        PropertyConstraintHelper containerHelper = this;
-//
-//        NamedObj container = ((Actor) getComponent()).getContainer();
-//        if (container != null) {
-//            containerHelper = (PropertyConstraintHelper)getSolver().getHelper(container);
-//        }
-//        return containerHelper;
-//    }
+    //    /**
+    //     * Return the helper of the container. If the container is
+    //     * null (which means this is the toplevel), returns this.
+    //     * @return The helper of the container. If the container is
+    //     * null (which means this is the toplevel), returns this.
+    //     * @exception IllegalActionException Thrown if an error occurs
+    //     * when getting the helper.
+    //     */
+    //    private PropertyConstraintHelper _getContainerHelper()
+    //            throws IllegalActionException {
+    //        PropertyConstraintHelper containerHelper = this;
+    //
+    //        NamedObj container = ((Actor) getComponent()).getContainer();
+    //        if (container != null) {
+    //            containerHelper = (PropertyConstraintHelper)getSolver().getHelper(container);
+    //        }
+    //        return containerHelper;
+    //    }
 
     /** Return the constraints of this component.  The constraints is
      *  a list of inequalities. This base class returns a empty list.
@@ -142,8 +141,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @return The list of constrainting terms.
      */
     public List<PropertyTerm> getConstraintingTerms(Object object) {
-        return getSolver().getConstraintManager()
-        .getConstraintingTerms(object);
+        return getSolver().getConstraintManager().getConstraintingTerms(object);
     }
 
     /**
@@ -172,16 +170,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return (PropertyConstraintSolver) _solver;
     }
 
-
     public boolean isAnnotated(Object object) {
-        return ((PropertyConstraintSolver) _solver)
-        .isAnnotatedTerm(object);
+        return ((PropertyConstraintSolver) _solver).isAnnotatedTerm(object);
     }
 
     public boolean isConstraintSource() {
-        boolean constraintSource =
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+        boolean constraintSource = (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET)
+                || (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
         return constraintSource;
     }
 
@@ -254,8 +249,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     public class Inequality extends ptolemy.graph.Inequality {
 
-        public Inequality(PropertyTerm lesserTerm,
-                PropertyTerm greaterTerm, boolean isBase) {
+        public Inequality(PropertyTerm lesserTerm, PropertyTerm greaterTerm,
+                boolean isBase) {
             super(lesserTerm, greaterTerm);
 
             _isBase = isBase;
@@ -321,24 +316,23 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param actorConstraintType
      * @exception IllegalActionException
      */
-    protected void _addDefaultConstraints(
-            ConstraintType actorConstraintType) throws IllegalActionException {
-        if (!_useDefaultConstraints ||
-                !AtomicActor.class.isInstance(getComponent())) {
+    protected void _addDefaultConstraints(ConstraintType actorConstraintType)
+            throws IllegalActionException {
+        if (!_useDefaultConstraints
+                || !AtomicActor.class.isInstance(getComponent())) {
             return;
         }
 
-        boolean constraintSource =
-            (actorConstraintType == ConstraintType.SRC_EQUALS_MEET) ||
-            (actorConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+        boolean constraintSource = (actorConstraintType == ConstraintType.SRC_EQUALS_MEET)
+                || (actorConstraintType == ConstraintType.SRC_EQUALS_GREATER);
 
-        List<Object> portList1 = (constraintSource) ?
-                ((AtomicActor) getComponent()).inputPortList() :
-                ((AtomicActor) getComponent()).outputPortList();
+        List<Object> portList1 = (constraintSource) ? ((AtomicActor) getComponent())
+                .inputPortList()
+                : ((AtomicActor) getComponent()).outputPortList();
 
-        List<Object> portList2 = (constraintSource) ?
-                ((AtomicActor) getComponent()).outputPortList() :
-                ((AtomicActor) getComponent()).inputPortList();
+        List<Object> portList2 = (constraintSource) ? ((AtomicActor) getComponent())
+                .outputPortList()
+                : ((AtomicActor) getComponent()).inputPortList();
 
         Iterator ports = portList1.iterator();
 
@@ -362,8 +356,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
         Iterator helpers = _getSubHelpers().iterator();
 
         while (helpers.hasNext()) {
-            PropertyConstraintHelper helper =
-                (PropertyConstraintHelper) helpers.next();
+            PropertyConstraintHelper helper = (PropertyConstraintHelper) helpers
+                    .next();
             _subHelperConstraints.addAll(helper.constraintList());
         }
     }
@@ -382,13 +376,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
                 // Take care of actors without nodes, e.g. MonitorValue actors without previous execution
                 if (node != null) {
-                    PropertyConstraintASTNodeHelper astHelper =
-                        (PropertyConstraintASTNodeHelper) ((PropertyConstraintSolver)_solver).getHelper(node);
+                    PropertyConstraintASTNodeHelper astHelper = ((PropertyConstraintSolver) _solver)
+                            .getHelper(node);
 
                     List list = new ArrayList();
                     list.add(node);
 
-                    _constraintObject(astHelper.interconnectConstraintType, attribute, list);
+                    _constraintObject(astHelper.interconnectConstraintType,
+                            attribute, list);
                     //setSameAs(attribute, getParseTree(attribute));
                     //setAtLeast(attribute, getParseTree(attribute));
                 }
@@ -406,20 +401,16 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param objectList
      * @exception IllegalActionException
      */
-    protected void _constraintObject(
-        ConstraintType constraintType,
-        Object object, List<Object> objectList)
+    protected void _constraintObject(ConstraintType constraintType,
+            Object object, List<Object> objectList)
             throws IllegalActionException {
 
-        boolean isEquals =
-            (constraintType == ConstraintType.EQUALS) ||
-            (constraintType == ConstraintType.SINK_EQUALS_MEET) ||
-            (constraintType == ConstraintType.SRC_EQUALS_MEET);
+        boolean isEquals = (constraintType == ConstraintType.EQUALS)
+                || (constraintType == ConstraintType.SINK_EQUALS_MEET)
+                || (constraintType == ConstraintType.SRC_EQUALS_MEET);
 
-        boolean useMeetFunction =
-            (constraintType == ConstraintType.SRC_EQUALS_MEET) ||
-            (constraintType == ConstraintType.SINK_EQUALS_MEET);
-
+        boolean useMeetFunction = (constraintType == ConstraintType.SRC_EQUALS_MEET)
+                || (constraintType == ConstraintType.SINK_EQUALS_MEET);
 
         if (constraintType != ConstraintType.NONE) {
             if (!useMeetFunction) {
@@ -443,17 +434,19 @@ public class PropertyConstraintHelper extends PropertyHelper {
                 }
             } else {
                 if (objectList.size() > 0) {
-                    InequalityTerm term2 = new MeetFunction(getSolver(), objectList);
+                    InequalityTerm term2 = new MeetFunction(getSolver(),
+                            objectList);
                     setSameAsByDefault(object, term2);
                 }
             }
         }
     }
 
-    protected void _constraintObject(
-        ConstraintType constraintType, Object object, Set<Object> objectList)
+    protected void _constraintObject(ConstraintType constraintType,
+            Object object, Set<Object> objectList)
             throws IllegalActionException {
-        _constraintObject(constraintType, object, new ArrayList<Object>(objectList));
+        _constraintObject(constraintType, object, new ArrayList<Object>(
+                objectList));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -471,8 +464,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
      */
     protected List _getConstraintedPorts(boolean constraintSource) {
         Actor actor = (Actor) getComponent();
-        return constraintSource ? actor.outputPortList() :
-            actor.inputPortList();
+        return constraintSource ? actor.outputPortList() : actor
+                .inputPortList();
     }
 
     /**
@@ -485,7 +478,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
     protected List<PropertyHelper> _getSubHelpers()
             throws IllegalActionException {
         PropertyConstraintSolver solver = getSolver();
-        if (solver.expressionASTNodeConstraintType.getExpression().equals("NONE")) {
+        if (solver.expressionASTNodeConstraintType.getExpression().equals(
+                "NONE")) {
             return new LinkedList();
         }
         return _getASTNodeHelpers();
@@ -497,7 +491,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param term1 The greater term.
      * @param term2 The lesser term.
      */
-    protected void _setAtLeast(PropertyTerm term1, PropertyTerm term2, boolean isBase) {
+    protected void _setAtLeast(PropertyTerm term1, PropertyTerm term2,
+            boolean isBase) {
         if (term1 != null && term2 != null) {
             _ownConstraints.add(new Inequality(term2, term1, isBase));
         }
@@ -512,7 +507,6 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -523,8 +517,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param constraintType
      * @exception IllegalActionException
      */
-    protected void _setConnectionConstraintType(
-            ConstraintType constraintType,
+    protected void _setConnectionConstraintType(ConstraintType constraintType,
             ConstraintType compositeConstraintType,
             ConstraintType fsmConstraintType,
             ConstraintType expressionASTNodeConstraintType)
@@ -533,20 +526,20 @@ public class PropertyConstraintHelper extends PropertyHelper {
         Iterator helpers = _getSubHelpers().iterator();
 
         while (helpers.hasNext()) {
-            PropertyConstraintHelper helper =
-                (PropertyConstraintHelper) helpers.next();
+            PropertyConstraintHelper helper = (PropertyConstraintHelper) helpers
+                    .next();
 
-            helper._setConnectionConstraintType(
-                    constraintType, compositeConstraintType,
-                    fsmConstraintType, expressionASTNodeConstraintType);
+            helper._setConnectionConstraintType(constraintType,
+                    compositeConstraintType, fsmConstraintType,
+                    expressionASTNodeConstraintType);
         }
 
         if (getComponent() instanceof ASTPtRootNode) {
 
             interconnectConstraintType = expressionASTNodeConstraintType;
 
-        } else if (getComponent() instanceof ModalModel ||
-                getComponent() instanceof FSMActor) {
+        } else if (getComponent() instanceof ModalModel
+                || getComponent() instanceof FSMActor) {
 
             interconnectConstraintType = fsmConstraintType;
 
@@ -583,7 +576,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
         _constraints.removeAll(removeConstraints);
     }
-*/
+    */
     protected void _setEffectiveTerms() {
         // do nothing in here, overwrite use-case specific!
 
@@ -597,18 +590,17 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param port The given port.
      * @return The list of constrainting ports.
      */
-    protected static List _getConstraintingPorts(
-            boolean constraintSource, TypedIOPort port) {
+    protected static List _getConstraintingPorts(boolean constraintSource,
+            TypedIOPort port) {
 
-        return constraintSource ? _getSinkPortList(port) :
-            _getSourcePortList(port);
+        return constraintSource ? _getSinkPortList(port)
+                : _getSourcePortList(port);
     }
 
-    protected static List<Inequality> _union(
-            List<Inequality> list1, List<Inequality> list2) {
+    protected static List<Inequality> _union(List<Inequality> list1,
+            List<Inequality> list2) {
 
-        List<Inequality> result =
-            new ArrayList<Inequality>(list1);
+        List<Inequality> result = new ArrayList<Inequality>(list1);
 
         result.addAll(list2);
         return result;
@@ -627,7 +619,6 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /** Indicate whether this helper uses the default actor constraints. */
     protected boolean _useDefaultConstraints;
-
 
     /**
      *

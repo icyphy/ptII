@@ -36,7 +36,8 @@ import ptolemy.kernel.util.StringAttribute;
 
 public class LogicalAND_Forward_CS extends PropertyConstraintSolver {
 
-    public LogicalAND_Forward_CS(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public LogicalAND_Forward_CS(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         propertyLattice.setExpression("logicalAND");
         propertyLattice.setVisibility(Settable.NOT_EDITABLE);
@@ -54,19 +55,25 @@ public class LogicalAND_Forward_CS extends PropertyConstraintSolver {
         fsmConstraintType.setVisibility(Settable.NOT_EDITABLE);
 
         // Add default highlight colors
-        StringAttribute highlightUnknownProperty = new StringAttribute(_momlHandler, "unknown");
+        StringAttribute highlightUnknownProperty = new StringAttribute(
+                _momlHandler, "unknown");
         highlightUnknownProperty.setExpression("Unknown");
-        ColorAttribute highlightUnknownColor = new ColorAttribute(_momlHandler, "unknownHighlightColor");
+        ColorAttribute highlightUnknownColor = new ColorAttribute(_momlHandler,
+                "unknownHighlightColor");
         highlightUnknownColor.setExpression("{0.0,0.0,0.0,1.0}");
 
-        StringAttribute highlightTrueProperty = new StringAttribute(_momlHandler, "true");
+        StringAttribute highlightTrueProperty = new StringAttribute(
+                _momlHandler, "true");
         highlightTrueProperty.setExpression("True");
-        ColorAttribute highlightTrueColor = new ColorAttribute(_momlHandler, "trueHighlightColor");
+        ColorAttribute highlightTrueColor = new ColorAttribute(_momlHandler,
+                "trueHighlightColor");
         highlightTrueColor.setExpression("{0.0,0.8,0.2,1.0}");
 
-        StringAttribute highlightFalseProperty = new StringAttribute(_momlHandler, "false");
+        StringAttribute highlightFalseProperty = new StringAttribute(
+                _momlHandler, "false");
         highlightFalseProperty.setExpression("False");
-        ColorAttribute highlightFalseColor = new ColorAttribute(_momlHandler, "falseHighlightColor");
+        ColorAttribute highlightFalseColor = new ColorAttribute(_momlHandler,
+                "falseHighlightColor");
         highlightFalseColor.setExpression("{0.0,0.2,1.0,1.0}");
     }
 

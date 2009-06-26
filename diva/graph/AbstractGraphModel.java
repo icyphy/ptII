@@ -100,8 +100,6 @@ public abstract class AbstractGraphModel implements GraphModel {
         }
     }
 
-
-
     /**
      * Remove the given listener from this graph model.
      * The listener will no longer be notified of changes
@@ -132,7 +130,7 @@ public abstract class AbstractGraphModel implements GraphModel {
      * @param e The GraphEvent to be processed.
      * @return true when the GraphEvent has been added to the queue.
      */
-    private  synchronized boolean _addEvent(GraphEvent e) {
+    private synchronized boolean _addEvent(GraphEvent e) {
         // If the structural event queue is not empty we can
         // ignore this change.
         if (structuralChangeEvents.isEmpty()) {

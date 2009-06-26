@@ -27,11 +27,11 @@
  */
 package ptolemy.data.properties;
 
+public class PropertyFailedRegressionTestException extends
+        PropertyResolutionException {
 
-
-public class PropertyFailedRegressionTestException extends PropertyResolutionException {
-
-    public PropertyFailedRegressionTestException(PropertySolver solver, String detail) {
+    public PropertyFailedRegressionTestException(PropertySolver solver,
+            String detail) {
         super(solver, detail);
     }
 

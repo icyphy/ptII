@@ -55,40 +55,39 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         super(solver, node, false);
     }
 
-   public List<Inequality> constraintList() throws IllegalActionException {
-       ptolemy.data.expr.ASTPtLeafNode node =
-           (ptolemy.data.expr.ASTPtLeafNode) getComponent();
+    public List<Inequality> constraintList() throws IllegalActionException {
+        ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) getComponent();
 
-       Lattice lattice = (Lattice) getSolver().getLattice();
+        Lattice lattice = (Lattice) getSolver().getLattice();
 
-       String name = node.getName();
+        String name = node.getName();
 
-       if (name != null) {
-           if (_doubleleafes.contains(name)) {
-               setEquals(node, lattice.getElement("DOUBLE"));
-           } else if (Constants.get(name) != null) {
-               setEquals(node, lattice.convertJavaToCtype(Constants.get(name).getType(), Constants.get(name)));
-//FIXME: Do we need to set up default constraints for inputs here?
-//           } else {
-//               _useDefaultConstraints = true;
-           }
-       } else if (node.isConstant()) {
-           setEquals(node, lattice.convertJavaToCtype(node.getToken().getType(), node.getToken()));
-//           setEquals(node, lattice.UNKNOWN);
-       }
+        if (name != null) {
+            if (_doubleleafes.contains(name)) {
+                setEquals(node, lattice.getElement("DOUBLE"));
+            } else if (Constants.get(name) != null) {
+                setEquals(node, lattice.convertJavaToCtype(Constants.get(name)
+                        .getType(), Constants.get(name)));
+                //FIXME: Do we need to set up default constraints for inputs here?
+                //           } else {
+                //               _useDefaultConstraints = true;
+            }
+        } else if (node.isConstant()) {
+            setEquals(node, lattice.convertJavaToCtype(node.getToken()
+                    .getType(), node.getToken()));
+            //           setEquals(node, lattice.UNKNOWN);
+        }
 
-       return super.constraintList();
-   }
+        return super.constraintList();
+    }
 
-   private static List _doubleleafes = Arrays.asList(
-           new String[]{ "PI"
-   });
+    private static List _doubleleafes = Arrays.asList(new String[] { "PI" });
 
-   public boolean isEffective() {
-       return true;
-   }
+    public boolean isEffective() {
+        return true;
+    }
 
-   public void setEffective(boolean isEffective) {
+    public void setEffective(boolean isEffective) {
 
-   }
+    }
 }

@@ -68,8 +68,9 @@ public class Ramp extends JavaCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(codeGenType(actor.output.getType()));
 
-        _codeStream.append(_eol + _codeGenerator.comment(
-                "initialize " + generateSimpleName(getComponent())));
+        _codeStream.append(_eol
+                + _codeGenerator.comment("initialize "
+                        + generateSimpleName(getComponent())));
         if (actor.output.getType() == BaseType.STRING) {
             _codeStream.appendCodeBlock("StringInitBlock");
         } else {

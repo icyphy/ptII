@@ -29,7 +29,6 @@
 //// DB
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -106,11 +105,13 @@ public class DB extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public DB(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public DB(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        inputIsPower = new Parameter(this, "inputIsPower", new BooleanToken(false));
+        inputIsPower = new Parameter(this, "inputIsPower", new BooleanToken(
+                false));
         inputIsPower.setTypeEquals(BaseType.BOOLEAN);
         min = new Parameter(this, "min", new DoubleToken(-100.0));
         min.setTypeEquals(BaseType.DOUBLE);
@@ -123,10 +124,11 @@ public class DB extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        DB newObject = (DB)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DB newObject = (DB) super.clone(workspace);
         newObject.$ASSIGN$_resultArray(new DoubleToken[_resultArray.length]);
-        System.arraycopy($BACKUP$_resultArray(), 0, newObject.$BACKUP$_resultArray(), 0, _resultArray.length);
+        System.arraycopy($BACKUP$_resultArray(), 0, newObject
+                .$BACKUP$_resultArray(), 0, _resultArray.length);
         return newObject;
     }
 
@@ -136,12 +138,12 @@ public class DB extends Transformer implements Rollbackable {
      * do nothing.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
+            DoubleToken in = (DoubleToken) input.get(0);
             double number = in.doubleValue();
-            double minValue = ((DoubleToken)min.getToken()).doubleValue();
+            double minValue = ((DoubleToken) min.getToken()).doubleValue();
             output.send(0, _doFunction(number, minValue));
         }
     }
@@ -163,15 +165,15 @@ public class DB extends Transformer implements Rollbackable {
      * @exception IllegalActionException If iterating cannot be
      * performed.
      */
-    public int iterate(int count) throws IllegalActionException  {
+    public int iterate(int count) throws IllegalActionException {
         if (count > _resultArray.length) {
             $ASSIGN$_resultArray(new DoubleToken[count]);
         }
         if (input.hasToken(0, count)) {
-            double minValue = ((DoubleToken)min.getToken()).doubleValue();
+            double minValue = ((DoubleToken) min.getToken()).doubleValue();
             Token[] inArray = input.get(0, count);
             for (int i = 0; i < count; i++) {
-                double input = ((DoubleToken)(inArray[i])).doubleValue();
+                double input = ((DoubleToken) (inArray[i])).doubleValue();
                 $ASSIGN$_resultArray(i, _doFunction(input, minValue));
             }
             output.send(0, $BACKUP$_resultArray(), count);
@@ -185,13 +187,14 @@ public class DB extends Transformer implements Rollbackable {
      * Return the specified number in decibels,
      * but no less than <i>minValue</i>.
      */
-    private DoubleToken _doFunction(double number, double minValue) throws IllegalActionException  {
+    private DoubleToken _doFunction(double number, double minValue)
+            throws IllegalActionException {
         double outNumber;
         if (number <= 0.0) {
             outNumber = minValue;
         } else {
             outNumber = ptolemy.math.SignalProcessing.toDecibels(number);
-            if (((BooleanToken)inputIsPower.getToken()).booleanValue()) {
+            if (((BooleanToken) inputIsPower.getToken()).booleanValue()) {
                 outNumber /= 2.0;
             }
             if (outNumber < minValue) {
@@ -203,34 +206,39 @@ public class DB extends Transformer implements Rollbackable {
 
     private final DoubleToken[] $ASSIGN$_resultArray(DoubleToken[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_resultArray.add(null, _resultArray, $CHECKPOINT.getTimestamp());
+            $RECORD$_resultArray.add(null, _resultArray, $CHECKPOINT
+                    .getTimestamp());
         }
         return _resultArray = newValue;
     }
 
-    private final DoubleToken $ASSIGN$_resultArray(int index0, DoubleToken newValue) {
+    private final DoubleToken $ASSIGN$_resultArray(int index0,
+            DoubleToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_resultArray.add(new int[] {
-                    index0
-                }, _resultArray[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_resultArray.add(new int[] { index0 },
+                    _resultArray[index0], $CHECKPOINT.getTimestamp());
         }
         return _resultArray[index0] = newValue;
     }
 
     private final DoubleToken[] $BACKUP$_resultArray() {
-        $RECORD$_resultArray.backup(null, _resultArray, $CHECKPOINT.getTimestamp());
+        $RECORD$_resultArray.backup(null, _resultArray, $CHECKPOINT
+                .getTimestamp());
         return _resultArray;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _resultArray = (DoubleToken[])$RECORD$_resultArray.restore(_resultArray, timestamp, trim);
+        _resultArray = (DoubleToken[]) $RECORD$_resultArray.restore(
+                _resultArray, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -258,9 +266,6 @@ public class DB extends Transformer implements Rollbackable {
 
     private transient FieldRecord $RECORD$_resultArray = new FieldRecord(1);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_resultArray
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_resultArray };
 
 }
-

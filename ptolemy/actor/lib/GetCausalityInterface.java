@@ -44,7 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GetCausalityInterface
 
@@ -108,13 +107,15 @@ public class GetCausalityInterface extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Actor container = (Actor)getContainer();
+        Actor container = (Actor) getContainer();
         Actor target = container;
         String targetName = actorName.stringValue();
         if (targetName != null && !targetName.trim().equals("")) {
-            target = (Actor)((CompositeEntity)container).getEntity(targetName);
+            target = (Actor) ((CompositeEntity) container)
+                    .getEntity(targetName);
             if (target == null) {
-                throw new IllegalActionException(this, "No actor named " + targetName);
+                throw new IllegalActionException(this, "No actor named "
+                        + targetName);
             }
         }
         CausalityInterface causalityInterface = target.getCausalityInterface();
@@ -123,7 +124,8 @@ public class GetCausalityInterface extends Source {
         StringBuffer dependentsResult = new StringBuffer();
         List<IOPort> inputs = target.inputPortList();
         for (IOPort input : inputs) {
-            Collection<IOPort> outputs = causalityInterface.dependentPorts(input);
+            Collection<IOPort> outputs = causalityInterface
+                    .dependentPorts(input);
             if (outputs.size() > 0) {
                 dependentsResult.append(input.getName());
                 dependentsResult.append(" has output port dependencies:\n");
@@ -142,7 +144,8 @@ public class GetCausalityInterface extends Source {
         }
         List<IOPort> outputs = target.outputPortList();
         for (IOPort output : outputs) {
-            Collection<IOPort> ports = causalityInterface.dependentPorts(output);
+            Collection<IOPort> ports = causalityInterface
+                    .dependentPorts(output);
             if (ports.size() > 0) {
                 dependentsResult.append(output.getName());
                 dependentsResult.append(" has input port dependencies:\n");
@@ -163,7 +166,8 @@ public class GetCausalityInterface extends Source {
 
         StringBuffer equivalencesResult = new StringBuffer();
         for (IOPort input : inputs) {
-            Collection<IOPort> equivalents = causalityInterface.equivalentPorts(input);
+            Collection<IOPort> equivalents = causalityInterface
+                    .equivalentPorts(input);
             if (equivalents.size() > 0) {
                 equivalencesResult.append(input.getName());
                 equivalencesResult.append(" has equivalent input ports:\n");
@@ -181,5 +185,5 @@ public class GetCausalityInterface extends Source {
             }
         }
         equivalences.send(0, new StringToken(equivalencesResult.toString()));
-}
+    }
 }

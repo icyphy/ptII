@@ -55,7 +55,8 @@ Code generator helper for IOPort.
 @Pt.AcceptedRating Red (mankit)
  */
 
-public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGenerator {
+public class IOPort extends ptolemy.codegen.c.actor.IOPort implements
+        PortCodeGenerator {
 
     /** Construct the code generator helper associated
      *  with the given IOPort.
@@ -69,15 +70,17 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
     ////                           public methods                    ////
 
     public String generateCodeForSend(String channel, String dataToken)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ptolemy.codegen.actor.Director directorHelper = _getDirectorHelper();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
 
-        return directorHelper.generateCodeForSend(port, channelNumber, dataToken);
+        return directorHelper.generateCodeForSend(port, channelNumber,
+                dataToken);
     }
 
-    public String generateCodeForGet(String channel) throws IllegalActionException {
+    public String generateCodeForGet(String channel)
+            throws IllegalActionException {
         ptolemy.codegen.actor.Director directorHelper = _getDirectorHelper();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
@@ -88,12 +91,11 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorHelper helper = (CodeGeneratorHelper)
-        _getHelper(getComponent().getContainer());
+        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(getComponent()
+                .getContainer());
 
         return helper.processCode(code.toString());
     }
-
 
     public String generateOffset(String offset, int channel, boolean isWrite,
             Director director) throws IllegalActionException {
@@ -104,11 +106,10 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         if (_isPthread() && receiver instanceof PNQueueReceiver) {
             String result;
             if (offset.length() == 0 || offset.equals("0")) {
-                result = (isWrite) ?
-                        "$getWriteOffset(" : "$getReadOffset(";
+                result = (isWrite) ? "$getWriteOffset(" : "$getReadOffset(";
             } else {
-                result = (isWrite) ?
-                        "$getAdvancedWriteOffset(" : "$getAdvancedReadOffset(";
+                result = (isWrite) ? "$getAdvancedWriteOffset("
+                        : "$getAdvancedReadOffset(";
                 result += offset + ", ";
             }
 
@@ -137,7 +138,6 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         return code.toString();
     }
 
-
     public ptolemy.actor.Director getDirector() {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         Actor actor = (Actor) port.getContainer();
@@ -160,15 +160,14 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         return director;
     }
 
-
     public String initializeOffsets() throws IllegalActionException {
         if (_isPthread()) {
             return "";
         }
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        CodeGeneratorHelper actorHelper =
-            (CodeGeneratorHelper) _getHelper(port.getContainer());
+        CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
+                .getContainer());
 
         StringBuffer code = new StringBuffer();
 
@@ -177,30 +176,29 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
             if (readOffset instanceof Integer) {
                 actorHelper.setReadOffset(port, i, Integer.valueOf(0));
             } else {
-                code.append(((String) readOffset)
-                        + " = 0;" + _eol);
+                code.append(((String) readOffset) + " = 0;" + _eol);
             }
             Object writeOffset = actorHelper.getWriteOffset(port, i);
             if (writeOffset instanceof Integer) {
                 actorHelper.setWriteOffset(port, i, Integer.valueOf(0));
             } else {
-                code.append(((String) writeOffset)
-                        + " = 0;" + _eol);
+                code.append(((String) writeOffset) + " = 0;" + _eol);
             }
         }
         return code.toString();
     }
 
-
     // Update the write offset of the [multiple] connected ports.
-    public String updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException {
+    public String updateConnectedPortsOffset(int rate, Director director)
+            throws IllegalActionException {
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         StringBuffer code = new StringBuffer();
-        code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
-                                               + CodeGeneratorHelper.generateName(port)));
+        code.append(getCodeGenerator().comment(
+                _eol + "....Begin updateConnectedPortsOffset...."
+                        + CodeGeneratorHelper.generateName(port)));
 
         if (rate == 0) {
             return "";
@@ -230,16 +228,20 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
                 Object offsetObject = helper.getWriteOffset(sinkPort,
                         sinkChannelNumber);
 
-                Receiver receiver = _getReceiver(
-                        offsetObject.toString(), sinkChannelNumber, sinkPort);
+                Receiver receiver = _getReceiver(offsetObject.toString(),
+                        sinkChannelNumber, sinkPort);
 
-                if (_isPthread() && ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
-                    code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
+                if (_isPthread()
+                        && ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                .isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
+                    code.append(_generateMPISendCode(j, rate, sinkPort,
+                            sinkChannelNumber, director));
 
                 } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
                     // PNReceiver.
-                    code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
+                    code.append(_updatePNOffset(rate, sinkPort,
+                            sinkChannelNumber, director, true));
                 } else {
 
                     if (offsetObject instanceof Integer) {
@@ -249,8 +251,8 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
                         if (bufferSize != 0) {
                             offset = (offset + rate) % bufferSize;
                         }
-                        helper.setWriteOffset(sinkPort, sinkChannelNumber, Integer
-                                .valueOf(offset));
+                        helper.setWriteOffset(sinkPort, sinkChannelNumber,
+                                Integer.valueOf(offset));
                     } else { // If offset is a variable.
                         String offsetVariable = (String) helper.getWriteOffset(
                                 sinkPort, sinkChannelNumber);
@@ -259,11 +261,14 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
                             int modulo = helper.getBufferSize(sinkPort,
                                     sinkChannelNumber) - 1;
                             code.append(offsetVariable + " = ("
-                                    + offsetVariable + " + " + rate + ")&" + modulo
-                                    + ";" + _eol);
+                                    + offsetVariable + " + " + rate + ")&"
+                                    + modulo + ";" + _eol);
                         } else {
-                            code.append(offsetVariable + " = ("
-                                    + offsetVariable + " + " + rate
+                            code.append(offsetVariable
+                                    + " = ("
+                                    + offsetVariable
+                                    + " + "
+                                    + rate
                                     + ") % "
                                     + helper.getBufferSize(sinkPort,
                                             sinkChannelNumber) + ";" + _eol);
@@ -272,22 +277,22 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
                 }
             }
         }
-        code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
-                                               + CodeGeneratorHelper.generateName(port)));
+        code.append(getCodeGenerator().comment(
+                _eol + "....End updateConnectedPortsOffset...."
+                        + CodeGeneratorHelper.generateName(port)));
         return code.toString();
     }
 
-
     // Updating the read offset.
     public String updateOffset(int rate, Director directorHelper)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
-        ptolemy.actor.IOPort port =
-            (ptolemy.actor.IOPort) getComponent();
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...."
-                                                 + CodeGeneratorHelper.generateName(port));
+        String code = getCodeGenerator().comment(
+                _eol + "....Begin updateOffset...."
+                        + CodeGeneratorHelper.generateName(port));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -297,7 +302,8 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         //        }
 
         for (int i = 0; i < port.getWidth(); i++) {
-            if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isMpiReceiveBuffer(port, i)) {
+            if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                    .isMpiReceiveBuffer(port, i)) {
                 // do nothing.
             } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
@@ -305,19 +311,22 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
                 //PNDirector pnDirector = (PNDirector)//directorHelper;
                 _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
 
-                List<Channel> channels = PNDirector.getReferenceChannels(port, i);
+                List<Channel> channels = PNDirector.getReferenceChannels(port,
+                        i);
 
                 for (Channel channel : channels) {
                     code += _updatePNOffset(rate, channel.port,
                             channel.channelNumber, directorHelper, false);
                 }
-                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-                                                   + CodeGeneratorHelper.generateName(port));
+                code += getCodeGenerator().comment(
+                        _eol + "....End updateOffset (PN)...."
+                                + CodeGeneratorHelper.generateName(port));
 
             } else {
                 code += _updateOffset(i, rate);
-                code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
-                                                   + CodeGeneratorHelper.generateName(port));
+                code += getCodeGenerator().comment(
+                        _eol + "\n....End updateOffset...."
+                                + CodeGeneratorHelper.generateName(port));
             }
         }
         return code;
@@ -326,9 +335,9 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private String _generateMPISendCode(int channelNumber,
-            int rate, ptolemy.actor.IOPort sinkPort,
-            int sinkChannelNumber, Director director) throws IllegalActionException {
+    private String _generateMPISendCode(int channelNumber, int rate,
+            ptolemy.actor.IOPort sinkPort, int sinkChannelNumber,
+            Director director) throws IllegalActionException {
         ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
 
         StringBuffer code = new StringBuffer();
@@ -337,28 +346,51 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
 
         for (int i = 0; i < rate; i++) {
 
-            int sinkRank = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getRankNumber((Actor) sinkPort.getContainer());
-            int sourceRank = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getRankNumber((Actor) port.getContainer());
+            int sinkRank = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                    .getRankNumber((Actor) sinkPort.getContainer());
+            int sourceRank = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                    .getRankNumber((Actor) port.getContainer());
 
             code.append("// Initialize send tag value." + _eol);
-            code.append("static int " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + " = " +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
+            code
+                    .append("static int "
+                            + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                    .getSendTag(sinkPort, sinkChannelNumber)
+                            + " = "
+                            + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                    .getMpiReceiveBufferId(sinkPort,
+                                            sinkChannelNumber) + ";" + _eol);
 
             if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector._DEBUG) {
-                code.append("printf(\"" + generateSimpleName(port.getContainer()) + "[" + sourceRank + "] sending msg <" +
-                        sinkRank + ", %d> for " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getBufferLabel(port, channelNumber) +
-                        "\\n\", " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
+                code
+                        .append("printf(\""
+                                + generateSimpleName(port.getContainer())
+                                + "["
+                                + sourceRank
+                                + "] sending msg <"
+                                + sinkRank
+                                + ", %d> for "
+                                + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                        .getBufferLabel(port, channelNumber)
+                                + "\\n\", "
+                                + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                        .getSendTag(sinkPort, sinkChannelNumber)
+                                + ");" + _eol);
             }
 
             code.append("MPI_Isend(&");
 
             String[] channelAndOffset = new String[2];
             channelAndOffset[0] = "" + sinkChannelNumber;
-            channelAndOffset[1] = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" +
-            ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current]";
+            channelAndOffset[1] = ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                    .generateFreeSlots(sinkPort, sinkChannelNumber)
+                    + "["
+                    + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                            .generatePortHeader(sinkPort, sinkChannelNumber)
+                    + ".current]";
 
-            String buffer =
-                CodeGeneratorHelper.generatePortReference(sinkPort, channelAndOffset , false);
+            String buffer = CodeGeneratorHelper.generatePortReference(sinkPort,
+                    channelAndOffset, false);
 
             code.append(buffer);
 
@@ -376,31 +408,57 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
 
             code.append(", " + sinkRank);
 
-            code.append(", " + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) +
-                    ", " + "comm, &" +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateMpiRequest(sinkPort, sinkChannelNumber) + "[" +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" +
-                    ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(sinkPort, sinkChannelNumber) +
-                    ".current" + (i == 0 ? "" : i) + "]]" + ");" + _eol);
+            code
+                    .append(", "
+                            + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                    .getSendTag(sinkPort, sinkChannelNumber)
+                            + ", "
+                            + "comm, &"
+                            + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                    .generateMpiRequest(sinkPort,
+                                            sinkChannelNumber)
+                            + "["
+                            + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                    .generateFreeSlots(sinkPort,
+                                            sinkChannelNumber)
+                            + "["
+                            + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                    .generatePortHeader(sinkPort,
+                                            sinkChannelNumber) + ".current"
+                            + (i == 0 ? "" : i) + "]]" + ");" + _eol);
 
             if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector._DEBUG) {
-                code.append("printf(\"" + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getBufferLabel(port, channelNumber) +
-                        ", rank[" + sourceRank + "], sended tag[%d]\\n\", " +
-                        ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
+                code
+                        .append("printf(\""
+                                + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                        .getBufferLabel(port, channelNumber)
+                                + ", rank["
+                                + sourceRank
+                                + "], sended tag[%d]\\n\", "
+                                + ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                                        .getSendTag(sinkPort, sinkChannelNumber)
+                                + ");" + _eol);
             }
         }
 
         // Update the Offset.
-        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.generatePortHeader(sinkPort, sinkChannelNumber) +
-                ".current += " + rate + ";" + _eol);
+        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                .generatePortHeader(sinkPort, sinkChannelNumber)
+                + ".current += " + rate + ";" + _eol);
 
         ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector directorHelper = (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector) _getHelper(director);
-        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + " += " +
-                directorHelper.getNumberOfMpiConnections(true) + ";" + _eol);
+        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                .getSendTag(sinkPort, sinkChannelNumber)
+                + " += "
+                + directorHelper.getNumberOfMpiConnections(true)
+                + ";"
+                + _eol);
 
-        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.getSendTag(sinkPort, sinkChannelNumber) + " &= 32767; // 2^15 - 1 which is the max tag value." + _eol);
+        code.append(ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector
+                .getSendTag(sinkPort, sinkChannelNumber)
+                + " &= 32767; // 2^15 - 1 which is the max tag value." + _eol);
 
-        return  code + _eol;
+        return code + _eol;
 
     }
 
@@ -414,8 +472,8 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
      * @exception IllegalActionException If there is problems getting the port
      *  buffer size or the offset in the channel and offset map.
      */
-    protected String _generateOffset(String offsetString, int channel, boolean isWrite)
-    throws IllegalActionException {
+    protected String _generateOffset(String offsetString, int channel,
+            boolean isWrite) throws IllegalActionException {
 
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
@@ -425,7 +483,6 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         //if (ptolemy.codegen.c.targets.mpi.domains.pn.kernel.PNDirector.isLocalBuffer(port, channel)) {
         //    int i = 1;
         //}
-
 
         // When dynamic references are allowed, any input ports require
         // offsets.
@@ -456,7 +513,7 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
             if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                 int offset = ((Integer) offsetObject).intValue()
-                + (Integer.valueOf(offsetString)).intValue();
+                        + (Integer.valueOf(offsetString)).intValue();
 
                 offset %= getBufferSize(port, channel);
                 temp = Integer.toString(offset);
@@ -484,11 +541,11 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
                 if (padBuffers) {
                     int modulo = getBufferSize(port, channel) - 1;
                     temp = "(" + offsetObject.toString() + " + " + offsetString
-                    + ")&" + modulo;
+                            + ")&" + modulo;
                 } else {
                     int modulo = getBufferSize(port, channel);
                     temp = "(" + offsetObject.toString() + " + " + offsetString
-                    + ")%" + modulo;
+                            + ")%" + modulo;
                 }
             }
 
@@ -516,21 +573,21 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
                     result = "[" + offsetObject + "&" + modulo + "]";
                 } else {
                     result = "[" + offsetObject + "%"
-                    + getBufferSize(port, channel) + "]";
+                            + getBufferSize(port, channel) + "]";
                 }
             }
         }
         return result;
     }
 
-
-    private ptolemy.codegen.actor.Director _getDirectorHelper() throws IllegalActionException {
+    private ptolemy.codegen.actor.Director _getDirectorHelper()
+            throws IllegalActionException {
         Director director = getDirector();
         return (ptolemy.codegen.actor.Director) _getHelper(director);
     }
 
-
-    private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
+    private Receiver _getReceiver(String offset, int channel,
+            ptolemy.actor.IOPort port) {
         Receiver[][] receivers = port.getReceivers();
 
         int staticOffset = -1;
@@ -556,7 +613,6 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         return receiver;
     }
 
-
     /**
      * Return true if the given string can be parse as an integer; otherwise,
      * return false.
@@ -573,62 +629,59 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         }
     }
 
-
     private boolean _isPthread() {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        boolean isPN = (((Actor) port.getContainer()).getDirector()
-                instanceof ptolemy.domains.pn.kernel.PNDirector);
+        boolean isPN = (((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.pn.kernel.PNDirector);
 
-        return isPN &&
-        (getCodeGenerator().target.getExpression().equals("default") ||
-         getCodeGenerator().target.getExpression().equals("posix"));
+        return isPN
+                && (getCodeGenerator().target.getExpression().equals("default") || getCodeGenerator().target
+                        .getExpression().equals("posix"));
     }
 
-
-    protected String _updateOffset(int channel, int rate) throws IllegalActionException {
+    protected String _updateOffset(int channel, int rate)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
 
-        ptolemy.actor.IOPort port =
-            (ptolemy.actor.IOPort) getComponent();
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
 
         // Update the offset for each channel.
         if (helper.getReadOffset(port, channel) instanceof Integer) {
             int offset = ((Integer) helper.getReadOffset(port, channel))
-            .intValue();
+                    .intValue();
             if (helper.getBufferSize(port, channel) != 0) {
                 offset = (offset + rate) % helper.getBufferSize(port, channel);
             }
             helper.setReadOffset(port, channel, Integer.valueOf(offset));
         } else { // If offset is a variable.
-            String offsetVariable = (String) helper.getReadOffset(port, channel);
+            String offsetVariable = (String) helper
+                    .getReadOffset(port, channel);
             if (padBuffers) {
                 int modulo = helper.getBufferSize(port, channel) - 1;
-                code.append(offsetVariable + " = (" + offsetVariable +
-                        " + " + rate + ")&" + modulo + ";" + _eol);
+                code.append(offsetVariable + " = (" + offsetVariable + " + "
+                        + rate + ")&" + modulo + ";" + _eol);
             } else {
-                code.append(offsetVariable + " = (" + offsetVariable +
-                        " + " + rate + ") % " +
-                        helper.getBufferSize(port, channel) + ";" + _eol);
+                code.append(offsetVariable + " = (" + offsetVariable + " + "
+                        + rate + ") % " + helper.getBufferSize(port, channel)
+                        + ";" + _eol);
             }
         }
         return code.toString();
 
     }
 
-
     private String _updatePNOffset(int rate, ptolemy.actor.IOPort port,
             int channelNumber, Director directorHelper, boolean isWrite)
-    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: this is kind of hacky.
         PNDirector pnDirector = (PNDirector) //directorHelper;
         _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
 
-        String incrementFunction = (isWrite) ?
-                "$incrementWriteOffset" : "$incrementReadOffset";
+        String incrementFunction = (isWrite) ? "$incrementWriteOffset"
+                : "$incrementReadOffset";
 
         if (rate <= 0) {
             assert false;
@@ -645,9 +698,9 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
         // FIXME: generate the right buffer reference from
         // both input and output ports.
 
-        return incrementFunction + "(" + incrementArg + "&" +
-        PNDirector.generatePortHeader(port, channelNumber) + ", &" +
-        pnDirector.generateDirectorHeader() + ");" + _eol;
+        return incrementFunction + "(" + incrementArg + "&"
+                + PNDirector.generatePortHeader(port, channelNumber) + ", &"
+                + pnDirector.generateDirectorHeader() + ");" + _eol;
     }
 
 }

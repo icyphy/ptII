@@ -185,9 +185,11 @@ public class LayoutConstraintsManager {
     }
 
     private ContainerLayout getLayout(String name) {
-        for (int i = 0; i < layouts.size(); i++)
-            if (layouts.get(i).getName().equals(name))
+        for (int i = 0; i < layouts.size(); i++) {
+            if (layouts.get(i).getName().equals(name)) {
                 return layouts.get(i);
+            }
+        }
 
         return null;
     }
@@ -291,8 +293,9 @@ public class LayoutConstraintsManager {
                                 + componentName + "\">\n");
                         for (String propertyName : customProperties.keySet()) {
 
-                            if (isTextComponent && propertyName.equals("text"))
+                            if (isTextComponent && propertyName.equals("text")) {
                                 break;
+                            }
 
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             XMLEncoder xmlEncoder = new XMLEncoder(stream);
@@ -339,8 +342,9 @@ public class LayoutConstraintsManager {
 
     public static boolean isTextComponent(Component component) {
         for (Class clazz : textComponents) {
-            if (clazz.isAssignableFrom(component.getClass()))
+            if (clazz.isAssignableFrom(component.getClass())) {
                 return true;
+            }
         }
         return false;
     }
@@ -387,25 +391,27 @@ public class LayoutConstraintsManager {
     public static String getAlignment(CellConstraints.Alignment alignment) {
         String value = null;
 
-        if (alignment == CellConstraints.DEFAULT)
+        if (alignment == CellConstraints.DEFAULT) {
             value = DEFAULT;
-        else if (alignment == CellConstraints.FILL)
+        } else if (alignment == CellConstraints.FILL) {
             value = FILL;
-        else if (alignment == CellConstraints.CENTER)
+        } else if (alignment == CellConstraints.CENTER) {
             value = CENTER;
-        else if (alignment == CellConstraints.LEFT)
+        } else if (alignment == CellConstraints.LEFT) {
             value = LEFT;
-        else if (alignment == CellConstraints.RIGHT)
+        } else if (alignment == CellConstraints.RIGHT) {
             value = RIGHT;
-        else if (alignment == CellConstraints.TOP)
+        } else if (alignment == CellConstraints.TOP) {
             value = TOP;
-        else if (alignment == CellConstraints.BOTTOM)
+        } else if (alignment == CellConstraints.BOTTOM) {
             value = BOTTOM;
+        }
 
-        if (value == null)
+        if (value == null) {
             throw new RuntimeException("Unknown alignment type");
-        else
+        } else {
             return value;
+        }
     }
 
     /**
@@ -414,22 +420,23 @@ public class LayoutConstraintsManager {
     public static CellConstraints.Alignment getAlignment(String value) {
         CellConstraints.Alignment alignment = null;
 
-        if (value.equalsIgnoreCase(DEFAULT))
+        if (value.equalsIgnoreCase(DEFAULT)) {
             alignment = CellConstraints.DEFAULT;
-        else if (value.equalsIgnoreCase(FILL))
+        } else if (value.equalsIgnoreCase(FILL)) {
             alignment = CellConstraints.FILL;
-        else if (value.equalsIgnoreCase(CENTER))
+        } else if (value.equalsIgnoreCase(CENTER)) {
             alignment = CellConstraints.CENTER;
-        else if (value.equalsIgnoreCase(LEFT))
+        } else if (value.equalsIgnoreCase(LEFT)) {
             alignment = CellConstraints.LEFT;
-        else if (value.equalsIgnoreCase(RIGHT))
+        } else if (value.equalsIgnoreCase(RIGHT)) {
             alignment = CellConstraints.RIGHT;
-        else if (value.equalsIgnoreCase(TOP))
+        } else if (value.equalsIgnoreCase(TOP)) {
             alignment = CellConstraints.TOP;
-        else if (value.equalsIgnoreCase(BOTTOM))
+        } else if (value.equalsIgnoreCase(BOTTOM)) {
             alignment = CellConstraints.BOTTOM;
-        else
+        } else {
             throw new RuntimeException("Invalid alignment");
+        }
 
         return alignment;
     }
@@ -464,8 +471,9 @@ public class LayoutConstraintsManager {
     public static LayoutConstraintsManager getLayoutConstraintsManager(
             Node containersNode) {
 
-        if (!containersNode.getNodeName().equals("containers"))
+        if (!containersNode.getNodeName().equals("containers")) {
             throw new RuntimeException("Expected a node named containers");
+        }
 
         LayoutConstraintsManager layoutConstraintsManager = new LayoutConstraintsManager();
         Node[] containerNodes = getNodesNamed(containersNode, "container");
@@ -475,9 +483,10 @@ public class LayoutConstraintsManager {
 
             Map<String, String> containerAttributes = getAttributeMap(containerNode);
             String containerName = containerAttributes.get("name");
-            if (containerName == null)
+            if (containerName == null) {
                 throw new RuntimeException(
                         "Container must have a name attribute");
+            }
             String columnSpecs = containerAttributes.get("columnSpecs") != null ? containerAttributes
                     .get("columnSpecs")
                     : "";
@@ -505,39 +514,50 @@ public class LayoutConstraintsManager {
                 int rightInset = 0;
                 int leftInset = 0;
 
-                if (constraintAttributes.get("name") == null)
+                if (constraintAttributes.get("name") == null) {
                     throw new RuntimeException(
                             "cellconstraints attribute name cannot be null for container "
                                     + containerName);
+                }
                 name = constraintAttributes.get("name");
-                if (constraintAttributes.get("horizontalAlignment") != null)
+                if (constraintAttributes.get("horizontalAlignment") != null) {
                     horizontalAlignment = getAlignment(constraintAttributes
                             .get("horizontalAlignment"));
-                if (constraintAttributes.get("verticalAlignment") != null)
+                }
+                if (constraintAttributes.get("verticalAlignment") != null) {
                     verticalAlignment = getAlignment(constraintAttributes
                             .get("verticalAlignment"));
-                if (constraintAttributes.get("gridX") != null)
+                }
+                if (constraintAttributes.get("gridX") != null) {
                     gridX = Integer.parseInt(constraintAttributes.get("gridX"));
-                if (constraintAttributes.get("gridY") != null)
+                }
+                if (constraintAttributes.get("gridY") != null) {
                     gridY = Integer.parseInt(constraintAttributes.get("gridY"));
-                if (constraintAttributes.get("gridWidth") != null)
+                }
+                if (constraintAttributes.get("gridWidth") != null) {
                     gridWidth = Integer.parseInt(constraintAttributes
                             .get("gridWidth"));
-                if (constraintAttributes.get("gridHeight") != null)
+                }
+                if (constraintAttributes.get("gridHeight") != null) {
                     gridHeight = Integer.parseInt(constraintAttributes
                             .get("gridHeight"));
-                if (constraintAttributes.get("topInset") != null)
+                }
+                if (constraintAttributes.get("topInset") != null) {
                     topInset = Integer.parseInt(constraintAttributes
                             .get("topInset"));
-                if (constraintAttributes.get("bottomInset") != null)
+                }
+                if (constraintAttributes.get("bottomInset") != null) {
                     bottomInset = Integer.parseInt(constraintAttributes
                             .get("bottomInset"));
-                if (constraintAttributes.get("rightInset") != null)
+                }
+                if (constraintAttributes.get("rightInset") != null) {
                     rightInset = Integer.parseInt(constraintAttributes
                             .get("rightInset"));
-                if (constraintAttributes.get("leftInset") != null)
+                }
+                if (constraintAttributes.get("leftInset") != null) {
                     leftInset = Integer.parseInt(constraintAttributes
                             .get("leftInset"));
+                }
 
                 CellConstraints constraints = new CellConstraints(gridX, gridY,
                         gridWidth, gridHeight, horizontalAlignment,
@@ -560,18 +580,20 @@ public class LayoutConstraintsManager {
                 Node propertiesNode = propertiesNodes[pIndex];
                 Map<String, String> propertyAttributes = getAttributeMap(propertiesNode);
                 String componentName = propertyAttributes.get("component");
-                if (componentName == null)
+                if (componentName == null) {
                     throw new RuntimeException(
                             "propertyset must have an attribute called component");
+                }
 
                 Node[] propertyNodes = getNodesNamed(propertiesNode, "property");
                 for (int propIndex = 0; propIndex < propertyNodes.length; propIndex++) {
                     Node propertyNode = propertyNodes[propIndex];
                     Map<String, String> voidAttributes = getAttributeMap(propertyNode);
                     String property = voidAttributes.get("name");
-                    if (property == null)
+                    if (property == null) {
                         throw new RuntimeException(
                                 "property element must have a name");
+                    }
                     fakeDoc += "<void method=\"setProperty\"><string>"
                             + componentName + "</string>";
                     fakeDoc += "<string>" + property + "</string>";
@@ -627,8 +649,9 @@ public class LayoutConstraintsManager {
         NodeList children = parent.getChildNodes();
         List<Node> childList = new ArrayList<Node>();
         for (int i = 0; i < children.getLength(); i++) {
-            if (nodeName.equals(children.item(i).getNodeName()))
+            if (nodeName.equals(children.item(i).getNodeName())) {
                 childList.add(children.item(i));
+            }
         }
         Node[] result = new Node[childList.size()];
         return childList.toArray(result);

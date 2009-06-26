@@ -149,7 +149,7 @@ public class RunTableau extends Tableau {
          *  @exception PrinterException If the print job is terminated.
          */
         public synchronized int print(Graphics graphics, PageFormat format,
-                                      int index) throws PrinterException {
+                int index) throws PrinterException {
             if (graphics == null) {
                 return Printable.NO_SUCH_PAGE;
             }

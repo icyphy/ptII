@@ -56,11 +56,11 @@ public class TimedDelay extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         _codeStream.clear();
         LinkedList args = new LinkedList();
-        Parameter delay =((ptolemy.domains.de.lib.TimedDelay)getComponent()).delay;
+        Parameter delay = ((ptolemy.domains.de.lib.TimedDelay) getComponent()).delay;
         double value = ((DoubleToken) delay.getToken()).doubleValue();
 
-        int intPart = (int)value;
-        int fracPart = (int)((value - (double)intPart)*1000000000.0);
+        int intPart = (int) value;
+        int fracPart = (int) ((value - intPart) * 1000000000.0);
         args.add(Integer.toString(intPart));
         args.add(Integer.toString(fracPart));
 

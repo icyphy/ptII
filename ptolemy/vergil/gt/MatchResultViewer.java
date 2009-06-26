@@ -207,8 +207,7 @@ public class MatchResultViewer extends GTFrame {
         PreviousFileAction previousFileAction = new PreviousFileAction();
         NextFileAction nextFileAction = new NextFileAction();
         TransformAction transformAction = new TransformAction();
-        TransformUntilFixpointAction transformUntilFixpointAction =
-            new TransformUntilFixpointAction();
+        TransformUntilFixpointAction transformUntilFixpointAction = new TransformUntilFixpointAction();
         CloseAction closeAction = new CloseAction();
 
         _viewMenu.addSeparator();
@@ -220,7 +219,8 @@ public class MatchResultViewer extends GTFrame {
 
         _transformMenu = new JMenu("Transform");
         _transformMenu.setMnemonic(KeyEvent.VK_T);
-        _transformItem = GUIUtilities.addMenuItem(_transformMenu, transformAction);
+        _transformItem = GUIUtilities.addMenuItem(_transformMenu,
+                transformAction);
         _transformUntilFixpointItem = GUIUtilities.addMenuItem(_transformMenu,
                 transformUntilFixpointAction);
         GUIUtilities.addMenuItem(_transformMenu, closeAction);
@@ -259,9 +259,9 @@ public class MatchResultViewer extends GTFrame {
             List<?> factoryList = entity.attributeList(tableauFactoryClass);
             if (factoryList.isEmpty()) {
                 try {
-                    new MatchResultTableau.Factory(entity,
-                            entity.uniqueName("_tableauFactory"))
-                    .setPersistent(false);
+                    new MatchResultTableau.Factory(entity, entity
+                            .uniqueName("_tableauFactory"))
+                            .setPersistent(false);
                 } catch (KernelException e) {
                     throw new KernelRuntimeException(e, "Unexpected exception");
                 }
@@ -345,8 +345,8 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    protected class MatchResultExternalPortController
-    extends ExternalIOPortController {
+    protected class MatchResultExternalPortController extends
+            ExternalIOPortController {
 
         MatchResultExternalPortController(GraphController controller) {
             super(controller);
@@ -380,8 +380,8 @@ public class MatchResultViewer extends GTFrame {
 
         public Figure drawNode(Object node) {
             Figure figure = super.drawNode(node);
-            ((MatchResultStateController) _stateController)._highlightNode(node,
-                    figure);
+            ((MatchResultStateController) _stateController)._highlightNode(
+                    node, figure);
             return figure;
         }
 
@@ -473,8 +473,8 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    protected class MatchResultTransitionController
-    extends TransitionController {
+    protected class MatchResultTransitionController extends
+            TransitionController {
 
         public MatchResultTransitionController(GraphController controller) {
             super(controller);
@@ -539,11 +539,11 @@ public class MatchResultViewer extends GTFrame {
     }
 
     private void _delegateUndoStack(NamedObj from, NamedObj to)
-    throws CloneNotSupportedException, IllegalActionException,
-    NameDuplicationException {
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
         UndoStackAttribute prevStack = UndoStackAttribute.getUndoInfo(from);
-        UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone(
-                to.workspace());
+        UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone(to
+                .workspace());
         stack.setContainer(to);
     }
 
@@ -583,12 +583,14 @@ public class MatchResultViewer extends GTFrame {
                     && _rule != null);
         }
         if (_transformUntilFixpointItem != null && _results != null) {
-            _transformUntilFixpointItem.setEnabled(_currentPosition < _results.size()
+            _transformUntilFixpointItem.setEnabled(_currentPosition < _results
+                    .size()
                     && _rule != null);
         }
         if (_transformUntilFixpointButton != null && _results != null) {
-            _transformUntilFixpointButton.setEnabled(_currentPosition < _results.size()
-                    && _rule != null);
+            _transformUntilFixpointButton
+                    .setEnabled(_currentPosition < _results.size()
+                            && _rule != null);
         }
     }
 
@@ -728,17 +730,15 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    private void _renderNamedObj(CompositeFigure figure,
-            Object semanticObject) {
+    private void _renderNamedObj(CompositeFigure figure, Object semanticObject) {
         if (semanticObject instanceof NamedObj && figure != null) {
             Color color = _getHighlightColor((NamedObj) semanticObject);
             if (color != null) {
                 Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
                 float padding = _HIGHLIGHT_PADDING;
                 BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
-                        bounds.getY() - padding,
-                        bounds.getWidth() + padding * 2.0,
-                        bounds.getHeight() + padding * 2.0,
+                        bounds.getY() - padding, bounds.getWidth() + padding
+                                * 2.0, bounds.getHeight() + padding * 2.0,
                         _HIGHLIGHT_THICKNESS);
                 bf.setStrokePaint(color);
 
@@ -754,15 +754,13 @@ public class MatchResultViewer extends GTFrame {
     private void _renderState(CompositeFigure figure, Object semanticObject) {
         if (semanticObject instanceof NamedObj && figure != null
                 && _results != null && _currentPosition < _results.size()
-                && _results.get(_currentPosition).containsValue(
-                        semanticObject)) {
+                && _results.get(_currentPosition).containsValue(semanticObject)) {
             Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
             float padding = _HIGHLIGHT_PADDING;
-            RoundedRectangle rf = new RoundedRectangle(
-                    bounds.getX() - padding, bounds.getY() - padding,
-                    bounds.getWidth() + padding * 2.0,
-                    bounds.getHeight() + padding * 2.0,
-                    null, _HIGHLIGHT_THICKNESS, 32.0, 32.0);
+            RoundedRectangle rf = new RoundedRectangle(bounds.getX() - padding,
+                    bounds.getY() - padding, bounds.getWidth() + padding * 2.0,
+                    bounds.getHeight() + padding * 2.0, null,
+                    _HIGHLIGHT_THICKNESS, 32.0, 32.0);
             rf.setStrokePaint(_HIGHLIGHT_COLOR);
 
             int index = figure.getFigureCount();
@@ -788,8 +786,8 @@ public class MatchResultViewer extends GTFrame {
             CompositeEntity model = (CompositeEntity) GTTools.cleanupModel(
                     currentModel, workspace);
             workspace.remove(currentModel);
-            Tableau tableau = getFrameController().getConfiguration().openModel(
-                    model);
+            Tableau tableau = getFrameController().getConfiguration()
+                    .openModel(model);
             ((Effigy) tableau.getContainer()).uri.setURI(null);
             String name = model.getName();
             if (name.equals("")) {
@@ -849,13 +847,13 @@ public class MatchResultViewer extends GTFrame {
                     i++;
                 }
                 if (i >= _PROMPT_TO_CONTINUE_COUNT && !_results.isEmpty()) {
-                   boolean answer = MessageHandler.yesNoQuestion("The " +
-                            "transformation process has not terminated " +
-                            "within " + _PROMPT_TO_CONTINUE_COUNT +
-                            " randomly chosen steps.\nIt is possible that " +
-                            "the transformations never reach a fixpoint.\n" +
-                            "Do you intend to continue? (If so, no more " +
-                            "questions will be asked.)");
+                    boolean answer = MessageHandler.yesNoQuestion("The "
+                            + "transformation process has not terminated "
+                            + "within " + _PROMPT_TO_CONTINUE_COUNT
+                            + " randomly chosen steps.\nIt is possible that "
+                            + "the transformations never reach a fixpoint.\n"
+                            + "Do you intend to continue? (If so, no more "
+                            + "questions will be asked.)");
                     if (!answer) {
                         break;
                     }
@@ -1158,8 +1156,8 @@ public class MatchResultViewer extends GTFrame {
         public void execute() throws Exception {
             MatchResultViewer viewer = MatchResultViewer.this;
             CompositeEntity currentModel = (CompositeEntity) getModel();
-            CompositeEntity oldModel = (CompositeEntity) GTTools.cleanupModel(
-                    currentModel);
+            CompositeEntity oldModel = (CompositeEntity) GTTools
+                    .cleanupModel(currentModel);
             _delegateUndoStack(currentModel, oldModel);
             ModelChangeRequest request = new ModelChangeRequest(viewer, viewer,
                     _model, new UndoChangeModelAction(oldModel,

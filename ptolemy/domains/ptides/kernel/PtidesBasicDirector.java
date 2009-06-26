@@ -102,7 +102,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public PtidesBasicDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         animateExecution = new Parameter(this, "animateExecution");
@@ -279,7 +279,8 @@ public class PtidesBasicDirector extends DEDirector {
                     // If the actor to be fired is not contained by the container,
                     // it may just be deleted. Put this actor to the
                     // list of disabled actors.
-                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
+                    if (!((CompositeEntity) getContainer())
+                            .deepContains((NamedObj) actorToFire)) {
                         _debug("Actor no longer under the control of this director. Disabling actor.");
                         _disableActor(actorToFire);
                         break;
@@ -321,7 +322,8 @@ public class PtidesBasicDirector extends DEDirector {
                     // If the actor to be fired is not contained by the container,
                     // it may just be deleted. Put this actor to the
                     // list of disabled actors.
-                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
+                    if (!((CompositeEntity) getContainer())
+                            .deepContains((NamedObj) actorToFire)) {
                         _disableActor(actorToFire);
                         break;
                     }
@@ -440,18 +442,17 @@ public class PtidesBasicDirector extends DEDirector {
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
             throw new IllegalActionException(this,
-            "No container, or container is not an Actor.");
+                    "No container, or container is not an Actor.");
         }
-        Director executiveDirector = ((Actor)container).getExecutiveDirector();
+        Director executiveDirector = ((Actor) container).getExecutiveDirector();
         if (executiveDirector == null) {
             throw new IllegalActionException(this,
-            "The PtidesBasicDirector can only be used within an enclosing director.");
+                    "The PtidesBasicDirector can only be used within an enclosing director.");
         }
-        executiveDirector.fireAtCurrentTime((Actor)container);
+        executiveDirector.fireAtCurrentTime((Actor) container);
 
         _setIcon(_getIdleIcon(), true);
     }
-
 
     /** Return a new receiver of the type PtidesBasicReceiver.
      *  @return A new PtidesBasicReceiver.
@@ -538,7 +539,8 @@ public class PtidesBasicDirector extends DEDirector {
 
         if (comparisonResult > 0) {
             if (_debugging) {
-                _debug("==== Set current time backwards from " + getModelTime() + " to: " + newTime);
+                _debug("==== Set current time backwards from " + getModelTime()
+                        + " to: " + newTime);
             }
         } else if (comparisonResult < 0) {
             if (_debugging) {
@@ -556,7 +558,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException if setModelTime() throws it.
      *  @see #setModelTime(Time)
      */
-    public void setTag(Time timestamp, int microstep) throws IllegalActionException {
+    public void setTag(Time timestamp, int microstep)
+            throws IllegalActionException {
         setModelTime(timestamp);
         setMicrostep(microstep);
     }
@@ -587,7 +590,6 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-
 
     /** Causality analysis that happens at the preinitialization phase.
      *  The goal is to annotate each port with a minDelay parameter,
@@ -627,50 +629,64 @@ public class PtidesBasicDirector extends DEDirector {
         // does this algorithm work?
         // initialize all port model delays to infinity.
         HashMap portDelays = new HashMap<IOPort, SuperdenseDependency>();
-        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
-            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
+        for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
+                .deepEntityList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
+                    .inputPortList())) {
                 portDelays.put(inputPort, SuperdenseDependency.OPLUS_IDENTITY);
             }
-            for (TypedIOPort outputPort : (List<TypedIOPort>)(actor.outputPortList())) {
+            for (TypedIOPort outputPort : (List<TypedIOPort>) (actor
+                    .outputPortList())) {
                 portDelays.put(outputPort, SuperdenseDependency.OPLUS_IDENTITY);
             }
         }
 
-        for (TypedIOPort inputPort : (List<TypedIOPort>)(((Actor)getContainer()).inputPortList())) {
-            SuperdenseDependency startDelay = SuperdenseDependency.valueOf(-_getRealTimeDelay(inputPort), 0);
+        for (TypedIOPort inputPort : (List<TypedIOPort>) (((Actor) getContainer())
+                .inputPortList())) {
+            SuperdenseDependency startDelay = SuperdenseDependency.valueOf(
+                    -_getRealTimeDelay(inputPort), 0);
             portDelays.put(inputPort, startDelay);
         }
         // Now start from each sensor (input port at the top level), traverse through all
         // ports.
-        for (TypedIOPort startPort : (List<TypedIOPort>)(((TypedCompositeActor)getContainer()).inputPortList())) {
+        for (TypedIOPort startPort : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                .inputPortList())) {
             // Setup a local priority queue to store all reached ports
-            HashMap localPortDelays = new HashMap<IOPort, SuperdenseDependency>(portDelays);
+            HashMap localPortDelays = new HashMap<IOPort, SuperdenseDependency>(
+                    portDelays);
 
             PriorityQueue distQueue = new PriorityQueue<PortDependency>();
-            distQueue.add(new PortDependency(startPort, (SuperdenseDependency)localPortDelays.get(startPort)));
+            distQueue.add(new PortDependency(startPort,
+                    (SuperdenseDependency) localPortDelays.get(startPort)));
 
             // Dijkstra's algorithm to find all shortest time delays.
             while (!distQueue.isEmpty()) {
-                PortDependency portDependency = (PortDependency)distQueue.remove();
-                IOPort port = (IOPort)portDependency.port;
-                SuperdenseDependency prevDependency = (SuperdenseDependency)portDependency.dependency;
-                Actor actor = (Actor)port.getContainer();
+                PortDependency portDependency = (PortDependency) distQueue
+                        .remove();
+                IOPort port = (IOPort) portDependency.port;
+                SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency.dependency;
+                Actor actor = (Actor) port.getContainer();
                 if (port.isInput() && port.isOutput()) {
-                    throw new IllegalActionException("the causality analysis cannot deal with" +
-                    "port that are both input and output");
+                    throw new IllegalActionException(
+                            "the causality analysis cannot deal with"
+                                    + "port that are both input and output");
                 }
                 // we do not want to traverse to the outside of the platform.
                 if (actor != getContainer()) {
                     if (port.isInput()) {
                         Collection<IOPort> outputs = _finiteDependentPorts(port);
                         for (IOPort outputPort : outputs) {
-                            SuperdenseDependency minimumDelay = (SuperdenseDependency)_getDependency(port, outputPort);
+                            SuperdenseDependency minimumDelay = (SuperdenseDependency) _getDependency(
+                                    port, outputPort);
                             // FIXME: what do we do with the microstep portion of the dependency?
                             // need to make sure we did not visit this port before.
-                            SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency.oTimes(minimumDelay);
-                            if (((SuperdenseDependency)localPortDelays.get(outputPort)).compareTo(modelTime) > 0) {
+                            SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency
+                                    .oTimes(minimumDelay);
+                            if (((SuperdenseDependency) localPortDelays
+                                    .get(outputPort)).compareTo(modelTime) > 0) {
                                 localPortDelays.put(outputPort, modelTime);
-                                distQueue.add(new PortDependency(outputPort, modelTime));
+                                distQueue.add(new PortDependency(outputPort,
+                                        modelTime));
                             }
                         }
                     } else { // port is an output port
@@ -679,26 +695,35 @@ public class PtidesBasicDirector extends DEDirector {
                         // a dependency already exists for that pair, that dependency must have a greater
                         // value, meaning it should be replaced. This is because the output port that
                         // led to that pair would not be in distQueue if it the dependency was smaller.
-                        Receiver[][] remoteReceivers = port.getRemoteReceivers();
+                        Receiver[][] remoteReceivers = port
+                                .getRemoteReceivers();
                         for (int i = 0; i < remoteReceivers.length; i++) {
                             for (int j = 0; j < remoteReceivers[i].length; j++) {
-                                IOPort sinkPort = remoteReceivers[i][j].getContainer();
-                                int channel = sinkPort.getChannelForReceiver(remoteReceivers[i][j]);
+                                IOPort sinkPort = remoteReceivers[i][j]
+                                        .getContainer();
+                                int channel = sinkPort
+                                        .getChannelForReceiver(remoteReceivers[i][j]);
                                 // we do not want to traverse to the outside of the platform.
                                 if (sinkPort.getContainer() != getContainer()) {
                                     // for this port channel pair, add the dependency.
-                                    Map<Integer, SuperdenseDependency> channelDependency =
-                                        (Map<Integer, SuperdenseDependency>)inputModelTimeDelays.get(sinkPort);
+                                    Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
+                                            .get(sinkPort);
                                     if (channelDependency == null) {
                                         channelDependency = new HashMap<Integer, SuperdenseDependency>();
                                     }
-                                    channelDependency.put(Integer.valueOf(channel), prevDependency);
-                                    inputModelTimeDelays.put(sinkPort, channelDependency);
+                                    channelDependency.put(Integer
+                                            .valueOf(channel), prevDependency);
+                                    inputModelTimeDelays.put(sinkPort,
+                                            channelDependency);
                                     // After updating dependencies, we need to decide whether we should keep traversing
                                     // the graph.
-                                    if (((SuperdenseDependency)localPortDelays.get(sinkPort)).compareTo(prevDependency) > 0) {
-                                        localPortDelays.put(sinkPort, prevDependency);
-                                        distQueue.add(new PortDependency(sinkPort, prevDependency));
+                                    if (((SuperdenseDependency) localPortDelays
+                                            .get(sinkPort))
+                                            .compareTo(prevDependency) > 0) {
+                                        localPortDelays.put(sinkPort,
+                                                prevDependency);
+                                        distQueue.add(new PortDependency(
+                                                sinkPort, prevDependency));
                                     }
                                 }
                             }
@@ -711,23 +736,31 @@ public class PtidesBasicDirector extends DEDirector {
                     Receiver[][] deepReceivers = port.deepGetReceivers();
                     for (int i = 0; i < deepReceivers.length; i++) {
                         for (int j = 0; j < deepReceivers[i].length; j++) {
-                            IOPort sinkPort = deepReceivers[i][j].getContainer();
-                            int channel = sinkPort.getChannelForReceiver(deepReceivers[i][j]);
+                            IOPort sinkPort = deepReceivers[i][j]
+                                    .getContainer();
+                            int channel = sinkPort
+                                    .getChannelForReceiver(deepReceivers[i][j]);
                             // we do not want to traverse to the outside of the deepReceivers.
                             if (sinkPort.getContainer() != getContainer()) {
                                 // for this port channel pair, add the dependency.
-                                Map<Integer, SuperdenseDependency> channelDependency =
-                                    (Map<Integer, SuperdenseDependency>)inputModelTimeDelays.get(sinkPort);
+                                Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
+                                        .get(sinkPort);
                                 if (channelDependency == null) {
                                     channelDependency = new HashMap<Integer, SuperdenseDependency>();
                                 }
-                                channelDependency.put(Integer.valueOf(channel), prevDependency);
-                                inputModelTimeDelays.put(sinkPort, channelDependency);
+                                channelDependency.put(Integer.valueOf(channel),
+                                        prevDependency);
+                                inputModelTimeDelays.put(sinkPort,
+                                        channelDependency);
                                 // After updating dependencies, we need to decide whether we should keep traversing
                                 // the graph.
-                                if (((SuperdenseDependency)localPortDelays.get(sinkPort)).compareTo(prevDependency) > 0) {
-                                    localPortDelays.put(sinkPort, prevDependency);
-                                    distQueue.add(new PortDependency(sinkPort, prevDependency));
+                                if (((SuperdenseDependency) localPortDelays
+                                        .get(sinkPort))
+                                        .compareTo(prevDependency) > 0) {
+                                    localPortDelays.put(sinkPort,
+                                            prevDependency);
+                                    distQueue.add(new PortDependency(sinkPort,
+                                            prevDependency));
                                 }
                             }
                         }
@@ -745,14 +778,14 @@ public class PtidesBasicDirector extends DEDirector {
         // If this smallest value does not exist, then the event arriving at this port channel pair
         // is always safe to process, thus minDelay does not change (it was by default set to
         // double.POSITIVE_INFINITY.
-        for (IOPort inputPort : (Set<IOPort>)inputModelTimeDelays.keySet()) {
-            Map<Integer, SuperdenseDependency> channelDependency =
-                (Map<Integer, SuperdenseDependency>)inputModelTimeDelays.get(inputPort);
+        for (IOPort inputPort : (Set<IOPort>) inputModelTimeDelays.keySet()) {
+            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
+                    .get(inputPort);
             //            Map<Integer, SuperdenseDependency> minDelays = new HashMap<Integer, SuperdenseDependency>();
             double[] minDelays = new double[channelDependency.size()];
             for (Integer portChannelMinDelay : channelDependency.keySet()) {
-                minDelays[portChannelMinDelay.intValue()] =
-                    _getMinDelayForPortChannel(inputPort, portChannelMinDelay, inputModelTimeDelays);
+                minDelays[portChannelMinDelay.intValue()] = _getMinDelayForPortChannel(
+                        inputPort, portChannelMinDelay, inputModelTimeDelays);
             }
             _setMinDelay(inputPort, minDelays);
         }
@@ -764,12 +797,12 @@ public class PtidesBasicDirector extends DEDirector {
      *   parameter cannot be evaluated.
      */
     protected void _clearHighlight(Actor actor) throws IllegalActionException {
-        if (((BooleanToken)animateExecution.getToken()).booleanValue()) {
-            String completeMoML =
-                "<deleteProperty name=\"_highlightColor\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, (NamedObj)actor, completeMoML);
+        if (((BooleanToken) animateExecution.getToken()).booleanValue()) {
+            String completeMoML = "<deleteProperty name=\"_highlightColor\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    (NamedObj) actor, completeMoML);
             Actor container = (Actor) getContainer();
-            ((TypedCompositeActor)container).requestChange(request);
+            ((TypedCompositeActor) container).requestChange(request);
         }
     }
 
@@ -782,15 +815,19 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException
      */
     protected void _clearMinDelayOffsets() throws IllegalActionException {
-        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
-            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
-                Parameter parameter = (Parameter)(inputPort).getAttribute("minDelay");
+        for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
+                .deepEntityList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
+                    .inputPortList())) {
+                Parameter parameter = (Parameter) (inputPort)
+                        .getAttribute("minDelay");
                 if (parameter != null) {
                     int channels = inputPort.getWidth();
                     if (channels > 0) {
                         Token[] tokens = new Token[channels];
                         for (int i = 0; i < channels; i++) {
-                            tokens[i] = new DoubleToken(Double.POSITIVE_INFINITY);
+                            tokens[i] = new DoubleToken(
+                                    Double.POSITIVE_INFINITY);
                         }
                         parameter.setToken(new ArrayToken(tokens));
                     }
@@ -817,8 +854,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  current time, or the depth of the given IO port has not be calculated,
      *  or the new event can not be enqueued.
      */
-    protected void _enqueueTriggerEvent(IOPort ioPort, Token token, Receiver receiver)
-    throws IllegalActionException {
+    protected void _enqueueTriggerEvent(IOPort ioPort, Token token,
+            Receiver receiver) throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
 
         if ((_eventQueue == null)
@@ -832,13 +869,14 @@ public class PtidesBasicDirector extends DEDirector {
         if (_debugging) {
             _debug("enqueue a trigger event for ",
                     ((NamedObj) actor).getName(), " time = " + getModelTime()
-                    + " microstep = " + _microstep + " depth = "
-                    + depth);
+                            + " microstep = " + _microstep + " depth = "
+                            + depth);
         }
 
         // Register this trigger event.
-        DEEvent newEvent = new DETokenEvent(ioPort, ioPort.getChannelForReceiver(receiver),
-                getModelTime(), _microstep, depth, token, receiver);
+        DEEvent newEvent = new DETokenEvent(ioPort, ioPort
+                .getChannelForReceiver(receiver), getModelTime(), _microstep,
+                depth, token, receiver);
         _eventQueue.put(newEvent);
     }
 
@@ -860,29 +898,37 @@ public class PtidesBasicDirector extends DEDirector {
         // FIXME: This does not support ports that are both input and output.
         // Should it?
         Collection<IOPort> result = new HashSet<IOPort>();
-        Actor actor = (Actor)port.getContainer();
+        Actor actor = (Actor) port.getContainer();
         CausalityInterface actorCausalityInterface;
         if (actor instanceof AtomicActor) {
-            actorCausalityInterface = (DefaultCausalityInterface)actor.getCausalityInterface();
+            actorCausalityInterface = (DefaultCausalityInterface) actor
+                    .getCausalityInterface();
         } else if (actor instanceof CompositeActor) {
-            actorCausalityInterface = (CausalityInterfaceForComposites)actor.getCausalityInterface();
+            actorCausalityInterface = (CausalityInterfaceForComposites) actor
+                    .getCausalityInterface();
         } else {
-            throw new IllegalActionException(actor, "Actor is not a typed atomic or typed composite " +
-            "actor, do not know how to deal with it.");
+            throw new IllegalActionException(actor,
+                    "Actor is not a typed atomic or typed composite "
+                            + "actor, do not know how to deal with it.");
         }
         if (port.isInput()) {
-            List<IOPort> outputs = ((Actor)port.getContainer()).outputPortList();
+            List<IOPort> outputs = ((Actor) port.getContainer())
+                    .outputPortList();
             for (IOPort output : outputs) {
-                Dependency dependency = actorCausalityInterface.getDependency(port, output);
-                if (dependency != null && dependency.compareTo(dependency.oPlusIdentity())!= 0) {
+                Dependency dependency = actorCausalityInterface.getDependency(
+                        port, output);
+                if (dependency != null
+                        && dependency.compareTo(dependency.oPlusIdentity()) != 0) {
                     result.add(output);
                 }
             }
         } else { // port is output port.
-            List<IOPort> inputs = ((Actor)port.getContainer()).inputPortList();
+            List<IOPort> inputs = ((Actor) port.getContainer()).inputPortList();
             for (IOPort input : inputs) {
-                Dependency dependency = actorCausalityInterface.getDependency(input, port);
-                if (dependency != null && dependency.compareTo(dependency.oPlusIdentity())!= 0) {
+                Dependency dependency = actorCausalityInterface.getDependency(
+                        input, port);
+                if (dependency != null
+                        && dependency.compareTo(dependency.oPlusIdentity()) != 0) {
                     result.add(input);
                 }
             }
@@ -929,7 +975,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return deadline of this event.
      *  @exception IllegalActionException
      */
-    protected Time _getAbsoluteDeadline(DEEvent event) throws IllegalActionException {
+    protected Time _getAbsoluteDeadline(DEEvent event)
+            throws IllegalActionException {
         IOPort port = event.ioPort();
         if (port == null) {
             // event is a pure event. So it always has the smallest deadline.
@@ -946,11 +993,14 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return List of events of the same tag.
      *  @exception IllegalActionException
      */
-    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
+    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event)
+            throws IllegalActionException {
         List<DEEvent> eventList = new ArrayList<DEEvent>();
         for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(eventIndex);
-            if (nextEvent.hasTheSameTagAs(event) && nextEvent.actor() == event.actor()) {
+            DEEvent nextEvent = ((DEListEventQueue) _eventQueue)
+                    .get(eventIndex);
+            if (nextEvent.hasTheSameTagAs(event)
+                    && nextEvent.actor() == event.actor()) {
                 eventList.add(nextEvent);
             } else {
                 break;
@@ -972,14 +1022,17 @@ public class PtidesBasicDirector extends DEDirector {
      *
      */
     protected static Dependency _getDependency(IOPort input, IOPort output)
-    throws IllegalActionException {
-        Actor actor = (Actor)input.getContainer();
+            throws IllegalActionException {
+        Actor actor = (Actor) input.getContainer();
         if (output != null) {
-            Actor outputActor = (Actor)output.getContainer();
+            Actor outputActor = (Actor) output.getContainer();
             if (actor != outputActor) {
-                throw new IllegalActionException(input, output, "Cannot get dependency" +
-                        "from these two ports, becasue they do not belong" +
-                "to the same actor.");
+                throw new IllegalActionException(
+                        input,
+                        output,
+                        "Cannot get dependency"
+                                + "from these two ports, becasue they do not belong"
+                                + "to the same actor.");
             }
         }
         CausalityInterface causalityInterface = actor.getCausalityInterface();
@@ -998,12 +1051,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If the animateExecution parameter cannot
      *   be evaluated.
      */
-    protected String _getExecutingIcon(Actor actorExecuting) throws IllegalActionException {
+    protected String _getExecutingIcon(Actor actorExecuting)
+            throws IllegalActionException {
         _highlightActor(actorExecuting, "{0.0, 0.0, 1.0, 1.0}");
-        return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">" +
-        "    <property name=\"height\" value=\"30\"/>" +
-        "    <property name=\"fillColor\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>" +
-        "  </property>";
+        return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">"
+                + "    <property name=\"height\" value=\"30\"/>"
+                + "    <property name=\"fillColor\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>"
+                + "  </property>";
     }
 
     /** Returns the executionTime parameter.
@@ -1011,12 +1065,14 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return executionTime parameter
      *  @exception IllegalActionException
      */
-    protected double _getExecutionTime(IOPort port) throws IllegalActionException {
+    protected double _getExecutionTime(IOPort port)
+            throws IllegalActionException {
         Double result = PtidesActorProperties.getExecutionTime(port);
         if (result != null) {
             return result;
         } else {
-            return PtidesActorProperties.getExecutionTime((Actor)port.getContainer());
+            return PtidesActorProperties.getExecutionTime((Actor) port
+                    .getContainer());
         }
     }
 
@@ -1028,10 +1084,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return A MoML string.
      */
     protected String _getIdleIcon() {
-        return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">" +
-        "    <property name=\"height\" value=\"30\"/>" +
-        "    <property name=\"fillColor\" value=\"{0.0, 1.0, 0.0, 1.0}\"/>" +
-        "  </property>";
+        return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">"
+                + "    <property name=\"height\" value=\"30\"/>"
+                + "    <property name=\"fillColor\" value=\"{0.0, 1.0, 0.0, 1.0}\"/>"
+                + "  </property>";
     }
 
     /** Returns the minDelay parameter.
@@ -1040,10 +1096,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return minDelay parameter.
      *  @exception IllegalActionException if we cannot get minDelay parameter.
      */
-    protected double _getMinDelay(IOPort port, int channel) throws IllegalActionException {
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
+    protected double _getMinDelay(IOPort port, int channel)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("minDelay");
         if (parameter != null) {
-            DoubleToken token = ((DoubleToken)((ArrayToken)parameter.getToken()).arrayValue()[channel]);
+            DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
+                    .getToken()).arrayValue()[channel]);
             if (token != null) {
                 return token.doubleValue();
             } else {
@@ -1113,16 +1172,19 @@ public class PtidesBasicDirector extends DEDirector {
 
         if (!_currentlyExecutingStack.isEmpty()) {
             // Case 2: We are currently executing an actor.
-            DoubleTimedEvent currentEventList = (DoubleTimedEvent)_currentlyExecutingStack.peek();
+            DoubleTimedEvent currentEventList = (DoubleTimedEvent) _currentlyExecutingStack
+                    .peek();
             // First check whether its remaining execution time is zero.
             Time remainingExecutionTime = currentEventList.remainingExecutionTime;
-            Time finishTime = _physicalTimeExecutionStarted.add(remainingExecutionTime);
+            Time finishTime = _physicalTimeExecutionStarted
+                    .add(remainingExecutionTime);
             int comparison = finishTime.compareTo(physicalTime);
             if (comparison < 0) {
                 // NOTE: This should not happen, so if it does, throw an exception.
-                throw new IllegalActionException(this,
-                        _getActorFromEventList((List<DEEvent>)currentEventList.contents),
-                "Physical time passed the finish time of the currently executing actor");
+                throw new IllegalActionException(
+                        this,
+                        _getActorFromEventList((List<DEEvent>) currentEventList.contents),
+                        "Physical time passed the finish time of the currently executing actor");
             } else if (comparison == 0) {
                 // Currently executing actor finishes now, so we want to return it.
                 // First set current model time.
@@ -1134,32 +1196,36 @@ public class PtidesBasicDirector extends DEDirector {
 
                 if (_debugging) {
                     _debug("Actor "
-                            + _getActorFromEventList((List<DEEvent>)currentEventList.contents)
-                            .getName(getContainer())
+                            + _getActorFromEventList(
+                                    (List<DEEvent>) currentEventList.contents)
+                                    .getName(getContainer())
                             + " finishes executing at physical time "
                             + physicalTime);
                 }
 
                 // Animate, if appropriate.
                 _setIcon(_getIdleIcon(), false);
-                _clearHighlight(_getActorFromEventList((List<DEEvent>)currentEventList.contents));
+                _clearHighlight(_getActorFromEventList((List<DEEvent>) currentEventList.contents));
                 _lastExecutingActor = null;
 
                 // Request a refiring so we can process the next event
                 // on the event queue at the current physical time.
-                executiveDirector.fireAtCurrentTime((Actor)container);
+                executiveDirector.fireAtCurrentTime((Actor) container);
 
-                return _getActorFromEventList((List<DEEvent>)currentEventList.contents);
+                return _getActorFromEventList((List<DEEvent>) currentEventList.contents);
             } else {
                 Time nextEventOnStackFireTime = _currentlyExecutingStack.peek().remainingExecutionTime;
-                Time expectedCompletionTime = nextEventOnStackFireTime.add(_physicalTimeExecutionStarted);
-                Time fireAtTime = executiveDirector.fireAt(container, expectedCompletionTime);
+                Time expectedCompletionTime = nextEventOnStackFireTime
+                        .add(_physicalTimeExecutionStarted);
+                Time fireAtTime = executiveDirector.fireAt(container,
+                        expectedCompletionTime);
                 if (!fireAtTime.equals(expectedCompletionTime)) {
-                    throw new IllegalActionException(executiveDirector,
+                    throw new IllegalActionException(
+                            executiveDirector,
                             "Ptides director requires refiring at time "
-                            + expectedCompletionTime
-                            + ", but the enclosing director replied that it will refire at time "
-                            + fireAtTime);
+                                    + expectedCompletionTime
+                                    + ", but the enclosing director replied that it will refire at time "
+                                    + fireAtTime);
                 }
                 // Currently executing actor needs more execution time.
                 // Decide whether to preempt it.
@@ -1217,14 +1283,14 @@ public class PtidesBasicDirector extends DEDirector {
         }
         Time executionTime = new Time(this, _getExecutionTime(ioport));
 
-        if (executionTime.compareTo(_zero) == 0 ) {
+        if (executionTime.compareTo(_zero) == 0) {
             // If execution time is zero, return the actor.
             // It will be fired now.
             setTag(timeStampOfEventFromQueue, microstepOfEventFromQueue);
 
             // Request a refiring so we can process the next event
             // on the event queue at the current physical time.
-            executiveDirector.fireAtCurrentTime((Actor)container);
+            executiveDirector.fireAtCurrentTime((Actor) container);
 
             return actorToFire;
         } else {
@@ -1233,42 +1299,49 @@ public class PtidesBasicDirector extends DEDirector {
             // and return null.
 
             Time expectedCompletionTime = physicalTime.add(executionTime);
-            Time fireAtTime = executiveDirector.fireAt(container, expectedCompletionTime);
+            Time fireAtTime = executiveDirector.fireAt(container,
+                    expectedCompletionTime);
 
             if (!fireAtTime.equals(expectedCompletionTime)) {
-                throw new IllegalActionException(actorToFire, executiveDirector,
+                throw new IllegalActionException(
+                        actorToFire,
+                        executiveDirector,
                         "Ptides director requires refiring at time "
-                        + expectedCompletionTime
-                        + ", but the enclosing director replied that it will refire at time "
-                        + fireAtTime);
+                                + expectedCompletionTime
+                                + ", but the enclosing director replied that it will refire at time "
+                                + fireAtTime);
             }
 
             // If we are preempting a current execution, then
             // update information of the preempted event.
             if (!_currentlyExecutingStack.isEmpty()) {
                 // We are preempting a current execution.
-                DoubleTimedEvent currentEventList = _currentlyExecutingStack.peek();
-                Time elapsedTime = physicalTime.subtract(_physicalTimeExecutionStarted);
-                currentEventList.remainingExecutionTime
-                = currentEventList.remainingExecutionTime.subtract(elapsedTime);
+                DoubleTimedEvent currentEventList = _currentlyExecutingStack
+                        .peek();
+                Time elapsedTime = physicalTime
+                        .subtract(_physicalTimeExecutionStarted);
+                currentEventList.remainingExecutionTime = currentEventList.remainingExecutionTime
+                        .subtract(elapsedTime);
                 if (currentEventList.remainingExecutionTime.compareTo(_zero) < 0) {
                     // This should not occur.
-                    throw new IllegalActionException(this,
-                            _getActorFromEventList((List<DEEvent>)currentEventList.contents),
-                    "Remaining execution is negative!");
+                    throw new IllegalActionException(
+                            this,
+                            _getActorFromEventList((List<DEEvent>) currentEventList.contents),
+                            "Remaining execution is negative!");
                 }
                 if (_debugging) {
                     _debug("Preempting actor "
-                            + _getActorFromEventList((List<DEEvent>)currentEventList.contents)
-                            .getName((NamedObj)container)
-                            + " at physical time "
-                            + physicalTime
+                            + _getActorFromEventList(
+                                    (List<DEEvent>) currentEventList.contents)
+                                    .getName((NamedObj) container)
+                            + " at physical time " + physicalTime
                             + ", which has remaining execution time "
                             + currentEventList.remainingExecutionTime);
                 }
             }
-            _currentlyExecutingStack.push(new DoubleTimedEvent(timeStampOfEventFromQueue,
-                    microstepOfEventFromQueue, eventsToProcess, executionTime));
+            _currentlyExecutingStack.push(new DoubleTimedEvent(
+                    timeStampOfEventFromQueue, microstepOfEventFromQueue,
+                    eventsToProcess, executionTime));
             _physicalTimeExecutionStarted = physicalTime;
 
             // Animate if appropriate.
@@ -1289,12 +1362,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return Actor associated with the event.
      *  @exception IllegalActionException
      */
-    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
+    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events)
+            throws IllegalActionException {
         DEEvent eventInList = events.get(0);
         DEEvent eventInQueue = _eventQueue.get();
-        if (!(eventInList.hasTheSameTagAs(eventInQueue) &&  (eventInQueue.actor() == eventInList.actor()))) {
-            throw new IllegalActionException("The event passed in is not the top event " +
-            "in the event queue, Probably need to overwrite this method. ");
+        if (!(eventInList.hasTheSameTagAs(eventInQueue) && (eventInQueue
+                .actor() == eventInList.actor()))) {
+            throw new IllegalActionException(
+                    "The event passed in is not the top event "
+                            + "in the event queue, Probably need to overwrite this method. ");
         }
         return super._getNextActorToFire();
     }
@@ -1340,10 +1416,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return realTimeDelay parameter
      *  @exception IllegalActionException
      */
-    protected double _getRealTimeDelay(IOPort port) throws IllegalActionException {
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("realTimeDelay");
+    protected double _getRealTimeDelay(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("realTimeDelay");
         if (parameter != null) {
-            return ((DoubleToken)parameter.getToken()).doubleValue();
+            return ((DoubleToken) parameter.getToken()).doubleValue();
         } else {
             return 0.0;
         }
@@ -1357,15 +1435,15 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If the animateExecution
      *   parameter cannot be evaluated.
      */
-    protected void _highlightActor(Actor actor, String color) throws IllegalActionException {
-        if (((BooleanToken)animateExecution.getToken()).booleanValue()) {
-            String completeMoML =
-                "<property name=\"_highlightColor\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
-                color +
-                "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, (NamedObj)actor, completeMoML);
+    protected void _highlightActor(Actor actor, String color)
+            throws IllegalActionException {
+        if (((BooleanToken) animateExecution.getToken()).booleanValue()) {
+            String completeMoML = "<property name=\"_highlightColor\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                    + color + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    (NamedObj) actor, completeMoML);
             Actor container = (Actor) getContainer();
-            ((TypedCompositeActor)container).requestChange(request);
+            ((TypedCompositeActor) container).requestChange(request);
         }
     }
 
@@ -1402,15 +1480,20 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException
      *  @see #_setTimedInterrupt(Time)
      */
-    protected boolean _safeToProcess(DEEvent event) throws IllegalActionException {
+    protected boolean _safeToProcess(DEEvent event)
+            throws IllegalActionException {
         IOPort port = event.ioPort();
         if (port != null) {
-            int channel = ((DETokenEvent)event).channel();
-            Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
+            int channel = ((DETokenEvent) event).channel();
+            Parameter parameter = (Parameter) ((NamedObj) port)
+                    .getAttribute("minDelay");
             if (parameter != null) {
-                DoubleToken token = ((DoubleToken)((ArrayToken)parameter.getToken()).arrayValue()[channel]);
-                Time waitUntilPhysicalTime = event.timeStamp().subtract(token.doubleValue());
-                if (_getPhysicalTime().subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0) {
+                DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
+                        .getToken()).arrayValue()[channel]);
+                Time waitUntilPhysicalTime = event.timeStamp().subtract(
+                        token.doubleValue());
+                if (_getPhysicalTime().subtract(waitUntilPhysicalTime)
+                        .compareTo(_zero) >= 0) {
                     return true;
                 } else {
                     _setTimedInterrupt(waitUntilPhysicalTime);
@@ -1436,22 +1519,21 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If the <i>animateExecution</i> parameter
      *   cannot be evaluated.
      */
-    protected void _setIcon(String moml, boolean clearFirst) throws IllegalActionException {
-        if (((BooleanToken)animateExecution.getToken()).booleanValue()) {
-            String completeMoML =
-                "<property name=\"_icon\" class=\"ptolemy.vergil.icon.EditorIcon\">" +
-                moml +
-                "</property>";
+    protected void _setIcon(String moml, boolean clearFirst)
+            throws IllegalActionException {
+        if (((BooleanToken) animateExecution.getToken()).booleanValue()) {
+            String completeMoML = "<property name=\"_icon\" class=\"ptolemy.vergil.icon.EditorIcon\">"
+                    + moml + "</property>";
             if (clearFirst && getAttribute("_icon") != null) {
                 // If we are running under MoMLSimpleApplication, then the _icon might not
                 // be present, so check before trying to delete it.
                 completeMoML = "<group><!-- PtidesBasicDirector --><deleteProperty name=\"_icon\"/>"
-                    + completeMoML
-                    + "</group>";
+                        + completeMoML + "</group>";
             }
-            MoMLChangeRequest request = new MoMLChangeRequest(this, this, completeMoML);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, this,
+                    completeMoML);
             Actor container = (Actor) getContainer();
-            ((TypedCompositeActor)container).requestChange(request);
+            ((TypedCompositeActor) container).requestChange(request);
         }
     }
 
@@ -1461,9 +1543,9 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected void _setTimedInterrupt(Time wakeUpTime) {
         Actor container = (Actor) getContainer();
-        Director executiveDirector = ((Actor)container).getExecutiveDirector();
+        Director executiveDirector = ((Actor) container).getExecutiveDirector();
         try {
-            executiveDirector.fireAt((Actor)container, wakeUpTime);
+            executiveDirector.fireAt((Actor) container, wakeUpTime);
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }
@@ -1483,10 +1565,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  the same equivalence class.
      *  @exception IllegalActionException
      */
-    protected void _trackLastTagConsumedByActor(DEEvent event) throws IllegalActionException {
+    protected void _trackLastTagConsumedByActor(DEEvent event)
+            throws IllegalActionException {
         NamedObj obj = event.ioPort();
         if (obj == null) {
-            obj= (NamedObj) event.actor();
+            obj = (NamedObj) event.actor();
         }
 
         // FIXME: this is sort of a hack. We have this because the network inteface may receive
@@ -1502,21 +1585,31 @@ public class PtidesBasicDirector extends DEDirector {
         if (prevTag != null) {
             if (tag.compareTo(prevTag) <= 0) {
                 if (obj instanceof Actor) {
-                    throw new IllegalActionException("Safe to process return the wrong " +
-                            "answer earlier. At Actor: " + obj.getName() +
-                            ", the tag of the previous processed event is: timestamp = " +
-                            prevTag.timestamp + ", microstep = " + prevTag.microstep +
-                            ". The tag of the current event is: timestamp = " +
-                            tag.timestamp + ", microstep = " + tag.microstep + ". ");
+                    throw new IllegalActionException(
+                            "Safe to process return the wrong "
+                                    + "answer earlier. At Actor: "
+                                    + obj.getName()
+                                    + ", the tag of the previous processed event is: timestamp = "
+                                    + prevTag.timestamp
+                                    + ", microstep = "
+                                    + prevTag.microstep
+                                    + ". The tag of the current event is: timestamp = "
+                                    + tag.timestamp + ", microstep = "
+                                    + tag.microstep + ". ");
                 } else {
-                    throw new IllegalActionException("Safe to process return the wrong " +
-                            "answer earlier. At Actor: " +
-                            ((IOPort) obj).getContainer().getName() + ", Port "
-                            + obj.getName() +
-                            ", the tag of the previous processed event is: timestamp = " +
-                            prevTag.timestamp + ", microstep = " + prevTag.microstep +
-                            ". The tag of the current event is: timestamp = " +
-                            tag.timestamp + ", microstep = " + tag.microstep + ". ");
+                    throw new IllegalActionException(
+                            "Safe to process return the wrong "
+                                    + "answer earlier. At Actor: "
+                                    + ((IOPort) obj).getContainer().getName()
+                                    + ", Port "
+                                    + obj.getName()
+                                    + ", the tag of the previous processed event is: timestamp = "
+                                    + prevTag.timestamp
+                                    + ", microstep = "
+                                    + prevTag.microstep
+                                    + ". The tag of the current event is: timestamp = "
+                                    + tag.timestamp + ", microstep = "
+                                    + tag.microstep + ". ");
                 }
             }
         }
@@ -1537,12 +1630,13 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
      */
-    protected boolean _transferInputs(IOPort port) throws IllegalActionException {
+    protected boolean _transferInputs(IOPort port)
+            throws IllegalActionException {
 
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferInputs on a port is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         boolean result = false;
@@ -1560,20 +1654,24 @@ public class PtidesBasicDirector extends DEDirector {
                 break;
             }
 
-            RealTimeEvent realTimeEvent = (RealTimeEvent)_realTimeOutputEventQueue.peek();
+            RealTimeEvent realTimeEvent = (RealTimeEvent) _realTimeOutputEventQueue
+                    .peek();
             int compare = realTimeEvent.deliveryTime.compareTo(physicalTime);
 
             if (compare > 0) {
                 break;
             } else if (compare == 0) {
                 // FIXME: Are these needed here?
-                Parameter parameter = (Parameter)((NamedObj) realTimeEvent.port).getAttribute("realTimeDelay");
+                Parameter parameter = (Parameter) ((NamedObj) realTimeEvent.port)
+                        .getAttribute("realTimeDelay");
                 double realTimeDelay = 0.0;
                 if (parameter != null) {
-                    realTimeDelay = ((DoubleToken)parameter.getToken()).doubleValue();
+                    realTimeDelay = ((DoubleToken) parameter.getToken())
+                            .doubleValue();
                 } else {
                     // this shouldn't happen.
-                    throw new IllegalActionException("real time delay should not be 0.0");
+                    throw new IllegalActionException(
+                            "real time delay should not be 0.0");
                 }
 
                 Time lastModelTime = _currentTime;
@@ -1583,15 +1681,18 @@ public class PtidesBasicDirector extends DEDirector {
                     // on the fact every network input port is directly connected to a networkInputDevice,
                     // which will set the correct timestamp associated with the token.
                     _realTimeOutputEventQueue.poll();
-                    realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
+                    realTimeEvent.port.sendInside(realTimeEvent.channel,
+                            realTimeEvent.token);
                 } else {
                     int lastMicrostep = _microstep;
                     // Since the event comes from a sensor, and we assume no sensor
                     // will produce two events of the same timestamp, the microstep
                     // of the new event is set to 0.
-                    setTag(realTimeEvent.deliveryTime.subtract(realTimeDelay), 0);
+                    setTag(realTimeEvent.deliveryTime.subtract(realTimeDelay),
+                            0);
                     _realTimeOutputEventQueue.poll();
-                    realTimeEvent.port.sendInside(realTimeEvent.channel, realTimeEvent.token);
+                    realTimeEvent.port.sendInside(realTimeEvent.channel,
+                            realTimeEvent.token);
                     setTag(lastModelTime, lastMicrostep);
                 }
                 if (_debugging) {
@@ -1602,17 +1703,21 @@ public class PtidesBasicDirector extends DEDirector {
 
             } else {
                 // FIXME: we should probably do something else here.
-                throw new IllegalArgumentException("missed transferring at the sensor. " +
-                        "Should transfer input at time = "
-                        + realTimeEvent.deliveryTime + ", and current physical time = " + physicalTime);
+                throw new IllegalArgumentException(
+                        "missed transferring at the sensor. "
+                                + "Should transfer input at time = "
+                                + realTimeEvent.deliveryTime
+                                + ", and current physical time = "
+                                + physicalTime);
             }
         }
 
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("realTimeDelay");
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("realTimeDelay");
         // realTimeDelay is default to 0.0;
         double realTimeDelay = 0.0;
         if (parameter != null) {
-            realTimeDelay = ((DoubleToken)parameter.getToken()).doubleValue();
+            realTimeDelay = ((DoubleToken) parameter.getToken()).doubleValue();
         }
         if (realTimeDelay == 0.0) {
             Time lastModelTime = _currentTime;
@@ -1633,14 +1738,17 @@ public class PtidesBasicDirector extends DEDirector {
                     if (i < port.getWidthInside()) {
                         if (port.hasToken(i)) {
                             Token t = port.get(i);
-                            Time waitUntilTime = physicalTime.add(realTimeDelay);
-                            RealTimeEvent realTimeEvent = new RealTimeEvent(port, i, t, waitUntilTime);
+                            Time waitUntilTime = physicalTime
+                                    .add(realTimeDelay);
+                            RealTimeEvent realTimeEvent = new RealTimeEvent(
+                                    port, i, t, waitUntilTime);
                             _realTimeOutputEventQueue.add(realTimeEvent);
                             result = true;
 
                             // wait until physical time to transfer the token into the platform
                             Actor container = (Actor) getContainer();
-                            container.getExecutiveDirector().fireAt((Actor)container, waitUntilTime);
+                            container.getExecutiveDirector().fireAt(
+                                    (Actor) container, waitUntilTime);
                         }
                     }
                 } catch (NoTokenException ex) {
@@ -1664,11 +1772,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  with the port and channel into the actuator event queue, and call fireAt of the executive
      *  director so we could send it at a later physical time.
      */
-    protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
+    protected boolean _transferOutputs(IOPort port)
+            throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
-                    + "is not an opaque input port.");
+                            + "is not an opaque input port.");
         }
 
         // first check for current time, and transfer any tokens that are already ready to output.
@@ -1686,29 +1795,32 @@ public class PtidesBasicDirector extends DEDirector {
             if (_realTimeInputEventQueue.isEmpty()) {
                 break;
             }
-            RealTimeEvent tokenEvent = (RealTimeEvent)_realTimeInputEventQueue.peek();
+            RealTimeEvent tokenEvent = (RealTimeEvent) _realTimeInputEventQueue
+                    .peek();
             compare = tokenEvent.deliveryTime.compareTo(physicalTime);
 
             if (compare > 0) {
                 break;
             } else if (compare == 0) {
                 if (_isNetworkPort(tokenEvent.port)) {
-                    throw new IllegalActionException("transferring network event from the"
-                            + "actuator event queue");
+                    throw new IllegalActionException(
+                            "transferring network event from the"
+                                    + "actuator event queue");
                 }
                 _realTimeInputEventQueue.poll();
                 tokenEvent.port.send(tokenEvent.channel, tokenEvent.token);
                 if (_debugging) {
-                    _debug(getName(), "transferring output "
-                            + tokenEvent.token
-                            + " from "
-                            + tokenEvent.port.getName());
+                    _debug(getName(), "transferring output " + tokenEvent.token
+                            + " from " + tokenEvent.port.getName());
                 }
                 result = true;
             } else if (compare < 0) {
                 // FIXME: we should probably do something else here.
-                throw new IllegalArgumentException("missed deadline at the actuator. Deadline = "
-                        + tokenEvent.deliveryTime + ", and current physical time = " + physicalTime);
+                throw new IllegalArgumentException(
+                        "missed deadline at the actuator. Deadline = "
+                                + tokenEvent.deliveryTime
+                                + ", and current physical time = "
+                                + physicalTime);
             }
         }
 
@@ -1735,9 +1847,12 @@ public class PtidesBasicDirector extends DEDirector {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 if (port.hasTokenInside(i)) {
                     // FIXME: we should probably do something else here.
-                    throw new IllegalArgumentException("missed deadline at the actuator at port: " +
-                            port.getName() + ". Deadline = "
-                            + _currentTime + ", and current physical time = " + physicalTime);
+                    throw new IllegalArgumentException(
+                            "missed deadline at the actuator at port: "
+                                    + port.getName() + ". Deadline = "
+                                    + _currentTime
+                                    + ", and current physical time = "
+                                    + physicalTime);
                 }
             }
         } else {
@@ -1745,11 +1860,13 @@ public class PtidesBasicDirector extends DEDirector {
                 try {
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
-                        RealTimeEvent tokenEvent = new RealTimeEvent(port, i, t, _currentTime);
+                        RealTimeEvent tokenEvent = new RealTimeEvent(port, i,
+                                t, _currentTime);
                         _realTimeInputEventQueue.add(tokenEvent);
                         // wait until physical time to transfer the output to the actuator
                         Actor container = (Actor) getContainer();
-                        container.getExecutiveDirector().fireAt((Actor)container, _currentTime);
+                        container.getExecutiveDirector().fireAt(
+                                (Actor) container, _currentTime);
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
@@ -1780,17 +1897,20 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return The min delay associated with this port channel pair.
      *  @exception IllegalActionException
      */
-    private static double _getMinDelayForPortChannel(IOPort inputPort, Integer channel,
-            Map<IOPort, Map<Integer, SuperdenseDependency>> inputModelTimeDelays) throws IllegalActionException {
+    private static double _getMinDelayForPortChannel(IOPort inputPort,
+            Integer channel,
+            Map<IOPort, Map<Integer, SuperdenseDependency>> inputModelTimeDelays)
+            throws IllegalActionException {
         SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
         // for each port that's in the same equivalence class as the input port,
-        for (IOPort port : (Collection<IOPort>)_finiteEquivalentPorts(inputPort)) {
-            Map<Integer, SuperdenseDependency> channelDependency =
-                (Map<Integer, SuperdenseDependency>)inputModelTimeDelays.get(port);
+        for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
+            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
+                    .get(port);
             if (channelDependency != null) {
                 for (Integer integer : channelDependency.keySet()) {
                     if (!(port == inputPort && integer == channel)) {
-                        SuperdenseDependency candidate = channelDependency.get(integer);
+                        SuperdenseDependency candidate = channelDependency
+                                .get(integer);
                         if (smallestDependency.compareTo(candidate) > 0) {
                             smallestDependency = candidate;
                         }
@@ -1806,10 +1926,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return relativeDeadline parameter
      *  @exception IllegalActionException
      */
-    private double _getRelativeDeadline(IOPort port) throws IllegalActionException {
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("relativeDeadline");
+    private double _getRelativeDeadline(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("relativeDeadline");
         if (parameter != null) {
-            return ((DoubleToken)parameter.getToken()).doubleValue();
+            return ((DoubleToken) parameter.getToken()).doubleValue();
         } else {
             return Double.NEGATIVE_INFINITY;
         }
@@ -1820,21 +1942,25 @@ public class PtidesBasicDirector extends DEDirector {
      *  platform is by default an actuator port.
      * @exception IllegalActionException
      */
-    private static boolean _isNetworkPort(IOPort port) throws IllegalActionException {
-        Parameter parameter = (Parameter)((NamedObj) port).getAttribute("networkPort");
+    private static boolean _isNetworkPort(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("networkPort");
         if (parameter != null) {
-            return ((BooleanToken)parameter.getToken()).booleanValue();
+            return ((BooleanToken) parameter.getToken()).booleanValue();
         }
         return false;
     }
 
-    private static void _setMinDelay(IOPort inputPort, double[] minDelays) throws IllegalActionException {
-        Parameter parameter = (Parameter)(inputPort).getAttribute("minDelay");
+    private static void _setMinDelay(IOPort inputPort, double[] minDelays)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) (inputPort).getAttribute("minDelay");
         if (parameter == null) {
             try {
                 parameter = new Parameter(inputPort, "minDelay");
             } catch (NameDuplicationException e) {
-                throw new IllegalActionException("A minDelay parameter already exists");
+                throw new IllegalActionException(
+                        "A minDelay parameter already exists");
             }
         }
         DoubleToken[] tokens = new DoubleToken[minDelays.length];
@@ -1890,7 +2016,8 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param executingEvents The events to execute.
          *  @param executionTime The execution time of the actor.
          */
-        public DoubleTimedEvent(Time timeStamp, int microstep, Object executingEvents, Time executionTime) {
+        public DoubleTimedEvent(Time timeStamp, int microstep,
+                Object executingEvents, Time executionTime) {
             super(timeStamp, executingEvents);
             this.microstep = microstep;
             remainingExecutionTime = executionTime;
@@ -1905,7 +2032,7 @@ public class PtidesBasicDirector extends DEDirector {
         /** Converts the executing event to a string. */
         public String toString() {
             return super.toString() + ", microstep = " + microstep
-            + ", remainingExecutionTime = " + remainingExecutionTime;
+                    + ", remainingExecutionTime = " + remainingExecutionTime;
         }
     }
 
@@ -1919,7 +2046,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param port The port.
          *  @param dependency The Dependency.
          */
-        public PortDependency (IOPort port, Dependency dependency) {
+        public PortDependency(IOPort port, Dependency dependency) {
             this.port = port;
             this.dependency = dependency;
         }
@@ -1946,22 +2073,24 @@ public class PtidesBasicDirector extends DEDirector {
          */
         public int compareTo(Object arg0) {
             PortDependency portDependency = (PortDependency) arg0;
-            if (this.dependency.compareTo(portDependency.dependency) > 0)
+            if (this.dependency.compareTo(portDependency.dependency) > 0) {
                 return 1;
-            else if (this.dependency.compareTo(portDependency.dependency) < 0)
+            } else if (this.dependency.compareTo(portDependency.dependency) < 0) {
                 return -1;
-            else
+            } else {
                 return 0;
+            }
         }
 
         /** Checks if this PortDependency is the same as another.
          *  @param arg0 The object checking against.
          */
         public boolean equals(Object arg0) {
-            if (compareTo(arg0) == 0)
+            if (compareTo(arg0) == 0) {
                 return true;
-            else
+            } else {
                 return false;
+            }
         }
     }
 
@@ -1979,7 +2108,8 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param token The token to be delivered.
          *  @param timestamp The time of delivery of this token.
          */
-        public RealTimeEvent(IOPort port, int channel, Token token, Time timestamp) {
+        public RealTimeEvent(IOPort port, int channel, Token token,
+                Time timestamp) {
             this.port = port;
             this.channel = channel;
             this.token = token;
@@ -2003,7 +2133,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param other The object comparing to.
          */
         public int compareTo(Object other) {
-            return deliveryTime.compareTo(((RealTimeEvent)other).deliveryTime);
+            return deliveryTime.compareTo(((RealTimeEvent) other).deliveryTime);
         }
     }
 }

@@ -167,24 +167,24 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         Dimension newSize = null;
                         if (width >= 0 && height >= 0) {
                             newSize = new Dimension(width, height);
-                            SizeAttribute sizeAttribute =
-                                (SizeAttribute) model.getAttribute(
-                                        "_vergilSize", SizeAttribute.class);
+                            SizeAttribute sizeAttribute = (SizeAttribute) model
+                                    .getAttribute("_vergilSize",
+                                            SizeAttribute.class);
                             if (sizeAttribute == null) {
                                 sizeAttribute = new SizeAttribute(model,
                                         "_vergilSize");
                             }
-                            sizeAttribute.setExpression("[" + newSize.width +
-                                    ", " + newSize.height + "]");
+                            sizeAttribute.setExpression("[" + newSize.width
+                                    + ", " + newSize.height + "]");
                         }
 
                         Tableau tableau = _tableaus[i];
                         boolean reopen = ((BooleanToken) reopenWindow
                                 .getToken()).booleanValue();
                         boolean modelChanged;
-                        if (tableau == null || reopen
-                                || !(tableau.getFrame() instanceof
-                                        BasicGraphFrame)) {
+                        if (tableau == null
+                                || reopen
+                                || !(tableau.getFrame() instanceof BasicGraphFrame)) {
                             if (tableau != null) {
                                 tableau.close();
                             }
@@ -193,9 +193,9 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             _tableaus[i] = tableau;
                             modelChanged = false;
                         } else {
-                            GTFrameTools.changeModel(
-                                    (BasicGraphFrame) tableau.getFrame(),
-                                    (CompositeEntity) model, true, true);
+                            GTFrameTools.changeModel((BasicGraphFrame) tableau
+                                    .getFrame(), (CompositeEntity) model, true,
+                                    true);
                             modelChanged = true;
                         }
 
@@ -203,8 +203,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             JFrame frame = tableau.getFrame();
 
                             // Compute location of the new frame.
-                            IntMatrixToken location =
-                                (IntMatrixToken) screenLocation.getToken();
+                            IntMatrixToken location = (IntMatrixToken) screenLocation
+                                    .getToken();
                             int x = location.getElementAt(0, 0);
                             int y = location.getElementAt(0, 1);
                             Point newLocation;

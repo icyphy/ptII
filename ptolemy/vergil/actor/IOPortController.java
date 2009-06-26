@@ -108,9 +108,9 @@ public class IOPortController extends AttributeController {
 
         setNodeRenderer(new EntityPortRenderer());
 
-//        // "Listen to Actor"
-//        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-//                new ListenToPortAction()));
+        //        // "Listen to Actor"
+        //        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+        //                new ListenToPortAction()));
 
         // Ports of entities do not use a selection interactor with
         // the same selection model as the rest of the first level figures.
@@ -247,17 +247,17 @@ public class IOPortController extends AttributeController {
      *  SwingUtilities.SOUTH, or SwingUtilities.WEST.
      */
     public static int getDirection(int portRotation) {
-            int direction;
-            if (portRotation == 90 || portRotation == -270) {
-                    direction = SwingConstants.NORTH;
-            } else if (portRotation == 180 || portRotation == -180) {
-                    direction = SwingConstants.EAST;
-            } else if (portRotation == 270 || portRotation == -90) {
-                    direction = SwingConstants.SOUTH;
-            } else {
-                    direction = SwingConstants.WEST;
-            }
-            return direction;
+        int direction;
+        if (portRotation == 90 || portRotation == -270) {
+            direction = SwingConstants.NORTH;
+        } else if (portRotation == 180 || portRotation == -180) {
+            direction = SwingConstants.EAST;
+        } else if (portRotation == 270 || portRotation == -90) {
+            direction = SwingConstants.SOUTH;
+        } else {
+            direction = SwingConstants.WEST;
+        }
+        return direction;
     }
 
     /** Return one of {-270, -180, -90, 0, 90, 180, 270} specifying
@@ -275,7 +275,7 @@ public class IOPortController extends AttributeController {
      *  @see ptolemy.vergil.actor.IOPortController#getCardinality(Port)
      */
     protected static int _getCardinality(Port port) {
-            return getCardinality(port);
+        return getCardinality(port);
     }
 
     /**
@@ -295,9 +295,8 @@ public class IOPortController extends AttributeController {
      *  @see ptolemy.vergil.actor.IOPortController#getDirection(int)
      */
     protected static int _getDirection(int portRotation) {
-            return getDirection(portRotation);
+        return getDirection(portRotation);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

@@ -183,7 +183,8 @@ public class GiottoCodeGeneratorUtilities {
      *  @return True if the given actor has at least on connected input port.
      * @exception IllegalActionException
      */
-    public static boolean needsInputDriver(Actor actor) throws IllegalActionException {
+    public static boolean needsInputDriver(Actor actor)
+            throws IllegalActionException {
         boolean retVal = false;
         Iterator inPorts = actor.inputPortList().iterator();
 
@@ -712,8 +713,8 @@ public class GiottoCodeGeneratorUtilities {
         }
 
         code.append("        schedule CG" + taskName + "_Task("
-                + inputPorts.toString()
-                + portSeparator + outputPorts + ")\n" + "}\n");
+                + inputPorts.toString() + portSeparator + outputPorts + ")\n"
+                + "}\n");
 
         return code.toString();
     }

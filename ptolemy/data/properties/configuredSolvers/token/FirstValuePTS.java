@@ -34,7 +34,8 @@ import ptolemy.kernel.util.Settable;
 
 public class FirstValuePTS extends PropertyTokenSolver {
 
-    public FirstValuePTS(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public FirstValuePTS(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         useCase.setExpression("firstValueToken");
         useCase.setVisibility(Settable.NOT_EDITABLE);

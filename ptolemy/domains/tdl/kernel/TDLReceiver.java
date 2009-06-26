@@ -51,201 +51,203 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
-        /**
-         * Construct an empty TDLReceiver with no container.
-         */
-        public TDLReceiver() {
-                super();
+    /**
+     * Construct an empty TDLReceiver with no container.
+     */
+    public TDLReceiver() {
+        super();
+    }
+
+    /**
+     * Construct an empty TDLReceiver with the specified container.
+     *
+     * @param container
+     *            The container.
+     * @exception IllegalActionException
+     *                If the container does not accept this receiver.
+     */
+    public TDLReceiver(IOPort container) throws IllegalActionException {
+        super(container);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Clear this receiver of any contained tokens. FIXME. Should rename and
+     * replace all the reset() with clear().
+     */
+    public void clear() {
+        reset();
+    }
+
+    /** Return a list with the token currently in the receiver, or
+     *  an empty list if there is no such token.
+     *  @return A list of instances of Token.
+     */
+    public List<Token> elementList() {
+        List<Token> result = new LinkedList<Token>();
+        if (_token != null) {
+            result.add(_token);
+        }
+        return result;
+    }
+
+    /**
+     * Get the contained and available token, i.e., get the last token that has
+     * been put into the receiver before the last update.
+     *
+     * @return A token.
+     * @exception NoTokenException
+     *                If no token is available.
+     */
+    public Token get() throws NoTokenException {
+        if (_token == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get data from an empty receiver.");
         }
 
-        /**
-         * Construct an empty TDLReceiver with the specified container.
-         *
-         * @param container
-         *            The container.
-         * @exception IllegalActionException
-         *                If the container does not accept this receiver.
-         */
-        public TDLReceiver(IOPort container) throws IllegalActionException {
-                super(container);
+        return _token;
+    }
+
+    /**
+     * Return true, since writing to this receiver is always allowed.
+     *
+     * @return True.
+     */
+    public boolean hasRoom() {
+        return true;
+    }
+
+    /**
+     * Return true, since writing to this receiver is always allowed.
+     *
+     * @param numberOfTokens
+     *            The size of tokens to be written to the receiver.
+     * @return True.
+     */
+    public final boolean hasRoom(int numberOfTokens) {
+        return true;
+    }
+
+    /**
+     * Return true if there is a token available. A token is available whenever
+     * put() has been called at least once followed by a call to the update()
+     * method.
+     *
+     * @return True if there is a token available.
+     */
+    public boolean hasToken() {
+        return (_token != null);
+    }
+
+    /**
+     * Return true if the receiver has at least one token available. Any number
+     * of calls to get() is allowed and will return the same available token.
+     *
+     * @param numberOfTokens
+     *            The number of tokens available in this receiver.
+     * @return True if there is a token available.
+     */
+    public final boolean hasToken(int numberOfTokens) {
+        return (_token != null);
+    }
+
+    /**
+     * Put a token into this receiver. Any token which has been put into the
+     * receiver before without calling update will be lost. The token becomes
+     * available to the get() method only after update() is called.
+     * <p>
+     * Note that putting a null into this receiver will leave the receiver empty
+     * after update. The receiver does not check against this but expects that
+     * IOPort will always put non-null tokens into receivers.
+     *
+     * @param token
+     *            The token to be put into this receiver.
+     * @exception NoRoomException
+     *                Not thrown in this base class.
+     */
+    public void put(Token token) throws NoRoomException {
+        if (token == null) {
+            return;
+        }
+        _nextToken = token;
+    }
+
+    /**
+     * Get the contained and available token, i.e., get the last token that has
+     * been put into the receiver before the last update and reset the _token
+     * only.
+     *
+     * @return A token.
+     * @exception NoTokenException
+     *                If no token is available.
+     */
+    public Token remove() throws NoTokenException {
+        if (_token == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get data from an empty receiver.");
         }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
+        Token buffer = _token;
+        _token = null;
+        return buffer;
+    }
 
-        /**
-         * Clear this receiver of any contained tokens. FIXME. Should rename and
-         * replace all the reset() with clear().
-         */
-        public void clear() {
-                reset();
+    /**
+     * Reset the receiver by removing all tokens from the receiver.
+     */
+    public void reset() {
+        _token = null;
+        _nextToken = null;
+    }
+
+    /**
+     * Update the receiver by making the last token that has been passed to
+     * put() available to get().
+     */
+    public void update() {
+        if (_nextToken == null) {
+            return;
         }
+        _token = _nextToken;
+    }
 
-        /** Return a list with the token currently in the receiver, or
-         *  an empty list if there is no such token.
-         *  @return A list of instances of Token.
-         */
-        public List<Token> elementList() {
-            List<Token> result = new LinkedList<Token>();
-            if (_token != null) {
-                result.add(_token);
-            }
-            return result;
-        }
+    /**
+     * Set the initial value of the receiver.
+     * @param token The initial token.
+     */
+    public void init(Token token) {
+        _token = token;
+    }
 
-        /**
-         * Get the contained and available token, i.e., get the last token that has
-         * been put into the receiver before the last update.
-         *
-         * @return A token.
-         * @exception NoTokenException
-         *                If no token is available.
-         */
-        public Token get() throws NoTokenException {
-                if (_token == null) {
-                        throw new NoTokenException(getContainer(),
-                                        "Attempt to get data from an empty receiver.");
-                }
+    /**
+     * access method for the token, for testing purposes.
+     *
+     * TODO remove.
+     * @return The token.
+     */
+    public Token getTok() {
+        return _token;
+    }
 
-                return _token;
-        }
+    /**
+     * Copy tokens to another receiver. This is used in a mode switch if the same task
+     * exists in the target mode.
+     * @param newReceiver Receiver that gets the copied tokens.
+     */
+    public void copyTokensTo(TDLReceiver newReceiver) {
+        newReceiver._nextToken = this._nextToken;
+        newReceiver._token = this._token;
 
-        /**
-         * Return true, since writing to this receiver is always allowed.
-         *
-         * @return True.
-         */
-        public boolean hasRoom() {
-                return true;
-        }
+    }
 
-        /**
-         * Return true, since writing to this receiver is always allowed.
-         *
-         * @param numberOfTokens
-         *            The size of tokens to be written to the receiver.
-         * @return True.
-         */
-        public final boolean hasRoom(int numberOfTokens) {
-                return true;
-        }
-
-        /**
-         * Return true if there is a token available. A token is available whenever
-         * put() has been called at least once followed by a call to the update()
-         * method.
-         *
-         * @return True if there is a token available.
-         */
-        public boolean hasToken() {
-                return (_token != null);
-        }
-
-        /**
-         * Return true if the receiver has at least one token available. Any number
-         * of calls to get() is allowed and will return the same available token.
-         *
-         * @param numberOfTokens
-         *            The number of tokens available in this receiver.
-         * @return True if there is a token available.
-         */
-        public final boolean hasToken(int numberOfTokens) {
-                return (_token != null);
-        }
-
-        /**
-         * Put a token into this receiver. Any token which has been put into the
-         * receiver before without calling update will be lost. The token becomes
-         * available to the get() method only after update() is called.
-         * <p>
-         * Note that putting a null into this receiver will leave the receiver empty
-         * after update. The receiver does not check against this but expects that
-         * IOPort will always put non-null tokens into receivers.
-         *
-         * @param token
-         *            The token to be put into this receiver.
-         * @exception NoRoomException
-         *                Not thrown in this base class.
-         */
-        public void put(Token token) throws NoRoomException {
-                if (token == null)
-                        return;
-                _nextToken = token;
-        }
-
-        /**
-         * Get the contained and available token, i.e., get the last token that has
-         * been put into the receiver before the last update and reset the _token
-         * only.
-         *
-         * @return A token.
-         * @exception NoTokenException
-         *                If no token is available.
-         */
-        public Token remove() throws NoTokenException {
-                if (_token == null) {
-                        throw new NoTokenException(getContainer(),
-                                        "Attempt to get data from an empty receiver.");
-                }
-
-                Token buffer = _token;
-                _token = null;
-                return buffer;
-        }
-
-        /**
-         * Reset the receiver by removing all tokens from the receiver.
-         */
-        public void reset() {
-                _token = null;
-                _nextToken = null;
-        }
-
-        /**
-         * Update the receiver by making the last token that has been passed to
-         * put() available to get().
-         */
-        public void update() {
-                if (_nextToken == null)
-                        return;
-                _token = _nextToken;
-        }
-
-        /**
-         * Set the initial value of the receiver.
-         * @param token The initial token.
-         */
-        public void init(Token token) {
-                _token = token;
-        }
-
-        /**
-         * access method for the token, for testing purposes.
-         *
-         * TODO remove.
-         * @return The token.
-         */
-        public Token getTok() {
-                return _token;
-        }
-
-        /**
-         * Copy tokens to another receiver. This is used in a mode switch if the same task
-         * exists in the target mode.
-         * @param newReceiver Receiver that gets the copied tokens.
-         */
-        public void copyTokensTo(TDLReceiver newReceiver) {
-                newReceiver._nextToken = this._nextToken;
-                newReceiver._token = this._token;
-
-        }
-
-        ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        /** The next token. */
-        private Token _nextToken = null;
+    /** The next token. */
+    private Token _nextToken = null;
 
-        /** The token available for reading. */
-        private Token _token = null;
+    /** The token available for reading. */
+    private Token _token = null;
 
 }

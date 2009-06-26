@@ -55,15 +55,13 @@ public class Sequence extends AtomicActor {
      * @exception IllegalActionException
      */
     public Sequence(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Sequence actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.Sequence actor) throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
-     }
+    }
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _actor.values);
         return super.constraintList();
     }

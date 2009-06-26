@@ -133,9 +133,12 @@ public class ExecutionTime extends LimitedFiringSource {
                 trigger.get(i);
             }
         }
-        long executionTimeValue = ((LongToken)executionTime.getToken()).longValue();
-        long granularityValue = ((LongToken)granularity.getToken()).longValue();
-        boolean realTimeValue = ((BooleanToken)realTime.getToken()).booleanValue();
+        long executionTimeValue = ((LongToken) executionTime.getToken())
+                .longValue();
+        long granularityValue = ((LongToken) granularity.getToken())
+                .longValue();
+        boolean realTimeValue = ((BooleanToken) realTime.getToken())
+                .booleanValue();
         boolean moreToDo = true;
         long count = 0L;
         while (moreToDo) {

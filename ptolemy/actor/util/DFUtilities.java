@@ -192,7 +192,8 @@ public class DFUtilities {
         }
 
         if (token.isNil()) {
-            throw new IllegalActionException(port, "Port rate parameter value is missing (is nil).");
+            throw new IllegalActionException(port,
+                    "Port rate parameter value is missing (is nil).");
         }
 
         if (token instanceof IntToken) {

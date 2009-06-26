@@ -109,8 +109,8 @@ public class AverageOverTime extends DETransformer {
         DoubleToken currentTime = new DoubleToken(modelTime.getDoubleValue());
         if (_lastToken != null) {
             DoubleToken lastTime = new DoubleToken(_lastTime.getDoubleValue());
-            Token increase = _lastToken.multiply(currentTime.subtract(
-                    lastTime));
+            Token increase = _lastToken
+                    .multiply(currentTime.subtract(lastTime));
             if (_sum == null) {
                 _sum = increase;
             } else {
@@ -153,8 +153,8 @@ public class AverageOverTime extends DETransformer {
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if (!result) {
-            result = input.hasToken(0) || !_lastTime.equals(
-                    getDirector().getModelTime());
+            result = input.hasToken(0)
+                    || !_lastTime.equals(getDirector().getModelTime());
         }
         return result;
     }

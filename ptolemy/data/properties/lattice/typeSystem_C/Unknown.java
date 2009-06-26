@@ -33,7 +33,6 @@ import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Property
 
@@ -51,6 +50,7 @@ public class Unknown extends LatticeProperty implements TypeProperty {
     public Unknown(PropertyLattice lattice) {
         super(lattice);
     }
+
     public Token getMaxValue() {
         return null;
     }
@@ -60,7 +60,7 @@ public class Unknown extends LatticeProperty implements TypeProperty {
     }
 
     public boolean hasMinMaxValue() {
-       return false;
+        return false;
     }
 
     public boolean isAcceptableSolution() {

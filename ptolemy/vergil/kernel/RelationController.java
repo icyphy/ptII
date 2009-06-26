@@ -192,7 +192,8 @@ public class RelationController extends ParameterizedNodeController {
                 IORelation ioRelation = (IORelation) relation;
                 try {
                     boolean isWidthFixed = ioRelation.isWidthFixed();
-                    if ( (isWidthFixed || !ioRelation.needsWidthInference()) && ioRelation.getWidth() > 1) {
+                    if ((isWidthFixed || !ioRelation.needsWidthInference())
+                            && ioRelation.getWidth() > 1) {
                         // Restore width and height to the default to get a reasonable slash.
                         width = 12.0;
                         height = 12.0;
@@ -202,12 +203,14 @@ public class RelationController extends ParameterizedNodeController {
                         Figure lineFigure = new BasicFigure(line, Color.black);
                         result.add(lineFigure);
                         String labelString = (isWidthFixed ? "" : "(")
-                            + ((IORelation) relation).getWidth() + (isWidthFixed ? "" : ")");
-
+                                + ((IORelation) relation).getWidth()
+                                + (isWidthFixed ? "" : ")");
 
                         LabelFigure label = new LabelFigure(labelString,
-                                _relationLabelFont, 0, SwingConstants.SOUTH_WEST);
-                        label.translateTo((width / 2) + 1.0, (-height / 2) - 1.0);
+                                _relationLabelFont, 0,
+                                SwingConstants.SOUTH_WEST);
+                        label.translateTo((width / 2) + 1.0,
+                                (-height / 2) - 1.0);
                         result.add(label);
                     }
                 } catch (IllegalActionException ex) {

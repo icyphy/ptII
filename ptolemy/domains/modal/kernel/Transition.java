@@ -482,8 +482,8 @@ public class Transition extends ComponentRelation {
      */
     public boolean isEnabled(ParserScope scope) throws IllegalActionException {
         ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
-        if (_guardParseTree == null || _guardParseTreeVersion
-                != _workspace.getVersion()) {
+        if (_guardParseTree == null
+                || _guardParseTreeVersion != _workspace.getVersion()) {
             String expr = getGuardExpression();
             // If the expression is empty, interpret this as true.
             if (expr.trim().equals("")) {

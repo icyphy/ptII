@@ -187,7 +187,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
 
     /** The controller that adds commands to the context menu.
      */
-    public /*static*/ class DependencyController extends ActorInstanceController {
+    public/*static*/class DependencyController extends ActorInstanceController {
         // Findbugs suggests making this static, but if this class is static,
         // we can't reference the non-static HighlightDependents class here.
 
@@ -238,7 +238,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
             // been created.
             NamedObj toplevel = actor.toplevel();
             if (toplevel instanceof Actor) {
-                Manager manager = ((Actor)toplevel).getManager();
+                Manager manager = ((Actor) toplevel).getManager();
                 if (manager == null) {
                     try {
                         manager = new Manager(toplevel.workspace(), "manager");

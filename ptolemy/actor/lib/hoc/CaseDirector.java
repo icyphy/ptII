@@ -191,7 +191,7 @@ public class CaseDirector extends Director {
             // If it's a string, use stringValue() otherwise there
             // are quotes around the string.
             if (controlToken instanceof StringToken) {
-                controlValue = ((StringToken)controlToken).stringValue();
+                controlValue = ((StringToken) controlToken).stringValue();
             } else {
                 controlValue = controlToken.toString();
             }

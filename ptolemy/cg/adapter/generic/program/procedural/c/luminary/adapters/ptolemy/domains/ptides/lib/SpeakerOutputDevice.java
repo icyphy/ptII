@@ -50,15 +50,17 @@ public class SpeakerOutputDevice extends OutputDevice {
      *  @throws IllegalActionException 
      *  @throws NameDuplicationException 
      */
-    public SpeakerOutputDevice(ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor) throws IllegalActionException, NameDuplicationException {
-        super(actor);        
+    public SpeakerOutputDevice(
+            ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor)
+            throws IllegalActionException, NameDuplicationException {
+        super(actor);
     }
-    
+
     ////////////////////////////////////////////////////////////////////
     ////                     public methods                         ////
 
-
-    public String generateActuatorActuationFuncCode() throws IllegalActionException {
+    public String generateActuatorActuationFuncCode()
+            throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = getStrategy().getCodeStream();
 
@@ -81,9 +83,10 @@ public class SpeakerOutputDevice extends OutputDevice {
     public String generateFireCode() throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = getStrategy().getCodeStream();
-        
+
         ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice) getComponent();
-        PtidesBasicDirector helper = (PtidesBasicDirector)getAdapter(actor.getDirector());
+        PtidesBasicDirector helper = (PtidesBasicDirector) getAdapter(actor
+                .getDirector());
 
         args.add((helper._actuators.get(actor)).toString());
 
@@ -92,11 +95,12 @@ public class SpeakerOutputDevice extends OutputDevice {
 
         return processCode(_codeStream.toString());
     }
-    
-    
-    public String generateHardwareInitializationCode() throws IllegalActionException {
+
+    public String generateHardwareInitializationCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(processCode(getStrategy().getCodeStream().getCodeBlock("initializeAudioOutput")));
+        code.append(processCode(getStrategy().getCodeStream().getCodeBlock(
+                "initializeAudioOutput")));
         return code.toString();
     }
 }

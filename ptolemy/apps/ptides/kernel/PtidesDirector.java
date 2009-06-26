@@ -312,8 +312,9 @@ public class PtidesDirector extends TimedPNDirector {
             throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this, "The process wants to "
-                    + " get fired in the past! (current time: " + getModelTime() + ", " +
-                                "requestedFiring: " + newFiringTime + ")");
+                    + " get fired in the past! (current time: "
+                    + getModelTime() + ", " + "requestedFiring: "
+                    + newFiringTime + ")");
         }
 
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
@@ -333,7 +334,7 @@ public class PtidesDirector extends TimedPNDirector {
         }
         return newFiringTime;
     }
-    
+
     /** Return a causality interface for the composite actor that
      *  contains this director. This class returns an
      *  instance of {@link TDLCausalityInterface}.
@@ -341,7 +342,8 @@ public class PtidesDirector extends TimedPNDirector {
      *   and output ports of the container.
      */
     public CausalityInterface getCausalityInterface() {
-        return new TDLCausalityInterface((Actor)getContainer(), defaultDependency());
+        return new TDLCausalityInterface((Actor) getContainer(),
+                defaultDependency());
     }
 
     /**
@@ -360,9 +362,8 @@ public class PtidesDirector extends TimedPNDirector {
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
                 .doubleValue());
 
-        TDLCausalityInterface causalityInterface =
-            (TDLCausalityInterface) ((CompositeActor) this.getContainer())
-            .getCausalityInterface();
+        TDLCausalityInterface causalityInterface = (TDLCausalityInterface) ((CompositeActor) this
+                .getContainer()).getCausalityInterface();
 
         // Iterate through all actors in the model and add them to a List. This
         // List is handed to the schedule listeners.
@@ -377,22 +378,25 @@ public class PtidesDirector extends TimedPNDirector {
                 // the following check cannot be done - modal models for instance
                 // are not timed directors but the refinements have to be timed
                 // directors
-//                if (!(compositeActor.getDirector() instanceof TimedDirector)) {
-//                    throw new IllegalActionException(
-//                            "Director of a CompositeActor in "
-//                                    + "the Ptides domain must be a TimedDirector");
-//                }
+                //                if (!(compositeActor.getDirector() instanceof TimedDirector)) {
+                //                    throw new IllegalActionException(
+                //                            "Director of a CompositeActor in "
+                //                                    + "the Ptides domain must be a TimedDirector");
+                //                }
                 if (compositeActor.getDirector() instanceof PtidesEmbeddedDirector) {
                     PtidesEmbeddedDirector director = (PtidesEmbeddedDirector) actor
                             .getDirector();
                     director._clockSyncronizationError = _clockSyncronizationError;
                     director._networkDelay = _networkDelay;
 
-
                     List<IOPort> inputPorts = compositeActor.inputPortList();
                     for (IOPort port : inputPorts) {
                         if (_debugging) {
-                            _debug("minDelay " + port + ": " + ((RealDependency)causalityInterface.getMinimumDelay(port)).value());
+                            _debug("minDelay "
+                                    + port
+                                    + ": "
+                                    + ((RealDependency) causalityInterface
+                                            .getMinimumDelay(port)).value());
                         }
                     }
 
@@ -400,11 +404,11 @@ public class PtidesDirector extends TimedPNDirector {
                 List<Actor> containedActors = compositeActor.entityList();
                 table.put(actor, containedActors);
             }
-//            else {
-//                throw new IllegalActionException(
-//                        "Only composite actors are allowed to "
-//                                + "be used here");
-//            }
+            //            else {
+            //                throw new IllegalActionException(
+            //                        "Only composite actors are allowed to "
+            //                                + "be used here");
+            //            }
         }
 
         if (_scheduleListeners != null) {
@@ -465,9 +469,8 @@ public class PtidesDirector extends TimedPNDirector {
         super.wrapup();
         _platformsToUnblock.clear();
 
-        TDLCausalityInterface causalityInterface =
-            (TDLCausalityInterface) ((CompositeActor) this.getContainer())
-            .getCausalityInterface();
+        TDLCausalityInterface causalityInterface = (TDLCausalityInterface) ((CompositeActor) this
+                .getContainer()).getCausalityInterface();
         causalityInterface.wrapup();
     }
 
@@ -548,16 +551,17 @@ public class PtidesDirector extends TimedPNDirector {
                                 while (!_stopRequested && !_stopFireRequested) {
                                     currentTime = getModelTime();
 
-                                    long elapsedTime = System.currentTimeMillis()
+                                    long elapsedTime = System
+                                            .currentTimeMillis()
                                             - _realStartTime;
                                     double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                                    ptolemy.actor.util.Time elapsed
-                                            = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
+                                    ptolemy.actor.util.Time elapsed = new ptolemy.actor.util.Time(
+                                            this, elapsedTimeInSeconds);
                                     if (currentTime.compareTo(elapsed) <= 0) {
                                         break;
                                     }
-                                    long timeToWait = (long) (currentTime.subtract(
-                                            elapsed).getDoubleValue() * 1000.0);
+                                    long timeToWait = (long) (currentTime
+                                            .subtract(elapsed).getDoubleValue() * 1000.0);
 
                                     if (timeToWait > 0) {
                                         if (_debugging) {
@@ -568,9 +572,11 @@ public class PtidesDirector extends TimedPNDirector {
                                         try {
                                             _workspace.wait(this, timeToWait);
                                         } catch (InterruptedException ex) {
-                                            throw new IllegalActionException(this, ex,
-                                                    "Thread interrupted when waiting for" +
-                                                    " real time to match model time.");
+                                            throw new IllegalActionException(
+                                                    this,
+                                                    ex,
+                                                    "Thread interrupted when waiting for"
+                                                            + " real time to match model time.");
                                         }
                                     }
                                 } // while
@@ -579,9 +585,10 @@ public class PtidesDirector extends TimedPNDirector {
                         setModelTime(event.timeStamp);
                         _informOfDelayUnblock();
                     } else {
-                        throw new InternalErrorException("Inconsistency"
-                                + " in number of actors blocked on delays count"
-                                + " and the entries in the CalendarQueue");
+                        throw new InternalErrorException(
+                                "Inconsistency"
+                                        + " in number of actors blocked on delays count"
+                                        + " and the entries in the CalendarQueue");
                     }
 
                     //Remove any other process waiting to be resumed at the new
@@ -605,10 +612,11 @@ public class PtidesDirector extends TimedPNDirector {
                             //then unblock it. Else put the newly removed
                             //process back on the event queue.
                             if (newTime.equals(getModelTime())) {
-                                if (unblockedActors.contains(actor))
+                                if (unblockedActors.contains(actor)) {
                                     continue;
-                                else
+                                } else {
                                     unblockedActors.add(actor);
+                                }
                                 _informOfDelayUnblock();
                             } else {
                                 _eventQueue.put(new TimedEvent(newTime, actor));
@@ -627,10 +635,6 @@ public class PtidesDirector extends TimedPNDirector {
             return true;
         }
     }
-
-
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

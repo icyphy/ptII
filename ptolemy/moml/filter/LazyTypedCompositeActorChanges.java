@@ -82,12 +82,13 @@ public class LazyTypedCompositeActorChanges implements MoMLFilter {
         // which will open up a large xml file and then close after 2 seconds.
         if (attributeName.equals("class")) {
             if (attributeValue.equals("ptolemy.actor.TypedCompositeActor")
-                && (container !=null /* && container.toplevel() != container */)) {
+                    && (container != null /* && container.toplevel() != container */)) {
                 if (container instanceof InstantiableNamedObj
-                    && !(((InstantiableNamedObj)container).isWithinClassDefinition())) {
+                        && !(((InstantiableNamedObj) container)
+                                .isWithinClassDefinition())) {
                     // We found a class outside of a class change.
                     MoMLParser.setModified(true);
-                    return (String) "ptolemy.actor.LazyTypedCompositeActor";
+                    return "ptolemy.actor.LazyTypedCompositeActor";
                 }
             }
         }
@@ -112,8 +113,8 @@ public class LazyTypedCompositeActorChanges implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName()
-            + ": change TypedCompositeActors that are not within class definitions to"
-            + " LazyTypedCompositeActors.";
+                + ": change TypedCompositeActors that are not within class definitions to"
+                + " LazyTypedCompositeActors.";
     }
 
 }

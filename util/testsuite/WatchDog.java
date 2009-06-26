@@ -108,8 +108,7 @@ public class WatchDog {
                                 + "the nightly build will notice\n"
                                 + "Failed: 666  Total Tests: 0 "
                                 + "((Passed: 0, Newly Passed: 0)  "
-                                + "Known Failed: 0) "
-                                + userDir);
+                                + "Known Failed: 0) " + userDir);
 
                         // Do not pass go, do not collect $200
                         StringUtilities.exit(4);

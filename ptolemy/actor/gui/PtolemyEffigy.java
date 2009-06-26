@@ -435,32 +435,37 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         if (toplevel != null) {
                             try {
                                 String entityClassName = StringUtilities
-                                    .getProperty("entityClassName");
-                                if ((entityClassName.length() > 0
-                                     || endTime > startTime + Manager.minimumStatisticsTime)
-                                    && toplevel instanceof CompositeEntity) {
+                                        .getProperty("entityClassName");
+                                if ((entityClassName.length() > 0 || endTime > startTime
+                                        + Manager.minimumStatisticsTime)
+                                        && toplevel instanceof CompositeEntity) {
                                     System.out
-                                        .println("Opened "
-                                                 + input
-                                                 + " in "
-                                                 + (System.currentTimeMillis() - startTime)
-                                                 + " ms.");
+                                            .println("Opened "
+                                                    + input
+                                                    + " in "
+                                                    + (System
+                                                            .currentTimeMillis() - startTime)
+                                                    + " ms.");
 
-                                    long statisticsStartTime = System.currentTimeMillis();
-                                    System.out.println(((CompositeEntity) toplevel)
-                                                       .statistics(entityClassName));
-                                    long statisticsEndTime = System.currentTimeMillis();
-                                    if (statisticsEndTime - statisticsStartTime
-                                        > Manager.minimumStatisticsTime) {
-                                        System.out.println("Generating statistics took"
-                                                           + (statisticsEndTime - statisticsStartTime)
-                                                           + " ms. ");
+                                    long statisticsStartTime = System
+                                            .currentTimeMillis();
+                                    System.out
+                                            .println(((CompositeEntity) toplevel)
+                                                    .statistics(entityClassName));
+                                    long statisticsEndTime = System
+                                            .currentTimeMillis();
+                                    if (statisticsEndTime - statisticsStartTime > Manager.minimumStatisticsTime) {
+                                        System.out
+                                                .println("Generating statistics took"
+                                                        + (statisticsEndTime - statisticsStartTime)
+                                                        + " ms. ");
                                     }
                                 }
                             } catch (SecurityException ex) {
-                                System.err.println("Warning, while trying to print timing statistics,"
-                                                   + " failed to read the entityClassName"
-                                                   + " property (-sandbox always causes this)");
+                                System.err
+                                        .println("Warning, while trying to print timing statistics,"
+                                                + " failed to read the entityClassName"
+                                                + " property (-sandbox always causes this)");
                             }
                             effigy.setModel(toplevel);
 

@@ -255,8 +255,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 + "\" value=\""
                 + StringUtilities.escapeForXML(ingredientList.toString())
                 + "\"/>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this,
-                _target, moml, null);
+        MoMLChangeRequest request = new MoMLChangeRequest(this, _target, moml,
+                null);
         request.setUndoable(true);
         _attribute.requestChange(request);
         return true;
@@ -326,8 +326,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
     @SuppressWarnings("unchecked")
     public static List<Class<? extends GTIngredient>> searchIngredientClasses(
             String[] packages, ClassLoader loader) {
-        List<Class<? extends GTIngredient>> ingredientClasses =
-            new LinkedList<Class<? extends GTIngredient>>();
+        List<Class<? extends GTIngredient>> ingredientClasses = new LinkedList<Class<? extends GTIngredient>>();
         for (String pkg : packages) {
             try {
                 Enumeration<URL> urls = loader.getResources(pkg.replace('.',
@@ -383,8 +382,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         super.setVisible(visible);
     }
 
-    public static final String REGULAR_EXPRESSION_HELP_FILE =
-        "ptolemy/configs/doc/basicHelp.htm";
+    public static final String REGULAR_EXPRESSION_HELP_FILE = "ptolemy/configs/doc/basicHelp.htm";
 
     /**
      * @author tfeng
@@ -416,14 +414,13 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
             DialogTableau tableau;
             try {
-                tableau = new DialogTableau(effigy, effigy
-                        .uniqueName("dialog"));
+                tableau = new DialogTableau(effigy, effigy.uniqueName("dialog"));
                 tableau.setFrame(new GTIngredientsEditor(tableau, parent,
                         object, configuration));
                 tableau.show();
             } catch (Exception e) {
-                throw new InternalErrorException("Unable to create " +
-                        "ingredient editor for " + object.getName());
+                throw new InternalErrorException("Unable to create "
+                        + "ingredient editor for " + object.getName());
             }
         }
 
@@ -762,10 +759,6 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 _textField.selectAll();
             }
 
-            public void setBackground(Color color) {
-                _textField.setBackground(color);
-            }
-
             public void setItem(Object value) {
                 _value = value;
                 if (value == null) {
@@ -954,8 +947,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             Class<?> ingredientClass = ingredient.getClass();
             _classSelector.addItemListener(this);
             _classSelector.setEditable(false);
-            for (Class<? extends GTIngredient> listedIngerdient
-                    : _ingredientClasses) {
+            for (Class<? extends GTIngredient> listedIngerdient : _ingredientClasses) {
                 if (listedIngerdient == null && ingredientClass == null
                         || listedIngerdient != null
                         && listedIngerdient.equals(ingredientClass)) {
@@ -964,11 +956,10 @@ public class GTIngredientsEditor extends PtolemyDialog {
                     _classSelector.setSelectedItem(element);
                 } else {
                     try {
-                        GTIngredient newIngredient = _createTemporaryIngredient(
-                                listedIngerdient);
+                        GTIngredient newIngredient = _createTemporaryIngredient(listedIngerdient);
                         if (newIngredient.isApplicable(_target)) {
-                            ComboElement element =
-                                new ComboElement(newIngredient);
+                            ComboElement element = new ComboElement(
+                                    newIngredient);
                             _classSelector.addItem(element);
                         }
                     } catch (Exception e) {
@@ -1084,8 +1075,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
         protected JComponent _getComponent(GTIngredientElement element) {
             JComponent component = null;
-            if (element instanceof BooleanCriterionElement ||
-                    element instanceof BooleanOperationElement) {
+            if (element instanceof BooleanCriterionElement
+                    || element instanceof BooleanOperationElement) {
                 JCheckBox checkBox = new JCheckBox();
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 component = checkBox;
@@ -1194,8 +1185,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
         protected void _setComponentValue(GTIngredientElement element,
                 JComponent component, Object value) {
-            if (element instanceof BooleanCriterionElement ||
-                    element instanceof BooleanOperationElement) {
+            if (element instanceof BooleanCriterionElement
+                    || element instanceof BooleanOperationElement) {
                 ((JCheckBox) component).setSelected(((Boolean) value)
                         .booleanValue());
             } else if (element instanceof StringCriterionElement) {

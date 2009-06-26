@@ -92,9 +92,10 @@ public abstract class PlatformExecutionStrategy {
      * @exception IllegalActionException Thrown if the execution of an actor was
      * missed.
      */
-    public abstract TimedEvent getNextEventToFire(Queue<TimedEvent> actorsFiring,
-            List<TimedEvent> eventsToFire, Time nextRealTimeEvent,
-            Time physicalTime) throws IllegalActionException;
+    public abstract TimedEvent getNextEventToFire(
+            Queue<TimedEvent> actorsFiring, List<TimedEvent> eventsToFire,
+            Time nextRealTimeEvent, Time physicalTime)
+            throws IllegalActionException;
 
     /**
      * Forward a schedule event to the enclosing director.

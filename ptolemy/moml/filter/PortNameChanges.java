@@ -164,7 +164,7 @@ public class PortNameChanges implements MoMLFilter {
                 // CompositeEntity. (tfeng 08/03/2008)
                 // <<<
                 && container instanceof CompositeEntity) {
-                    // >>>
+            // >>>
             int lastIndex = attributeValue.lastIndexOf(".");
             NamedObj portContainer = null;
             String portContainerName = null;

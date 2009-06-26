@@ -156,7 +156,6 @@ public class ExternalIOPortController extends AttributeController {
         }
     }
 
-
     /** Move the node's figure to the location specified in the node's
      *  semantic object, if that object is an instance of Locatable.
      *  If the semantic object is not a location, then do nothing.
@@ -172,11 +171,12 @@ public class ExternalIOPortController extends AttributeController {
             if (hasLocation(node)) {
                 double[] location = getLocation(node);
                 if (node instanceof Location) {
-                     NamedObj port = ((Location) node).getContainer();
+                    NamedObj port = ((Location) node).getContainer();
 
-                     // In case the location is (0,0) we try to come up with a
-                     // better one.
-                    if (port instanceof IOPort && location[0] == 0.0 && location[1] == 0.0) {
+                    // In case the location is (0,0) we try to come up with a
+                    // better one.
+                    if (port instanceof IOPort && location[0] == 0.0
+                            && location[1] == 0.0) {
                         BasicGraphController controller = (BasicGraphController) getController();
                         BasicGraphFrame frame = controller.getFrame();
 
@@ -187,53 +187,65 @@ public class ExternalIOPortController extends AttributeController {
                         // frame.getJGraph() == null.
                         if (frame.getJGraph() != null) {
                             GraphPane pane = controller.getGraphPane();
-                            location = WithIconGraphController.getNewPortLocation(pane, frame, (IOPort) port);
+                            location = WithIconGraphController
+                                    .getNewPortLocation(pane, frame,
+                                            (IOPort) port);
                         } else {
                             IOPort ioPort = (IOPort) port;
                             if (ioPort.isInput() && ioPort.isOutput()) {
-                                double[] newLocation = _inoutputPortLocations.get(ioPort);
+                                double[] newLocation = _inoutputPortLocations
+                                        .get(ioPort);
                                 if (newLocation != null) {
                                     location = newLocation;
                                 } else {
                                     // Put at the bottom
-                                    location[0] = 300.0 + _inoutputPortLocations.size() * 40;
-                                    location[1] = 380.0 ;
-                                    _inoutputPortLocations.put(ioPort, location);
+                                    location[0] = 300.0 + _inoutputPortLocations
+                                            .size() * 40;
+                                    location[1] = 380.0;
+                                    _inoutputPortLocations
+                                            .put(ioPort, location);
                                 }
                             } else if (ioPort.isInput()) {
-                                double[] newLocation = _inputPortLocations.get(ioPort);
+                                double[] newLocation = _inputPortLocations
+                                        .get(ioPort);
                                 if (newLocation != null) {
                                     location = newLocation;
                                 } else {
                                     // Put at the left side
                                     location[0] = 20.0;
-                                    location[1] = 200.0 + _inputPortLocations.size() * 40;
+                                    location[1] = 200.0 + _inputPortLocations
+                                            .size() * 40;
                                     _inputPortLocations.put(ioPort, location);
                                 }
                             } else if (ioPort.isOutput()) {
-                                double[] newLocation = _outputPortLocations.get(ioPort);
+                                double[] newLocation = _outputPortLocations
+                                        .get(ioPort);
                                 if (newLocation != null) {
                                     location = newLocation;
                                 } else {
                                     // Put at the right side
                                     location[0] = 580.0;
-                                    location[1] = 200.0 + _outputPortLocations.size() * 40;
+                                    location[1] = 200.0 + _outputPortLocations
+                                            .size() * 40;
                                     _outputPortLocations.put(ioPort, location);
                                 }
                             } else {
-                                double[] newLocation = _otherPortLocations.get(ioPort);
+                                double[] newLocation = _otherPortLocations
+                                        .get(ioPort);
                                 if (newLocation != null) {
                                     location = newLocation;
                                 } else {
                                     // Put in the middle
                                     location[0] = 300.0;
-                                    location[1] = 200.0 + _otherPortLocations.size() * 40;
+                                    location[1] = 200.0 + _otherPortLocations
+                                            .size() * 40;
                                     _otherPortLocations.put(ioPort, location);
                                 }
                             }
 
                         }
-                        location = SnapConstraint.constrainPoint(location[0], location[1]);
+                        location = SnapConstraint.constrainPoint(location[0],
+                                location[1]);
                     }
                 }
                 CanvasUtilities.translateTo(nf, location[0], location[1]);

@@ -85,8 +85,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */
-public class FSMGraphFrame extends ExtendedGraphFrame
-        implements ActionListener {
+public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener {
 
     /** Construct a frame associated with the specified FSM model.
      *  After constructing this, it is necessary
@@ -148,20 +147,20 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         try {
             for (NamedObj namedObj : namedObjSet) {
                 if (namedObj instanceof State) {
-                    ((State) namedObj).saveRefinementsInConfigurer.setToken(
-                            BooleanToken.TRUE);
+                    ((State) namedObj).saveRefinementsInConfigurer
+                            .setToken(BooleanToken.TRUE);
                 }
             }
             super.copy();
         } catch (IllegalActionException e) {
-            MessageHandler.error("Unable to set attributes of the selected " +
-                    "states.");
+            MessageHandler.error("Unable to set attributes of the selected "
+                    + "states.");
         } finally {
             for (NamedObj namedObj : namedObjSet) {
                 if (namedObj instanceof State) {
                     try {
-                        ((State) namedObj).saveRefinementsInConfigurer.setToken(
-                                BooleanToken.FALSE);
+                        ((State) namedObj).saveRefinementsInConfigurer
+                                .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -186,8 +185,9 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                             .uniqueName("debug listener"));
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
-                    tableau.setDebuggable(((FSMActor) getModel())
-                            .getDirector());
+                    tableau
+                            .setDebuggable(((FSMActor) getModel())
+                                    .getDirector());
                 } else if (actionCommand.equals("Listen to State Machine")) {
                     Effigy effigy = (Effigy) getTableau().getContainer();
 
@@ -379,15 +379,15 @@ public class FSMGraphFrame extends ExtendedGraphFrame
             i++;
             if (item.getActionCommand().equals("Save As")) {
                 // Add a SaveAsDesignPattern here.
-                JMenuItem importItem = new JMenuItem(
-                        "Import Design Pattern", KeyEvent.VK_D);
-                JMenuItem exportItem = new JMenuItem(
-                        "Export Design Pattern", KeyEvent.VK_D);
+                JMenuItem importItem = new JMenuItem("Import Design Pattern",
+                        KeyEvent.VK_D);
+                JMenuItem exportItem = new JMenuItem("Export Design Pattern",
+                        KeyEvent.VK_D);
                 JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 4];
                 System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                newItems[i+1] = importItem;
+                newItems[i + 1] = importItem;
                 importItem.addActionListener(this);
-                newItems[i+2] = exportItem;
+                newItems[i + 2] = exportItem;
                 exportItem.addActionListener(this);
                 System.arraycopy(fileMenuItems, i, newItems, i + 4,
                         fileMenuItems.length - i);
@@ -427,10 +427,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame
      *  @param name The name of the exported model.
      *  @exception IOException If an I/O error occurs.
      */
-    protected void _exportDesignPattern(Writer writer, NamedObj model, String name)
-            throws IOException {
-        if (_query != null && _query.hasEntry("selected") &&
-                _query.getBooleanValue("selected")) {
+    protected void _exportDesignPattern(Writer writer, NamedObj model,
+            String name) throws IOException {
+        if (_query != null && _query.hasEntry("selected")
+                && _query.getBooleanValue("selected")) {
             List<State> modifiedStates = new LinkedList<State>();
             try {
                 Set<?> set = _getSelectionSet();
@@ -438,19 +438,19 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                     if (object instanceof State) {
                         State state = (State) object;
                         modifiedStates.add(state);
-                        state.saveRefinementsInConfigurer.setToken(
-                                BooleanToken.TRUE);
+                        state.saveRefinementsInConfigurer
+                                .setToken(BooleanToken.TRUE);
                     }
                 }
                 super._exportDesignPattern(writer, model, name);
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(null, e, "Unable to set " +
-                        "attributes for the states.");
+                throw new InternalErrorException(null, e, "Unable to set "
+                        + "attributes for the states.");
             } finally {
                 for (State state : modifiedStates) {
                     try {
-                        state.saveRefinementsInConfigurer.setToken(
-                                BooleanToken.FALSE);
+                        state.saveRefinementsInConfigurer
+                                .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -511,8 +511,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                 }
             }
         } catch (Exception e) {
-            throw new InternalErrorException(null, e, "Fail to prepare for " +
-                    "exporting a design pattern.");
+            throw new InternalErrorException(null, e, "Fail to prepare for "
+                    + "exporting a design pattern.");
         }
     }
 

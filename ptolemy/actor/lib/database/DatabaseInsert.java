@@ -119,14 +119,15 @@ public class DatabaseInsert extends Sink {
 
         if (input.hasToken(0)) {
             String databaseName = databaseManager.stringValue();
-            DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
+            DatabaseManager database = DatabaseManager.findDatabaseManager(
+                    databaseName, this);
 
             String prefix = "insert into " + table.stringValue() + " (";
-            ArrayToken inputArray = (ArrayToken)input.get(0);
+            ArrayToken inputArray = (ArrayToken) input.get(0);
             for (int i = 0; i < inputArray.length(); i++) {
                 StringBuffer columnNames = new StringBuffer();
                 StringBuffer values = new StringBuffer();
-                RecordToken row = (RecordToken)inputArray.getElement(i);
+                RecordToken row = (RecordToken) inputArray.getElement(i);
                 Set<String> columns = row.labelSet();
                 for (String column : columns) {
                     if (columnNames.length() != 0) {
@@ -136,11 +137,8 @@ public class DatabaseInsert extends Sink {
                     columnNames.append(column);
                     values.append(row.get(column).toString());
                 }
-                String sql = prefix
-                        + columnNames.toString()
-                        + ") values ("
-                        + values.toString()
-                        + ")";
+                String sql = prefix + columnNames.toString() + ") values ("
+                        + values.toString() + ")";
                 if (_debugging) {
                     _debug("Issuing statement:\n" + sql);
                 }
@@ -158,9 +156,10 @@ public class DatabaseInsert extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (((BooleanToken)clear.getToken()).booleanValue()) {
+        if (((BooleanToken) clear.getToken()).booleanValue()) {
             String databaseName = databaseManager.stringValue();
-            DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
+            DatabaseManager database = DatabaseManager.findDatabaseManager(
+                    databaseName, this);
             String query = "delete from " + table.stringValue() + ";";
             if (_debugging) {
                 _debug("Issuing statement:\n" + query);

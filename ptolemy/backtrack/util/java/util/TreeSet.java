@@ -81,7 +81,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status updated to 1.4
  */
-public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serializable, Rollbackable {
+public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
+        Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.2.
@@ -140,7 +141,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
     public TreeSet(SortedSet sortedSet) {
         $ASSIGN$map(new TreeMap(sortedSet.comparator()));
         Iterator itr = sortedSet.iterator();
-        ((TreeMap)map).putKeysLinear(itr, sortedSet.size());
+        ((TreeMap) map).putKeysLinear(itr, sortedSet.size());
     }
 
     /**     
@@ -175,8 +176,9 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         boolean result = false;
         int pos = c.size();
         Iterator itr = c.iterator();
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             result |= (map.put(itr.next(), "") == null);
+        }
         return result;
     }
 
@@ -194,9 +196,9 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
     public Object clone() {
         TreeSet copy = null;
         try {
-            copy = (TreeSet)super.clone();
+            copy = (TreeSet) super.clone();
             // Map may be either TreeMap or TreeMap.SubMap, hence the ugly casts.
-            copy.$ASSIGN$map((SortedMap)((AbstractMap)map).clone());
+            copy.$ASSIGN$map((SortedMap) ((AbstractMap) map).clone());
         } catch (CloneNotSupportedException x) {
             // Impossible result.
         }
@@ -235,8 +237,8 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
      * Returns a view of this Set including all elements less than
      * <code>to</code>. The returned set is backed by the original, so changes
      * in one appear in the other. The subset will throw an{
-@link IllegalArgumentException    }
- for any attempt to access or add an
+    @link IllegalArgumentException    }
+    for any attempt to access or add an
      * element beyond the specified cutoff. The returned set does not include
      * the endpoint; if you want inclusion, pass the successor element.
      * @param to the (exclusive) cutoff point
@@ -300,8 +302,8 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
      * <code>from</code> and less than <code>to</code> (a half-open interval).
      * The returned set is backed by the original, so changes in one appear in
      * the other. The subset will throw an {
-@link IllegalArgumentException    }
-for any attempt to access or add an element beyond the specified cutoffs.
+    @link IllegalArgumentException    }
+    for any attempt to access or add an element beyond the specified cutoffs.
      * The returned set includes the low endpoint but not the high; if you want
      * to reverse this behavior on either end, pass in the successor element.
      * @param from the (inclusive) low cutoff point
@@ -321,8 +323,8 @@ for any attempt to access or add an element beyond the specified cutoffs.
      * Returns a view of this Set including all elements greater or equal to
      * <code>from</code>. The returned set is backed by the original, so
      * changes in one appear in the other. The subset will throw an{
-@link IllegalArgumentException    }
- for any attempt to access or add an
+    @link IllegalArgumentException    }
+    for any attempt to access or add an
      * element beyond the specified cutoff. The returned set includes the
      * endpoint; if you want to exclude it, pass in the successor element.
      * @param from the (inclusive) low cutoff point
@@ -343,14 +345,15 @@ for any attempt to access or add an element beyond the specified cutoffs.
      * @serialData the <i>comparator</i> (Object), followed by the set size
      * (int), the the elements in sorted order (Object)
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         Iterator itr = map.keySet().iterator();
         int pos = map.size();
         s.writeObject(map.comparator());
         s.writeInt(pos);
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             s.writeObject(itr.next());
+        }
     }
 
     /**     
@@ -361,12 +364,13 @@ for any attempt to access or add an element beyond the specified cutoffs.
      * @serialData the <i>comparator</i> (Object), followed by the set size
      * (int), the the elements in sorted order (Object)
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
-        Comparator comparator = (Comparator)s.readObject();
+        Comparator comparator = (Comparator) s.readObject();
         int size = s.readInt();
         $ASSIGN$map(new TreeMap(comparator));
-        ((TreeMap)map).putFromObjStream(s, size, false);
+        ((TreeMap) map).putFromObjStream(s, size, false);
     }
 
     private final SortedMap $ASSIGN$map(SortedMap newValue) {
@@ -380,20 +384,18 @@ for any attempt to access or add an element beyond the specified cutoffs.
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        map = (SortedMap)$RECORD$map.restore(map, timestamp, trim);
+        map = (SortedMap) $RECORD$map.restore(map, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
     private transient FieldRecord $RECORD$map = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$map
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map };
 
 }
-

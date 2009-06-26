@@ -154,9 +154,10 @@ public final class RowSpec extends FormSpec {
      * @see RowSpec#RowSpec(String)
      */
     public static RowSpec[] decodeSpecs(String encodedRowSpecs) {
-        if (encodedRowSpecs == null)
+        if (encodedRowSpecs == null) {
             throw new NullPointerException(
                     "The row specification must not be null.");
+        }
 
         StringTokenizer tokenizer = new StringTokenizer(encodedRowSpecs, ", ");
         int rowCount = tokenizer.countTokens();

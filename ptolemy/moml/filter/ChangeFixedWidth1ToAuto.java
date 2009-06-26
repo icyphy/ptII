@@ -42,7 +42,6 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// ChangeFixedWidth1ToAuto
 
-
 /** When this class is registered with the MoMLParser.setMoMLFilter()
  method, it will cause MoMLParser to filter so that models from
  earlier releases will run in the current release.
@@ -101,8 +100,8 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
                     madeModification = true;
                     relation.width.setToken("Auto");
                     relation.width.setDerivedLevel(1);
-                        // Make it derived to make sure it is not
-                        // saved if not changed.
+                    // Make it derived to make sure it is not
+                    // saved if not changed.
                 }
             }
         }
@@ -115,10 +114,10 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
      */
     public static void main(String[] args) throws Exception {
         String errorMessage = "Usage: \n\tConvert one model:\n\t\tjava -classpath $PTII "
-            + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto model.xml\n\tConvert all models in a folder:\n\t" +
-                            "\tjava -classpath $PTII "
-            + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto -all path\n\tConvert all models in a demo folder:\n\t\tjava -classpath $PTII "
-            + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto -demo path";
+                + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto model.xml\n\tConvert all models in a folder:\n\t"
+                + "\tjava -classpath $PTII "
+                + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto -all path\n\tConvert all models in a demo folder:\n\t\tjava -classpath $PTII "
+                + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto -demo path";
         if (args.length != 1 && args.length != 2) {
             System.err.println(errorMessage);
             return;
@@ -133,7 +132,8 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
                 System.err.println(errorMessage);
                 return;
             }
-            _updateXMLFiles(new File(args[1]), args[0].equals("-demo") ? "demo" : null);
+            _updateXMLFiles(new File(args[1]), args[0].equals("-demo") ? "demo"
+                    : null);
         }
     }
 
@@ -143,7 +143,6 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
     public String toString() {
         return Integer.toHexString(hashCode());
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -160,9 +159,13 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
             if (file.isFile()) {
                 String filename = file.getName();
                 int length = filename.length();
-                if (length > 3 && filename.substring(length - 4, length).toLowerCase().equals(".xml")) {
+                if (length > 3
+                        && filename.substring(length - 4, length).toLowerCase()
+                                .equals(".xml")) {
                     try {
-                        if (filter == null || file.toURI().toString().toLowerCase().contains("/" + filter +"/")) {
+                        if (filter == null
+                                || file.toURI().toString().toLowerCase()
+                                        .contains("/" + filter + "/")) {
                             _updateFile(file.toString());
                         }
                     } catch (Exception e) {
@@ -186,7 +189,8 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
         ChangeFixedWidth1ToAuto filter = new ChangeFixedWidth1ToAuto();
         MoMLParser.addMoMLFilter(filter);
 
-        URL xmlFile = ChangeFixedWidth1ToAuto.class.getClassLoader().getResource(fileName);
+        URL xmlFile = ChangeFixedWidth1ToAuto.class.getClassLoader()
+                .getResource(fileName);
 
         if (xmlFile != null) {
             InputStream input = xmlFile.openStream();

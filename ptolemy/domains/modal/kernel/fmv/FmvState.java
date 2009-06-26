@@ -34,7 +34,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FmvAutomaton
 
@@ -86,7 +85,5 @@ public class FmvState extends State {
      *  reachability analysis state.   The default value is false.
      */
     public Parameter isReachabilityAnalysisState;
-
-
 
 }

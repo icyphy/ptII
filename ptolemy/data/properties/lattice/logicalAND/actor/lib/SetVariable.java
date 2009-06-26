@@ -57,8 +57,7 @@ public class SetVariable extends AtomicActor {
      * @exception IllegalActionException
      */
     public SetVariable(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.SetVariable actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.SetVariable actor) throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;

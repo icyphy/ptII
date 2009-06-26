@@ -28,10 +28,10 @@ package thales.actor.gui;
 import java.io.IOException;
 import java.net.URL;
 
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLEffigy;
 import ptolemy.actor.gui.HTMLViewer;
-import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.Attribute;
@@ -99,7 +99,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                 // NOTE: This cannot handle a URL that is relative to the
                 // MoML file within which this attribute might be being
                 // defined.  Is there any way to do that?
-                URL toRead = MoMLApplication.specToURL(urlSpec);
+                URL toRead = ConfigurationApplication.specToURL(urlSpec);
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "Cannot open URL: "

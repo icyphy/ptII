@@ -59,7 +59,7 @@ import ptolemy.util.StringUtilities;
 * @Pt.AcceptedRating Yellow (rodiers)
 */
 public abstract class HTMLCodeGeneratorAdapter {
-    
+
     /** Construct the code generator adapter associated
      *  with the given component.
      *  @param component The associated component.
@@ -72,7 +72,7 @@ public abstract class HTMLCodeGeneratorAdapter {
      *  @return The generated HTML.
      */
     abstract public String generateHTML() throws IllegalActionException;
-    
+
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
@@ -80,7 +80,7 @@ public abstract class HTMLCodeGeneratorAdapter {
     public GenericCodeGenerator getCodeGenerator() {
         return _codeGenerator;
     }
-    
+
     /** Get the component associated with this adapter.
      *  @return The associated component.
      */
@@ -96,10 +96,10 @@ public abstract class HTMLCodeGeneratorAdapter {
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line character so that the files we generate
      *  have the proper end of line character for use by other native tools.
@@ -108,16 +108,16 @@ public abstract class HTMLCodeGeneratorAdapter {
     // FIXME rodiers: This is defined multiple times, in different root classes
     //              Not really what we want.
 
-static {
-    _eol = StringUtilities.getProperty("line.separator");
-}      
-    
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The code generator that contains this adapter class.*/
-    protected GenericCodeGenerator _codeGenerator;    
+    protected GenericCodeGenerator _codeGenerator;
 
     /** The associated component. */
-    private NamedObj _component;    
+    private NamedObj _component;
 }

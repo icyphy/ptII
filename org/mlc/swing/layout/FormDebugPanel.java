@@ -212,8 +212,9 @@ public class FormDebugPanel extends JPanel {
      */
     private void paintGrid(Graphics g) {
 
-        if (deactivated)
+        if (deactivated) {
             return;
+        }
 
         if (!(getLayout() instanceof ContainerLayout)) {
             return;

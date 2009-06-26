@@ -196,17 +196,14 @@ public class Configurer extends JPanel implements CloseListener {
 
                 for (Settable parameter : parameters) {
                     String newValue = parameter.getExpression();
-                    String oldValue = (String) _originalValues
-                            .get(parameter);
+                    String oldValue = _originalValues.get(parameter);
 
                     if (!newValue.equals(oldValue)) {
                         hasChanges = true;
                         buffer.append("<property name=\"");
-                        buffer.append(((NamedObj) parameter)
-                                .getName(_object));
+                        buffer.append(((NamedObj) parameter).getName(_object));
                         buffer.append("\" value=\"");
-                        buffer.append(StringUtilities
-                                .escapeForXML(oldValue));
+                        buffer.append(StringUtilities.escapeForXML(oldValue));
                         buffer.append("\"/>\n");
                     }
                 }
@@ -256,8 +253,7 @@ public class Configurer extends JPanel implements CloseListener {
                     if ((defaultValue != null)
                             && !newValue.equals(defaultValue)) {
                         buffer.append("<property name=\"");
-                        buffer.append(((NamedObj) parameter)
-                                .getName(_object));
+                        buffer.append(((NamedObj) parameter).getName(_object));
                         buffer.append("\" value=\"");
                         buffer.append(StringUtilities
                                 .escapeForXML(defaultValue));
@@ -281,11 +277,11 @@ public class Configurer extends JPanel implements CloseListener {
 
                             // Reset the derived level, which has the side
                             // effect of marking the object not overridden.
-                            Iterator<Settable> parameters = parametersReset.iterator();
+                            Iterator<Settable> parameters = parametersReset
+                                    .iterator();
 
                             while (parameters.hasNext()) {
-                                Settable parameter = (Settable) parameters
-                                        .next();
+                                Settable parameter = parameters.next();
 
                                 if (isVisible(_object, parameter)) {
                                     int derivedLevel = ((NamedObj) parameter)
@@ -319,10 +315,8 @@ public class Configurer extends JPanel implements CloseListener {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 
     /** Return the visible Settables of NamedObj object. When addDecoratedAttributes is true
      *  we will also return the decorated attributes.
@@ -332,9 +326,11 @@ public class Configurer extends JPanel implements CloseListener {
      *          decorated attributes should also be included.
      *  @return The visible attributes.
      */
-    static private Set<Settable> _getVisibleSettables(final NamedObj object, boolean addDecoratedAttributes) {
+    static private Set<Settable> _getVisibleSettables(final NamedObj object,
+            boolean addDecoratedAttributes) {
         Set<Settable> attributes = new HashSet<Settable>();
-        Iterator<?> parameters = object.attributeList(Settable.class).iterator();
+        Iterator<?> parameters = object.attributeList(Settable.class)
+                .iterator();
 
         while (parameters.hasNext()) {
             Settable parameter = (Settable) parameters.next();
@@ -350,7 +346,8 @@ public class Configurer extends JPanel implements CloseListener {
             List<?> decorators = toplevel.attributeList(Decorator.class);
 
             for (Object decorator : decorators) {
-                List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator).getDecoratorAttributes(object);
+                List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator)
+                        .getDecoratorAttributes(object);
 
                 for (DecoratedAttribute decoratedAttribute : decoratedAttributes) {
                     Attribute attribute = decoratedAttribute.getAttribute();
@@ -366,7 +363,6 @@ public class Configurer extends JPanel implements CloseListener {
         }
         return attributes;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -70,8 +70,8 @@ public class TimedPlotter extends Plotter implements TimedActor {
     public TimedPlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        disconnectGraphOnAbsentValue = new Parameter(this, "disconnectGraphOnAbsentValue",
-                new BooleanToken(false));
+        disconnectGraphOnAbsentValue = new Parameter(this,
+                "disconnectGraphOnAbsentValue", new BooleanToken(false));
         disconnectGraphOnAbsentValue.setTypeEquals(BaseType.BOOLEAN);
 
         // Create the input port and make it a multiport.
@@ -97,7 +97,6 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -139,7 +138,8 @@ public class TimedPlotter extends Plotter implements TimedActor {
         double currentTimeValue;
         int width = input.getWidth();
 
-        boolean disconnectOnAbsent = ((BooleanToken) disconnectGraphOnAbsentValue.getToken()).booleanValue();
+        boolean disconnectOnAbsent = ((BooleanToken) disconnectGraphOnAbsentValue
+                .getToken()).booleanValue();
         int offset = ((IntToken) startingDataset.getToken()).intValue();
 
         for (int i = width - 1; i >= 0; i--) {

@@ -50,8 +50,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class HierarchyFlatteningAttribute extends Parameter
-implements GTAttribute {
+public class HierarchyFlatteningAttribute extends Parameter implements
+        GTAttribute {
 
     /**
      * @param container
@@ -66,8 +66,7 @@ implements GTAttribute {
         setTypeEquals(BaseType.BOOLEAN);
         setToken(BooleanToken.getInstance(!DEFAULT));
 
-        editorFactory = new VisibleParameterEditorFactory(this,
-                "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
     }
 
     /** If this variable is not lazy (the default) then evaluate
@@ -126,8 +125,8 @@ implements GTAttribute {
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
             + "  style=\"fill:#FFFFFF\"/>"
-            + "<text x=\"8\" y=\"17\" style=\"font-size:16; " +
-                    "font-family:SansSerif; fill:#A00000\">..</text>"
+            + "<text x=\"8\" y=\"17\" style=\"font-size:16; "
+            + "font-family:SansSerif; fill:#A00000\">..</text>"
             + "<rect x=\"18\" y=\"11\" width=\"11\" height=\"10\""
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"20\" y=\"13\" width=\"7\" height=\"6\""
@@ -152,8 +151,8 @@ implements GTAttribute {
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
             + "  style=\"fill:#FFFFFF\"/>"
-            + "<text x=\"8\" y=\"17\" style=\"font-size:16; " +
-                    "font-family:SansSerif; fill:#A00000\">..</text>"
+            + "<text x=\"8\" y=\"17\" style=\"font-size:16; "
+            + "font-family:SansSerif; fill:#A00000\">..</text>"
             + "<rect x=\"18\" y=\"11\" width=\"11\" height=\"10\""
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"20\" y=\"13\" width=\"7\" height=\"6\""

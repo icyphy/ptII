@@ -42,7 +42,6 @@ import java.util.List;
 import ptolemy.gui.PtGUIUtilities;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyTransferable
 

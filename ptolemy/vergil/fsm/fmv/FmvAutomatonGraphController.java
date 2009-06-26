@@ -156,7 +156,8 @@ public class FmvAutomatonGraphController extends FSMGraphController {
             if ((getSourceType() == TOOLBAR_TYPE)
                     || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
-                BasicGraphFrame frame = FmvAutomatonGraphController.this.getFrame();
+                BasicGraphFrame frame = FmvAutomatonGraphController.this
+                        .getFrame();
                 Point2D center;
 
                 if (frame != null) {
@@ -208,7 +209,8 @@ public class FmvAutomatonGraphController extends FSMGraphController {
             }
 
             if (moml == null) {
-                moml = "<entity name=\"" + stateName
+                moml = "<entity name=\""
+                        + stateName
                         + "\" class=\"ptolemy.domains.fsm.kernel.fmv.FmvState\">\n"
                         + "<property name=\"" + locationName
                         + "\" class=\"ptolemy.kernel.util.Location\""

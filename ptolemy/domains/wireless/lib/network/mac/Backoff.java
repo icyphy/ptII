@@ -294,7 +294,7 @@ public class Backoff extends MACActorBase {
         declareDelayDependency(getBackoff, BKDone, 0.0);
         declareDelayDependency(fromDataPump, BKDone, 0.0);
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private int _generateRandom(int ccw) {

@@ -36,7 +36,6 @@ import java.util.List;
 import ptolemy.data.properties.Property;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PropertyTermManager.
 
@@ -59,7 +58,7 @@ public class PropertyTermManager implements PropertyTermFactory {
     }
 
     public List<PropertyTerm> terms() {
-        List<PropertyTerm>  result = new LinkedList<PropertyTerm>();
+        List<PropertyTerm> result = new LinkedList<PropertyTerm>();
         result.addAll(_propertyTerms.values());
         return result;
     }
@@ -79,36 +78,34 @@ public class PropertyTermManager implements PropertyTermFactory {
             return (PropertyTerm) object;
         }
 
-//        if (object instanceof NamedObj) {
-//
-//            // Use the property term for the ParameterPort, if it is connected.
-//            if (object instanceof PortParameter) {
-//                PortParameter parameter = (PortParameter) object;
-//                if (parameter.getPort().numLinks() > 0) {
-//                    return getPropertyTerm(parameter.getPort());
-//                }
-//            }
-//
-//            // The property term for an Attribute is its root ASTNode.
-//            //if (object instanceof Attribute) {
-//            //    ASTPtRootNode node = _solver.getParseTree((Attribute) object);
-//            //    return getPropertyTerm(node);
-//            //}
-//        }
+        //        if (object instanceof NamedObj) {
+        //
+        //            // Use the property term for the ParameterPort, if it is connected.
+        //            if (object instanceof PortParameter) {
+        //                PortParameter parameter = (PortParameter) object;
+        //                if (parameter.getPort().numLinks() > 0) {
+        //                    return getPropertyTerm(parameter.getPort());
+        //                }
+        //            }
+        //
+        //            // The property term for an Attribute is its root ASTNode.
+        //            //if (object instanceof Attribute) {
+        //            //    ASTPtRootNode node = _solver.getParseTree((Attribute) object);
+        //            //    return getPropertyTerm(node);
+        //            //}
+        //        }
 
         if (!_propertyTerms.containsKey(object)) {
             _propertyTerms.put(object, new InequalityTerm(object));
         }
-        return (PropertyTerm) _propertyTerms.get(object);
+        return _propertyTerms.get(object);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The mapping between property-able objects and their PropertyTerm. */
-    private HashMap<Object, PropertyTerm> _propertyTerms =
-        new HashMap<Object, PropertyTerm>();
+    private HashMap<Object, PropertyTerm> _propertyTerms = new HashMap<Object, PropertyTerm>();
 
     protected PropertyConstraintSolver _solver;
 
@@ -121,7 +118,7 @@ public class PropertyTermManager implements PropertyTermFactory {
         protected Object _object;
         private boolean _isEffective;
 
-        protected InequalityTerm (Object object) {
+        protected InequalityTerm(Object object) {
             _object = object;
             _isEffective = true;
         }
@@ -188,7 +185,7 @@ public class PropertyTermManager implements PropertyTermFactory {
 
             // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.
             if (_object instanceof LatticeProperty) {
-                _solver.setResolvedProperty(_object, (LatticeProperty)_object);
+                _solver.setResolvedProperty(_object, (LatticeProperty) _object);
             } else {
                 _solver.setResolvedProperty(_object, (Property) property);
             }
@@ -226,7 +223,7 @@ public class PropertyTermManager implements PropertyTermFactory {
             return false;
         }
 
-        public void setEffective (boolean isEffective) {
+        public void setEffective(boolean isEffective) {
             _isEffective = isEffective;
         }
 
@@ -241,16 +238,16 @@ public class PropertyTermManager implements PropertyTermFactory {
                         "The property is not settable.");
             }
 
-//            Property declaredProperty = _solver.getDeclaredProperty(_object);
-//            if (declaredProperty != null &&
-//                    !declaredProperty.isSubstitutionInstance((Property) property)) {
-//                throw new IllegalActionException("Property conflict on object "
-//                        + _object.toString() + ".\n"
-//                        + "Declared property is "
-//                        + declaredProperty.toString() + ".\n"
-//                        + "The connection or property constraints, however, "
-//                        + "require property " + property.toString());
-//            }
+            //            Property declaredProperty = _solver.getDeclaredProperty(_object);
+            //            if (declaredProperty != null &&
+            //                    !declaredProperty.isSubstitutionInstance((Property) property)) {
+            //                throw new IllegalActionException("Property conflict on object "
+            //                        + _object.toString() + ".\n"
+            //                        + "Declared property is "
+            //                        + declaredProperty.toString() + ".\n"
+            //                        + "The connection or property constraints, however, "
+            //                        + "require property " + property.toString());
+            //            }
 
             _solver.setResolvedProperty(_object, (Property) property);
         }
@@ -268,7 +265,8 @@ public class PropertyTermManager implements PropertyTermFactory {
 
     }
 
-    public List<PropertyTerm> getAffectedTerms(PropertyTerm updateTerm) throws IllegalActionException {
+    public List<PropertyTerm> getAffectedTerms(PropertyTerm updateTerm)
+            throws IllegalActionException {
         return new ArrayList<PropertyTerm>();
     }
 }

@@ -78,8 +78,8 @@ public class ObjectToken extends Token {
      */
     public ObjectToken(Object value, Class<?> valueClass)
             throws IllegalActionException {
-        if (value != null && valueClass != null &&
-                !valueClass.isInstance(value)) {
+        if (value != null && valueClass != null
+                && !valueClass.isInstance(value)) {
             throw new IllegalActionException("The value " + value + " is not "
                     + "an instance of class " + valueClass);
         }
@@ -130,10 +130,10 @@ public class ObjectToken extends Token {
         }
 
         ObjectToken objectToken = (ObjectToken) object;
-        if (_class == null && objectToken._class == null ||
-                _class != null && _class.equals(objectToken._class)) {
-            return _value == null && objectToken._value == null ||
-                    _value != null && _value.equals(objectToken._value);
+        if (_class == null && objectToken._class == null || _class != null
+                && _class.equals(objectToken._class)) {
+            return _value == null && objectToken._value == null
+                    || _value != null && _value.equals(objectToken._value);
         } else {
             return false;
         }
@@ -149,9 +149,9 @@ public class ObjectToken extends Token {
             try {
                 return new ObjectType(_value, _class);
             } catch (IllegalActionException e) {
-                throw new InternalErrorException("This ObjectToken does not " +
-                        "contain a value that conforms to the specified " +
-                        "class.");
+                throw new InternalErrorException("This ObjectToken does not "
+                        + "contain a value that conforms to the specified "
+                        + "class.");
             }
         }
     }
@@ -210,7 +210,7 @@ public class ObjectToken extends Token {
      *   cannot be loaded.
      */
     public static ObjectToken object(String className)
-    throws IllegalActionException {
+            throws IllegalActionException {
         try {
             Class objectClass = Class.forName(className);
             return new ObjectToken(null, objectClass);

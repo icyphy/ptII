@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 import ptolemy.actor.IOPort;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 /** 
  * 
@@ -41,10 +40,10 @@ import ptolemy.kernel.util.NamedObj;
  */
 public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
-    public Receiver(ptolemy.actor.Receiver receiver) 
-    throws IllegalActionException {
+    public Receiver(ptolemy.actor.Receiver receiver)
+            throws IllegalActionException {
         super(null);
-        
+
         IOPort port = getReceiver().getContainer();
         int channel = port.getChannelForReceiver(getReceiver());
         _name = getStrategy().generateVariableName(port) + "_" + channel;
@@ -54,17 +53,18 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
     abstract public String generateHasTokenCode() throws IllegalActionException;
 
-    abstract public String generatePutCode(String token) throws IllegalActionException;
-    
+    abstract public String generatePutCode(String token)
+            throws IllegalActionException;
+
     public ptolemy.actor.Receiver getReceiver() {
         return _receiver;
     }
-    
+
     public String getName() {
         return _name;
     }
-    
+
     private ptolemy.actor.Receiver _receiver;
-    
+
     protected String _name;
 }

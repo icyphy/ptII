@@ -48,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import bsh.Interpreter;
 
@@ -186,11 +187,12 @@ public class NewComponentDialog extends JPanel {
     public Component getInstance() {
         Component component = null;
         String script;
-        if (preview == null || preview.length() == 0)
+        if (preview == null || preview.length() == 0) {
             script = getImports() + "\n" + getDeclarations() + "\n"
                     + getConfiguration();
-        else
+        } else {
             script = preview.trim();
+        }
         String componentName = componentNameTextField.getText();
         script = script.replaceAll("\\$\\{name\\}", componentName);
 
@@ -212,8 +214,9 @@ public class NewComponentDialog extends JPanel {
 
     private void doPreview() {
         Component component = getInstance();
-        if (component == null)
+        if (component == null) {
             return;
+        }
         JPanel temporaryContainer = new JPanel();
         temporaryContainer.add(component);
         if (temporaryContainer != null) {
@@ -275,8 +278,9 @@ public class NewComponentDialog extends JPanel {
      * @return
      */
     private String cleanString(String instr) {
-        if (instr == null)
+        if (instr == null) {
             return instr;
+        }
 
         // Java 1.5 library method
         //    while ( res.contains("\n\n") )
@@ -307,7 +311,7 @@ public class NewComponentDialog extends JPanel {
             ComponentDef componentDef) {
         JDialog dlg = new JDialog(owner, "Edit Component", true);
         UserPrefs.getPrefs().useSavedBounds("newcomp", dlg);
-        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         NewComponentDialog panel = new NewComponentDialog(dlg);
         panel.editComponentDef(componentDef);
         panel.setComponentName(componentDef.name);
@@ -332,7 +336,7 @@ public class NewComponentDialog extends JPanel {
             ComponentDef componentDef) {
         JDialog dlg = new JDialog(owner, "New Component", true);
         UserPrefs.getPrefs().useSavedBounds("newcomp", dlg);
-        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         NewComponentDialog panel = new NewComponentDialog(dlg);
         panel.setComponentDef(componentDef);
         panel.setComponentName("untitled");

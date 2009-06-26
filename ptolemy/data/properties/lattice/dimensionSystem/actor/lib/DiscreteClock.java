@@ -63,17 +63,14 @@ public class DiscreteClock extends PropertyConstraintHelper {
         _actor = actor;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _lattice.getElement("UNITLESS"));
 
         return super.constraintList();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -85,7 +82,6 @@ public class DiscreteClock extends PropertyConstraintHelper {
 
         return result;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

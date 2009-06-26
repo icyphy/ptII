@@ -457,7 +457,6 @@ public class PlotBox extends JPanel implements Printable {
                     // Other exceptions should not occur.
                 }
 
-
             }
         }
     }
@@ -1412,6 +1411,7 @@ public class PlotBox extends JPanel implements Printable {
         _plotImage = null;
         _captionStrings = captionStrings;
     }
+
     /** If the argument is false, draw the plot without using color
      *  (in black and white).  Otherwise, draw it in color (the default).
      *  @param useColor False to draw in back and white.
@@ -1767,8 +1767,8 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         if (_captionStrings != null) {
-            for (Enumeration captions = _captionStrings.elements();
-                 captions.hasMoreElements();) {
+            for (Enumeration captions = _captionStrings.elements(); captions
+                    .hasMoreElements();) {
                 String captionLine = (String) captions.nextElement();
                 output.println("<caption>" + captionLine + "</caption>");
             }
@@ -2012,9 +2012,10 @@ public class PlotBox extends JPanel implements Printable {
             titley = titlefontheight + _topPadding;
         }
 
-        int captionHeight = (_captionStrings.size()) * (_captionFontMetrics.getHeight());
+        int captionHeight = (_captionStrings.size())
+                * (_captionFontMetrics.getHeight());
         if (captionHeight > 0) {
-            captionHeight += 5;         //extra padding
+            captionHeight += 5; //extra padding
         }
 
         // Number of vertical tick marks depends on the height of the font
@@ -2053,7 +2054,8 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         // NOTE: 5 pixel padding on the bottom.
-        if ((_xlabel != null) && (_bottomPadding < (captionHeight + labelheight + 5))) {
+        if ((_xlabel != null)
+                && (_bottomPadding < (captionHeight + labelheight + 5))) {
             _bottomPadding = captionHeight + labelheight + 5;
         }
 
@@ -2601,11 +2603,11 @@ public class PlotBox extends JPanel implements Printable {
         graphics.setFont(_captionFont);
         int fontHt = _captionFontMetrics.getHeight();
         int yCapPosn = drawRect.height - captionHeight + 14;
-        for (Enumeration captions = _captionStrings.elements();
-             captions.hasMoreElements();) {
+        for (Enumeration captions = _captionStrings.elements(); captions
+                .hasMoreElements();) {
             String captionLine = (String) captions.nextElement();
             int labelx = _ulx
-                + ((width - _captionFontMetrics.stringWidth(captionLine)) / 2);
+                    + ((width - _captionFontMetrics.stringWidth(captionLine)) / 2);
             graphics.drawString(captionLine, labelx, yCapPosn);
             yCapPosn += fontHt;
         }
@@ -2857,8 +2859,8 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         if (_captionStrings != null) {
-            for (Enumeration captions = _captionStrings.elements();
-                 captions.hasMoreElements();) {
+            for (Enumeration captions = _captionStrings.elements(); captions
+                    .hasMoreElements();) {
                 String captionLine = (String) captions.nextElement();
                 output.println("Caption: " + captionLine);
             }
@@ -4289,7 +4291,8 @@ public class PlotBox extends JPanel implements Printable {
                 // set this property:
                 // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
                 // and then run $PTII/bin/vergil
-                if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
+                if (StringUtilities.getProperty("ptolemy.ptII.print.platform")
+                        .equals("CrossPlatform")) {
                     _printCrossPlatform();
                 } else {
                     _printNative();
@@ -4346,9 +4349,8 @@ public class PlotBox extends JPanel implements Printable {
                 } catch (Exception ex) {
                     Component ancestor = getTopLevelAncestor();
                     JOptionPane.showMessageDialog(ancestor,
-                            "Printing failed:\n"
-                            + ex.toString(), "Print Error",
-                            JOptionPane.WARNING_MESSAGE);
+                            "Printing failed:\n" + ex.toString(),
+                            "Print Error", JOptionPane.WARNING_MESSAGE);
                 }
             }
         }

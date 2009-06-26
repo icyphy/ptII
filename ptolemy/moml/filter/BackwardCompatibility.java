@@ -104,4 +104,3 @@ public class BackwardCompatibility {
         _filterList.add(new RelationWidthChanges());
     }
 }
-

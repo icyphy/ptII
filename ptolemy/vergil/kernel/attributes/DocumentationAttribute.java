@@ -33,8 +33,8 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.EditorFactory;
-import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -144,7 +144,7 @@ public class DocumentationAttribute extends VisibleAttribute {
                 }
 
                 if (docAttribute != null) {
-                    URL doc = MoMLApplication.specToURL(docAttribute
+                    URL doc = ConfigurationApplication.specToURL(docAttribute
                             .getExpression());
                     configuration.openModel(doc, doc, doc.toExternalForm());
                 } else {

@@ -44,10 +44,10 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -101,7 +101,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
-
     /** If true, the generated code will be C++ instead of C.
      * FIXME: This is a temporary fix.  In the long run, C++ should
      * be its own target language for code generation.  In the short
@@ -117,7 +116,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  parameter with default value false.
      */
     public Parameter sourceLineBinding;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -248,10 +247,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             //String targetValue = target.getExpression();
 
             // FIXME: why do we need this?
-//            if (!targetValue.equals(_DEFAULT_TARGET)) {
-//                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
-//                        + "init();" + _eol);
-//            }
+            //            if (!targetValue.equals(_DEFAULT_TARGET)) {
+            //                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
+            //                        + "init();" + _eol);
+            //            }
 
         } else {
             // If the container is not in the top level, we are generating code
@@ -363,7 +362,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer typeMembers = new StringBuffer();
         code.append("#define TYPE_Token -1 " + _eol);
 
-
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
@@ -403,7 +401,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             typeStreams[i].appendCodeBlock("declareBlock");
             code.append(typeStreams[i].toString());
         }
-
 
         ArrayList<String> args = new ArrayList<String>();
         // Token declareBlock.
@@ -451,8 +448,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 // /*** [function name]Block ***/
                 //     .....
                 // /**/
-                String functionName = typesArray[i] + "_"
-                + functionsArray[j];
+                String functionName = typesArray[i] + "_" + functionsArray[j];
 
                 try {
                     // Boolean_isCloseTo and String_isCloseTo map to
@@ -462,8 +458,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                                     .equals("String"))) {
 
                         if (!functions.contains("equals")) {
-                            markFunctionCalled(
-                                    typesArray[i] + "_equals", null);
+                            markFunctionCalled(typesArray[i] + "_equals", null);
                         }
                     } else {
                         if (!_unsupportedTypeFunctions.contains(functionName)
@@ -479,11 +474,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     // generated code because the function table makes
                     // reference to this label.
 
-                    typeStreams[i].append("#define " + functionName + " MISSING " + _eol);
+                    typeStreams[i].append("#define " + functionName
+                            + " MISSING " + _eol);
                     _unsupportedTypeFunctions.add(functionName);
 
-                    System.out.println("Warning -- missing function defintion: "
-                            + functionName + "()");
+                    System.out
+                            .println("Warning -- missing function defintion: "
+                                    + functionName + "()");
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types.
@@ -497,8 +494,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                String functionName = typesArray[i] + "_"
-                        + functionsArray[j];
+                String functionName = typesArray[i] + "_" + functionsArray[j];
 
                 if (_unsupportedTypeFunctions.contains(functionName)) {
                     defineUnsupportedTypeFunctionMethod = true;
@@ -523,7 +519,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         functionName = typesArray[i] + "_equals";
                         if (!_unsupportedTypeFunctions.contains(functionName)) {
                             args.add(functionName);
-                            sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                            sharedStream.appendCodeBlock("funcHeaderBlock",
+                                    args);
                         }
                     }
                 }
@@ -599,7 +596,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /**
      * @return
      */
@@ -631,9 +627,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         if (functions.contains("isCloseTo")
-                //&& _newTypesUsed.contains("Int")
-                //&& !_newTypesUsed.contains("Double")
-                ) {
+        //&& _newTypesUsed.contains("Int")
+        //&& !_newTypesUsed.contains("Double")
+        ) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
         }
@@ -657,14 +653,15 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment("Generate variable declarations for "
                     + "modified parameters"));
-            Iterator<Parameter> modifiedVariables = _modifiedVariables.iterator();
+            Iterator<Parameter> modifiedVariables = _modifiedVariables
+                    .iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                ProgramCodeGeneratorAdapter adapter =  (ProgramCodeGeneratorAdapter) getAdapter(variable.getContainer());
-                code.append("static "
-                        + adapter.targetType(variable.getType())
+                ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(variable
+                        .getContainer());
+                code.append("static " + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
             }
         }
@@ -686,18 +683,20 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (_modifiedVariables != null && !(_modifiedVariables.isEmpty())) {
             code.append(comment(1, "Generate variable initialization for "
                     + "modified parameters"));
-            Iterator<Parameter> modifiedVariables = _modifiedVariables.iterator();
+            Iterator<Parameter> modifiedVariables = _modifiedVariables
+                    .iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
-                ProgramCodeGeneratorAdapter containerAdapter =  (ProgramCodeGeneratorAdapter) getAdapter(container);
+                ProgramCodeGeneratorAdapter containerAdapter = (ProgramCodeGeneratorAdapter) getAdapter(container);
                 code.append(INDENT1
                         + generateVariableName(variable)
                         + " = "
-                        + containerAdapter.getParameterValue(variable.getName(),
-                                variable.getContainer()) + ";" + _eol);
+                        + containerAdapter.getParameterValue(
+                                variable.getName(), variable.getContainer())
+                        + ";" + _eol);
             }
         }
 
@@ -827,7 +826,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
         Set<String> actorLibraryDirectories = adapter.getLibraryDirectories();
-        Iterator<String> libraryDirectoryIterator = actorLibraryDirectories.iterator();
+        Iterator<String> libraryDirectoryIterator = actorLibraryDirectories
+                .iterator();
         while (libraryDirectoryIterator.hasNext()) {
             addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
                     + "\"");
@@ -882,7 +882,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
         // Parse other function files.
-        String directorFunctionDir = cCodegenPath + "kernel/parameterized/directorFunctions/";
+        String directorFunctionDir = cCodegenPath
+                + "kernel/parameterized/directorFunctions/";
         _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
 
         /* FIXME rodiers: do target specific code differently
@@ -971,7 +972,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
             // Make sure all #line macros are at the start of a line.
-            String codeString = code.toString().replaceAll("#line", _eol + "#line");
+            String codeString = code.toString().replaceAll("#line",
+                    _eol + "#line");
 
             StringTokenizer tokenizer = new StringTokenizer(codeString, _eol);
 
@@ -1037,7 +1039,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (!_isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
-            includingFiles.addAll(((CCodeGeneratorAdapterStrategy) compositeActorAdapter.getStrategy()).getJVMHeaderFiles());
+            includingFiles
+                    .addAll(((CCodeGeneratorAdapterStrategy) compositeActorAdapter
+                            .getStrategy()).getJVMHeaderFiles());
         }
 
         includingFiles.add("<stdarg.h>");
@@ -1225,11 +1229,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
                 } else {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                                      "# Unknown java property os.name \"" + osName
-                                      + "\" please edit ptolemy/codegen/c/"
-                                      + "kernel/CCodeGenerator.java and "
-                                      + "ptolemy/actor/lib/jni/"
-                                      + "CompiledCompositeActor.java");
+                            "# Unknown java property os.name \"" + osName
+                                    + "\" please edit ptolemy/codegen/c/"
+                                    + "kernel/CCodeGenerator.java and "
+                                    + "ptolemy/actor/lib/jni/"
+                                    + "CompiledCompositeActor.java");
                 }
 
             }
@@ -1249,16 +1253,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     uriString.lastIndexOf("/") + 1)
                     + _sanitizedModelName + ".mk.in");
         }
-        
-        String generatorDirectory = generatorPackageList.stringValue().replace('.', '/');
-        
+
+        String generatorDirectory = generatorPackageList.stringValue().replace(
+                '.', '/');
+
         if (getContainer().getContainer() != null) {
             // We have a embedded code generator
             templateList.add("ptolemy/cg/kernel/" + generatorDirectory
                     + (_isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
-            
+
         }
-        
+
         // 2. If the target parameter is set, look for a makefile.
 
         // FIXME rodiers: don't access generatorPackageList directly!
@@ -1352,7 +1357,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
-    final public void markFunctionCalled(String name, CCodeGeneratorAdapterStrategy adapter)
+    final public void markFunctionCalled(String name,
+            CCodeGeneratorAdapterStrategy adapter)
             throws IllegalActionException {
 
         try {
@@ -1360,22 +1366,21 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
             if (!_overloadedFunctionSet.contains(name)) {
 
-                String code = adapter == null ?
-                        processCode(functionCode) :
-                        adapter.processCode(functionCode);
+                String code = adapter == null ? processCode(functionCode)
+                        : adapter.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
                 _overloadedFunctionSet.add(name);
             }
-//            if (name.startsWith("Array_")) {
-//                // Array_xxx might need to have xxx added.
-//                // See c/actor/lib/test/auto/MultiplyDivide5.xml
-//
-//                // FIXME: this will add any function, which means that
-//                // if the user has Array_foo, foo is added.  Is this right?
-//                _tokenFuncUsed.add(name.substring(6));
-//            }
+            //            if (name.startsWith("Array_")) {
+            //                // Array_xxx might need to have xxx added.
+            //                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+            //
+            //                // FIXME: this will add any function, which means that
+            //                // if the user has Array_foo, foo is added.  Is this right?
+            //                _tokenFuncUsed.add(name.substring(6));
+            //            }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to mark function called for \"" + name + "\" in \""
@@ -1386,7 +1391,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     private CodeStream _overloadedFunctions;
 
-        /** An ordered set of function code */
+    /** An ordered set of function code */
     LinkedHashSet<String> _overloadedFunctionSet;
 
     /** Set of type/function combinations that are not supported.

@@ -212,8 +212,8 @@ public class IterateOverArray extends MirrorComposite {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public IterateOverArray(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public IterateOverArray(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -441,8 +441,8 @@ public class IterateOverArray extends MirrorComposite {
     ////                         private methods                   ////
 
     /** Initialize the class. */
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
         new IterateDirector(this, uniqueName("IterateDirector"));
 
@@ -818,8 +818,8 @@ public class IterateOverArray extends MirrorComposite {
             }
 
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND,
-                                                        channelIndex, true, token));
+                _notifyPortEventListeners(new IOPortEvent(this,
+                        IOPortEvent.SEND, channelIndex, true, token));
             }
 
             try {

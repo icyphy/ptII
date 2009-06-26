@@ -204,8 +204,8 @@ public class PteraGraphController extends FSMGraphController {
             NamedObj toplevel = graphModel.getPtolemyModel();
 
             // Create the state.
-            String moml = "<group name=\"auto\">" +
-                    frame._getDefaultEventMoML() + "</group>";
+            String moml = "<group name=\"auto\">"
+                    + frame._getDefaultEventMoML() + "</group>";
 
             MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
                     moml) {
@@ -216,8 +216,8 @@ public class PteraGraphController extends FSMGraphController {
                         return;
                     }
                     for (NamedObj object : topObjects) {
-                        Location location = (Location) object.getAttribute(
-                                "_location");
+                        Location location = (Location) object
+                                .getAttribute("_location");
                         if (location == null) {
                             try {
                                 location = new Location(object, "_location");
@@ -227,7 +227,7 @@ public class PteraGraphController extends FSMGraphController {
                         }
                         if (location != null) {
                             try {
-                                location.setLocation(new double[]{x, y});
+                                location.setLocation(new double[] { x, y });
                             } catch (IllegalActionException e) {
                                 // Ignore.
                             }

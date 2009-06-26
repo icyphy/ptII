@@ -639,7 +639,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
          *         its derivative in history.
          */
         public double[] getEntry(int index) {
-            return ((DoubleDouble) _entries.get(index)).toArray();
+            return (_entries.get(index)).toArray();
         }
 
         /** Push the new state-derivative pair into the history.

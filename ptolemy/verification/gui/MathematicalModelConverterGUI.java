@@ -102,10 +102,10 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
-        JTextArea messageArea = new JTextArea("NOTE: This is a highly " +
-                "preliminary facility for\n      verification with many " +
-                "limitations. It is \n      best viewed as a concept " +
-                "demonstration.", 2, 10);
+        JTextArea messageArea = new JTextArea("NOTE: This is a highly "
+                + "preliminary facility for\n      verification with many "
+                + "limitations. It is \n      best viewed as a concept "
+                + "demonstration.", 2, 10);
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
@@ -173,8 +173,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         final JTextAreaExec exec = new JTextAreaExec(
                 "Terminal (Verification Results)", false);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left,
-                exec);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                left, exec);
         splitPane.setOneTouchExpandable(true);
 
         // Adjust the divider so that the control panel does not have a
@@ -203,30 +203,30 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
 
                     String inputTemporalFormula = modelConverter.formula
                             .getExpression();
-                    FormulaType formulaType = (FormulaType) modelConverter
-                            .formulaType.getChosenValue();
+                    FormulaType formulaType = (FormulaType) modelConverter.formulaType
+                            .getChosenValue();
                     int span = ((IntToken) modelConverter.span.getToken())
                             .intValue();
-                    OutputType outputType = (OutputType) modelConverter
-                            .outputType.getChosenValue();
+                    OutputType outputType = (OutputType) modelConverter.outputType
+                            .getChosenValue();
                     int bufferSize = ((IntToken) modelConverter.buffer
                             .getToken()).intValue();
-                    if (formulaType == FormulaType.Risk ||
-                            formulaType == FormulaType.Reachability) {
-                        inputTemporalFormula =
-                            modelConverter.generateGraphicalSpec(formulaType);
+                    if (formulaType == FormulaType.Risk
+                            || formulaType == FormulaType.Reachability) {
+                        inputTemporalFormula = modelConverter
+                                .generateGraphicalSpec(formulaType);
                         formulaType = FormulaType.CTL;
                     }
 
                     StringBuffer code = new StringBuffer("");
 
                     try {
-                        code.append(modelConverter.generateFile(file, modelType,
-                                inputTemporalFormula, formulaType, span,
-                                outputType, bufferSize));
+                        code.append(modelConverter.generateFile(file,
+                                modelType, inputTemporalFormula, formulaType,
+                                span, outputType, bufferSize));
                     } catch (Exception e) {
-                        MessageHandler.error("Failed to output result to the " +
-                                "file.", e);
+                        MessageHandler.error("Failed to output result to the "
+                                + "file.", e);
                         return;
                     }
 

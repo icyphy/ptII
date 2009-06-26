@@ -197,10 +197,12 @@ public class ComponentDef implements Comparable<Object> {
         List<ComponentDef> components = new ArrayList<ComponentDef>();
         InputStream paletteStream = ComponentDef.class
                 .getResourceAsStream("components.xml");
-        if (paletteStream == null)
+        if (paletteStream == null) {
             paletteStream = getCompFile();
-        if (paletteStream == null)
+        }
+        if (paletteStream == null) {
             return components;
+        }
 
         Document dataDocument = null;
 
@@ -245,8 +247,9 @@ public class ComponentDef implements Comparable<Object> {
         for (int i = 0; i < children.getLength(); i++) {
             String childname = children.item(i).getNodeName();
             if (childname != null) {
-                if (nodeName.equals(childname))
+                if (nodeName.equals(childname)) {
                     childList.add(children.item(i));
+                }
             }
         }
         Node[] result = new Node[childList.size()];

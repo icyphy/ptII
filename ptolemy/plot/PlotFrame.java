@@ -420,7 +420,8 @@ public class PlotFrame extends JFrame {
         // If you are using $PTII/bin/vergil, under bash, set this property:
         // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
         // and then run $PTII/bin/vergil
-        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
+        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals(
+                "CrossPlatform")) {
             _printCrossPlatform();
         } else {
             _printNative();
@@ -483,7 +484,7 @@ public class PlotFrame extends JFrame {
 
         if (pdfPrintService == null) {
             throw new PrinterException("Could not find a printer with the "
-                                       + "string \"PDF\" in its name.");
+                    + "string \"PDF\" in its name.");
         }
 
         PrinterJob job = PrinterJob.getPrinterJob();
@@ -497,9 +498,10 @@ public class PlotFrame extends JFrame {
 
         job.print(aset);
         if (foundPDFPrinter) {
-            System.out.println("Plot printed from command line. "
-                               + "Under MacOSX, look for "
-                               + "~/Desktop/Java Printing.pdf");
+            System.out
+                    .println("Plot printed from command line. "
+                            + "Under MacOSX, look for "
+                            + "~/Desktop/Java Printing.pdf");
         }
     }
 
@@ -765,4 +767,3 @@ public class PlotFrame extends JFrame {
         }
     }
 }
-

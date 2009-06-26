@@ -40,8 +40,8 @@ import ptolemy.kernel.util.StringAttribute;
 
 public class PropertyTokenASTNodeHelper extends PropertyTokenHelper {
 
-    public PropertyTokenASTNodeHelper(PropertyTokenSolver solver, Object component)
-    throws IllegalActionException {
+    public PropertyTokenASTNodeHelper(PropertyTokenSolver solver,
+            Object component) throws IllegalActionException {
         super(solver, component);
     }
 
@@ -57,28 +57,31 @@ public class PropertyTokenASTNodeHelper extends PropertyTokenHelper {
         return list;
     }
 
-   /**
-     * Return the list of sub-helpers. In this base class,
-     * return an empty list.
-     * @return The list of sub-helpers.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    /**
+      * Return the list of sub-helpers. In this base class,
+      * return an empty list.
+      * @return The list of sub-helpers.
+      * @exception IllegalActionException Not thrown in this base class.
+      */
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
         return new ArrayList<PropertyHelper>();
     }
 
-    public void determineProperty(List <Attribute>attributeList) throws IllegalActionException, NameDuplicationException {
+    public void determineProperty(List<Attribute> attributeList)
+            throws IllegalActionException, NameDuplicationException {
         Iterator attributeIterator = attributeList.iterator();
         while (attributeIterator.hasNext()) {
-            Attribute attribute = (Attribute)attributeIterator.next();
-//FIXME: take care of all StringParameters and filter them
-//       should not be necessary once proprtyable attributes are filtered (related to kernel exceptions)
-            if (((attribute instanceof StringAttribute) &&
-                 (attribute.getName().equalsIgnoreCase("guardExpression"))) ||
-                 (attribute instanceof Parameter) ||
-                 (attribute instanceof PortParameter)) {
+            Attribute attribute = (Attribute) attributeIterator.next();
+            //FIXME: take care of all StringParameters and filter them
+            //       should not be necessary once proprtyable attributes are filtered (related to kernel exceptions)
+            if (((attribute instanceof StringAttribute) && (attribute.getName()
+                    .equalsIgnoreCase("guardExpression")))
+                    || (attribute instanceof Parameter)
+                    || (attribute instanceof PortParameter)) {
 
-                setEquals(attribute, getSolver().getProperty(getParseTree(attribute)));
+                setEquals(attribute, getSolver().getProperty(
+                        getParseTree(attribute)));
             }
         }
     }

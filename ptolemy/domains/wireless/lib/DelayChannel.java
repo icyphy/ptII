@@ -135,7 +135,7 @@ public class DelayChannel extends ErasureChannel {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DelayChannel newObject = (DelayChannel)super.clone(workspace);
+        DelayChannel newObject = (DelayChannel) super.clone(workspace);
         newObject._receptions = null;
         return newObject;
     }

@@ -32,8 +32,8 @@ import java.awt.Dimension;
 import java.net.URL;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.MoMLApplet;
-import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
@@ -159,9 +159,9 @@ public class MoMLViewerApplet extends MoMLApplet {
 
         if (configurationPath != null) {
             try {
-                URL specificationURL = MoMLApplication
+                URL specificationURL = ConfigurationApplication
                         .specToURL(configurationPath);
-                _configuration = MoMLApplication
+                _configuration = ConfigurationApplication
                         .readConfiguration(specificationURL);
                 report("Opened '" + specificationURL + "': " + _configuration);
             } catch (Exception ex) {

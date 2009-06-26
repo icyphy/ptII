@@ -70,8 +70,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DebuggerParameter extends TableauParameter
-        implements DebugListener {
+public class DebuggerParameter extends TableauParameter implements
+        DebugListener {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -126,8 +126,8 @@ public class DebuggerParameter extends TableauParameter
             switch (mode) {
             case A_DISPLAY:
                 try {
-                    Tableau tableau =
-                        (Tableau) ((ObjectToken) getToken()).getValue();
+                    Tableau tableau = (Tableau) ((ObjectToken) getToken())
+                            .getValue();
 
                     if (tableau == null) {
                         tableau = _createTableau();
@@ -140,23 +140,24 @@ public class DebuggerParameter extends TableauParameter
                         TextEditor frame = (TextEditor) tableau.getFrame();
                         frame.text.append(message + "\n");
                         try {
-                            int lineOffset = frame.text.getLineStartOffset(
-                                    frame.text.getLineCount() - 1);
+                            int lineOffset = frame.text
+                                    .getLineStartOffset(frame.text
+                                            .getLineCount() - 1);
                             frame.text.setCaretPosition(lineOffset);
                         } catch (BadLocationException ex) {
                             // Ignore ... worst case is that the scrollbar doesn't move.
                         }
                     }
                 } catch (Throwable e) {
-                    throw new InternalErrorException(this, e, "Unable to report " +
-                            "message \"" + message + "\".");
+                    throw new InternalErrorException(this, e,
+                            "Unable to report " + "message \"" + message
+                                    + "\".");
                 }
                 break;
             case B_CHECK_LOG:
                 if (!message.equals(_lines[_lineNumber++])) {
-                    throw new RuntimeException(
-                            "Log does not match on line " +
-                            (_lineNumber - 1) + ".");
+                    throw new RuntimeException("Log does not match on line "
+                            + (_lineNumber - 1) + ".");
                 }
                 break;
             case C_RECORD_LOG:
@@ -201,10 +202,10 @@ public class DebuggerParameter extends TableauParameter
 
         Mode mode = (Mode) this.mode.getChosenValue();
         if (mode == Mode.B_CHECK_LOG) {
-            if (_lineNumber + 1 != _lines.length ||
-                    !_lines[_lineNumber].equals("")) {
-                throw new RuntimeException("Log does not match on line " +
-                        (_lineNumber) + ".");
+            if (_lineNumber + 1 != _lines.length
+                    || !_lines[_lineNumber].equals("")) {
+                throw new RuntimeException("Log does not match on line "
+                        + (_lineNumber) + ".");
             }
         }
     }
@@ -282,18 +283,18 @@ public class DebuggerParameter extends TableauParameter
         try {
             textEffigy = TextEffigy.newTextEffigy(effigy, "");
         } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Unable to create " +
-                    "effigy.");
+            throw new IllegalActionException(this, e, "Unable to create "
+                    + "effigy.");
         }
         Tableau tableau;
         try {
             tableau = new Tableau(textEffigy, "tableau");
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e, "Unable to create " +
-                    "tableau.");
+            throw new IllegalActionException(this, e, "Unable to create "
+                    + "tableau.");
         }
-        TextEditor frame = new TextEditor(tableau.getTitle(),
-                textEffigy.getDocument());
+        TextEditor frame = new TextEditor(tableau.getTitle(), textEffigy
+                .getDocument());
         frame.text.setColumns(((IntToken) columnsDisplayed.getToken())
                 .intValue());
         frame.text.setRows(((IntToken) rowsDisplayed.getToken()).intValue());
@@ -317,8 +318,7 @@ public class DebuggerParameter extends TableauParameter
         boolean hierarchical = ((BooleanToken) this.hierarchical.getToken())
                 .booleanValue();
         if (container instanceof PteraController) {
-            LinkedList<PteraController> controllers =
-                new LinkedList<PteraController>();
+            LinkedList<PteraController> controllers = new LinkedList<PteraController>();
             controllers.add((PteraController) container);
             while (!controllers.isEmpty()) {
                 PteraController controller = controllers.removeFirst();
@@ -335,13 +335,13 @@ public class DebuggerParameter extends TableauParameter
                         continue;
                     }
                     if (object instanceof Event) {
-                        TypedActor[] refinements =
-                            ((Event) object).getRefinement();
+                        TypedActor[] refinements = ((Event) object)
+                                .getRefinement();
                         if (refinements != null) {
                             for (TypedActor refinement : refinements) {
                                 if (refinement instanceof PteraController) {
-                                    controllers.add(
-                                            (PteraController) refinement);
+                                    controllers
+                                            .add((PteraController) refinement);
                                 }
                             }
                         }

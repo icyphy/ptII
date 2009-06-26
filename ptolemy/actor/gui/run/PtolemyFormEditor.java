@@ -534,8 +534,9 @@ public class PtolemyFormEditor extends JPanel {
         for (int index = 0; index < _container.getComponentCount(); index++) {
             Component component = _container.getComponent(index);
             CellConstraints constraints = _getComponentConstraints(component);
-            if (constraints.gridX > column)
+            if (constraints.gridX > column) {
                 constraints.gridX++;
+            }
         }
 
         try {
@@ -557,8 +558,9 @@ public class PtolemyFormEditor extends JPanel {
         for (int index = 0; index < _container.getComponentCount(); index++) {
             Component component = _container.getComponent(index);
             CellConstraints constraints = _getComponentConstraints(component);
-            if (constraints.gridY > rowIndex)
+            if (constraints.gridY > rowIndex) {
                 constraints.gridY++;
+            }
         }
 
         try {
@@ -745,8 +747,9 @@ public class PtolemyFormEditor extends JPanel {
         }
 
         public Object getNextValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
+            }
             Integer next = constraints.gridX + constraints.gridWidth - 1 < _containerLayout
                     .getColumnCount() ? Integer
                     .valueOf(constraints.gridWidth + 1) : null;
@@ -754,9 +757,9 @@ public class PtolemyFormEditor extends JPanel {
         }
 
         public Object getPreviousValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
-            else {
+            } else {
                 Integer previous = constraints.gridWidth > 1 ? Integer
                         .valueOf(constraints.gridWidth - 1) : null;
                 return previous;
@@ -764,15 +767,17 @@ public class PtolemyFormEditor extends JPanel {
         }
 
         public Object getValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return "";
-            else
+            } else {
                 return Integer.valueOf(constraints.gridWidth);
+            }
         }
 
         public void setValue(Object value) {
-            if (constraints == null || value == null)
+            if (constraints == null || value == null) {
                 return;
+            }
 
             constraints.gridWidth = ((Number) value).intValue();
             super.fireStateChanged();
@@ -940,8 +945,9 @@ public class PtolemyFormEditor extends JPanel {
                     // component
                     // is bigger than one cell...
                     if (constraints.gridY + constraints.gridHeight - 1 >= rowIndex
-                            && constraints.gridHeight > 1)
+                            && constraints.gridHeight > 1) {
                         constraints.gridHeight--;
+                    }
                 }
             }
             _containerLayout.removeRowSpec(rowIndex - 1);
@@ -1029,8 +1035,9 @@ public class PtolemyFormEditor extends JPanel {
                             && rowIndex < constraints.gridY
                                     + constraints.gridHeight) {
                         component = thisComponent;
-                        if (component == topComponent)
+                        if (component == topComponent) {
                             break;
+                        }
                     }
                 }
             }
@@ -1193,9 +1200,9 @@ public class PtolemyFormEditor extends JPanel {
         }
 
         public Object getNextValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
-            else {
+            } else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < _containerLayout
                         .getRowCount() ? Integer
                         .valueOf(constraints.gridHeight + 1) : null;
@@ -1204,9 +1211,9 @@ public class PtolemyFormEditor extends JPanel {
         }
 
         public Object getPreviousValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
-            else {
+            } else {
                 Integer previous = constraints.gridHeight > 1 ? Integer
                         .valueOf(constraints.gridHeight - 1) : null;
                 return previous;
@@ -1214,15 +1221,17 @@ public class PtolemyFormEditor extends JPanel {
         }
 
         public Object getValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return "";
-            else
+            } else {
                 return Integer.valueOf(constraints.gridHeight);
+            }
         }
 
         public void setValue(Object value) {
-            if (constraints == null || value == null)
+            if (constraints == null || value == null) {
                 return;
+            }
             //        Number val = (Number) value;
             constraints.gridHeight = ((Number) value).intValue();
             super.fireStateChanged();

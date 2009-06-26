@@ -149,7 +149,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
              */
             public String generateFireCode() {
                 return "/* ParseTreeCodeGenerator.generateFireCode() "
-                + "not implemented in codegen.kernel.GenericCodeGenerator */";
+                        + "not implemented in codegen.kernel.GenericCodeGenerator */";
             }
         };
     }
@@ -199,7 +199,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
             // for each channel.
             for (int j = 0; j < sourcePort.getWidth(); j++) {
-                Iterator<Channel> sinks = getSinkChannels(sourcePort, j).iterator();
+                Iterator<Channel> sinks = getSinkChannels(sourcePort, j)
+                        .iterator();
 
                 // for each sink channel connected.
                 while (sinks.hasNext()) {
@@ -214,15 +215,16 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     }
 
     // FIXME rodiers: this only used by the PNDirector
-    static public boolean checkLocal(boolean forComposite, IOPort port) throws IllegalActionException {
+    static public boolean checkLocal(boolean forComposite, IOPort port)
+            throws IllegalActionException {
         return (port.isInput() && !forComposite && port.isOutsideConnected())
-        || (port.isOutput() && forComposite);
+                || (port.isOutput() && forComposite);
     }
 
- // FIXME rodiers: this only used by the PNDirector
+    // FIXME rodiers: this only used by the PNDirector
     static public boolean checkRemote(boolean forComposite, IOPort port) {
         return (port.isOutput() && !forComposite)
-        || (port.isInput() && forComposite);
+                || (port.isInput() && forComposite);
     }
 
     /**
@@ -260,11 +262,12 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        String composite = (getComponent() instanceof CompositeActor) ?
-                "Composite Actor: " : "";
+        String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
+                : "";
 
-        code.append(_eol + _codeGenerator.comment("Fire "
-                + composite + generateName(getComponent())));
+        code.append(_eol
+                + _codeGenerator.comment("Fire " + composite
+                        + generateName(getComponent())));
 
         if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
             code.append(_adapter._generateFireCode());
@@ -275,15 +278,14 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             // Needed for jni and embeddedJava.
             code.append(_adapter._generateFireCode());
         } else {
-            code.append(_generateFireInvocation(
-                    getComponent()) + ";" + _eol);
+            code.append(_generateFireInvocation(getComponent()) + ";" + _eol);
         }
 
         try {
             copyFilesToCodeDirectory(getComponent(), _codeGenerator);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-            "Problem copying files from the necessaryFiles parameter.");
+                    "Problem copying files from the necessaryFiles parameter.");
         }
         return processCode(code.toString());
     }
@@ -298,8 +300,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_eol + "void " + generateName(getComponent())
-                + _getFireFunctionArguments() + " {"
-                + _eol);
+                + _getFireFunctionArguments() + " {" + _eol);
         code.append(_adapter._generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
@@ -327,7 +328,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void generateModeTransitionCode(StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /**
@@ -343,11 +344,11 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         StringBuffer code = new StringBuffer();
         code.append(_generateBlockByName(_defaultBlocks[3]));
 
-//        Actor actor = (Actor) getComponent();
-//        for (IOPort port : (List<IOPort>) actor.outputPortList()) {
-//            ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
-//            code.append(portAdapter.generatePostfireCode());
-//        }
+        //        Actor actor = (Actor) getComponent();
+        //        for (IOPort port : (List<IOPort>) actor.outputPortList()) {
+        //            ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
+        //            code.append(portAdapter.generatePostfireCode());
+        //        }
         return processCode(code.toString());
     }
 
@@ -388,14 +389,15 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         String name = StringUtilities.sanitizeName(namedObj.getName());
         return name.replaceAll("\\$", "Dollar");
     }
-    
+
     /**
      * Generate the type conversion fire code. This method is called by the
      * Director to append necessary fire code to handle type conversion.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    final public String generateTypeConvertFireCode() throws IllegalActionException {
+    final public String generateTypeConvertFireCode()
+            throws IllegalActionException {
         return generateTypeConvertFireCode(false);
     }
 
@@ -407,7 +409,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateTypeConvertFireCode(boolean forComposite)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         // Type conversion code for inter-actor port conversion.
@@ -418,8 +420,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             if (!forComposite && source.port.isOutput() || forComposite
                     && source.port.isInput()) {
 
-                Iterator<Channel> sinkChannels = getTypeConvertSinkChannels(source)
-                .iterator();
+                Iterator<Channel> sinkChannels = getTypeConvertSinkChannels(
+                        source).iterator();
 
                 while (sinkChannels.hasNext()) {
                     Channel sink = sinkChannels.next();
@@ -438,7 +440,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     public String generateVariableName(NamedObj namedObj) {
         return _codeGenerator.generateVariableName(namedObj);
     }
-
 
     /**
      * Generate the wrapup code. In this base class, do nothing. Subclasses
@@ -477,7 +478,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   not well-formed.
      */
     public String getFunctionInvocation(String functionString, boolean isStatic)
-    throws IllegalActionException {
+            throws IllegalActionException {
         functionString = processCode(functionString);
 
         // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
@@ -494,8 +495,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
-                    + "String was:\n:" + functionString);
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                            + "String was:\n:" + functionString);
         }
 
         String typeOrToken = functionString.substring(0, commaIndex).trim();
@@ -503,7 +504,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 openFuncParenIndex).trim();
 
         String argumentList = functionString.substring(openFuncParenIndex + 1)
-        .trim();
+                .trim();
 
         if (isStatic) {
             // Record the referenced type function in the infoTable.
@@ -511,11 +512,11 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
             if (argumentList.length() == 0) {
                 throw new IllegalActionException(
-                "Static type function requires at least one argument(s).");
+                        "Static type function requires at least one argument(s).");
             }
 
             return "functionTable[(int)" + typeOrToken + "][FUNC_"
-            + functionName + "](" + argumentList;
+                    + functionName + "](" + argumentList;
 
         } else {
             // Record the referenced type function in the infoTable.
@@ -527,7 +528,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             }
 
             return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
-            + functionName + "](" + typeOrToken + argumentList;
+                    + functionName + "](" + typeOrToken + argumentList;
         }
     }
 
@@ -548,7 +549,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             LinkedList<String> includeFilesList = null;
             try {
                 includeFilesList = StringUtilities
-                .readLines(includeFilesString);
+                        .readLines(includeFilesString);
             } catch (IOException e) {
                 throw new IllegalActionException(
                         "Unable to read include files for " + getName());
@@ -575,7 +576,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             LinkedList<String> includeDirectoriesList = null;
             try {
                 includeDirectoriesList = StringUtilities
-                .readLines(includeDirectoriesString);
+                        .readLines(includeDirectoriesString);
             } catch (IOException e) {
                 throw new IllegalActionException(
                         "Unable to read include directories for " + getName());
@@ -628,7 +629,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             LinkedList<String> libraryDirectoryList = null;
             try {
                 libraryDirectoryList = StringUtilities
-                .readLines(libraryDirectoriesString);
+                        .readLines(libraryDirectoriesString);
             } catch (IOException e) {
                 throw new IllegalActionException(
                         "Unable to read library directories for " + getName());
@@ -650,14 +651,16 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     public Set<Parameter> getModifiedVariables() throws IllegalActionException {
         Set<Parameter> set = new HashSet<Parameter>();
         if (_object instanceof ExplicitChangeContext) {
-            set.addAll(((ExplicitChangeContext) _object)
-                    .getModifiedVariables());
+            set
+                    .addAll(((ExplicitChangeContext) _object)
+                            .getModifiedVariables());
         }
 
         Iterator<?> inputPorts = ((Actor) _object).inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            if (inputPort instanceof ParameterPort && inputPort.isOutsideConnected()) {
+            if (inputPort instanceof ParameterPort
+                    && inputPort.isOutsideConnected()) {
                 set.add(((ParameterPort) inputPort).getParameter());
             }
         }
@@ -674,7 +677,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   not well-formed.
      */
     public String getNewInvocation(String constructorString)
-    throws IllegalActionException {
+            throws IllegalActionException {
         constructorString = processCode(constructorString);
 
         // i.e. "$new(Array(8, 8, arg1, arg2, ...))"
@@ -688,11 +691,11 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 || (closeFuncParenIndex != (constructorString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $new() macro. "
-                    + "[i.e. -- $new([elementType]Array(8, 8, arg1, arg2, ...))]");
+                            + "[i.e. -- $new([elementType]Array(8, 8, arg1, arg2, ...))]");
         }
 
         String typeName = constructorString.substring(0, openFuncParenIndex)
-        .trim();
+                .trim();
 
         // Record the referenced type function in the infoTable.
         _codeGenerator._newTypesUsed.add(typeName);
@@ -703,7 +706,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         // Transform this to a function call that needs
         // implementation code.
         return processCode("$" + typeName + "_new"
-        + constructorString.substring(openFuncParenIndex));
+                + constructorString.substring(openFuncParenIndex));
     }
 
     /** Get the object associated with this adapter.
@@ -755,8 +758,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         StringTokenizer tokenizer2 = new StringTokenizer(attributeName, "()",
                 false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            throw new IllegalActionException(getComponent(), "Invalid cast type: "
-                    + attributeName);
+            throw new IllegalActionException(getComponent(),
+                    "Invalid cast type: " + attributeName);
         }
 
         if (tokenizer2.countTokens() == 2) {
@@ -793,9 +796,9 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 if (variable.isStringMode()) {
                     return generateTypeConvertMethod("\""
                             + parseTreeCodeGenerator
-                            .escapeForTargetLanguage(variable
-                                    .getExpression()) + "\"", castType,
-                    "String");
+                                    .escapeForTargetLanguage(variable
+                                            .getExpression()) + "\"", castType,
+                            "String");
                 }
 
                 PtParser parser = new PtParser();
@@ -806,20 +809,23 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(variable, throwable,
                             "Failed to generate parse tree for \"" + name
-                            + "\". in \"" + container + "\"");
+                                    + "\". in \"" + container + "\"");
                 }
                 try {
                     parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                                                             new VariableScope(variable));
+                            new VariableScope(variable));
                 } catch (Exception ex) {
                     StringBuffer results = new StringBuffer();
-                    Iterator<?> allScopedVariableNames = ModelScope.getAllScopedVariableNames(variable,container).iterator();
+                    Iterator<?> allScopedVariableNames = ModelScope
+                            .getAllScopedVariableNames(variable, container)
+                            .iterator();
                     while (allScopedVariableNames.hasNext()) {
-                        results.append(allScopedVariableNames.next().toString() + "\n");
+                        results.append(allScopedVariableNames.next().toString()
+                                + "\n");
                     }
                     throw new IllegalActionException(getComponent(), ex,
-                                                     "Failed to find " + variable.getFullName() + "\n"
-                                                     + results.toString());
+                            "Failed to find " + variable.getFullName() + "\n"
+                                    + results.toString());
 
                 }
 
@@ -858,11 +864,12 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                     PtParser parser = new PtParser();
                     ASTPtRootNode parseTree = null;
                     try {
-                        parseTree = parser.generateParseTree(element.toString());
+                        parseTree = parser
+                                .generateParseTree(element.toString());
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(attribute, throwable,
                                 "Failed to generate parse tree for \"" + name
-                                + "\". in \"" + container + "\"");
+                                        + "\". in \"" + container + "\"");
                     }
                     parseTreeCodeGenerator.evaluateParseTree(parseTree,
                             new VariableScope((Parameter) attribute));
@@ -871,8 +878,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                             .generateFireCode());
                     /////////////////////////////////////////////////////
 
-                    return generateTypeConvertMethod(elementCode,
-                            castType, codeGenType(element.getType()));
+                    return generateTypeConvertMethod(elementCode, castType,
+                            codeGenType(element.getType()));
                 }
 
                 throw new IllegalActionException(getComponent(), attributeName
@@ -950,7 +957,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return _adapter.getReference(name, isWrite);
     }
 
-
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -967,7 +973,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   exist or does not have a value.
      */
     public String getReference(String name, boolean isWrite)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ptolemy.actor.Director director = ((Actor) _object).getDirector();
         Director directorAdapter = (Director) _getAdapter(director);
         return directorAdapter.getReference(name, isWrite, _adapter);
@@ -1024,15 +1030,16 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                         if (((ArrayType) type).hasKnownLength()) {
                             return String.valueOf(((ArrayType) type).length());
                         } else {
-                            return getReference(name) + ".payload." + codeGenType(type) + "->size";
+                            return getReference(name) + ".payload."
+                                    + codeGenType(type) + "->size";
                         }
                     }
                 }
             }
         }
 
-        throw new IllegalActionException(getComponent(), "Attribute not found: "
-                + name);
+        throw new IllegalActionException(getComponent(),
+                "Attribute not found: " + name);
     }
 
     /** Get the write offset in the buffer of a given channel to which a token
@@ -1046,12 +1053,12 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   be found.
      *  @see #setWriteOffset(IOPort, int, Object)
      */
-//    public Object getWriteOffset(IOPort port, int channelNumber)
-//    throws IllegalActionException {
-//
-//        return ((PortCodeGenerator) _getAdapter(port))
-//        .getWriteOffset(channelNumber);
-//    }
+    //    public Object getWriteOffset(IOPort port, int channelNumber)
+    //    throws IllegalActionException {
+    //
+    //        return ((PortCodeGenerator) _getAdapter(port))
+    //        .getWriteOffset(channelNumber);
+    //    }
 
     /**
      * Determine if the given type is primitive.
@@ -1138,8 +1145,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to replace the parameter \"" + name
-                        + "\" in the macro \"" + macro
-                        + "\".\nInitial code was:\n" + code);
+                                + "\" in the macro \"" + macro
+                                + "\".\nInitial code was:\n" + code);
             }
 
             String string = code.substring(closeParenIndex + 1, nextPos);
@@ -1177,11 +1184,11 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   be found.
      *  @see #getReadOffset(IOPort, int)
      */
-//    final public void setReadOffset(IOPort port, int channelNumber,
-//            Object readOffset) throws IllegalActionException {
-//        ((PortCodeGenerator) _getAdapter(port))
-//        .setReadOffset(channelNumber, readOffset);
-//    }
+    //    final public void setReadOffset(IOPort port, int channelNumber,
+    //            Object readOffset) throws IllegalActionException {
+    //        ((PortCodeGenerator) _getAdapter(port))
+    //        .setReadOffset(channelNumber, readOffset);
+    //    }
 
     /** Set the write offset in a buffer of a given channel to which a token
      *  should be put.
@@ -1192,18 +1199,18 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
      *  @see #getWriteOffset(IOPort, int)
      */
-//    final public void setWriteOffset(IOPort port, int channelNumber,
-//            Object writeOffset) throws IllegalActionException {
-//        ((PortCodeGenerator) _getAdapter(port))
-//            .setWriteOffset(channelNumber, writeOffset);
-//    }
+    //    final public void setWriteOffset(IOPort port, int channelNumber,
+    //            Object writeOffset) throws IllegalActionException {
+    //        ((PortCodeGenerator) _getAdapter(port))
+    //            .setWriteOffset(channelNumber, writeOffset);
+    //    }
 
     /**
      * Get the corresponding type in C from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
      * @return The C data type.
      */
-    public /*static*/ String targetType(Type ptType) {
+    public/*static*/String targetType(Type ptType) {
         return _codeGenerator.targetType(ptType);
     }
 
@@ -1253,8 +1260,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         int commaIndex = indexOf(",", parameters, 0);
 
         while (commaIndex >= 0) {
-            String item = parameters.substring(
-                    previousCommaIndex, commaIndex).trim();
+            String item = parameters.substring(previousCommaIndex, commaIndex)
+                    .trim();
 
             result.add(item);
 
@@ -1262,8 +1269,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             commaIndex = indexOf(",", parameters, previousCommaIndex);
         }
 
-        String item = parameters.substring(
-                previousCommaIndex, parameters.length()).trim();
+        String item = parameters.substring(previousCommaIndex,
+                parameters.length()).trim();
 
         if (item.trim().length() > 0) {
             result.add(item);
@@ -1313,7 +1320,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
         if (fileDependencies.length() > 0) {
             LinkedList<String> fileDependenciesList = StringUtilities
-            .readLines(fileDependencies);
+                    .readLines(fileDependencies);
             File codeDirectoryFile = codeGenerator._codeDirectoryAsFile();
             String necessaryFileName = null;
             Iterator<String> iterator = fileDependenciesList.iterator();
@@ -1346,7 +1353,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 String necessaryFileShortName = necessaryURL.getPath();
                 if (necessaryURL.getPath().lastIndexOf("/") > -1) {
                     necessaryFileShortName = necessaryFileShortName
-                    .substring(necessaryFileShortName.lastIndexOf("/"));
+                            .substring(necessaryFileShortName.lastIndexOf("/"));
                 }
 
                 File necessaryFileDestination = new File(codeDirectoryFile,
@@ -1368,14 +1375,14 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                         String directory = "unknown";
                         if (!StringUtilities.getProperty("user.dir").equals("")) {
                             directory = "\""
-                                + StringUtilities.getProperty("user.dir")
-                                + "\"";
+                                    + StringUtilities.getProperty("user.dir")
+                                    + "\"";
                         }
                         throw new IllegalActionException(namedObj, ex,
                                 "Failed to copy \"" + necessaryURL + "\" to \""
-                                + necessaryFileDestination
-                                + "\". Current directory is "
-                                + directory);
+                                        + necessaryFileDestination
+                                        + "\". Current directory is "
+                                        + directory);
                     }
                 }
                 // Reopen the destination file and get its time for
@@ -1389,7 +1396,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         }
         return lastModified;
     }
-    
+
     /** Given a block name, generate code for that block.
      *  This method is called by actors adapters that have simple blocks
      *  that do not take parameters or have widths.
@@ -1403,8 +1410,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
         return generateBlockCode(blockName, new ArrayList<String>());
-    }    
-    
+    }
+
     /** Given a block name, generate code for that block.
      *  This method is called by actors adapters that have simple blocks
      *  that do not take parameters or have widths.
@@ -1416,7 +1423,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *  the adapter .c file.
      */
     public String generateBlockCode(String blockName, List<String> args)
-                throws IllegalActionException {
+            throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
         _codeStream.clear();
         _codeStream.appendCodeBlock(blockName, args);
@@ -1439,7 +1446,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             channelString = "0";
         }
 
-        String channelOffset = ProgramCodeGeneratorAdapterStrategy.generateName(port);
+        String channelOffset = ProgramCodeGeneratorAdapterStrategy
+                .generateName(port);
         channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
         channelOffset += "[" + channelString + "]";
 
@@ -1463,12 +1471,12 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             return expression;
         }
 
-        expression = "$convert_" + refType + "_" + castType 
-        + "(" + expression + ")";
-        
+        expression = "$convert_" + refType + "_" + castType + "(" + expression
+                + ")";
+
         return processCode(expression);
     }
-    
+
     /** Generate sanitized name for the given named object. Remove all
      *  underscores to avoid conflicts with systems functions.
      *  @param namedObj The named object for which the name is generated.
@@ -1498,8 +1506,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         String channelOffset;
         if (channelAndOffset[1].equals("")) {
             channelOffset = ProgramCodeGeneratorAdapterStrategy
-            .generateChannelOffset(port, isWrite,
-                    channelAndOffset[0]);
+                    .generateChannelOffset(port, isWrite, channelAndOffset[0]);
         } else {
             channelOffset = channelAndOffset[1];
         }
@@ -1526,7 +1533,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return _defaultBlocks;
     }
 
-
     /** Return a list of channel objects that are the sink input ports given
      *  a port and channel. Note the returned channels are newly
      *  created objects and therefore not associated with the adapter class.
@@ -1536,7 +1542,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   of the given output channel.
      * @exception IllegalActionException
      */
-    public static List<Channel> getSinkChannels(IOPort port, int channelNumber) throws IllegalActionException {
+    public static List<Channel> getSinkChannels(IOPort port, int channelNumber)
+            throws IllegalActionException {
         List<Channel> sinkChannels = new LinkedList<Channel>();
         Receiver[][] remoteReceivers;
 
@@ -1611,7 +1618,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *  information about the receivers or constructing the new Channel.
      */
     public static Channel getSourceChannel(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Receiver[][] receivers = null;
 
         if (port.isInput()) {
@@ -1654,7 +1661,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     public Set<Channel> getTypeConvertChannels() {
         return _portConversions.keySet();
     }
-    
+
     /**
      * Generate a variable reference for the given channel. This varaible
      * reference is needed for type conversion. The source adapter get this
@@ -1684,7 +1691,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     public static void main(String[] args) {
         selfTest();
     }
-
 
     public static void selfTest() {
         System.out.println(parseList("(a, b, abc)"));
@@ -1743,12 +1749,12 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         // The references are associated with their own adapter, so we need
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
-        + source.channelNumber + ", " + offset;
+                + source.channelNumber + ", " + offset;
         String sourceRef = ((ProgramCodeGeneratorAdapter) _getAdapter(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
-        + ", " + offset;
+                + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
         // the inside receiver of an output port.
@@ -1777,42 +1783,43 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         if (!sinkType.equals(sourceType)) {
             if (isPrimitive(sinkType)) {
                 result = codeGenType(sourceType) + "to" + codeGenType(sinkType)
-                + "(" + result + ")";
+                        + "(" + result + ")";
 
             } else if (isPrimitive(sourceType)) {
                 result = "$new(" + codeGenType(sourceType) + "(" + result
-                + "))";
+                        + "))";
             }
 
             if (sinkType != BaseType.SCALAR && sinkType != BaseType.GENERAL
                     && !isPrimitive(sinkType)) {
                 if (sinkType instanceof ArrayType) {
                     if (isPrimitive(sourceType)) {
-                        result = "$new(" + codeGenType(sinkType) + "(1, 1, " + result + ", TYPE_"
-                        + codeGenType(sourceType) + "))";
+                        result = "$new(" + codeGenType(sinkType) + "(1, 1, "
+                                + result + ", TYPE_" + codeGenType(sourceType)
+                                + "))";
                     }
 
                     // Deep converting for ArrayType.
                     Type elementType = ((ArrayType) sinkType).getElementType();
                     while (elementType instanceof ArrayType) {
                         elementType = ((ArrayType) elementType)
-                        .getElementType();
+                                .getElementType();
                     }
 
                     if (elementType != BaseType.SCALAR
                             && elementType != BaseType.GENERAL) {
                         result = "$typeFunc(TYPE_"
-                            + codeGenType(sinkType)
-                            + "::convert("
-                            + result
-                            + ", /*CGH*/ TYPE_"
-                            + codeGenType(((ArrayType) sinkType)
-                                    .getElementType()) + "))";
+                                + codeGenType(sinkType)
+                                + "::convert("
+                                + result
+                                + ", /*CGH*/ TYPE_"
+                                + codeGenType(((ArrayType) sinkType)
+                                        .getElementType()) + "))";
                     }
 
                 } else {
                     result = "$typeFunc(TYPE_" + codeGenType(sinkType)
-                    + "::convert(" + result + "))";
+                            + "::convert(" + result + "))";
                 }
             }
         }
@@ -1834,8 +1841,9 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
     protected ProgramCodeGeneratorAdapter _getAdapter(NamedObj component)
-    throws IllegalActionException {
-        return (ProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(component);
+            throws IllegalActionException {
+        return (ProgramCodeGeneratorAdapter) _codeGenerator
+                .getAdapter(component);
     }
 
     /** Return the replacement string of the given macro. Subclass
@@ -1848,14 +1856,15 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *  parameter is not valid.
      */
     protected String _replaceMacro(String macro, String parameter)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         // $$def(abc)
         // ==> abc$def(abc)
         int indexOfDollarSign = macro.indexOf('$');
         if (indexOfDollarSign >= 0) {
             String result = "$" + macro.substring(0, indexOfDollarSign);
-            String innerMacro = macro.substring(indexOfDollarSign + 1, macro.length());
+            String innerMacro = macro.substring(indexOfDollarSign + 1, macro
+                    .length());
             result += _replaceMacro(innerMacro, parameter);
             return result;
         }
@@ -1912,11 +1921,11 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 return generateVariableName(getComponent());
             } else {
                 return generateVariableName(getComponent()) + "_"
-                + processCode(parameter);
+                        + processCode(parameter);
             }
         } else if (macro.equals("actorClass")) {
             return getComponent().getClassName().replace('.', '_') + "_"
-            + processCode(parameter);
+                    + processCode(parameter);
 
             // Handle type function macros.
         } else if (macro.equals("new")) {
@@ -1942,18 +1951,22 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             Method checker = null;
             Class<?> userMacro = null;
             try {
-                userMacro = Class.forName(
-                        "ptolemy.codegen.kernel.userMacro." + macro);
+                userMacro = Class.forName("ptolemy.codegen.kernel.userMacro."
+                        + macro);
 
-                handler = userMacro.getMethod("handleMacro", new Class[] { List.class });
-                checker = userMacro.getMethod("checkArguments", new Class[] { List.class });
+                handler = userMacro.getMethod("handleMacro",
+                        new Class[] { List.class });
+                checker = userMacro.getMethod("checkArguments",
+                        new Class[] { List.class });
             } catch (Exception ex) {
                 // Don't print out error, since this is probably not an user macro.
                 return null;
             }
 
             try {
-                checker.invoke(userMacro, new Object[] { parseList(parameter) });
+                checker
+                        .invoke(userMacro,
+                                new Object[] { parseList(parameter) });
                 return (String) handler.invoke(userMacro,
                         new Object[] { parseList(parameter) });
             } catch (Exception ex) {
@@ -1975,7 +1988,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *   if the index is less than 0 or past the end of the string.
      */
     protected static int _findClosedParen(String string, int pos)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (pos < 0 || pos >= string.length()) {
             throw new IllegalActionException("The character index " + pos
                     + " is past the end of string \"" + string
@@ -2031,6 +2044,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
         return -1;
     }
+
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.
@@ -2039,13 +2053,12 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** The ProgramCodeGeneratorAdapter.*/
     protected ProgramCodeGeneratorAdapter _adapter;
-    
 
     /** The code generator that contains this adapter class.
      */
@@ -2092,7 +2105,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      *  the block or processing the macros.
      */
     private String _generateBlockByName(String blockName)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _codeStream.clear();
         _codeStream.appendCodeBlock(blockName, true);
         // There is no need to generate comment for empty code block.
@@ -2120,8 +2133,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      * @param component The given component.
      * @return The generated code.
      */
-    private static String _generateFireInvocation(
-            NamedObj component) {
+    private static String _generateFireInvocation(NamedObj component) {
         return generateName(component) + "()";
     }
 
@@ -2136,7 +2148,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      * FIXME: SDF specific
      */
     private String _generateTypeConvertStatements(Channel source, Channel sink)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         StringBuffer statements = new StringBuffer();
 
@@ -2144,8 +2156,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 DFUtilities.getTokenConsumptionRate(source.port));
 
         for (int offset = 0; offset < rate || (offset == 0 && rate == 0); offset++) {
-            statements.append(_adapter._generateTypeConvertStatement(
-                    source, sink, offset));
+            statements.append(_adapter._generateTypeConvertStatement(source,
+                    sink, offset));
         }
         return processCode(statements.toString());
     }
@@ -2191,7 +2203,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
             if (attribute instanceof Variable) {
 
-                if (((Variable)attribute).getName().equals(refName)) {
+                if (((Variable) attribute).getName().equals(refName)) {
                     return (Variable) attribute;
                 }
             }
@@ -2216,7 +2228,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         sinks.add(sink);
     }
 
-    private String _replaceGetMacro(String parameter) throws IllegalActionException {
+    private String _replaceGetMacro(String parameter)
+            throws IllegalActionException {
         // e.g. $get(0, input);
         List<String> parameters = parseList(parameter);
 
@@ -2230,8 +2243,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         if (port == null || channel.length() == 0) {
             throw new IllegalActionException(parameter
                     + " is not acceptable by $get(). "
-                    + "The $get macro takes in as arguments " +
-            "a channelNumber, and a port (e.g. $get(0, output).");
+                    + "The $get macro takes in as arguments "
+                    + "a channelNumber, and a port (e.g. $get(0, output).");
         }
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _getAdapter(port);
@@ -2239,7 +2252,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return portAdapter.generateGetCode(channel);
     }
 
-    private String _replaceSendMacro(String parameter) throws IllegalActionException {
+    private String _replaceSendMacro(String parameter)
+            throws IllegalActionException {
         // e.g. $send(input, 0, token);
         List<String> parameters = parseList(parameter);
 
@@ -2251,14 +2265,16 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         channel = parameters.get(1);
 
         if (port == null || channel.length() == 0) {
-            throw new IllegalActionException(parameter
-                    + " is not acceptable by $send(). "
-                    + "The $send macro takes in as arguments " +
-            "a channelNumber, port, and data (e.g. $send(0, output, 45).");
+            throw new IllegalActionException(
+                    parameter
+                            + " is not acceptable by $send(). "
+                            + "The $send macro takes in as arguments "
+                            + "a channelNumber, port, and data (e.g. $send(0, output, 45).");
         }
 
         if (parameters.size() == 2) {
-            dataToken = processCode("$ref(" + port.getName() + "#" + channel + ")");
+            dataToken = processCode("$ref(" + port.getName() + "#" + channel
+                    + ")");
 
         } else if (parameters.size() == 3) {
             dataToken = parameters.get(2);
@@ -2284,21 +2300,22 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         CodeStream codeStream = null;
         if (namedObj != null
                 && namedObj instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
-            adapter =  (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter(codeGenerator.getContainer());
+            adapter = (ProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(codeGenerator.getContainer());
             codeStream = new CodeStream(adapter);
             // We have an EmbeddedCActor, read the codeBlocks from
             // the embeddedCCode parameter.
             codeStream
-            .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) namedObj).embeddedCCode
-                    .getExpression());
+                    .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) namedObj).embeddedCCode
+                            .getExpression());
         } else {
-            adapter = (ProgramCodeGeneratorAdapter) codeGenerator.getAdapter(namedObj);
+            adapter = (ProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(namedObj);
             codeStream = new CodeStream(adapter);
         }
 
         return codeStream;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -2308,7 +2325,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      * with the code block name (String) as key.
      */
     private static final String[] _defaultBlocks = { "preinitBlock",
-        "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
 
     /** The associated object. */
     private Object _object;
@@ -2322,7 +2339,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     /////////////////////////////////////////////////////////////////////
     ////                      inner classes                   ////
-
 
     /** A class that defines a channel object. A channel object is
      *  specified by its port and its channel index in that port.
@@ -2348,8 +2364,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
          */
         public boolean equals(Object object) {
             return object instanceof Channel
-            && port.equals(((Channel) object).port)
-            && channelNumber == ((Channel) object).channelNumber;
+                    && port.equals(((Channel) object).port)
+                    && channelNumber == ((Channel) object).channelNumber;
         }
 
         /**
@@ -2432,10 +2448,11 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                     // is either directly specified by a constant or it is a
                     // modified variable.
                     PtParser parser = new PtParser();
-                    String parameterValue = getParameterValue(name, result.getContainer());
+                    String parameterValue = getParameterValue(name, result
+                            .getContainer());
                     try {
-                        ASTPtRootNode parseTree =
-                            parser.generateParseTree(parameterValue);
+                        ASTPtRootNode parseTree = parser
+                                .generateParseTree(parameterValue);
 
                         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
 
@@ -2461,7 +2478,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             if (_variable != null) {
                 return _variable.getParserScope().getType(name);
             }
@@ -2478,7 +2495,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             if (_variable != null) {
                 return _variable.getParserScope().getTypeTerm(name);
             }
@@ -2498,9 +2515,14 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         }
 
         public String toString() {
-            return super.toString() + " variable: " + _variable + " variable.parserScope: "
-                + (_variable == null ? "N/A, _variable is null" : _variable.getParserScope());
+            return super.toString()
+                    + " variable: "
+                    + _variable
+                    + " variable.parserScope: "
+                    + (_variable == null ? "N/A, _variable is null" : _variable
+                            .getParserScope());
         }
+
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
 

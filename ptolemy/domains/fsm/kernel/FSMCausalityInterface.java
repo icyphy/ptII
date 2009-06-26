@@ -48,7 +48,6 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 ////FSMCausalityInterface
 
@@ -83,229 +82,239 @@ current refinement.
 */
 public class FSMCausalityInterface extends CausalityInterfaceForComposites {
 
-   /** Construct a causality interface for the specified actor.
-    *  @param actor The actor for which this is a causality interface.
-    *   This is required to be an instance of CompositeEntity.
-    *  @param defaultDependency The default dependency of an output
-    *   port on an input port.
-    *  @exception IllegalArgumentException If the actor parameter is not
-    *  an instance of CompositeEntity.
-    */
-   public FSMCausalityInterface(
-           Actor actor, Dependency defaultDependency)
-           throws IllegalArgumentException {
-       super(actor, defaultDependency);
-       if (!(actor instanceof FSMActor)) {
-           throw new IllegalArgumentException(
-                   "Cannot create an instance of " +
-                   "FSMCausalityInterface for " +
-                   actor.getFullName()
-                   +", which is not an FSMActor.");
-       }
-   }
+    /** Construct a causality interface for the specified actor.
+     *  @param actor The actor for which this is a causality interface.
+     *   This is required to be an instance of CompositeEntity.
+     *  @param defaultDependency The default dependency of an output
+     *   port on an input port.
+     *  @exception IllegalArgumentException If the actor parameter is not
+     *  an instance of CompositeEntity.
+     */
+    public FSMCausalityInterface(Actor actor, Dependency defaultDependency)
+            throws IllegalArgumentException {
+        super(actor, defaultDependency);
+        if (!(actor instanceof FSMActor)) {
+            throw new IllegalArgumentException("Cannot create an instance of "
+                    + "FSMCausalityInterface for " + actor.getFullName()
+                    + ", which is not an FSMActor.");
+        }
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   /** Return the dependency between the specified input port
-    *  and the specified output port.  This is done by checking
-    *  the guards and actions of all the transitions.
-    *  When called for the first time since a change in the model
-    *  structure, this method performs the complete analysis of
-    *  the FSM and caches the result. Subsequent calls just
-    *  look up the result.
-    *  @param input The input port.
-    *  @param output The output port, or null to update the
-    *   dependencies (and record equivalence classes) without
-    *   requiring there to be an output port.
-    *  @return The dependency between the specified input port
-    *   and the specified output port, or null if a null output
-    *   is port specified.
-    *  @exception IllegalActionException If a guard expression cannot be parsed.
-    */
-   public Dependency getDependency(IOPort input, IOPort output)
-           throws IllegalActionException {
-       // Cast is safe because this is checked in the constructor
-       FSMActor actor = (FSMActor)_actor;
+    /** Return the dependency between the specified input port
+     *  and the specified output port.  This is done by checking
+     *  the guards and actions of all the transitions.
+     *  When called for the first time since a change in the model
+     *  structure, this method performs the complete analysis of
+     *  the FSM and caches the result. Subsequent calls just
+     *  look up the result.
+     *  @param input The input port.
+     *  @param output The output port, or null to update the
+     *   dependencies (and record equivalence classes) without
+     *   requiring there to be an output port.
+     *  @return The dependency between the specified input port
+     *   and the specified output port, or null if a null output
+     *   is port specified.
+     *  @exception IllegalActionException If a guard expression cannot be parsed.
+     */
+    public Dependency getDependency(IOPort input, IOPort output)
+            throws IllegalActionException {
+        // Cast is safe because this is checked in the constructor
+        FSMActor actor = (FSMActor) _actor;
 
-       // If the dependency is not up-to-date, then update it.
-       long workspaceVersion = actor.workspace().getVersion();
-       if (_dependencyVersion != workspaceVersion) {
-           // Need to update dependencies. The cached version
-           // is obsolete.
-           boolean stateDependentCausality = ((BooleanToken)
-                   actor.stateDependentCausality.getToken())
-                   .booleanValue();
-           try {
-               actor.workspace().getReadAccess();
-               _reverseDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
-               _forwardDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
+        // If the dependency is not up-to-date, then update it.
+        long workspaceVersion = actor.workspace().getVersion();
+        if (_dependencyVersion != workspaceVersion) {
+            // Need to update dependencies. The cached version
+            // is obsolete.
+            boolean stateDependentCausality = ((BooleanToken) actor.stateDependentCausality
+                    .getToken()).booleanValue();
+            try {
+                actor.workspace().getReadAccess();
+                _reverseDependencies = new HashMap<IOPort, Map<IOPort, Dependency>>();
+                _forwardDependencies = new HashMap<IOPort, Map<IOPort, Dependency>>();
 
-               // Initialize the equivalence classes to contain each input port.
-               _equivalenceClasses = new HashMap<IOPort,Collection<IOPort>>();
-               List<IOPort> actorInputs = _actor.inputPortList();
-               for (IOPort actorInput : actorInputs) {
-                   Set<IOPort> equivalences = new HashSet<IOPort>();
-                   equivalences.add(actorInput);
-                   _equivalenceClasses.put(actorInput, equivalences);
-               }
+                // Initialize the equivalence classes to contain each input port.
+                _equivalenceClasses = new HashMap<IOPort, Collection<IOPort>>();
+                List<IOPort> actorInputs = _actor.inputPortList();
+                for (IOPort actorInput : actorInputs) {
+                    Set<IOPort> equivalences = new HashSet<IOPort>();
+                    equivalences.add(actorInput);
+                    _equivalenceClasses.put(actorInput, equivalences);
+                }
 
-               // Keep track of all the ports that must go into the
-               // equivalence class of input ports that affect the state.
-               Collection<IOPort> stateEquivalentPorts = new HashSet<IOPort>();
+                // Keep track of all the ports that must go into the
+                // equivalence class of input ports that affect the state.
+                Collection<IOPort> stateEquivalentPorts = new HashSet<IOPort>();
 
-               // Iterate over all the transitions or just the transitions
-               // of the current state.
-               Collection<Transition> transitions;
-               if (!stateDependentCausality) {
-                   transitions = actor.relationList();
-               } else {
-                   State currentState = actor.currentState();
-                   transitions = currentState.outgoingPort.linkedRelationList();
-               }
-               for (Transition transition : transitions) {
-                   // Collect all the output ports that are written to on this transition.
-                   Set<IOPort> outputs = new HashSet<IOPort>();
+                // Iterate over all the transitions or just the transitions
+                // of the current state.
+                Collection<Transition> transitions;
+                if (!stateDependentCausality) {
+                    transitions = actor.relationList();
+                } else {
+                    State currentState = actor.currentState();
+                    transitions = currentState.outgoingPort
+                            .linkedRelationList();
+                }
+                for (Transition transition : transitions) {
+                    // Collect all the output ports that are written to on this transition.
+                    Set<IOPort> outputs = new HashSet<IOPort>();
 
-                   // Look only at the "choice" actions because "commit" actions
-                   // do not execute until postfire(), and hence do not imply
-                   // an input/output dependency.
-                   List<AbstractActionsAttribute> actions = transition.choiceActionList();
-                   for (AbstractActionsAttribute action : actions) {
-                       List<String> names = action.getDestinationNameList();
-                       for (String name : names) {
-                           NamedObj destination = action.getDestination(name);
-                           if (destination instanceof IOPort
-                                   && ((IOPort)destination).isOutput()) {
-                               // Found an output that is written to.
-                               outputs.add((IOPort)destination);
-                           }
-                       }
-                   }
+                    // Look only at the "choice" actions because "commit" actions
+                    // do not execute until postfire(), and hence do not imply
+                    // an input/output dependency.
+                    List<AbstractActionsAttribute> actions = transition
+                            .choiceActionList();
+                    for (AbstractActionsAttribute action : actions) {
+                        List<String> names = action.getDestinationNameList();
+                        for (String name : names) {
+                            NamedObj destination = action.getDestination(name);
+                            if (destination instanceof IOPort
+                                    && ((IOPort) destination).isOutput()) {
+                                // Found an output that is written to.
+                                outputs.add((IOPort) destination);
+                            }
+                        }
+                    }
 
-                   // Now handle the guard expression, finding
-                   // all referenced input ports.
-                   Set<IOPort> inputs = new HashSet<IOPort>();
-                   String guard = transition.getGuardExpression();
-                   // The guard expression may be empty (in the Ptera domain,
-                   // for example). Continue if this is the case.
-                   if (guard.trim().equals("")) {
-                       continue;
-                   }
-                   // Parse the guard expression.
-                   PtParser parser = new PtParser();
-                   try {
-                       ASTPtRootNode guardParseTree = parser.generateParseTree(guard);
-                       ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
-                       Set<String> freeVariables = collector.collectFreeVariables(guardParseTree);
-                       for (String freeVariable : freeVariables) {
-                           // Reach into the FSMActor to get the port.
-                           IOPort port = (IOPort)actor._identifierToPort.get(freeVariable);
-                           if (port != null && port.isInput()) {
-                               // Found a reference to an input port in the guard.
-                               inputs.add(port);
-                           }
-                       }
-                   } catch (IllegalActionException ex) {
-                       throw new IllegalActionException(actor, ex,
-                               "Failed to parse guard expression \""
-                               + guard + "\"");
-                   }
-                   if (inputs.isEmpty()) {
-                       continue;
-                   }
-                   stateEquivalentPorts.addAll(inputs);
+                    // Now handle the guard expression, finding
+                    // all referenced input ports.
+                    Set<IOPort> inputs = new HashSet<IOPort>();
+                    String guard = transition.getGuardExpression();
+                    // The guard expression may be empty (in the Ptera domain,
+                    // for example). Continue if this is the case.
+                    if (guard.trim().equals("")) {
+                        continue;
+                    }
+                    // Parse the guard expression.
+                    PtParser parser = new PtParser();
+                    try {
+                        ASTPtRootNode guardParseTree = parser
+                                .generateParseTree(guard);
+                        ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+                        Set<String> freeVariables = collector
+                                .collectFreeVariables(guardParseTree);
+                        for (String freeVariable : freeVariables) {
+                            // Reach into the FSMActor to get the port.
+                            IOPort port = (IOPort) actor._identifierToPort
+                                    .get(freeVariable);
+                            if (port != null && port.isInput()) {
+                                // Found a reference to an input port in the guard.
+                                inputs.add(port);
+                            }
+                        }
+                    } catch (IllegalActionException ex) {
+                        throw new IllegalActionException(actor, ex,
+                                "Failed to parse guard expression \"" + guard
+                                        + "\"");
+                    }
+                    if (inputs.isEmpty()) {
+                        continue;
+                    }
+                    stateEquivalentPorts.addAll(inputs);
 
-                   // Set dependencies of all the found output
-                   // ports on all the found input ports.
-                   for (IOPort writtenOutput : outputs) {
-                       Map<IOPort,Dependency> outputMap = _reverseDependencies.get(writtenOutput);
-                       if (outputMap == null) {
-                           outputMap = new HashMap<IOPort,Dependency>();
-                           _reverseDependencies.put(writtenOutput, outputMap);
-                       }
-                       for (IOPort readInput : inputs) {
-                           outputMap.put(readInput, _defaultDependency.oTimesIdentity());
+                    // Set dependencies of all the found output
+                    // ports on all the found input ports.
+                    for (IOPort writtenOutput : outputs) {
+                        Map<IOPort, Dependency> outputMap = _reverseDependencies
+                                .get(writtenOutput);
+                        if (outputMap == null) {
+                            outputMap = new HashMap<IOPort, Dependency>();
+                            _reverseDependencies.put(writtenOutput, outputMap);
+                        }
+                        for (IOPort readInput : inputs) {
+                            outputMap.put(readInput, _defaultDependency
+                                    .oTimesIdentity());
 
-                           // Now handle the forward dependencies.
-                           Map<IOPort,Dependency> inputMap = _forwardDependencies.get(readInput);
-                           if (inputMap == null) {
-                               inputMap = new HashMap<IOPort,Dependency>();
-                               _forwardDependencies.put(readInput, inputMap);
-                           }
-                           inputMap.put(writtenOutput, _defaultDependency.oTimesIdentity());
-                       }
-                   }
-               } // End of iteration over transitions.
+                            // Now handle the forward dependencies.
+                            Map<IOPort, Dependency> inputMap = _forwardDependencies
+                                    .get(readInput);
+                            if (inputMap == null) {
+                                inputMap = new HashMap<IOPort, Dependency>();
+                                _forwardDependencies.put(readInput, inputMap);
+                            }
+                            inputMap.put(writtenOutput, _defaultDependency
+                                    .oTimesIdentity());
+                        }
+                    }
+                } // End of iteration over transitions.
 
-               // Iterate over the refinements to find any additional ports that may
-               // have to be added to the state equivalent ports. These are input
-               // ports where the corresponding input port on the refinement has
-               // a direct effect on an output.
-               Collection<State> states;
-               if (!stateDependentCausality) {
-                   states = actor.entityList();
-               } else {
-                   State currentState = actor.currentState();
-                   states = new HashSet<State>();
-                   states.add(currentState);
-               }
-               for (State state : states) {
-                   TypedActor[] refinements = state.getRefinement();
-                   if (refinements != null && refinements.length > 0) {
-                       for (int i = 0; i < refinements.length; i++) {
-                           CausalityInterface causality = refinements[i].getCausalityInterface();
-                           // For each output port, find the input ports that affect it.
-                           Collection<IOPort> outputs = refinements[i].outputPortList();
-                           for (IOPort refinementOutput : outputs) {
-                               Collection<IOPort> inputs = causality.dependentPorts(refinementOutput);
-                               for (IOPort refinementInput : inputs) {
-                                   Collection<IOPort> equivalents = causality.equivalentPorts(refinementInput);
-                                   for (IOPort equivalent : equivalents) {
-                                       // Whew... Need to add the port with the same name to
-                                       // the state equivalents.
-                                       IOPort port = (IOPort)actor.getPort(equivalent.getName());
-                                       // This should not be null, but if it is, ignore.
-                                       if (port != null) {
-                                           stateEquivalentPorts.add(port);
-                                       }
-                                   }
-                               }
-                           }
-                       }
-                   }
-               }
-               // If any input is an instance of ParameterPort, then
-               // all inputs must be in the same equivalence class.
-               List<IOPort> inputs = _actor.inputPortList();
-               for (IOPort actorInput : inputs) {
-                   if (actorInput instanceof ParameterPort) {
-                       stateEquivalentPorts = inputs;
-                       break;
-                   }
-               }
-               // Now set the equivalence classes.
-               for (IOPort equivalent : stateEquivalentPorts) {
-                   _equivalenceClasses.put(equivalent, stateEquivalentPorts);
-               }
-           } finally {
-               actor.workspace().doneReading();
-           }
-           _dependencyVersion = workspaceVersion;
-       }
-       if (output == null) {
-           return null;
-       }
-       Map<IOPort,Dependency> inputMap = _forwardDependencies.get(input);
-       if (inputMap != null) {
-           Dependency result = inputMap.get(output);
-           if (result != null) {
-               return result;
-           }
-       }
-       // If there is no recorded dependency, then reply
-       // with the additive identity (which indicates no
-       // dependency).
-       return _defaultDependency.oPlusIdentity();
-   }
+                // Iterate over the refinements to find any additional ports that may
+                // have to be added to the state equivalent ports. These are input
+                // ports where the corresponding input port on the refinement has
+                // a direct effect on an output.
+                Collection<State> states;
+                if (!stateDependentCausality) {
+                    states = actor.entityList();
+                } else {
+                    State currentState = actor.currentState();
+                    states = new HashSet<State>();
+                    states.add(currentState);
+                }
+                for (State state : states) {
+                    TypedActor[] refinements = state.getRefinement();
+                    if (refinements != null && refinements.length > 0) {
+                        for (int i = 0; i < refinements.length; i++) {
+                            CausalityInterface causality = refinements[i]
+                                    .getCausalityInterface();
+                            // For each output port, find the input ports that affect it.
+                            Collection<IOPort> outputs = refinements[i]
+                                    .outputPortList();
+                            for (IOPort refinementOutput : outputs) {
+                                Collection<IOPort> inputs = causality
+                                        .dependentPorts(refinementOutput);
+                                for (IOPort refinementInput : inputs) {
+                                    Collection<IOPort> equivalents = causality
+                                            .equivalentPorts(refinementInput);
+                                    for (IOPort equivalent : equivalents) {
+                                        // Whew... Need to add the port with the same name to
+                                        // the state equivalents.
+                                        IOPort port = (IOPort) actor
+                                                .getPort(equivalent.getName());
+                                        // This should not be null, but if it is, ignore.
+                                        if (port != null) {
+                                            stateEquivalentPorts.add(port);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // If any input is an instance of ParameterPort, then
+                // all inputs must be in the same equivalence class.
+                List<IOPort> inputs = _actor.inputPortList();
+                for (IOPort actorInput : inputs) {
+                    if (actorInput instanceof ParameterPort) {
+                        stateEquivalentPorts = inputs;
+                        break;
+                    }
+                }
+                // Now set the equivalence classes.
+                for (IOPort equivalent : stateEquivalentPorts) {
+                    _equivalenceClasses.put(equivalent, stateEquivalentPorts);
+                }
+            } finally {
+                actor.workspace().doneReading();
+            }
+            _dependencyVersion = workspaceVersion;
+        }
+        if (output == null) {
+            return null;
+        }
+        Map<IOPort, Dependency> inputMap = _forwardDependencies.get(input);
+        if (inputMap != null) {
+            Dependency result = inputMap.get(output);
+            if (result != null) {
+                return result;
+            }
+        }
+        // If there is no recorded dependency, then reply
+        // with the additive identity (which indicates no
+        // dependency).
+        return _defaultDependency.oPlusIdentity();
+    }
 }

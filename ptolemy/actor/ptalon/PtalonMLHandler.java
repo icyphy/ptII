@@ -103,9 +103,9 @@ public class PtalonMLHandler extends HandlerBase {
                 //_actor.ptalonCodeLocation.setToken(new StringToken(file
                 //        .toString()));
                 if (name.startsWith("/")) {
-                        name = name.substring(1);
+                    name = name.substring(1);
                 } else {
-                        name = "$CLASSPATH/" + name;
+                    name = "$CLASSPATH/" + name;
                 }
                 _actor.ptalonCodeLocation.setToken(new StringToken(name));
             }

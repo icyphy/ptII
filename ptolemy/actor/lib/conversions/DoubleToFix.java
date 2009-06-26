@@ -163,12 +163,12 @@ public class DoubleToFix extends Converter {
         DoubleToFix newObject = (DoubleToFix) super.clone(workspace);
 
         newObject._quantization = new FixPointQuantization(
-                newObject._quantization.getPrecision(),
-                newObject._quantization.getOverflow(),
-                newObject._quantization.getRounding());
+                newObject._quantization.getPrecision(), newObject._quantization
+                        .getOverflow(), newObject._quantization.getRounding());
 
         return newObject;
     }
+
     /** Read at most one token from the input and output the converted
      *  fixed-point value with the precision given by the
      *  <i>precision</i> parameter, overflow strategy given by the

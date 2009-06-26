@@ -125,17 +125,17 @@ public class PropertyClassChanges implements MoMLFilter {
             // Save the name of the attribute for later use if we see a "class"
             _lastNameSeen = attributeValue;
 
-//             System.out.println("<---filterAttributeValue: " + container + "\t"
-//                     +  attributeName + "\t" + attributeValue
-//                     + "fav0.5: lastNameSeen: " + _lastNameSeen);
+            //             System.out.println("<---filterAttributeValue: " + container + "\t"
+            //                     +  attributeName + "\t" + attributeValue
+            //                     + "fav0.5: lastNameSeen: " + _lastNameSeen);
             if (_currentlyProcessingActorWithPropertyClassChanges
                     && (element != null) && element.equals("property")) {
                 if (_propertyMap.containsKey(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
-//                     System.out.println("<---filterAttributeValue: " + container + "\t"
-//                             +  attributeName + "\t" + attributeValue
-//                             + "fav1: foundChange");
+                    //                     System.out.println("<---filterAttributeValue: " + container + "\t"
+                    //                             +  attributeName + "\t" + attributeValue
+                    //                             + "fav1: foundChange");
                     _newClass = (String) _propertyMap.get(attributeValue);
                     _foundChange = true;
                 } else {
@@ -143,9 +143,9 @@ public class PropertyClassChanges implements MoMLFilter {
                     // However, we might have other names that
                     // did match, so keep looking
                     //_currentlyProcessingActorWithPropertyClassChanges = false;
-//                     System.out.println("<---filterAttributeValue: " + container + "\t"
-//                             +  attributeName + "\t" + attributeValue
-//                             + "fav2: non-matching name");
+                    //                     System.out.println("<---filterAttributeValue: " + container + "\t"
+                    //                             +  attributeName + "\t" + attributeValue
+                    //                             + "fav2: non-matching name");
 
                     _newClass = null;
                     _foundChange = false;
@@ -157,20 +157,22 @@ public class PropertyClassChanges implements MoMLFilter {
             if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
                 if ((container != null)
-                        && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().substring(0,
-                            container.getFullName().lastIndexOf(".")).equals(_currentActorFullName)
+                        && !container.getFullName().equals(
+                                _currentActorFullName)
+                        && !container.getFullName().substring(0,
+                                container.getFullName().lastIndexOf("."))
+                                .equals(_currentActorFullName)
 
-                    ) {
+                ) {
                     // This is fix for an unusual bug involving
                     // space.Occupant.
                     // See test 1.1 in test/PropertyClassChanges.tcl
                     _currentlyProcessingActorWithPropertyClassChanges = false;
                     _newClass = null;
                     _foundChange = false;
-//                     System.out.println("<---filterAttributeValue: " + container + "\t"
-//                             +  attributeName + "\t" + attributeValue
-//                             + "fav3: Did not match, returning " + attributeValue);
+                    //                     System.out.println("<---filterAttributeValue: " + container + "\t"
+                    //                             +  attributeName + "\t" + attributeValue
+                    //                             + "fav3: Did not match, returning " + attributeValue);
 
                     return attributeValue;
                 }
@@ -188,17 +190,16 @@ public class PropertyClassChanges implements MoMLFilter {
 
                 _newClass = null;
                 _foundChange = false;
-//                     System.out.println("<---filterAttributeValue: " + container + "\t"
-//                             +  attributeName + "\t" + attributeValue
-//                             + "fav4, returning temporaryNewClass" + temporaryNewClass);
+                //                     System.out.println("<---filterAttributeValue: " + container + "\t"
+                //                             +  attributeName + "\t" + attributeValue
+                //                             + "fav4, returning temporaryNewClass" + temporaryNewClass);
 
                 return temporaryNewClass;
             } else if (_actorsWithPropertyClassChanges
                     .containsKey(attributeValue)) {
-//                     System.out.println("<---filterAttributeValue: " + container + "\t"
-//                             +  attributeName + "\t" + attributeValue
-//                             + "fav4.5, found a class with a property class change");
-
+                //                     System.out.println("<---filterAttributeValue: " + container + "\t"
+                //                             +  attributeName + "\t" + attributeValue
+                //                             + "fav4.5, found a class with a property class change");
 
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
@@ -210,9 +211,9 @@ public class PropertyClassChanges implements MoMLFilter {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
 
-//                     System.out.println("<---filterAttributeValue: " + container + "\t"
-//                             +  attributeName + "\t" + attributeValue
-//                             + "fav5: found a class with a prop class change");
+                //                     System.out.println("<---filterAttributeValue: " + container + "\t"
+                //                             +  attributeName + "\t" + attributeValue
+                //                             + "fav5: found a class with a prop class change");
 
                 _propertyMap = (HashMap) _actorsWithPropertyClassChanges
                         .get(attributeValue);
@@ -222,12 +223,12 @@ public class PropertyClassChanges implements MoMLFilter {
                     /*&& !container.getFullName().substring(0,
                       container.getFullName().lastIndexOf(".")).equals(_currentActorFullName)*/
                     && !container.getFullName().startsWith(
-                      _currentActorFullName)) {
+                            _currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
-//                     System.out.println("<---filterAttributeValue: " + container + "\t"
-//                             +  attributeName + "\t" + attributeValue
-//                             + "fav6: found another class in diff container");
+                //                     System.out.println("<---filterAttributeValue: " + container + "\t"
+                //                             +  attributeName + "\t" + attributeValue
+                //                             + "fav6: found another class in diff container");
 
                 _currentlyProcessingActorWithPropertyClassChanges = false;
             }
@@ -247,9 +248,9 @@ public class PropertyClassChanges implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
-//            System.out.println("<---filterEndElement: "
-//                    + ((container == null) ? "null" : container.getFullName())
-//                    +  "\t" + elementName + "\t" + currentCharData);
+        //            System.out.println("<---filterEndElement: "
+        //                    + ((container == null) ? "null" : container.getFullName())
+        //                    +  "\t" + elementName + "\t" + currentCharData);
         _foundChange = false;
     }
 
@@ -299,11 +300,12 @@ public class PropertyClassChanges implements MoMLFilter {
                 Iterator propertyMapEntries = propertyMap.entrySet().iterator();
 
                 while (propertyMapEntries.hasNext()) {
-                    Map.Entry properties = (Map.Entry) propertyMapEntries.next();
+                    Map.Entry properties = (Map.Entry) propertyMapEntries
+                            .next();
                     String oldProperty = (String) properties.getKey();
                     String newProperty = (String) properties.getValue();
-                    results.append("\t\t" + oldProperty + "\t -> " + newProperty
-                        + "\n");
+                    results.append("\t\t" + oldProperty + "\t -> "
+                            + newProperty + "\n");
                 }
             }
         }
@@ -345,18 +347,18 @@ public class PropertyClassChanges implements MoMLFilter {
         HashMap displayClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
-        displayClassChanges.put("title",
-                "ptolemy.data.expr.StringParameter");
+        displayClassChanges.put("title", "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.gui.Display",
                 displayClassChanges);
 
-        _actorsWithPropertyClassChanges.put("ptolemy.domains.sr.lib.gui.NonStrictDisplay",
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sr.lib.gui.NonStrictDisplay",
                 displayClassChanges);
 
-        _actorsWithPropertyClassChanges.put("ptolemy.domains.dt.kernel.text.TimedDisplay",
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.dt.kernel.text.TimedDisplay",
                 displayClassChanges);
-
 
         // Expression
         // This is a second generation change.
@@ -514,8 +516,6 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.fsm.modal.ModalModel", modalModelClassChanges);
 
-
-
         // ModalModel changes for the new model model
         HashMap modalModelClassChanges2 = new HashMap();
 
@@ -536,12 +536,13 @@ public class PropertyClassChanges implements MoMLFilter {
                 "ptolemy.vergil.modal.modal.ModalTableauFactory");
 
         _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.modal.modal.ModalModel", modalModelClassChanges2);
+                "ptolemy.domains.modal.modal.ModalModel",
+                modalModelClassChanges2);
 
         // HashMap hdfClassChanges = new HashMap();
-//         hdfClassChanges.put("_Director", null);
-//         _actorsWithPropertyClassChanges.put(
-//                 "ptolemy.domains.hdf.kernel.HDFFSMDirector", hdfClassChanges);
+        //         hdfClassChanges.put("_Director", null);
+        //         _actorsWithPropertyClassChanges.put(
+        //                 "ptolemy.domains.hdf.kernel.HDFFSMDirector", hdfClassChanges);
 
         // LevelCrossingDetector
         HashMap levelCrossingDetectorClassChanges = new HashMap();
@@ -615,8 +616,8 @@ public class PropertyClassChanges implements MoMLFilter {
                 .put("ptolemy.domains.fsm.kernel.Transition",
                         TransitionClassChanges);
 
-        _actorsWithPropertyClassChanges
-                .put("ptolemy.domains.modal.kernel.Transition",
-                        TransitionClassChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.modal.kernel.Transition",
+                TransitionClassChanges);
     }
 }

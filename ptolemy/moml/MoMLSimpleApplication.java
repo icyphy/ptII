@@ -111,13 +111,14 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _manager.startRun();
 
         Thread waitThread = new Thread() {
-                public void run() {
-                    waitForFinish();
-                    if (_sawThrowable != null) {
-                        throw new RuntimeException("Execution failed", _sawThrowable);
-                    }
+            public void run() {
+                waitForFinish();
+                if (_sawThrowable != null) {
+                    throw new RuntimeException("Execution failed",
+                            _sawThrowable);
                 }
-            };
+            }
+        };
 
         // Note that we start the thread here, which could
         // be risky when we subclass, since the thread will be

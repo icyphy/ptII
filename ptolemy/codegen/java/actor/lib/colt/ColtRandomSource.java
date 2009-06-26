@@ -96,10 +96,10 @@ public abstract class ColtRandomSource extends JavaCodeGeneratorHelper {
             _codeStream.appendCodeBlock("setSeedBlock1", args);
         }
 
-
-        String generatorClassValue = ((StringToken) actor.generatorClass.getToken()).stringValue();
+        String generatorClassValue = ((StringToken) actor.generatorClass
+                .getToken()).stringValue();
         if ((generatorClassValue == null)
-            || generatorClassValue.equals("DRand")) {
+                || generatorClassValue.equals("DRand")) {
             _codeStream.appendCodeBlock("setRandomNumberGeneratorDRand");
         } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
             _codeStream.appendCodeBlock("setRandomNumberMersenneTwister");
@@ -110,8 +110,6 @@ public abstract class ColtRandomSource extends JavaCodeGeneratorHelper {
         } else if (generatorClassValue.equals("Ranmar")) {
             _codeStream.appendCodeBlock("setRandomNumberRanmar");
         }
-
-
 
         return processCode(_codeStream.toString());
     }

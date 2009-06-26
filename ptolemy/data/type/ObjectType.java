@@ -94,9 +94,9 @@ public class ObjectType implements Cloneable, Type {
      *  an instance of <i>valueClass</i>.
      */
     public ObjectType(Object value, Class<?> valueClass)
-    throws IllegalActionException {
-        if (value != null && valueClass != null &&
-                !valueClass.isInstance(value)) {
+            throws IllegalActionException {
+        if (value != null && valueClass != null
+                && !valueClass.isInstance(value)) {
             throw new IllegalActionException("The value " + value + " is not "
                     + "an instance of class " + valueClass);
         }
@@ -140,8 +140,8 @@ public class ObjectType implements Cloneable, Type {
                 return new ObjectToken(value, _class);
             }
         }
-        throw new IllegalArgumentException(Token
-                .notSupportedConversionMessage(token, this.toString()));
+        throw new IllegalArgumentException(Token.notSupportedConversionMessage(
+                token, this.toString()));
     }
 
     /** Return a new type which represents the type that results from

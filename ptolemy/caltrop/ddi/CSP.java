@@ -117,7 +117,7 @@ public class CSP extends AbstractDDI {
         // and no multiport support (always assume channel 0) FIXME
 
         // We require the (Action[]) cast for Java 1.5.0_06
-        Action[] actions = (Action[]) _actions.clone();
+        Action[] actions = _actions.clone();
         Map inputProfile;
         Map dataSoFar = new HashMap();
 

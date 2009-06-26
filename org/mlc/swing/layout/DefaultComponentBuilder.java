@@ -90,10 +90,10 @@ public class DefaultComponentBuilder implements ComponentBuilder {
                     }
                 }
 
-                if (propertyDescriptor == null)
+                if (propertyDescriptor == null) {
                     throw new RuntimeException("Could not find property '"
                             + propertyName + "' in class " + clazz.getName());
-                else {
+                } else {
                     this.properties.add(new BeanProperty(propertyDescriptor
                             .getName(), propertyDescriptor.getPropertyType()));
                     nameToDescriptor.put(propertyDescriptor.getName(),
@@ -108,8 +108,9 @@ public class DefaultComponentBuilder implements ComponentBuilder {
         buffer.append(clazz.getName() + " " + name + " = new "
                 + clazz.getName() + "(");
 
-        if (beanProperties.containsKey("text"))
+        if (beanProperties.containsKey("text")) {
             buffer.append("\"" + (String) beanProperties.get("text") + "\"");
+        }
 
         buffer.append(");\n");
         return buffer.toString();
@@ -127,8 +128,9 @@ public class DefaultComponentBuilder implements ComponentBuilder {
         String decl = clazz.getName() + " ${name}= new " + clazz.getName()
                 + "(";
 
-        if (beanProperties.containsKey("text"))
+        if (beanProperties.containsKey("text")) {
             decl += "\"" + (String) beanProperties.get("text") + "\"";
+        }
         decl += ");";
 
         //          String decl = getDeclaration(name, beanProperties);

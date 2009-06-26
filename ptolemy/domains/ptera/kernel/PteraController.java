@@ -103,7 +103,7 @@ public class PteraController extends ModalController {
      *   already in the container.
      */
     public PteraController(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -116,7 +116,7 @@ public class PteraController extends ModalController {
      *   be read.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == LIFO) {
             director.LIFO.setToken(LIFO.getToken());
         } else {
@@ -137,8 +137,8 @@ public class PteraController extends ModalController {
         PteraController controller = (PteraController) super.clone(workspace);
         controller._executiveDirector = null;
         controller._executiveDirectorVersion = -1;
-        controller.director = (PteraDirector) controller.getAttribute(
-                "_Director");
+        controller.director = (PteraDirector) controller
+                .getAttribute("_Director");
         return controller;
     }
 
@@ -199,8 +199,7 @@ public class PteraController extends ModalController {
                     _executiveDirector = super.getDirector();
                 } else {
                     _executiveDirector = null;
-                    for (Object atomicEntity
-                            : modalModel.allAtomicEntityList()) {
+                    for (Object atomicEntity : modalModel.allAtomicEntityList()) {
                         if (atomicEntity instanceof Event) {
                             Event event = (Event) atomicEntity;
                             Actor[] refinements;
@@ -215,8 +214,8 @@ public class PteraController extends ModalController {
                                         // Return the director of the Ptera
                                         // controller that has an event with the
                                         // current controller as its refinement.
-                                        _executiveDirector = ((PteraController)
-                                                event.getContainer()).director;
+                                        _executiveDirector = ((PteraController) event
+                                                .getContainer()).director;
                                         break;
                                     }
                                 }
@@ -369,12 +368,11 @@ public class PteraController extends ModalController {
      *  @return True if synchronizedToRealtime is set; false otherwise.
      */
     public boolean synchronizeToRealtime() {
-        List<?> synchronizeAttributes =
-            attributeList(SynchronizeToRealtime.class);
+        List<?> synchronizeAttributes = attributeList(SynchronizeToRealtime.class);
         boolean synchronize = false;
         if (synchronizeAttributes.size() > 0) {
-            SynchronizeToRealtime attribute =
-                (SynchronizeToRealtime) synchronizeAttributes.get(0);
+            SynchronizeToRealtime attribute = (SynchronizeToRealtime) synchronizeAttributes
+                    .get(0);
             try {
                 synchronize = ((BooleanToken) attribute.getToken())
                         .booleanValue();
@@ -407,15 +405,14 @@ public class PteraController extends ModalController {
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() {
-        Set<Inequality> constraintList = new HashSet<Inequality>(
-                super.typeConstraints());
+        Set<Inequality> constraintList = new HashSet<Inequality>(super
+                .typeConstraints());
         List<?> events = entityList(Event.class);
         for (Object eventObject : events) {
             Event event = (Event) eventObject;
             List<?> attributes = event.attributeList(HasTypeConstraints.class);
             for (Object attributeObject : attributes) {
-                HasTypeConstraints attribute =
-                    (HasTypeConstraints) attributeObject;
+                HasTypeConstraints attribute = (HasTypeConstraints) attributeObject;
                 constraintList.addAll(attribute.typeConstraints());
             }
         }
@@ -449,8 +446,8 @@ public class PteraController extends ModalController {
      *  @return The map.
      */
     protected TreeMap<Class<? extends Entity>, String> _getRefinementClasses() {
-        TreeMap<Class<? extends Entity>, String> map =
-            super._getRefinementClasses();
+        TreeMap<Class<? extends Entity>, String> map = super
+                ._getRefinementClasses();
         map.put(Event.class, PteraController.class.getName());
         map.put(PteraController.class, PteraController.class.getName());
         return map;
@@ -472,7 +469,7 @@ public class PteraController extends ModalController {
      *  coincides with a director already in the controller.
      */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         director = new PteraDirector(this, "_Director");
         new SingletonAttribute(director, "_hide");
 

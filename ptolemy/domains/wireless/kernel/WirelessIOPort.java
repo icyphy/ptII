@@ -326,7 +326,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        WirelessIOPort newObject = (WirelessIOPort)super.clone(workspace);
+        WirelessIOPort newObject = (WirelessIOPort) super.clone(workspace);
         newObject._receivers = null;
         newObject._insideReceivers = null;
         newObject._insideChannel = null;

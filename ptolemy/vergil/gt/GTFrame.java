@@ -154,8 +154,9 @@ public class GTFrame extends ExtendedGraphFrame {
         if (component == null) {
             if (entity instanceof TransformationRule
                     && ((TransformationRule) entity).mode.isMatchOnly()) {
-                component = super._createRightComponent(
-                        ((TransformationRule) entity).getPattern());
+                component = super
+                        ._createRightComponent(((TransformationRule) entity)
+                                .getPattern());
             } else {
                 component = super._createRightComponent(entity);
             }
@@ -164,7 +165,7 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected SizeAttribute _createSizeAttribute()
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         SizeAttribute size = super._createSizeAttribute();
         if (_frameController.hasTabs()) {
             Component component = _frameController.getTabbedPane()
@@ -178,8 +179,8 @@ public class GTFrame extends ExtendedGraphFrame {
         return _graphPanner;
     }
 
-    protected static class ConfigureCriteriaAction
-    extends ConfigureIngredientsAction {
+    protected static class ConfigureCriteriaAction extends
+            ConfigureIngredientsAction {
 
         protected String _getAttributeName() {
             return "criteria";
@@ -190,8 +191,8 @@ public class GTFrame extends ExtendedGraphFrame {
         }
     }
 
-    protected static abstract class ConfigureIngredientsAction
-    extends FigureAction {
+    protected static abstract class ConfigureIngredientsAction extends
+            FigureAction {
 
         public void actionPerformed(ActionEvent event) {
             // Determine which entity was selected for the look inside action.
@@ -202,8 +203,8 @@ public class GTFrame extends ExtendedGraphFrame {
                 EditorFactory factory = null;
                 try {
                     target.workspace().getReadAccess();
-                    List<?> attributeList = target.attributeList(
-                            EditorFactory.class);
+                    List<?> attributeList = target
+                            .attributeList(EditorFactory.class);
                     if (attributeList.size() > 0) {
                         factory = (EditorFactory) attributeList.get(0);
                     }
@@ -232,8 +233,8 @@ public class GTFrame extends ExtendedGraphFrame {
                 }
                 try {
                     EditorFactory factory = new GTIngredientsEditor.Factory(
-                            target,
-                            target.uniqueName("ingredientsEditorFactory"));
+                            target, target
+                                    .uniqueName("ingredientsEditorFactory"));
                     factory.setPersistent(false);
                     factory.createEditor(target, frame);
                     factory.setContainer(null);
@@ -250,8 +251,8 @@ public class GTFrame extends ExtendedGraphFrame {
         }
     }
 
-    protected static class ConfigureOperationsAction
-    extends ConfigureIngredientsAction {
+    protected static class ConfigureOperationsAction extends
+            ConfigureIngredientsAction {
 
         protected String _getAttributeName() {
             return "operations";

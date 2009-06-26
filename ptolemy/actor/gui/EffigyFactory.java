@@ -127,8 +127,8 @@ public class EffigyFactory extends CompositeEntity {
             stream = input.openStream();
         } catch (AccessControlException ex) {
             // Applets will throw this.
-            AccessControlException exception = new AccessControlException("Failed to open \""
-                    + input + "\"");
+            AccessControlException exception = new AccessControlException(
+                    "Failed to open \"" + input + "\"");
             exception.initCause(ex);
             throw exception;
         } catch (IOException ex) {

@@ -85,8 +85,7 @@ public class ParserAttribute extends SingletonAttribute {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParserAttribute newObject = (ParserAttribute) super.clone(workspace);
         // If we don't set _parser to null, then the master and the
         // clone share a MoMLParser, which is not good.

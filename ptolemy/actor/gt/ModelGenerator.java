@@ -86,7 +86,6 @@ public class ModelGenerator extends Source {
         output.setTypeEquals(ActorToken.TYPE);
     }
 
-
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -162,9 +161,11 @@ public class ModelGenerator extends Source {
     public boolean prefire() throws IllegalActionException {
         ParameterPort modelNamePort = modelName.getPort();
         return super.prefire()
-                && (moml.isOutsideConnected() && moml.hasToken(0) ||
-                    modelNamePort.isOutsideConnected() && modelNamePort.hasToken(0) ||
-                    !moml.isOutsideConnected() && !modelNamePort.isOutsideConnected());
+                && (moml.isOutsideConnected() && moml.hasToken(0)
+                        || modelNamePort.isOutsideConnected()
+                        && modelNamePort.hasToken(0) || !moml
+                        .isOutsideConnected()
+                        && !modelNamePort.isOutsideConnected());
     }
 
     public PortParameter modelName;

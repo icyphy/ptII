@@ -92,7 +92,7 @@ public class BasicJApplet extends JApplet {
      *  background color is set to white.
      */
     public void init() {
-        GraphicalMessageHandler.setContext(this);
+        UndeferredGraphicalMessageHandler.setContext(this);
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
         // Process the background parameter.

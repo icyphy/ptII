@@ -368,22 +368,22 @@ public abstract class PropertyHelper {
      *
      * @return The list of PropertyHelpers for ASTPtRootNodes.
      */
-    protected List<PropertyHelper> _getASTNodeHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getASTNodeHelpers()
+            throws IllegalActionException {
         List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
-        ParseTreeASTNodeHelperCollector collector =
-            new ParseTreeASTNodeHelperCollector();
+        ParseTreeASTNodeHelperCollector collector = new ParseTreeASTNodeHelperCollector();
 
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
-//                try {
-                    List<PropertyHelper> helpers = collector.collectHelpers(
-                            root, getSolver());
-                    astHelpers.addAll(helpers);
-//                } catch (IllegalActionException ex) {
-//                    // This means the expression is not parse-able.
-//                    // FIXME: So, we will discard it for now.
-//                    throw new AssertionError(ex.stackTraceToString(ex));
-//                }
+                //                try {
+                List<PropertyHelper> helpers = collector.collectHelpers(root,
+                        getSolver());
+                astHelpers.addAll(helpers);
+                //                } catch (IllegalActionException ex) {
+                //                    // This means the expression is not parse-able.
+                //                    // FIXME: So, we will discard it for now.
+                //                    throw new AssertionError(ex.stackTraceToString(ex));
+                //                }
             }
         }
         return astHelpers;
@@ -395,7 +395,8 @@ public abstract class PropertyHelper {
      * @return The list of ASTPtRootNodes.
      * @exception IllegalActionException
      */
-    protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
+    protected List<ASTPtRootNode> _getAttributeParseTrees()
+            throws IllegalActionException {
         List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();
 
         Iterator attributes = null;
@@ -405,19 +406,19 @@ public abstract class PropertyHelper {
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute) attributes.next();
 
-//            try {
-                ASTPtRootNode pt = getParseTree(attribute);
-                if (pt != null) {
-                    result.add(pt);
-                }
-//            } catch (IllegalActionException ex) {
-//                // This means the expression is not parse-able.
-//                // FIXME: So, we will discard it for now.
-//                // FIXME: Breaks the regression test. Need to figure out a better
-//                // way to deal with the problem.
-//                System.out.println(KernelException.stackTraceToString(ex));
-//                //throw new AssertionError(ex.stackTraceToString(ex));
-//            }
+            //            try {
+            ASTPtRootNode pt = getParseTree(attribute);
+            if (pt != null) {
+                result.add(pt);
+            }
+            //            } catch (IllegalActionException ex) {
+            //                // This means the expression is not parse-able.
+            //                // FIXME: So, we will discard it for now.
+            //                // FIXME: Breaks the regression test. Need to figure out a better
+            //                // way to deal with the problem.
+            //                System.out.println(KernelException.stackTraceToString(ex));
+            //                //throw new AssertionError(ex.stackTraceToString(ex));
+            //            }
         }
         return result;
     }

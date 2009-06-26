@@ -60,8 +60,8 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
 
         code.append(directorHelper.generateFireCode());
 
@@ -71,8 +71,8 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
 
         code.append(directorHelper.generatePreinitializeCode());
 
@@ -82,8 +82,8 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
 
         code.append(directorHelper.generateInitializeCode());
 
@@ -93,8 +93,8 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
 
         code.append(directorHelper.generateWrapupCode());
 

@@ -56,7 +56,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.util.NamedObj;
@@ -93,11 +93,11 @@ public class SWTVergilApplication {
 
         // FIXME: Code duplicated from MoMLApplication.  Perhaps refactoring
         // would help here?
-        
+
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.
         MoMLParser.setErrorHandler(new VergilErrorHandler());
-        
+
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.
         // NOTE: This creates the only dependence on Swing in this
@@ -107,7 +107,7 @@ public class SWTVergilApplication {
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
-        
+
         // Create a parser to use.
         _parser = new MoMLParser();
 
@@ -144,7 +144,7 @@ public class SWTVergilApplication {
         }
 
         // End of code duplication from MoMLApplication
-        
+
         // Start of code from Snippet135
         final Display display = new Display();
         final Shell shell = new Shell(display);
@@ -497,7 +497,7 @@ public class SWTVergilApplication {
      * @exception Exception If the model cannot be found or cannot be parsed.
      */
     protected NamedObj _openModel(String model) throws Exception {
-        URL modelURL = FileUtilities.nameToURL(model, null, null);     
+        URL modelURL = FileUtilities.nameToURL(model, null, null);
         return _parser.parse(null, modelURL);
     }
 
@@ -510,7 +510,8 @@ public class SWTVergilApplication {
                 .nameToURL("$CLASSPATH/ptolemy/configs/full/configuration.xml",
                         null, null);
         System.out.println("ConfigurationURL: " + configurationURL);
-        _configuration = MoMLApplication.readConfiguration(configurationURL);
+        _configuration = ConfigurationApplication
+                .readConfiguration(configurationURL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -526,7 +527,7 @@ public class SWTVergilApplication {
 
     /** The parser used to construct the configuration. */
     protected MoMLParser _parser;
-    
+
     /** The Ptolemy model.*/
     protected NamedObj _toplevel;
 

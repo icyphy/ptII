@@ -82,8 +82,9 @@ public class ParameterizedNodeController extends NamedObjController {
         Configuration config = null;
         for (Iterator it = configsList.iterator(); it.hasNext();) {
             config = (Configuration) it.next();
-            if (config != null)
+            if (config != null) {
                 break;
+            }
         }
 
         //If a MenuFactory has been defined in the configuration, use this

@@ -42,7 +42,6 @@ import javax.swing.JPopupMenu;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
@@ -213,10 +212,11 @@ public class FigureAction extends AbstractAction {
                     //
                     // So, if the current figure is a BasicGrabHandle, we
                     // do not throw the exception
-                    if (! (layer.getCurrentFigure() instanceof BasicGrabHandle)) {
+                    if (!(layer.getCurrentFigure() instanceof BasicGrabHandle)) {
                         throw new InternalErrorException(
-                                "Internal error: FigureLayer \"" + layer.getCurrentFigure()
-                                + "\" has no associated Ptolemy II object!");
+                                "Internal error: FigureLayer \""
+                                        + layer.getCurrentFigure()
+                                        + "\" has no associated Ptolemy II object!");
                     }
                 }
             } else {
@@ -313,7 +313,6 @@ public class FigureAction extends AbstractAction {
         return _y;
     }
 
-
     /** Determine a new location for a figure if another figure is
      *  already at that location.
      *  @param x The x value of the proposed location.
@@ -328,9 +327,8 @@ public class FigureAction extends AbstractAction {
      *  the original location or an offset location that does not obscure
      *  an object of class <i>figure</i>.
      */
-    static public double [] offsetFigure(double x, double y,
-            double xOffset, double yOffset, Class<?> figureClass,
-            FigureLayer foregroundLayer,
+    static public double[] offsetFigure(double x, double y, double xOffset,
+            double yOffset, Class<?> figureClass, FigureLayer foregroundLayer,
             Rectangle2D visibleRectangle) {
         // Solve the problem of items from the toolbar overlapping.
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3002
@@ -338,7 +336,7 @@ public class FigureAction extends AbstractAction {
         // This method is in this class so that we can handle
         // ports and relations.
 
-        double [] point = new double[2];
+        double[] point = new double[2];
         point[0] = x;
         point[1] = y;
 
@@ -362,16 +360,18 @@ public class FigureAction extends AbstractAction {
             checkFigure = false;
 
             // The rectangle in which we search for a Figure.
-            Rectangle2D region = new Rectangle2D.Double(
-                    point[0] - halo, point[1] - halo, width, width);
+            Rectangle2D region = new Rectangle2D.Double(point[0] - halo,
+                    point[1] - halo, width, width);
 
             // Iterate through figures within the region.
-            Iterator<?> foregroundFigures = foregroundLayer.getFigures().getIntersectedFigures(region).figuresFromFront();
-            Iterator<?> pickFigures = CanvasUtilities.pickIter(foregroundFigures,
-                    region);
+            Iterator<?> foregroundFigures = foregroundLayer.getFigures()
+                    .getIntersectedFigures(region).figuresFromFront();
+            Iterator<?> pickFigures = CanvasUtilities.pickIter(
+                    foregroundFigures, region);
 
             while (pickFigures.hasNext() && !checkFigure) {
-                CanvasComponent possibleFigure = (CanvasComponent)pickFigures.next();
+                CanvasComponent possibleFigure = (CanvasComponent) pickFigures
+                        .next();
                 if (possibleFigure == null) {
                     // Nothing to see here, move along - there is no Figure.
                     break;
@@ -382,10 +382,11 @@ public class FigureAction extends AbstractAction {
 
                     while (possibleFigure instanceof UserObjectContainer
                             && userObject == null && !checkFigure) {
-                        userObject = ((UserObjectContainer) possibleFigure).getUserObject();
+                        userObject = ((UserObjectContainer) possibleFigure)
+                                .getUserObject();
                         if (userObject instanceof Location
-                                && (figureClass.isInstance(userObject)
-                                        || figureClass.isInstance(possibleFigure))) {
+                                && (figureClass.isInstance(userObject) || figureClass
+                                        .isInstance(possibleFigure))) {
                             // We found a figure here, so we will
                             // loop again.
                             checkFigure = true;
@@ -395,20 +396,20 @@ public class FigureAction extends AbstractAction {
                             // Check to make sure we are not outside the view
                             if (point[0] > visibleRectangle.getWidth()) {
                                 point[0] = originalX;
-                                point[1] = originalY
-                                    - PASTE_OFFSET * 2 * ++xMax;
+                                point[1] = originalY - PASTE_OFFSET * 2
+                                        * ++xMax;
                                 if (point[1] < 0) {
-                                    point[1] = originalY
-                                        + PASTE_OFFSET * 2 * ++xMax;
+                                    point[1] = originalY + PASTE_OFFSET * 2
+                                            * ++xMax;
                                 }
                             }
 
                             if (point[1] > visibleRectangle.getHeight()) {
-                                point[0] = originalX
-                                    - PASTE_OFFSET * 2 * ++yMax;
+                                point[0] = originalX - PASTE_OFFSET * 2
+                                        * ++yMax;
                                 if (point[0] < 0) {
-                                    point[0] = originalX
-                                        + PASTE_OFFSET * 2 * ++xMax;
+                                    point[0] = originalX + PASTE_OFFSET * 2
+                                            * ++xMax;
                                 }
                                 point[1] = originalY;
 
@@ -462,11 +463,8 @@ public class FigureAction extends AbstractAction {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

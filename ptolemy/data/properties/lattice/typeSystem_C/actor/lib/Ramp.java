@@ -52,25 +52,26 @@ public class Ramp extends AtomicActor {
      * @param actor the associated actor
      * @exception IllegalActionException
      */
-    public Ramp(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Ramp actor) throws IllegalActionException {
+    public Ramp(PropertyConstraintSolver solver, ptolemy.actor.lib.Ramp actor)
+            throws IllegalActionException {
 
         super(solver, actor);
         _lattice = (Lattice) getSolver().getLattice();
         _actor = actor;
-   }
+    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-//        setAtLeast(actor.output, actor.init);
-//        setAtLeast(actor.output, actor.step);
-//        // FIXME: Is this the right thing to do???
-//        //        How do we make sure that Ptolemy and EDC type systems are consistent?
-//
-//        // this does not work!
-//        setAtLeast(actor.output, lattice.getEDCtype(actor.output.getType(), null));
+        //        setAtLeast(actor.output, actor.init);
+        //        setAtLeast(actor.output, actor.step);
+        //        // FIXME: Is this the right thing to do???
+        //        //        How do we make sure that Ptolemy and EDC type systems are consistent?
+        //
+        //        // this does not work!
+        //        setAtLeast(actor.output, lattice.getEDCtype(actor.output.getType(), null));
 
-//FIXME: consider firingCountLimit for output type
-        setEquals(_actor.output, _lattice.convertJavaToCtype(_actor.output.getType(), null));
+        //FIXME: consider firingCountLimit for output type
+        setEquals(_actor.output, _lattice.convertJavaToCtype(_actor.output
+                .getType(), null));
         return super.constraintList();
     }
 
@@ -79,4 +80,3 @@ public class Ramp extends AtomicActor {
     private ptolemy.actor.lib.Ramp _actor;
     private Lattice _lattice;
 }
-

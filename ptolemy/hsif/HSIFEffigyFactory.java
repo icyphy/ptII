@@ -33,9 +33,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
-import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -193,7 +193,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
                 outputFileWriter.close();
                 System.out.println(" Done");
 
-                URL temporaryOutputURL = MoMLApplication
+                URL temporaryOutputURL = ConfigurationApplication
                         .specToURL(temporaryOutputFileName);
 
                 // Note that createEffigy might end up substituting %20

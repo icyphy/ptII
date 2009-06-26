@@ -98,7 +98,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @exception Exception If thrown while configuring the port
      */
     public void addPort(String name, String value)
-        throws NameDuplicationException, Exception {
+            throws NameDuplicationException, Exception {
 
         _portHash.put(name, value);
         ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
@@ -114,10 +114,10 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @see #getProperty(String)
      */
     public void addProperty(String name, String value)
-        throws NameDuplicationException, Exception {
+            throws NameDuplicationException, Exception {
         _propertyHash.put(name, value);
-        ConfigurableAttribute attribute = new ConfigurableAttribute(this, "prop:"
-                + name);
+        ConfigurableAttribute attribute = new ConfigurableAttribute(this,
+                "prop:" + name);
         attribute.configure(null, null, value);
     }
 
@@ -138,13 +138,13 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public void createEmptyFields(NamedObj target) {
         try {
-            /*ConfigurableAttribute authorAtt =*/ new ConfigurableAttribute(this,
-                    "author");
-            /*ConfigurableAttribute versionAtt =*/ new ConfigurableAttribute(this,
-                    "version");
-            /*ConfigurableAttribute descriptionAtt =*/ new ConfigurableAttribute(
+            /*ConfigurableAttribute authorAtt =*/new ConfigurableAttribute(
+                    this, "author");
+            /*ConfigurableAttribute versionAtt =*/new ConfigurableAttribute(
+                    this, "version");
+            /*ConfigurableAttribute descriptionAtt =*/new ConfigurableAttribute(
                     this, "description");
-            /*ConfigurableAttribute uldAtt =*/ new ConfigurableAttribute(this,
+            /*ConfigurableAttribute uldAtt =*/new ConfigurableAttribute(this,
                     "userLevelDocumentation");
 
             _author = "";
@@ -180,10 +180,12 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * another given KeplerDccumentationAtttribute.
      * @param documentationAttribute The DocumentationAttribute from which to copy attributes.
      */
-    public void createInstanceFromExisting(KeplerDocumentationAttribute documentationAttribute) {
+    public void createInstanceFromExisting(
+            KeplerDocumentationAttribute documentationAttribute) {
         Iterator attributes = documentationAttribute.attributeList().iterator();
         while (attributes.hasNext()) {
-            ConfigurableAttribute attribute = (ConfigurableAttribute) attributes.next();
+            ConfigurableAttribute attribute = (ConfigurableAttribute) attributes
+                    .next();
             String attributeName = attribute.getName();
             if (attributeName.equals("description")) {
                 _description = attribute.getConfigureText();
@@ -194,8 +196,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
             } else if (attributeName.equals("userLevelDocumentation")) {
                 _userLevelDocumentation = attribute.getConfigureText();
             } else if (attributeName.indexOf("port:") != -1) { //add to the port hash
-                String portName = attributeName.substring(attributeName.indexOf(":") + 1,
-                        attributeName.length());
+                String portName = attributeName.substring(attributeName
+                        .indexOf(":") + 1, attributeName.length());
                 String portDescription = attribute.getConfigureText();
                 if (portName != null) {
                     if (portDescription == null) {
@@ -205,8 +207,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 }
 
             } else if (attributeName.indexOf("prop:") != -1) { //add to the prop hash
-                String propertyName = attributeName.substring(attributeName.indexOf(":") + 1,
-                        attributeName.length());
+                String propertyName = attributeName.substring(attributeName
+                        .indexOf(":") + 1, attributeName.length());
                 String propertyDescription = attribute.getConfigureText();
                 if (propertyName != null) {
                     if (propertyDescription == null) {
@@ -230,41 +232,49 @@ public class KeplerDocumentationAttribute extends Attribute implements
             throws IOException {
         createInstanceFromExisting(this);
         StringBuffer results = new StringBuffer(
-                "<property name=\"" + name + "\" class=\"" + getClassName()
-                + "\">\n"
-                + "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + StringUtilities.escapeForXML(_description) + "</configure>"
-                + "</property>\n"
-                + "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + StringUtilities.escapeForXML(_author) + "</configure>"
-                + "</property>\n"
-                + "<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + StringUtilities.escapeForXML(_version) + "</configure>"
-                + "</property>\n"
-                + "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + StringUtilities.escapeForXML(_userLevelDocumentation) + "</configure>"
-                + "</property>\n");
+                "<property name=\""
+                        + name
+                        + "\" class=\""
+                        + getClassName()
+                        + "\">\n"
+                        + "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                        + "<configure>"
+                        + StringUtilities.escapeForXML(_description)
+                        + "</configure>"
+                        + "</property>\n"
+                        + "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                        + "<configure>"
+                        + StringUtilities.escapeForXML(_author)
+                        + "</configure>"
+                        + "</property>\n"
+                        + "<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                        + "<configure>"
+                        + StringUtilities.escapeForXML(_version)
+                        + "</configure>"
+                        + "</property>\n"
+                        + "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                        + "<configure>"
+                        + StringUtilities.escapeForXML(_userLevelDocumentation)
+                        + "</configure>" + "</property>\n");
 
         Enumeration portKeys = _portHash.keys();
         while (portKeys.hasMoreElements()) {
             String key = (String) portKeys.nextElement();
             String val = (String) _portHash.get(key);
-            results.append("<property name=\"port:"
-                            + key
-                            + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                    + "<configure>" + StringUtilities.escapeForXML(val) + "</configure>"
-                    + "</property>\n");
+            results.append("<property name=\"port:" + key
+                    + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                    + "<configure>" + StringUtilities.escapeForXML(val)
+                    + "</configure>" + "</property>\n");
         }
 
         Enumeration propKeys = _propertyHash.keys();
         while (propKeys.hasMoreElements()) {
             String key = (String) propKeys.nextElement();
             String val = (String) _propertyHash.get(key);
-            results.append("<property name=\"prop:"
-                            + key
-                            + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                    + "<configure>" + StringUtilities.escapeForXML(val) + "</configure>"
-                    + "</property>\n");
+            results.append("<property name=\"prop:" + key
+                    + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                    + "<configure>" + StringUtilities.escapeForXML(val)
+                    + "</configure>" + "</property>\n");
         }
 
         results.append("</property>");
@@ -327,24 +337,31 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public DocAttribute getDocAttribute(NamedObj target) {
         createInstanceFromExisting(this);
         try {
-            DocAttribute documentationAttribute = new DocAttribute(target.workspace());
+            DocAttribute documentationAttribute = new DocAttribute(target
+                    .workspace());
             documentationAttribute.setContainer(target);
             //documentationAttribute.setName("keplerFormattedPTIIDocumentation");
-            documentationAttribute.author = new StringAttribute(documentationAttribute, "author");
+            documentationAttribute.author = new StringAttribute(
+                    documentationAttribute, "author");
             documentationAttribute.author.setExpression(_author);
-            documentationAttribute.version = new StringAttribute(documentationAttribute, "version");
+            documentationAttribute.version = new StringAttribute(
+                    documentationAttribute, "version");
             documentationAttribute.version.setExpression(_version);
-            documentationAttribute.since = new StringAttribute(documentationAttribute, "since");
+            documentationAttribute.since = new StringAttribute(
+                    documentationAttribute, "since");
             documentationAttribute.since.setExpression("");
-            documentationAttribute.description = new StringParameter(documentationAttribute, "description");
-            documentationAttribute.description.setExpression(_userLevelDocumentation);
+            documentationAttribute.description = new StringParameter(
+                    documentationAttribute, "description");
+            documentationAttribute.description
+                    .setExpression(_userLevelDocumentation);
 
             //add ports and params
             Enumeration ports = _portHash.keys();
             while (ports.hasMoreElements()) {
                 String name = (String) ports.nextElement();
                 String description = (String) _portHash.get(name);
-                StringAttribute attribute = new StringAttribute(documentationAttribute, name + " (port)");
+                StringAttribute attribute = new StringAttribute(
+                        documentationAttribute, name + " (port)");
                 attribute.setExpression(description);
             }
 
@@ -352,8 +369,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
             while (propItt.hasMoreElements()) {
                 String name = (String) propItt.nextElement();
                 String description = (String) _propertyHash.get(name);
-                StringParameter parameter = new StringParameter(documentationAttribute, name
-                        + " (parameter)");
+                StringParameter parameter = new StringParameter(
+                        documentationAttribute, name + " (parameter)");
                 parameter.setExpression(description);
             }
 
@@ -463,8 +480,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  ConfigurableAttribute.
      *  @see #addProperty(String, String)
      */
-    public String removeProperty(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public String removeProperty(String name) throws IllegalActionException,
+            NameDuplicationException {
         String retval = (String) _propertyHash.remove(name);
         if (retval != null) {
             Attribute attribute = getAttribute("prop:" + name);
@@ -548,28 +565,26 @@ public class KeplerDocumentationAttribute extends Attribute implements
         createInstanceFromExisting(this);
         StringBuffer results = new StringBuffer(
                 "<?xml version=\"1.0\" standalone=\"yes\"?>\n"
-                + "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\""
-                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n"
-                + "<doc name=\"" + _docName + "\" class=\"" + _docClass
-                + "\">\n"
-                + "<description>\n" + _userLevelDocumentation
-                + "\n</description>\n"
-                + "<author>" + _author + "</author>\n");
+                        + "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\""
+                        + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n"
+                        + "<doc name=\"" + _docName + "\" class=\"" + _docClass
+                        + "\">\n" + "<description>\n" + _userLevelDocumentation
+                        + "\n</description>\n" + "<author>" + _author
+                        + "</author>\n");
 
         Enumeration ports = _portHash.keys();
         while (ports.hasMoreElements()) {
             String name = (String) ports.nextElement();
             String desc = (String) _portHash.get(name);
-            results.append("<port name=\"" + name + "\">"
-                    + desc + "</port>\n");
+            results.append("<port name=\"" + name + "\">" + desc + "</port>\n");
         }
 
         Enumeration propItt = _propertyHash.keys();
         while (propItt.hasMoreElements()) {
             String name = (String) propItt.nextElement();
             String desc = (String) _propertyHash.get(name);
-            results.append("<property name=\"" + name + "\">"
-                    + desc + "</property>\n");
+            results.append("<property name=\"" + name + "\">" + desc
+                    + "</property>\n");
         }
 
         results.append("</doc>\n");

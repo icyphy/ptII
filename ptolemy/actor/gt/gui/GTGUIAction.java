@@ -117,8 +117,7 @@ public class GTGUIAction extends GUIAction {
 
                 if (_parsedObject == null) {
                     if (_momlSource != null) {
-                        URL url = _parser.fileNameToURL(_momlSource,
-                                null);
+                        URL url = _parser.fileNameToURL(_momlSource, null);
                         _parsedObject = _parser.parse(url, url);
                         _momlSource = null;
                     } else {
@@ -141,8 +140,8 @@ public class GTGUIAction extends GUIAction {
                 try {
                     manager.execute();
                 } catch (Throwable t) {
-                    MessageHandler.error("Error while executing the " +
-                            "transformation model.", t);
+                    MessageHandler.error("Error while executing the "
+                            + "transformation model.", t);
                 } finally {
                     manager.removeExecutionListener(listener);
                 }
@@ -187,8 +186,8 @@ public class GTGUIAction extends GUIAction {
                 if (ignore) {
                     new IgnoringAttribute(child, "_ignore");
                 } else {
-                    IgnoringAttribute attribute =
-                        (IgnoringAttribute) child.getAttribute("_ignore");
+                    IgnoringAttribute attribute = (IgnoringAttribute) child
+                            .getAttribute("_ignore");
                     if (attribute != null) {
                         attribute.setContainer(null);
                     }

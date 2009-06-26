@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.actor;
 
-
 public class TypedIOPort extends IOPort {
 
     /** Construct the code generator helper associated

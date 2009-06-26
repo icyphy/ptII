@@ -217,7 +217,8 @@ public final class Workspace implements Nameable, Serializable {
      *  @return A description of the workspace.
      * @exception IllegalActionException
      */
-    public synchronized String description(int detail) throws IllegalActionException {
+    public synchronized String description(int detail)
+            throws IllegalActionException {
         // NOTE: It is not strictly needed for this method to be
         // synchronized, since _description is.  However, by making it
         // synchronized, the documentation shows this on the public

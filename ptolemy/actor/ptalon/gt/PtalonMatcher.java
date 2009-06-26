@@ -68,8 +68,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PtalonMatcher extends TypedCompositeActor
-        implements GTCompositeActor {
+public class PtalonMatcher extends TypedCompositeActor implements
+        GTCompositeActor {
 
     public PtalonMatcher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -80,7 +80,7 @@ public class PtalonMatcher extends TypedCompositeActor
     }
 
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if (!_handleAttributeChange) {
@@ -103,8 +103,8 @@ public class PtalonMatcher extends TypedCompositeActor
                     _currentActor.getAttribute(_IGNORING_ATTRIBUTE_NAME)
                             .setContainer(null);
                 }
-                Attribute ignoringAttribute = _currentActor.getAttribute(
-                        _IGNORING_ATTRIBUTE_NAME);
+                Attribute ignoringAttribute = _currentActor
+                        .getAttribute(_IGNORING_ATTRIBUTE_NAME);
                 if (ignoringAttribute != null) {
                     ignoringAttribute.setContainer(null);
                 }
@@ -112,8 +112,8 @@ public class PtalonMatcher extends TypedCompositeActor
                 _createParameters();
                 _rearrangePtalonActors();
             } catch (Exception e) {
-                throw new IllegalActionException(null, e, "Unable to " +
-                        "create Ptalon actor inside.");
+                throw new IllegalActionException(null, e, "Unable to "
+                        + "create Ptalon actor inside.");
             } finally {
                 _handleAttributeChange = true;
             }
@@ -125,7 +125,7 @@ public class PtalonMatcher extends TypedCompositeActor
     }
 
     public void setContainer(CompositeEntity container)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (GTTools.isInPattern(this)) {
@@ -145,20 +145,20 @@ public class PtalonMatcher extends TypedCompositeActor
 
     public FileParameter ptalonCodeLocation;
 
-    public static class NestedPtalonActor extends PtalonActor
-            implements GTCompositeActor {
+    public static class NestedPtalonActor extends PtalonActor implements
+            GTCompositeActor {
 
         public NestedPtalonActor(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
-            setClassName("ptolemy.actor.ptalon.gt.PtalonMatcher" +
-                    "$NestedPtalonActor");
+            setClassName("ptolemy.actor.ptalon.gt.PtalonMatcher"
+                    + "$NestedPtalonActor");
             setPersistent(false);
         }
 
         public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+                throws IllegalActionException {
             if (!_initializing && !_fixed) {
                 super.attributeChanged(attribute);
             }
@@ -186,14 +186,12 @@ public class PtalonMatcher extends TypedCompositeActor
     }
 
     private void _createParameters() throws IllegalActionException,
-    NameDuplicationException, CloneNotSupportedException {
+            NameDuplicationException, CloneNotSupportedException {
         _currentActor._fixed = true;
-        Set<PtalonExpressionParameter> parameters =
-            new HashSet<PtalonExpressionParameter>();
-        for (Object parameterObject : _currentActor.attributeList(
-                PtalonExpressionParameter.class)) {
-            PtalonExpressionParameter parameter =
-                (PtalonExpressionParameter) parameterObject;
+        Set<PtalonExpressionParameter> parameters = new HashSet<PtalonExpressionParameter>();
+        for (Object parameterObject : _currentActor
+                .attributeList(PtalonExpressionParameter.class)) {
+            PtalonExpressionParameter parameter = (PtalonExpressionParameter) parameterObject;
             parameter.setVisibility(Settable.NOT_EDITABLE);
             Attribute myAttribute = getAttribute(_MIRRORED_PARAMETER_PREFIX
                     + parameter.getName());
@@ -202,8 +200,7 @@ public class PtalonMatcher extends TypedCompositeActor
                 myAttribute.setContainer(null);
                 myAttribute = null;
             }
-            PtalonExpressionParameter myParameter =
-                (PtalonExpressionParameter) myAttribute;
+            PtalonExpressionParameter myParameter = (PtalonExpressionParameter) myAttribute;
             if (myParameter == null) {
                 myParameter = (PtalonExpressionParameter) parameter.clone();
                 myParameter.setName(_MIRRORED_PARAMETER_PREFIX
@@ -213,31 +210,29 @@ public class PtalonMatcher extends TypedCompositeActor
                 myParameter.setToken(parameter.getExpression());
                 parameter.setToken(parameter.getToken().toString());
             } else {
-                Parameter hideParameter =
-                    (Parameter) myParameter.getAttribute("_hide");
+                Parameter hideParameter = (Parameter) myParameter
+                        .getAttribute("_hide");
                 if (hideParameter != null) {
                     hideParameter.setContainer(null);
                 }
             }
             parameters.add(myParameter);
         }
-        for (Object parameterObject
-                : attributeList(PtalonExpressionParameter.class)) {
-            PtalonExpressionParameter parameter =
-                (PtalonExpressionParameter) parameterObject;
+        for (Object parameterObject : attributeList(PtalonExpressionParameter.class)) {
+            PtalonExpressionParameter parameter = (PtalonExpressionParameter) parameterObject;
             if (!(parameters.contains(parameter))) {
                 if (parameter.getAttribute("_hide") == null) {
-                    new Parameter(parameter, "_hide").setToken(
-                            BooleanToken.TRUE);
+                    new Parameter(parameter, "_hide")
+                            .setToken(BooleanToken.TRUE);
                 }
             }
         }
     }
 
-    private void _createPtalonActor(HashKey key)
-    throws IllegalActionException, NameDuplicationException {
-        NestedPtalonActor actor = new NestedPtalonActor(this, uniqueName(
-                "PtalonActor"));
+    private void _createPtalonActor(HashKey key) throws IllegalActionException,
+            NameDuplicationException {
+        NestedPtalonActor actor = new NestedPtalonActor(this,
+                uniqueName("PtalonActor"));
         actor.ptalonCodeLocation.setToken(key._codeLocation);
         for (Map.Entry<String, Token> entry : key._parameterMap.entrySet()) {
             String name = entry.getKey();
@@ -259,25 +254,24 @@ public class PtalonMatcher extends TypedCompositeActor
 
     private HashKey _getKey() throws IllegalActionException {
         HashKey key = new HashKey((StringToken) ptalonCodeLocation.getToken());
-        for (Object parameter
-                : attributeList(PtalonExpressionParameter.class)) {
+        for (Object parameter : attributeList(PtalonExpressionParameter.class)) {
             key.put((PtalonExpressionParameter) parameter);
         }
         return key;
     }
 
     private HashKey _getKey(PtalonActor actor) throws IllegalActionException {
-        HashKey key =
-            new HashKey((StringToken) actor.ptalonCodeLocation.getToken());
-        for (Object parameter
-                : actor.attributeList(PtalonExpressionParameter.class)) {
+        HashKey key = new HashKey((StringToken) actor.ptalonCodeLocation
+                .getToken());
+        for (Object parameter : actor
+                .attributeList(PtalonExpressionParameter.class)) {
             key.put((PtalonExpressionParameter) parameter);
         }
         return key;
     }
 
     private void _mirrorPtalonActor() throws IllegalActionException,
-    NameDuplicationException, CloneNotSupportedException {
+            NameDuplicationException, CloneNotSupportedException {
         removeAllPorts();
         removeAllRelations();
         for (Object portObject : _currentActor.portList()) {
@@ -292,7 +286,7 @@ public class PtalonMatcher extends TypedCompositeActor
     }
 
     private void _rearrangePtalonActors() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         final int width = 640;
         final int xSpace = 80;
         final int ySpace = 80;
@@ -321,8 +315,7 @@ public class PtalonMatcher extends TypedCompositeActor
 
     private static final String _MIRRORED_PARAMETER_PREFIX = "m_";
 
-    private Map<HashKey, NestedPtalonActor> _actors =
-        new HashMap<HashKey, NestedPtalonActor>();
+    private Map<HashKey, NestedPtalonActor> _actors = new HashMap<HashKey, NestedPtalonActor>();
 
     private NestedPtalonActor _currentActor;
 
@@ -335,8 +328,9 @@ public class PtalonMatcher extends TypedCompositeActor
         public boolean equals(Object object) {
             if (object instanceof HashKey) {
                 HashKey key = (HashKey) object;
-                if (_codeLocation == key._codeLocation || (_codeLocation != null
-                        && _codeLocation.equals(key._codeLocation))) {
+                if (_codeLocation == key._codeLocation
+                        || (_codeLocation != null && _codeLocation
+                                .equals(key._codeLocation))) {
                     return _parameterMap.equals(key._parameterMap);
                 }
             }
@@ -353,7 +347,7 @@ public class PtalonMatcher extends TypedCompositeActor
         }
 
         public void put(PtalonExpressionParameter parameter)
-        throws IllegalActionException {
+                throws IllegalActionException {
             String name = parameter.getName();
             if (name.startsWith(_MIRRORED_PARAMETER_PREFIX)) {
                 name = name.substring(_MIRRORED_PARAMETER_PREFIX.length());

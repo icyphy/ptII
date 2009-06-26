@@ -58,19 +58,17 @@ public class SampleDelay extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                            public methods                 ////
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         /* always set output of feedback loop to False if we want to
          * interpret the use-case as const/nonconst. By adding partial
          * evaluation a less conservative behavior could be implemented.
          */
-        ptolemy.domains.sdf.lib.SampleDelay actor =
-            (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+        ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
 
         setAtLeast(actor.output, _lattice.getElement("FALSE"));
 

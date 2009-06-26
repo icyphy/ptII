@@ -31,7 +31,6 @@
 //// GradientAdaptiveLattice
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Lattice;
 import ptolemy.backtrack.Checkpoint;
@@ -125,14 +124,17 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public GradientAdaptiveLattice(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public GradientAdaptiveLattice(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         timeConstant = new Parameter(this, "timeConstant");
         timeConstant.setExpression("1.0");
         timeConstant.setTypeEquals(BaseType.DOUBLE);
         timeConstant.validate();
-        adaptedReflectionCoefficients = new TypedIOPort(this, "adaptedReflectionCoefficients", false, true);
-        adaptedReflectionCoefficients.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        adaptedReflectionCoefficients = new TypedIOPort(this,
+                "adaptedReflectionCoefficients", false, true);
+        adaptedReflectionCoefficients.setTypeEquals(new ArrayType(
+                BaseType.DOUBLE));
         output.setTypeAtLeast(input);
     }
 
@@ -144,9 +146,11 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
      * @exception IllegalActionException If this method is invoked
      * with an unrecognized parameter.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == timeConstant) {
-            double timeConstantValue = ((DoubleToken)timeConstant.getToken()).doubleValue();
+            double timeConstantValue = ((DoubleToken) timeConstant.getToken())
+                    .doubleValue();
             $ASSIGN$_oneMinusAlpha(((timeConstantValue - 1.0) / (timeConstantValue + 1.0)));
             $ASSIGN$_alpha(1.0 - _oneMinusAlpha);
         }
@@ -161,22 +165,29 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class has
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        GradientAdaptiveLattice newObject = (GradientAdaptiveLattice)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super
+                .clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
-        newObject.$ASSIGN$_estimatedErrorPower(new double[newObject._order + 1]);
-        System.arraycopy(newObject.$BACKUP$_estimatedErrorPower(), 0, $BACKUP$_estimatedErrorPower(), 0, newObject._order + 1);
-        newObject.$ASSIGN$_estimatedErrorPowerCache(new double[newObject._order + 1]);
-        System.arraycopy(newObject.$BACKUP$_estimatedErrorPowerCache(), 0, $BACKUP$_estimatedErrorPowerCache(), 0, newObject._order + 1);
-        newObject.$ASSIGN$_reflectionCoefficientsCache(new double[newObject._order]);
-        System.arraycopy(newObject.$BACKUP$_reflectionCoefficientsCache(), 0, $BACKUP$_reflectionCoefficientsCache(), 0, newObject._order);
+        newObject
+                .$ASSIGN$_estimatedErrorPower(new double[newObject._order + 1]);
+        System.arraycopy(newObject.$BACKUP$_estimatedErrorPower(), 0,
+                $BACKUP$_estimatedErrorPower(), 0, newObject._order + 1);
+        newObject
+                .$ASSIGN$_estimatedErrorPowerCache(new double[newObject._order + 1]);
+        System.arraycopy(newObject.$BACKUP$_estimatedErrorPowerCache(), 0,
+                $BACKUP$_estimatedErrorPowerCache(), 0, newObject._order + 1);
+        newObject
+                .$ASSIGN$_reflectionCoefficientsCache(new double[newObject._order]);
+        System.arraycopy(newObject.$BACKUP$_reflectionCoefficientsCache(), 0,
+                $BACKUP$_reflectionCoefficientsCache(), 0, newObject._order);
         return newObject;
     }
 
     /**
      * Initialize the state of the filter.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         for (int i = 0; i <= _order; i++) {
             $ASSIGN$_estimatedErrorPower(i, 0.0);
@@ -185,9 +196,10 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
                 $ASSIGN$_reflectionCoefficientsCache(i, 0.0);
             }
         }
-        ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
+        ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
         for (int i = 0; i < _order; i++) {
-            _reflectionCoefficients[i] = ((DoubleToken)value.getElement(i)).doubleValue();
+            _reflectionCoefficients[i] = ((DoubleToken) value.getElement(i))
+                    .doubleValue();
         }
     }
 
@@ -195,13 +207,15 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
-        System.arraycopy($BACKUP$_estimatedErrorPowerCache(), 0, $BACKUP$_estimatedErrorPower(), 0, _order + 1);
-        System.arraycopy($BACKUP$_reflectionCoefficientsCache(), 0, _reflectionCoefficients, 0, _order);
+    public boolean postfire() throws IllegalActionException {
+        System.arraycopy($BACKUP$_estimatedErrorPowerCache(), 0,
+                $BACKUP$_estimatedErrorPower(), 0, _order + 1);
+        System.arraycopy($BACKUP$_reflectionCoefficientsCache(), 0,
+                _reflectionCoefficients, 0, _order);
         return super.postfire();
     }
 
-    protected void _doFilter() throws IllegalActionException  {
+    protected void _doFilter() throws IllegalActionException {
         double k;
         for (int i = 0; i < _order; i++) {
             k = _reflectionCoefficients[i];
@@ -210,12 +224,14 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         DoubleToken[] outputArray = new DoubleToken[_order];
         for (int i = _order; i > 0; i--) {
             k = _reflectionCoefficients[i - 1];
-            _backwardCache[i] = (-k * _forwardCache[i - 1]) + _backwardCache[i - 1];
+            _backwardCache[i] = (-k * _forwardCache[i - 1])
+                    + _backwardCache[i - 1];
             double fe_i = _forwardCache[i];
             double be_i = _backwardCache[i];
             double fe_ip = _forwardCache[i - 1];
             double be_ip = _backwardCache[i - 1];
-            double newError = (_estimatedErrorPower[i] * _oneMinusAlpha) + (_alpha * ((fe_ip * fe_ip) + (be_ip * be_ip)));
+            double newError = (_estimatedErrorPower[i] * _oneMinusAlpha)
+                    + (_alpha * ((fe_ip * fe_ip) + (be_ip * be_ip)));
             double newCoefficient = _reflectionCoefficients[i - 1];
             if (newError != 0.0) {
                 newCoefficient += ((_alpha * ((fe_i * be_ip) + (be_i * fe_ip))) / newError);
@@ -229,7 +245,8 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
             $ASSIGN$_reflectionCoefficientsCache(i - 1, newCoefficient);
             $ASSIGN$_estimatedErrorPowerCache(i, newError);
         }
-        adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE, outputArray));
+        adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE,
+                outputArray));
     }
 
     protected void _reallocate() {
@@ -248,87 +265,103 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
 
     private final double $ASSIGN$_oneMinusAlpha(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_oneMinusAlpha.add(null, _oneMinusAlpha, $CHECKPOINT.getTimestamp());
+            $RECORD$_oneMinusAlpha.add(null, _oneMinusAlpha, $CHECKPOINT
+                    .getTimestamp());
         }
         return _oneMinusAlpha = newValue;
     }
 
     private final double[] $ASSIGN$_estimatedErrorPower(double[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_estimatedErrorPower.add(null, _estimatedErrorPower, $CHECKPOINT.getTimestamp());
+            $RECORD$_estimatedErrorPower.add(null, _estimatedErrorPower,
+                    $CHECKPOINT.getTimestamp());
         }
         return _estimatedErrorPower = newValue;
     }
 
-    private final double $ASSIGN$_estimatedErrorPower(int index0, double newValue) {
+    private final double $ASSIGN$_estimatedErrorPower(int index0,
+            double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_estimatedErrorPower.add(new int[] {
-                    index0
-                }, _estimatedErrorPower[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_estimatedErrorPower.add(new int[] { index0 },
+                    _estimatedErrorPower[index0], $CHECKPOINT.getTimestamp());
         }
         return _estimatedErrorPower[index0] = newValue;
     }
 
     private final double[] $BACKUP$_estimatedErrorPower() {
-        $RECORD$_estimatedErrorPower.backup(null, _estimatedErrorPower, $CHECKPOINT.getTimestamp());
+        $RECORD$_estimatedErrorPower.backup(null, _estimatedErrorPower,
+                $CHECKPOINT.getTimestamp());
         return _estimatedErrorPower;
     }
 
     private final double[] $ASSIGN$_estimatedErrorPowerCache(double[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_estimatedErrorPowerCache.add(null, _estimatedErrorPowerCache, $CHECKPOINT.getTimestamp());
+            $RECORD$_estimatedErrorPowerCache.add(null,
+                    _estimatedErrorPowerCache, $CHECKPOINT.getTimestamp());
         }
         return _estimatedErrorPowerCache = newValue;
     }
 
-    private final double $ASSIGN$_estimatedErrorPowerCache(int index0, double newValue) {
+    private final double $ASSIGN$_estimatedErrorPowerCache(int index0,
+            double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_estimatedErrorPowerCache.add(new int[] {
-                    index0
-                }, _estimatedErrorPowerCache[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_estimatedErrorPowerCache.add(new int[] { index0 },
+                    _estimatedErrorPowerCache[index0], $CHECKPOINT
+                            .getTimestamp());
         }
         return _estimatedErrorPowerCache[index0] = newValue;
     }
 
     private final double[] $BACKUP$_estimatedErrorPowerCache() {
-        $RECORD$_estimatedErrorPowerCache.backup(null, _estimatedErrorPowerCache, $CHECKPOINT.getTimestamp());
+        $RECORD$_estimatedErrorPowerCache.backup(null,
+                _estimatedErrorPowerCache, $CHECKPOINT.getTimestamp());
         return _estimatedErrorPowerCache;
     }
 
-    private final double[] $ASSIGN$_reflectionCoefficientsCache(double[] newValue) {
+    private final double[] $ASSIGN$_reflectionCoefficientsCache(
+            double[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_reflectionCoefficientsCache.add(null, _reflectionCoefficientsCache, $CHECKPOINT.getTimestamp());
+            $RECORD$_reflectionCoefficientsCache.add(null,
+                    _reflectionCoefficientsCache, $CHECKPOINT.getTimestamp());
         }
         return _reflectionCoefficientsCache = newValue;
     }
 
-    private final double $ASSIGN$_reflectionCoefficientsCache(int index0, double newValue) {
+    private final double $ASSIGN$_reflectionCoefficientsCache(int index0,
+            double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_reflectionCoefficientsCache.add(new int[] {
-                    index0
-                }, _reflectionCoefficientsCache[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_reflectionCoefficientsCache.add(new int[] { index0 },
+                    _reflectionCoefficientsCache[index0], $CHECKPOINT
+                            .getTimestamp());
         }
         return _reflectionCoefficientsCache[index0] = newValue;
     }
 
     private final double[] $BACKUP$_reflectionCoefficientsCache() {
-        $RECORD$_reflectionCoefficientsCache.backup(null, _reflectionCoefficientsCache, $CHECKPOINT.getTimestamp());
+        $RECORD$_reflectionCoefficientsCache.backup(null,
+                _reflectionCoefficientsCache, $CHECKPOINT.getTimestamp());
         return _reflectionCoefficientsCache;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _alpha = $RECORD$_alpha.restore(_alpha, timestamp, trim);
-        _oneMinusAlpha = $RECORD$_oneMinusAlpha.restore(_oneMinusAlpha, timestamp, trim);
-        _estimatedErrorPower = (double[])$RECORD$_estimatedErrorPower.restore(_estimatedErrorPower, timestamp, trim);
-        _estimatedErrorPowerCache = (double[])$RECORD$_estimatedErrorPowerCache.restore(_estimatedErrorPowerCache, timestamp, trim);
-        _reflectionCoefficientsCache = (double[])$RECORD$_reflectionCoefficientsCache.restore(_reflectionCoefficientsCache, timestamp, trim);
+        _oneMinusAlpha = $RECORD$_oneMinusAlpha.restore(_oneMinusAlpha,
+                timestamp, trim);
+        _estimatedErrorPower = (double[]) $RECORD$_estimatedErrorPower.restore(
+                _estimatedErrorPower, timestamp, trim);
+        _estimatedErrorPowerCache = (double[]) $RECORD$_estimatedErrorPowerCache
+                .restore(_estimatedErrorPowerCache, timestamp, trim);
+        _reflectionCoefficientsCache = (double[]) $RECORD$_reflectionCoefficientsCache
+                .restore(_reflectionCoefficientsCache, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -358,19 +391,18 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
 
     private transient FieldRecord $RECORD$_oneMinusAlpha = new FieldRecord(0);
 
-    private transient FieldRecord $RECORD$_estimatedErrorPower = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_estimatedErrorPower = new FieldRecord(
+            1);
 
-    private transient FieldRecord $RECORD$_estimatedErrorPowerCache = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_estimatedErrorPowerCache = new FieldRecord(
+            1);
 
-    private transient FieldRecord $RECORD$_reflectionCoefficientsCache = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_reflectionCoefficientsCache = new FieldRecord(
+            1);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_alpha,
-            $RECORD$_oneMinusAlpha,
-            $RECORD$_estimatedErrorPower,
-            $RECORD$_estimatedErrorPowerCache,
-            $RECORD$_reflectionCoefficientsCache
-        };
+            $RECORD$_alpha, $RECORD$_oneMinusAlpha,
+            $RECORD$_estimatedErrorPower, $RECORD$_estimatedErrorPowerCache,
+            $RECORD$_reflectionCoefficientsCache };
 
 }
-

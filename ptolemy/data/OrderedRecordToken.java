@@ -72,9 +72,9 @@ public class OrderedRecordToken extends RecordToken {
      *  keys or values, or if it contains non-String keys or non-Token
      *  values.
      */
-     public OrderedRecordToken(Map fieldMap) throws IllegalActionException {
-     super(fieldMap);
-     }
+    public OrderedRecordToken(Map fieldMap) throws IllegalActionException {
+        super(fieldMap);
+    }
 
     /** Construct a RecordToken from the specified string.
      *  @param init A string expression of a record.
@@ -96,7 +96,8 @@ public class OrderedRecordToken extends RecordToken {
      *   do not have the same length, or contains null element,
      *   or the labels array contains duplicate elements.
      */
-    public OrderedRecordToken(String[] labels, Token[] values) throws IllegalActionException {
+    public OrderedRecordToken(String[] labels, Token[] values)
+            throws IllegalActionException {
         super(labels, values);
     }
 
@@ -108,7 +109,7 @@ public class OrderedRecordToken extends RecordToken {
      *   is maintained.
      */
     protected void _initializeStorage() {
-            _fields = new LinkedHashMap();
+        _fields = new LinkedHashMap();
     }
 
 }

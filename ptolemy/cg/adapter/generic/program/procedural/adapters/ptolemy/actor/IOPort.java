@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,7 +48,8 @@ Code generator adapter for {@link ptolemy.actor.IOPort}.
 @Pt.AcceptedRating Red (mankit)
  */
 
-public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGenerator {
+public class IOPort extends ProgramCodeGeneratorAdapter implements
+        PortCodeGenerator {
 
     /** Construct the code generator adapter
      *  for the given IOPort.
@@ -84,15 +84,16 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
         // need to change to ensure no name collisions between multiple receivers within the same 
         // channel would occur.
         if (receivers[channelIndex].length > 1) {
-            throw new IllegalActionException("Didn't take care of the case where one channel" +
-                "has more than one receiver");
+            throw new IllegalActionException(
+                    "Didn't take care of the case where one channel"
+                            + "has more than one receiver");
         }
         for (int j = 0; j < receivers[channelIndex].length; j++) {
             code.append(receivers[channelIndex][j].generateGetCode());
         }
         return code.toString();
     }
-    
+
     /** 
      * Generate code for replacing the hasToken() macro.
      * This delegates to the receiver adapter for the specified
@@ -111,8 +112,9 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
         int channelNumber = Integer.parseInt(channel);
         // FIXME: take care of the offset, and why are we getting all the receivers all the time?
         if (receivers[channelNumber].length > 1) {
-            throw new IllegalActionException("Didn't take care of the case where one channel" +
-                "has more than one receiver");
+            throw new IllegalActionException(
+                    "Didn't take care of the case where one channel"
+                            + "has more than one receiver");
         }
         if (receivers[channelNumber].length > 0) {
             return receivers[channelNumber][0].generateHasTokenCode();
@@ -131,13 +133,15 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      * @exception IllegalActionException If the receiver adapter is
      *  not found or it encounters an error while generating the
      *  send code.
-     */    
-    public String generateSendCode(String channel, String dataToken) throws IllegalActionException {
-        
+     */
+    public String generateSendCode(String channel, String dataToken)
+            throws IllegalActionException {
+
         Receiver[][] remoteReceivers = getRemoteReceiverAdapters();
         int channelIndex = Integer.parseInt(channel);
         // FIXME: take care of the offset, and why are we getting all the receivers all the time?
-        if ((remoteReceivers == null) || (remoteReceivers.length <= channelIndex)
+        if ((remoteReceivers == null)
+                || (remoteReceivers.length <= channelIndex)
                 || (remoteReceivers[channelIndex] == null)) {
             return "";
         }
@@ -148,15 +152,20 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
         // need to change to ensure no name collisions between multiple receivers within the same 
         // channel would occur.
         if (remoteReceivers[channelIndex].length > 1) {
-            throw new IllegalActionException("Didn't take care of the case where one channel" +
-                "has more than one receiver");
+            throw new IllegalActionException(
+                    "Didn't take care of the case where one channel"
+                            + "has more than one receiver");
         }
         for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
-            Type sourceType = ((ptolemy.actor.TypedIOPort)getComponent()).getType();
-            Type sinkType = ((ptolemy.actor.TypedIOPort)remoteReceivers[channelIndex][i].getReceiver().getContainer()).getType();
-            dataToken = "$convert_" + getStrategy().codeGenType(sourceType) + "_" 
-            + getStrategy().codeGenType(sinkType) + "(" + dataToken + ")";
-            code.append(remoteReceivers[channelIndex][i].generatePutCode(dataToken));
+            Type sourceType = ((ptolemy.actor.TypedIOPort) getComponent())
+                    .getType();
+            Type sinkType = ((ptolemy.actor.TypedIOPort) remoteReceivers[channelIndex][i]
+                    .getReceiver().getContainer()).getType();
+            dataToken = "$convert_" + getStrategy().codeGenType(sourceType)
+                    + "_" + getStrategy().codeGenType(sinkType) + "("
+                    + dataToken + ")";
+            code.append(remoteReceivers[channelIndex][i]
+                    .generatePutCode(dataToken));
         }
         return code.toString();
     }
@@ -172,9 +181,9 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         Receiver[][] receivers = getReceiverAdapters();
-        
+
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 code.append(receivers[i][j].generateInitializeCode());
@@ -194,9 +203,9 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         Receiver[][] receivers = getReceiverAdapters();
-        
+
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 code.append(receivers[i][j].generatePreinitializeCode());
@@ -216,9 +225,9 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         Receiver[][] receivers = getReceiverAdapters();
-        
+
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 code.append(receivers[i][j].generateWrapupCode());
@@ -226,7 +235,6 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
         }
         return code.toString();
     }
-
 
     /** Generate the shared code for this IOPort.
      *  The shared code is generated by appending the
@@ -239,9 +247,9 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      */
     public Set getSharedCode() throws IllegalActionException {
         Set code = new HashSet();
-        
+
         Receiver[][] receivers = getReceiverAdapters();
-        
+
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 code.addAll(receivers[i][j].getSharedCode());
@@ -275,15 +283,16 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements PortCodeGener
      * @throws IllegalActionException Thrown if {@link #getAdapter(Object)}
      * throws it.
      */
-    public Receiver[][] getRemoteReceiverAdapters() throws IllegalActionException {
+    public Receiver[][] getRemoteReceiverAdapters()
+            throws IllegalActionException {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
-        
+
         ptolemy.actor.Receiver[][] farReceivers = port.getRemoteReceivers();
         Receiver[][] receiverAdapters = new Receiver[farReceivers.length][];
         for (int i = 0; i < farReceivers.length; i++) {
             receiverAdapters[i] = new Receiver[farReceivers[i].length];
             for (int j = 0; j < farReceivers[i].length; j++) {
-                receiverAdapters[i][j] = (Receiver) getAdapter(farReceivers[i][j]);                
+                receiverAdapters[i][j] = (Receiver) getAdapter(farReceivers[i][j]);
             }
         }
         return receiverAdapters;

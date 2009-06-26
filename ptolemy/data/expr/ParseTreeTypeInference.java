@@ -254,15 +254,16 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 if (childTypes[0] instanceof FunctionType) {
                     FunctionType function = (FunctionType) childTypes[0];
                     if (function.getArgCount() != 2) {
-                        throw new IllegalActionException("The first argument " +
-                                "to the function \"fold\" must be a function " +
-                                "that accepts two arguments.");
+                        throw new IllegalActionException(
+                                "The first argument "
+                                        + "to the function \"fold\" must be a function "
+                                        + "that accepts two arguments.");
                     }
                     if (!function.getArgType(0).isCompatible(childTypes[1])) {
-                        throw new IllegalActionException("The second " +
-                                "argument of the function \"fold\" is not " +
-                                "compatible with the first parameter to the " +
-                                "function provided to \"fold\".");
+                        throw new IllegalActionException("The second "
+                                + "argument of the function \"fold\" is not "
+                                + "compatible with the first parameter to the "
+                                + "function provided to \"fold\".");
                     }
                     // Do not check the type of the second argument of the
                     // function, because if the collection is a Java collection,
@@ -273,21 +274,21 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 }
             }
 
-            throw new IllegalActionException("The function \"fold\" is " +
-                    "a higher-order function that takes exactly 3 " +
-                    "arguments. The first argument must be a function " +
-                    "that takes 2 arguments. The second must be a value " +
-                    "that can be passed to the function as its first " +
-                    "argument. The third must be a list of values that " +
-                    "can be passed to the function as its second " +
-                    "argument.");
+            throw new IllegalActionException("The function \"fold\" is "
+                    + "a higher-order function that takes exactly 3 "
+                    + "arguments. The first argument must be a function "
+                    + "that takes 2 arguments. The second must be a value "
+                    + "that can be passed to the function as its first "
+                    + "argument. The third must be a list of values that "
+                    + "can be passed to the function as its second "
+                    + "argument.");
         }
 
         if (functionName.equals("object") && argCount == 1) {
             ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
             if (classNameNode instanceof ASTPtLeafNode) {
-                ptolemy.data.Token token =
-                    ((ASTPtLeafNode) classNameNode).getToken();
+                ptolemy.data.Token token = ((ASTPtLeafNode) classNameNode)
+                        .getToken();
                 if (token != null && token instanceof StringToken) {
                     String className = ((StringToken) token).stringValue();
                     try {
@@ -295,8 +296,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         _setType(node, new ObjectType(clazz));
                         return;
                     } catch (ClassNotFoundException e) {
-                        throw new IllegalActionException("Unable to load class "
-                                + className);
+                        throw new IllegalActionException(
+                                "Unable to load class " + className);
                     }
                 }
             }
@@ -693,7 +694,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 boolean compatible = true;
                 for (int i = 0; compatible && i < argCount; i++) {
                     Class<?> argumentType = ConversionUtilities
-                            .convertTokenTypeToJavaType(argTypes[i+1]);
+                            .convertTokenTypeToJavaType(argTypes[i + 1]);
                     if (!parameterTypes[i].isAssignableFrom(argumentType)) {
                         compatible = false;
                     }
@@ -816,27 +817,27 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             Object object = ((ObjectType) argTypes[0]).getValue();
             if (object != null) {
                 if (object instanceof NamedObj) {
-                    Object result = ((NamedObj) object).getAttribute(
-                            methodName);
+                    Object result = ((NamedObj) object)
+                            .getAttribute(methodName);
                     if (result == null && object instanceof Entity) {
                         result = ((Entity) object).getPort(methodName);
                     }
                     if (result == null && object instanceof CompositeEntity) {
-                        result = ((CompositeEntity) object).getEntity(
-                                methodName);
+                        result = ((CompositeEntity) object)
+                                .getEntity(methodName);
                         if (result == null) {
-                            result = ((CompositeEntity) object).getRelation(
-                                    methodName);
+                            result = ((CompositeEntity) object)
+                                    .getRelation(methodName);
                         }
                     }
 
                     if (result == null) {
-                        List attributes = ((NamedObj) object).attributeList(
-                                ContainmentExtender.class);
+                        List attributes = ((NamedObj) object)
+                                .attributeList(ContainmentExtender.class);
                         Iterator attrIterator = attributes.iterator();
                         while (result == null && attrIterator.hasNext()) {
-                            ContainmentExtender extender = (ContainmentExtender)
-                                    attrIterator.next();
+                            ContainmentExtender extender = (ContainmentExtender) attrIterator
+                                    .next();
                             result = extender.getContainedObject(methodName);
                         }
                     }

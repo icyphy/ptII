@@ -52,11 +52,12 @@ public class StateTypeCriterion extends Criterion {
     }
 
     public StateTypeCriterion(GTIngredientList owner, String values) {
-        this(owner,  false, false);
+        this(owner, false, false);
         setValues(values);
     }
 
-    public StateTypeCriterion(GTIngredientList owner, boolean isInit, boolean isFinal) {
+    public StateTypeCriterion(GTIngredientList owner, boolean isInit,
+            boolean isFinal) {
         super(owner, 2);
 
         _isInit = isInit;
@@ -88,7 +89,7 @@ public class StateTypeCriterion extends Criterion {
     }
 
     public boolean isApplicable(NamedObj object) {
-         return super.isApplicable(object) && object instanceof State;
+        return super.isApplicable(object) && object instanceof State;
     }
 
     public boolean isFinal() {
@@ -111,16 +112,16 @@ public class StateTypeCriterion extends Criterion {
         State state = (State) object;
         try {
             if (isInitEnabled() && isFinalEnabled()) {
-                if (_isInit == ((BooleanToken)state.isInitialState.getToken())
-                        .booleanValue() &&_isFinal == ((BooleanToken)state
-                                .isFinalState.getToken()).booleanValue()) {
+                if (_isInit == ((BooleanToken) state.isInitialState.getToken())
+                        .booleanValue()
+                        && _isFinal == ((BooleanToken) state.isFinalState
+                                .getToken()).booleanValue()) {
                     return true;
                 } else {
                     return false;
                 }
-            }
-            else if (isInitEnabled()) {
-                if (_isInit == ((BooleanToken)state.isInitialState.getToken())
+            } else if (isInitEnabled()) {
+                if (_isInit == ((BooleanToken) state.isInitialState.getToken())
                         .booleanValue()) {
                     return true;
                 } else {
@@ -129,13 +130,13 @@ public class StateTypeCriterion extends Criterion {
             }
 
             else if (isFinalEnabled()) {
-                if (_isFinal == ((BooleanToken)state.isFinalState.getToken())
+                if (_isFinal == ((BooleanToken) state.isFinalState.getToken())
                         .booleanValue()) {
                     return true;
                 } else {
                     return false;
                 }
-            } else if (!isFinalEnabled() && !isInitEnabled() ) {
+            } else if (!isFinalEnabled() && !isInitEnabled()) {
                 return true;
             } else {
                 return false;
@@ -162,7 +163,6 @@ public class StateTypeCriterion extends Criterion {
         _isFinal = _decodeBooleanField(1, fieldIterator);
     }
 
-
     public void setisFinalEnabled(boolean enabled) {
         setEnabled(1, enabled);
     }
@@ -175,9 +175,8 @@ public class StateTypeCriterion extends Criterion {
     }
 
     private static final CriterionElement[] _ELEMENTS = {
-        new BooleanCriterionElement("isInit", true),
-        new BooleanCriterionElement("isFinal", true)
-    };
+            new BooleanCriterionElement("isInit", true),
+            new BooleanCriterionElement("isFinal", true) };
 
     private boolean _isFinal;
 

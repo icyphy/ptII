@@ -82,7 +82,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @see AbstractList
  * @status updated to 1.4
  */
-public class ArrayList extends AbstractList implements List, RandomAccess, Cloneable, Serializable, Rollbackable {
+public class ArrayList extends AbstractList implements List, RandomAccess,
+        Cloneable, Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.2
@@ -112,8 +113,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      */
     public ArrayList(int capacity) {
         // Must explicitly check, to get correct exception.
-        if (capacity < 0)
+        if (capacity < 0) {
             throw new IllegalArgumentException();
+        }
         $ASSIGN$data(new Object[capacity]);
     }
 
@@ -132,7 +134,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      * @throws NullPointerException if c is null
      */
     public ArrayList(Collection c) {
-        this((int)(c.size() * 1.1f));
+        this((int) (c.size() * 1.1f));
         addAll(c);
     }
 
@@ -200,9 +202,11 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      * @return the index where e was found
      */
     public int indexOf(Object e) {
-        for (int i = 0; i < size; i++) 
-            if (equals(e, data[i]))
+        for (int i = 0; i < size; i++) {
+            if (equals(e, data[i])) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -213,9 +217,11 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      * @return the index where e was found
      */
     public int lastIndexOf(Object e) {
-        for (int i = size - 1; i >= 0; i--) 
-            if (equals(e, data[i]))
+        for (int i = size - 1; i >= 0; i--) {
+            if (equals(e, data[i])) {
                 return i;
+            }
+        }
         return -1;
     }
 
@@ -226,8 +232,8 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     public Object clone() {
         ArrayList clone = null;
         try {
-            clone = (ArrayList)super.clone();
-            clone.$ASSIGN$data((Object[])data.clone());
+            clone = (ArrayList) super.clone();
+            clone.$ASSIGN$data(data.clone());
         } catch (CloneNotSupportedException e) {
             // Impossible to get here.
         }
@@ -259,10 +265,12 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      * @throws NullPointerException if a is null
      */
     public Object[] toArray(Object[] a) {
-        if (a.length < size)
-            a = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
-        else if (a.length > size)
+        if (a.length < size) {
+            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+                    size);
+        } else if (a.length > size) {
             a[size] = null;
+        }
         System.arraycopy($BACKUP$data(), 0, a, 0, size);
         return a;
     }
@@ -300,8 +308,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      */
     public boolean add(Object e) {
         setModCount(getModCount() + 1);
-        if (size == data.length)
+        if (size == data.length) {
             ensureCapacity(size + 1);
+        }
         $ASSIGN$data($ASSIGN$SPECIAL$size(11, size), e);
         return true;
     }
@@ -317,10 +326,13 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     public void add(int index, Object e) {
         checkBoundInclusive(index);
         setModCount(getModCount() + 1);
-        if (size == data.length)
+        if (size == data.length) {
             ensureCapacity(size + 1);
-        if (index != size)
-            System.arraycopy($BACKUP$data(), index, $BACKUP$data(), index + 1, size - index);
+        }
+        if (index != size) {
+            System.arraycopy($BACKUP$data(), index, $BACKUP$data(), index + 1,
+                    size - index);
+        }
         $ASSIGN$data(index, e);
         $ASSIGN$SPECIAL$size(11, size);
     }
@@ -335,9 +347,11 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         checkBoundExclusive(index);
         Object r = data[index];
         setModCount(getModCount() + 1);
-        if (index != $ASSIGN$SPECIAL$size(14, size))
-            System.arraycopy($BACKUP$data(), index + 1, $BACKUP$data(), index, size - index);
-            // Aid for garbage collection by releasing this pointer.
+        if (index != $ASSIGN$SPECIAL$size(14, size)) {
+            System.arraycopy($BACKUP$data(), index + 1, $BACKUP$data(), index,
+                    size - index);
+        }
+        // Aid for garbage collection by releasing this pointer.
         $ASSIGN$data(size, null);
         return r;
     }
@@ -381,14 +395,18 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         Iterator itr = c.iterator();
         int csize = c.size();
         setModCount(getModCount() + 1);
-        if (csize + size > data.length)
+        if (csize + size > data.length) {
             ensureCapacity(size + csize);
+        }
         int end = index + csize;
-        if (size > 0 && index != size)
-            System.arraycopy($BACKUP$data(), index, $BACKUP$data(), end, size - index);
+        if (size > 0 && index != size) {
+            System.arraycopy($BACKUP$data(), index, $BACKUP$data(), end, size
+                    - index);
+        }
         $ASSIGN$SPECIAL$size(0, csize);
-        for (; index < end; index++) 
+        for (; index < end; index++) {
             $ASSIGN$data(index, itr.next());
+        }
         return csize > 0;
     }
 
@@ -403,10 +421,12 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         int change = toIndex - fromIndex;
         if (change > 0) {
             setModCount(getModCount() + 1);
-            System.arraycopy($BACKUP$data(), toIndex, $BACKUP$data(), fromIndex, size - toIndex);
+            System.arraycopy($BACKUP$data(), toIndex, $BACKUP$data(),
+                    fromIndex, size - toIndex);
             $ASSIGN$SPECIAL$size(1, change);
-        } else if (change < 0)
+        } else if (change < 0) {
             throw new IndexOutOfBoundsException();
+        }
     }
 
     /**     
@@ -418,8 +438,10 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         // Implementation note: we do not check for negative ranges here, since
         // use of a negative index will cause an ArrayIndexOutOfBoundsException,
         // a subclass of the required exception, with no effort on our part.
-        if (index > size)
-            throw new IndexOutOfBoundsException("Index: " + index+", Size: "+size);
+        if (index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
+                    + size);
+        }
     }
 
     /**     
@@ -431,8 +453,10 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         // Implementation note: we do not check for negative ranges here, since
         // use of a negative index will cause an ArrayIndexOutOfBoundsException,
         // a subclass of the required exception, with no effort on our part.
-        if (index >= size)
-            throw new IndexOutOfBoundsException("Index: " + index+", Size: "+size);
+        if (index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
+                    + size);
+        }
     }
 
     /**     
@@ -446,15 +470,20 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     boolean removeAllInternal(Collection c) {
         int i;
         int j;
-        for (i = 0; i < size; i++) 
-            if (c.contains(data[i]))
+        for (i = 0; i < size; i++) {
+            if (c.contains(data[i])) {
                 break;
-        if (i == size)
+            }
+        }
+        if (i == size) {
             return false;
+        }
         setModCount(getModCount() + 1);
-        for (j = i++; i < size; i++) 
-            if (!c.contains(data[i]))
+        for (j = i++; i < size; i++) {
+            if (!c.contains(data[i])) {
                 $ASSIGN$data(j++, data[i]);
+            }
+        }
         $ASSIGN$SPECIAL$size(1, i - j);
         return true;
     }
@@ -471,15 +500,20 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     boolean retainAllInternal(Collection c) {
         int i;
         int j;
-        for (i = 0; i < size; i++) 
-            if (!c.contains(data[i]))
+        for (i = 0; i < size; i++) {
+            if (!c.contains(data[i])) {
                 break;
-        if (i == size)
+            }
+        }
+        if (i == size) {
             return false;
+        }
         setModCount(getModCount() + 1);
-        for (j = i++; i < size; i++) 
-            if (c.contains(data[i]))
+        for (j = i++; i < size; i++) {
+            if (c.contains(data[i])) {
                 $ASSIGN$data(j++, data[i]);
+            }
+        }
         $ASSIGN$SPECIAL$size(1, i - j);
         return true;
     }
@@ -491,7 +525,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      * @serialData the size field (int), the length of the backing array
      * (int), followed by its elements (Objects) in proper order.
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         // The 'size' field.
         s.defaultWriteObject();
         // We serialize unused list entries to preserve capacity.
@@ -499,8 +533,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         s.writeInt(len);
         // it would be more efficient to just write "size" items,
         // this need readObject read "size" items too.
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++) {
             s.writeObject(data[i]);
+        }
     }
 
     /**     
@@ -511,13 +546,15 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
      * @serialData the size field (int), the length of the backing array
      * (int), followed by its elements (Objects) in proper order.
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         // the `size' field.
         s.defaultReadObject();
         int capacity = s.readInt();
         $ASSIGN$data(new Object[capacity]);
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++) {
             $ASSIGN$data(i, s.readObject());
+        }
     }
 
     private final int $ASSIGN$size(int newValue) {
@@ -532,38 +569,38 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return size += newValue;
-            case 1:
-                return size -= newValue;
-            case 2:
-                return size *= newValue;
-            case 3:
-                return size /= newValue;
-            case 4:
-                return size &= newValue;
-            case 5:
-                return size |= newValue;
-            case 6:
-                return size ^= newValue;
-            case 7:
-                return size %= newValue;
-            case 8:
-                return size <<= newValue;
-            case 9:
-                return size >>= newValue;
-            case 10:
-                return size >>>= newValue;
-            case 11:
-                return size++;
-            case 12:
-                return size--;
-            case 13:
-                return ++size;
-            case 14:
-                return --size;
-            default:
-                return size;
+        case 0:
+            return size += newValue;
+        case 1:
+            return size -= newValue;
+        case 2:
+            return size *= newValue;
+        case 3:
+            return size /= newValue;
+        case 4:
+            return size &= newValue;
+        case 5:
+            return size |= newValue;
+        case 6:
+            return size ^= newValue;
+        case 7:
+            return size %= newValue;
+        case 8:
+            return size <<= newValue;
+        case 9:
+            return size >>= newValue;
+        case 10:
+            return size >>>= newValue;
+        case 11:
+            return size++;
+        case 12:
+            return size--;
+        case 13:
+            return ++size;
+        case 14:
+            return --size;
+        default:
+            return size;
         }
     }
 
@@ -576,9 +613,8 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
 
     private final Object $ASSIGN$data(int index0, Object newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$data.add(new int[] {
-                    index0
-                }, data[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$data.add(new int[] { index0 }, data[index0], $CHECKPOINT
+                    .getTimestamp());
         }
         return data[index0] = newValue;
     }
@@ -589,13 +625,14 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         size = $RECORD$size.restore(size, timestamp, trim);
-        data = (Object[])$RECORD$data.restore(data, timestamp, trim);
+        data = (Object[]) $RECORD$data.restore(data, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
@@ -604,9 +641,6 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     private transient FieldRecord $RECORD$data = new FieldRecord(1);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$size,
-            $RECORD$data
-        };
+            $RECORD$size, $RECORD$data };
 
 }
-

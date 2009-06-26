@@ -96,8 +96,8 @@ public class ArrowAttribute extends LineAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == x || attribute == y || attribute == arrowLength ||
-                attribute == arrowWidth || attribute == lineColor) {
+        if (attribute == x || attribute == y || attribute == arrowLength
+                || attribute == arrowWidth || attribute == lineColor) {
             double xValue = ((DoubleToken) x.getToken()).doubleValue();
             double yValue = ((DoubleToken) y.getToken()).doubleValue();
             double arrowLengthValue = ((DoubleToken) arrowLength.getToken())
@@ -134,13 +134,13 @@ public class ArrowAttribute extends LineAttribute {
         polygon.moveTo(0.0, halfWidth);
         polygon.lineTo(arrowLength + 3.0, 0.0);
         polygon.lineTo(arrowLength, halfWidth);
-        polygon.lineTo(Math.sqrt(x*x + y*y), halfWidth);
+        polygon.lineTo(Math.sqrt(x * x + y * y), halfWidth);
         polygon.lineTo(arrowLength, halfWidth);
         polygon.lineTo(arrowLength + 3.0, arrowWidth);
         polygon.closePath();
 
-        AffineTransform transform = AffineTransform.getRotateInstance(
-                Math.atan2(y, x));
+        AffineTransform transform = AffineTransform.getRotateInstance(Math
+                .atan2(y, x));
         polygon.transform(transform);
         return polygon;
     }

@@ -31,12 +31,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.DecoratedAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
 
 ///////////////////////////////////////////////////////////////////////
 ////ProgramCodeGeneratorAdapterStrategy
@@ -70,7 +68,7 @@ import ptolemy.kernel.util.NamedObj;
 */
 //FIXME: Why extend NamedObj? Extend Attribute and store in the actor being adapted?
 abstract public class CodeGeneratorAdapter extends NamedObj {
-    
+
     /** Create and return the decorated attributes for the corresponding Ptolemy Component.
      *  @param genericCodeGenerator The code generator that is the decorator for the
      *  corresponding Ptolemy Component.
@@ -80,8 +78,10 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public List<DecoratedAttribute> createDecoratedAttributes(GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException {
-            return new LinkedList<DecoratedAttribute>();
+    public List<DecoratedAttribute> createDecoratedAttributes(
+            GenericCodeGenerator genericCodeGenerator)
+            throws IllegalActionException, NameDuplicationException {
+        return new LinkedList<DecoratedAttribute>();
     }
 
     /** Get the code generator associated with this adapter class.
@@ -89,17 +89,17 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
     abstract public ProgramCodeGenerator getCodeGenerator();
-    
+
     /** Set the code generator associated with this adapter class.
      *  @param codeGenerator The code generator associated with this
      *   adapter class.
      *  @see #getCodeGenerator()
      */
     abstract public void setCodeGenerator(GenericCodeGenerator codeGenerator);
-    
+
     /** Set the strategy for generating code for this adapter.
      * @param strategy The strategy.
-     */ 
+     */
     public void setStrategy(Object strategy) {
     }
 }

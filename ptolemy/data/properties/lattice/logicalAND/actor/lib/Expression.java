@@ -57,8 +57,7 @@ public class Expression extends AtomicActor {
      * @exception IllegalActionException
      */
     public Expression(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Expression actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.Expression actor) throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;

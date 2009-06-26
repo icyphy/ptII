@@ -51,7 +51,6 @@ public class BooleanSelect extends CCodeGeneratorHelper {
         super(actor);
     }
 
-
     /**
      * Return the code generated for sending the true input data.
      * Iterate through the connections to the true port
@@ -61,11 +60,10 @@ public class BooleanSelect extends CCodeGeneratorHelper {
      * when getting the width for the port or the code block.
      */
     public String sendTrueInputs() throws IllegalActionException {
-        ptolemy.actor.lib.BooleanSelect actor =
-            (ptolemy.actor.lib.BooleanSelect) getComponent();
+        ptolemy.actor.lib.BooleanSelect actor = (ptolemy.actor.lib.BooleanSelect) getComponent();
 
-        int width = Math.min(
-                actor.output.getWidth(), actor.trueInput.getWidth());
+        int width = Math.min(actor.output.getWidth(), actor.trueInput
+                .getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();
@@ -87,11 +85,10 @@ public class BooleanSelect extends CCodeGeneratorHelper {
      * when getting the width for the port or the code block.
      */
     public String sendFalseInputs() throws IllegalActionException {
-        ptolemy.actor.lib.BooleanSelect actor =
-            (ptolemy.actor.lib.BooleanSelect) getComponent();
+        ptolemy.actor.lib.BooleanSelect actor = (ptolemy.actor.lib.BooleanSelect) getComponent();
 
-        int width = Math.min(
-                actor.output.getWidth(), actor.trueInput.getWidth());
+        int width = Math.min(actor.output.getWidth(), actor.trueInput
+                .getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();

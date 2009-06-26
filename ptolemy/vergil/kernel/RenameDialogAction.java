@@ -65,24 +65,24 @@ public class RenameDialogAction extends FigureAction {
      *            The parent TableauFrame
      */
     public RenameDialogAction(TableauFrame parent) {
-      super("");
-      if (parent == null) {
-        IllegalArgumentException iae = new IllegalArgumentException(
-            "ActorDialogAction constructor received NULL argument for TableauFrame");
-        iae.fillInStackTrace();
-        throw iae;
-      }
-      //this.parent = parent;
+        super("");
+        if (parent == null) {
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "ActorDialogAction constructor received NULL argument for TableauFrame");
+            iae.fillInStackTrace();
+            throw iae;
+        }
+        //this.parent = parent;
 
-      this.putValue(Action.NAME, DISPLAY_NAME);
-      this.putValue(GUIUtilities.LARGE_ICON, LARGE_ICON);
-      this.putValue("tooltip", TOOLTIP);
-      this.putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
+        this.putValue(Action.NAME, DISPLAY_NAME);
+        this.putValue(GUIUtilities.LARGE_ICON, LARGE_ICON);
+        this.putValue("tooltip", TOOLTIP);
+        this.putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
 
-      DISPLAY_NAME = StaticResources.getDisplayString(
-        "actions.actor.displayName", "Configure");
-      TOOLTIP = StaticResources.getDisplayString(
-        "actions.actor.tooltip", "Change Settings for Actor");
+        DISPLAY_NAME = StaticResources.getDisplayString(
+                "actions.actor.displayName", "Configure");
+        TOOLTIP = StaticResources.getDisplayString("actions.actor.tooltip",
+                "Change Settings for Actor");
     }
 
     /** Construct a rename dialog action with the specified name,

@@ -138,9 +138,10 @@ public abstract class FormSpec implements Serializable {
         this.defaultAlignment = defaultAlignment;
         this.size = size;
         this.resizeWeight = resizeWeight;
-        if (resizeWeight < 0)
+        if (resizeWeight < 0) {
             throw new IllegalArgumentException(
                     "The resize weight must be non-negative.");
+        }
     }
 
     /**
@@ -296,8 +297,9 @@ public abstract class FormSpec implements Serializable {
      */
     private Size decodeAtomicSize(String token) {
         Sizes.ComponentSize componentSize = Sizes.ComponentSize.valueOf(token);
-        if (componentSize != null)
+        if (componentSize != null) {
             return componentSize;
+        }
         return ConstantSize.valueOf(token, isHorizontal());
     }
 
@@ -457,24 +459,26 @@ public abstract class FormSpec implements Serializable {
          * @return the corresponding DefaultAlignment or null
          */
         private static DefaultAlignment valueOf(String str, boolean isHorizontal) {
-            if (str.equals("f") || str.equals("fill"))
+            if (str.equals("f") || str.equals("fill")) {
                 return FILL_ALIGN;
-            else if (str.equals("c") || str.equals("center"))
+            } else if (str.equals("c") || str.equals("center")) {
                 return CENTER_ALIGN;
-            else if (isHorizontal) {
-                if (str.equals("r") || str.equals("right"))
+            } else if (isHorizontal) {
+                if (str.equals("r") || str.equals("right")) {
                     return RIGHT_ALIGN;
-                else if (str.equals("l") || str.equals("left"))
+                } else if (str.equals("l") || str.equals("left")) {
                     return LEFT_ALIGN;
-                else
+                } else {
                     return null;
+                }
             } else {
-                if (str.equals("t") || str.equals("top"))
+                if (str.equals("t") || str.equals("top")) {
                     return TOP_ALIGN;
-                else if (str.equals("b") || str.equals("bottom"))
+                } else if (str.equals("b") || str.equals("bottom")) {
                     return BOTTOM_ALIGN;
-                else
+                } else {
                     return null;
+                }
             }
         }
 

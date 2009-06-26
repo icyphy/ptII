@@ -116,10 +116,9 @@ public class TestIcon extends NameIcon {
         width = Math.floor(stringBounds.getWidth()) + 40;
         height = Math.floor(stringBounds.getHeight()) + 24;
 
-        Polygon2D polygon = new Polygon2D.Double(new double[] {
-                0.0, height / 2.0, width / 2, 0.0, width, height / 2.0,
-                width / 2.0, height
-        });
+        Polygon2D polygon = new Polygon2D.Double(new double[] { 0.0,
+                height / 2.0, width / 2, 0.0, width, height / 2.0, width / 2.0,
+                height });
         return new BasicFigure(polygon, _getFill(), _getLineWidth());
     }
 
@@ -140,8 +139,8 @@ public class TestIcon extends NameIcon {
             return figure;
         } else if (label != null) {
             Rectangle2D bounds = figure.getBounds();
-            label.translateTo(bounds.getCenterX(), bounds.getMinY() +
-                    label.getBounds().getHeight() / 2.0 + 15.0);
+            label.translateTo(bounds.getCenterX(), bounds.getMinY()
+                    + label.getBounds().getHeight() / 2.0 + 15.0);
         }
 
         String actions = null;
@@ -177,14 +176,12 @@ public class TestIcon extends NameIcon {
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
-            colorParameter = (Parameter) (getAttribute("fill",
-                    Parameter.class));
+            colorParameter = (Parameter) (getAttribute("fill", Parameter.class));
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
-                    Color color = new Color(
-                            (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
+                    Color color = new Color((float) ((ScalarToken) array
+                            .getElement(0)).doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
                                     .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
@@ -206,8 +203,8 @@ public class TestIcon extends NameIcon {
         LabelFigure label = new LabelFigure(text, _ACTION_FONT, 1.0,
                 SwingConstants.CENTER);
         Rectangle2D newBounds = label.getBounds();
-        label.translateTo(bounds.getCenterX(),
-                bounds.getMaxY() + newBounds.getHeight() / 2.0 + 7.0);
+        label.translateTo(bounds.getCenterX(), bounds.getMaxY()
+                + newBounds.getHeight() / 2.0 + 7.0);
         figure.add(label);
         return label;
     }

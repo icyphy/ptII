@@ -66,14 +66,17 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating red (jiazou)
  */
-public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector {
+public class PtidesBasicDirector
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
      *  @param ptidesBasicDirector The associated director
      *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
-    public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
+    public PtidesBasicDirector(
+            ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
         super(ptidesBasicDirector);
     }
 
@@ -92,25 +95,27 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
         // generate a name for it, and put the name along with this actor into a
         // HashMap.
         Map devices = new HashMap<Actor, String>();
-        for (Actor actor : (List<Actor>)((TypedCompositeActor)getComponent()).deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent())
+                .deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
             if (actor instanceof InterruptDevice) {
-                devices.put(actor, new String("Sensing_" + 
-                        ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor)));
+                devices.put(actor, new String("Sensing_"
+                        + ProgramCodeGeneratorAdapterStrategy
+                                .generateName((NamedObj) actor)));
             }
         }
-        
+
         // List of args used to get the template.
         List args = new LinkedList();
 
         // The first element in the args should be the externs. For each device in the set,
         // we need to add an external method.
         StringBuffer externs = new StringBuffer();
-        for (Actor actor : (Set<Actor>)devices.keySet()) {
+        for (Actor actor : (Set<Actor>) devices.keySet()) {
             externs.append("        EXTERN  " + devices.get(actor) + _eol);
         }
         args.add(externs.toString());
-                
+
         // Now we create an array for each device. The length of the array should be the number of
         // supported configurations in this device. For each actor that fits a device and
         // a particular configuration, add it into the array associated with the device, 
@@ -118,18 +123,20 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
         // supportedConfigurations().
         int configurationSize = GPInputDevice.numSupportedConfigurations;
         String[] GPHandlers = new String[configurationSize];
-        for (Actor actor : (Set<Actor>)devices.keySet()) {
+        for (Actor actor : (Set<Actor>) devices.keySet()) {
             if (actor instanceof GPInputDevice) {
-                GPInputDevice GPActor = (GPInputDevice)actor;
+                GPInputDevice GPActor = (GPInputDevice) actor;
                 for (int i = 0; i < configurationSize; i++) {
-                    if (GPActor.pad.toString() == GPActor.supportedConfigurations().get(i)) {
-                        GPHandlers[i] = (String)devices.get(actor);
+                    if (GPActor.pad.toString() == GPActor
+                            .supportedConfigurations().get(i)) {
+                        GPHandlers[i] = (String) devices.get(actor);
                         break;
                     }
                 }
             } else {
-                throw new IllegalActionException((Actor)actor, "This actor is not an interrupt" +
-                		"device, cannot generate an ISR for it.");
+                throw new IllegalActionException(actor,
+                        "This actor is not an interrupt"
+                                + "device, cannot generate an ISR for it.");
             }
         }
         for (int i = 0; i < configurationSize; i++) {
@@ -140,9 +147,10 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
                 args.add(GPHandlers[i]);
             }
         }
-        
+
         // In the future if we add more devices, then it should be a derivation of the above code.
-        code.append(getStrategy().getCodeStream().getCodeBlock("assemblyFileBlock", args));
+        code.append(getStrategy().getCodeStream().getCodeBlock(
+                "assemblyFileBlock", args));
 
         return code;
     }
@@ -158,7 +166,9 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(getCodeGenerator().comment("Create a task for each actor."));
+        code
+                .append(getCodeGenerator().comment(
+                        "Create a task for each actor."));
 
         code.append("while (true);" + _eol);
         return code.toString();
@@ -192,8 +202,8 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(getCodeGenerator()
-                .comment("Initialization code of the PtidesDirector."));
+        code.append(getCodeGenerator().comment(
+                "Initialization code of the PtidesDirector."));
 
         code.append(getStrategy().getCodeStream().getCodeBlock("initPDBlock"));
         code.append(super.generateInitializeCode());
@@ -211,7 +221,8 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
         StringBuffer code = new StringBuffer();
 
         code.append(ProgramCodeGeneratorAdapterStrategy.generateName(_director
-                .getContainer()) + "();" + _eol);
+                .getContainer())
+                + "();" + _eol);
 
         return code.toString();
     }
@@ -228,14 +239,16 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
         List args = new LinkedList();
         args.add(_generateDirectorHeader());
 
-        args.add(((CompositeActor)
-                _director.getContainer()).deepEntityList().size());
+        args.add(((CompositeActor) _director.getContainer()).deepEntityList()
+                .size());
 
         code.append(super.generatePreinitializeCode());
 
-        code.append(getStrategy().getCodeStream().getCodeBlock("preinitPDBlock", args));
+        code.append(getStrategy().getCodeStream().getCodeBlock(
+                "preinitPDBlock", args));
 
-        code.append(getStrategy().getCodeStream().getCodeBlock("initPDCodeBlock"));
+        code.append(getStrategy().getCodeStream().getCodeBlock(
+                "initPDCodeBlock"));
 
         code.append(_generateInitializeHardwareCode());
 
@@ -250,7 +263,7 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
      * @exception IllegalActionException Not thrown in this class.
      */
     public String generateVariableInitialization()
-    throws IllegalActionException {
+            throws IllegalActionException {
         return "";
     }
 
@@ -266,7 +279,6 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
         Set sharedCode = super.getSharedCode();
         return sharedCode;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -284,7 +296,7 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
      *   throws it.
      */
     protected String _createDynamicOffsetVariables(TypedIOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         /* FIXME: make it useful such that we know which event offset to write to
            StringBuffer code = new StringBuffer();
            code.append(_eol + _codeGenerator.comment(
@@ -319,16 +331,21 @@ public class PtidesBasicDirector extends ptolemy.cg.adapter.generic.program.proc
      *  @return code initialization code for hardware peripherals
      *  @throws IllegalActionException
      */
-    protected String _generateInitializeHardwareCode() throws IllegalActionException {
+    protected String _generateInitializeHardwareCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
         for (Actor actor : _actuators.keySet()) {
-            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice)getAdapter(actor)).generateHardwareInitializationCode());
+            code
+                    .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(actor))
+                            .generateHardwareInitializationCode());
         }
         for (Actor actor : _sensors.keySet()) {
-            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice)getAdapter(actor)).generateHardwareInitializationCode());
+            code
+                    .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(actor))
+                            .generateHardwareInitializationCode());
         }
 
         code.append("}" + _eol);

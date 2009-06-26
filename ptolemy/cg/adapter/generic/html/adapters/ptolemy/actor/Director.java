@@ -31,12 +31,10 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.html.HTMLCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-
 
 ////Director
 
@@ -52,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 
  */
 public class Director extends HTMLCodeGeneratorAdapter {
-    
+
     /** Construct the code generator adapter associated with the given director.
      *  Note before calling the generate*() methods, you must also call
      *  setCodeGenerator(GenericCodeGenerator).
@@ -79,16 +77,17 @@ public class Director extends HTMLCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
 
         Iterator<?> actors = ((CompositeActor) getComponent().getContainer())
-        .deepEntityList().iterator();
-        
-        code.append("<li>" + getComponent().getName() + "</li>" + _eol);        
+                .deepEntityList().iterator();
+
+        code.append("<li>" + getComponent().getName() + "</li>" + _eol);
 
         while (actors.hasNext()) {
-            code.append("<li>");        
+            code.append("<li>");
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
             code.append(adapter.generateFireCode());
-            code.append("</li>");        
+            code.append("</li>");
         }
         return code.toString();
     }

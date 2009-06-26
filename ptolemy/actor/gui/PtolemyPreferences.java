@@ -107,30 +107,31 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         showParameters.setExpression("None");
         showParameters.setDisplayName("Show parameters");
 
-        Parameter checkWidthConsistencyAtMultiports = new Parameter(this, "_checkWidthConsistencyAtMultiports");
+        Parameter checkWidthConsistencyAtMultiports = new Parameter(this,
+                "_checkWidthConsistencyAtMultiports");
         checkWidthConsistencyAtMultiports.setTypeEquals(BaseType.BOOLEAN);
         checkWidthConsistencyAtMultiports.setExpression("true");
-        checkWidthConsistencyAtMultiports.setDisplayName("Check width consistency at multiports");
+        checkWidthConsistencyAtMultiports
+                .setDisplayName("Check width consistency at multiports");
 
-        Parameter checkWidthConstraints = new Parameter(this, "_checkWidthConstraints");
+        Parameter checkWidthConstraints = new Parameter(this,
+                "_checkWidthConstraints");
         checkWidthConstraints.setTypeEquals(BaseType.BOOLEAN);
         checkWidthConstraints.setExpression("true");
         checkWidthConstraints.setDisplayName("Check width constraints");
 
-        Parameter defaultInferredWidthTo1 = new Parameter(this, "_defaultInferredWidthTo1");
+        Parameter defaultInferredWidthTo1 = new Parameter(this,
+                "_defaultInferredWidthTo1");
         defaultInferredWidthTo1.setTypeEquals(BaseType.BOOLEAN);
         defaultInferredWidthTo1.setExpression("false");
         defaultInferredWidthTo1.setDisplayName("Default inferred width to 1");
 
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" "
-                + "width=\"120\" height=\"20\" "
-                + "style=\"fill:#00FFFF\"/>\n"
-                + "<text x=\"-55\" y=\"5\" "
+                + "<rect x=\"-60\" y=\"-10\" " + "width=\"120\" height=\"20\" "
+                + "style=\"fill:#00FFFF\"/>\n" + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
-                + "LocalPreferences\n" + "</text>\n"
-                + "</svg>\n");
+                + "LocalPreferences\n" + "</text>\n" + "</svg>\n");
         // Hide the name.
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
         hideName.setToken(BooleanToken.TRUE);

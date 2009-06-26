@@ -157,51 +157,11 @@ public class BasicGraphModel extends BasicModularGraphModel {
         }
 
         /**
-         * Return an iterator over the source, or "in", nodes of this
-         * node. This iterator does not support removal operations.
-         * This method provides a convenient way of traversing a
-         * graph.
-         */
-        public Iterator inNodes() {
-            return new diva.util.IteratorAdapter() {
-                Iterator edges = inEdges();
-
-                public boolean hasNext() {
-                    return edges.hasNext();
-                }
-
-                public Object next() {
-                    return ((Edge) edges.next()).getTail();
-                }
-            };
-        }
-
-        /**
          * Return an iterator over the <i>out</i> edges of this
          * node.  This iterator does not support removal operations.
          */
         public Iterator outEdges() {
             return new ArrayIterator(_out.toArray());
-        }
-
-        /**
-         * Return an iterator over the sink, or "out", nodes of this
-         * node. This iterator does not support removal operations.
-         * This method provides a convenient way of traversing a
-         * graph.
-         */
-        public Iterator outNodes() {
-            return new diva.util.IteratorAdapter() {
-                Iterator edges = outEdges();
-
-                public boolean hasNext() {
-                    return edges.hasNext();
-                }
-
-                public Object next() {
-                    return ((Edge) edges.next()).getHead();
-                }
-            };
         }
 
         public void removeInEdge(Edge e) {
@@ -253,20 +213,8 @@ public class BasicGraphModel extends BasicModularGraphModel {
             _nodes.add(n);
         }
 
-        public boolean contains(Node n) {
-            return _nodes.contains(n);
-        }
-
         public int getNodeCount() {
             return _nodes.size();
-        }
-
-        public Node getNode(int i) {
-            return (Node) _nodes.get(i);
-        }
-
-        public int getIndex(Node n) {
-            return _nodes.indexOf(n);
         }
 
         public Iterator nodes() {
@@ -341,16 +289,8 @@ public class BasicGraphModel extends BasicModularGraphModel {
             return _tail;
         }
 
-        public double getWeight() {
-            return _weight;
-        }
-
         public boolean isDirected() {
             return _directed;
-        }
-
-        public void setDirected(boolean val) {
-            _directed = val;
         }
 
         public void setHead(Node n) {
@@ -375,10 +315,6 @@ public class BasicGraphModel extends BasicModularGraphModel {
             if (_tail != null) {
                 ((BasicNode) _tail).addOutEdge(this);
             }
-        }
-
-        public void setWeight(double weight) {
-            _weight = weight;
         }
 
         /** Print a readable description of this edge

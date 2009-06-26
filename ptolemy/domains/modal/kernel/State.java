@@ -332,7 +332,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *   if a comma-separated list is malformed.
      */
     public NamedObj getObjectInRefinement(String name)
-    throws IllegalActionException {
+            throws IllegalActionException {
         TypedActor[] refinements = getRefinement();
         if (refinements == null) {
             return null;
@@ -340,8 +340,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
         for (TypedActor refinement : refinements) {
             if (refinement instanceof NamedObj) {
-                Attribute attribute = ((NamedObj) refinement).getAttribute(
-                        name);
+                Attribute attribute = ((NamedObj) refinement)
+                        .getAttribute(name);
                 if (attribute != null) {
                     return attribute;
                 } else if (refinement instanceof Entity) {
@@ -546,13 +546,13 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                 if (actors != null) {
                     for (TypedActor actor : actors) {
                         if (!configurePrinted) {
-                            output.write(_getIndentPrefix(depth) +
-                                    "<configure>\n");
+                            output.write(_getIndentPrefix(depth)
+                                    + "<configure>\n");
                             configurePrinted = true;
                         }
                         if (actor instanceof FSMActor) {
-                            ((FSMActor) actor).exportSubmodel(output, depth + 1,
-                                    actor.getName());
+                            ((FSMActor) actor).exportSubmodel(output,
+                                    depth + 1, actor.getName());
                         } else {
                             ((NamedObj) actor).exportMoML(output, depth + 1);
                         }
@@ -570,8 +570,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                 configurePrinted = true;
             }
             if (actor instanceof FSMActor) {
-                ((FSMActor) actor).exportSubmodel(output, depth + 1,
-                        actor.getName());
+                ((FSMActor) actor).exportSubmodel(output, depth + 1, actor
+                        .getName());
             } else {
                 ((NamedObj) actor).exportMoML(output, depth + 1);
             }
@@ -590,16 +590,17 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     private void _populateRefinements() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
         CompositeEntity modalModel = (CompositeEntity) container.getContainer();
-        boolean isModalModelInvisible = modalModel != null &&
-                !modalModel.attributeList(InvisibleModalModel.class).isEmpty();
-        if (!(modalModel instanceof TypedCompositeActor) ||
-                isModalModelInvisible) {
+        boolean isModalModelInvisible = modalModel != null
+                && !modalModel.attributeList(InvisibleModalModel.class)
+                        .isEmpty();
+        if (!(modalModel instanceof TypedCompositeActor)
+                || isModalModelInvisible) {
             if (modalModel == null || isModalModelInvisible) {
                 try {
                     if (modalModel == null) {
                         modalModel = new ModalModel(workspace());
-                        new InvisibleModalModel(modalModel,
-                                modalModel.uniqueName("_invisibleModalModel"));
+                        new InvisibleModalModel(modalModel, modalModel
+                                .uniqueName("_invisibleModalModel"));
                         container.setContainer(modalModel);
                     }
                 } catch (NameDuplicationException e) {

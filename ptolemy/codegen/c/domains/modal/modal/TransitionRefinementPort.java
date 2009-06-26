@@ -44,7 +44,8 @@ public class TransitionRefinementPort extends IOPort {
      *  with the given TransitionRefinementPort.
      *  @param component The associated component.
      */
-    public TransitionRefinementPort(ptolemy.domains.modal.modal.TransitionRefinementPort component) {
+    public TransitionRefinementPort(
+            ptolemy.domains.modal.modal.TransitionRefinementPort component) {
         super(component);
     }
 }

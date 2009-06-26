@@ -57,7 +57,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
@@ -132,15 +132,16 @@ public class AWTVergilApplication {
         Listener runListener = new Listener() {
             public void handleEvent(Event e) {
                 try {
-                    TypedCompositeActor toplevel = ((TypedCompositeActor)_toplevel);
-                    Manager manager = new Manager(_toplevel.workspace(), "myManager");
-                    
+                    TypedCompositeActor toplevel = ((TypedCompositeActor) _toplevel);
+                    Manager manager = new Manager(_toplevel.workspace(),
+                            "myManager");
+
                     toplevel.setManager(manager);
                     manager.execute();
                 } catch (Throwable throwable) {
                     throw new RuntimeException(throwable);
                 }
-               
+
             }
         };
         shell.addListener(SWT.Close, exitListener);
@@ -157,12 +158,12 @@ public class AWTVergilApplication {
         aboutItem.setText("&About\tCtrl+A");
         aboutItem.setAccelerator(SWT.CONTROL + 'A');
         aboutItem.addListener(SWT.Selection, aboutListener);
-        
+
         MenuItem runItem = new MenuItem(fileMenu, SWT.PUSH);
         runItem.setText("&Run\tCtrl+R");
         runItem.setAccelerator(SWT.CONTROL + 'R');
         runItem.addListener(SWT.Selection, runListener);
-       
+
         shell.setMenuBar(mb);
 
         RGB color = shell.getBackground().getRGB();
@@ -417,7 +418,7 @@ public class AWTVergilApplication {
                     "$CLASSPATH/ptolemy/configs/full/configuration.xml", null,
                     null);
             System.out.println("ConfigurationURL: " + configurationURL);
-            _configuration = MoMLApplication
+            _configuration = ConfigurationApplication
                     .readConfiguration(configurationURL);
         } catch (Exception ex) {
             System.out.println(ex);
@@ -432,7 +433,7 @@ public class AWTVergilApplication {
     protected static Configuration _configuration;
 
     protected static JGraph _jgraph;
-    
+
     protected static NamedObj _toplevel;
 
     /**
@@ -476,6 +477,7 @@ public class AWTVergilApplication {
         public FileTableModel(File[] files) {
             this.files = files;
         }
+
         public Class getColumnClass(int col) {
             if (col == 1) {
                 return Long.class;

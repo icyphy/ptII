@@ -169,8 +169,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  @see FSMActor
  */
-public class FSMDirector extends Director implements
-        ExplicitChangeContext, QuasiTransparentDirector, SuperdenseTimeDirector {
+public class FSMDirector extends Director implements ExplicitChangeContext,
+        QuasiTransparentDirector, SuperdenseTimeDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -276,7 +276,8 @@ public class FSMDirector extends Director implements
      *   and output ports.
      */
     public Dependency defaultDependency() {
-        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector != null) {
             return executiveDirector.defaultDependency();
         }
@@ -307,15 +308,18 @@ public class FSMDirector extends Director implements
             _debug("Current state is:", currentState.getName());
         }
 
-        List<Transition> enabledPreemptiveTransitions = controller.enabledTransitions(currentState.preemptiveTransitionList());
+        List<Transition> enabledPreemptiveTransitions = controller
+                .enabledTransitions(currentState.preemptiveTransitionList());
         if (enabledPreemptiveTransitions.size() > 0) {
             // Do not call the following unless there is actually a preemptive transition enabled
             // because in a fixed-point iteration you could get an exception if you call chooseTransition
             // with the list of preemptive transitions after a non-preemptive transition was already
             // discovered to be enabled.
-            Transition chosenTransition = controller.chooseTransition(enabledPreemptiveTransitions);
+            Transition chosenTransition = controller
+                    .chooseTransition(enabledPreemptiveTransitions);
             if (_debugging) {
-                _debug("Preemptive transition enabled:",  chosenTransition.getName());
+                _debug("Preemptive transition enabled:", chosenTransition
+                        .getName());
             }
             // First execute the refinements of the transition.
             Actor[] actors = chosenTransition.getRefinement();
@@ -326,7 +330,8 @@ public class FSMDirector extends Director implements
                         break;
                     }
                     if (_debugging) {
-                        _debug("Fire transition refinement:",  actors[i].getName());
+                        _debug("Fire transition refinement:", actors[i]
+                                .getName());
                     }
                     if (actors[i].prefire()) {
                         actors[i].fire();
@@ -348,7 +353,7 @@ public class FSMDirector extends Director implements
                 }
                 if (actors[i].prefire()) {
                     if (_debugging) {
-                        _debug("Fire state refinement:",  actors[i].getName());
+                        _debug("Fire state refinement:", actors[i].getName());
                     }
                     actors[i].fire();
                     _stateRefinementsToPostfire.add(actors[i]);
@@ -357,10 +362,12 @@ public class FSMDirector extends Director implements
         }
         controller.readOutputsFromRefinement();
 
-        Transition chosenTransition = controller.chooseTransition(currentState.nonpreemptiveTransitionList());
+        Transition chosenTransition = controller.chooseTransition(currentState
+                .nonpreemptiveTransitionList());
         if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Nonpreemptive transition enabled:",  chosenTransition.getName());
+                _debug("Nonpreemptive transition enabled:", chosenTransition
+                        .getName());
             }
             actors = chosenTransition.getRefinement();
             if (actors != null) {
@@ -370,7 +377,8 @@ public class FSMDirector extends Director implements
                     }
                     if (actors[i].prefire()) {
                         if (_debugging) {
-                            _debug("Fire transition refinement:",  actors[i].getName());
+                            _debug("Fire transition refinement:", actors[i]
+                                    .getName());
                         }
                         actors[i].fire();
                         _transitionRefinementsToPostfire.add(actors[i]);
@@ -504,8 +512,10 @@ public class FSMDirector extends Director implements
     public Time getModelNextIterationTime() {
         try {
             FSMActor controller = getController();
-            List transitionList = controller.currentState().outgoingPort.linkedRelationList();
-            List enabledTransitions = controller.enabledTransitions(transitionList);
+            List transitionList = controller.currentState().outgoingPort
+                    .linkedRelationList();
+            List enabledTransitions = controller
+                    .enabledTransitions(transitionList);
             if (enabledTransitions.size() > 0) {
                 return _currentTime;
             }
@@ -592,9 +602,11 @@ public class FSMDirector extends Director implements
      *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getIndex() {
-        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector instanceof SuperdenseTimeDirector) {
-            return ((SuperdenseTimeDirector)executiveDirector).getIndex() + _indexOffset;
+            return ((SuperdenseTimeDirector) executiveDirector).getIndex()
+                    + _indexOffset;
         }
         return 0;
     }
@@ -675,7 +687,8 @@ public class FSMDirector extends Director implements
         if (container instanceof Actor) {
             Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
-            if (executiveDirector != null && !executiveDirector.implementsStrictActorSemantics()) {
+            if (executiveDirector != null
+                    && !executiveDirector.implementsStrictActorSemantics()) {
                 return false;
             }
         }
@@ -697,7 +710,8 @@ public class FSMDirector extends Director implements
                         // is a Modal Model without its own director. In this case director == this,
                         // and the call director.implementsStrictActorSemantics() would lead to a infinite
                         // loop.
-                        if (director != null && director != this && !director.implementsStrictActorSemantics()) {
+                        if (director != null && director != this
+                                && !director.implementsStrictActorSemantics()) {
                             return false;
                         }
                     }
@@ -733,7 +747,8 @@ public class FSMDirector extends Director implements
      *  in scheduling by the enclosing director.
      */
     public void invalidateSchedule() {
-        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector != null) {
             executiveDirector.invalidateSchedule();
         }
@@ -819,7 +834,8 @@ public class FSMDirector extends Director implements
 
         for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
             if (_debugging) {
-                _debug("Postfiring transition refinment:", transitionRefinement.getName());
+                _debug("Postfiring transition refinment:", transitionRefinement
+                        .getName());
             }
             if (!transitionRefinement.postfire()) {
                 _disabledActors.add(transitionRefinement);
@@ -891,7 +907,8 @@ public class FSMDirector extends Director implements
                 // but we tolerate it here.
                 if (destinationDirector != this
                         && destinationDirector instanceof SuperdenseTimeDirector) {
-                    ((SuperdenseTimeDirector)destinationDirector).setIndex(index);
+                    ((SuperdenseTimeDirector) destinationDirector)
+                            .setIndex(index);
                 }
             }
         }
@@ -948,18 +965,20 @@ public class FSMDirector extends Director implements
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 insideReceivers[i][j].put(t);
                                 if (_debugging) {
-                                    _debug(getFullName(),
-                                            "transferring input "
+                                    _debug(getFullName(), "transferring input "
                                             + t
                                             + " from "
                                             + port.getFullName()
                                             + " to "
-                                            + (insideReceivers[i][j]).getContainer().getFullName());
+                                            + (insideReceivers[i][j])
+                                                    .getContainer()
+                                                    .getFullName());
                                 }
                             }
                             transferredToken = true;
                         }
-                    } else { /** Port does not have a token. */
+                    } else {
+                        /** Port does not have a token. */
                         if ((insideReceivers != null)
                                 && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
@@ -967,7 +986,8 @@ public class FSMDirector extends Director implements
                             }
                         }
                     }
-                } else { /** Port status is not known. */
+                } else {
+                    /** Port status is not known. */
                     if ((insideReceivers != null)
                             && (insideReceivers[i] != null)) {
                         for (int j = 0; j < insideReceivers[i].length; j++) {
@@ -1241,10 +1261,8 @@ public class FSMDirector extends Director implements
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
                         if (_debugging) {
-                            _debug(getName(), "transferring output "
-                                    + t
-                                    + " from "
-                                    + port.getName());
+                            _debug(getName(), "transferring output " + t
+                                    + " from " + port.getName());
                         }
                         port.send(i, t);
                         result = true;
@@ -1263,7 +1281,6 @@ public class FSMDirector extends Director implements
         }
         return result;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1302,7 +1319,6 @@ public class FSMDirector extends Director implements
     /** Transition refinements to postfire(), as determined by the fire() method. */
     protected List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _checkActorsForReceiver(TypedActor[] actors, Nameable cont,
@@ -1337,7 +1353,7 @@ public class FSMDirector extends Director implements
      *  @exception IllegalActionException If getting the receivers fails.
      */
     private void _resetOutputReceivers() throws IllegalActionException {
-        List<IOPort> outputs = ((Actor)getContainer()).outputPortList();
+        List<IOPort> outputs = ((Actor) getContainer()).outputPortList();
         for (IOPort output : outputs) {
             Receiver[][] receivers = output.getInsideReceivers();
             if (receivers != null) {

@@ -64,7 +64,8 @@ public class UndoListener implements UndoableEditListener {
      * automatically (it is then the responsibilty of the caller to
      * provide a mechanism for invoking the undo and redo actions.)
      */
-    public UndoListener() {}
+    public UndoListener() {
+    }
 
     /**
      * Construct an undo listener with default key mappings.
@@ -85,17 +86,14 @@ public class UndoListener implements UndoableEditListener {
         ActionMap actionMap = textArea.getActionMap();
 
         // Ctrl-z or equivalent to undo.
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-                        "undo");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit
+                .getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
         actionMap.put("undo", _undoAction);
         // Ctrl-y or equivalent to redo
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-                        "redo");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit
+                .getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
         actionMap.put("redo", _redoAction);
     }
-
 
     /** Remember the edit and update the action state.
      *  @param event The event that occurred.
@@ -117,7 +115,6 @@ public class UndoListener implements UndoableEditListener {
 
     /** The undo manager. */
     protected UndoManager _undo = new UndoManager();
-
 
     /**
      * Perform the undo action.

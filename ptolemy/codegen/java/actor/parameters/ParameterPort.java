@@ -29,7 +29,6 @@ package ptolemy.codegen.java.actor.parameters;
 
 import ptolemy.codegen.java.actor.TypedIOPort;
 
-
 /**
 Code generator helper for {@link ptolemy.actor.parameters.ParameterPort}.
 

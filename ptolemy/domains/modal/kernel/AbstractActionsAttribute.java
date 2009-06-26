@@ -144,7 +144,8 @@ public abstract class AbstractActionsAttribute extends Action implements
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractActionsAttribute newObject = (AbstractActionsAttribute) super.clone(workspace);
+        AbstractActionsAttribute newObject = (AbstractActionsAttribute) super
+                .clone(workspace);
         newObject._destinations = null;
         newObject._destinationsListVersion = -1;
         newObject._numbers = null;
@@ -500,9 +501,11 @@ public abstract class AbstractActionsAttribute extends Action implements
                 }
 
                 int index = _destinationNames.indexOf(_name);
-                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(index);
+                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees
+                        .get(index);
 
-                Type type = _typeInference.inferTypes(parseTree, _getParserScope());
+                Type type = _typeInference.inferTypes(parseTree,
+                        _getParserScope());
 
                 // Return the array type with type as the element type when
                 // there is an index following the name and the name resolves to
@@ -514,11 +517,11 @@ public abstract class AbstractActionsAttribute extends Action implements
                 while (container != null && !(container instanceof Entity)) {
                     container = container.getContainer();
                 }
-                if (container != null &&
-                        ((Entity) container).getPort(_name) == null) {
+                if (container != null
+                        && ((Entity) container).getPort(_name) == null) {
                     // Not a port, then it must be a variable.
                     if (_numbers.get(index) != null &&
-                            // If the destination is not a variable, it should
+                    // If the destination is not a variable, it should
                             // be a port, and port(i) refers to the i-th channel
                             // of the port, which has the same type as the port
                             // itself.
@@ -584,11 +587,9 @@ public abstract class AbstractActionsAttribute extends Action implements
 
         private String _name;
 
-        private ParseTreeTypeInference _typeInference =
-            new ParseTreeTypeInference();
+        private ParseTreeTypeInference _typeInference = new ParseTreeTypeInference();
 
-        private ParseTreeFreeVariableCollector _variableCollector =
-            new ParseTreeFreeVariableCollector();
+        private ParseTreeFreeVariableCollector _variableCollector = new ParseTreeFreeVariableCollector();
     }
 
     /** List of channels. Elements may be numbers or variable names. */

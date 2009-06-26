@@ -163,7 +163,8 @@ public class LabelFigure extends AbstractFigure {
      * given string in the given font, with the given padding and anchor,
      * and the given color.
      */
-    public LabelFigure(String s, Font font, double padding, int anchor, Color color) {
+    public LabelFigure(String s, Font font, double padding, int anchor,
+            Color color) {
         this(s, font, padding, anchor);
         _fillPaint = color;
     }

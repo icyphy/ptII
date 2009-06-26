@@ -33,6 +33,7 @@ import java.util.Set;
 
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.expr.ChoiceParameter;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
@@ -52,17 +53,17 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationMode extends ChoiceParameter
-implements MatchCallback {
+public class TransformationMode extends ChoiceParameter implements
+        MatchCallback {
 
     public TransformationMode(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, Mode.class);
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TransformationMode newObject = (TransformationMode) super.clone(
-                workspace);
+        TransformationMode newObject = (TransformationMode) super
+                .clone(workspace);
         newObject._masterRule = null;
         newObject._random = new Random();
         newObject._workingCopy = null;
@@ -88,7 +89,7 @@ implements MatchCallback {
     }
 
     public TransformationRule getWorkingCopy(TransformationRule masterRule)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (_masterRule != masterRule || _workingCopy == null
                 || _workingCopyVersion != masterRule.workspace().getVersion()) {
             if (_workingCopy != null) {
@@ -96,15 +97,15 @@ implements MatchCallback {
                 _workingCopy = null;
             }
             try {
-                _workingCopy = (TransformationRule) masterRule.clone(
-                        _workspace);
+                _workingCopy = (TransformationRule) masterRule
+                        .clone(_workspace);
                 new WorkingCopyScopeExtender(_workingCopy, "_scopeExtender",
                         masterRule);
                 _masterRule = masterRule;
                 _workingCopyVersion = masterRule.workspace().getVersion();
             } catch (Exception e) {
-                throw new IllegalActionException(this, e, "Cannot get a " +
-                        "working copy this transformation rule.");
+                throw new IllegalActionException(this, e, "Cannot get a "
+                        + "working copy this transformation rule.");
             }
         }
         return _workingCopy;
@@ -138,16 +139,19 @@ implements MatchCallback {
                     switch (mode) {
                     case REPLACE_FIRST:
                         MatchResult result = _matchResults.getFirst();
-                        GraphTransformer.transform(workingCopy, result, listener);
+                        GraphTransformer.transform(workingCopy, result,
+                                listener);
                         break;
                     case REPLACE_LAST:
                         result = _matchResults.getLast();
-                        GraphTransformer.transform(workingCopy, result, listener);
+                        GraphTransformer.transform(workingCopy, result,
+                                listener);
                         break;
                     case REPLACE_ANY:
-                        result = _matchResults.get(_random.nextInt(
-                                _matchResults.size()));
-                        GraphTransformer.transform(workingCopy, result, listener);
+                        result = _matchResults.get(_random
+                                .nextInt(_matchResults.size()));
+                        GraphTransformer.transform(workingCopy, result,
+                                listener);
                         break;
                     case REPLACE_ALL:
                         GraphTransformer.transform(workingCopy,
@@ -200,8 +204,7 @@ implements MatchCallback {
 
     private TransformationRule _masterRule;
 
-    private LinkedList<MatchResult> _matchResults =
-        new LinkedList<MatchResult>();
+    private LinkedList<MatchResult> _matchResults = new LinkedList<MatchResult>();
 
     private GraphMatcher _matcher = new GraphMatcher();
 
@@ -213,16 +216,16 @@ implements MatchCallback {
 
     private Workspace _workspace = new Workspace();
 
-    private static class WorkingCopyScopeExtender extends Attribute
-    implements ScopeExtender {
+    private static class WorkingCopyScopeExtender extends Attribute implements
+            ScopeExtender {
 
         public List<?> attributeList() {
             NamedObj container = _masterRule;
-            Set<?> names = VariableScope.getAllScopedVariableNames(null,
-                    container);
+            Set<?> names = ModelScope
+                    .getAllScopedVariableNames(null, container);
             List<Variable> variables = new LinkedList<Variable>();
             for (Object name : names) {
-                variables.add(VariableScope.getScopedVariable(null, container,
+                variables.add(ModelScope.getScopedVariable(null, container,
                         (String) name));
             }
             return variables;
@@ -230,7 +233,7 @@ implements MatchCallback {
 
         public Attribute getAttribute(String name) {
             NamedObj container = _masterRule;
-            return VariableScope.getScopedVariable(null, container, name);
+            return ModelScope.getScopedVariable(null, container, name);
         }
 
         WorkingCopyScopeExtender(NamedObj container, String name,

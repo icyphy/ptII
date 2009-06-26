@@ -65,9 +65,9 @@ public class UpSample extends ProgramCodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
         CodeStream codeStream = getStrategy().getCodeStream();
-        
+
         ptolemy.domains.sdf.lib.UpSample actor = (ptolemy.domains.sdf.lib.UpSample) getComponent();
-        
+
         ArrayList args = new ArrayList();
 
         Type type = actor.input.getType();
@@ -84,7 +84,7 @@ public class UpSample extends ProgramCodeGeneratorAdapter {
         codeStream.append(getStrategy().generateBlockCode("fireBlock", args));
         return codeStream.toString();
     }
-    
+
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from AddSubtract.c,
@@ -109,8 +109,8 @@ public class UpSample extends ProgramCodeGeneratorAdapter {
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol
-                    + getCodeGenerator().comment("preinitialize "
-                            + getComponent().getName()));
+                    + getCodeGenerator().comment(
+                            "preinitialize " + getComponent().getName()));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

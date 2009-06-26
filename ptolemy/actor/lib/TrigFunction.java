@@ -186,8 +186,7 @@ public class TrigFunction extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TrigFunction newObject = (TrigFunction) super.clone(workspace);
 
         newObject._resultArray = new DoubleToken[1];

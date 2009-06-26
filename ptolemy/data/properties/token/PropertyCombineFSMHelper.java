@@ -63,7 +63,8 @@ public class PropertyCombineFSMHelper extends PropertyCombineCompositeHelper {
         super(solver, actor);
     }
 
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
         List<PropertyHelper> helpers = new ArrayList<PropertyHelper>();
         return helpers;
     }

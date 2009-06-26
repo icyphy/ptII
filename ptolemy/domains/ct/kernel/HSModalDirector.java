@@ -72,7 +72,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class HSModalDirector extends FSMDirector implements CTTransparentDirector {
+public class HSModalDirector extends FSMDirector implements
+        CTTransparentDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -345,8 +346,10 @@ public class HSModalDirector extends FSMDirector implements CTTransparentDirecto
         } else {
             // This should never happen because a modal model with
             // an HSModalDirector must be used inside a CT model.
-            throw new InternalErrorException("A modal model with "
-                    + "an HSModalDirector must be used inside a CT model, not a " + executiveDirector);
+            throw new InternalErrorException(
+                    "A modal model with "
+                            + "an HSModalDirector must be used inside a CT model, not a "
+                            + executiveDirector);
         }
     }
 
@@ -849,7 +852,8 @@ public class HSModalDirector extends FSMDirector implements CTTransparentDirecto
             // If we are not at the top level of the hierarchy, request a refiring.
             _fireContainerAt(getModelTime());
 
-            Director executiveDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
+            Director executiveDirector = ((CompositeActor) getContainer())
+                    .getExecutiveDirector();
 
             // If this iteration will not generate more events, (the
             // current phase of execution is neithter generating-event nor

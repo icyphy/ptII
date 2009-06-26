@@ -167,8 +167,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
     public void wrapup() throws IllegalActionException {
         try {
             for (TypedIOPort port : (List<TypedIOPort>) portList()) {
-                for (TypedIORelation relation :
-                    (List<TypedIORelation>) port.insideRelationList()) {
+                for (TypedIORelation relation : (List<TypedIORelation>) port
+                        .insideRelationList()) {
                     relation.setContainer(null);
                 }
             }
@@ -198,8 +198,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
-    protected void setEmbeddedActor()
-            throws IllegalActionException, NameDuplicationException{
+    protected void setEmbeddedActor() throws IllegalActionException,
+            NameDuplicationException {
 
         // This code was separated into its own function so that
         // embeddedJavaFileActor can extend this class without a large

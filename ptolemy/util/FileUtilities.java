@@ -378,7 +378,7 @@ public class FileUtilities {
                 try {
                     // Adding another '/' for remote execution.
                     if ((newURI.getScheme() != null)
-                        && (newURI.getAuthority() == null)) {
+                            && (newURI.getAuthority() == null)) {
                         // Change from Efrat:
                         // "I made these change to allow remote
                         // execution of a workflow from within a web
@@ -420,21 +420,23 @@ public class FileUtilities {
                         try {
                             // Under Webstart, ptalon, EightChannelFFT
                             // requires this.
-                            return new URL(baseDirectory.toURL(), newURI.toString());
+                            return new URL(baseDirectory.toURL(), newURI
+                                    .toString());
                         } catch (Exception ex5) {
                             // Ignore
                         }
 
                         IOException io = new IOException(
                                 "Problem with URI format in '"
-                                + urlString
-                                + "'. "
-                                + "This can happen if the '"
-                                + urlString
-                                + "' is not absolute"
-                                + " and is not present relative to the directory"
-                                + " in which the specified model was read"
-                                + " (which was '" + baseDirectory + "')");
+                                        + urlString
+                                        + "'. "
+                                        + "This can happen if the '"
+                                        + urlString
+                                        + "' is not absolute"
+                                        + " and is not present relative to the directory"
+                                        + " in which the specified model was read"
+                                        + " (which was '" + baseDirectory
+                                        + "')");
                         io.initCause(ex3);
                         throw io;
                     }
@@ -491,8 +493,6 @@ public class FileUtilities {
             return STD_IN;
         }
 
-
-
         // Not standard input. Try URL mechanism.
         URL url = nameToURL(name, base, classLoader);
 
@@ -508,9 +508,11 @@ public class FileUtilities {
             // Try it as a jar url.
             // WebStart ptalon MapReduce needs this.
             try {
-                URL possibleJarURL = ClassUtilities.jarURLEntryResource(url.toString());
+                URL possibleJarURL = ClassUtilities.jarURLEntryResource(url
+                        .toString());
                 if (possibleJarURL != null) {
-                    inputStreamReader = new InputStreamReader(possibleJarURL.openStream());
+                    inputStreamReader = new InputStreamReader(possibleJarURL
+                            .openStream());
                 }
                 // If possibleJarURL is null, this throws an exception,
                 // which we ignore and report the first exception (ex)

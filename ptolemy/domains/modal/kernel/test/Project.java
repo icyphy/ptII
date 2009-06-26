@@ -28,7 +28,7 @@ package ptolemy.domains.modal.kernel.test;
 
 import java.net.URL;
 
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.modal.kernel.ia.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
@@ -60,7 +60,7 @@ public class Project {
      */
     public Project(String firstMoML, String secondMoML) throws Exception {
         // Construct the first automaton
-        URL url = MoMLApplication.specToURL(firstMoML);
+        URL url = ConfigurationApplication.specToURL(firstMoML);
 
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().
@@ -70,7 +70,7 @@ public class Project {
         firstAutomaton.addPorts();
 
         // Construct the second automaton
-        url = MoMLApplication.specToURL(secondMoML);
+        url = ConfigurationApplication.specToURL(secondMoML);
 
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().  Also, a new instance

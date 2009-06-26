@@ -258,8 +258,9 @@ public class IOPort extends ComponentPort {
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_BEGIN,
-                                                    IOPortEvent.ALLCHANNELS, true, token));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.SEND_BEGIN, IOPortEvent.ALLCHANNELS, true,
+                    token));
         }
 
         try {
@@ -289,8 +290,9 @@ public class IOPort extends ComponentPort {
             }
         } finally {
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
-                                                        IOPortEvent.ALLCHANNELS, true, token));
+                _notifyPortEventListeners(new IOPortEvent(this,
+                        IOPortEvent.SEND_END, IOPortEvent.ALLCHANNELS, true,
+                        token));
             }
         }
     }
@@ -332,9 +334,9 @@ public class IOPort extends ComponentPort {
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_BEGIN,
-                                                    IOPortEvent.ALLCHANNELS, true,
-                                                    tokenArray, vectorLength));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.SEND_BEGIN, IOPortEvent.ALLCHANNELS, true,
+                    tokenArray, vectorLength));
         }
 
         try {
@@ -365,9 +367,9 @@ public class IOPort extends ComponentPort {
             }
         } finally {
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
-                                                        IOPortEvent.ALLCHANNELS, true,
-                                                        tokenArray, vectorLength));
+                _notifyPortEventListeners(new IOPortEvent(this,
+                        IOPortEvent.SEND_END, IOPortEvent.ALLCHANNELS, true,
+                        tokenArray, vectorLength));
             }
         }
     }
@@ -424,12 +426,19 @@ public class IOPort extends ComponentPort {
 
             if (t != null) {
                 if (width != t.intValue()) {
-                    throw new IllegalActionException(this,
-                            "The outside width (" + width + ") of port " + getFullName()
-                            + " is different from the width constrain specified by parameter "
-                            + parameter + " with container " + parameter.getContainer() + ". A"
-                            + " possible fix is to right clicking on the"
-                            + " outside relation(s) and set the width -1.");
+                    throw new IllegalActionException(
+                            this,
+                            "The outside width ("
+                                    + width
+                                    + ") of port "
+                                    + getFullName()
+                                    + " is different from the width constrain specified by parameter "
+                                    + parameter
+                                    + " with container "
+                                    + parameter.getContainer()
+                                    + ". A"
+                                    + " possible fix is to right clicking on the"
+                                    + " outside relation(s) and set the width -1.");
                 }
             }
         }
@@ -437,8 +446,8 @@ public class IOPort extends ComponentPort {
         for (IOPort port : _widthEqualToPort) {
             int otherWidth = port._getOutsideWidth(null);
             if (width != otherWidth) {
-                throw new IllegalActionException(this,
-                        "The outside width (" + width + ") of port " + getFullName()
+                throw new IllegalActionException(this, "The outside width ("
+                        + width + ") of port " + getFullName()
                         + " is different from the outside width (" + otherWidth
                         + ") of port " + port.getFullName()
                         + ". A possible fix is to right clicking on the"
@@ -446,7 +455,6 @@ public class IOPort extends ComponentPort {
             }
         }
     }
-
 
     /** Clone this port into the specified workspace. The new port is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -566,9 +574,8 @@ public class IOPort extends ComponentPort {
                     }
                     if (width == -1) {
                         throw new IllegalActionException(this,
-                                                         "Width of relation \""
-                                                         + relation.getName()
-                                                         + "\" was -1?");
+                                "Width of relation \"" + relation.getName()
+                                        + "\" was -1?");
                     }
 
                     Receiver[][] result = new Receiver[width][1];
@@ -585,7 +592,8 @@ public class IOPort extends ComponentPort {
                     // we create a new list with one element.
                     // EAL 7/30/99.
                     if (_localReceiversTable.containsKey(relation)) {
-                        List<Receiver[][]> occurrences = _localReceiversTable.get(relation);
+                        List<Receiver[][]> occurrences = _localReceiversTable
+                                .get(relation);
                         occurrences.add(result);
                     } else {
                         List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
@@ -751,7 +759,8 @@ public class IOPort extends ComponentPort {
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    public Receiver[][] deepGetReceivers() throws InvalidStateException, IllegalActionException {
+    public Receiver[][] deepGetReceivers() throws InvalidStateException,
+            IllegalActionException {
         if (!isInput()) {
             return _EMPTY_RECEIVER_ARRAY;
         }
@@ -819,9 +828,8 @@ public class IOPort extends ComponentPort {
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(
-                new IOPortEvent(this, IOPortEvent.GET_BEGIN,
-                              channelIndex, true, null));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.GET_BEGIN, channelIndex, true, null));
         }
 
         try {
@@ -859,9 +867,8 @@ public class IOPort extends ComponentPort {
             if (token == null) {
                 token = localToken;
                 if (_hasPortEventListeners) {
-                    _notifyPortEventListeners(
-                        new IOPortEvent(this, IOPortEvent.GET_END,
-                                      channelIndex, true, token));
+                    _notifyPortEventListeners(new IOPortEvent(this,
+                            IOPortEvent.GET_END, channelIndex, true, token));
                 }
             }
         }
@@ -912,9 +919,9 @@ public class IOPort extends ComponentPort {
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(
-                new IOPortEvent(this, IOPortEvent.GET_BEGIN,
-                              channelIndex, true, null, vectorLength));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.GET_BEGIN, channelIndex, true, null,
+                    vectorLength));
         }
 
         try {
@@ -947,9 +954,9 @@ public class IOPort extends ComponentPort {
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(
-                new IOPortEvent(this, IOPortEvent.GET_END,
-                              channelIndex, true, retArray, vectorLength));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.GET_END, channelIndex, true, retArray,
+                    vectorLength));
         }
 
         int index = 1;
@@ -1000,7 +1007,7 @@ public class IOPort extends ComponentPort {
 
         // FIXME: this is for backwards compatibility, but really should go
         // in a getChannelForRemoteReceiver()
-        if (! isInput()) {
+        if (!isInput()) {
             receivers = getRemoteReceivers();
 
             for (int channel = 0; channel < receivers.length; channel++) {
@@ -1042,7 +1049,6 @@ public class IOPort extends ComponentPort {
         return _defaultWidth;
     }
 
-
     /** Get a token from the specified inside channel of this port.
      *  This method is usually called on the output port of a
      *  composite actor.
@@ -1075,9 +1081,8 @@ public class IOPort extends ComponentPort {
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(
-                new IOPortEvent(this, IOPortEvent.GET_BEGIN,
-                            channelIndex, false, null));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.GET_BEGIN, channelIndex, false, null));
         }
 
         try {
@@ -1115,9 +1120,8 @@ public class IOPort extends ComponentPort {
             if (token == null) {
                 token = localToken;
                 if (_hasPortEventListeners) {
-                    _notifyPortEventListeners(
-                        new IOPortEvent(this, IOPortEvent.GET_END,
-                                    channelIndex, false, token));
+                    _notifyPortEventListeners(new IOPortEvent(this,
+                            IOPortEvent.GET_END, channelIndex, false, token));
                 }
             }
         }
@@ -1227,10 +1231,10 @@ public class IOPort extends ComponentPort {
      * @return The index of the relation at the port.
      */
     @SuppressWarnings("unchecked")
-    static public int getRelationIndex(IOPort port,
-            Relation relation,
-            boolean isOutsideRelation ) {
-        List<Relation> relations = isOutsideRelation ? port.linkedRelationList() : port.insideRelationList();
+    static public int getRelationIndex(IOPort port, Relation relation,
+            boolean isOutsideRelation) {
+        List<Relation> relations = isOutsideRelation ? port
+                .linkedRelationList() : port.insideRelationList();
         int i = 0;
         for (Relation relation2 : relations) {
             if (relation == relation2) {
@@ -1695,8 +1699,7 @@ public class IOPort extends ComponentPort {
                 if (t != null) {
                     return t.intValue();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // It it throws, it means we can't evaluate the
                 // parameter yet.
                 continue;
@@ -1705,15 +1708,16 @@ public class IOPort extends ComponentPort {
 
         for (IOPort port : _widthEqualToPort) {
             try {
-                Set<IORelation> outsideUnspecifiedWidths = RelationWidthInference._relationsWithUnspecifiedWidths(port.linkedRelationList());
+                Set<IORelation> outsideUnspecifiedWidths = RelationWidthInference
+                        ._relationsWithUnspecifiedWidths(port
+                                .linkedRelationList());
                 // It there is still a outsideUnspecifiedWidths, the width
                 // is not yet completely specified.
                 if (outsideUnspecifiedWidths.isEmpty()) {
                     int outsideWidth = port._getOutsideWidth(null);
                     return outsideWidth;
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // It it throws, it means we can't evaluate the
                 // width yet.
                 continue;
@@ -2003,7 +2007,8 @@ public class IOPort extends ComponentPort {
      *  @see #setWidthEquals(IOPort, boolean)
      */
     public boolean hasWidthConstraints() {
-        return !_widthEqualToParameter.isEmpty() || !_widthEqualToPort.isEmpty();
+        return !_widthEqualToParameter.isEmpty()
+                || !_widthEqualToPort.isEmpty();
     }
 
     /** Override the base class to invalidate the schedule and resolved
@@ -2183,7 +2188,6 @@ public class IOPort extends ComponentPort {
 
         return _isInput;
     }
-
 
     /** Return whether the port has relations connected on the inside.
      * @return True when a relation != null is connected on the inside.
@@ -2481,7 +2485,8 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             if (_numberOfSinksVersion != _workspace.getVersion()) {
                 Nameable container = getContainer();
-                Director excDirector = ((Actor) container).getExecutiveDirector();
+                Director excDirector = ((Actor) container)
+                        .getExecutiveDirector();
                 int depthOfDirector = excDirector.depthInHierarchy();
                 LinkedList<IOPort> result = new LinkedList<IOPort>();
                 Iterator<?> ports = deepConnectedPortList().iterator();
@@ -2490,11 +2495,9 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.getContainer().depthInHierarchy();
 
-                    if (port.isInput()
-                            && (depth >= depthOfDirector)) {
+                    if (port.isInput() && (depth >= depthOfDirector)) {
                         result.addLast(port);
-                    } else if (port.isOutput()
-                            && (depth < depthOfDirector)
+                    } else if (port.isOutput() && (depth < depthOfDirector)
                             && (port.numberOfSinks() > 0)) {
                         result.addLast(port);
                     }
@@ -2535,7 +2538,8 @@ public class IOPort extends ComponentPort {
                 int depthOfDirector = -1;
 
                 if (container != null) {
-                    Director director = ((Actor) container).getExecutiveDirector();
+                    Director director = ((Actor) container)
+                            .getExecutiveDirector();
                     if (director != null) {
                         depthOfDirector = director.depthInHierarchy();
                     }
@@ -2548,12 +2552,10 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.depthInHierarchy();
 
-                    if (port.isInput()
-                            && (depth <= depthOfDirector)
+                    if (port.isInput() && (depth <= depthOfDirector)
                             && (port.numberOfSources() > 0)) {
                         result.addLast(port);
-                    } else if (port.isOutput()
-                            && (depth > depthOfDirector)) {
+                    } else if (port.isOutput() && (depth > depthOfDirector)) {
                         result.addLast(port);
                     }
                 }
@@ -2628,8 +2630,8 @@ public class IOPort extends ComponentPort {
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_BEGIN,
-                                                    channelIndex, true, token));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.SEND_BEGIN, channelIndex, true, token));
         }
 
         try {
@@ -2640,7 +2642,8 @@ public class IOPort extends ComponentPort {
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
 
-                if ((farReceivers == null) || (farReceivers.length <= channelIndex)
+                if ((farReceivers == null)
+                        || (farReceivers.length <= channelIndex)
                         || (farReceivers[channelIndex] == null)) {
                     return;
                 }
@@ -2656,8 +2659,8 @@ public class IOPort extends ComponentPort {
             }
         } finally {
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
-                                                        channelIndex, true, token));
+                _notifyPortEventListeners(new IOPortEvent(this,
+                        IOPortEvent.SEND_END, channelIndex, true, token));
             }
         }
     }
@@ -2701,9 +2704,9 @@ public class IOPort extends ComponentPort {
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_BEGIN,
-                                                    channelIndex, true, tokenArray,
-                                                    vectorLength));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.SEND_BEGIN, channelIndex, true, tokenArray,
+                    vectorLength));
         }
 
         try {
@@ -2714,7 +2717,8 @@ public class IOPort extends ComponentPort {
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
 
-                if ((farReceivers == null) || (farReceivers.length <= channelIndex)
+                if ((farReceivers == null)
+                        || (farReceivers.length <= channelIndex)
                         || (farReceivers[channelIndex] == null)) {
                     return;
                 }
@@ -2730,9 +2734,9 @@ public class IOPort extends ComponentPort {
             }
         } finally {
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
-                                                        channelIndex, true, tokenArray,
-                                                        vectorLength));
+                _notifyPortEventListeners(new IOPortEvent(this,
+                        IOPortEvent.SEND_END, channelIndex, true, tokenArray,
+                        vectorLength));
             }
         }
     }
@@ -2852,8 +2856,8 @@ public class IOPort extends ComponentPort {
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_BEGIN,
-                                                    channelIndex, false, token));
+            _notifyPortEventListeners(new IOPortEvent(this,
+                    IOPortEvent.SEND_BEGIN, channelIndex, false, token));
         }
 
         try {
@@ -2864,7 +2868,8 @@ public class IOPort extends ComponentPort {
                 // any non-runtime exception.
                 farReceivers = deepGetReceivers();
 
-                if ((farReceivers == null) || (farReceivers.length <= channelIndex)
+                if ((farReceivers == null)
+                        || (farReceivers.length <= channelIndex)
                         || (farReceivers[channelIndex] == null)) {
                     return;
                 }
@@ -2880,8 +2885,8 @@ public class IOPort extends ComponentPort {
             }
         } finally {
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
-                                                        channelIndex, false, token));
+                _notifyPortEventListeners(new IOPortEvent(this,
+                        IOPortEvent.SEND_END, channelIndex, false, token));
             }
         }
     }
@@ -3071,7 +3076,8 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             if (_sinkPortListVersion != _workspace.getVersion()) {
                 Nameable container = getContainer();
-                Director excDirector = ((Actor) container).getExecutiveDirector();
+                Director excDirector = ((Actor) container)
+                        .getExecutiveDirector();
                 int depthOfDirector = excDirector.depthInHierarchy();
                 _sinkPortList = new LinkedList<IOPort>();
                 Iterator<?> ports = deepConnectedPortList().iterator();
@@ -3114,7 +3120,8 @@ public class IOPort extends ComponentPort {
                 int depthOfDirector = -1;
 
                 if (container != null) {
-                    Director director = ((Actor) container).getExecutiveDirector();
+                    Director director = ((Actor) container)
+                            .getExecutiveDirector();
                     depthOfDirector = director.depthInHierarchy();
                 }
 
@@ -3360,7 +3367,8 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 // Have to clone the local receivers table to avoid
                 // a ConcurrentModificationException.
-                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable.clone());
+                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable
+                        .clone());
 
                 for (IORelation relation : clonedMap.keySet()) {
                     if (!isInsideLinked(relation)) {
@@ -3393,7 +3401,8 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 // Have to clone the local receivers table to avoid
                 // a ConcurrentModificationException.
-                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable.clone());
+                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable
+                        .clone());
 
                 for (IORelation relation : clonedMap.keySet()) {
 
@@ -3595,7 +3604,8 @@ public class IOPort extends ComponentPort {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -3782,7 +3792,8 @@ public class IOPort extends ComponentPort {
      *  except for the specified port.
      * @exception IllegalActionException
      */
-    protected int _getInsideWidth(IORelation except) throws IllegalActionException {
+    protected int _getInsideWidth(IORelation except)
+            throws IllegalActionException {
         if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
             int result = 0;
             Iterator<?> relations = insideRelationList().iterator();
@@ -3838,7 +3849,8 @@ public class IOPort extends ComponentPort {
      *  except for the specified port.
      * @exception IllegalActionException
      */
-    protected int _getOutsideWidth(IORelation except) throws IllegalActionException {
+    protected int _getOutsideWidth(IORelation except)
+            throws IllegalActionException {
         if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
             int result = 0;
             Iterator<?> relations = linkedRelationList().iterator();
@@ -4208,7 +4220,8 @@ public class IOPort extends ComponentPort {
 
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
-                        if ((theRelation != null) && !theRelation.isWidthFixed()) {
+                        if ((theRelation != null)
+                                && !theRelation.isWidthFixed()) {
                             throw new IllegalActionException(
                                     this,
                                     relation,
@@ -4374,7 +4387,8 @@ public class IOPort extends ComponentPort {
             }
             // Need to do this for the executive director as well because the port
             // may belong to an opaque composite actor.
-            Director executiveDirector = ((Actor) container).getExecutiveDirector();
+            Director executiveDirector = ((Actor) container)
+                    .getExecutiveDirector();
             if (executiveDirector != null) {
                 executiveDirector.invalidateSchedule();
                 executiveDirector.invalidateResolvedTypes();

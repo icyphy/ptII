@@ -215,8 +215,7 @@ public class TerrainProperty extends TypedAtomicActor implements
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TerrainProperty newObject = (TerrainProperty) super
-                .clone(workspace);
+        TerrainProperty newObject = (TerrainProperty) super.clone(workspace);
         ArrayToken xypointsArray;
         try {
             xypointsArray = (ArrayToken) newObject.xyPoints.getToken();
@@ -227,12 +226,15 @@ public class TerrainProperty extends TypedAtomicActor implements
         newObject._yPoints = new int[newObject._numberOfPoints];
         for (int i = 0; i < xypointsArray.length(); i++) {
             ArrayToken xypointArray = (ArrayToken) xypointsArray.getElement(i);
-            newObject._xPoints[i] = ((IntToken) xypointArray.getElement(0)).intValue();
-            newObject._yPoints[i] = ((IntToken) xypointArray.getElement(1)).intValue();
+            newObject._xPoints[i] = ((IntToken) xypointArray.getElement(0))
+                    .intValue();
+            newObject._yPoints[i] = ((IntToken) xypointArray.getElement(1))
+                    .intValue();
         }
 
-        newObject._icon = (EditorIcon)newObject.getAttribute("_icon");
-        newObject._terrain = (FilledShapeAttribute)newObject.getAttribute("terrain");
+        newObject._icon = (EditorIcon) newObject.getAttribute("_icon");
+        newObject._terrain = (FilledShapeAttribute) newObject
+                .getAttribute("terrain");
         return newObject;
     }
 

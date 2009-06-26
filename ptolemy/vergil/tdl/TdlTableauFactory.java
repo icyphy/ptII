@@ -36,7 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TdlTableauFactory
 
@@ -58,7 +57,8 @@ public class TdlTableauFactory extends TableauFactory {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public TdlTableauFactory(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public TdlTableauFactory(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -74,7 +74,8 @@ public class TdlTableauFactory extends TableauFactory {
         Configuration configuration = (Configuration) effigy.toplevel();
 
         TDLModule model = (TDLModule) ((PtolemyEffigy) effigy).getModel();
-        FSMActor controller = ((TDLModuleDirector) model.getDirector()).getController();
+        FSMActor controller = ((TDLModuleDirector) model.getDirector())
+                .getController();
         return configuration.openModel(controller);
     }
 }

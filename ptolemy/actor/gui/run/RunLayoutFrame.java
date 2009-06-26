@@ -122,9 +122,10 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
     public void addContainer(String name, Container container) {
         // check to see if another panel with this name already exists
         ContainerLayout layout = _constraintsManager.getContainerLayout(name);
-        if (layout != null)
+        if (layout != null) {
             throw new IllegalArgumentException("A container with name " + name
                     + " already exists");
+        }
 
         layout = new ContainerLayout(name, "pref", "pref");
         _constraintsManager.addLayout(layout);

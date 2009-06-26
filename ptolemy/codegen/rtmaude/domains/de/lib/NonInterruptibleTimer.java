@@ -43,7 +43,8 @@ package ptolemy.codegen.rtmaude.domains.de.lib;
 */
 public class NonInterruptibleTimer extends Timer {
 
-    public NonInterruptibleTimer(ptolemy.domains.de.lib.NonInterruptibleTimer component) {
+    public NonInterruptibleTimer(
+            ptolemy.domains.de.lib.NonInterruptibleTimer component) {
         super(component);
     }
 }

@@ -98,7 +98,8 @@ public class DEMessageSource extends RandomSource {
         Time now = dir.getModelTime();
         _generateRandomNumber();
         dir.fireAt(this, now.add(((DoubleToken) maxDelay.getToken())
-                                 .doubleValue() * _current));
+                .doubleValue()
+                * _current));
     }
 
     /** If this is the first fire, output the request
@@ -180,11 +181,9 @@ public class DEMessageSource extends RandomSource {
      *  Derived classes may throw it if there are problems getting parameter
      *  values.
      */
-    protected void _generateRandomNumber()
-        throws IllegalActionException {
+    protected void _generateRandomNumber() throws IllegalActionException {
         _current = _random.nextDouble();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

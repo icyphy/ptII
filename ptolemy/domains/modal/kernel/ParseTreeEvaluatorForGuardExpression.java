@@ -393,10 +393,12 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // If the operator is neither about equal nor not-equal relations,
             // both tokens must be scalar tokens.
             if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
-                throw new IllegalActionException("The " + operator.image
-                        + " operator can only be applied between scalars and not "
-                        + "between a " + leftToken.getType() + " and a "
-                        + rightToken.getType() + ".");
+                throw new IllegalActionException(
+                        "The "
+                                + operator.image
+                                + " operator can only be applied between scalars and not "
+                                + "between a " + leftToken.getType()
+                                + " and a " + rightToken.getType() + ".");
             }
             ScalarToken leftScalar = (ScalarToken) leftToken;
             ScalarToken rightScalar = (ScalarToken) rightToken;

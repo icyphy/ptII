@@ -69,8 +69,7 @@ public class DefaultModelAttribute extends FileParameter {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        editorFactory = new VisibleParameterEditorFactory(this,
-                "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
     }
 
     /** Specify the container NamedObj, adding this attribute to the

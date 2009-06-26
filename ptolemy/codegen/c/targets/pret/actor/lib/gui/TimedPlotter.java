@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red
  */
-public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGeneratorHelper {
+public class TimedPlotter extends CCodeGeneratorHelper {//PlotterBase{  //CCodeGeneratorHelper {
 
     /** Constructor method for the TimedPlotter helper.
      *  @param actor the associated actor.
@@ -61,49 +61,46 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
      *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
-   public String generateFireCode() throws IllegalActionException {
-       System.out.println("Timed Plotter generateFireCode called");
-       
+    public String generateFireCode() throws IllegalActionException {
+        System.out.println("Timed Plotter generateFireCode called");
+
         StringBuffer code = new StringBuffer();
-       // code.append(super.generateFireCode());
+        // code.append(super.generateFireCode());
         ptolemy.actor.lib.gui.TimedPlotter actor = (ptolemy.actor.lib.gui.TimedPlotter) getComponent();
-        if(actor.getAttribute("_top")!= null)// this will need to be modified to be pret specific
+        if (actor.getAttribute("_top") != null)// this will need to be modified to be pret specific
         {
-        code.append(generatePlotFireCode(actor.input.getWidth(),1));
-        }
-    else if(actor.getAttribute("_bottom")!= null){// this will need to be modified to be pret specific
-            code.append(generatePlotFireCode(actor.input.getWidth(),2));  
-        }
-        else{
-            code.append(generatePlotFireCode(actor.input.getWidth(),0));    // this will need to be modified to be pret specific
+            code.append(generatePlotFireCode(actor.input.getWidth(), 1));
+        } else if (actor.getAttribute("_bottom") != null) {// this will need to be modified to be pret specific
+            code.append(generatePlotFireCode(actor.input.getWidth(), 2));
+        } else {
+            code.append(generatePlotFireCode(actor.input.getWidth(), 0)); // this will need to be modified to be pret specific
         }
         return code.toString();
     }
-    
+
     /** Generate plot specific fire code.
      *  @param width The width.
      *  @return The generated code.
      *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
-    public String generatePlotFireCode(int width, int id) throws IllegalActionException {
+    public String generatePlotFireCode(int width, int id)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();
         for (int i = width - 1; i >= 0; i--) {
             args.clear();
             args.add(Integer.valueOf(i));
-           if(id == 1){
+            if (id == 1) {
                 code.append(_generateBlockCode("plotBlock1", args));
-            }
-            else if(id == 2){
-                code.append(_generateBlockCode("plotBlock2", args));  
-            }
-            else{
+            } else if (id == 2) {
+                code.append(_generateBlockCode("plotBlock2", args));
+            } else {
                 code.append(_generateBlockCode("plotBlock", args));
             }
         }
 
         return code.toString();
     }
-    
+
 }

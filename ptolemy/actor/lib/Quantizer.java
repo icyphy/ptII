@@ -117,13 +117,12 @@ public class Quantizer extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Quantizer newObject = (Quantizer) super.clone(workspace);
 
-        newObject._thresholds = new double [_thresholds.length];
-        System.arraycopy(_thresholds, 0,
-                newObject._thresholds, 0, _thresholds.length) ;
+        newObject._thresholds = new double[_thresholds.length];
+        System.arraycopy(_thresholds, 0, newObject._thresholds, 0,
+                _thresholds.length);
 
         return newObject;
     }

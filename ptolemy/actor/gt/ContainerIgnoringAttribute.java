@@ -52,8 +52,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ContainerIgnoringAttribute extends Parameter
-implements GTAttribute {
+public class ContainerIgnoringAttribute extends Parameter implements
+        GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -75,8 +75,7 @@ implements GTAttribute {
         setTypeEquals(BaseType.BOOLEAN);
         setToken(BooleanToken.getInstance(!DEFAULT));
 
-        editorFactory = new VisibleParameterEditorFactory(this,
-                "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
     }
 
     /** Specify the container NamedObj, adding this attribute to the
@@ -109,7 +108,7 @@ implements GTAttribute {
      *  @see #getContainer()
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, true);
@@ -166,54 +165,54 @@ implements GTAttribute {
     /** The icon used when flattening is set to true.
      */
     private static final String _FLATTENING_ICON = "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
-        + "  style=\"fill:#00FFFF\"/>"
-        + "<rect x=\"5\" y=\"5\" width=\"30\" height=\"22\""
-        + "  style=\"fill:#FF0000\"/>"
-        + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
-        + "  style=\"fill:#C0C0C0\"/>"
-        + "<rect x=\"14\" y=\"11\" width=\"15\" height=\"10\""
-        + "  style=\"fill:#FF0000\"/>"
-        + "<rect x=\"16\" y=\"13\" width=\"11\" height=\"6\""
-        + "  style=\"fill:#C0C0C0\"/>"
-        + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<rect x=\"59\" y=\"5\" width=\"30\" height=\"22\""
-        + "  style=\"fill:#FF0000\"/>"
-        + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
-        + "  style=\"fill:#C0C0C0\"/>" + "</svg>";
+            + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
+            + "  style=\"fill:#00FFFF\"/>"
+            + "<rect x=\"5\" y=\"5\" width=\"30\" height=\"22\""
+            + "  style=\"fill:#FF0000\"/>"
+            + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
+            + "  style=\"fill:#C0C0C0\"/>"
+            + "<rect x=\"14\" y=\"11\" width=\"15\" height=\"10\""
+            + "  style=\"fill:#FF0000\"/>"
+            + "<rect x=\"16\" y=\"13\" width=\"11\" height=\"6\""
+            + "  style=\"fill:#C0C0C0\"/>"
+            + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<rect x=\"59\" y=\"5\" width=\"30\" height=\"22\""
+            + "  style=\"fill:#FF0000\"/>"
+            + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
+            + "  style=\"fill:#C0C0C0\"/>" + "</svg>";
 
     /** The icon used when flattening is set to false.
      */
     private static final String _NOT_FLATTENING_ICON = "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
-        + "  style=\"fill:#00FFFF\"/>"
-        + "<rect x=\"5\" y=\"5\" width=\"30\" height=\"22\""
-        + "  style=\"fill:#FF0000\"/>"
-        + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
-        + "  style=\"fill:#C0C0C0\"/>"
-        + "<rect x=\"14\" y=\"11\" width=\"15\" height=\"10\""
-        + "  style=\"fill:#FF0000\"/>"
-        + "<rect x=\"16\" y=\"13\" width=\"11\" height=\"6\""
-        + "  style=\"fill:#C0C0C0\"/>"
-        + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<rect x=\"59\" y=\"5\" width=\"30\" height=\"22\""
-        + "  style=\"fill:#FF0000\"/>"
-        + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
-        + "  style=\"fill:#C0C0C0\"/>"
-        + "<line x1=\"41\" y1=\"9\" x2=\"49\" y2=\"23\""
-        + "  style=\"stroke:#C00000; stroke-width:3\"/>" + "</svg>";
+            + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
+            + "  style=\"fill:#00FFFF\"/>"
+            + "<rect x=\"5\" y=\"5\" width=\"30\" height=\"22\""
+            + "  style=\"fill:#FF0000\"/>"
+            + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
+            + "  style=\"fill:#C0C0C0\"/>"
+            + "<rect x=\"14\" y=\"11\" width=\"15\" height=\"10\""
+            + "  style=\"fill:#FF0000\"/>"
+            + "<rect x=\"16\" y=\"13\" width=\"11\" height=\"6\""
+            + "  style=\"fill:#C0C0C0\"/>"
+            + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<rect x=\"59\" y=\"5\" width=\"30\" height=\"22\""
+            + "  style=\"fill:#FF0000\"/>"
+            + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
+            + "  style=\"fill:#C0C0C0\"/>"
+            + "<line x1=\"41\" y1=\"9\" x2=\"49\" y2=\"23\""
+            + "  style=\"stroke:#C00000; stroke-width:3\"/>" + "</svg>";
 }

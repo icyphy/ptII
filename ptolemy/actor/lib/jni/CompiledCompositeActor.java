@@ -334,11 +334,17 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     } catch (UnsupportedClassVersionError ex) {
                         // This can occur if we have two different
                         // machines sharing ~/codegen.
-                        throw new IllegalActionException(this, ex,
+                        throw new IllegalActionException(
+                                this,
+                                ex,
                                 "Unsupported class version in the class \""
-                                        + jniClassName + "\" from \"" + url
+                                        + jniClassName
+                                        + "\" from \""
+                                        + url
                                         + "\".  Try deleting the \""
-                                        + jniClassName + "\" class in \"" + url
+                                        + jniClassName
+                                        + "\" class in \""
+                                        + url
                                         + "\".\nThis problem can also occur "
                                         + "if the version of java that is "
                                         + "running Ptolemy and the version "
@@ -548,8 +554,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             Writer writer = null;
             try {
                 if (_debugging) {
-                    _debugAndSystemOut("Generate \"" + codeFileName + "\" in \""
-                            + codeDirectory.getBaseDirectory() + "\"");
+                    _debugAndSystemOut("Generate \"" + codeFileName
+                            + "\" in \"" + codeDirectory.getBaseDirectory()
+                            + "\"");
                 }
 
                 writer = FileUtilities.openForWriting(codeFileName,
@@ -615,7 +622,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         if (modelURI == null) {
             if (_debugging) {
                 _debugAndSystemOut(message
-                    + "This model does not have a _uri parameter.");
+                        + "This model does not have a _uri parameter.");
             }
             return true;
         }
@@ -630,8 +637,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 || sharedObjectFile.lastModified() < modelFile.lastModified()) {
             if (_debugging) {
                 _debugAndSystemOut(message
-                    + "The sharedObjectFile has a modification time "
-                    + "that is earlier than the modelFile modification time.");
+                        + "The sharedObjectFile has a modification time "
+                        + "that is earlier than the modelFile modification time.");
             }
             return true;
         }
@@ -639,9 +646,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         if (effigy == null) {
             if (_debugging) {
                 _debugAndSystemOut(message
-                    + "No effigy.  This can happen when "
-                    + "CodeGenerator.generateCode() is called from within "
-                    + "the test suite.  The code will be recompiled.");
+                        + "No effigy.  This can happen when "
+                        + "CodeGenerator.generateCode() is called from within "
+                        + "the test suite.  The code will be recompiled.");
             }
             _version = ++_noEffigyVersion;
             _updateSanitizedActorName();

@@ -55,8 +55,7 @@ public class AtomicActor extends PropertyCombineHelper {
      * @exception KernelException
      */
     public AtomicActor(PropertyCombineSolver solver,
-            ptolemy.actor.AtomicActor actor)
-            throws KernelException {
+            ptolemy.actor.AtomicActor actor) throws KernelException {
         super(solver, actor);
     }
 }

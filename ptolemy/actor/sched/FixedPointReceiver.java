@@ -122,7 +122,6 @@ public class FixedPointReceiver extends AbstractReceiver {
         return result;
     }
 
-
     /** Return the contained token.  If there is no token or the status
      *  of this receiver is unknown, throw an exception.
      *  @return The token contained in the receiver.

@@ -121,8 +121,8 @@ public class MatchResultTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        MatchResultViewer frame = new MatchResultViewer(
-                model, this, defaultLibrary);
+        MatchResultViewer frame = new MatchResultViewer(model, this,
+                defaultLibrary);
 
         try {
             setFrame(frame);

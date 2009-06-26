@@ -138,20 +138,23 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *   a period.
      */
     public static XMLIcon getXMLIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         try {
-          Class XMLIconClass = _getAlternateXMLIcon();
-          if (XMLIconClass == null) {
-             return new XMLIcon(container, name);
-          }
+            Class XMLIconClass = _getAlternateXMLIcon();
+            if (XMLIconClass == null) {
+                return new XMLIcon(container, name);
+            }
 
-          Class[] argsClass = new Class[] {NamedObj.class, String.class};
-          Constructor alternateXMLIconConstructor = XMLIconClass.getConstructor(argsClass);
-          XMLIcon xmlIcon = (XMLIcon)alternateXMLIconConstructor.newInstance(new Object[] {container, name});
-          return xmlIcon;
-        } catch(Exception ex) {
-            System.out.println("Warning: could not instantiate alternate XMLIcon class. " +
-              "Using default XMLIcon.  : " + ex.getMessage());
+            Class[] argsClass = new Class[] { NamedObj.class, String.class };
+            Constructor alternateXMLIconConstructor = XMLIconClass
+                    .getConstructor(argsClass);
+            XMLIcon xmlIcon = (XMLIcon) alternateXMLIconConstructor
+                    .newInstance(new Object[] { container, name });
+            return xmlIcon;
+        } catch (Exception ex) {
+            System.out
+                    .println("Warning: could not instantiate alternate XMLIcon class. "
+                            + "Using default XMLIcon.  : " + ex.getMessage());
             ex.printStackTrace();
             return new XMLIcon(container, name);
         }
@@ -173,20 +176,24 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *   a period.
      */
     public static XMLIcon getXMLIcon(Workspace workspace, String name)
-      throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         try {
             Class XMLIconClass = _getAlternateXMLIcon();
             if (XMLIconClass == null) {
-               return new XMLIcon(workspace, name);
+                return new XMLIcon(workspace, name);
             }
             // Get the new object and return it
-            Class[] argsClass = new Class[] {ptolemy.kernel.util.Workspace.class, String.class};
-            Constructor alternateXMLIconConstructor = XMLIconClass.getConstructor(argsClass);
-            XMLIcon xmlIcon = (XMLIcon)alternateXMLIconConstructor.newInstance(new Object[] {workspace, name});
+            Class[] argsClass = new Class[] {
+                    ptolemy.kernel.util.Workspace.class, String.class };
+            Constructor alternateXMLIconConstructor = XMLIconClass
+                    .getConstructor(argsClass);
+            XMLIcon xmlIcon = (XMLIcon) alternateXMLIconConstructor
+                    .newInstance(new Object[] { workspace, name });
             return xmlIcon;
         } catch (Exception ex) {
-            System.out.println("Warning: could not instantiate alternate XMLIcon class. " +
-              "Using default XMLIcon.  : " + ex.getMessage());
+            System.out
+                    .println("Warning: could not instantiate alternate XMLIcon class. "
+                            + "Using default XMLIcon.  : " + ex.getMessage());
             ex.printStackTrace();
             return new XMLIcon(workspace, name);
         }
@@ -374,7 +381,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         String result = "";
 
         if (bracket == 0) {
@@ -418,30 +426,30 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         // FIXME: why does this always skip the first configuration?
         // Instead, we should check each configuration as we go.
         if (configurations.hasNext()) {
-            Configuration config = (Configuration)configurations.next();
+            Configuration config = (Configuration) configurations.next();
             String alternateXMLIconClassName = null;
             if (config != null) {
                 // If _alternateXMLIcon is set in the config, use that
                 // class as the XMLIcon instead of the default
 
-                StringAttribute alternateXMLIconAttribute = (StringAttribute)
-                    config.getAttribute("_alternateXMLIcon");
+                StringAttribute alternateXMLIconAttribute = (StringAttribute) config
+                        .getAttribute("_alternateXMLIcon");
                 if (alternateXMLIconAttribute != null) {
-                    alternateXMLIconClassName =
-                        alternateXMLIconAttribute.getExpression();
+                    alternateXMLIconClassName = alternateXMLIconAttribute
+                            .getExpression();
                 }
 
-                if (alternateXMLIconClassName == null) {  //attribute was not found
+                if (alternateXMLIconClassName == null) { //attribute was not found
                     return null;
                 } else {
-                    Class alternateXMLIconClass = Class.forName(alternateXMLIconClassName);
+                    Class alternateXMLIconClass = Class
+                            .forName(alternateXMLIconClassName);
                     return alternateXMLIconClass;
                 }
             }
         }
         return null;
     }
-
 
     /** Update the painted list of the icon based on the SVG data
      *  in the associated "_iconDescription" parameter, if there is one.

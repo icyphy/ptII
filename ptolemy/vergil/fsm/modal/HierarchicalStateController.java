@@ -96,8 +96,8 @@ public class HierarchicalStateController extends StateController {
                 _addRefinementAction));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _removeRefinementAction));
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _lookInsideAction));
+        _menuFactory
+                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -158,8 +158,8 @@ public class HierarchicalStateController extends StateController {
                 Iterator iterator = refinementList.iterator();
                 while (iterator.hasNext()) {
                     Entity entity = (Entity) iterator.next();
-                    refinementClasses.put(entity.getName(),
-                            entity.getClass().getName());
+                    refinementClasses.put(entity.getName(), entity.getClass()
+                            .getName());
                 }
             } else {
                 refinementClasses = getRefinementClasses();
@@ -167,8 +167,8 @@ public class HierarchicalStateController extends StateController {
 
             // If refinement extenders are defined, add the classes specified in
             // them to the list of choices.
-            List<RefinementExtender> extenders = state.attributeList(
-                    RefinementExtender.class);
+            List<RefinementExtender> extenders = state
+                    .attributeList(RefinementExtender.class);
             String firstExtenderDescription = null;
             for (RefinementExtender extender : extenders) {
                 try {
@@ -185,8 +185,9 @@ public class HierarchicalStateController extends StateController {
 
             String[] choiceNames = (String[]) refinementClasses.keySet()
                     .toArray(new String[refinementClasses.size()]);
-            query.addChoice("Class", "Class", choiceNames, choiceNames[0],
-                    true);
+            query
+                    .addChoice("Class", "Class", choiceNames, choiceNames[0],
+                            true);
             if (firstExtenderDescription != null) {
                 query.set("Class", firstExtenderDescription);
             }
@@ -226,8 +227,8 @@ public class HierarchicalStateController extends StateController {
             // specified a set of prototype refinements.
             Entity template = null;
             if (refinements instanceof CompositeEntity) {
-                template = ((CompositeEntity) refinements).getEntity(
-                        choiceName);
+                template = ((CompositeEntity) refinements)
+                        .getEntity(choiceName);
             }
 
             try {
@@ -427,8 +428,7 @@ public class HierarchicalStateController extends StateController {
     }
 
     /** The action that adds a refinement. */
-    protected AddRefinementAction _addRefinementAction =
-        new AddRefinementAction();
+    protected AddRefinementAction _addRefinementAction = new AddRefinementAction();
 
     /** The action that handles look inside.  This is accessed by
      *  by ActorViewerController to create a hot key for the editor.
@@ -436,6 +436,5 @@ public class HierarchicalStateController extends StateController {
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
     /** The action that removes a refinement. */
-    protected RemoveRefinementAction _removeRefinementAction =
-        new RemoveRefinementAction();
+    protected RemoveRefinementAction _removeRefinementAction = new RemoveRefinementAction();
 }

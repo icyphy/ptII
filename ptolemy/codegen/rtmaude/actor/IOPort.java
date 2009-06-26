@@ -59,14 +59,13 @@ public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
     @Override
     public String generateTermCode() throws IllegalActionException {
         ptolemy.actor.IOPort p = (ptolemy.actor.IOPort) getComponent();
-        if ( p.getWidth() > 1 )
+        if (p.getWidth() > 1) {
             return _generateBlockCode("multiBlock");
-        else
-            return _generateBlockCode(defaultTermBlock,
-                    (p.isInput() && p.isOutput() ?
-                            "InOut" : (p.isInput() ? "In" : "Out")
-                    ) + "Port"
-        );
+        } else {
+            return _generateBlockCode(defaultTermBlock, (p.isInput()
+                    && p.isOutput() ? "InOut" : (p.isInput() ? "In" : "Out"))
+                    + "Port");
+        }
     }
 
     public String generateCodeForGet(String channel)

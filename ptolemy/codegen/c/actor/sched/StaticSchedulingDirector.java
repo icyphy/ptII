@@ -83,8 +83,8 @@ public class StaticSchedulingDirector extends Director {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(
-                "The firing of the StaticSchedulingDirector"));
+        code.append(_codeGenerator
+                .comment("The firing of the StaticSchedulingDirector"));
 
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
@@ -120,12 +120,12 @@ public class StaticSchedulingDirector extends Director {
                         code.append("int $actorSymbol(i);" + _eol);
                         isIDefined = true;
                     }
-                    code.append("for ($actorSymbol(i) = 0; $actorSymbol(i) < " + count
-                            + " ; $actorSymbol(i)++) {" + _eol);
+                    code.append("for ($actorSymbol(i) = 0; $actorSymbol(i) < "
+                            + count + " ; $actorSymbol(i)++) {" + _eol);
                 }
 
-                code.append(CodeGeneratorHelper.generateName((NamedObj)
-                 actor) + "();" + _eol);
+                code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
+                        + "();" + _eol);
 
                 _generateUpdatePortOffsetCode(code, actor);
 
@@ -196,8 +196,8 @@ public class StaticSchedulingDirector extends Director {
                 // Declare iteration outside of the loop to avoid
                 // mode" with gcc-3.3.3
                 code.append(_eol + "int iteration;" + _eol);
-                code.append("for (iteration = 0; iteration < "
-                        + iterationCount + "; iteration ++) {" + _eol);
+                code.append("for (iteration = 0; iteration < " + iterationCount
+                        + "; iteration ++) {" + _eol);
             }
         }
 
@@ -214,8 +214,7 @@ public class StaticSchedulingDirector extends Director {
                     + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
          */
-        _generateUpdatePortOffsetCode(code,
-                (Actor) _director.getContainer());
+        _generateUpdatePortOffsetCode(code, (Actor) _director.getContainer());
 
         code.append(generatePostfireCode());
 
@@ -271,8 +270,8 @@ public class StaticSchedulingDirector extends Director {
                     .doubleValue();
             if (periodValue != 0.0) {
                 variableDeclarations.append(_eol
-                        + _codeGenerator.comment(
-                                "Director has a period attribute,"
+                        + _codeGenerator
+                                .comment("Director has a period attribute,"
                                         + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }

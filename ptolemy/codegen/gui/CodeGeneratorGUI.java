@@ -182,8 +182,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         // If we execute any commands, print the output in the text area.
         codeGenerator.setExecuteCommands(exec);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                upper, exec);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper,
+                exec);
         splitPane.setOneTouchExpandable(true);
 
         // Adjust the divider so that the control panel does not

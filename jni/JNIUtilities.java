@@ -579,8 +579,7 @@ public class JNIUtilities {
                                 + "    //if ((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n"
                                 + "    //{\n"
                                 + "    //std::cout << \"warning : the matrix is empty !\""
-                                + " << std::endl;\n"
-                                + "    //}\n");
+                                + " << std::endl;\n" + "    //}\n");
             }
         }
 

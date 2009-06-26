@@ -116,9 +116,9 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
         iconColumns.setExpression("{\"deskno\", \"lname\"}");
         colorKey.setExpression("sponsorlname");
-        columns.setExpression("{\"deskno\", \"lname\", \"fnames\"," +
-                        " \"email\", \"classcd\", \"sponsorlname\", " +
-                        "\"occupancy\", \"departure\", \"spacenotes\"}");
+        columns.setExpression("{\"deskno\", \"lname\", \"fnames\","
+                + " \"email\", \"classcd\", \"sponsorlname\", "
+                + "\"occupancy\", \"departure\", \"spacenotes\"}");
 
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");
@@ -242,9 +242,11 @@ public class Occupants extends ArrayOfRecordsRecorder {
             fieldNames.append(label);
             // If the field identifies the space, then use the destination value.
             // Otherwise, use the source value.
-            String fieldValue = ((StringToken)sourceRecord.get(label)).stringValue();
+            String fieldValue = ((StringToken) sourceRecord.get(label))
+                    .stringValue();
             if (_spaceFields.contains(label)) {
-                fieldValue = ((StringToken)destinationRecord.get(label)).stringValue();
+                fieldValue = ((StringToken) destinationRecord.get(label))
+                        .stringValue();
             } else {
                 if (clearedFieldValues.length() > 0) {
                     clearedFieldValues.append(", ");
@@ -302,7 +304,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             }
             Set<String> result = new TreeSet<String>();
             for (int i = 0; i < sourceArray.length(); i++) {
-                RecordToken token = (RecordToken)sourceArray.getElement(i);
+                RecordToken token = (RecordToken) sourceArray.getElement(i);
                 String classcd = _getField(token, "classcd");
                 if (!"".equals(classcd)) {
                     result.add(classcd);
@@ -328,36 +330,29 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  @param parent The owning frame.
      *  @return A record for a person to assign.
      */
-    private RecordToken _editPersonQuery(
-            RecordToken person,
-            String room,
-            DatabaseManager database,
-            NamedObj object,
-            Frame parent)
+    private RecordToken _editPersonQuery(RecordToken person, String room,
+            DatabaseManager database, NamedObj object, Frame parent)
             throws CancelException, IllegalActionException {
         Query query = new Query();
         // NOTE: It would be nice to just provide editing of all fields
         // in _occupantInSpaceFields, but the sponsor needs to be dealt
         // with specially.
         String oldSponsorName = _getField(person, "sponsorlname");
-        query.addLine("spacenotes", "spacenotes", _getField(person, "spacenotes"));
+        query.addLine("spacenotes", "spacenotes", _getField(person,
+                "spacenotes"));
         query.addLine("occupancy", "occupancy", _getField(person, "occupancy"));
         query.addLine("departure", "departure", _getField(person, "departure"));
         query.addLine("sponsorlname", "sponsorlname", oldSponsorName);
 
-        String message = "Edit occupant "
-                + _getField(person, "fnames")
-                + " "
-                + _getField(person, "lname")
-                + " in "
-                + room
+        String message = "Edit occupant " + _getField(person, "fnames") + " "
+                + _getField(person, "lname") + " in " + room
                 + "\nPlease enter a description of the occupant,"
                 + "\nthe occupancy date, and the expected departure"
                 + "\ndate (if known). Dates should be in format"
                 + "\nYEAR-MONTH-DAY, as in 2008-08-15."
                 + "\nYou may also specify or change the sponsor.";
-        ComponentDialog subdialog = new ComponentDialog(
-                parent, "Edit occupant", query, null, message);
+        ComponentDialog subdialog = new ComponentDialog(parent,
+                "Edit occupant", query, null, message);
 
         if (!"OK".equals(subdialog.buttonPressed())) {
             // User canceled.
@@ -370,35 +365,33 @@ public class Occupants extends ArrayOfRecordsRecorder {
             // Sponsor has changed. Get new sponsor information.
             boolean iterate = true;
             while (iterate) {
-                RecordToken sponsor = _searchForPerson(
-                        newSponsorName, sponsorFnames, "", "", "", parent, object, database, null,
-                        "Find sponsor for "
-                        + _getField(person, "fnames")
-                        + " "
-                        + _getField(person, "lname"));
+                RecordToken sponsor = _searchForPerson(newSponsorName,
+                        sponsorFnames, "", "", "", parent, object, database,
+                        null, "Find sponsor for " + _getField(person, "fnames")
+                                + " " + _getField(person, "lname"));
                 // Get confirmation with full information.
                 newSponsorName = _getField(sponsor, "lname");
                 sponsorFnames = _getField(sponsor, "fnames");
                 sponsorID = _getField(sponsor, "personid");
                 String question = "Confirm that sponsor for "
-                        + _getField(person, "fnames")
-                        + " "
-                        + _getField(person, "lname")
-                        + " should be "
-                        + sponsorFnames
-                        + " "
-                        + newSponsorName
-                        + "?";
+                        + _getField(person, "fnames") + " "
+                        + _getField(person, "lname") + " should be "
+                        + sponsorFnames + " " + newSponsorName + "?";
                 if (MessageHandler.yesNoCancelQuestion(question)) {
                     break;
                 }
             }
         }
 
-        Map<String,Token> map = _recordAsMap(person);
-        map.put("spacenotes", new StringToken(query.getStringValue("spacenotes")));
-        map.put("occupancy", new StringToken(query.getStringValue("occupancy")));
-        map.put("departure", new StringToken(query.getStringValue("departure")));
+        Map<String, Token> map = _recordAsMap(person);
+        map.put("spacenotes", new StringToken(query
+                .getStringValue("spacenotes")));
+        map
+                .put("occupancy", new StringToken(query
+                        .getStringValue("occupancy")));
+        map
+                .put("departure", new StringToken(query
+                        .getStringValue("departure")));
         map.put("sponsorlname", new StringToken(newSponsorName));
         map.put("sponsorfnames", new StringToken(sponsorFnames));
         map.put("sponsorid", new StringToken(sponsorID));
@@ -415,7 +408,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
     private String _getField(RecordToken record, String field) {
         Token fieldValue = record.get(field);
         if (fieldValue instanceof StringToken) {
-            return ((StringToken)fieldValue).stringValue();
+            return ((StringToken) fieldValue).stringValue();
         }
         return "";
     }
@@ -434,12 +427,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *   be evaluated or if executing the database query throws it,
      *   or if re-executing the model throws it.
      */
-    private boolean _move(
-            DatabaseManager database,
-            String sourceSpaceID,
-            String destinationSpaceID,
-            int mode)
-            throws KernelException {
+    private boolean _move(DatabaseManager database, String sourceSpaceID,
+            String destinationSpaceID, int mode) throws KernelException {
 
         // If the source and destination IDs are the same, don't do anything.
         if (sourceSpaceID.equals(destinationSpaceID)) {
@@ -459,7 +448,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
         sql1.append(sourceSpaceID);
         sql1.append("';");
         String databaseName = databaseManager.stringValue();
-        database = DatabaseManager.findDatabaseManager(databaseName, Occupants.this);
+        database = DatabaseManager.findDatabaseManager(databaseName,
+                Occupants.this);
         ArrayToken sourceArray = database.executeQuery(sql1.toString());
         // If the above returns null, the user canceled.
         if (sourceArray == null) {
@@ -474,7 +464,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             }
             return true;
         }
-        RecordToken sourceRecord = (RecordToken)sourceArray.getElement(0);
+        RecordToken sourceRecord = (RecordToken) sourceArray.getElement(0);
 
         // Next use a query to get a complete record of the destination.
         StringBuffer sql2 = new StringBuffer();
@@ -497,11 +487,13 @@ public class Occupants extends ArrayOfRecordsRecorder {
             }
             return true;
         }
-        RecordToken destinationRecord = (RecordToken)destinationArray.getElement(0);
+        RecordToken destinationRecord = (RecordToken) destinationArray
+                .getElement(0);
 
         // Now do different things depending on the mode.
         if (mode == _ADD_NEW) {
-            _addNewShared(database, sourceSpaceID, sourceRecord, destinationRecord);
+            _addNewShared(database, sourceSpaceID, sourceRecord,
+                    destinationRecord);
         } else if (mode == _REPLACE) {
             // Create a new entry that replaces all the fields of destination
             // except the ones that identify the destination location.
@@ -520,7 +512,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     }
                     setFieldValues.append(label);
                     setFieldValues.append("=");
-                    String sourceFieldValue = ((StringToken)sourceRecord.get(label)).stringValue();
+                    String sourceFieldValue = ((StringToken) sourceRecord
+                            .get(label)).stringValue();
                     setFieldValues.append(_quotedString(sourceFieldValue));
 
                     if (clearedFieldValues.length() > 0) {
@@ -572,16 +565,20 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     }
                     destinationFieldValues.append(label);
                     destinationFieldValues.append("=");
-                    String sourceFieldValue = ((StringToken)sourceRecord.get(label)).stringValue();
-                    destinationFieldValues.append(_quotedString(sourceFieldValue));
+                    String sourceFieldValue = ((StringToken) sourceRecord
+                            .get(label)).stringValue();
+                    destinationFieldValues
+                            .append(_quotedString(sourceFieldValue));
 
                     if (sourceFieldValues.length() > 0) {
                         sourceFieldValues.append(", ");
                     }
                     sourceFieldValues.append(label);
                     sourceFieldValues.append("=");
-                    String destinationFieldValue = ((StringToken)destinationRecord.get(label)).stringValue();
-                    sourceFieldValues.append(_quotedString(destinationFieldValue));
+                    String destinationFieldValue = ((StringToken) destinationRecord
+                            .get(label)).stringValue();
+                    sourceFieldValues
+                            .append(_quotedString(destinationFieldValue));
                 }
             }
 
@@ -618,12 +615,12 @@ public class Occupants extends ArrayOfRecordsRecorder {
     private String _occupants(ArrayToken records) {
         String result = null;
         if (records.length() > 0) {
-            RecordToken occupant = (RecordToken)records.getElement(0);
+            RecordToken occupant = (RecordToken) records.getElement(0);
             Token priorLname = occupant.get("lname");
             String lname = "";
             boolean foundOccupant = false;
             if (priorLname != null) {
-                lname = ((StringToken)priorLname).stringValue().trim();
+                lname = ((StringToken) priorLname).stringValue().trim();
                 if (lname.length() > 0) {
                     foundOccupant = true;
                 }
@@ -631,7 +628,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             Token priorFnames = occupant.get("fnames");
             String fnames = "";
             if (priorFnames != null) {
-                fnames = ((StringToken)priorFnames).stringValue().trim();
+                fnames = ((StringToken) priorFnames).stringValue().trim();
                 if (fnames.length() > 0) {
                     foundOccupant = true;
                 }
@@ -696,8 +693,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  @param record The record token.
      *  @return A map with the contents of the record.
      */
-    private Map<String,Token> _recordAsMap(RecordToken record) {
-        Map<String,Token> result = new LinkedHashMap<String,Token>();
+    private Map<String, Token> _recordAsMap(RecordToken record) {
+        Map<String, Token> result = new LinkedHashMap<String, Token>();
         Set<String> labels = record.labelSet();
         for (String label : labels) {
             Token fieldValue = record.get(label);
@@ -724,18 +721,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  @param message A text message to include in the dialog, or null to not specify one.
      *  @return A record for a person.
      */
-    private RecordToken _searchForPerson(
-            String lname,
-            String fnames,
-            String classcd,
-            String email,
-            String sponsorlname,
-            Frame parent,
-            NamedObj object,
-            DatabaseManager database,
-            RecordToken sponsor,
-            String message
-            ) throws CancelException, IllegalActionException {
+    private RecordToken _searchForPerson(String lname, String fnames,
+            String classcd, String email, String sponsorlname, Frame parent,
+            NamedObj object, DatabaseManager database, RecordToken sponsor,
+            String message) throws CancelException, IllegalActionException {
         Query query = new Query();
         query.addLine("lname", "lastname", lname);
         query.addLine("fnames", "first names", fnames);
@@ -754,8 +743,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
             query.addDisplay("sponsorlname", "sponsor last name", sponsorlname);
         }
 
-        ComponentDialog subdialog = new ComponentDialog(
-                parent, "Find a person", query, null, message);
+        ComponentDialog subdialog = new ComponentDialog(parent,
+                "Find a person", query, null, message);
 
         if (!"OK".equals(subdialog.buttonPressed())) {
             // User canceled.
@@ -821,9 +810,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
             // No pattern was specified.
             MessageHandler.warning("Please specify a search pattern.");
             // Re-open the dialog.
-            return _searchForPerson(
-                    lname, fnames, classcd, email, sponsorlname,
-                    parent, object, database, sponsor, message);
+            return _searchForPerson(lname, fnames, classcd, email,
+                    sponsorlname, parent, object, database, sponsor, message);
         }
         sql.append(";");
         ArrayToken matches = database.executeQuery(sql.toString());
@@ -839,23 +827,24 @@ public class Occupants extends ArrayOfRecordsRecorder {
         // to redo the search).
         if (sponsor == null) {
             while (matches.length() == 0) {
-                if (MessageHandler.yesNoQuestion("No matching entries. Create a new entry?")) {
+                if (MessageHandler
+                        .yesNoQuestion("No matching entries. Create a new entry?")) {
                     // The next to final null argument forces the sponsor to match in the database.
                     // We need to be able to have a sponsor that is not the people database (e.g.
                     // a center), so we construct a dummy record for that.
                     RecordToken sponsorsSponsor = new RecordToken();
-                    sponsor = _searchForPerson(
-                            sponsorlname, "", "", "", "", parent, object,
-                            database, sponsorsSponsor, "Please specify a sponsor:");
+                    sponsor = _searchForPerson(sponsorlname, "", "", "", "",
+                            parent, object, database, sponsorsSponsor,
+                            "Please specify a sponsor:");
                     sponsorlname = _getField(sponsor, "lname");
-                    return _searchForPerson(
-                            lname, fnames, classcd, email, sponsorlname,
-                            parent, object, database, sponsor, "New occupant profile:");
+                    return _searchForPerson(lname, fnames, classcd, email,
+                            sponsorlname, parent, object, database, sponsor,
+                            "New occupant profile:");
                 } else {
                     // Re-open the dialog to search again.
-                    return _searchForPerson(
-                            lname, fnames, classcd, email, sponsorlname,
-                            parent, object, database, sponsor, message);
+                    return _searchForPerson(lname, fnames, classcd, email,
+                            sponsorlname, parent, object, database, sponsor,
+                            message);
                 }
             }
         } else if (matches.length() == 0) {
@@ -893,8 +882,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 ArrayToken columns = new ArrayToken(
                         "{\"lname\", \"fnames\", \"email\", \"classcd\"}");
                 selectOne.display(matches, columns);
-                ComponentDialog selectOneDialog = new ComponentDialog(
-                        parent, "Select a person", selectOne);
+                ComponentDialog selectOneDialog = new ComponentDialog(parent,
+                        "Select a person", selectOne);
                 if (!"OK".equals(selectOneDialog.buttonPressed())) {
                     // User canceled.
                     throw new CancelException();
@@ -902,10 +891,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 selectedOne = selectOne.table.getSelectedRow();
             }
             // User selected one. Pre-populate the information.
-            return (RecordToken)matches.getElement(selectedOne);
+            return (RecordToken) matches.getElement(selectedOne);
         } else {
             // There is only one match. Use that.
-            return (RecordToken)matches.getElement(0);
+            return (RecordToken) matches.getElement(0);
         }
     }
 
@@ -942,35 +931,33 @@ public class Occupants extends ArrayOfRecordsRecorder {
             boolean abort = false;
             try {
                 Parameter attributeToEdit = Occupants.this.records;
-                ArrayToken value = (ArrayToken)attributeToEdit.getToken();
+                ArrayToken value = (ArrayToken) attributeToEdit.getToken();
                 ArrayOfRecordsPane pane = new ArrayOfRecordsPane();
-                ArrayToken columnsValue = (ArrayToken)columns.getToken();
+                ArrayToken columnsValue = (ArrayToken) columns.getToken();
                 if (columnsValue != null && columnsValue.length() == 0) {
                     columnsValue = null;
                 }
                 pane.display(value, columnsValue);
                 _table = pane.table;
 
-                String[] buttons = {"Close",
-                        "Edit occupant",
-                        "Move occupant",
-                        "Add occupant",
-                        "Remove occupant",
-                        "Remove space",
-                        "Add space"};
+                String[] buttons = { "Close", "Edit occupant", "Move occupant",
+                        "Add occupant", "Remove occupant", "Remove space",
+                        "Add space" };
 
                 // Set up table selection interaction.
                 // Set the table to allow only one row selected at a time.
                 _table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                _table.getSelectionModel().addListSelectionListener(new RowListener());
+                _table.getSelectionModel().addListSelectionListener(
+                        new RowListener());
 
                 // If there was previously a selection, then make sure it is still selected.
                 if (_selectedRow >= 0 && _selectedRow < _table.getRowCount()) {
-                    _table.getSelectionModel().setSelectionInterval(_selectedRow, _selectedRow);
+                    _table.getSelectionModel().setSelectionInterval(
+                            _selectedRow, _selectedRow);
                 }
 
-                ComponentDialog dialog = new ComponentDialog(
-                        parent, object.getFullName(), pane, buttons, null, true);
+                ComponentDialog dialog = new ComponentDialog(parent, object
+                        .getFullName(), pane, buttons, null, true);
 
                 String response = dialog.buttonPressed();
 
@@ -980,11 +967,13 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         || "Add occupant".equals(response)
                         || "Remove occupant".equals(response)
                         || "Remove space".equals(response)) {
-                    if (_selectedRow < 0 || _selectedRow >= _table.getRowCount()) {
+                    if (_selectedRow < 0
+                            || _selectedRow >= _table.getRowCount()) {
                         if (_table.getRowCount() == 1) {
                             // There is only one row. Assume that one is selected.
                             _selectedRow = 0;
-                            _table.getSelectionModel().setSelectionInterval(_selectedRow, _selectedRow);
+                            _table.getSelectionModel().setSelectionInterval(
+                                    _selectedRow, _selectedRow);
                         } else {
                             MessageHandler.warning("Please select a row.");
                             return;
@@ -1000,20 +989,21 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
                     ///////////////////////////////////////////// Edit occupant
 
-                    ArrayToken array = (ArrayToken)records.getToken();
-                    RecordToken record = (RecordToken)array.getElement(_selectedRow);
+                    ArrayToken array = (ArrayToken) records.getToken();
+                    RecordToken record = (RecordToken) array
+                            .getElement(_selectedRow);
                     String room = _getField(record, "room");
-                    String sourceSpaceID
-                            = ((StringToken)record.get("spaceid")).stringValue();
+                    String sourceSpaceID = ((StringToken) record.get("spaceid"))
+                            .stringValue();
 
                     // First bring up a dialog to specify a search for an existing person.
                     String databaseName = databaseManager.stringValue();
-                    database = DatabaseManager
-                            .findDatabaseManager(databaseName, Occupants.this);
+                    database = DatabaseManager.findDatabaseManager(
+                            databaseName, Occupants.this);
 
                     // Construct a query pre-populated with the specified information.
-                    RecordToken newPerson = _editPersonQuery(
-                            record, room, database, object, parent);
+                    RecordToken newPerson = _editPersonQuery(record, room,
+                            database, object, parent);
 
                     StringBuffer update = new StringBuffer();
                     update.append("update ");
@@ -1028,7 +1018,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         first = false;
                         update.append(label);
                         update.append("=");
-                        update.append(_quotedString(((StringToken)newPerson.get(label)).stringValue()));
+                        update.append(_quotedString(((StringToken) newPerson
+                                .get(label)).stringValue()));
                     }
                     update.append(" where trim(spaceid)='");
                     update.append(sourceSpaceID);
@@ -1042,8 +1033,9 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     ///////////////////////////////////////////// Move occupant
                     try {
                         // Guess about the space information and construct a query.
-                        ArrayToken array = (ArrayToken)records.getToken();
-                        RecordToken record = (RecordToken)array.getElement(_selectedRow);
+                        ArrayToken array = (ArrayToken) records.getToken();
+                        RecordToken record = (RecordToken) array
+                                .getElement(_selectedRow);
                         String building = _getField(record, "bldg");
                         String room = _getField(record, "room");
                         String deskno = _getField(record, "deskno");
@@ -1053,7 +1045,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
                         // If there is no person, warn and abort.
                         if (fnames.trim().equals("") && lname.trim().equals("")) {
-                            MessageHandler.warning("No person occupying the selected space.");
+                            MessageHandler
+                                    .warning("No person occupying the selected space.");
                             createEditor(object, parent);
                             return;
                         }
@@ -1064,10 +1057,11 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         query.addLine("deskno", "desk", deskno);
                         query.addLine("spacenotes", "notes", spacenotes);
 
-                        String message = "Move " + fnames + " " + lname + " to location:";
+                        String message = "Move " + fnames + " " + lname
+                                + " to location:";
                         // The null below says to use default buttons.
-                        ComponentDialog subdialog = new ComponentDialog(
-                                parent, "Move an occupant", query, null, message);
+                        ComponentDialog subdialog = new ComponentDialog(parent,
+                                "Move an occupant", query, null, message);
 
                         if ("OK".equals(subdialog.buttonPressed())) {
                             building = query.getStringValue("bldg");
@@ -1076,7 +1070,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                             spacenotes = query.getStringValue("spacenotes");
 
                             String databaseName = databaseManager.stringValue();
-                            database = DatabaseManager.findDatabaseManager(databaseName, Occupants.this);
+                            database = DatabaseManager.findDatabaseManager(
+                                    databaseName, Occupants.this);
 
                             ArrayToken priorOccupants = _priorOccupants(
                                     database, building, room, deskno);
@@ -1091,11 +1086,12 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                 // Use for the destination spaceID the first of the
                                 // prior occupants. They should all have the same space-specific
                                 // information.
-                                RecordToken destination = (RecordToken)priorOccupants.getElement(0);
-                                String priorOccupantsSpaceID
-                                        = ((StringToken)destination.get("spaceid")).stringValue();
-                                String sourceSpaceID
-                                        = ((StringToken)record.get("spaceid")).stringValue();
+                                RecordToken destination = (RecordToken) priorOccupants
+                                        .getElement(0);
+                                String priorOccupantsSpaceID = ((StringToken) destination
+                                        .get("spaceid")).stringValue();
+                                String sourceSpaceID = ((StringToken) record
+                                        .get("spaceid")).stringValue();
 
                                 // Get the name of the occupant of the first matching space.
                                 String name = _occupants(priorOccupants);
@@ -1106,26 +1102,33 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                     question.append(name);
                                     question.append(". Move anyway?");
 
-                                    String[] confirmButtons = {"Share with occupant",
+                                    String[] confirmButtons = {
+                                            "Share with occupant",
                                             "Replace occupant",
-                                            "Swap with occupant",
-                                            "Cancel"};
-                                    JLabel label = new JLabel(question.toString());
+                                            "Swap with occupant", "Cancel" };
+                                    JLabel label = new JLabel(question
+                                            .toString());
                                     ComponentDialog confirm = new ComponentDialog(
-                                            parent, message, label, confirmButtons);
-                                    String confirmResponse = confirm.buttonPressed();
+                                            parent, message, label,
+                                            confirmButtons);
+                                    String confirmResponse = confirm
+                                            .buttonPressed();
 
                                     if ("Cancel".equals(confirmResponse)) {
                                         return;
-                                    } else if ("Share with occupant".equals(confirmResponse)) {
-                                        if (_move(database, sourceSpaceID, priorOccupantsSpaceID, _ADD_NEW)) {
+                                    } else if ("Share with occupant"
+                                            .equals(confirmResponse)) {
+                                        if (_move(database, sourceSpaceID,
+                                                priorOccupantsSpaceID, _ADD_NEW)) {
                                             // User did not cancel.
                                             // Re-open the dialog until the Close button is pressed.
                                             alteredDatabase = true;
                                         }
                                         return;
-                                    } else if ("Swap with occupant".equals(confirmResponse)) {
-                                        if (_move(database, sourceSpaceID, priorOccupantsSpaceID, _SWAP)) {
+                                    } else if ("Swap with occupant"
+                                            .equals(confirmResponse)) {
+                                        if (_move(database, sourceSpaceID,
+                                                priorOccupantsSpaceID, _SWAP)) {
                                             // User did not cancel.
                                             // Re-open the dialog until the Close button is pressed.
                                             alteredDatabase = true;
@@ -1138,7 +1141,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                 }
                                 // Space is not occupied or user selected to replace current
                                 // occupant.
-                                if (!_move(database, sourceSpaceID, priorOccupantsSpaceID, _REPLACE)) {
+                                if (!_move(database, sourceSpaceID,
+                                        priorOccupantsSpaceID, _REPLACE)) {
                                     // User canceled.
                                     return;
                                 }
@@ -1147,27 +1151,33 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         }
                     } catch (KernelException e) {
                         // This should have been caught earlier.
-                        MessageHandler.error(
-                                "Update failed. Perhaps you need to resynchronize with the database?", e);
+                        MessageHandler
+                                .error(
+                                        "Update failed. Perhaps you need to resynchronize with the database?",
+                                        e);
                         return;
                     }
                 } else if ("Add occupant".equals(response)) {
 
                     ///////////////////////////////////////////// Add a person
 
-                    ArrayToken array = (ArrayToken)records.getToken();
-                    RecordToken record = (RecordToken)array.getElement(_selectedRow);
+                    ArrayToken array = (ArrayToken) records.getToken();
+                    RecordToken record = (RecordToken) array
+                            .getElement(_selectedRow);
                     String building = _getField(record, "bldg");
                     String room = _getField(record, "room");
                     String deskno = _getField(record, "deskno");
-                    String sourceSpaceID = ((StringToken)record.get("spaceid")).stringValue();
+                    String sourceSpaceID = ((StringToken) record.get("spaceid"))
+                            .stringValue();
 
                     String databaseName = databaseManager.stringValue();
-                    database = DatabaseManager.findDatabaseManager(databaseName, Occupants.this);
+                    database = DatabaseManager.findDatabaseManager(
+                            databaseName, Occupants.this);
 
                     // Check whether the space is occupied.
                     boolean share = false;
-                    ArrayToken priorOccupants = _priorOccupants(database, building, room, deskno);
+                    ArrayToken priorOccupants = _priorOccupants(database,
+                            building, room, deskno);
                     String occupant = _occupants(priorOccupants);
                     if (occupant != null) {
                         // Space is occupied. Find out whether to
@@ -1177,35 +1187,37 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         question.append(occupant);
                         question.append(". Replace or share?");
 
-                        String[] confirmButtons = {"Share with occupant",
-                                "Replace occupant",
-                                "Cancel"};
+                        String[] confirmButtons = { "Share with occupant",
+                                "Replace occupant", "Cancel" };
                         JLabel label = new JLabel(question.toString());
-                        String message = "Add occupant to " + room + "-" + deskno;
-                        ComponentDialog confirm = new ComponentDialog(
-                                parent, message, label, confirmButtons);
+                        String message = "Add occupant to " + room + "-"
+                                + deskno;
+                        ComponentDialog confirm = new ComponentDialog(parent,
+                                message, label, confirmButtons);
                         String confirmResponse = confirm.buttonPressed();
 
                         if ("Cancel".equals(confirmResponse)) {
                             throw new CancelException();
-                        } else if ("Share with occupant".equals(confirmResponse)) {
+                        } else if ("Share with occupant"
+                                .equals(confirmResponse)) {
                             share = true;
                         }
                         // leave share == false.
                     }
 
                     // First bring up a dialog to specify a search for an existing person.
-                    RecordToken personInfo = _searchForPerson(
-                            "", "", "", "", "", parent, object, database,
-                            null, "Enter information to search for (partial information is OK):");
+                    RecordToken personInfo = _searchForPerson("", "", "", "",
+                            "", parent, object, database, null,
+                            "Enter information to search for (partial information is OK):");
 
                     // Construct a query pre-populated with the specified information.
-                    RecordToken newPerson = _editPersonQuery(
-                            personInfo, room, database, object, parent);
+                    RecordToken newPerson = _editPersonQuery(personInfo, room,
+                            database, object, parent);
 
                     if (share) {
                         _addNewShared(database, null,
-                                (RecordToken)priorOccupants.getElement(0), newPerson);
+                                (RecordToken) priorOccupants.getElement(0),
+                                newPerson);
                         return;
                     }
                     // Replace existing occupant, if any.
@@ -1222,7 +1234,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         first = false;
                         update.append(label);
                         update.append("=");
-                        update.append(_quotedString(((StringToken)newPerson.get(label)).stringValue()));
+                        update.append(_quotedString(((StringToken) newPerson
+                                .get(label)).stringValue()));
                     }
                     update.append(" where trim(spaceid)='");
                     update.append(sourceSpaceID);
@@ -1235,20 +1248,18 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
                     ///////////////////////////////////////////// Remove a person
 
-                    ArrayToken array = (ArrayToken)records.getToken();
-                    RecordToken record = (RecordToken)array.getElement(_selectedRow);
+                    ArrayToken array = (ArrayToken) records.getToken();
+                    RecordToken record = (RecordToken) array
+                            .getElement(_selectedRow);
                     String fnames = _getField(record, "fnames");
                     String lname = _getField(record, "lname");
                     String room = _getField(record, "room");
-                    String spaceID = ((StringToken)record.get("spaceid")).stringValue();
+                    String spaceID = ((StringToken) record.get("spaceid"))
+                            .stringValue();
 
                     // Get confirmation.
                     String question = "Are you sure you want to remove "
-                        + fnames
-                        + " "
-                        + lname
-                        + " from "
-                        + room;
+                            + fnames + " " + lname + " from " + room;
                     if (!MessageHandler.yesNoCancelQuestion(question)) {
                         createEditor(object, parent);
                         return;
@@ -1280,7 +1291,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     update.append("';");
 
                     String databaseName = databaseManager.stringValue();
-                    database = DatabaseManager.findDatabaseManager(databaseName, Occupants.this);
+                    database = DatabaseManager.findDatabaseManager(
+                            databaseName, Occupants.this);
 
                     database.executeUpdate(update.toString(), 1);
                     alteredDatabase = true;
@@ -1289,20 +1301,25 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
                     ///////////////////////////////////////////// Remove a space
                     try {
-                        ArrayToken array = (ArrayToken)records.getToken();
+                        ArrayToken array = (ArrayToken) records.getToken();
                         if (array.length() <= _selectedRow) {
-                            MessageHandler.error("No such row with index " + _selectedRow);
+                            MessageHandler.error("No such row with index "
+                                    + _selectedRow);
                             return;
                         }
-                        RecordToken record = (RecordToken)array.getElement(_selectedRow);
-                        String spaceid = ((StringToken)record.get("spaceid")).stringValue();
+                        RecordToken record = (RecordToken) array
+                                .getElement(_selectedRow);
+                        String spaceid = ((StringToken) record.get("spaceid"))
+                                .stringValue();
                         if (spaceid == null) {
-                            MessageHandler.error("No space ID for the selected space.");
+                            MessageHandler
+                                    .error("No space ID for the selected space.");
                             return;
                         }
                         // Get confirmation.
-                        if (!MessageHandler.yesNoQuestion(
-                                "Are you sure you want to permanently remove space with ID " + spaceid)) {
+                        if (!MessageHandler
+                                .yesNoQuestion("Are you sure you want to permanently remove space with ID "
+                                        + spaceid)) {
                             return;
                         }
                         StringBuffer sql = new StringBuffer();
@@ -1312,14 +1329,16 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         sql.append(spaceid);
                         sql.append("';");
                         String databaseName = databaseManager.stringValue();
-                        database = DatabaseManager
-                                .findDatabaseManager(databaseName, Occupants.this);
+                        database = DatabaseManager.findDatabaseManager(
+                                databaseName, Occupants.this);
                         database.executeUpdate(sql.toString(), 1);
                         alteredDatabase = true;
                     } catch (KernelException e) {
                         // This should have been caught earlier.
-                        MessageHandler.error(
-                                "Update failed. Perhaps you need to resynchronize with the database?", e);
+                        MessageHandler
+                                .error(
+                                        "Update failed. Perhaps you need to resynchronize with the database?",
+                                        e);
                         return;
                     }
                 } else if ("Add space".equals(response)) {
@@ -1327,8 +1346,9 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     ///////////////////////////////////////////// Add a space
                     try {
                         // Guess about the space information and construct a query.
-                        ArrayToken array = (ArrayToken)records.getToken();
-                        RecordToken record = (RecordToken)array.getElement(_selectedRow);
+                        ArrayToken array = (ArrayToken) records.getToken();
+                        RecordToken record = (RecordToken) array
+                                .getElement(_selectedRow);
                         String building = _getField(record, "bldg");
                         String room = _getField(record, "room");
                         String deskno = _getField(record, "deskno");
@@ -1344,8 +1364,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         query.addLine("roomtype", "room type", roomtype);
                         query.addLine("spacenotes", "notes", spacenotes);
 
-                        ComponentDialog subdialog = new ComponentDialog(
-                                parent, "Add a Space", query);
+                        ComponentDialog subdialog = new ComponentDialog(parent,
+                                "Add a Space", query);
 
                         if ("OK".equals(subdialog.buttonPressed())) {
                             building = query.getStringValue("bldg");
@@ -1358,7 +1378,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                             StringBuffer sql = new StringBuffer();
                             sql.append("insert into ");
                             sql.append(table.stringValue());
-                            sql.append(" (bldg,room,deskno,hasdesk,roomtype,spacenotes) values(");
+                            sql
+                                    .append(" (bldg,room,deskno,hasdesk,roomtype,spacenotes) values(");
                             sql.append(_quotedString(building));
                             sql.append(",");
                             sql.append(_quotedString(room));
@@ -1372,15 +1393,17 @@ public class Occupants extends ArrayOfRecordsRecorder {
                             sql.append(_quotedString(spacenotes));
                             sql.append(");");
                             String databaseName = databaseManager.stringValue();
-                            database = DatabaseManager
-                            .findDatabaseManager(databaseName, Occupants.this);
+                            database = DatabaseManager.findDatabaseManager(
+                                    databaseName, Occupants.this);
                             database.executeUpdate(sql.toString(), 1);
                             alteredDatabase = true;
                         }
                     } catch (KernelException e) {
                         // This should have been caught earlier.
-                        MessageHandler.error(
-                                "Update failed. Perhaps you need to resynchronize with the database?", e);
+                        MessageHandler
+                                .error(
+                                        "Update failed. Perhaps you need to resynchronize with the database?",
+                                        e);
                         return;
                     }
                 }
@@ -1402,8 +1425,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         }
                         getManager().execute();
                     } catch (KernelException ex) {
-                        MessageHandler.error(
-                                "Failed to update from database.", ex);
+                        MessageHandler.error("Failed to update from database.",
+                                ex);
                     }
                 }
                 // Re-open the dialog until the Close button is pressed.

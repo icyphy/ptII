@@ -110,16 +110,17 @@ public class PNDirector extends Director {
      * {@link #processCode(String)} throw it.
      */
     public String generateCodeForGet(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         List<Channel> channels = getReferenceChannels(port, channelNumber);
 
         if (channels.size() == 0) {
             return "";
-        } if (channels.size() != 1) {
+        }
+        if (channels.size() != 1) {
             throw new IllegalActionException(this,
-                    "There are more than one channel to get data from. " +
-                            "This is ambiguous.");
+                    "There are more than one channel to get data from. "
+                            + "This is ambiguous.");
         }
 
         Channel referenceChannel = channels.get(0);
@@ -129,16 +130,18 @@ public class PNDirector extends Director {
             return "";
         }
 
-        CodeGeneratorHelper actorHelper =
-            (CodeGeneratorHelper) _getHelper(port.getContainer());
+        CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
+                .getContainer());
 
-        String dataVariable = "$ref(" + generateSimpleName(referencePort)
-            + "#" + referenceChannel.channelNumber + ")";
-        String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
+        String dataVariable = "$ref(" + generateSimpleName(referencePort) + "#"
+                + referenceChannel.channelNumber + ")";
+        String queue = _generateQueueReference(referencePort,
+                referenceChannel.channelNumber);
         String waitTime = _getMaxDelay(referenceChannel);
 
-        return actorHelper.processCode("while ( pdTRUE != xQueueReceive(" + queue + ", &" + dataVariable
-            + ", " + waitTime + ") );" + _eol);
+        return actorHelper.processCode("while ( pdTRUE != xQueueReceive("
+                + queue + ", &" + dataVariable + ", " + waitTime + ") );"
+                + _eol);
     }
 
     /**
@@ -163,17 +166,20 @@ public class PNDirector extends Director {
         for (Channel referenceChannel : channels) {
             IOPort referencePort = referenceChannel.port;
 
-            CodeGeneratorHelper actorHelper =
-                (CodeGeneratorHelper) _getHelper(referencePort.getContainer());
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(referencePort
+                    .getContainer());
 
-//            String dataVariable = "$ref(" + referencePort.getName()
-//                + "#" + referenceChannel.channelNumber + ")";
+            //            String dataVariable = "$ref(" + referencePort.getName()
+            //                + "#" + referenceChannel.channelNumber + ")";
 
-            String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
+            String queue = _generateQueueReference(referencePort,
+                    referenceChannel.channelNumber);
             String waitTime = _getMaxDelay(referenceChannel);
 
-            result.append(actorHelper.processCode("while ( pdTRUE != xQueueSend(" +
-                    queue + ", &" + dataToken + ", " + waitTime + ") );" + _eol));
+            result.append(actorHelper
+                    .processCode("while ( pdTRUE != xQueueSend(" + queue
+                            + ", &" + dataToken + ", " + waitTime + ") );"
+                            + _eol));
         }
         return result.toString();
     }
@@ -188,8 +194,8 @@ public class PNDirector extends Director {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        CompositeActor compositeActor =
-            (CompositeActor) _director.getContainer();
+        CompositeActor compositeActor = (CompositeActor) _director
+                .getContainer();
 
         code.append(_codeGenerator.comment("Create a task for each actor."));
 
@@ -204,12 +210,12 @@ public class PNDirector extends Director {
          */
         for (Actor actor : actorList) {
             code.append("xTaskCreate(");
-            code.append(_getActorTaskLabel(actor));         // task function.
-            code.append(", \"" + actor.getDisplayName());   // task string label.
-            code.append("\", " + _getStackSize(actor));     // stack depth.
-            code.append(", NULL");                          // pointer to task parameters
-            code.append(", " + _getPriority(actor));        // priority.
-            code.append(", task_" +                        // task handle.
+            code.append(_getActorTaskLabel(actor)); // task function.
+            code.append(", \"" + actor.getDisplayName()); // task string label.
+            code.append("\", " + _getStackSize(actor)); // stack depth.
+            code.append(", NULL"); // pointer to task parameters
+            code.append(", " + _getPriority(actor)); // priority.
+            code.append(", task_" + // task handle.
                     _getActorTaskLabel(actor) + ");" + _eol);
         }
 
@@ -218,7 +224,6 @@ public class PNDirector extends Director {
 
         return code.toString();
     }
-
 
     /**
      * Generate the initialize code.
@@ -246,10 +251,10 @@ public class PNDirector extends Director {
 
         // Initialize each queue variable.
         for (Channel buffer : _queues) {
-            args.set(0, _generateQueueReference(buffer.port, buffer.channelNumber));
+            args.set(0, _generateQueueReference(buffer.port,
+                    buffer.channelNumber));
             args.set(1, _getQueueSize(buffer.port, buffer.channelNumber));
-            args.set(2, targetType(
-                    ((TypedIOPort) buffer.port).getType()));
+            args.set(2, targetType(((TypedIOPort) buffer.port).getType()));
             code.append(_codeStream.getCodeBlock("initBuffer", args));
         }
         return code.toString();
@@ -266,8 +271,9 @@ public class PNDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(((CodeGeneratorHelper) _getHelper(_director
-                .getContainer())).generateFireCode());
+        code
+                .append(((CodeGeneratorHelper) _getHelper(_director
+                        .getContainer())).generateFireCode());
 
         return code.toString();
     }
@@ -287,8 +293,8 @@ public class PNDirector extends Director {
 
         _queues.clear();
 
-        List<Entity> actorList =
-            ((CompositeEntity) _director.getContainer()).deepEntityList();
+        List<Entity> actorList = ((CompositeEntity) _director.getContainer())
+                .deepEntityList();
 
         for (Entity actor : actorList) {
 
@@ -318,7 +324,7 @@ public class PNDirector extends Director {
      * @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         /* FIXME: So far, the only possible composition using PN
         * is PN inside PN. In this case, we should generate one cross-level
         * queue rather than two. This method override the base
@@ -335,7 +341,7 @@ public class PNDirector extends Director {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void generateTransferOutputsCode(IOPort port, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         /* FIXME: So far, the only possible composition using PN
          * is PN inside PN. In this case, we should generate one cross-level
          * queue rather than two. This method override the base
@@ -352,7 +358,7 @@ public class PNDirector extends Director {
      * @exception IllegalActionException Not thrown in this class.
      */
     public String generateVariableInitialization()
-    throws IllegalActionException {
+            throws IllegalActionException {
         return "";
     }
 
@@ -369,7 +375,7 @@ public class PNDirector extends Director {
      * @exception IllegalActionException Not thrown in this class.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: Reference with offset larger than 1 will not work
         // (e.g. $ref(port, 3)).
         return 1;
@@ -410,10 +416,10 @@ public class PNDirector extends Director {
      *   throws it.
      */
     protected String _createDynamicOffsetVariables(TypedIOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol + _codeGenerator.comment(
-        "PNDirector's queue declarations."));
+        code.append(_eol
+                + _codeGenerator.comment("PNDirector's queue declarations."));
 
         int width;
         if (port.isInput()) {
@@ -430,7 +436,8 @@ public class PNDirector extends Director {
 
             for (int i = 0; i < width; i++) {
                 args.set(0, _generateQueueReference(port, i));
-                code.append(_codeStream.getCodeBlock("declareBufferHeader", args));
+                code.append(_codeStream.getCodeBlock("declareBufferHeader",
+                        args));
 
                 // Keep track of the queues.
                 _queues.add(new Channel(port, i));
@@ -450,10 +457,9 @@ public class PNDirector extends Director {
      * @param channelNumber The specified channel number.
      * @return The reference for the queue.
      */
-    private static String _generateQueueReference(
-            IOPort port, int channelNumber) {
-        return CodeGeneratorHelper.generateName(port)
-        + "_" + channelNumber + "_queue";
+    private static String _generateQueueReference(IOPort port, int channelNumber) {
+        return CodeGeneratorHelper.generateName(port) + "_" + channelNumber
+                + "_queue";
     }
 
     /**
@@ -471,21 +477,20 @@ public class PNDirector extends Director {
      *  throws it.
      */
     private void _generateTaskFunctionCode(StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
-        List<Actor> actorList =
-            ((CompositeActor) _director.getContainer()).deepEntityList();
+        List<Actor> actorList = ((CompositeActor) _director.getContainer())
+                .deepEntityList();
         //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
 
         // Generate the task function for each actor.
         for (Actor actor : actorList) {
             StringBuffer functionCode = new StringBuffer();
 
-            CodeGeneratorHelper helper =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
-            code.append(_eol + "static void " +
-                    _getActorTaskLabel(actor) + "(void* arg) {" + _eol);
+            code.append(_eol + "static void " + _getActorTaskLabel(actor)
+                    + "(void* arg) {" + _eol);
 
             String loopCountDeclare = "";
 
@@ -493,7 +498,8 @@ public class PNDirector extends Director {
             // The actor is guaranteed to be opague from calling deepEntityList(),
             // so all we need to check whether or not it is a CompositeActor.
             if (actor instanceof CompositeActor) {
-                Director directorHelper = (Director) _getHelper(actor.getDirector());
+                Director directorHelper = (Director) _getHelper(actor
+                        .getDirector());
 
                 // If so, it should contain a different Director.
                 assert (directorHelper != this);
@@ -504,8 +510,8 @@ public class PNDirector extends Director {
 
                 // if firingCountLimit exists, generate for loop.
                 if (actor instanceof LimitedFiringSource) {
-                    int firingCount = ((IntToken) ((LimitedFiringSource) actor)
-                            .firingCountLimit.getToken()).intValue();
+                    int firingCount = ((IntToken) ((LimitedFiringSource) actor).firingCountLimit
+                            .getToken()).intValue();
 
                     loopCountDeclare = "int i = 0;" + _eol;
                     functionCode.append("for (; i < " + firingCount
@@ -531,7 +537,8 @@ public class PNDirector extends Director {
             // init
             // This needs to be called last because all references
             // need to be collected before generating their initialization.
-            String variableInitializeCode = helper.generateVariableInitialization();
+            String variableInitializeCode = helper
+                    .generateVariableInitialization();
             String initializeCode = helper.generateInitializeCode();
 
             code.append(loopCountDeclare);
@@ -548,7 +555,7 @@ public class PNDirector extends Director {
      */
     private String _getActorTaskLabel(Actor actor) {
         return CodeGeneratorHelper.generateName((NamedObj) actor)
-        + "_TaskFunction";
+                + "_TaskFunction";
     }
 
     /**
@@ -573,7 +580,8 @@ public class PNDirector extends Director {
      */
     private String _getPriority(Actor actor) {
         // Getting this info from static analysis.
-        Parameter parameter = (Parameter) ((Entity) actor).getAttribute("_priority");
+        Parameter parameter = (Parameter) ((Entity) actor)
+                .getAttribute("_priority");
         if (parameter != null) {
             return parameter.getExpression();
         }
@@ -590,11 +598,10 @@ public class PNDirector extends Director {
      * @exception IllegalActionException
      */
     private int _getQueueSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: we can get this info from static analysis.
-        IntToken sizeToken = (IntToken)
-        ((ptolemy.domains.pn.kernel.PNDirector) _director)
-        .initialQueueCapacity.getToken();
+        IntToken sizeToken = (IntToken) ((ptolemy.domains.pn.kernel.PNDirector) _director).initialQueueCapacity
+                .getToken();
 
         return sizeToken.intValue();
     }
@@ -609,7 +616,8 @@ public class PNDirector extends Director {
      */
     private String _getStackSize(Actor actor) {
         // FIXME: we can get this info from static analysis.
-        Parameter parameter = (Parameter) ((Entity) actor).getAttribute("_stackSize");
+        Parameter parameter = (Parameter) ((Entity) actor)
+                .getAttribute("_stackSize");
         if (parameter != null) {
             return parameter.getExpression();
         }

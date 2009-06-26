@@ -65,10 +65,12 @@ public class AWTPlotApplication {
         }
 
         public Class getColumnClass(int col) {
-            if (col == 1)
+            if (col == 1) {
                 return Long.class;
-            if (col == 2)
+            }
+            if (col == 2) {
                 return Date.class;
+            }
             return String.class;
         }
 
@@ -77,12 +79,15 @@ public class AWTPlotApplication {
         }
 
         public Object getValueAt(int row, int col) {
-            if (col == 0)
+            if (col == 0) {
                 return files[row].getName();
-            if (col == 1)
+            }
+            if (col == 1) {
                 return new Long(files[row].length());
-            if (col == 2)
+            }
+            if (col == 2) {
                 return new Date(files[row].lastModified());
+            }
             return "";
         }
 
@@ -102,10 +107,12 @@ public class AWTPlotApplication {
                         | SWT.ICON_QUESTION);
                 dialog.setText("Question");
                 dialog.setMessage("Exit?");
-                if (e.type == SWT.Close)
+                if (e.type == SWT.Close) {
                     e.doit = false;
-                if (dialog.open() != SWT.OK)
+                }
+                if (dialog.open() != SWT.OK) {
                     return;
+                }
                 shell.dispose();
             }
         };
@@ -140,8 +147,9 @@ public class AWTPlotApplication {
                 s.setLocation(x, y);
                 s.open();
                 while (!s.isDisposed()) {
-                    if (!display.readAndDispatch())
+                    if (!display.readAndDispatch()) {
                         display.sleep();
+                    }
                 }
             }
         };
@@ -188,12 +196,12 @@ public class AWTPlotApplication {
         java.awt.Frame fileTableFrame = SWT_AWT.new_Frame(tableComp);
         java.awt.Panel panel = new java.awt.Panel(new java.awt.BorderLayout());
         fileTableFrame.add(panel);
-//        final JTable fileTable = new JTable(new FileTableModel(null));
-//        fileTable.setDoubleBuffered(true);
-//        fileTable.setShowGrid(false);
-//        fileTable.createDefaultColumnsFromModel();
-//        JScrollPane scrollPane = new JScrollPane(fileTable);
-//        panel.add(scrollPane);
+        //        final JTable fileTable = new JTable(new FileTableModel(null));
+        //        fileTable.setDoubleBuffered(true);
+        //        fileTable.setShowGrid(false);
+        //        fileTable.createDefaultColumnsFromModel();
+        //        JScrollPane scrollPane = new JScrollPane(fileTable);
+        //        panel.add(scrollPane);
 
         final Plot plot = new Plot();
         panel.add(plot);
@@ -206,8 +214,9 @@ public class AWTPlotApplication {
 
         sash.addListener(SWT.Selection, new Listener() {
             public void handleEvent(Event e) {
-                if (e.detail == SWT.DRAG)
+                if (e.detail == SWT.DRAG) {
                     return;
+                }
                 GridData data = (GridData) fileTree.getLayoutData();
                 Rectangle trim = fileTree.computeTrim(0, 0, 0, 0);
                 data.widthHint = e.x - trim.width;
@@ -226,20 +235,23 @@ public class AWTPlotApplication {
         fileTree.addListener(SWT.Expand, new Listener() {
             public void handleEvent(Event e) {
                 TreeItem item = (TreeItem) e.item;
-                if (item == null)
+                if (item == null) {
                     return;
+                }
                 if (item.getItemCount() == 1) {
                     TreeItem firstItem = item.getItems()[0];
-                    if (firstItem.getData() != null)
+                    if (firstItem.getData() != null) {
                         return;
+                    }
                     firstItem.dispose();
                 } else {
                     return;
                 }
                 File root = (File) item.getData();
                 File[] files = root.listFiles();
-                if (files == null)
+                if (files == null) {
                     return;
+                }
                 for (int i = 0; i < files.length; i++) {
                     File file = files[i];
                     if (file.isDirectory()) {
@@ -251,22 +263,22 @@ public class AWTPlotApplication {
                 }
             }
         });
-//        fileTree.addListener(SWT.Selection, new Listener() {
-//            public void handleEvent(Event e) {
-//                TreeItem item = (TreeItem) e.item;
-//                if (item == null)
-//                    return;
-//                final File root = (File) item.getData();
-//                EventQueue.invokeLater(new Runnable() {
-//                    public void run() {
-//                        statusLabel.setText(root.getAbsolutePath());
-//                        locationText.setText(root.getAbsolutePath());
-//                        fileTable
-//                                .setModel(new FileTableModel(root.listFiles()));
-//                    }
-//                });
-//            }
-//        });
+        //        fileTree.addListener(SWT.Selection, new Listener() {
+        //            public void handleEvent(Event e) {
+        //                TreeItem item = (TreeItem) e.item;
+        //                if (item == null)
+        //                    return;
+        //                final File root = (File) item.getData();
+        //                EventQueue.invokeLater(new Runnable() {
+        //                    public void run() {
+        //                        statusLabel.setText(root.getAbsolutePath());
+        //                        locationText.setText(root.getAbsolutePath());
+        //                        fileTable
+        //                                .setModel(new FileTableModel(root.listFiles()));
+        //                    }
+        //                });
+        //            }
+        //        });
 
         GridLayout layout = new GridLayout(4, false);
         layout.marginWidth = layout.marginHeight = 0;
@@ -315,8 +327,9 @@ public class AWTPlotApplication {
 
         shell.open();
         while (!shell.isDisposed()) {
-            if (!display.readAndDispatch())
+            if (!display.readAndDispatch()) {
                 display.sleep();
+            }
         }
         display.dispose();
     }

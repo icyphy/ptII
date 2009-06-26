@@ -31,7 +31,6 @@ import java.util.Map;
 
 import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.properties.Property;
@@ -48,7 +47,7 @@ import ptolemy.kernel.util.Settable;
 public class PropertyCombineSolver extends PropertySolver {
 
     public PropertyCombineSolver(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _propertyName = new StringParameter(this, "propertyName");
@@ -60,10 +59,10 @@ public class PropertyCombineSolver extends PropertySolver {
         TextStyle style = new TextStyle(_propertyExpression, "_style");
         style.height.setExpression("10");
         style.width.setExpression("80");
-/*
-        _propertyEmptyString = new StringParameter(this, "propertyEmptyString");
-        _propertyEmptyString.setExpression("");
-*/
+        /*
+                _propertyEmptyString = new StringParameter(this, "propertyEmptyString");
+                _propertyEmptyString.setExpression("");
+        */
         _inputPorts = new Parameter(this, "inputPorts");
         _inputPorts.setTypeEquals(BaseType.BOOLEAN);
         _inputPorts.setExpression("true");
@@ -75,29 +74,27 @@ public class PropertyCombineSolver extends PropertySolver {
         _unconnectedPorts = new Parameter(this, "ignore unconnected Ports");
         _unconnectedPorts.setTypeEquals(BaseType.BOOLEAN);
         _unconnectedPorts.setExpression("true");
-/*
-        _atomicActors = new Parameter(this, "atomicActors");
-        _atomicActors.setTypeEquals(BaseType.BOOLEAN);
-        _atomicActors.setExpression("true");
+        /*
+                _atomicActors = new Parameter(this, "atomicActors");
+                _atomicActors.setTypeEquals(BaseType.BOOLEAN);
+                _atomicActors.setExpression("true");
 
-        _compositeActors = new Parameter(this, "compositeActors");
-        _compositeActors.setTypeEquals(BaseType.BOOLEAN);
-        _compositeActors.setExpression("false");
-*/
+                _compositeActors = new Parameter(this, "compositeActors");
+                _compositeActors.setTypeEquals(BaseType.BOOLEAN);
+                _compositeActors.setExpression("false");
+        */
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"115\" height=\"40\" "
                 + "style=\"fill:red\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Property.</text></svg>");
 
-        new PropertySolverGUIFactory(
-                this, "_portValueSolverGUIFactory");
+        new PropertySolverGUIFactory(this, "_portValueSolverGUIFactory");
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /**
      * Returns the helper that contains property information for
@@ -105,17 +102,16 @@ public class PropertyCombineSolver extends PropertySolver {
      * @param object The given object.
      * @return The associated property constraint helper.
      */
-    public PropertyHelper getHelper(Object object) throws IllegalActionException {
+    public PropertyHelper getHelper(Object object)
+            throws IllegalActionException {
         return _getHelper(object);
     }
 
-    protected void _resolveProperties(NamedObj analyzer)
-        throws KernelException {
+    protected void _resolveProperties(NamedObj analyzer) throws KernelException {
 
         super._resolveProperties(analyzer);
 
-        PropertyCombineCompositeHelper topLevelHelper =
-            (PropertyCombineCompositeHelper) _getHelper(_toplevel());
+        PropertyCombineCompositeHelper topLevelHelper = (PropertyCombineCompositeHelper) _getHelper(_toplevel());
 
         topLevelHelper.reinitialize();
 
@@ -130,15 +126,16 @@ public class PropertyCombineSolver extends PropertySolver {
     public String getExtendedUseCaseName() {
         return "token::" + getUseCaseName();
     }
-/*
-    public String getPropertyEmptyString() {
-        return _propertyEmptyString.getExpression();
-    }
-*/
+
+    /*
+        public String getPropertyEmptyString() {
+            return _propertyEmptyString.getExpression();
+        }
+    */
     //FIXME: only use method from base class?
     public Property getProperty(Object object) {
         if (object instanceof PortParameter) {
-            return super.getProperty(((PortParameter)object).getPort());
+            return super.getProperty(((PortParameter) object).getPort());
         }
         return super.getProperty(object);
     }
@@ -157,15 +154,18 @@ public class PropertyCombineSolver extends PropertySolver {
     }
 
     public Boolean getInputPorts() {
-        return (_inputPorts.getExpression().equalsIgnoreCase("true")) ? true : false;
+        return (_inputPorts.getExpression().equalsIgnoreCase("true")) ? true
+                : false;
     }
 
     public Boolean getOutputPorts() {
-        return (_outputPorts.getExpression().equalsIgnoreCase("true")) ? true : false;
+        return (_outputPorts.getExpression().equalsIgnoreCase("true")) ? true
+                : false;
     }
 
     public Boolean getUnconnectedPorts() {
-        return (_unconnectedPorts.getExpression().equalsIgnoreCase("true")) ? true : false;
+        return (_unconnectedPorts.getExpression().equalsIgnoreCase("true")) ? true
+                : false;
     }
 
     public Property getResolvedProperty(Object object) {
@@ -177,7 +177,7 @@ public class PropertyCombineSolver extends PropertySolver {
     }
 
     public PropertyToken getToken(Object object) {
-        return (PropertyToken)_tokenMap.get(object);
+        return _tokenMap.get(object);
     }
 
     /*
@@ -188,7 +188,7 @@ public class PropertyCombineSolver extends PropertySolver {
     public Boolean getCompositeActors() {
         return (_compositeActors.getExpression().equalsIgnoreCase("true")) ? true : false;
     }
-*/
+    */
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

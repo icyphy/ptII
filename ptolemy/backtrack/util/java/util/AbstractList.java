@@ -74,7 +74,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status updated to 1.4
  */
-public abstract class AbstractList extends AbstractCollection implements List, Rollbackable {
+public abstract class AbstractList extends AbstractCollection implements List,
+        Rollbackable {
 
     /**     
      * A count of the number of structural modifications that have been made to
@@ -82,8 +83,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
      * are ones which change the list size or affect how iterations would
      * behave. This field is available for use by Iterator and ListIterator,
      * in order to throw a {
-@link ConcurrentModificationException    }
- in response
+    @link ConcurrentModificationException    }
+    in response
      * to the next operation on the iterator. This <i>fail-fast</i> behavior
      * saves the user from many subtle bugs otherwise possible from concurrent
      * modification during iteration.
@@ -101,8 +102,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     // with the one in List. Don't you love Sun's inconsistencies?
     /**     
      * This class follows the implementation requirements set forth in{
-@link AbstractList#subList(int, int)    }
-. It matches Sun's implementation
+    @link AbstractList#subList(int, int)    }
+    . It matches Sun's implementation
      * by using a non-public top-level class in the same package.
      * @author Original author unknown
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -146,8 +147,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
          */
         // This can be inlined. Package visible, for use by iterator.
         void checkMod() {
-            if (getModCount() != backingList.getModCount())
+            if (getModCount() != backingList.getModCount()) {
                 throw new ConcurrentModificationException();
+            }
         }
 
         /**         
@@ -158,8 +160,10 @@ public abstract class AbstractList extends AbstractCollection implements List, R
          */
         // This will get inlined, since it is private.
         private void checkBoundsInclusive(int index) {
-            if (index < 0 || index > getSize())
-                throw new IndexOutOfBoundsException("Index: " + index+", Size:"+getSize());
+            if (index < 0 || index > getSize()) {
+                throw new IndexOutOfBoundsException("Index: " + index
+                        + ", Size:" + getSize());
+            }
         }
 
         /**         
@@ -170,8 +174,10 @@ public abstract class AbstractList extends AbstractCollection implements List, R
          */
         // This will get inlined, since it is private.
         private void checkBoundsExclusive(int index) {
-            if (index < 0 || index >= getSize())
-                throw new IndexOutOfBoundsException("Index: " + index+", Size:"+getSize());
+            if (index < 0 || index >= getSize()) {
+                throw new IndexOutOfBoundsException("Index: " + index
+                        + ", Size:" + getSize());
+            }
         }
 
         /**         
@@ -344,7 +350,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
             checkMod();
             checkBoundsInclusive(index);
             return new ListIterator() {
-                private final ListIterator i = backingList.listIterator(index + offset);
+                private final ListIterator i = backingList.listIterator(index
+                        + offset);
 
                 private int position = index;
 
@@ -377,8 +384,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                  * list has been modified elsewhere.
                  */
                 public Object next() {
-                    if (position == getSize())
+                    if (position == getSize()) {
                         throw new NoSuchElementException();
+                    }
                     $ASSIGN$SPECIAL$position(11, position);
                     return i.next();
                 }
@@ -392,8 +400,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                  * list has been modified elsewhere.
                  */
                 public Object previous() {
-                    if (position == 0)
+                    if (position == 0) {
                         throw new NoSuchElementException();
+                    }
                     $ASSIGN$SPECIAL$position(12, position);
                     return i.previous();
                 }
@@ -472,6 +481,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                     $ASSIGN$SPECIAL$position(11, position);
                     setModCount(backingList.getModCount());
                 }
+
                 // Here is the reason why the various modCount fields are mostly
 
                 final class _PROXY_ implements Rollbackable {
@@ -497,61 +507,67 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
                 private final int $ASSIGN$position(int newValue) {
                     if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                        $RECORD$position.add(null, position, $CHECKPOINT
+                                .getTimestamp());
                     }
                     return position = newValue;
                 }
 
-                private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
+                private final int $ASSIGN$SPECIAL$position(int operator,
+                        long newValue) {
                     if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                        $RECORD$position.add(null, position, $CHECKPOINT
+                                .getTimestamp());
                     }
                     switch (operator) {
-                        case 0:
-                            return position += newValue;
-                        case 1:
-                            return position -= newValue;
-                        case 2:
-                            return position *= newValue;
-                        case 3:
-                            return position /= newValue;
-                        case 4:
-                            return position &= newValue;
-                        case 5:
-                            return position |= newValue;
-                        case 6:
-                            return position ^= newValue;
-                        case 7:
-                            return position %= newValue;
-                        case 8:
-                            return position <<= newValue;
-                        case 9:
-                            return position >>= newValue;
-                        case 10:
-                            return position >>>= newValue;
-                        case 11:
-                            return position++;
-                        case 12:
-                            return position--;
-                        case 13:
-                            return ++position;
-                        case 14:
-                            return --position;
-                        default:
-                            return position;
+                    case 0:
+                        return position += newValue;
+                    case 1:
+                        return position -= newValue;
+                    case 2:
+                        return position *= newValue;
+                    case 3:
+                        return position /= newValue;
+                    case 4:
+                        return position &= newValue;
+                    case 5:
+                        return position |= newValue;
+                    case 6:
+                        return position ^= newValue;
+                    case 7:
+                        return position %= newValue;
+                    case 8:
+                        return position <<= newValue;
+                    case 9:
+                        return position >>= newValue;
+                    case 10:
+                        return position >>>= newValue;
+                    case 11:
+                        return position++;
+                    case 12:
+                        return position--;
+                    case 13:
+                        return ++position;
+                    case 14:
+                        return --position;
+                    default:
+                        return position;
                     }
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
                     $RECORD$i.restore(i, timestamp, trim);
-                    position = $RECORD$position.restore(position, timestamp, trim);
+                    position = $RECORD$position.restore(position, timestamp,
+                            trim);
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                                new _PROXY_(), timestamp, trim);
                         FieldRecord.popState($RECORDS);
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -561,11 +577,13 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -577,12 +595,11 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
                 private transient FieldRecord $RECORD$i = new FieldRecord(0);
 
-                private transient FieldRecord $RECORD$position = new FieldRecord(0);
+                private transient FieldRecord $RECORD$position = new FieldRecord(
+                        0);
 
                 private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                        $RECORD$i,
-                        $RECORD$position
-                    };
+                        $RECORD$i, $RECORD$position };
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -627,7 +644,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -638,19 +656,18 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
         private transient FieldRecord $RECORD$size = new FieldRecord(0);
 
-        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$size
-            };
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$size };
 
     }
 
     /**     
      * This class is a RandomAccess version of SubList, as required by{
-@link AbstractList#subList(int, int)    }
-.
+    @link AbstractList#subList(int, int)    }
+    .
      * @author Eric Blake (ebb9@email.byu.edu)
      */
-    private static final class RandomAccessSubList extends SubList implements RandomAccess, Rollbackable {
+    private static final class RandomAccessSubList extends SubList implements
+            RandomAccess, Rollbackable {
 
         /**         
          * Construct the sublist.
@@ -663,7 +680,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -671,8 +689,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
             super.$RESTORE(timestamp, trim);
         }
 
-        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
@@ -758,8 +775,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     public boolean addAll(int index, Collection c) {
         Iterator itr = c.iterator();
         int size = c.size();
-        for (int pos = size; pos > 0; pos--) 
+        for (int pos = size; pos > 0; pos--) {
             add(index++, itr.next());
+        }
         return size > 0;
     }
 
@@ -795,18 +813,23 @@ public abstract class AbstractList extends AbstractCollection implements List, R
      * @see #hashCode()
      */
     public boolean equals(Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof List))
+        }
+        if (!(o instanceof List)) {
             return false;
+        }
         int size = size();
-        if (size != ((List)o).size())
+        if (size != ((List) o).size()) {
             return false;
+        }
         Iterator itr1 = iterator();
-        Iterator itr2 = ((List)o).iterator();
-        while (--size >= 0) 
-            if (!equals(itr1.next(), itr2.next()))
+        Iterator itr2 = ((List) o).iterator();
+        while (--size >= 0) {
+            if (!equals(itr1.next(), itr2.next())) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -830,8 +853,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
         int hashCode = 1;
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             hashCode = 31 * hashCode + hashCode(itr.next());
+        }
         return hashCode;
     }
 
@@ -846,9 +870,11 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     public int indexOf(Object o) {
         ListIterator itr = listIterator();
         int size = size();
-        for (int pos = 0; pos < size; pos++) 
-            if (equals(o, itr.next()))
+        for (int pos = 0; pos < size; pos++) {
+            if (equals(o, itr.next())) {
                 return pos;
+            }
+        }
         return -1;
     }
 
@@ -880,8 +906,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              * list has been modified elsewhere.
              */
             private void checkMod() {
-                if (knownMod != getModCount())
+                if (knownMod != getModCount()) {
                     throw new ConcurrentModificationException();
+                }
             }
 
             /**             
@@ -904,8 +931,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              */
             public Object next() {
                 checkMod();
-                if (pos == size)
+                if (pos == size) {
                     throw new NoSuchElementException();
+                }
                 $ASSIGN$last(pos);
                 return get($ASSIGN$SPECIAL$pos(11, pos));
             }
@@ -923,8 +951,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              */
             public void remove() {
                 checkMod();
-                if (last < 0)
+                if (last < 0) {
                     throw new IllegalStateException();
+                }
                 AbstractList.this.remove(last);
                 $ASSIGN$SPECIAL$pos(12, pos);
                 $ASSIGN$SPECIAL$size(12, size);
@@ -958,38 +987,38 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                     $RECORD$pos.add(null, pos, $CHECKPOINT.getTimestamp());
                 }
                 switch (operator) {
-                    case 0:
-                        return pos += newValue;
-                    case 1:
-                        return pos -= newValue;
-                    case 2:
-                        return pos *= newValue;
-                    case 3:
-                        return pos /= newValue;
-                    case 4:
-                        return pos &= newValue;
-                    case 5:
-                        return pos |= newValue;
-                    case 6:
-                        return pos ^= newValue;
-                    case 7:
-                        return pos %= newValue;
-                    case 8:
-                        return pos <<= newValue;
-                    case 9:
-                        return pos >>= newValue;
-                    case 10:
-                        return pos >>>= newValue;
-                    case 11:
-                        return pos++;
-                    case 12:
-                        return pos--;
-                    case 13:
-                        return ++pos;
-                    case 14:
-                        return --pos;
-                    default:
-                        return pos;
+                case 0:
+                    return pos += newValue;
+                case 1:
+                    return pos -= newValue;
+                case 2:
+                    return pos *= newValue;
+                case 3:
+                    return pos /= newValue;
+                case 4:
+                    return pos &= newValue;
+                case 5:
+                    return pos |= newValue;
+                case 6:
+                    return pos ^= newValue;
+                case 7:
+                    return pos %= newValue;
+                case 8:
+                    return pos <<= newValue;
+                case 9:
+                    return pos >>= newValue;
+                case 10:
+                    return pos >>>= newValue;
+                case 11:
+                    return pos++;
+                case 12:
+                    return pos--;
+                case 13:
+                    return ++pos;
+                case 14:
+                    return --pos;
+                default:
+                    return pos;
                 }
             }
 
@@ -998,38 +1027,38 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                     $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
                 }
                 switch (operator) {
-                    case 0:
-                        return size += newValue;
-                    case 1:
-                        return size -= newValue;
-                    case 2:
-                        return size *= newValue;
-                    case 3:
-                        return size /= newValue;
-                    case 4:
-                        return size &= newValue;
-                    case 5:
-                        return size |= newValue;
-                    case 6:
-                        return size ^= newValue;
-                    case 7:
-                        return size %= newValue;
-                    case 8:
-                        return size <<= newValue;
-                    case 9:
-                        return size >>= newValue;
-                    case 10:
-                        return size >>>= newValue;
-                    case 11:
-                        return size++;
-                    case 12:
-                        return size--;
-                    case 13:
-                        return ++size;
-                    case 14:
-                        return --size;
-                    default:
-                        return size;
+                case 0:
+                    return size += newValue;
+                case 1:
+                    return size -= newValue;
+                case 2:
+                    return size *= newValue;
+                case 3:
+                    return size /= newValue;
+                case 4:
+                    return size &= newValue;
+                case 5:
+                    return size |= newValue;
+                case 6:
+                    return size ^= newValue;
+                case 7:
+                    return size %= newValue;
+                case 8:
+                    return size <<= newValue;
+                case 9:
+                    return size >>= newValue;
+                case 10:
+                    return size >>>= newValue;
+                case 11:
+                    return size++;
+                case 12:
+                    return size--;
+                case 13:
+                    return ++size;
+                case 14:
+                    return --size;
+                default:
+                    return size;
                 }
             }
 
@@ -1042,13 +1071,15 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
             private final int $ASSIGN$knownMod(int newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
+                            .getTimestamp());
                 }
                 return knownMod = newValue;
             }
 
             public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
@@ -1058,7 +1089,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                 last = $RECORD$last.restore(last, timestamp, trim);
                 knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -1072,7 +1104,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                 if ($CHECKPOINT != checkpoint) {
                     Checkpoint oldCheckpoint = $CHECKPOINT;
                     if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
                         FieldRecord.pushState($RECORDS);
                     }
                     $CHECKPOINT = checkpoint;
@@ -1091,11 +1124,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
             private transient FieldRecord $RECORD$knownMod = new FieldRecord(0);
 
             private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                    $RECORD$pos,
-                    $RECORD$size,
-                    $RECORD$last,
-                    $RECORD$knownMod
-                };
+                    $RECORD$pos, $RECORD$size, $RECORD$last, $RECORD$knownMod };
 
             {
                 $CHECKPOINT.addObject(new _PROXY_());
@@ -1114,9 +1143,11 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     public int lastIndexOf(Object o) {
         int pos = size();
         ListIterator itr = listIterator(pos);
-        while (--pos >= 0) 
-            if (equals(o, itr.previous()))
+        while (--pos >= 0) {
+            if (equals(o, itr.previous())) {
                 return pos;
+            }
+        }
         return -1;
     }
 
@@ -1147,8 +1178,10 @@ public abstract class AbstractList extends AbstractCollection implements List, R
      * @see #modCount
      */
     public ListIterator listIterator(final int index) {
-        if (index < 0 || index > size())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + size());
+        }
         return new ListIterator() {
             private int knownMod = getModCount();
 
@@ -1165,8 +1198,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              * list has been modified elsewhere.
              */
             private void checkMod() {
-                if (knownMod != getModCount())
+                if (knownMod != getModCount()) {
                     throw new ConcurrentModificationException();
+                }
             }
 
             /**             
@@ -1199,8 +1233,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              */
             public Object next() {
                 checkMod();
-                if (position == size)
+                if (position == size) {
                     throw new NoSuchElementException();
+                }
                 $ASSIGN$lastReturned(position);
                 return get($ASSIGN$SPECIAL$position(11, position));
             }
@@ -1215,8 +1250,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              */
             public Object previous() {
                 checkMod();
-                if (position == 0)
+                if (position == 0) {
                     throw new NoSuchElementException();
+                }
                 $ASSIGN$lastReturned($ASSIGN$SPECIAL$position(14, position));
                 return get(lastReturned);
             }
@@ -1253,8 +1289,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              */
             public void remove() {
                 checkMod();
-                if (lastReturned < 0)
+                if (lastReturned < 0) {
                     throw new IllegalStateException();
+                }
                 AbstractList.this.remove(lastReturned);
                 $ASSIGN$SPECIAL$size(12, size);
                 $ASSIGN$position(lastReturned);
@@ -1281,8 +1318,9 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              */
             public void set(Object o) {
                 checkMod();
-                if (lastReturned < 0)
+                if (lastReturned < 0) {
                     throw new IllegalStateException();
+                }
                 AbstractList.this.set(lastReturned, o);
             }
 
@@ -1301,7 +1339,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
              */
             public void add(Object o) {
                 checkMod();
-                AbstractList.this.add($ASSIGN$SPECIAL$position(11, position), o);
+                AbstractList.this
+                        .add($ASSIGN$SPECIAL$position(11, position), o);
                 $ASSIGN$SPECIAL$size(11, size);
                 $ASSIGN$lastReturned(-1);
                 $ASSIGN$knownMod(getModCount());
@@ -1330,61 +1369,66 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
             private final int $ASSIGN$knownMod(int newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
+                            .getTimestamp());
                 }
                 return knownMod = newValue;
             }
 
             private final int $ASSIGN$position(int newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                    $RECORD$position.add(null, position, $CHECKPOINT
+                            .getTimestamp());
                 }
                 return position = newValue;
             }
 
-            private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
+            private final int $ASSIGN$SPECIAL$position(int operator,
+                    long newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                    $RECORD$position.add(null, position, $CHECKPOINT
+                            .getTimestamp());
                 }
                 switch (operator) {
-                    case 0:
-                        return position += newValue;
-                    case 1:
-                        return position -= newValue;
-                    case 2:
-                        return position *= newValue;
-                    case 3:
-                        return position /= newValue;
-                    case 4:
-                        return position &= newValue;
-                    case 5:
-                        return position |= newValue;
-                    case 6:
-                        return position ^= newValue;
-                    case 7:
-                        return position %= newValue;
-                    case 8:
-                        return position <<= newValue;
-                    case 9:
-                        return position >>= newValue;
-                    case 10:
-                        return position >>>= newValue;
-                    case 11:
-                        return position++;
-                    case 12:
-                        return position--;
-                    case 13:
-                        return ++position;
-                    case 14:
-                        return --position;
-                    default:
-                        return position;
+                case 0:
+                    return position += newValue;
+                case 1:
+                    return position -= newValue;
+                case 2:
+                    return position *= newValue;
+                case 3:
+                    return position /= newValue;
+                case 4:
+                    return position &= newValue;
+                case 5:
+                    return position |= newValue;
+                case 6:
+                    return position ^= newValue;
+                case 7:
+                    return position %= newValue;
+                case 8:
+                    return position <<= newValue;
+                case 9:
+                    return position >>= newValue;
+                case 10:
+                    return position >>>= newValue;
+                case 11:
+                    return position++;
+                case 12:
+                    return position--;
+                case 13:
+                    return ++position;
+                case 14:
+                    return --position;
+                default:
+                    return position;
                 }
             }
 
             private final int $ASSIGN$lastReturned(int newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT.getTimestamp());
+                    $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT
+                            .getTimestamp());
                 }
                 return lastReturned = newValue;
             }
@@ -1394,53 +1438,56 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                     $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
                 }
                 switch (operator) {
-                    case 0:
-                        return size += newValue;
-                    case 1:
-                        return size -= newValue;
-                    case 2:
-                        return size *= newValue;
-                    case 3:
-                        return size /= newValue;
-                    case 4:
-                        return size &= newValue;
-                    case 5:
-                        return size |= newValue;
-                    case 6:
-                        return size ^= newValue;
-                    case 7:
-                        return size %= newValue;
-                    case 8:
-                        return size <<= newValue;
-                    case 9:
-                        return size >>= newValue;
-                    case 10:
-                        return size >>>= newValue;
-                    case 11:
-                        return size++;
-                    case 12:
-                        return size--;
-                    case 13:
-                        return ++size;
-                    case 14:
-                        return --size;
-                    default:
-                        return size;
+                case 0:
+                    return size += newValue;
+                case 1:
+                    return size -= newValue;
+                case 2:
+                    return size *= newValue;
+                case 3:
+                    return size /= newValue;
+                case 4:
+                    return size &= newValue;
+                case 5:
+                    return size |= newValue;
+                case 6:
+                    return size ^= newValue;
+                case 7:
+                    return size %= newValue;
+                case 8:
+                    return size <<= newValue;
+                case 9:
+                    return size >>= newValue;
+                case 10:
+                    return size >>>= newValue;
+                case 11:
+                    return size++;
+                case 12:
+                    return size--;
+                case 13:
+                    return ++size;
+                case 14:
+                    return --size;
+                default:
+                    return size;
                 }
             }
 
             public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
                 knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
                 position = $RECORD$position.restore(position, timestamp, trim);
-                lastReturned = $RECORD$lastReturned.restore(lastReturned, timestamp, trim);
+                lastReturned = $RECORD$lastReturned.restore(lastReturned,
+                        timestamp, trim);
                 size = $RECORD$size.restore(size, timestamp, trim);
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -1454,7 +1501,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                 if ($CHECKPOINT != checkpoint) {
                     Checkpoint oldCheckpoint = $CHECKPOINT;
                     if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
                         FieldRecord.pushState($RECORDS);
                     }
                     $CHECKPOINT = checkpoint;
@@ -1468,16 +1516,14 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
             private transient FieldRecord $RECORD$position = new FieldRecord(0);
 
-            private transient FieldRecord $RECORD$lastReturned = new FieldRecord(0);
+            private transient FieldRecord $RECORD$lastReturned = new FieldRecord(
+                    0);
 
             private transient FieldRecord $RECORD$size = new FieldRecord(0);
 
             private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                    $RECORD$knownMod,
-                    $RECORD$position,
-                    $RECORD$lastReturned,
-                    $RECORD$size
-                };
+                    $RECORD$knownMod, $RECORD$position, $RECORD$lastReturned,
+                    $RECORD$size };
 
             {
                 $CHECKPOINT.addObject(new _PROXY_());
@@ -1587,12 +1633,15 @@ public abstract class AbstractList extends AbstractCollection implements List, R
      * @see RandomAccess
      */
     public List subList(int fromIndex, int toIndex) {
-        if (fromIndex > toIndex)
-            throw new IllegalArgumentException(fromIndex + " > "+toIndex);
-        if (fromIndex < 0 || toIndex > size())
+        if (fromIndex > toIndex) {
+            throw new IllegalArgumentException(fromIndex + " > " + toIndex);
+        }
+        if (fromIndex < 0 || toIndex > size()) {
             throw new IndexOutOfBoundsException();
-        if (this instanceof RandomAccess)
+        }
+        if (this instanceof RandomAccess) {
             return new RandomAccessSubList(this, fromIndex, toIndex);
+        }
         return new SubList(this, fromIndex, toIndex);
     }
 
@@ -1612,7 +1661,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -1623,9 +1673,6 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
     private transient FieldRecord $RECORD$modCount = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$modCount
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$modCount };
 
 }
-

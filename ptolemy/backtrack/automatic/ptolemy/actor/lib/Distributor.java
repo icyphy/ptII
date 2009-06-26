@@ -29,7 +29,6 @@
 //// Distributor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
@@ -80,7 +79,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Yellow (mudit)
  * @Pt.AcceptedRating Yellow (cxh)
  */
-public class Distributor extends Transformer implements SequenceActor, Rollbackable {
+public class Distributor extends Transformer implements SequenceActor,
+        Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -124,18 +124,21 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * of the parameter, but will only do it when the token is requested to
      * delay the triggering of the width.
      */
-    private static class WidthDependentParameter extends Parameter implements Rollbackable {
+    private static class WidthDependentParameter extends Parameter implements
+            Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         private IOPort _port;
 
-        public WidthDependentParameter(NamedObj container, String name, Token token, IOPort port) throws IllegalActionException, NameDuplicationException  {
+        public WidthDependentParameter(NamedObj container, String name,
+                Token token, IOPort port) throws IllegalActionException,
+                NameDuplicationException {
             super(container, name, token);
             $ASSIGN$_port(port);
         }
 
-        public ptolemy.data.Token getToken() throws IllegalActionException  {
+        public ptolemy.data.Token getToken() throws IllegalActionException {
             setExpression(_port.getWidth() + " * blockSize");
             return super.getToken();
         }
@@ -152,14 +155,16 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            _port = (IOPort)$RECORD$_port.restore(_port, timestamp, trim);
+            _port = (IOPort) $RECORD$_port.restore(_port, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -173,7 +178,8 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -187,9 +193,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
 
         private transient FieldRecord $RECORD$_port = new FieldRecord(0);
 
-        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$_port
-            };
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_port };
 
     }
 
@@ -204,16 +208,19 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * @exception IllegalActionException If the actor cannot be contained
      * by the proposed container.
      */
-    public Distributor(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public Distributor(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         blockSize = new Parameter(this, "blockSize");
         blockSize.setTypeEquals(BaseType.INT);
         blockSize.setExpression("1");
-        input_tokenConsumptionRate = new WidthDependentParameter(input, "tokenConsumptionRate", new IntToken(0), output);
+        input_tokenConsumptionRate = new WidthDependentParameter(input,
+                "tokenConsumptionRate", new IntToken(0), output);
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
-        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate");
         output_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("blockSize");
@@ -229,10 +236,12 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * @exception CloneNotSupportedException If a derived class contains
      * attributes that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        Distributor newObject = (Distributor)super.clone(workspace);
-        newObject.input_tokenConsumptionRate = (Parameter)(newObject.input.getAttribute("tokenConsumptionRate"));
-        ((WidthDependentParameter)newObject.input_tokenConsumptionRate).setPort(newObject.output);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Distributor newObject = (Distributor) super.clone(workspace);
+        newObject.input_tokenConsumptionRate = (Parameter) (newObject.input
+                .getAttribute("tokenConsumptionRate"));
+        ((WidthDependentParameter) newObject.input_tokenConsumptionRate)
+                .setPort(newObject.output);
         return newObject;
     }
 
@@ -260,17 +269,18 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * On the next iteration, the actor will pick up where it left off.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         $ASSIGN$_tentativeOutputPosition(_currentOutputPosition);
         int width = output.getWidth();
-        int blockSizeValue = ((IntToken)blockSize.getToken()).intValue();
+        int blockSizeValue = ((IntToken) blockSize.getToken()).intValue();
         for (int i = 0; i < width; i++) {
             if (!input.hasToken(0, blockSizeValue)) {
                 break;
             }
             Token[] tokens = input.get(0, blockSizeValue);
-            output.send($ASSIGN$SPECIAL$_tentativeOutputPosition(11, _tentativeOutputPosition), tokens, blockSizeValue);
+            output.send($ASSIGN$SPECIAL$_tentativeOutputPosition(11,
+                    _tentativeOutputPosition), tokens, blockSizeValue);
             if (_tentativeOutputPosition >= width) {
                 $ASSIGN$_tentativeOutputPosition(0);
             }
@@ -281,7 +291,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * Begin execution by setting the current output channel to zero.
      * @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_currentOutputPosition(0);
     }
@@ -293,75 +303,83 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * will be sent.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         $ASSIGN$_currentOutputPosition(_tentativeOutputPosition);
         return super.postfire();
     }
 
     private final int $ASSIGN$_currentOutputPosition(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentOutputPosition.add(null, _currentOutputPosition, $CHECKPOINT.getTimestamp());
+            $RECORD$_currentOutputPosition.add(null, _currentOutputPosition,
+                    $CHECKPOINT.getTimestamp());
         }
         return _currentOutputPosition = newValue;
     }
 
     private final int $ASSIGN$_tentativeOutputPosition(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeOutputPosition.add(null, _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeOutputPosition.add(null,
+                    _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
         }
         return _tentativeOutputPosition = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_tentativeOutputPosition(int operator, long newValue) {
+    private final int $ASSIGN$SPECIAL$_tentativeOutputPosition(int operator,
+            long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeOutputPosition.add(null, _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeOutputPosition.add(null,
+                    _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _tentativeOutputPosition += newValue;
-            case 1:
-                return _tentativeOutputPosition -= newValue;
-            case 2:
-                return _tentativeOutputPosition *= newValue;
-            case 3:
-                return _tentativeOutputPosition /= newValue;
-            case 4:
-                return _tentativeOutputPosition &= newValue;
-            case 5:
-                return _tentativeOutputPosition |= newValue;
-            case 6:
-                return _tentativeOutputPosition ^= newValue;
-            case 7:
-                return _tentativeOutputPosition %= newValue;
-            case 8:
-                return _tentativeOutputPosition <<= newValue;
-            case 9:
-                return _tentativeOutputPosition >>= newValue;
-            case 10:
-                return _tentativeOutputPosition >>>= newValue;
-            case 11:
-                return _tentativeOutputPosition++;
-            case 12:
-                return _tentativeOutputPosition--;
-            case 13:
-                return ++_tentativeOutputPosition;
-            case 14:
-                return --_tentativeOutputPosition;
-            default:
-                return _tentativeOutputPosition;
+        case 0:
+            return _tentativeOutputPosition += newValue;
+        case 1:
+            return _tentativeOutputPosition -= newValue;
+        case 2:
+            return _tentativeOutputPosition *= newValue;
+        case 3:
+            return _tentativeOutputPosition /= newValue;
+        case 4:
+            return _tentativeOutputPosition &= newValue;
+        case 5:
+            return _tentativeOutputPosition |= newValue;
+        case 6:
+            return _tentativeOutputPosition ^= newValue;
+        case 7:
+            return _tentativeOutputPosition %= newValue;
+        case 8:
+            return _tentativeOutputPosition <<= newValue;
+        case 9:
+            return _tentativeOutputPosition >>= newValue;
+        case 10:
+            return _tentativeOutputPosition >>>= newValue;
+        case 11:
+            return _tentativeOutputPosition++;
+        case 12:
+            return _tentativeOutputPosition--;
+        case 13:
+            return ++_tentativeOutputPosition;
+        case 14:
+            return --_tentativeOutputPosition;
+        default:
+            return _tentativeOutputPosition;
         }
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _currentOutputPosition = $RECORD$_currentOutputPosition.restore(_currentOutputPosition, timestamp, trim);
-        _tentativeOutputPosition = $RECORD$_tentativeOutputPosition.restore(_tentativeOutputPosition, timestamp, trim);
+        _currentOutputPosition = $RECORD$_currentOutputPosition.restore(
+                _currentOutputPosition, timestamp, trim);
+        _tentativeOutputPosition = $RECORD$_tentativeOutputPosition.restore(
+                _tentativeOutputPosition, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -387,14 +405,13 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord $RECORD$_currentOutputPosition = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentOutputPosition = new FieldRecord(
+            0);
 
-    private transient FieldRecord $RECORD$_tentativeOutputPosition = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeOutputPosition = new FieldRecord(
+            0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_currentOutputPosition,
-            $RECORD$_tentativeOutputPosition
-        };
+            $RECORD$_currentOutputPosition, $RECORD$_tentativeOutputPosition };
 
 }
-

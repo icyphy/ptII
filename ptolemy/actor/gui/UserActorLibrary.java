@@ -338,7 +338,7 @@ public class UserActorLibrary {
      *  <p>This variable is not final so that users of this class
      *  may change it.
      */
-    public static /*final*/ String USER_LIBRARY_NAME = "UserLibrary";
+    public static/*final*/String USER_LIBRARY_NAME = "UserLibrary";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

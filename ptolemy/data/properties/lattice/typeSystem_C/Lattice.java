@@ -33,7 +33,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -91,12 +90,11 @@ public class Lattice extends PropertyLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-
     // The infinite property lattice
     public Lattice() {
         super();
 
-// FIXME: how to convert from Ptolemy type system to EDC type system?
+        // FIXME: how to convert from Ptolemy type system to EDC type system?
         addNodeWeight(CONFLICT);
 
         addNodeWeight(DOUBLEDOUBLE);
@@ -120,7 +118,6 @@ public class Lattice extends PropertyLattice {
         addNodeWeight(VOID);
 
         addNodeWeight(UNKNOWN);
-
 
         addEdge(UNKNOWN, VOID);
         addEdge(UNKNOWN, BOOLEAN);
@@ -151,19 +148,19 @@ public class Lattice extends PropertyLattice {
         addEdge(DOUBLE, DOUBLEDOUBLE);
 
         // FIXME: convert boolean to REAL32?
-//        addEdge(BOOLEAN, REAL32);
+        //        addEdge(BOOLEAN, REAL32);
 
         // FIXME: automatic conversion from integer to real types valid?
         // do we need explicit modeling of int -> real and real -> int?
         // does not work since UINT32 and SINT32 need to have single LUB (INVALID)
-//        addEdge(SINT32, REAL32);
-//        addEdge(UINT32, REAL32);
+        //        addEdge(SINT32, REAL32);
+        //        addEdge(UINT32, REAL32);
 
-      addEdge(VOID, CONFLICT);
-      addEdge(BOOLEAN, CONFLICT);
-      addEdge(ULONGLONG, CONFLICT);
-      addEdge(LONGLONG, CONFLICT);
-      addEdge(DOUBLEDOUBLE, CONFLICT);
+        addEdge(VOID, CONFLICT);
+        addEdge(BOOLEAN, CONFLICT);
+        addEdge(ULONGLONG, CONFLICT);
+        addEdge(LONGLONG, CONFLICT);
+        addEdge(DOUBLEDOUBLE, CONFLICT);
 
         // FIXME: Replace this with an assert when we move to 1.5
         if (!isLattice()) {
@@ -172,65 +169,68 @@ public class Lattice extends PropertyLattice {
         }
     }
 
-    public Property convertJavaToCtype(Type type, Token token) throws IllegalActionException {
-        TypeProperty cType = (TypeProperty)UNKNOWN;
+    public Property convertJavaToCtype(Type type, Token token)
+            throws IllegalActionException {
+        TypeProperty cType = (TypeProperty) UNKNOWN;
 
         // FIXME: consider ShortToken, UnsignedByteToken, ...
         // FIXME: what is the criteria for bit-values?
         if (type.equals(BaseType.BOOLEAN)) {
-            cType = (TypeProperty)BOOLEAN;
-        } else if ((type.equals(BaseType.UNSIGNED_BYTE)) || (type.equals(BaseType.SHORT)) || (type.equals(BaseType.INT)) || (type.equals(BaseType.LONG))) {
-//            if (token == null) {
-                if (type.equals(BaseType.UNSIGNED_BYTE)) {
-                    cType = (TypeProperty)UCHAR;
-                } else if (type.equals(BaseType.SHORT)) {
-                   cType = (TypeProperty)SHORT;
-                } else if (type.equals(BaseType.INT)) {
-                    cType = (TypeProperty)INT;
-                } else if (type.equals(BaseType.LONG)) {
-                    cType = (TypeProperty)LONGLONG;
-                }
-/*            } else {
-                if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)UINT).getMaxValue()))).booleanValue()) {
-    // FIXME: throw exception
-    //               throw ;
-                } else if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)USHORT).getMaxValue()))).booleanValue()) {
-                    cType = (TypeProperty)UINT;
-                } else if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)UCHAR).getMaxValue()))).booleanValue()) {
-                    cType = (TypeProperty)USHORT;
-                } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)INT).getMinValue()))).booleanValue()) {
-    //              FIXME: throw exception
-    //              throw ;
-                } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)SHORT).getMinValue()))).booleanValue()) {
-                    cType = (TypeProperty)INT;
-                } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)CHAR).getMinValue()))).booleanValue()) {
-                    cType = (TypeProperty)SHORT;
-                } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)UCHAR).getMinValue()))).booleanValue()) {
-                    cType = (TypeProperty)CHAR;
-                } else {
-                    cType = (TypeProperty)UCHAR;
-                }
+            cType = (TypeProperty) BOOLEAN;
+        } else if ((type.equals(BaseType.UNSIGNED_BYTE))
+                || (type.equals(BaseType.SHORT)) || (type.equals(BaseType.INT))
+                || (type.equals(BaseType.LONG))) {
+            //            if (token == null) {
+            if (type.equals(BaseType.UNSIGNED_BYTE)) {
+                cType = (TypeProperty) UCHAR;
+            } else if (type.equals(BaseType.SHORT)) {
+                cType = (TypeProperty) SHORT;
+            } else if (type.equals(BaseType.INT)) {
+                cType = (TypeProperty) INT;
+            } else if (type.equals(BaseType.LONG)) {
+                cType = (TypeProperty) LONGLONG;
             }
-*/
+            /*            } else {
+                            if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)UINT).getMaxValue()))).booleanValue()) {
+                // FIXME: throw exception
+                //               throw ;
+                            } else if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)USHORT).getMaxValue()))).booleanValue()) {
+                                cType = (TypeProperty)UINT;
+                            } else if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)UCHAR).getMaxValue()))).booleanValue()) {
+                                cType = (TypeProperty)USHORT;
+                            } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)INT).getMinValue()))).booleanValue()) {
+                //              FIXME: throw exception
+                //              throw ;
+                            } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)SHORT).getMinValue()))).booleanValue()) {
+                                cType = (TypeProperty)INT;
+                            } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)CHAR).getMinValue()))).booleanValue()) {
+                                cType = (TypeProperty)SHORT;
+                            } else if (((ScalarToken)token).isLessThan(((ScalarToken)(((TypeProperty)UCHAR).getMinValue()))).booleanValue()) {
+                                cType = (TypeProperty)CHAR;
+                            } else {
+                                cType = (TypeProperty)UCHAR;
+                            }
+                        }
+            */
         } else if (type.equals(BaseType.DOUBLE)) {
-// FIXME: Consider range and precision for type assignment!
-//            if (token == null) {
-                    cType = (TypeProperty)DOUBLE;
-/*            } else {
-                if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)FLOAT).getMaxValue()))).booleanValue()) {
-                    cType = (TypeProperty)DOUBLE;
-                } else {
-                    cType = (TypeProperty)FLOAT;
-                }
-            }
-*/
+            // FIXME: Consider range and precision for type assignment!
+            //            if (token == null) {
+            cType = (TypeProperty) DOUBLE;
+            /*            } else {
+                            if (((ScalarToken)token).isGreaterThan(((ScalarToken)(((TypeProperty)FLOAT).getMaxValue()))).booleanValue()) {
+                                cType = (TypeProperty)DOUBLE;
+                            } else {
+                                cType = (TypeProperty)FLOAT;
+                            }
+                        }
+            */
         } else if (type.equals(BaseType.FLOAT)) {
-            cType = (TypeProperty)FLOAT;
+            cType = (TypeProperty) FLOAT;
         } else if (type.equals(BaseType.NIL)) {
-            cType = (TypeProperty)VOID;
+            cType = (TypeProperty) VOID;
         }
 
-        return (Property)cType;
+        return (Property) cType;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -55,7 +55,7 @@ public class PtidesTopLevelDirector extends DEDirector {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public PtidesTopLevelDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 }

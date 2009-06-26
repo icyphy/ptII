@@ -55,25 +55,25 @@ public class SchedulingRelationController extends TransitionController {
     }
 
     public void setConfiguration(Configuration configuration) {
-            super.setConfiguration(configuration);
+        super.setConfiguration(configuration);
 
-            if (_lookInsideActionFactory != null) {
-                    _menuFactory.removeMenuItemFactory(_lookInsideActionFactory);
-            }
+        if (_lookInsideActionFactory != null) {
+            _menuFactory.removeMenuItemFactory(_lookInsideActionFactory);
+        }
     }
 
     public static class SchedulingRelationRenderer extends LinkRenderer {
 
         public Connector render(Object edge, Site tailSite, Site headSite) {
-            ArcConnector connector =
-                (ArcConnector) super.render(edge, tailSite, headSite);
+            ArcConnector connector = (ArcConnector) super.render(edge,
+                    tailSite, headSite);
             Arc arc = (Arc) edge;
-            SchedulingRelation relation =
-                (SchedulingRelation) arc.getRelation();
+            SchedulingRelation relation = (SchedulingRelation) arc
+                    .getRelation();
             if (relation != null && relation.isCanceling()) {
                 BasicStroke stroke = new BasicStroke(2.0f,
                         BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f,
-                        new float[] {5.0f, 7.0f}, 0.0f);
+                        new float[] { 5.0f, 7.0f }, 0.0f);
                 connector.setStroke(stroke);
             }
             return connector;

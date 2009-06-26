@@ -123,7 +123,7 @@ public class SchedulingRelation extends Transition {
 
         delay = new StringAttribute(this, "delay") {
             protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+                    throws IOException {
                 String displayName = getDisplayName();
                 setDisplayName(null);
                 try {
@@ -168,7 +168,7 @@ public class SchedulingRelation extends Transition {
      *   <i>arguments</i> and <i>delay</i> are not acceptable.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == arguments) {
             _parseArguments();
         } else if (attribute == delay) {
@@ -204,8 +204,8 @@ public class SchedulingRelation extends Transition {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SchedulingRelation relation =
-            (SchedulingRelation) super.clone(workspace);
+        SchedulingRelation relation = (SchedulingRelation) super
+                .clone(workspace);
         relation._argumentsTree = null;
         relation._argumentsTreeVersion = -1;
         relation._delayTree = null;
@@ -223,17 +223,16 @@ public class SchedulingRelation extends Transition {
      *   be of type {@link ArrayToken} or {@link RecordToken}.
      *  @exception IllegalActionException If the evaluation is unsuccessful.
      */
-    public Token getArguments(ParserScope scope)
-    throws IllegalActionException {
+    public Token getArguments(ParserScope scope) throws IllegalActionException {
         if (_argumentsTreeVersion != _workspace.getVersion()) {
             _parseArguments();
         }
         Token token = _parseTreeEvaluator.evaluateParseTree(_argumentsTree,
                 scope);
-        if (token == null || !(token instanceof ArrayToken ||
-                token instanceof RecordToken)) {
-            throw new IllegalActionException(this, "Unable to evaluate " +
-                    "arguments \"" + arguments.getExpression() + "\".");
+        if (token == null
+                || !(token instanceof ArrayToken || token instanceof RecordToken)) {
+            throw new IllegalActionException(this, "Unable to evaluate "
+                    + "arguments \"" + arguments.getExpression() + "\".");
         }
         return token;
     }
@@ -251,8 +250,8 @@ public class SchedulingRelation extends Transition {
         }
         Token token = _parseTreeEvaluator.evaluateParseTree(_delayTree, scope);
         if (token == null || !(token instanceof ScalarToken)) {
-            throw new IllegalActionException(this, "Unable to evaluate delay" +
-                    "expression \"" + delay.getExpression() + "\".");
+            throw new IllegalActionException(this, "Unable to evaluate delay"
+                    + "expression \"" + delay.getExpression() + "\".");
         }
         double result = ((ScalarToken) token).doubleValue();
         return result;
@@ -282,10 +281,10 @@ public class SchedulingRelation extends Transition {
         String argumentsExpression = arguments.getExpression();
         if (argumentsExpression != null) {
             String trimmedArguments = argumentsExpression.trim();
-            boolean emptyArguments = trimmedArguments.startsWith("{") &&
-                    trimmedArguments.endsWith("}") &&
-                    trimmedArguments.substring(1, trimmedArguments.length() - 1)
-                            .trim().equals("");
+            boolean emptyArguments = trimmedArguments.startsWith("{")
+                    && trimmedArguments.endsWith("}")
+                    && trimmedArguments.substring(1,
+                            trimmedArguments.length() - 1).trim().equals("");
             if (!emptyArguments) {
                 if (buffer.length() > 0) {
                     buffer.append("\n");
@@ -351,8 +350,8 @@ public class SchedulingRelation extends Transition {
                 object = ModelScope.getScopedVariable(null, this, name);
             }
             if (object == null) {
-                throw new IllegalActionException(this, "Unable to find " +
-                        "a port of a variable with name\"" + name + "\".");
+                throw new IllegalActionException(this, "Unable to find "
+                        + "a port of a variable with name\"" + name + "\".");
             } else {
                 if (list == null) {
                     list = new LinkedList<NamedObj>();
@@ -435,15 +434,14 @@ public class SchedulingRelation extends Transition {
      *   arguments.
      */
     private void _parseArguments() throws IllegalActionException {
-        _argumentsTree = new PtParser().generateParseTree(
-                arguments.getExpression());
+        _argumentsTree = new PtParser().generateParseTree(arguments
+                .getExpression());
         _argumentsTreeVersion = _workspace.getVersion();
-        if (!(_argumentsTree == null ||
-                _argumentsTree instanceof ASTPtArrayConstructNode ||
-                _argumentsTree instanceof ASTPtRecordConstructNode)) {
-            throw new IllegalActionException(this, "The arguments for a " +
-                    "scheduling edge must be in an array or a record in the " +
-                    "form of {...}.");
+        if (!(_argumentsTree == null
+                || _argumentsTree instanceof ASTPtArrayConstructNode || _argumentsTree instanceof ASTPtRecordConstructNode)) {
+            throw new IllegalActionException(this, "The arguments for a "
+                    + "scheduling edge must be in an array or a record in the "
+                    + "form of {...}.");
         }
     }
 
@@ -457,9 +455,8 @@ public class SchedulingRelation extends Transition {
     }
 
     /** An array of all recognizable constant values that equal to 0.0d. */
-    private static final String[] _ZERO_CONSTS = new String[] {
-        "0", "0.0", "0l", "0s", "0ub", "0.0d", "0.0f"
-    };
+    private static final String[] _ZERO_CONSTS = new String[] { "0", "0.0",
+            "0l", "0s", "0ub", "0.0d", "0.0f" };
 
     /** The parse tree of arguments. */
     private ASTPtRootNode _argumentsTree;

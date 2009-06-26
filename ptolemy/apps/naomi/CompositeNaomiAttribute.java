@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (tfeng)
  */
 public interface CompositeNaomiAttribute {
-    
+
     public String getResourceIdentifier();
 
     public void loadCompositeAttribute(Reader reader)

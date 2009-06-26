@@ -59,13 +59,13 @@ public class DCT8x8 extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DCT8x8(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        input = new TypedIOPort(this,"input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
 
-        output = new TypedIOPort(this,"output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
 
     }
@@ -104,15 +104,16 @@ public class DCT8x8 extends TypedAtomicActor {
         super.initialize();
         _output = new IntMatrixToken[1];
         cos_values = new float[8];
-        cos_values[0] = (float)0.7071068;
-        cos_values[1] = (float)0.4903926;
-        cos_values[2] = (float)0.4619398;
-        cos_values[3] = (float)0.4157348;
-        cos_values[4] = (float)0.3535534;
-        cos_values[5] = (float)0.2777851;
-        cos_values[6] = (float)0.1913417;
-        cos_values[7] = (float)0.0975452;
+        cos_values[0] = (float) 0.7071068;
+        cos_values[1] = (float) 0.4903926;
+        cos_values[2] = (float) 0.4619398;
+        cos_values[3] = (float) 0.4157348;
+        cos_values[4] = (float) 0.3535534;
+        cos_values[5] = (float) 0.2777851;
+        cos_values[6] = (float) 0.1913417;
+        cos_values[7] = (float) 0.0975452;
     }
+
     /** .
      *
      *  @exception IllegalActionException If there is no director,
@@ -123,27 +124,24 @@ public class DCT8x8 extends TypedAtomicActor {
         super.fire();
 
         int i, j, k;
-        float [] _block = new float[8];
-        float [] _temp = new float[8];
-        float [][] _ftemp = new float[8][8];
-        int [][] sum = new int[8][8];
+        float[] _block = new float[8];
+        float[] _temp = new float[8];
+        float[][] _ftemp = new float[8][8];
+        int[][] sum = new int[8][8];
         IntMatrixToken _input;
 
         if (input.hasToken(0)) {
-            _input = (IntMatrixToken)input.get(0);
+            _input = (IntMatrixToken) input.get(0);
         } else {
             return;
         }
 
-        for ( i = 0; i < 8; i++ )
-        {
-            for (j = 0; j < 8; j++)
-            {
-                _block[j] = _input.getElementAt(i,j);
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                _block[j] = _input.getElementAt(i, j);
             }
 
-            for (j = 0; j < 4; j++)
-            {
+            for (j = 0; j < 4; j++) {
                 k = 7 - j;
                 _temp[j] = _block[j] + _block[k];
                 _temp[k] = _block[j] - _block[k];
@@ -163,8 +161,10 @@ public class DCT8x8 extends TypedAtomicActor {
 
             _ftemp[i][0] = (_block[0] + _block[1]) * cos_values[4];
             _ftemp[i][4] = (_block[0] - _block[1]) * cos_values[4];
-            _ftemp[i][2] = _block[2] * cos_values[6] + _block[3] * cos_values[2];
-            _ftemp[i][6] = _block[3] * cos_values[6] - _block[2] * cos_values[2];
+            _ftemp[i][2] = _block[2] * cos_values[6] + _block[3]
+                    * cos_values[2];
+            _ftemp[i][6] = _block[3] * cos_values[6] - _block[2]
+                    * cos_values[2];
 
             _temp[4] = _block[4] + _block[5];
             _temp[7] = _block[7] + _block[6];
@@ -177,10 +177,8 @@ public class DCT8x8 extends TypedAtomicActor {
             _ftemp[i][3] = _temp[6] * cos_values[3] - _temp[5] * cos_values[5];
         }
 
-        for (i = 0; i < 8; i++ )
-        {
-            for (j = 0; j < 4; j++)
-            {
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 4; j++) {
                 k = 7 - j;
                 _temp[j] = _ftemp[j][i] + _ftemp[k][i];
                 _temp[k] = _ftemp[j][i] - _ftemp[k][i];
@@ -199,32 +197,33 @@ public class DCT8x8 extends TypedAtomicActor {
 
             _ftemp[0][i] = (_block[0] + _block[1]) * cos_values[4];
             _ftemp[4][i] = (_block[0] - _block[1]) * cos_values[4];
-            _ftemp[2][i] = _block[2] * cos_values[6] + _block[3] * cos_values[2];
-            _ftemp[6][i] = _block[3] * cos_values[6] - _block[2] * cos_values[2];
+            _ftemp[2][i] = _block[2] * cos_values[6] + _block[3]
+                    * cos_values[2];
+            _ftemp[6][i] = _block[3] * cos_values[6] - _block[2]
+                    * cos_values[2];
 
             _temp[4] = _block[4] + _block[5];
             _temp[7] = _block[7] + _block[6];
             _temp[5] = _block[4] - _block[5];
             _temp[6] = _block[7] - _block[6];
 
-            _ftemp[1][i] =  _temp[4] * cos_values[7] +  _temp[7] * cos_values[1];
-            _ftemp[5][i] =  _temp[5] * cos_values[3] +  _temp[6] * cos_values[5];
-            _ftemp[7][i] =  _temp[7] * cos_values[7] -  _temp[4] * cos_values[1];
-            _ftemp[3][i] =  _temp[6] * cos_values[3] -  _temp[5] * cos_values[5];
+            _ftemp[1][i] = _temp[4] * cos_values[7] + _temp[7] * cos_values[1];
+            _ftemp[5][i] = _temp[5] * cos_values[3] + _temp[6] * cos_values[5];
+            _ftemp[7][i] = _temp[7] * cos_values[7] - _temp[4] * cos_values[1];
+            _ftemp[3][i] = _temp[6] * cos_values[3] - _temp[5] * cos_values[5];
 
         }
 
-        for (i = 0; i < 8; i++)
-        {
-          for (j = 0; j < 8; j++)
-          {
-            sum[i][j] = (int)(_ftemp[i][j]);
-          }
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                sum[i][j] = (int) (_ftemp[i][j]);
+            }
         }
         _output[0] = new IntMatrixToken(sum);
-        output.send(0, _output, _output.length );
+        output.send(0, _output, _output.length);
 
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IntMatrixToken[] _output;

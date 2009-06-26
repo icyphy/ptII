@@ -80,20 +80,16 @@ public class ModelRepaintController extends Attribute {
 
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" "
-                + "width=\"135\" height=\"20\" "
-                + "style=\"fill:#00FFFF\"/>\n"
-                + "<text x=\"-55\" y=\"5\" "
+                + "<rect x=\"-60\" y=\"-10\" " + "width=\"135\" height=\"20\" "
+                + "style=\"fill:#00FFFF\"/>\n" + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
-                + "RepaintController\n" + "</text>\n"
-                + "</svg>\n");
+                + "RepaintController\n" + "</text>\n" + "</svg>\n");
 
         // Hide the name.
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
         hideName.setToken(BooleanToken.TRUE);
         hideName.setVisibility(Settable.EXPERT);
     }
-
 
     /** Specify the container NamedObj, adding this attribute to the
      *  list of attributes in the container.  If the container already

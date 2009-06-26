@@ -177,4 +177,3 @@ public interface SortedSet extends Set, Rollbackable {
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }
-

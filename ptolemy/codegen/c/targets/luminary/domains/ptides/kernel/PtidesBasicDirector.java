@@ -62,7 +62,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating
  */
-public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel.PtidesBasicDirector {
+public class PtidesBasicDirector extends
+        ptolemy.codegen.c.domains.ptides.kernel.PtidesBasicDirector {
 
     /**
      * Construct the code generator helper associated with the given
@@ -70,7 +71,8 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
      * @param ptidesBasicDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
-    public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
+    public PtidesBasicDirector(
+            ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
         super(ptidesBasicDirector);
     }
 
@@ -165,8 +167,8 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(CodeGeneratorHelper.generateName(_director
-                .getContainer()) + "();" + _eol);
+        code.append(CodeGeneratorHelper.generateName(_director.getContainer())
+                + "();" + _eol);
 
         return code.toString();
     }
@@ -183,15 +185,15 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
         List args = new LinkedList();
         args.add(_generateDirectorHeader());
 
-        args.add(((CompositeActor)
-                _director.getContainer()).deepEntityList().size());
+        args.add(((CompositeActor) _director.getContainer()).deepEntityList()
+                .size());
 
         code.append(super.generatePreinitializeCode());
 
         code.append(_codeStream.getCodeBlock("preinitPDBlock", args));
-        
+
         code.append(_codeStream.getCodeBlock("initPDCodeBlock"));
-        
+
         code.append(_generateInitializeHardwareCode());
 
         return code.toString();
@@ -206,7 +208,7 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
      * @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         /* FIXME: So far, the only possible composition using PN
          * is PN inside PN. In this case, we should generate one cross-level
          * queue rather than two. This method override the base
@@ -223,7 +225,7 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void generateTransferOutputsCode(IOPort port, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         /* FIXME: So far, the only possible composition using PN
          * is PN inside PN. In this case, we should generate one cross-level
          * queue rather than two. This method override the base
@@ -240,7 +242,7 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
      * @exception IllegalActionException Not thrown in this class.
      */
     public String generateVariableInitialization()
-    throws IllegalActionException {
+            throws IllegalActionException {
         return "";
     }
 
@@ -257,7 +259,7 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
      * @exception IllegalActionException Not thrown in this class.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: Reference with offset larger than 1 will not work
         // (e.g. $ref(port, 3)).
         return 1;
@@ -275,8 +277,7 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
         Set sharedCode = super.getSharedCode();
         return sharedCode;
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -293,7 +294,7 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
      *   throws it.
      */
     protected String _createDynamicOffsetVariables(TypedIOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         /* FIXME: make it useful such that we know which event offset to write to
         StringBuffer code = new StringBuffer();
         code.append(_eol + _codeGenerator.comment(
@@ -328,18 +329,23 @@ public class PtidesBasicDirector extends ptolemy.codegen.c.domains.ptides.kernel
      *  @return code initialization code for hardware peripherals
      *  @throws IllegalActionException
      */
-    protected String _generateInitializeHardwareCode() throws IllegalActionException {
+    protected String _generateInitializeHardwareCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
         for (Actor actor : _actuators.keySet()) {
-            code.append(((ptolemy.codegen.c.domains.ptides.lib.OutputDevice)_getHelper(actor)).generateHardwareInitializationCode());
+            code
+                    .append(((ptolemy.codegen.c.domains.ptides.lib.OutputDevice) _getHelper(actor))
+                            .generateHardwareInitializationCode());
         }
         for (Actor actor : _sensors.keySet()) {
-            code.append(((ptolemy.codegen.c.domains.ptides.lib.InputDevice)_getHelper(actor)).generateHardwareInitializationCode());
+            code
+                    .append(((ptolemy.codegen.c.domains.ptides.lib.InputDevice) _getHelper(actor))
+                            .generateHardwareInitializationCode());
         }
-        
+
         code.append("}" + _eol);
         return code.toString();
     }

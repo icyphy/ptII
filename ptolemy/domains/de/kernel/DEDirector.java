@@ -212,7 +212,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
-public class DEDirector extends Director implements SuperdenseTimeDirector, TimedDirector {
+public class DEDirector extends Director implements SuperdenseTimeDirector,
+        TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -357,7 +358,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DEDirector newObject = (DEDirector)super.clone(workspace);
+        DEDirector newObject = (DEDirector) super.clone(workspace);
         newObject._disabledActors = null;
         newObject._eventQueue = null;
         newObject._exceedStopTime = false;
@@ -386,8 +387,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      */
     public String describePriorities() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality
-                = (CausalityInterfaceForComposites)container.getCausalityInterface();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+                .getCausalityInterface();
         return causality.describeDepths();
     }
 
@@ -511,7 +512,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                     // If the actor to be fired is not contained by the container,
                     // it may just be deleted. Put this actor to the
                     // list of disabled actors.
-                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
+                    if (!((CompositeEntity) getContainer())
+                            .deepContains((NamedObj) actorToFire)) {
                         _debug("Actor no longer under the control of this director. Disabling actor.");
                         _disableActor(actorToFire);
                         break;
@@ -553,7 +555,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                     // If the actor to be fired is not contained by the container,
                     // it may just be deleted. Put this actor to the
                     // list of disabled actors.
-                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
+                    if (!((CompositeEntity) getContainer())
+                            .deepContains((NamedObj) actorToFire)) {
                         _disableActor(actorToFire);
                         break;
                     }
@@ -814,7 +817,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      *   is not acceptable to a refinement.
      */
     public void fireAtSkipped(Time time) throws IllegalActionException {
-        fireAtCurrentTime((Actor)getContainer());
+        fireAtCurrentTime((Actor) getContainer());
     }
 
     /** Return the event queue. Note that this method is not synchronized.
@@ -972,9 +975,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         if (_isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
-                Director executiveDirector = ((CompositeActor)container).getExecutiveDirector();
+                Director executiveDirector = ((CompositeActor) container)
+                        .getExecutiveDirector();
                 if (executiveDirector instanceof SuperdenseTimeDirector) {
-                    _microstep = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                    _microstep = ((SuperdenseTimeDirector) executiveDirector)
+                            .getIndex();
                 }
             }
         }
@@ -1014,8 +1019,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      */
     public void invalidateSchedule() {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality
-                = (CausalityInterfaceForComposites)container.getCausalityInterface();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+                .getCausalityInterface();
         causality.invalidate();
     }
 
@@ -1135,18 +1140,17 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         if (_isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
-                Director executiveDirector = ((CompositeActor)container).getExecutiveDirector();
+                Director executiveDirector = ((CompositeActor) container)
+                        .getExecutiveDirector();
                 if (executiveDirector instanceof SuperdenseTimeDirector) {
-                    _microstep = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                    _microstep = ((SuperdenseTimeDirector) executiveDirector)
+                            .getIndex();
                 }
             }
         }
 
         if (_debugging) {
-            _debug("Current time is: ("
-                    + getModelTime()
-                    + ", "
-                    + getIndex()
+            _debug("Current time is: (" + getModelTime() + ", " + getIndex()
                     + ")");
         }
 
@@ -1183,11 +1187,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                 || (modelTime.compareTo(nextEventTime) == 0 && getIndex() > nextEventIndex)) {
             DEEvent skippedEvent = _eventQueue.take();
             if (_debugging) {
-                _debug("Skipping event at time ("
-                        + nextEventTime
-                        + ", "
-                        + nextEventIndex
-                        + ") destined for actor "
+                _debug("Skipping event at time (" + nextEventTime + ", "
+                        + nextEventIndex + ") destined for actor "
                         + skippedEvent.actor().getFullName());
             }
             if (skippedEvent.ioPort() == null) {
@@ -1288,8 +1289,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         // clearly indicate that the cost is in static analysis
         // done in preinitialize.
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality
-                = (CausalityInterfaceForComposites)container.getCausalityInterface();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+                .getCausalityInterface();
         causality.checkForCycles();
 
         if (_debugging && _verbose) {
@@ -1556,8 +1557,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      */
     protected int _getDepthOfActor(Actor actor) throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality
-                = (CausalityInterfaceForComposites)container.getCausalityInterface();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+                .getCausalityInterface();
         return causality.getDepthOfActor(actor);
     }
 
@@ -1568,10 +1569,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      *   a depth (this should not occur if the ioPort is under the control
      *   of this director).
      */
-    protected int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
+    protected int _getDepthOfIOPort(IOPort ioPort)
+            throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality
-                = (CausalityInterfaceForComposites)container.getCausalityInterface();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+                .getCausalityInterface();
         return causality.getDepthOfPort(ioPort);
     }
 
@@ -1644,12 +1646,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                     // missed an event
                     throw new IllegalActionException(
                             "Fire: Missed an event: the next event tag "
-                            + nextEvent.timeStamp()
-                            + " :: "
-                            + nextEvent.microstep()
-                            + " is earlier than the current model tag "
-                            + getModelTime() + " :: " + _microstep
-                            + " !");
+                                    + nextEvent.timeStamp() + " :: "
+                                    + nextEvent.microstep()
+                                    + " is earlier than the current model tag "
+                                    + getModelTime() + " :: " + _microstep
+                                    + " !");
                 }
 
                 // If the event is in the future time, it is ignored
@@ -1785,8 +1786,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                                 // the DE domain has an upper limit on running
                                 // time of Double.MAX_VALUE milliseconds.
                                 double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                                ptolemy.actor.util.Time elapsed
-                                        = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
+                                ptolemy.actor.util.Time elapsed = new ptolemy.actor.util.Time(
+                                        this, elapsedTimeInSeconds);
                                 if (currentTime.compareTo(elapsed) <= 0) {
                                     break;
                                 }
@@ -1820,16 +1821,19 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                                         // locks on the workspace, which would block
                                         // UI interactions and may cause deadlocks.
                                         // SOLUTION: explicitly release read permissions.
-                                        depth = _workspace.releaseReadPermission();
+                                        depth = _workspace
+                                                .releaseReadPermission();
                                         _eventQueue.wait(timeToWait);
                                     } catch (InterruptedException ex) {
                                         // Continue executing?
                                         // No, because this could be a problem if any
                                         // actor assumes that model time always exceeds
                                         // real time when synchronizeToRealTime is set.
-                                        throw new IllegalActionException(this, ex,
-                                                "Thread interrupted when waiting for" +
-                                                " real time to match model time.");
+                                        throw new IllegalActionException(
+                                                this,
+                                                ex,
+                                                "Thread interrupted when waiting for"
+                                                        + " real time to match model time.");
                                     }
                                 }
                             } // while
@@ -1955,7 +1959,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
 
     /** The set of actors that have returned false in their postfire()
      *  methods. Events destined for these actors are discarded and

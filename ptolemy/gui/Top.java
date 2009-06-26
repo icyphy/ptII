@@ -162,7 +162,7 @@ public abstract class Top extends JFrame {
         getContentPane().setLayout(new BorderLayout());
 
         // Make this the default context for modal messages.
-        GraphicalMessageHandler.setContext(this);
+        UndeferredGraphicalMessageHandler.setContext(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ public abstract class Top extends JFrame {
                         (tk.getScreenSize().height - getSize().height) / 2);
 
                 // Make this the default context for modal messages.
-                GraphicalMessageHandler.setContext(Top.this);
+                UndeferredGraphicalMessageHandler.setContext(Top.this);
             }
         };
 
@@ -325,10 +325,11 @@ public abstract class Top extends JFrame {
                         if (_fileMenuItems[i] == null) {
                             _fileMenu.addSeparator();
                         } else {
-                            _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
-                                    .getText());
-                            _fileMenuItems[i].addActionListener(
-                                    fileMenuListener);
+                            _fileMenuItems[i]
+                                    .setActionCommand(_fileMenuItems[i]
+                                            .getText());
+                            _fileMenuItems[i]
+                                    .addActionListener(fileMenuListener);
                             _fileMenu.add(_fileMenuItems[i]);
                         }
                     }
@@ -674,8 +675,8 @@ public abstract class Top extends JFrame {
             // typically not what we want.
             // So we use the current directory instead.
             // This will fail with a security exception in applets.
-            String currentWorkingDirectory = StringUtilities.getProperty(
-                    "user.dir");
+            String currentWorkingDirectory = StringUtilities
+                    .getProperty("user.dir");
             if (currentWorkingDirectory == null) {
                 return null;
             } else {
@@ -816,7 +817,8 @@ public abstract class Top extends JFrame {
         // If you are using $PTII/bin/vergil, under bash, set this property:
         // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
         // and then run $PTII/bin/vergil
-        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
+        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals(
+                "CrossPlatform")) {
             _printCrossPlatform();
         } else {
             _printNative();
@@ -842,7 +844,7 @@ public abstract class Top extends JFrame {
         } else if (this instanceof Printable) {
             //PageFormat format = job.pageDialog(job.defaultPage());
             //job.setPrintable((Printable) this, format);
-            job.setPrintable((Printable)this);
+            job.setPrintable((Printable) this);
         } else {
             // Can't print it.
             return;
@@ -852,8 +854,7 @@ public abstract class Top extends JFrame {
             try {
                 job.print(aset);
             } catch (Exception ex) {
-                MessageHandler.error("Cross Platform Printing Failed",
-                        ex);
+                MessageHandler.error("Cross Platform Printing Failed", ex);
             }
         }
     }
@@ -878,7 +879,7 @@ public abstract class Top extends JFrame {
 
         if (pdfPrintService == null) {
             throw new PrinterException("Could not find a printer with the "
-                                       + "string \"PDF\" in its name.");
+                    + "string \"PDF\" in its name.");
         }
 
         PrinterJob job = PrinterJob.getPrinterJob();
@@ -894,33 +895,38 @@ public abstract class Top extends JFrame {
             job.setPageable((Pageable) this);
             job.validatePage(pageFormat);
         } else if (this instanceof Printable) {
-            job.setPrintable((Printable)this, pageFormat);
+            job.setPrintable((Printable) this, pageFormat);
         } else {
             System.out.println("Can't print a " + this
-                                   + ", it must be either Pageable or Printable");
+                    + ", it must be either Pageable or Printable");
             // Can't print it.
             return;
         }
         if (foundPDFPrinter) {
             // This gets ignored, but let's try it anyway
-            Destination destination = new Destination(new File("ptolemy.pdf").toURI());
+            Destination destination = new Destination(new File("ptolemy.pdf")
+                    .toURI());
             aset.add(destination);
 
             // On the Mac, calling job.setJobName() will set the file name,
             // but not the directory.
-            System.out.println("Top._printPDF(): Print Job information, much of which is ignored?\n"
-                               + "JobName: " + job.getJobName() + "\nUserName: " + job.getUserName());
-            javax.print.attribute.Attribute [] attributes = aset.toArray();
+            System.out
+                    .println("Top._printPDF(): Print Job information, much of which is ignored?\n"
+                            + "JobName: "
+                            + job.getJobName()
+                            + "\nUserName: "
+                            + job.getUserName());
+            javax.print.attribute.Attribute[] attributes = aset.toArray();
             for (int i = 0; i < attributes.length; i++) {
                 System.out.println(attributes[i].getName() + " "
-                                   + attributes[i].getCategory() + " "
-                                   + attributes[i]);
+                        + attributes[i].getCategory() + " " + attributes[i]);
             }
 
             job.print(aset);
-            System.out.println("Window printed from command line. "
-                               + "Under MacOSX, look for "
-                               + "~/Desktop/Java Printing.pdf");
+            System.out
+                    .println("Window printed from command line. "
+                            + "Under MacOSX, look for "
+                            + "~/Desktop/Java Printing.pdf");
         }
     }
 
@@ -947,7 +953,7 @@ public abstract class Top extends JFrame {
             job.setPageable((Pageable) this);
             job.validatePage(pageFormat);
         } else if (this instanceof Printable) {
-            job.setPrintable((Printable)this, pageFormat);
+            job.setPrintable((Printable) this, pageFormat);
         } else {
             // Can't print it.
             return;
@@ -1129,7 +1135,7 @@ public abstract class Top extends JFrame {
     class FileMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
-            GraphicalMessageHandler.setContext(Top.this);
+            UndeferredGraphicalMessageHandler.setContext(Top.this);
 
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -1168,7 +1174,7 @@ public abstract class Top extends JFrame {
     class HelpMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
-            GraphicalMessageHandler.setContext(Top.this);
+            UndeferredGraphicalMessageHandler.setContext(Top.this);
 
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -1220,11 +1226,13 @@ public abstract class Top extends JFrame {
     }
 
     private static void _macCheck() {
-        if ( PtGUIUtilities.macOSLookAndFeel() && System.getProperty("java.version").startsWith("1.5")) {
-            System.out.println("Warning, under Mac OS X with Java 1.5, printing might "
-                               + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
-                               + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
-                               + "and restarting vergil: $PTII/bin/vergil");
+        if (PtGUIUtilities.macOSLookAndFeel()
+                && System.getProperty("java.version").startsWith("1.5")) {
+            System.out
+                    .println("Warning, under Mac OS X with Java 1.5, printing might "
+                            + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
+                            + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
+                            + "and restarting vergil: $PTII/bin/vergil");
         }
     }
 

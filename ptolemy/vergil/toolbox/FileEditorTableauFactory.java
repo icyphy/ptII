@@ -126,19 +126,20 @@ public class FileEditorTableauFactory extends TableauFactory {
         } catch (Exception ex) {
             // Attempt to create a blank file with the specified name.
             // If there is no specified name, first prompt the user for one.
-            FileParameter parameter = (FileParameter)attribute;
+            FileParameter parameter = (FileParameter) attribute;
             if (parameter.getExpression().trim().equals("")) {
                 // Prompt for a file name.
                 // Then set the parameter to match the file name.
-                String inputValue = JOptionPane.showInputDialog("Please specify a file name");
+                String inputValue = JOptionPane
+                        .showInputDialog("Please specify a file name");
                 parameter.setExpression(inputValue);
                 url = parameter.asURL();
             }
             File file = parameter.asFile();
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    throw new Exception("Failed to create \""
-                        + file.getName() + "\"");
+                    throw new Exception("Failed to create \"" + file.getName()
+                            + "\"");
                 }
             } else {
                 // FIXME: Why did this fail? Prompt for new file name?

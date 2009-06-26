@@ -147,9 +147,10 @@ public final class ConstantSize implements Size, Serializable {
         Unit unit = Unit.valueOf(encodedUnit, horizontal);
         double value = Double.parseDouble(encodedValue);
         if (unit.requiresIntegers) {
-            if (value != (int) value)
+            if (value != (int) value) {
                 throw new IllegalArgumentException(unit.toString() + " value "
                         + encodedValue + " must be an integer.");
+            }
         }
         return new ConstantSize(value, unit);
     }
@@ -185,22 +186,23 @@ public final class ConstantSize implements Size, Serializable {
      * @return the size in pixels
      */
     public int getPixelSize(Component component) {
-        if (unit == PIXEL)
+        if (unit == PIXEL) {
             return intValue();
-        else if (unit == POINT)
+        } else if (unit == POINT) {
             return Sizes.pointAsPixel(intValue(), component);
-        else if (unit == INCH)
+        } else if (unit == INCH) {
             return Sizes.inchAsPixel(value, component);
-        else if (unit == MILLIMETER)
+        } else if (unit == MILLIMETER) {
             return Sizes.millimeterAsPixel(value, component);
-        else if (unit == CENTIMETER)
+        } else if (unit == CENTIMETER) {
             return Sizes.centimeterAsPixel(value, component);
-        else if (unit == DIALOG_UNITS_X)
+        } else if (unit == DIALOG_UNITS_X) {
             return Sizes.dialogUnitXAsPixel(intValue(), component);
-        else if (unit == DIALOG_UNITS_Y)
+        } else if (unit == DIALOG_UNITS_Y) {
             return Sizes.dialogUnitYAsPixel(intValue(), component);
-        else
+        } else {
             throw new IllegalStateException("Invalid unit " + unit);
+        }
     }
 
     // Implementing the Size Interface **************************************
@@ -237,10 +239,12 @@ public final class ConstantSize implements Size, Serializable {
      * @see     java.util.Hashtable
      */
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (!(o instanceof ConstantSize))
+        }
+        if (!(o instanceof ConstantSize)) {
             return false;
+        }
         ConstantSize size = (ConstantSize) o;
         return this.value == size.value && this.unit == size.unit;
     }
@@ -329,21 +333,22 @@ public final class ConstantSize implements Size, Serializable {
          */
         static Unit valueOf(String str, boolean horizontal) {
             String lowerCase = str.toLowerCase(Locale.ENGLISH);
-            if (lowerCase.equals("px") || lowerCase.length() == 0)
+            if (lowerCase.equals("px") || lowerCase.length() == 0) {
                 return PIXEL;
-            else if (lowerCase.equals("dlu"))
+            } else if (lowerCase.equals("dlu")) {
                 return horizontal ? DIALOG_UNITS_X : DIALOG_UNITS_Y;
-            else if (lowerCase.equals("pt"))
+            } else if (lowerCase.equals("pt")) {
                 return POINT;
-            else if (lowerCase.equals("in"))
+            } else if (lowerCase.equals("in")) {
                 return INCH;
-            else if (lowerCase.equals("mm"))
+            } else if (lowerCase.equals("mm")) {
                 return MILLIMETER;
-            else if (lowerCase.equals("cm"))
+            } else if (lowerCase.equals("cm")) {
                 return CENTIMETER;
-            else
+            } else {
                 throw new IllegalArgumentException("Invalid unit name '" + str
                         + "'. Must be one of: " + "px, dlu, pt, mm, cm, in");
+            }
         }
 
         public String toString() {

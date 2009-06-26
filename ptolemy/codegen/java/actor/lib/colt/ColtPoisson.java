@@ -69,7 +69,7 @@ public class ColtPoisson extends ColtRandomSource {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-            _codeStream.appendCodeBlock("poissonInitBlock");
+        _codeStream.appendCodeBlock("poissonInitBlock");
 
         return processCode(_codeStream.toString());
     }

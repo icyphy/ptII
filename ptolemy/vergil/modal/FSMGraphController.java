@@ -113,11 +113,14 @@ public class FSMGraphController extends FSMViewerGraphController {
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
-            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
+            diva.gui.GUIUtilities
+                    .addToolBarButton(toolbar, _newInputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
-            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                    _newOutputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInOutPortAction);
-            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutPortAction);
+            diva.gui.GUIUtilities
+                    .addToolBarButton(toolbar, _newInOutPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newInputMultiportAction);

@@ -233,24 +233,23 @@ public abstract class BasicGraphController extends AbstractGraphController
             String parameterName = "_getDocumentationActionDocPreference";
             try {
                 Parameter getDocumentationActionDocPreference = (Parameter) configuration
-                    .getAttribute(parameterName, Parameter.class);
+                        .getAttribute(parameterName, Parameter.class);
                 if (getDocumentationActionDocPreference != null) {
                     // If you want KeplerDocumentationAttribute, set
                     // _getDocumentationActionDocPreference to 1.
-                    docPreference = Integer.parseInt(
-                            getDocumentationActionDocPreference.getExpression());
+                    docPreference = Integer
+                            .parseInt(getDocumentationActionDocPreference
+                                    .getExpression());
                 }
             } catch (Exception ex) {
-                    System.err.println("Warning, failed to parse "
-                            + parameterName);
-                    ex.printStackTrace();
+                System.err.println("Warning, failed to parse " + parameterName);
+                ex.printStackTrace();
             }
-             _getDocumentationAction = new GetDocumentationAction(docPreference);
+            _getDocumentationAction = new GetDocumentationAction(docPreference);
         }
         if (_getDocumentationAction != null) {
             _getDocumentationAction.setConfiguration(configuration);
         }
-
 
         if ((_configuration != null) && (_menuFactory != null)) {
             // NOTE: The following requires that the configuration be

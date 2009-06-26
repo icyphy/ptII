@@ -103,7 +103,8 @@ public abstract class ChangeRequest {
      *  @param isStructuralChange Specifies whether this change is a structural
      *  one.
      */
-    public ChangeRequest(Object source, String description, boolean isStructuralChange) {
+    public ChangeRequest(Object source, String description,
+            boolean isStructuralChange) {
         _source = source;
         _description = description;
         _errorReported = false;

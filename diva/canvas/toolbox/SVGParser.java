@@ -116,8 +116,7 @@ public class SVGParser {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in "
-                        + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps, ex);
             }
             return ps;
         } else if (type.equals("circle")) {
@@ -134,8 +133,7 @@ public class SVGParser {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in "
-                        + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps, ex);
             }
             return ps;
         } else if (type.equals("ellipse")) {
@@ -155,8 +153,7 @@ public class SVGParser {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in "
-                        + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps, ex);
             }
 
             return ps;
@@ -176,8 +173,7 @@ public class SVGParser {
                 processPaintedPathAttributes(pp, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in "
-                        + pp, ex);
+                throw new RuntimeException("Failed to parse color in " + pp, ex);
             }
             return pp;
         } else if (type.equals("polyline")) {
@@ -196,8 +192,7 @@ public class SVGParser {
                 processPaintedPathAttributes(pp, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in "
-                        + pp, ex);
+                throw new RuntimeException("Failed to parse color in " + pp, ex);
             }
 
             return pp;
@@ -218,8 +213,7 @@ public class SVGParser {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in "
-                        + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps, ex);
             }
             return ps;
         } else if (type.equals("text")) {
@@ -233,8 +227,8 @@ public class SVGParser {
                 processPaintedStringAttributes(string, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in "
-                        + string, ex);
+                throw new RuntimeException(
+                        "Failed to parse color in " + string, ex);
             }
             string.translate(x, y);
             return string;
@@ -374,8 +368,7 @@ public class SVGParser {
 
     /** Given a string, return a color.
      */
-    private static Color lookupColor(String color)
-            throws NumberFormatException {
+    private static Color lookupColor(String color) throws NumberFormatException {
         String s = color.toLowerCase();
 
         if (s.equals("black")) {

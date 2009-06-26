@@ -149,8 +149,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         cardinality = new StringAttribute(initialState.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        _causalityInterface = new IntegratorCausalityInterface(
-                this, BooleanDependency.OTIMES_IDENTITY);
+        _causalityInterface = new IntegratorCausalityInterface(this,
+                BooleanDependency.OTIMES_IDENTITY);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -214,8 +214,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         double stepSize = dir.getCurrentStepSize();
 
         if (_debugging) {
-            _debug("Fire at time " + dir.getModelTime()
-                    + " with step size " + stepSize);
+            _debug("Fire at time " + dir.getModelTime() + " with step size "
+                    + stepSize);
         }
 
         // The state at the current model time depends on the inputs
@@ -356,15 +356,13 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         ContinuousDirector dir = (ContinuousDirector) getDirector();
 
         if (dir == null) {
-            throw new IllegalActionException(this,
-                    " no director available");
+            throw new IllegalActionException(this, " no director available");
         }
 
         ContinuousODESolver solver = dir._getODESolver();
 
         if (solver == null) {
-            throw new IllegalActionException(this,
-                    " no ODE solver available");
+            throw new IllegalActionException(this, " no ODE solver available");
         }
 
         super.initialize();
@@ -428,7 +426,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 _impulseValue += ((DoubleToken) impulse.get(i)).doubleValue();
                 getDirector().fireAtCurrentTime(this);
                 if (_debugging) {
-                    _debug("-- impulse input found. State adjustment in next microstep: " + _impulseValue);
+                    _debug("-- impulse input found. State adjustment in next microstep: "
+                            + _impulseValue);
                 }
             }
         }
@@ -438,12 +437,14 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             _initialStateValue = 0.0;
             if (initialStatePort.hasToken(i)) {
                 _initialStatePending = true;
-                _initialStateValue += ((DoubleToken) initialStatePort.get(i)).doubleValue();
+                _initialStateValue += ((DoubleToken) initialStatePort.get(i))
+                        .doubleValue();
                 getDirector().fireAtCurrentTime(this);
                 if (_debugging) {
-                    _debug("-- initialState input found. State in next microstep: " + _initialStateValue);
+                    _debug("-- initialState input found. State in next microstep: "
+                            + _initialStateValue);
                 }
-           }
+            }
         }
         _state = _tentativeState;
         if (_debugging) {
@@ -564,8 +565,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     /** Custom causality interface that fine tunes the equivalent ports
      *  and removes the dependence of the output on any of the inputs.
      */
-    private class IntegratorCausalityInterface
-            extends BreakCausalityInterface {
+    private class IntegratorCausalityInterface extends BreakCausalityInterface {
         public IntegratorCausalityInterface(Actor actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);

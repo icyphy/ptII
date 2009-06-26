@@ -64,8 +64,8 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DesignPatternImporter extends Attribute
-        implements GTAttribute, ValueListener {
+public class DesignPatternImporter extends Attribute implements GTAttribute,
+        ValueListener {
 
     public DesignPatternImporter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -110,12 +110,12 @@ public class DesignPatternImporter extends Attribute
                 if (parameter == designPatternFile) {
                     value = ((StringToken) token).stringValue();
                 } else {
-                    action.overrideParameter(parameter.getName(),
-                            parameter.getExpression());
+                    action.overrideParameter(parameter.getName(), parameter
+                            .getExpression());
                 }
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(this, e, "Unable to obtain " +
-                        "value for parameter " + parameter.getName());
+                throw new InternalErrorException(this, e, "Unable to obtain "
+                        + "value for parameter " + parameter.getName());
             }
         }
         if (table.equals(_lastValues)) {
@@ -144,11 +144,11 @@ public class DesignPatternImporter extends Attribute
         try {
             Reader reader = designPatternFile.openForReading();
             URI baseDirectory = designPatternFile.getBaseDirectory();
-            model = parser.parse(baseDirectory == null ? null :
-                baseDirectory.toURL(), value, reader);
+            model = parser.parse(baseDirectory == null ? null : baseDirectory
+                    .toURL(), value, reader);
         } catch (Exception e) {
-            throw new InternalErrorException(this, e, "Unable to read design " +
-                    "pattern from file \"" + value + "\".");
+            throw new InternalErrorException(this, e, "Unable to read design "
+                    + "pattern from file \"" + value + "\".");
         }
 
         final String moml = action.getMoml(model, null);
@@ -158,13 +158,13 @@ public class DesignPatternImporter extends Attribute
         final NamedObj container = getContainer();
         final UndoStackAttribute undoStack;
         try {
-            undoStack = new UndoStackAttribute(container, container.uniqueName(
-                    "_undoStack"));
+            undoStack = new UndoStackAttribute(container, container
+                    .uniqueName("_undoStack"));
             undoStack.moveToFirst();
         } catch (KernelException e) {
             // This should not happen.
-            throw new InternalErrorException(this, e, "Unable to create " +
-                    "empty undo stack.");
+            throw new InternalErrorException(this, e, "Unable to create "
+                    + "empty undo stack.");
         }
 
         boolean isModified = MoMLParser.isModified();
@@ -175,8 +175,8 @@ public class DesignPatternImporter extends Attribute
             MoMLParser.addMoMLFilter(filter);
             parser.parse(moml);
         } catch (Exception e) {
-            throw new InternalErrorException(this, e, "Unable to apply the " +
-                    "design pattern in file \"" + value + "\".");
+            throw new InternalErrorException(this, e, "Unable to apply the "
+                    + "design pattern in file \"" + value + "\".");
         } finally {
             MoMLParser.getMoMLFilters().remove(filter);
             MoMLParser.setModified(isModified);
@@ -190,14 +190,15 @@ public class DesignPatternImporter extends Attribute
 
             Attribute after = container.getAttribute("After");
             if (after instanceof TransformationAttribute) {
-                final TransformationAttribute attribute =
-                    (TransformationAttribute) after;
+                final TransformationAttribute attribute = (TransformationAttribute) after;
                 attribute.addExecutionListener(new ExecutionListener() {
                     public void executionError(Manager manager,
                             Throwable throwable) {
                     }
+
                     public void executionFinished(Manager manager) {
                     }
+
                     public void managerStateChanged(Manager manager) {
                         if (manager.getState() == Manager.PREINITIALIZING) {
                             MoMLParser.addMoMLFilter(filter);
@@ -222,6 +223,7 @@ public class DesignPatternImporter extends Attribute
                             attribute.removeExecutionListener(this);
                         }
                     }
+
                     private boolean _isModified;
                 });
             }

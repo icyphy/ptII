@@ -87,7 +87,8 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception IllegalActionException Always thrown in this base class.
      */
     public List<Token> elementList() throws IllegalActionException {
-        throw new IllegalActionException(_container, "Receiver does not implement elementList()");
+        throw new IllegalActionException(_container,
+                "Receiver does not implement elementList()");
     }
 
     /** Get a token from this receiver.
@@ -315,7 +316,7 @@ public abstract class AbstractReceiver implements Receiver {
         // pn/kernel/test/block.xml for a test case
         // (Bug fix proposed by Daniel Crawl.)
         for (int i = 0; i < numberOfTokens; i++) {
-            for (int j = 0; j < receivers.length; j++ ) {
+            for (int j = 0; j < receivers.length; j++) {
                 if (containers[j] == null) {
                     receivers[j].put(tokens[i]);
                 } else {
@@ -373,7 +374,8 @@ public abstract class AbstractReceiver implements Receiver {
      *  @return The class name and the full name. */
     public String toString() {
         IOPort container = getContainer();
-        return getClass().getName() + " {" + ( container != null ? container.getFullName() : "")
+        return getClass().getName() + " {"
+                + (container != null ? container.getFullName() : "")
                 + ".receiver }";
     }
 

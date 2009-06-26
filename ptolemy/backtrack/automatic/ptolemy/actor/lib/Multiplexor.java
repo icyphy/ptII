@@ -29,7 +29,6 @@
 //// Multiplexor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -94,7 +93,8 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public Multiplexor(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public Multiplexor(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         select = new TypedIOPort(this, "select", true, false);
@@ -109,10 +109,10 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * @exception IllegalActionException If there is no director, or if
      * the <i>select</i> input is out of range.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (select.hasToken(0)) {
-            $ASSIGN$_channel(((IntToken)select.get(0)).intValue());
+            $ASSIGN$_channel(((IntToken) select.get(0)).intValue());
         }
         boolean inRange = false;
         for (int i = 0; i < input.getWidth(); i++) {
@@ -125,7 +125,8 @@ public class Multiplexor extends Transformer implements Rollbackable {
             }
         }
         if (!inRange) {
-            throw new IllegalActionException(this, "Select input is out of range: " + _channel+".");
+            throw new IllegalActionException(this,
+                    "Select input is out of range: " + _channel + ".");
         }
     }
 
@@ -144,14 +145,16 @@ public class Multiplexor extends Transformer implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _channel = $RECORD$_channel.restore(_channel, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -179,9 +182,6 @@ public class Multiplexor extends Transformer implements Rollbackable {
 
     private transient FieldRecord $RECORD$_channel = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_channel
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_channel };
 
 }
-

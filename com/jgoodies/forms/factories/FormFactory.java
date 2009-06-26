@@ -33,6 +33,7 @@ package com.jgoodies.forms.factories;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.ConstantSize;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.Sizes;
 import com.jgoodies.forms.util.LayoutStyle;
@@ -116,7 +117,7 @@ public final class FormFactory {
      * @see #GLUE_ROWSPEC
      */
     public static final ColumnSpec GLUE_COLSPEC = new ColumnSpec(
-            ColumnSpec.DEFAULT, Sizes.ZERO, ColumnSpec.DEFAULT_GROW);
+            ColumnSpec.DEFAULT, Sizes.ZERO, FormSpec.DEFAULT_GROW);
 
     // Layout Style Dependent Column Specs ***********************************
 
@@ -180,8 +181,7 @@ public final class FormFactory {
      * @see #BUTTON_COLSPEC
      */
     public static final ColumnSpec GROWING_BUTTON_COLSPEC = new ColumnSpec(
-            ColumnSpec.DEFAULT, BUTTON_COLSPEC.getSize(),
-            ColumnSpec.DEFAULT_GROW);
+            ColumnSpec.DEFAULT, BUTTON_COLSPEC.getSize(), FormSpec.DEFAULT_GROW);
 
     // Frequently used Row Specifications ***********************************
 
@@ -224,7 +224,7 @@ public final class FormFactory {
      * @see #GLUE_COLSPEC
      */
     public static final RowSpec GLUE_ROWSPEC = new RowSpec(RowSpec.DEFAULT,
-            Sizes.ZERO, RowSpec.DEFAULT_GROW);
+            Sizes.ZERO, FormSpec.DEFAULT_GROW);
 
     // Layout Style Dependent Row Specs *************************************
 
@@ -409,7 +409,7 @@ public final class FormFactory {
      * @return a <code>ColumnSpec</code> that describes a horizontal gap
      */
     public static ColumnSpec createGapColumnSpec(ConstantSize gapSize) {
-        return new ColumnSpec(ColumnSpec.LEFT, gapSize, ColumnSpec.NO_GROW);
+        return new ColumnSpec(ColumnSpec.LEFT, gapSize, FormSpec.NO_GROW);
     }
 
     /**
@@ -420,7 +420,7 @@ public final class FormFactory {
      * @return a <code>RowSpec</code> that describes a vertical gap
      */
     public static RowSpec createGapRowSpec(ConstantSize gapSize) {
-        return new RowSpec(RowSpec.TOP, gapSize, RowSpec.NO_GROW);
+        return new RowSpec(RowSpec.TOP, gapSize, FormSpec.NO_GROW);
     }
 
 }

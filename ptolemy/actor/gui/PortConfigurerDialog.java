@@ -100,7 +100,6 @@ import ptolemy.moml.unit.UnitLibrary;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PortConfigurerDialog
 
@@ -559,9 +558,11 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                         // with some other name than "_type". In theory, there
                         // should only be one, but just in case, always use the last
                         // one.
-                        List<TypeAttribute> attributes = tiop.attributeList(TypeAttribute.class);
+                        List<TypeAttribute> attributes = tiop
+                                .attributeList(TypeAttribute.class);
                         if (attributes.size() > 0) {
-                            TypeAttribute typeAttribute = attributes.get(attributes.size() - 1);
+                            TypeAttribute typeAttribute = attributes
+                                    .get(attributes.size() - 1);
                             type = typeAttribute.getExpression();
                         }
 
@@ -569,8 +570,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                                 .get(ColumnNames.COL_TYPE);
 
                         if (((type == null) && (!tableValue.equals("")))
-                                || ((type != null) && (!tableValue
-                                        .equals(type)))) {
+                                || ((type != null) && (!tableValue.equals(type)))) {
                             havePortUpdate = true;
                             updates.put(ColumnNames.COL_TYPE, Boolean.TRUE);
                         }
@@ -882,10 +882,13 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                         // with some other name than "_type". In theory, there
                         // should only be one, but just in case, always use the last
                         // one.
-                        List<TypeAttribute> attributes = tiop.attributeList(TypeAttribute.class);
+                        List<TypeAttribute> attributes = tiop
+                                .attributeList(TypeAttribute.class);
                         if (attributes.size() > 0) {
-                            TypeAttribute type = attributes.get(attributes.size() - 1);
-                            portInfo.put(ColumnNames.COL_TYPE, type.getExpression());
+                            TypeAttribute type = attributes.get(attributes
+                                    .size() - 1);
+                            portInfo.put(ColumnNames.COL_TYPE, type
+                                    .getExpression());
                         } else {
                             portInfo.put(ColumnNames.COL_TYPE, "");
                         }

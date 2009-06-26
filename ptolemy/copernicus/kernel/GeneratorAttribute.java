@@ -328,7 +328,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
                     if (!ptIIUserDirectoryFile.mkdirs()) {
                         throw new IllegalActionException(
                                 "Failed to create directory \""
-                                + ptIIUserDirectoryFile + "\"");
+                                        + ptIIUserDirectoryFile + "\"");
                     }
                 }
 
@@ -380,13 +380,14 @@ public class GeneratorAttribute extends SingletonAttribute implements
         if (!targetPathFile.isDirectory() || !targetPathFile.canWrite()) {
             // Make any directories
             if (!targetPathFile.mkdirs()) {
-                throw new IllegalActionException("targetPathFile: '" + targetPathFile
-                        + "' was not a " + "writable directory, and "
+                throw new IllegalActionException("targetPathFile: '"
+                        + targetPathFile + "' was not a "
+                        + "writable directory, and "
                         + "mkdirs() failed.  targetPath should be specified "
                         + "as a relative path because targetPathFile is "
                         + "created by combining ptIIUserDirectory ("
-                        + ptIIUserDirectory  + ") and targetPath ("
-                        + targetPath + ")");
+                        + ptIIUserDirectory + ") and targetPath (" + targetPath
+                        + ")");
             }
         }
 

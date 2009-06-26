@@ -82,8 +82,7 @@ public class Constraint extends GTParameter {
         variable.setExpression("5");
         variable.setPersistent(false);
 
-        editorFactory = new VisibleParameterEditorFactory(this,
-                "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,16 +177,13 @@ public class Constraint extends GTParameter {
             protected ParserScope _createScope(Pattern pattern,
                     MatchResult matchResult, ParserScope superScope) {
                 return new Scope(pattern, matchResult, superScope) {
-                    public Token get(String name)
-                            throws IllegalActionException {
+                    public Token get(String name) throws IllegalActionException {
                         if (name.equals("this")) {
-                            NamedObj container =
-                                Constraint.this.getContainer();
-                            NamedObj match =
-                                (NamedObj) _matchResult.get(container);
+                            NamedObj container = Constraint.this.getContainer();
+                            NamedObj match = (NamedObj) _matchResult
+                                    .get(container);
                             if (match != null) {
-                                return new ObjectToken(match,
-                                        match.getClass());
+                                return new ObjectToken(match, match.getClass());
                             }
                         }
                         return super.get(name);

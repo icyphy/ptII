@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.video;
 
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntMatrixToken;
@@ -35,7 +34,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// DCT2x2dc
@@ -63,13 +61,13 @@ public class DCT2x2dc extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DCT2x2dc(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        input = new TypedIOPort(this,"input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
 
-        output = new TypedIOPort(this,"output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
 
     }
@@ -108,6 +106,7 @@ public class DCT2x2dc extends TypedAtomicActor {
         super.initialize();
         _output = new IntMatrixToken[1];
     }
+
     /** .
      *
      *  @exception IllegalActionException If there is no director,
@@ -117,20 +116,20 @@ public class DCT2x2dc extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        int [][] temp = new int[2][2];
-        int [][] sum = new int[2][2];
+        int[][] temp = new int[2][2];
+        int[][] sum = new int[2][2];
         IntMatrixToken _input;
 
         if (input.hasToken(0)) {
-            _input = (IntMatrixToken)input.get(0);
+            _input = (IntMatrixToken) input.get(0);
         } else {
             return;
         }
 
-        temp[0][0] = _input.getElementAt(0,0) + _input.getElementAt(0,1);
-        temp[1][0] = _input.getElementAt(0,0) - _input.getElementAt(0,1);
-        temp[0][1] = _input.getElementAt(1,0) + _input.getElementAt(1,1);
-        temp[1][1] = _input.getElementAt(1,0) - _input.getElementAt(1,1);
+        temp[0][0] = _input.getElementAt(0, 0) + _input.getElementAt(0, 1);
+        temp[1][0] = _input.getElementAt(0, 0) - _input.getElementAt(0, 1);
+        temp[0][1] = _input.getElementAt(1, 0) + _input.getElementAt(1, 1);
+        temp[1][1] = _input.getElementAt(1, 0) - _input.getElementAt(1, 1);
 
         sum[0][0] = temp[0][0] + temp[0][1];
         sum[1][0] = temp[1][0] + temp[1][1];
@@ -138,9 +137,10 @@ public class DCT2x2dc extends TypedAtomicActor {
         sum[1][1] = temp[1][0] - temp[1][1];
 
         _output[0] = new IntMatrixToken(sum);
-        output.send(0, _output, _output.length );
+        output.send(0, _output, _output.length);
 
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IntMatrixToken[] _output;

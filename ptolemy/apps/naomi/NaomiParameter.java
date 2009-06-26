@@ -61,17 +61,18 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     }
 
     public void changeExecuted(ChangeRequest change) {
-        if (change instanceof MoMLChangeRequest &&
-                !(change instanceof PrivateMoMLChangeRequest)) {
+        if (change instanceof MoMLChangeRequest
+                && !(change instanceof PrivateMoMLChangeRequest)) {
             NamedObj container = getContainer();
             NamedObj context = ((MoMLChangeRequest) change).getContext();
-            if (container != null && (container == context ||
-                    container.getContainer() == context)) {
-                String expression = StringUtilities.unescapeForXML(
-                        formatExpression(_method, _attributeName, new Date(),
-                                _unit, _documentation));
-                String moml = "<property name=\"" + getName() + "\" value=\"" +
-                        expression + "\"/>";
+            if (container != null
+                    && (container == context || container.getContainer() == context)) {
+                String expression = StringUtilities
+                        .unescapeForXML(formatExpression(_method,
+                                _attributeName, new Date(), _unit,
+                                _documentation));
+                String moml = "<property name=\"" + getName() + "\" value=\""
+                        + expression + "\"/>";
                 PrivateMoMLChangeRequest request = new PrivateMoMLChangeRequest(
                         this, container, moml);
                 request.setUndoable(true);
@@ -105,9 +106,9 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         if (method == null) {
             return "";
         } else {
-            return method + ":" + attributeName + " (" +
-                    new SimpleDateFormat(DATE_FORMAT).format(modifiedDate) +
-                    ") (" + unit + ") (" + documentation + ")";
+            return method + ":" + attributeName + " ("
+                    + new SimpleDateFormat(DATE_FORMAT).format(modifiedDate)
+                    + ") (" + unit + ") (" + documentation + ")";
         }
     }
 
@@ -129,7 +130,7 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (container != oldContainer) {
             super.setContainer(container);
@@ -180,8 +181,8 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         } else {
             Matcher matcher = _PATTERN.matcher(expression);
             if (!matcher.matches()) {
-                throw new IllegalActionException(this, "Fail to parse: " +
-                        expression);
+                throw new IllegalActionException(this, "Fail to parse: "
+                        + expression);
             }
             String method = matcher.group(1);
             if (method.equals("get")) {
@@ -191,16 +192,16 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
             } else if (method.equals("sync")) {
                 _method = Method.SYNC;
             } else {
-                throw new IllegalActionException(this, "Unknown method: " +
-                        method);
+                throw new IllegalActionException(this, "Unknown method: "
+                        + method);
             }
             _attributeName = matcher.group(2);
             try {
-                _modifiedDate = new SimpleDateFormat(DATE_FORMAT).parse(
-                        matcher.group(3));
+                _modifiedDate = new SimpleDateFormat(DATE_FORMAT).parse(matcher
+                        .group(3));
             } catch (ParseException e) {
-                throw new IllegalActionException(this, e, "Fail to parse: " +
-                        expression);
+                throw new IllegalActionException(this, e, "Fail to parse: "
+                        + expression);
             }
             _unit = matcher.group(4);
             _documentation = matcher.group(5);
@@ -224,10 +225,11 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         private String _name;
     }
 
-    private static final Pattern _PATTERN = Pattern.compile("\\s*" +
-            "((?:get)|(?:put)|(?:sync)):" +
-            "([a-zA-Z\\$_][a-zA-Z\\$_0-9]*(?:\\.[a-zA-Z\\$_][a-zA-Z\\$_0-9]*)*)"
-            + "\\s+\\((.*)\\)\\s+\\((.*)\\)\\s+\\((.*)\\)\\s*");
+    private static final Pattern _PATTERN = Pattern
+            .compile("\\s*"
+                    + "((?:get)|(?:put)|(?:sync)):"
+                    + "([a-zA-Z\\$_][a-zA-Z\\$_0-9]*(?:\\.[a-zA-Z\\$_][a-zA-Z\\$_0-9]*)*)"
+                    + "\\s+\\((.*)\\)\\s+\\((.*)\\)\\s+\\((.*)\\)\\s*");
 
     private String _attributeName;
 

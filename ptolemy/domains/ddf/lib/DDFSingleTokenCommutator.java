@@ -117,15 +117,17 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
                     rate[i] = _zero;
                 }
 
-                    for (int i = 0; i < input.getWidth(); i++) {
-                        rate[i] = _one;
-                        _rateArray[i] = new ArrayToken(BaseType.INT, rate);
-                        rate[i] = _zero;
-                    }
+                for (int i = 0; i < input.getWidth(); i++) {
+                    rate[i] = _one;
+                    _rateArray[i] = new ArrayToken(BaseType.INT, rate);
+                    rate[i] = _zero;
+                }
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex,
-                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
-                        "Width inference should already have been done.");
+                throw new InternalErrorException(
+                        this,
+                        ex,
+                        "At this time IllegalActionExceptions are not allowed to happen.\n"
+                                + "Width inference should already have been done.");
             }
         }
     }

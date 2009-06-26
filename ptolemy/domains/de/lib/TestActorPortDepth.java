@@ -101,7 +101,7 @@ public class TestActorPortDepth extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "TestActorPortDepth can only be used with DEDirector.");
         }
-        String result = ((DEDirector)director).describePriorities();
+        String result = ((DEDirector) director).describePriorities();
         output.send(0, new StringToken(result));
     }
 }

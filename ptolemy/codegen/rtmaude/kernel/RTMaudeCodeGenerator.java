@@ -90,14 +90,16 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
 
     @Override
     public String generateMainEntryCode() throws IllegalActionException {
-        return super.generateMainEntryCode() +
-            ((RTMaudeAdaptor) _getHelper(getContainer())).generateEntryCode();
+        return super.generateMainEntryCode()
+                + ((RTMaudeAdaptor) _getHelper(getContainer()))
+                        .generateEntryCode();
     }
 
     @Override
     public String generateMainExitCode() throws IllegalActionException {
-        return super.generateMainExitCode() +
-            ((RTMaudeAdaptor) _getHelper(getContainer())).generateExitCode();
+        return super.generateMainExitCode()
+                + ((RTMaudeAdaptor) _getHelper(getContainer()))
+                        .generateExitCode();
     }
 
     @Override
@@ -143,5 +145,6 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
             throw new IllegalActionException("Problem executing the "
                     + "commands:" + _eol + errorMessage);
         }
-        return _executeCommands.getLastSubprocessReturnCode();    }
+        return _executeCommands.getLastSubprocessReturnCode();
+    }
 }

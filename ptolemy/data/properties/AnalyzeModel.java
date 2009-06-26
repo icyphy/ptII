@@ -78,16 +78,15 @@ public class AnalyzeModel extends GTEvent {
 
         long elapsed = System.currentTimeMillis() - start;
         if (data == null) {
-            _debug(new PteraDebugEvent(this, "Finish analysis (" +
-                    (double) elapsed / 1000 + " sec)."));
+            _debug(new PteraDebugEvent(this, "Finish analysis ("
+                    + (double) elapsed / 1000 + " sec)."));
         } else {
-            _debug(new PteraDebugEvent(this, "Request refire (" +
-                    (double) elapsed / 1000 + " sec)."));
+            _debug(new PteraDebugEvent(this, "Request refire ("
+                    + (double) elapsed / 1000 + " sec)."));
         }
 
         return data;
     }
-
 
     /**
      *

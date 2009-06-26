@@ -77,7 +77,7 @@ public class FSMDirector extends Director {
      */
     public String generateFireCode() throws IllegalActionException {
         ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
-        .getController();
+                .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         StringBuffer code = new StringBuffer();
@@ -86,10 +86,10 @@ public class FSMDirector extends Director {
         code.append(_eol + "/* Preemptive Transition */" + _eol + _eol);
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
-            public Iterator retrieveTransitions(State state) {
-                return state.preemptiveTransitionList().iterator();
-            }
-        });
+                    public Iterator retrieveTransitions(State state) {
+                        return state.preemptiveTransitionList().iterator();
+                    }
+                });
 
         code.append(_eol);
 
@@ -105,10 +105,10 @@ public class FSMDirector extends Director {
         code.append(_eol + "/* Nonpreemptive Transition */" + _eol + _eol);
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
-            public Iterator retrieveTransitions(State state) {
-                return state.nonpreemptiveTransitionList().iterator();
-            }
-        });
+                    public Iterator retrieveTransitions(State state) {
+                        return state.nonpreemptiveTransitionList().iterator();
+                    }
+                });
 
         code.append("}" + _eol);
 
@@ -122,11 +122,11 @@ public class FSMDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     protected void _generateRefinementCode(StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
-        .getController();
+                .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         int depth = 1;
@@ -166,7 +166,7 @@ public class FSMDirector extends Director {
                             code.append("switch ("
                                     + actorHelper.processCode("$actorSymbol("
                                             + "currentConfiguration)") + ") {"
-                                            + _eol);
+                                    + _eol);
                             for (int k = 0; k < rates.length; k++) {
                                 code.append("case " + k + ":" + _eol);
                                 if (rates[k] != null) {
@@ -215,7 +215,7 @@ public class FSMDirector extends Director {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             // modal controller is not used as a stand-alone actor.
@@ -234,67 +234,65 @@ public class FSMDirector extends Director {
     // specific to a target (e.g. OpenRTOS or PRET), so it should
     // be moved into an subclass which overrides this method. The
     // subclass should be put under the target-specific packages.
-//    public String _generateActorCode() throws IllegalActionException{
-//        StringBuffer code = new StringBuffer();
-//        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
-//        ptolemy.domains.fsm.kernel.FSMActor controller = director
-//        .getController();
-//        //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-//
-//        //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-//        //        .booleanValue();
-//
-//        int depth = 1;
-//
-//        Iterator states = controller.entityList().iterator();
-//        int stateCount = 0;
-//        depth++;
-//
-//        while (states.hasNext()) {
-//            // code.append(_getIndentPrefix(depth));
-//            //code.append("case " + stateCount + ":" + _eol);
-//            stateCount++;
-//
-//            depth++;
-//
-//            State state = (State) states.next();
-//            Actor[] actors = state.getRefinement();
-//
-//            if (actors != null) {
-//                for (int i = 0; i < actors.length; i++) {
-//                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
-//
-//                    code.append("void "+_getActorName(actors[i])+"(){");
-//
-//                    code.append(actorHelper.generateFireCode());
-//                    code.append(actorHelper.generateTypeConvertFireCode());
-//                    code.append(_eol+"}"+_eol);
-//                }}
-//        }
-//        return code.toString();
-//    }
-//
-//
-//    private String _getActorName(Actor actor) {
-//        String actorFullName = actor.getFullName();
-//        actorFullName = actorFullName.substring(1,actorFullName.length());
-//        actorFullName = actorFullName.replace('.', '_');
-//        actorFullName = actorFullName.replace(' ', '_');
-//        return actorFullName;
-//    }
-//
-//
-//
-//    public String generatePreinitializeCode()throws IllegalActionException{
-//        StringBuffer code = new StringBuffer();
-//        code.append(super.generatePreinitializeCode());
-//
-//        code.append(_generateActorCode());
-//
-//        return code.toString();
-//    }
-//
+    //    public String _generateActorCode() throws IllegalActionException{
+    //        StringBuffer code = new StringBuffer();
+    //        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
+    //        ptolemy.domains.fsm.kernel.FSMActor controller = director
+    //        .getController();
+    //        //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
+    //
+    //        //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+    //        //        .booleanValue();
+    //
+    //        int depth = 1;
+    //
+    //        Iterator states = controller.entityList().iterator();
+    //        int stateCount = 0;
+    //        depth++;
+    //
+    //        while (states.hasNext()) {
+    //            // code.append(_getIndentPrefix(depth));
+    //            //code.append("case " + stateCount + ":" + _eol);
+    //            stateCount++;
+    //
+    //            depth++;
+    //
+    //            State state = (State) states.next();
+    //            Actor[] actors = state.getRefinement();
+    //
+    //            if (actors != null) {
+    //                for (int i = 0; i < actors.length; i++) {
+    //                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
+    //
+    //                    code.append("void "+_getActorName(actors[i])+"(){");
+    //
+    //                    code.append(actorHelper.generateFireCode());
+    //                    code.append(actorHelper.generateTypeConvertFireCode());
+    //                    code.append(_eol+"}"+_eol);
+    //                }}
+    //        }
+    //        return code.toString();
+    //    }
+    //
+    //
+    //    private String _getActorName(Actor actor) {
+    //        String actorFullName = actor.getFullName();
+    //        actorFullName = actorFullName.substring(1,actorFullName.length());
+    //        actorFullName = actorFullName.replace('.', '_');
+    //        actorFullName = actorFullName.replace(' ', '_');
+    //        return actorFullName;
+    //    }
+    //
+    //
+    //
+    //    public String generatePreinitializeCode()throws IllegalActionException{
+    //        StringBuffer code = new StringBuffer();
+    //        code.append(super.generatePreinitializeCode());
+    //
+    //        code.append(_generateActorCode());
+    //
+    //        return code.toString();
+    //    }
+    //
 
 }
-
-

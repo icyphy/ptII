@@ -134,8 +134,7 @@ public class Connector extends MoMLApplication {
         super(args);
     }
 
-    public synchronized void executionError(Manager manager,
-            Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         super.executionError(manager, throwable);
 
         System.out.println("Execution error: " + throwable.getMessage());
@@ -176,8 +175,8 @@ public class Connector extends MoMLApplication {
             throw new IllegalActionException("NAOMI root directory is not "
                     + "specified with -root argument.");
         } else if (!_pathExists(_root)) {
-            throw new IllegalActionException("NAOMI root directory \""
-                    + _root + "\" does not exist.");
+            throw new IllegalActionException("NAOMI root directory \"" + _root
+                    + "\" does not exist.");
         }
 
         if (_command == null) {
@@ -259,25 +258,25 @@ public class Connector extends MoMLApplication {
     }
 
     public static final String[][] COMMAND_OPTIONS = new String[][] {
-        {"-cmd", "<command>"},
-        {"    ", "execute (load NAOMI attributes, execute the model, and " +
-                 "save NAOMI attributes"},
-        {"    ", "list (list NAOMI attributes)"},
-        {"    ", "load (load NAOMI attributes (irregard of modification time)"},
-        {"    ", "save (save NAOMI attributes (irregard of modification time)"},
-        {"    ", "sync (synchronize NAOMI attributes)"},
-        {"    ", "transform (transform the model)"},
-        {"-in", "<input model>"},
-        {"-out", "<output model>"},
-        {"-owner", "<owner>"},
-        {"-root", "<NAOMI root directory>"}
-    };
+            { "-cmd", "<command>" },
+            {
+                    "    ",
+                    "execute (load NAOMI attributes, execute the model, and "
+                            + "save NAOMI attributes" },
+            { "    ", "list (list NAOMI attributes)" },
+            { "    ",
+                    "load (load NAOMI attributes (irregard of modification time)" },
+            { "    ",
+                    "save (save NAOMI attributes (irregard of modification time)" },
+            { "    ", "sync (synchronize NAOMI attributes)" },
+            { "    ", "transform (transform the model)" },
+            { "-in", "<input model>" }, { "-out", "<output model>" },
+            { "-owner", "<owner>" }, { "-root", "<NAOMI root directory>" } };
 
     public static final String[][] NAMESPACES = new String[][] {
-        {"att", "http://www.atl.lmco.com/naomi/attributes"},
-        {"inf", "http://www.atl.lmco.com/naomi/interfaces"},
-        {"xsi", "http://www.w3.org/2001/XMLSchema-instance"}
-    };
+            { "att", "http://www.atl.lmco.com/naomi/attributes" },
+            { "inf", "http://www.atl.lmco.com/naomi/interfaces" },
+            { "xsi", "http://www.w3.org/2001/XMLSchema-instance" } };
 
     public class LinkNaomiAttributeAction extends AbstractAction {
 
@@ -353,8 +352,9 @@ public class Connector extends MoMLApplication {
                     try {
                         _loadAttribute(attributesPath, naomiName);
                     } catch (IllegalActionException e1) {
-                        MessageHandler.error("Unable to locate NAOMI attribute "
-                                + "with name \"" + naomiName + "\".");
+                        MessageHandler
+                                .error("Unable to locate NAOMI attribute "
+                                        + "with name \"" + naomiName + "\".");
                         return;
                     }
                 }
@@ -362,10 +362,10 @@ public class Connector extends MoMLApplication {
                 Attribute attribute = model.getAttribute(paramName);
                 String expression = NaomiParameter.formatExpression(method,
                         naomiName, new Date(), unit, documentation);
-                String moml = "<property name=\"" +
-                        attribute.uniqueName("naomi") + "\" class=\"" +
-                        NaomiParameter.class.getName() + "\" value=\"" +
-                        StringUtilities.unescapeForXML(expression) + "\"/>";
+                String moml = "<property name=\""
+                        + attribute.uniqueName("naomi") + "\" class=\""
+                        + NaomiParameter.class.getName() + "\" value=\""
+                        + StringUtilities.unescapeForXML(expression) + "\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         attribute, moml);
                 request.setUndoable(true);
@@ -430,22 +430,24 @@ public class Connector extends MoMLApplication {
 
         public void actionPerformed(ActionEvent e) {
             final NamedObj model = _frame.getModel();
-            model.requestChange(new ChangeRequest(this,
-                    "Load NAOMI attributes") {
-                protected void _execute() throws Exception {
-                    try {
-                        synchronized (model) {
-                            _loadInterfaceFromModel(model);
-                            _undoable = true;
-                            _mergeWithPrevious = false;
-                            _loadAttributes(model, _getAttributesPath(), true);
-                            _saveInterface();
+            model
+                    .requestChange(new ChangeRequest(this,
+                            "Load NAOMI attributes") {
+                        protected void _execute() throws Exception {
+                            try {
+                                synchronized (model) {
+                                    _loadInterfaceFromModel(model);
+                                    _undoable = true;
+                                    _mergeWithPrevious = false;
+                                    _loadAttributes(model,
+                                            _getAttributesPath(), true);
+                                    _saveInterface();
+                                }
+                            } catch (IllegalActionException e) {
+                                throw new InternalErrorException(e);
+                            }
                         }
-                    } catch (IllegalActionException e) {
-                        throw new InternalErrorException(e);
-                    }
-                }
-            });
+                    });
         }
 
         private PtolemyFrame _frame;
@@ -501,22 +503,24 @@ public class Connector extends MoMLApplication {
 
         public void actionPerformed(ActionEvent e) {
             final NamedObj model = _frame.getModel();
-            model.requestChange(new ChangeRequest(this,
-                    "Save NAOMI attributes") {
-                protected void _execute() throws Exception {
-                    try {
-                        synchronized (model) {
-                            _loadInterfaceFromModel(model);
-                            _undoable = true;
-                            _mergeWithPrevious = false;
-                            _saveAttributes(model, _getAttributesPath(), true);
-                            _saveInterface();
+            model
+                    .requestChange(new ChangeRequest(this,
+                            "Save NAOMI attributes") {
+                        protected void _execute() throws Exception {
+                            try {
+                                synchronized (model) {
+                                    _loadInterfaceFromModel(model);
+                                    _undoable = true;
+                                    _mergeWithPrevious = false;
+                                    _saveAttributes(model,
+                                            _getAttributesPath(), true);
+                                    _saveInterface();
+                                }
+                            } catch (IllegalActionException e) {
+                                throw new InternalErrorException(e);
+                            }
                         }
-                    } catch (IllegalActionException e) {
-                        throw new InternalErrorException(e);
-                    }
-                }
-            });
+                    });
         }
 
         private PtolemyFrame _frame;
@@ -600,8 +604,9 @@ public class Connector extends MoMLApplication {
     public class UnlinkNaomiAttributeAction extends AbstractAction {
         public UnlinkNaomiAttributeAction(PtolemyFrame frame) {
             super("Unlink NAOMI Attribute");
-            putValue("tooltip", "Remove a link between a NAOMI attribute and a "
-                    + "parameter");
+            putValue("tooltip",
+                    "Remove a link between a NAOMI attribute and a "
+                            + "parameter");
 
             _frame = frame;
         }
@@ -635,8 +640,8 @@ public class Connector extends MoMLApplication {
             if (dialog.buttonPressed().equals("OK")) {
                 String paramName = query.getStringValue("parameter");
                 Attribute attribute = model.getAttribute(paramName);
-                for (Object paramObject
-                        : attribute.attributeList(NaomiParameter.class)) {
+                for (Object paramObject : attribute
+                        .attributeList(NaomiParameter.class)) {
                     NaomiParameter param = (NaomiParameter) paramObject;
                     String moml = "<deleteProperty name=\"" + param.getName()
                             + "\"/>";
@@ -654,8 +659,8 @@ public class Connector extends MoMLApplication {
     }
 
     public enum Command {
-        EXECUTE("execute"), LIST("list"), LOAD("load"), SAVE("save"),
-        SYNC("sync"), TRANSFORM("transform");
+        EXECUTE("execute"), LIST("list"), LOAD("load"), SAVE("save"), SYNC(
+                "sync"), TRANSFORM("transform");
 
         public String toString() {
             return _name;
@@ -685,8 +690,7 @@ public class Connector extends MoMLApplication {
 
     protected Configuration _createDefaultConfiguration() throws Exception {
         if (_configurationURL == null) {
-            _configurationURL = specToURL(_basePath
-                    + "/full/configuration.xml");
+            _configurationURL = specToURL(_basePath + "/full/configuration.xml");
         }
 
         // This has the side effects of merging properties from ptII.properties
@@ -732,8 +736,8 @@ public class Connector extends MoMLApplication {
         Collection<NamedObj> children = GTTools.getChildren(model, true, true,
                 true, true);
         for (NamedObj child : children) {
-            List<NaomiParameter> parameters = child.attributeList(
-                    NaomiParameter.class);
+            List<NaomiParameter> parameters = child
+                    .attributeList(NaomiParameter.class);
             for (NaomiParameter parameter : parameters) {
                 String attributeName = parameter.getAttributeName();
                 boolean needLoad = _inputAttributes.contains(attributeName);
@@ -761,11 +765,9 @@ public class Connector extends MoMLApplication {
 
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xpath = xpathFactory.newXPath();
-            xpath.setNamespaceContext(new MappedNamespaceContext(
-                    NAMESPACES));
+            xpath.setNamespaceContext(new MappedNamespaceContext(NAMESPACES));
 
-            XPathExpression expr = xpath.compile(
-                    "/att:attribute/att:value");
+            XPathExpression expr = xpath.compile("/att:attribute/att:value");
             String value = expr.evaluate(document);
             value = StringUtilities.unescapeForXML(value);
 
@@ -799,19 +801,19 @@ public class Connector extends MoMLApplication {
 
     protected void _loadAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
-        Collection<NamedObj> children = new LinkedList<NamedObj>(
-                GTTools.getChildren(model, true, true, true, true));
+        Collection<NamedObj> children = new LinkedList<NamedObj>(GTTools
+                .getChildren(model, true, true, true, true));
         for (NamedObj child : children) {
-            List<NaomiParameter> parameters = child.attributeList(
-                    NaomiParameter.class);
+            List<NaomiParameter> parameters = child
+                    .attributeList(NaomiParameter.class);
             for (NaomiParameter parameter : parameters) {
                 String attributeName = parameter.getAttributeName();
                 if (!_inputAttributes.contains(attributeName)) {
                     continue;
                 }
 
-                Tuple<String, String, Date, String, String> tuple =
-                    _loadAttribute(attributesPath, attributeName);
+                Tuple<String, String, Date, String, String> tuple = _loadAttribute(
+                        attributesPath, attributeName);
                 String value = tuple.getV1();
                 String resource = tuple.getV2();
                 String protocol = "naomi://";
@@ -832,14 +834,13 @@ public class Connector extends MoMLApplication {
                 System.out.println("Load: " + attributeName + " = " + value);
 
                 if (parameter instanceof CompositeNaomiAttribute) {
-                    CompositeNaomiAttribute compositeAttr =
-                        (CompositeNaomiAttribute) parameter;
+                    CompositeNaomiAttribute compositeAttr = (CompositeNaomiAttribute) parameter;
                     InputStreamReader reader = null;
                     File resourceFile = new File(_root, resource);
                     if (resourceFile.canRead()) {
                         try {
-                            reader = new InputStreamReader(
-                                    new FileInputStream(resourceFile));
+                            reader = new InputStreamReader(new FileInputStream(
+                                    resourceFile));
                             compositeAttr.loadCompositeAttribute(reader);
                         } catch (IOException e) {
                             throw new IllegalActionException(null, e,
@@ -855,13 +856,13 @@ public class Connector extends MoMLApplication {
                             }
                         }
                     } else {
-                        System.out.println("Unable to find resource " +
-                                resource + ". Skipping.");
+                        System.out.println("Unable to find resource "
+                                + resource + ". Skipping.");
                     }
                 } else if (child instanceof Variable) {
-                    String moml = "<property name=\"" + child.getName() +
-                            "\" value=\"" + StringUtilities.escapeForXML(value)
-                            + "\"/>";
+                    String moml = "<property name=\"" + child.getName()
+                            + "\" value=\""
+                            + StringUtilities.escapeForXML(value) + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             child.getContainer(), moml);
                     if (_undoable) {
@@ -871,16 +872,17 @@ public class Connector extends MoMLApplication {
                     }
                     request.execute();
                 } else {
-                    throw new IllegalActionException("Do not know how to " +
-                            "handle object " + child.getName() + ".");
+                    throw new IllegalActionException("Do not know how to "
+                            + "handle object " + child.getName() + ".");
                 }
 
-                String moml = "<property name=\"" + parameter.getName() +
-                        "\" value=\"" + NaomiParameter.formatExpression(
-                                parameter.getMethod(),
-                                parameter.getAttributeName(), date, unit,
-                                doc) +
-                        "\"/>";
+                String moml = "<property name=\""
+                        + parameter.getName()
+                        + "\" value=\""
+                        + NaomiParameter.formatExpression(
+                                parameter.getMethod(), parameter
+                                        .getAttributeName(), date, unit, doc)
+                        + "\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, child,
                         moml);
                 if (_undoable) {
@@ -901,8 +903,8 @@ public class Connector extends MoMLApplication {
         Collection<NamedObj> children = GTTools.getChildren(model, true, true,
                 true, true);
         for (NamedObj child : children) {
-            List<NaomiParameter> parameters = child.attributeList(
-                    NaomiParameter.class);
+            List<NaomiParameter> parameters = child
+                    .attributeList(NaomiParameter.class);
             for (NaomiParameter parameter : parameters) {
                 String attributeName = parameter.getAttributeName();
                 NaomiParameter.Method method = parameter.getMethod();
@@ -935,7 +937,7 @@ public class Connector extends MoMLApplication {
         xpath.setNamespaceContext(new MappedNamespaceContext(NAMESPACES));
         XPathExpression expr;
 
-        String[] nodeTypes = new String[] {"input", "output"};
+        String[] nodeTypes = new String[] { "input", "output" };
         List<Set<String>> sets = new LinkedList<Set<String>>();
         sets.add(_inputAttributes);
         sets.add(_outputAttributes);
@@ -955,8 +957,8 @@ public class Connector extends MoMLApplication {
         }
     }
 
-    protected Tableau _openModel(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    protected Tableau _openModel(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         Tableau tableau = super._openModel(entity);
         JFrame frame = tableau.getFrame();
         if (frame instanceof PtolemyFrame) {
@@ -1005,8 +1007,8 @@ public class Connector extends MoMLApplication {
         if (arg.startsWith("-")) {
             arg = arg.toLowerCase();
             if (_isExpectingValue()) {
-                throw new IllegalActionException("Expecting value for argument "
-                        + "\"" + arg + "\"");
+                throw new IllegalActionException(
+                        "Expecting value for argument " + "\"" + arg + "\"");
             } else if (arg.equals("-cmd") && _command == null) {
                 _expectingCommand = true;
                 return true;
@@ -1068,11 +1070,11 @@ public class Connector extends MoMLApplication {
 
     protected void _saveAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
-        Collection<NamedObj> children = new LinkedList<NamedObj>(
-                GTTools.getChildren(model, true, true, true, true));
+        Collection<NamedObj> children = new LinkedList<NamedObj>(GTTools
+                .getChildren(model, true, true, true, true));
         for (NamedObj child : children) {
-            List<NaomiParameter> parameters = child.attributeList(
-                    NaomiParameter.class);
+            List<NaomiParameter> parameters = child
+                    .attributeList(NaomiParameter.class);
             for (NaomiParameter parameter : parameters) {
                 String attributeName = parameter.getAttributeName();
                 if (!_outputAttributes.contains(attributeName)) {
@@ -1094,8 +1096,8 @@ public class Connector extends MoMLApplication {
                 String doc = parameter.getDocumentation();
 
                 try {
-                    DocumentBuilderFactory docFactory =
-                        DocumentBuilderFactory.newInstance();
+                    DocumentBuilderFactory docFactory = DocumentBuilderFactory
+                            .newInstance();
                     docFactory.setNamespaceAware(true);
                     DocumentBuilder builder;
                     builder = docFactory.newDocumentBuilder();
@@ -1107,8 +1109,9 @@ public class Connector extends MoMLApplication {
                             "http://www.w3.org/2001/XMLSchema-instance",
                             "schemaLocation");
                     attribute.setPrefix("xsi");
-                    attribute.setValue("http://www.atl.lmco.com/naomi attribute"
-                            + "_simple.xsd");
+                    attribute
+                            .setValue("http://www.atl.lmco.com/naomi attribute"
+                                    + "_simple.xsd");
                     root.setAttributeNodeNS(attribute);
                     Element owner = document.createElementNS(NAMESPACES[0][1],
                             "owner");
@@ -1118,18 +1121,16 @@ public class Connector extends MoMLApplication {
                     if (parameter instanceof CompositeNaomiAttribute) {
                         if (_outModelName == null) {
                             throw new IllegalActionException(
-                                    "Unable to generate resource file " +
-                                    "name. Please specify the -out " +
-                                    "parameter.");
+                                    "Unable to generate resource file "
+                                            + "name. Please specify the -out "
+                                            + "parameter.");
                         }
-                        CompositeNaomiAttribute compositeAttr =
-                            (CompositeNaomiAttribute) parameter;
-                        String identifier =
-                            compositeAttr.getResourceIdentifier();
+                        CompositeNaomiAttribute compositeAttr = (CompositeNaomiAttribute) parameter;
+                        String identifier = compositeAttr
+                                .getResourceIdentifier();
                         PrintWriter writer = null;
                         File outModelFile = new File(_outModelName);
-                        File outModelDirectory =
-                            outModelFile.getParentFile();
+                        File outModelDirectory = outModelFile.getParentFile();
                         File resourceFile = new File(outModelDirectory,
                                 identifier);
                         try {
@@ -1149,9 +1150,9 @@ public class Connector extends MoMLApplication {
                         if (resourcePath.startsWith(rootPath)) {
                             Element resource = document.createElementNS(
                                     NAMESPACES[0][1], "resource");
-                            String resourceURI = "naomi://" +
-                                    resourcePath.substring(rootPath.length())
-                                    .replace('\\', '/');
+                            String resourceURI = "naomi://"
+                                    + resourcePath.substring(rootPath.length())
+                                            .replace('\\', '/');
                             resource.setAttribute("name", identifier);
                             resource.setAttribute("uri", resourceURI);
                             root.appendChild(resource);
@@ -1164,24 +1165,25 @@ public class Connector extends MoMLApplication {
                         // variables inside CompositeActors.
                         variable.invalidate();
                         String newValue = variable.getToken().toString();
-                        System.out.println("Save: " + attributeName + " = " +
-                                newValue);
+                        System.out.println("Save: " + attributeName + " = "
+                                + newValue);
 
                         Element value = document.createElementNS(
                                 NAMESPACES[0][1], "value");
-                        value.setTextContent(StringUtilities.escapeForXML(
-                                newValue));
+                        value.setTextContent(StringUtilities
+                                .escapeForXML(newValue));
                         root.appendChild(value);
                     } else {
-                        throw new IllegalActionException("Do not know how to " +
-                                "handle object " + child.getName() + ".");
+                        throw new IllegalActionException("Do not know how to "
+                                + "handle object " + child.getName() + ".");
                     }
 
                     Element units = document.createElementNS(NAMESPACES[0][1],
                             "units");
                     if (!unit.equals("")) {
-                        units.setTextContent(StringUtilities.escapeForXML(
-                                unit));
+                        units
+                                .setTextContent(StringUtilities
+                                        .escapeForXML(unit));
                     }
                     root.appendChild(units);
                     Element documentation = document.createElementNS(
@@ -1192,12 +1194,11 @@ public class Connector extends MoMLApplication {
                     }
                     root.appendChild(documentation);
 
-                    FileOutputStream stream =
-                        new FileOutputStream(attributeFile);
+                    FileOutputStream stream = new FileOutputStream(
+                            attributeFile);
                     _serializeXML(document, stream);
 
-                    if (!attributeFile.setLastModified(attributeDate
-                            .getTime())) {
+                    if (!attributeFile.setLastModified(attributeDate.getTime())) {
                         throw new IllegalActionException("Failed to set last "
                                 + "modified time of \""
                                 + attributeFile.getName() + "\"");
@@ -1208,7 +1209,7 @@ public class Connector extends MoMLApplication {
                 } catch (FileNotFoundException e) {
                     throw new IllegalActionException(null, e,
                             "Cannot create attribute file: "
-                            + attributeFile.getPath());
+                                    + attributeFile.getPath());
                 }
             }
         }
@@ -1219,8 +1220,8 @@ public class Connector extends MoMLApplication {
         System.out.println("Output interface: " + interfaceFile.getPath());
         Document interfaceDocument = _generateInterface();
         try {
-            _serializeXML(interfaceDocument, new FileOutputStream(
-                    interfaceFile));
+            _serializeXML(interfaceDocument,
+                    new FileOutputStream(interfaceFile));
         } catch (FileNotFoundException e) {
             throw new IllegalActionException(null, e,
                     "Cannot output interface.");
@@ -1231,8 +1232,8 @@ public class Connector extends MoMLApplication {
         List<Attribute> attributes = model.attributeList();
         List<Attribute> transformations = new LinkedList<Attribute>();
         for (Attribute attribute : attributes) {
-            List<TransformationParameter> transformationParams =
-                attribute.attributeList(TransformationParameter.class);
+            List<TransformationParameter> transformationParams = attribute
+                    .attributeList(TransformationParameter.class);
             if (!transformationParams.isEmpty()) {
                 transformations.add(attribute);
             }
@@ -1240,8 +1241,8 @@ public class Connector extends MoMLApplication {
 
         Attribute transformation = null;
         if (transformations.size() == 0) {
-            throw new IllegalActionException("No attribute exists in the " +
-                    "model that specifies a transformation.");
+            throw new IllegalActionException("No attribute exists in the "
+                    + "model that specifies a transformation.");
         } else if (transformations.size() == 1) {
             transformation = transformations.get(0);
         } else {
@@ -1286,8 +1287,8 @@ public class Connector extends MoMLApplication {
                     }
                 }
             } else {
-                List<EditorFactory> factories = transformation.attributeList(
-                        EditorFactory.class);
+                List<EditorFactory> factories = transformation
+                        .attributeList(EditorFactory.class);
                 if (factories.size() > 0) {
                     factory = (EditorFactory) factories.get(0);
                 }
@@ -1304,9 +1305,8 @@ public class Connector extends MoMLApplication {
                 factory.createEditor(transformation, null);
                 Frame[] frames = Frame.getFrames();
                 for (Frame frame : frames) {
-                    if (frame instanceof PtolemyFrame &&
-                            ((PtolemyFrame) frame).getModel() ==
-                                transformation) {
+                    if (frame instanceof PtolemyFrame
+                            && ((PtolemyFrame) frame).getModel() == transformation) {
                         frame.addWindowListener(new WindowListener() {
 
                             public void windowActivated(WindowEvent e) {
@@ -1350,8 +1350,7 @@ public class Connector extends MoMLApplication {
                             .getAttribute("target", FileParameter.class);
                     writer = target.openForWriting();
 
-                    TransformationAttribute attribute =
-                        (TransformationAttribute) transformation;
+                    TransformationAttribute attribute = (TransformationAttribute) transformation;
                     attribute.executeTransformation();
 
                     model.executeChangeRequests();
@@ -1374,15 +1373,14 @@ public class Connector extends MoMLApplication {
     }
 
     protected String _usage() {
-        return _configurationUsage(
-                "java " + getClass().getName() + " [ options ]",
-                COMMAND_OPTIONS, new String[] {});
+        return _configurationUsage("java " + getClass().getName()
+                + " [ options ]", COMMAND_OPTIONS, new String[] {});
     }
 
     private Document _generateInterface() throws IllegalActionException {
         try {
-            DocumentBuilderFactory factory =
-                DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = DocumentBuilderFactory
+                    .newInstance();
             factory.setNamespaceAware(true);
             factory.setValidating(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -1425,14 +1423,14 @@ public class Connector extends MoMLApplication {
         File interfacePath = new File(new File(_root, "interfaces"), _owner);
         if (!interfacePath.exists() || !interfacePath.isDirectory()) {
             if (!interfacePath.mkdirs()) {
-                throw new IllegalActionException("Unable to create path to " +
-                        "interface file " + interfacePath.getPath() + ".");
+                throw new IllegalActionException("Unable to create path to "
+                        + "interface file " + interfacePath.getPath() + ".");
             }
         }
         File interfaceFile = new File(interfacePath, _owner + "_interface.xml");
         if (interfaceFile.exists() && !interfaceFile.isFile()) {
-            throw new IllegalActionException("Interface file " +
-                    interfaceFile.getPath() + " is not a file.");
+            throw new IllegalActionException("Interface file "
+                    + interfaceFile.getPath() + " is not a file.");
         }
         return interfaceFile;
     }
@@ -1456,8 +1454,8 @@ public class Connector extends MoMLApplication {
         URL base = inURL;
         String identifier = inURL.toExternalForm();
         ModelDirectory directory = _configuration.getDirectory();
-        EffigyFactory factory = (EffigyFactory) _configuration.getEntity(
-                "effigyFactory");
+        EffigyFactory factory = (EffigyFactory) _configuration
+                .getEntity("effigyFactory");
         PtolemyEffigy effigy = (PtolemyEffigy) factory.createEffigy(directory,
                 base, inURL);
         effigy.identifier.setExpression(identifier);
@@ -1466,8 +1464,8 @@ public class Connector extends MoMLApplication {
 
     private Document _parseXML(File file) throws IllegalActionException {
         try {
-            DocumentBuilderFactory docFactory =
-                DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory
+                    .newInstance();
             docFactory.setNamespaceAware(true);
             DocumentBuilder builder = docFactory.newDocumentBuilder();
             return builder.parse(file);
@@ -1496,8 +1494,8 @@ public class Connector extends MoMLApplication {
         try {
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(stream);
-            TransformerFactory transformerFactory =
-                TransformerFactory.newInstance();
+            TransformerFactory transformerFactory = TransformerFactory
+                    .newInstance();
             Transformer serializer = transformerFactory.newTransformer();
             serializer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
             serializer.setOutputProperty(OutputKeys.INDENT, "yes");

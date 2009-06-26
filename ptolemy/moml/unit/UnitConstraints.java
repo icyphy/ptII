@@ -210,7 +210,7 @@ public class UnitConstraints implements UnitPresentation {
 
         if (!_constraints.isEmpty()) {
             retv.append(((UnitEquation) (_constraints.elementAt(0)))
-                            .descriptiveForm());
+                    .descriptiveForm());
         }
 
         for (int i = 1; i < _constraints.size(); i++) {

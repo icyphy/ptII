@@ -42,6 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
@@ -197,8 +198,8 @@ public class Effigy extends CompositeEntity {
                                 // the file does not have %20s.
                                 // See
                                 // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=153
-                                path = StringUtilities.substitute(
-                                        path, "%20", " ");
+                                path = StringUtilities.substitute(path, "%20",
+                                        " ");
                                 file = new File(path);
                                 _modifiableURI = file.canWrite();
                             }

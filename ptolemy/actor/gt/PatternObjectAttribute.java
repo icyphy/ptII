@@ -1,4 +1,4 @@
- /*
+/*
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -22,12 +22,12 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                        PT_COPYRIGHT_VERSION_2
-                        COPYRIGHTENDKEY
+                       PT_COPYRIGHT_VERSION_2
+                       COPYRIGHTENDKEY
 
 
 
- */
+*/
 
 package ptolemy.actor.gt;
 
@@ -49,8 +49,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PatternObjectAttribute extends StringAttribute
-implements ValueListener {
+public class PatternObjectAttribute extends StringAttribute implements
+        ValueListener {
 
     /**
      *
@@ -86,13 +86,13 @@ implements ValueListener {
                 // Update the ports with the criteria attribute of the
                 // corresponding actor in the pattern of the transformation
                 // rule.
-                NamedObj correspondingEntity =
-                    GTTools.getCorrespondingPatternObject(container);
+                NamedObj correspondingEntity = GTTools
+                        .getCorrespondingPatternObject(container);
                 if (correspondingEntity != null) {
                     GTIngredientsAttribute criteria;
                     try {
-                        criteria = (GTIngredientsAttribute)
-                                container.getAttribute("criteria",
+                        criteria = (GTIngredientsAttribute) container
+                                .getAttribute("criteria",
                                         GTIngredientsAttribute.class);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -116,9 +116,9 @@ implements ValueListener {
                     }
                     if (container instanceof GTEntity
                             && correspondingEntity instanceof GTEntity) {
-                        ((GTEntity) container).updateAppearance(
-                                ((GTEntity) correspondingEntity)
-                                .getCriteriaAttribute());
+                        ((GTEntity) container)
+                                .updateAppearance(((GTEntity) correspondingEntity)
+                                        .getCriteriaAttribute());
                     }
                 }
             }

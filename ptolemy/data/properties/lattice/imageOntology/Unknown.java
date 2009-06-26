@@ -31,7 +31,6 @@ package ptolemy.data.properties.lattice.imageOntology;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Property
 

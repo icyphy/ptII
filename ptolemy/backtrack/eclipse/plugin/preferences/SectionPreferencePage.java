@@ -147,7 +147,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
      *  @see #_setParent(FieldEditor, Composite)
      */
     protected Composite _getParent(FieldEditor editor) {
-        return (Composite) _composites.get(editor);
+        return _composites.get(editor);
     }
 
     /** Create a new container with the given parent.

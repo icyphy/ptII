@@ -136,8 +136,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     /**     
      * The number of entries in this hash map.
      */
-    private    // Package visible for use by nested classes.
- int size;
+    private// Package visible for use by nested classes.
+    int size;
 
     /**     
      * The load factor of this WeakHashMap.  This is the maximum ratio of
@@ -160,8 +160,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * by the garbage collection.  Instead the iterators must make
      * sure to have strong references to the entries they rely on.
      */
-    private    // Package visible for use by nested classes.
- int modCount;
+    private// Package visible for use by nested classes.
+    int modCount;
 
     // This method will get inlined.
     // This is the next entry.
@@ -183,7 +183,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * theEntrySet.  Note that the entry set may silently shrink, just
      * like the WeakHashMap.
      */
-    private final class WeakEntrySet extends AbstractSet implements Rollbackable {
+    private final class WeakEntrySet extends AbstractSet implements
+            Rollbackable {
 
         /**         
          * Non-private constructor to reduce bytecode emitted.
@@ -242,8 +243,10 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 private void checkMod() {
                     cleanQueue();
-                    if (getKnownMod() != getModCount())
-                        throw new ConcurrentModificationException(getKnownMod() + " != "+getModCount());
+                    if (getKnownMod() != getModCount()) {
+                        throw new ConcurrentModificationException(getKnownMod()
+                                + " != " + getModCount());
+                    }
                 }
 
                 /**                 
@@ -253,7 +256,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  * get the first entry.
                  * @return the next entry.
                  */
-                private WeakBucket.WeakEntry findNext(WeakBucket.WeakEntry lastEntry) {
+                private WeakBucket.WeakEntry findNext(
+                        WeakBucket.WeakEntry lastEntry) {
                     int slot;
                     WeakBucket nextBucket;
                     if (lastEntry != null) {
@@ -266,13 +270,15 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     while (true) {
                         while (nextBucket != null) {
                             WeakBucket.WeakEntry entry = nextBucket.getEntry();
-                            if (entry != null)
+                            if (entry != null) {
                                 return entry;
+                            }
                             nextBucket = nextBucket.getNext();
                         }
                         slot++;
-                        if (slot == getBuckets().length)
+                        if (slot == getBuckets().length) {
                             return null;
+                        }
                         nextBucket = getBuckets()[slot];
                     }
                 }
@@ -294,8 +300,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 public Object next() {
                     checkMod();
-                    if (getNextEntry() == null)
+                    if (getNextEntry() == null) {
                         throw new NoSuchElementException();
+                    }
                     setLastEntry(getNextEntry());
                     setNextEntry(findNext(getLastEntry()));
                     return getLastEntry();
@@ -311,8 +318,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 public void remove() {
                     checkMod();
-                    if (getLastEntry() == null)
+                    if (getLastEntry() == null) {
                         throw new IllegalStateException();
+                    }
                     setModCount(getModCount() + 1);
                     internalRemove(getLastEntry().getBucket());
                     setLastEntry(null);
@@ -364,21 +372,27 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
                 }
 
-                private final WeakBucket.WeakEntry $ASSIGN$lastEntry(WeakBucket.WeakEntry newValue) {
+                private final WeakBucket.WeakEntry $ASSIGN$lastEntry(
+                        WeakBucket.WeakEntry newValue) {
                     if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$lastEntry.add(null, lastEntry, $CHECKPOINT.getTimestamp());
+                        $RECORD$lastEntry.add(null, lastEntry, $CHECKPOINT
+                                .getTimestamp());
                     }
-                    if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                    if (newValue != null
+                            && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                         newValue.$SET$CHECKPOINT($CHECKPOINT);
                     }
                     return lastEntry = newValue;
                 }
 
-                private final WeakBucket.WeakEntry $ASSIGN$nextEntry(WeakBucket.WeakEntry newValue) {
+                private final WeakBucket.WeakEntry $ASSIGN$nextEntry(
+                        WeakBucket.WeakEntry newValue) {
                     if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$nextEntry.add(null, nextEntry, $CHECKPOINT.getTimestamp());
+                        $RECORD$nextEntry.add(null, nextEntry, $CHECKPOINT
+                                .getTimestamp());
                     }
-                    if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                    if (newValue != null
+                            && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                         newValue.$SET$CHECKPOINT($CHECKPOINT);
                     }
                     return nextEntry = newValue;
@@ -386,22 +400,28 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
                 private final int $ASSIGN$knownMod(int newValue) {
                     if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                        $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
+                                .getTimestamp());
                     }
                     return knownMod = newValue;
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    lastEntry = (WeakBucket.WeakEntry)$RECORD$lastEntry.restore(lastEntry, timestamp, trim);
-                    nextEntry = (WeakBucket.WeakEntry)$RECORD$nextEntry.restore(nextEntry, timestamp, trim);
-                    knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+                    lastEntry = (WeakBucket.WeakEntry) $RECORD$lastEntry
+                            .restore(lastEntry, timestamp, trim);
+                    nextEntry = (WeakBucket.WeakEntry) $RECORD$nextEntry
+                            .restore(nextEntry, timestamp, trim);
+                    knownMod = $RECORD$knownMod.restore(knownMod, timestamp,
+                            trim);
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                                new _PROXY_(), timestamp, trim);
                         FieldRecord.popState($RECORDS);
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -411,11 +431,13 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
                         $CHECKPOINT = checkpoint;
@@ -425,17 +447,17 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     return this;
                 }
 
-                private transient FieldRecord $RECORD$lastEntry = new FieldRecord(0);
+                private transient FieldRecord $RECORD$lastEntry = new FieldRecord(
+                        0);
 
-                private transient FieldRecord $RECORD$nextEntry = new FieldRecord(0);
+                private transient FieldRecord $RECORD$nextEntry = new FieldRecord(
+                        0);
 
-                private transient FieldRecord $RECORD$knownMod = new FieldRecord(0);
+                private transient FieldRecord $RECORD$knownMod = new FieldRecord(
+                        0);
 
                 private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                        $RECORD$lastEntry,
-                        $RECORD$nextEntry,
-                        $RECORD$knownMod
-                    };
+                        $RECORD$lastEntry, $RECORD$nextEntry, $RECORD$knownMod };
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
@@ -445,7 +467,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -453,8 +476,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             super.$RESTORE(timestamp, trim);
         }
 
-        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
     }
 
@@ -468,7 +490,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * look for this reference in the hashtable, to remove that entry.
      * @author Jochen Hoenicke
      */
-    private static class WeakBucket extends WeakReference implements Rollbackable {
+    private static class WeakBucket extends WeakReference implements
+            Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -529,7 +552,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
              * @return the key
              */
             public Object getKey() {
-                return getKeyField() == NULL_KEY?null:getKeyField();
+                return getKeyField() == NULL_KEY ? null : getKeyField();
             }
 
             /**             
@@ -557,7 +580,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
              * @return the hash code
              */
             public int hashCode() {
-                return getKeyField().hashCode() ^ WeakHashMap.hashCode(getValue());
+                return getKeyField().hashCode()
+                        ^ AbstractMap.hashCode(getValue());
             }
 
             /**             
@@ -567,14 +591,15 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
              */
             public boolean equals(Object o) {
                 if (o instanceof Map.Entry) {
-                    Map.Entry e = (Map.Entry)o;
-                    return WeakHashMap.equals(getKey(), e.getKey()) && WeakHashMap.equals(getValue(), e.getValue());
+                    Map.Entry e = (Map.Entry) o;
+                    return AbstractMap.equals(getKey(), e.getKey())
+                            && AbstractMap.equals(getValue(), e.getValue());
                 }
                 return false;
             }
 
             public String toString() {
-                return getKey() + "="+getValue();
+                return getKey() + "=" + getValue();
             }
 
             void setKeyField(Object key) {
@@ -593,14 +618,16 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             }
 
             public void $COMMIT(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE(long timestamp, boolean trim) {
-                key = (Object)$RECORD$key.restore(key, timestamp, trim);
+                key = $RECORD$key.restore(key, timestamp, trim);
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            this, timestamp, trim);
                     FieldRecord.popState($RECORDS);
                     $RESTORE(timestamp, trim);
                 }
@@ -614,7 +641,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 if ($CHECKPOINT != checkpoint) {
                     Checkpoint oldCheckpoint = $CHECKPOINT;
                     if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
                         FieldRecord.pushState($RECORDS);
                     }
                     $CHECKPOINT = checkpoint;
@@ -628,9 +656,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
             private transient FieldRecord $RECORD$key = new FieldRecord(0);
 
-            private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                    $RECORD$key
-                };
+            private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$key };
 
         }
 
@@ -643,7 +669,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
          * @param slot the slot.  This must match the slot where this bucket
          * will be enqueued.
          */
-        public WeakBucket(Object key, ReferenceQueue queue, Object value, int slot) {
+        public WeakBucket(Object key, ReferenceQueue queue, Object value,
+                int slot) {
             super(key, queue);
             this.setValue(value);
             this.setSlot(slot);
@@ -656,8 +683,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
          */
         WeakEntry getEntry() {
             final Object key = this.get();
-            if (key == null)
+            if (key == null) {
                 return null;
+            }
             return new WeakEntry(key);
         }
 
@@ -679,10 +707,6 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
         void setValue(Object value) {
             this.$ASSIGN$value(value);
-        }
-
-        Object getValue() {
-            return value;
         }
 
         private final Object $ASSIGN$value(Object newValue) {
@@ -710,16 +734,18 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            value = (Object)$RECORD$value.restore(value, timestamp, trim);
-            next = (WeakBucket)$RECORD$next.restore(next, timestamp, trim);
+            value = $RECORD$value.restore(value, timestamp, trim);
+            next = (WeakBucket) $RECORD$next.restore(next, timestamp, trim);
             slot = $RECORD$slot.restore(slot, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -733,7 +759,8 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -752,10 +779,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         private transient FieldRecord $RECORD$slot = new FieldRecord(0);
 
         private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$value,
-                $RECORD$next,
-                $RECORD$slot
-            };
+                $RECORD$value, $RECORD$next, $RECORD$slot };
 
     }
 
@@ -787,12 +811,14 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      */
     public WeakHashMap(int initialCapacity, float loadFactor) {
         // Check loadFactor for NaN as well.
-        if (initialCapacity < 0 || !(loadFactor > 0))
+        if (initialCapacity < 0 || !(loadFactor > 0)) {
             throw new IllegalArgumentException();
-        if (initialCapacity == 0)
+        }
+        if (initialCapacity == 0) {
             initialCapacity = 1;
+        }
         this.$ASSIGN$loadFactor(loadFactor);
-        $ASSIGN$threshold((int)(initialCapacity * loadFactor));
+        $ASSIGN$threshold((int) (initialCapacity * loadFactor));
         theEntrySet = new WeakEntrySet();
         queue = new ReferenceQueue();
         setBuckets(new WeakBucket[initialCapacity]);
@@ -831,7 +857,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     void cleanQueue() {
         Object bucket = queue.poll();
         while (bucket != null) {
-            internalRemove((WeakBucket)bucket);
+            internalRemove((WeakBucket) bucket);
             bucket = queue.poll();
         }
     }
@@ -846,7 +872,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         WeakBucket[] oldBuckets = getBuckets();
         int newsize = getBuckets().length * 2 + 1;
         // XXX should be prime.
-        $ASSIGN$threshold((int)(newsize * loadFactor));
+        $ASSIGN$threshold((int) (newsize * loadFactor));
         setBuckets(new WeakBucket[newsize]);
         // Now we have to insert the buckets again.
         for (int i = 0; i < oldBuckets.length; i++) {
@@ -880,14 +906,16 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * @return The WeakBucket.WeakEntry or null, if the key wasn't found.
      */
     private WeakBucket.WeakEntry internalGet(Object key) {
-        if (key == null)
+        if (key == null) {
             key = NULL_KEY;
+        }
         int slot = hash(key);
         WeakBucket bucket = getBuckets()[slot];
         while (bucket != null) {
             WeakBucket.WeakEntry entry = bucket.getEntry();
-            if (entry != null && equals(key, entry.getKeyField()))
+            if (entry != null && equals(key, entry.getKeyField())) {
                 return entry;
+            }
             bucket = bucket.getNext();
         }
         return null;
@@ -899,8 +927,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * @param value the value.
      */
     private void internalAdd(Object key, Object value) {
-        if (key == null)
+        if (key == null) {
             key = NULL_KEY;
+        }
         int slot = hash(key);
         WeakBucket bucket = new WeakBucket(key, queue, value, slot);
         bucket.setNext(getBuckets()[slot]);
@@ -916,25 +945,28 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      */
     void internalRemove(WeakBucket bucket) {
         int slot = bucket.getSlot();
-        if (slot == -1)
+        if (slot == -1) {
             // This bucket was already removed.
             // Mark the bucket as removed.  This is necessary, since the
             // bucket may be enqueued later by the garbage collection, and
             // internalRemove will be called a second time.
             return;
+        }
         bucket.setSlot(-1);
         WeakBucket prev = null;
         WeakBucket next = getBuckets()[slot];
         while (next != bucket) {
-            if (next == null)
+            if (next == null) {
                 throw new InternalError("WeakHashMap in incosistent state");
+            }
             prev = next;
             next = prev.getNext();
         }
-        if (prev == null)
+        if (prev == null) {
             getBuckets()[slot] = bucket.getNext();
-        else
+        } else {
             prev.setNext(bucket.getNext());
+        }
         setSize(getSize() - 1);
     }
 
@@ -979,7 +1011,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     public Object get(Object key) {
         cleanQueue();
         WeakBucket.WeakEntry entry = internalGet(key);
-        return entry == null?null:entry.getValue();
+        return entry == null ? null : entry.getValue();
     }
 
     /**     
@@ -993,11 +1025,13 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     public Object put(Object key, Object value) {
         cleanQueue();
         WeakBucket.WeakEntry entry = internalGet(key);
-        if (entry != null)
+        if (entry != null) {
             return entry.setValue(value);
+        }
         setModCount(getModCount() + 1);
-        if (getSize() >= threshold)
+        if (getSize() >= threshold) {
             rehash();
+        }
         internalAdd(key, value);
         return null;
     }
@@ -1012,8 +1046,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     public Object remove(Object key) {
         cleanQueue();
         WeakBucket.WeakEntry entry = internalGet(key);
-        if (entry == null)
+        if (entry == null) {
             return null;
+        }
         setModCount(getModCount() + 1);
         internalRemove(entry.getBucket());
         return entry.getValue();
@@ -1094,19 +1129,20 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return $BACKUP$buckets();
     }
 
-    void setModCount(    // Package visible for use by nested classes.
-int modCount) {
+    void setModCount( // Package visible for use by nested classes.
+            int modCount) {
         this.$ASSIGN$modCount(modCount);
     }
+
     // Package visible for use by nested classes.
 
     int getModCount() {
         return modCount;
     }
 
-    void setSize(    // Package visible for use by nested classes.
-    // Package visible for use by nested classes.
-int size) {
+    void setSize( // Package visible for use by nested classes.
+            // Package visible for use by nested classes.
+            int size) {
         this.$ASSIGN$size(size);
     }
 
@@ -1123,7 +1159,8 @@ int size) {
 
     private final float $ASSIGN$loadFactor(float newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$loadFactor.add(null, loadFactor, $CHECKPOINT.getTimestamp());
+            $RECORD$loadFactor
+                    .add(null, loadFactor, $CHECKPOINT.getTimestamp());
         }
         return loadFactor = newValue;
     }
@@ -1155,7 +1192,8 @@ int size) {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -1166,7 +1204,8 @@ int size) {
         threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
         modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
         $RECORD$theEntrySet.restore(theEntrySet, timestamp, trim);
-        buckets = (WeakBucket[])$RECORD$buckets.restore(buckets, timestamp, trim);
+        buckets = (WeakBucket[]) $RECORD$buckets.restore(buckets, timestamp,
+                trim);
         super.$RESTORE(timestamp, trim);
     }
 
@@ -1185,14 +1224,8 @@ int size) {
     private transient FieldRecord $RECORD$buckets = new FieldRecord(1);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$queue,
-            $RECORD$size,
-            $RECORD$loadFactor,
-            $RECORD$threshold,
-            $RECORD$modCount,
-            $RECORD$theEntrySet,
-            $RECORD$buckets
-        };
+            $RECORD$queue, $RECORD$size, $RECORD$loadFactor, $RECORD$threshold,
+            $RECORD$modCount, $RECORD$theEntrySet, $RECORD$buckets };
 
 }
 

@@ -1117,8 +1117,7 @@ public class LiveSound {
         try {
             // Source DataLine is really a target for
             // audio data, not a source.
-            _sourceLine = AudioSystem
-                    .getSourceDataLine(format);
+            _sourceLine = AudioSystem.getSourceDataLine(format);
 
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.

@@ -58,22 +58,25 @@ public class ModalModel extends TypedCompositeActor {
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        ptolemy.domains.fsm.modal.ModalModel mm =
-            (ptolemy.domains.fsm.modal.ModalModel) getComponent();
-        if (name.equals("controller"))
+        ptolemy.domains.fsm.modal.ModalModel mm = (ptolemy.domains.fsm.modal.ModalModel) getComponent();
+        if (name.equals("controller")) {
             return mm.getController().getName();
+        }
         if (name.equals("refinement")) {
-            return new ListTerm<State>("empty"," ", mm.getController().entityList(State.class)) {
+            return new ListTerm<State>("empty", " ", mm.getController()
+                    .entityList(State.class)) {
                 public String item(State s) throws IllegalActionException {
                     Actor[] rfs = s.getRefinement();
                     if (rfs != null) {
                         StringBuffer code = new StringBuffer();
-                        for (Actor a : rfs)
-                            code.append(_generateBlockCode("refineStateBlock", s.getName(), a.getName()));
+                        for (Actor a : rfs) {
+                            code.append(_generateBlockCode("refineStateBlock",
+                                    s.getName(), a.getName()));
+                        }
                         return code.toString();
-                    }
-                    else
+                    } else {
                         return null;
+                    }
                 }
             }.generateCode();
         }

@@ -340,7 +340,8 @@ public class BusContentionApplet extends PtolemyApplet {
     //}
     ///////////////////////////////////////////////////////////////////
     //// BusContentionGraphController
-    public static class BusContentionGraphController extends BasicGraphController {
+    public static class BusContentionGraphController extends
+            BasicGraphController {
         private SelectionDragger _selectionDragger;
 
         /**

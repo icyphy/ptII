@@ -506,8 +506,7 @@ public class FmvAutomaton extends FSMActor {
 
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
-            VariableInfo individual = _variableInfo
-                    .remove(valName);
+            VariableInfo individual = _variableInfo.remove(valName);
             if (individual != null) {
                 try {
                     int lbOriginal = Integer.parseInt(individual._minValue);
@@ -557,8 +556,9 @@ public class FmvAutomaton extends FSMActor {
                 // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
                 name = iterator.next();
-                if (name != null)
+                if (name != null) {
                     stateInThis = frontier.remove(name);
+                }
                 if (stateInThis != null) {
                     ComponentPort outPort = stateInThis.outgoingPort;
                     Iterator transitions = outPort.linkedRelationList()
@@ -1080,7 +1080,7 @@ public class FmvAutomaton extends FSMActor {
                                                 .trim();
 
                                         try {
-                                            /*int value =*/ Integer
+                                            /*int value =*/Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
                                         } catch (Exception ex) {
@@ -1135,7 +1135,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         try {
                                             Integer.parseInt(rValueOperends[1]
-                                                            .trim());
+                                                    .trim());
                                         } catch (Exception ex) {
                                             // check if the value is of format
                                             // (-a)
@@ -1184,9 +1184,8 @@ public class FmvAutomaton extends FSMActor {
                                                 .trim();
 
                                         try {
-                                            Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
+                                            Integer.parseInt(rValueOperends[1]
+                                                    .trim());
                                         } catch (Exception ex) {
                                             // check if the value is of format
                                             // (-a)
@@ -1239,9 +1238,8 @@ public class FmvAutomaton extends FSMActor {
                                                 .trim();
 
                                         try {
-                                            Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
+                                            Integer.parseInt(rValueOperends[1]
+                                                    .trim());
                                         } catch (Exception ex) {
                                             // check if the value is of format
                                             // (-a)

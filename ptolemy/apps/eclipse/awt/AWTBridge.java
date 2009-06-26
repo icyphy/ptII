@@ -16,10 +16,8 @@ import org.eclipse.swt.widgets.Shell;
 //
 // Omry Yadan.
 //   Updated at 17/8/2005
-public class AWTBridge
-{
-    public static void main(String[] args)
-    {
+public class AWTBridge {
+    public static void main(String[] args) {
 
         Display display = new Display();
         Shell shell = new Shell(display);
@@ -45,11 +43,9 @@ public class AWTBridge
         awt.add(awtLabel);
         shell.open();
 
-        while (!shell.isDisposed())
-        {
+        while (!shell.isDisposed()) {
 
-            if (!display.readAndDispatch())
-            {
+            if (!display.readAndDispatch()) {
 
                 display.sleep();
 

@@ -62,12 +62,10 @@ public class Comparator extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
-        ptolemy.actor.lib.logic.Comparator actor =
-            (ptolemy.actor.lib.logic.Comparator) getComponent();
+    public List<Inequality> constraintList() throws IllegalActionException {
+        ptolemy.actor.lib.logic.Comparator actor = (ptolemy.actor.lib.logic.Comparator) getComponent();
 
         setAtLeast(actor.output, new FunctionTerm(actor.left, actor.right));
 
@@ -98,8 +96,8 @@ public class Comparator extends PropertyConstraintHelper {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property leftProperty = (Property) getSolver().getProperty(_left);
-            Property rightProperty = (Property) getSolver().getProperty(_right);
+            Property leftProperty = getSolver().getProperty(_left);
+            Property rightProperty = getSolver().getProperty(_right);
 
             Property unknown = _lattice.getElement("UNKNOWN");
 
@@ -122,10 +120,8 @@ public class Comparator extends PropertyConstraintHelper {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_left),
-                getPropertyTerm(_right)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_left),
+                    getPropertyTerm(_right) };
         }
     }
 }

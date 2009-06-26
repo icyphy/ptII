@@ -35,8 +35,6 @@ import java.lang.ref.WeakReference;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
@@ -119,14 +117,14 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         Object[] message = new Object[1];
         String string = info;
         message[0] = _messageComponent(StringUtilities.ellipsis(string,
-                        StringUtilities.ELLIPSIS_LENGTH_SHORT));
+                StringUtilities.ELLIPSIS_LENGTH_SHORT));
 
         Object[] options = { "Dismiss" };
 
         // Show the MODAL dialog
         JOptionPane.showOptionDialog(getContext(), message, "Error",
-                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE,
-                null, options, options[0]);
+                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
+                options, options[0]);
     }
 
     /** Show the specified message and throwable information.
@@ -161,15 +159,15 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         }
 
         message[0] = _messageComponent(StringUtilities.ellipsis(string,
-                        StringUtilities.ELLIPSIS_LENGTH_SHORT));
+                StringUtilities.ELLIPSIS_LENGTH_SHORT));
 
         Object[] options = { "Dismiss", "Display Stack Trace" };
 
         // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(getContext(),
-                message, MessageHandler.shortDescription(throwable),
-                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE,
-                null, options, options[0]);
+        int selected = JOptionPane.showOptionDialog(getContext(), message,
+                MessageHandler.shortDescription(throwable),
+                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
+                options, options[0]);
 
         if (selected == 1) {
             _showStackTrace(throwable, info);
@@ -184,15 +182,14 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
     protected void _message(String info) {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(info,
-                        StringUtilities.ELLIPSIS_LENGTH_LONG));
+                StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "OK" };
 
         // Show the MODAL dialog
         JOptionPane.showOptionDialog(getContext(), message, "Message",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.INFORMATION_MESSAGE, null, options,
-                options[0]);
+                JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                null, options, options[0]);
     }
 
     /** Show the specified message in a modal dialog.  If the user
@@ -218,7 +215,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         // Running vergil on a HSIF .xml file will create a line longer
         // than 80 characters
         message[0] = _messageComponent(StringUtilities.ellipsis(info,
-                        StringUtilities.ELLIPSIS_LENGTH_LONG));
+                StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,
@@ -253,7 +250,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
             throws CancelException {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(info,
-                        StringUtilities.ELLIPSIS_LENGTH_LONG));
+                StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "OK", "Display Stack Trace", "Cancel" };
 
@@ -278,7 +275,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
     protected boolean _yesNoQuestion(String question) {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(question,
-                        StringUtilities.ELLIPSIS_LENGTH_LONG));
+                StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "Yes", "No" };
 
@@ -306,7 +303,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
             throws CancelException {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(question,
-                        StringUtilities.ELLIPSIS_LENGTH_LONG));
+                StringUtilities.ELLIPSIS_LENGTH_LONG));
 
         Object[] options = { "Yes", "No", "Cancel" };
 
@@ -358,7 +355,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         }
 
         message[0] = _messageComponent(StringUtilities.ellipsis(string,
-                        StringUtilities.ELLIPSIS_LENGTH_LONG));
+                StringUtilities.ELLIPSIS_LENGTH_LONG));
         message[1] = stext;
 
         // Show the MODAL dialog
@@ -386,17 +383,17 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         Object result = message;
         // Unfortunately, this hack does not wrap text properly,
         // so I'm commenting it out temporarily.
-//         try {
-//             JTextField textField = new JTextField(message);
-//             textField.setEditable(false);
-//             textField.setBorder(null);
-//             textField.setForeground(UIManager.getColor("Label.foreground"));
-//             textField.setBackground(UIManager.getColor("Label.background"));
-//             textField.setFont(UIManager.getFont("Label.font"));
-//             result = textField;
-//         } catch (Exception ex) {
-//             // Ignore, just return the string
-//         }
+        //         try {
+        //             JTextField textField = new JTextField(message);
+        //             textField.setEditable(false);
+        //             textField.setBorder(null);
+        //             textField.setForeground(UIManager.getColor("Label.foreground"));
+        //             textField.setBackground(UIManager.getColor("Label.background"));
+        //             textField.setFont(UIManager.getFont("Label.font"));
+        //             result = textField;
+        //         } catch (Exception ex) {
+        //             // Ignore, just return the string
+        //         }
         return result;
     }
 }

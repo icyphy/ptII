@@ -31,7 +31,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.properties.PropertyAttribute;
-import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.PropertySolverBase;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 public class PropertyTokenAttribute extends PropertyAttribute {
 
     public PropertyTokenAttribute(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -55,7 +55,7 @@ public class PropertyTokenAttribute extends PropertyAttribute {
         if (expression.length() > 0) {
 
             // Get the shared parser.
-            PtParser parser = PropertySolver.getParser();
+            PtParser parser = PropertySolverBase.getParser();
             ASTPtRootNode root = parser.generateParseTree(expression);
 
             ParseTreeEvaluator evaluator = new ParseTreeEvaluator();

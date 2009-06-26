@@ -75,9 +75,10 @@ final class BoundedSize implements Size, Serializable {
      * @exception NullPointerException if the basis is null
      */
     BoundedSize(Size basis, Size lowerBound, Size upperBound) {
-        if (basis == null)
+        if (basis == null) {
             throw new NullPointerException(
                     "The basis of a bounded size must not be null.");
+        }
         this.basis = basis;
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
@@ -128,10 +129,12 @@ final class BoundedSize implements Size, Serializable {
      * @see     java.util.Hashtable
      */
     public boolean equals(Object object) {
-        if (this == object)
+        if (this == object) {
             return true;
-        if (!(object instanceof BoundedSize))
+        }
+        if (!(object instanceof BoundedSize)) {
             return false;
+        }
         BoundedSize size = (BoundedSize) object;
         return basis.equals(size.basis)
                 && ((lowerBound == null && size.lowerBound == null) || (lowerBound != null && lowerBound

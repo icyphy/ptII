@@ -33,13 +33,12 @@ import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 /**
  * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice.
@@ -57,9 +56,11 @@ public class GPInputDevice extends InputDevice {
      *  @throws IllegalActionException 
      * @throws NameDuplicationException 
      */
-    public GPInputDevice(ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice actor) throws IllegalActionException, NameDuplicationException {
+    public GPInputDevice(
+            ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice actor)
+            throws IllegalActionException, NameDuplicationException {
         super(actor);
-        
+
         Parameter pinParameter = actor.pin;
         StringParameter padParameter = actor.pad;
         _pinID = null;
@@ -68,25 +69,27 @@ public class GPInputDevice extends InputDevice {
         if (pinParameter != null) {
             _pinID = ((IntToken) pinParameter.getToken()).toString();
         } else {
-            throw new IllegalActionException("does not know to which pin this output device is associated.");
+            throw new IllegalActionException(
+                    "does not know to which pin this output device is associated.");
         }
         if (padParameter != null) {
             _padID = padParameter.stringValue();
         } else {
-            throw new IllegalActionException("does not know to which pin this output device is associated.");
+            throw new IllegalActionException(
+                    "does not know to which pin this output device is associated.");
         }
-        
+
     }
-    
+
     ////////////////////////////////////////////////////////////////////
     ////                     public methods                         ////
-
 
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = getStrategy().getCodeStream();
-        
-        args.add(CCodeGeneratorAdapterStrategy.generateName((NamedObj) getComponent()));
+
+        args.add(ProgramCodeGeneratorAdapterStrategy
+                .generateName(getComponent()));
         args.add(_padID);
         args.add(_pinID);
 
@@ -95,16 +98,18 @@ public class GPInputDevice extends InputDevice {
 
         return processCode(_codeStream.toString());
     }
-    
-    public String generateHardwareInitializationCode() throws IllegalActionException {
+
+    public String generateHardwareInitializationCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         List args = new ArrayList();
         args.add(_padID);
         args.add(_pinID);
-        code.append(processCode(getStrategy().getCodeStream().getCodeBlock("initializeGPInput", args)));
+        code.append(processCode(getStrategy().getCodeStream().getCodeBlock(
+                "initializeGPInput", args)));
         return code.toString();
     }
-    
+
     private String _pinID;
     private String _padID;
 }

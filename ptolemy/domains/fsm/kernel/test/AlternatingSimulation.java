@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Set;
 
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
 import ptolemy.domains.fsm.kernel.ia.StatePair;
 import ptolemy.moml.MoMLParser;
@@ -68,7 +68,7 @@ public class AlternatingSimulation {
     public AlternatingSimulation(String superMoML, String subMoML,
             boolean onlyReacheable) throws Exception {
         // Construct the super automaton
-        URL url = MoMLApplication.specToURL(superMoML);
+        URL url = ConfigurationApplication.specToURL(superMoML);
 
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().
@@ -78,7 +78,7 @@ public class AlternatingSimulation {
         superAutomaton.addPorts();
 
         // Construct the sub automaton
-        url = MoMLApplication.specToURL(subMoML);
+        url = ConfigurationApplication.specToURL(subMoML);
 
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().  Also, a new instance

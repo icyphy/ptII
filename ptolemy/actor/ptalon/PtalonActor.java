@@ -197,8 +197,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
                     if (ready) {
                         PtalonPopulator populator = new PtalonPopulator();
-                        populator.setASTNodeClass(
-                                "ptolemy.actor.ptalon.PtalonAST");
+                        populator
+                                .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
@@ -206,8 +206,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to process attribute change to "
-                            + "PtalonParameter, whose value is \""
-                            + attribute + "\".");
+                                    + "PtalonParameter, whose value is \""
+                                    + attribute + "\".");
                 }
             }
         }
@@ -443,16 +443,16 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             } catch (IllegalActionException ex) {
                 IOException ex2 = new IOException(
                         "Unable to get valid file name "
-                        + "from ptalonCodeLocation: \""
-                        + ptalonCodeLocation + "\".");
+                                + "from ptalonCodeLocation: \""
+                                + ptalonCodeLocation + "\".");
                 ex2.initCause(ex);
                 throw ex2;
             }
 
             // Strip postfix.
             if (!filename.toLowerCase().endsWith(".ptln")) {
-                throw new IOException("Ptalon file does not end with " +
-                        "postfix .ptln.");
+                throw new IOException("Ptalon file does not end with "
+                        + "postfix .ptln.");
             }
             filename = filename.substring(0, filename.length() - 5);
 
@@ -462,8 +462,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             if (filename.startsWith("$CLASSPATH")) {
                 filename = filename.substring(9);
             }
-            String ptIIDir = StringUtilities.getProperty(
-                    "ptolemy.ptII.dir");
+            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
             File ptIIDirFile = new File(ptIIDir);
             String prefix = ptIIDirFile.toURI().toString();
             if (prefix.startsWith("file:/")) {
@@ -492,17 +491,16 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 if (!_unsettablePtalonParameters.contains(param)) {
                     if (param instanceof PtalonExpressionParameter) {
                         String expression = param.getExpression();
-                        expression = expression.replaceAll("\"",
-                                "\\&quot\\;");
+                        expression = expression.replaceAll("\"", "\\&quot\\;");
                         output.write(_getIndentPrefix(depth + 2)
                                 + "<ptalonExpressionParameter name=\""
-                                + param.getName() + "\" value=\""
-                                + expression + "\"/>\n");
+                                + param.getName() + "\" value=\"" + expression
+                                + "\"/>\n");
                     } else {
                         output.write(_getIndentPrefix(depth + 2)
-                                + "<ptalonParameter name=\""
-                                + param.getName() + "\" value=\""
-                                + param.getExpression() + "\"/>\n");
+                                + "<ptalonParameter name=\"" + param.getName()
+                                + "\" value=\"" + param.getExpression()
+                                + "\"/>\n");
                     }
                 }
             }
@@ -549,12 +547,12 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             } catch (IllegalActionException ex) {
                 // We might be under WebStart, try it as a jar URL
                 inputURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(ptalonCodeLocation.getExpression());
+                        .getResource(ptalonCodeLocation.getExpression());
                 if (inputURL == null) {
                     throw new IllegalActionException(this, ex,
-                            "Failed to open "
-                            + "\"" +  ptalonCodeLocation.getExpression()
-                            + "\" as a file or jar URL");
+                            "Failed to open " + "\""
+                                    + ptalonCodeLocation.getExpression()
+                                    + "\" as a file or jar URL");
                 }
             }
 
@@ -566,8 +564,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 rec.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                 rec.actor_definition();
             } catch (IOException ex2) {
-                throw new IllegalActionException(this, ex2,
-                        "Failed to open \"" + inputURL + "\".");
+                throw new IllegalActionException(this, ex2, "Failed to open \""
+                        + inputURL + "\".");
             } finally {
                 if (inputStream != null) {
                     try {
@@ -604,8 +602,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _codeManager.assignInternalParameters();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to process "
-                    + "the ptalonCodeLocation \"" + ptalonCodeLocation
-                    + "\"");
+                    + "the ptalonCodeLocation \"" + ptalonCodeLocation + "\"");
         }
     }
 

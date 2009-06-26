@@ -120,12 +120,13 @@ public class StaticSchedulingDirector extends Director {
                         code.append("int i;" + _eol);
                         isIDefined = true;
                     }
-                    code.append("for (i = 0; i < " + count
-                            + " ; i++) {" + _eol);
+                    code
+                            .append("for (i = 0; i < " + count + " ; i++) {"
+                                    + _eol);
                 }
 
-                code.append(CodeGeneratorHelper.generateName((NamedObj)
-                 actor) + "();" + _eol);
+                code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
+                        + "();" + _eol);
 
                 _generateUpdatePortOffsetCode(code, actor);
 
@@ -196,8 +197,8 @@ public class StaticSchedulingDirector extends Director {
                 // Declare iteration outside of the loop to avoid
                 // mode" with gcc-3.3.3
                 code.append(_eol + "int iteration;" + _eol);
-                code.append("for (iteration = 0; iteration < "
-                        + iterationCount + "; iteration ++) {" + _eol);
+                code.append("for (iteration = 0; iteration < " + iterationCount
+                        + "; iteration ++) {" + _eol);
             }
         }
 
@@ -214,8 +215,7 @@ public class StaticSchedulingDirector extends Director {
                     + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
          */
-        _generateUpdatePortOffsetCode(code,
-                (Actor) _director.getContainer());
+        _generateUpdatePortOffsetCode(code, (Actor) _director.getContainer());
 
         code.append(generatePostfireCode());
 
@@ -271,8 +271,8 @@ public class StaticSchedulingDirector extends Director {
                     .doubleValue();
             if (periodValue != 0.0) {
                 variableDeclarations.append(_eol
-                        + _codeGenerator.comment(
-                                "Director has a period attribute,"
+                        + _codeGenerator
+                                .comment("Director has a period attribute,"
                                         + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }

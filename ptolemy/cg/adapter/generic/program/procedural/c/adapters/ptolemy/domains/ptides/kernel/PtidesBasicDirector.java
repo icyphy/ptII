@@ -47,7 +47,6 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Cha
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
-import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.OutputDevice;
@@ -75,7 +74,8 @@ public class PtidesBasicDirector extends Director {
      *  @param ptidesBasicDirector The associated director
      *  ptolemy.domains.ptides.kernel.PtidesBasicDirector
      */
-    public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
+    public PtidesBasicDirector(
+            ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
         super(ptidesBasicDirector);
     }
 
@@ -92,7 +92,7 @@ public class PtidesBasicDirector extends Director {
         StringBuffer code = new StringBuffer();
         return code;
     }
-    
+
     /** Generate the initialize code for the associated PtidesBasic director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the adapter associated with
@@ -117,29 +117,28 @@ public class PtidesBasicDirector extends Director {
      *   Take care of platform independent code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code =
-            new StringBuffer(super.generatePreinitializeCode());
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
         code.append(_generatePtrToEventHeadCodeInputs());
-        
+
         code.append(_generateActorFireCode());
 
         List args = new LinkedList();
         args.add(_generateDirectorHeader());
 
-        args.add(((CompositeActor)
-                _director.getContainer()).deepEntityList().size());
-        
+        args.add(((CompositeActor) _director.getContainer()).deepEntityList()
+                .size());
+
         CodeStream codestream = getStrategy().getCodeStream();
 
         codestream.clear();
         code.append(codestream.getCodeBlock("preinitPIBlock", args));
-        
+
         code.append(codestream.getCodeBlock("initPICodeBlock"));
 
         return code.toString();
     }
-    
+
     /**
      * Generate the type conversion fire code. Here we don't actually want to generate
      * any type conversion statement, the type conversion is done within the event creation.
@@ -170,78 +169,96 @@ public class PtidesBasicDirector extends Director {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set getSharedCode() throws IllegalActionException {
-        
+
         _modelStaticAnalysis();
-        
+
         Set sharedCode = new HashSet();
         getStrategy().getCodeStream().clear();
-        
+
         // define the number of actuators in the system as a macro.
-        getStrategy().getCodeStream().append("#define numActuators " + _actuators.size() + _eol);
-        
+        getStrategy().getCodeStream().append(
+                "#define numActuators " + _actuators.size() + _eol);
+
         getStrategy().getCodeStream().appendCodeBlocks("StructDefBlock");
         getStrategy().getCodeStream().appendCodeBlocks("FuncProtoBlock");
-        
+
         // prototypes for actor functions
         getStrategy().getCodeStream().append(_generateActorFuncProtoCode());
-        
+
         // prototypes for actuator functions.
-        getStrategy().getCodeStream().append(_generateActuatorActuationFuncArrayCode());
+        getStrategy().getCodeStream().append(
+                _generateActuatorActuationFuncArrayCode());
 
         getStrategy().getCodeStream().appendCodeBlocks("FuncBlock");
-        
+
         if (!getStrategy().getCodeStream().isEmpty()) {
-            sharedCode.add(processCode(getStrategy().getCodeStream().toString()));
+            sharedCode
+                    .add(processCode(getStrategy().getCodeStream().toString()));
         }
-        
+
         return sharedCode;
     }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    protected String _generateActuatorActuationFuncArrayCode() throws IllegalActionException {
+    protected String _generateActuatorActuationFuncArrayCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         if (_actuators.size() > 0) {
-            code.append("static void (*actuatorActuations[" + _actuators.size() + "])() = {");
+            code.append("static void (*actuatorActuations[" + _actuators.size()
+                    + "])() = {");
             Iterator it = _actuators.keySet().iterator();
-            Actor actor = (Actor)it.next();
-            code.append("Actuation_" + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor));
+            Actor actor = (Actor) it.next();
+            code.append("Actuation_"
+                    + ProgramCodeGeneratorAdapterStrategy
+                            .generateName((NamedObj) actor));
             while (it.hasNext()) {
-                actor = (Actor)it.next();
-                code.append(", Actuation_" + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor));
-            }       
+                actor = (Actor) it.next();
+                code.append(", Actuation_"
+                        + ProgramCodeGeneratorAdapterStrategy
+                                .generateName((NamedObj) actor));
+            }
             code.append("};" + _eol);
         }
-        
+
         return code.toString();
     }
-    
-    protected String _generateActuatorActuationFuncProtoCode() throws IllegalActionException {
+
+    protected String _generateActuatorActuationFuncProtoCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        for (Actor actor : (List<Actor>)((CompositeActor) _director.getContainer()).deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                .getContainer()).deepEntityList()) {
             if (actor instanceof OutputDevice) {
-                code.append("void Actuation_" + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor)
-                        + "(void);" + _eol);
+                code.append("void Actuation_"
+                        + ProgramCodeGeneratorAdapterStrategy
+                                .generateName((NamedObj) actor) + "(void);"
+                        + _eol);
             }
         }
-        
+
         return code.toString();
     }
-    
+
     /** Generate actor function prototypes.
      * @throws IllegalActionException 
      */
-    protected String _generateActorFuncProtoCode() throws IllegalActionException {
+    protected String _generateActorFuncProtoCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        for (Actor actor : (List<Actor>)((CompositeActor) _director.getContainer()).deepEntityList()) {
-            code.append("void " + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor) + "(void);" + _eol);
+        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                .getContainer()).deepEntityList()) {
+            code.append("void "
+                    + ProgramCodeGeneratorAdapterStrategy
+                            .generateName((NamedObj) actor) + "(void);" + _eol);
         }
-        
+
         code.append(_generateActuatorActuationFuncProtoCode());
-        
+
         return code.toString();
     }
 
@@ -252,7 +269,8 @@ public class PtidesBasicDirector extends Director {
      *   reading parameters throws it.
      */
     protected String _generateDirectorHeader() {
-        return ProgramCodeGeneratorAdapterStrategy.generateName(_director) + "_controlBlock";
+        return ProgramCodeGeneratorAdapterStrategy.generateName(_director)
+                + "_controlBlock";
     }
 
     /**
@@ -284,13 +302,16 @@ public class PtidesBasicDirector extends Director {
 
         // The references are associated with their own adapter, so we need
         // to find the associated adapter.
-        String sourcePortChannel = ProgramCodeGeneratorAdapterStrategy.generateName(source.port) + "#"
-        + source.channelNumber + ", " + offset;
-        String sourceRef = ((ProgramCodeGeneratorAdapter) (getCodeGenerator().getAdapter(source.port
-                .getContainer()))).getReference(sourcePortChannel);
+        String sourcePortChannel = ProgramCodeGeneratorAdapterStrategy
+                .generateName(source.port)
+                + "#" + source.channelNumber + ", " + offset;
+        String sourceRef = ((ProgramCodeGeneratorAdapter) (getCodeGenerator()
+                .getAdapter(source.port.getContainer())))
+                .getReference(sourcePortChannel);
 
-        String sinkPortChannel = ProgramCodeGeneratorAdapterStrategy.generateName(sink.port) + "#" + sink.channelNumber
-        + ", " + offset;
+        String sinkPortChannel = ProgramCodeGeneratorAdapterStrategy
+                .generateName(sink.port)
+                + "#" + sink.channelNumber + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
         // the inside receiver of an output port.
@@ -299,8 +320,9 @@ public class PtidesBasicDirector extends Director {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((ProgramCodeGeneratorAdapter) (getCodeGenerator().getAdapter(sink.port
-                .getContainer()))).getReference(sinkPortChannel, true);
+        String sinkRef = ((ProgramCodeGeneratorAdapter) (getCodeGenerator()
+                .getAdapter(sink.port.getContainer()))).getReference(
+                sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -308,7 +330,8 @@ public class PtidesBasicDirector extends Director {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = ProgramCodeGeneratorAdapterStrategy.generateName(sink.port);
+            sinkRef = ProgramCodeGeneratorAdapterStrategy
+                    .generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }
@@ -320,19 +343,20 @@ public class PtidesBasicDirector extends Director {
         String sinkCodeGenType = getStrategy().codeGenType(sinkType);
 
         if (!sinkCodeGenType.equals(sourceCodeGenType)) {
-            result = "$convert_" + sourceCodeGenType + "_"
-            + sinkCodeGenType + "(" + result + ")";
+            result = "$convert_" + sourceCodeGenType + "_" + sinkCodeGenType
+                    + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";" + _eol;
     }
-    
+
     protected void _modelStaticAnalysis() {
         _actuators = new HashMap<Actor, Integer>();
         _sensors = new HashMap<Actor, Integer>();
-        
+
         int actuatorIndex = 0;
         int sensorIndex = 0;
-        for (Actor actor : (List<Actor>)((CompositeActor) _director.getContainer()).deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
             if (actor instanceof ActuationDevice) {
                 _actuators.put(actor, new Integer(actuatorIndex));
@@ -356,34 +380,48 @@ public class PtidesBasicDirector extends Director {
     private String _generateActorFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            
-            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj)actor);
-            
+
+            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
+
             if (actor instanceof ActuationDevice) {
-                code.append("void Actuation_" + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor) + "() {" + _eol);
-                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice)adapter)
-                        .generateActuatorActuationFuncCode());
+                code
+                        .append("void Actuation_"
+                                + ProgramCodeGeneratorAdapterStrategy
+                                        .generateName((NamedObj) actor)
+                                + "() {" + _eol);
+                code
+                        .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+                                .generateActuatorActuationFuncCode());
                 code.append("}" + _eol);
             }
-            
+
             if (actor instanceof InterruptDevice) {
-                code.append("void Sensing_" + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor) + "() {" + _eol);
-                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice)adapter)
-                        .generateSensorSensingFuncCode());
+                code
+                        .append("void Sensing_"
+                                + ProgramCodeGeneratorAdapterStrategy
+                                        .generateName((NamedObj) actor)
+                                + "() {" + _eol);
+                code
+                        .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) adapter)
+                                .generateSensorSensingFuncCode());
                 code.append("}" + _eol);
             }
-            code.append("void " + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor) + "() " + "{" + _eol);
+            code.append("void "
+                    + ProgramCodeGeneratorAdapterStrategy
+                            .generateName((NamedObj) actor) + "() " + "{"
+                    + _eol);
             code.append(adapter.generateFireCode());
 
             // After each actor firing, the Event Head ptr needs to point to null
             code.append(_generateClearEventHeadCode(actor));
             code.append("}" + _eol);
         }
-        
+
         return code.toString();
     }
 
@@ -392,30 +430,38 @@ public class PtidesBasicDirector extends Director {
      * @return
      * @throws IllegalActionException 
      */
-    private String _generateClearEventHeadCode(Actor actor) throws IllegalActionException {
+    private String _generateClearEventHeadCode(Actor actor)
+            throws IllegalActionException {
         // if the actor is an input device, the input is fake.
         if (actor instanceof InputDevice) {
             return "";
         }
         StringBuffer code = new StringBuffer();
-        code.append("/* generate code for clearing Event Head buffer. */" + _eol);
-        for (IOPort inputPort: (List<IOPort>)actor.inputPortList()) {
+        code.append("/* generate code for clearing Event Head buffer. */"
+                + _eol);
+        for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
-                code.append("Event_Head_" + ProgramCodeGeneratorAdapterStrategy.generateName(inputPort) 
-                        + "[" + channel + "] = NULL;" + _eol);
+                code.append("Event_Head_"
+                        + ProgramCodeGeneratorAdapterStrategy
+                                .generateName(inputPort) + "[" + channel
+                        + "] = NULL;" + _eol);
             }
         }
         return code.toString();
     }
-    
-    private String _generatePtrToEventHeadCodeInputs() throws IllegalActionException {
+
+    private String _generatePtrToEventHeadCodeInputs()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        for (Actor actor: (List<Actor>)(((CompositeActor) _director.getContainer()).deepEntityList())) {
+        for (Actor actor : (List<Actor>) (((CompositeActor) _director
+                .getContainer()).deepEntityList())) {
             if (!(actor instanceof InputDevice)) {
-                for (IOPort inputPort: (List<IOPort>)actor.inputPortList()){
+                for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
                     if (inputPort.getWidth() > 0) {
-                        code.append("Event* Event_Head_" + ProgramCodeGeneratorAdapterStrategy.generateName(inputPort) 
-                                + "[" + inputPort.getWidth() + "] = {NULL");
+                        code.append("Event* Event_Head_"
+                                + ProgramCodeGeneratorAdapterStrategy
+                                        .generateName(inputPort) + "["
+                                + inputPort.getWidth() + "] = {NULL");
                         for (int channel = 1; channel < inputPort.getWidth(); channel++) {
                             code.append(", NULL");
                         }

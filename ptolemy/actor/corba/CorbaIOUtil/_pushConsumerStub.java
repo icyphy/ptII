@@ -44,7 +44,7 @@ public class _pushConsumerStub extends org.omg.CORBA.portable.ObjectImpl
     private static String[] __ids = { "IDL:CorbaIOUtil/pushConsumer:1.0" };
 
     public String[] _ids() {
-        return (String[]) __ids.clone();
+        return __ids.clone();
     }
 
     private void readObject(java.io.ObjectInputStream s)

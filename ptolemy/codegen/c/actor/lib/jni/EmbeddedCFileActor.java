@@ -41,43 +41,45 @@ Code generator helper for EmbeddedCFileActor.
 @Pt.ProposedRating red (cavaness)
 @Pt.AcceptedRating Red (cavaness)
 */
-public class EmbeddedCFileActor extends CompiledCompositeActor  {
-   /** Construct the code generator helper associated with the given
-    *  TypedCompositeActor.
-    *  @param actor The associated actor.
-    */
-   public EmbeddedCFileActor(ptolemy.actor.lib.jni.EmbeddedCFileActor actor) {
-       super(actor);
-   }
+public class EmbeddedCFileActor extends CompiledCompositeActor {
+    /** Construct the code generator helper associated with the given
+     *  TypedCompositeActor.
+     *  @param actor The associated actor.
+     */
+    public EmbeddedCFileActor(ptolemy.actor.lib.jni.EmbeddedCFileActor actor) {
+        super(actor);
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                      inner classes                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                      inner classes                        ////
 
-   /** A placeholder or dummy actor used in Embedded C code generation.
-    *  It extends the EmbeddedActor class in the EmbeddedCActor.
-    */
-   public static class EmbeddedFileActor extends ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
+    /** A placeholder or dummy actor used in Embedded C code generation.
+     *  It extends the EmbeddedActor class in the EmbeddedCActor.
+     */
+    public static class EmbeddedFileActor extends
+            ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
 
-       /** Create a EmbeddedFileActor.
-        *  @param actor The associated actor.
-        */
-       public EmbeddedFileActor(
-               ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor) {
-           super(actor);
-       }
-       /** Before generating the shared code, call changeEmbeddedCCode (in ptolemy/actor/
-        *  lib/jni/EmbeddedCFileActor)to make sure the contents of the file have been saved
-        *  into the embeddedCCode parameter (in ptolmey/actor/lib/jni/EmbeddedCActor).  The
-        *  embeddedCCode parameter is set right before code generation in order for the most
-        *  recent revision of the file to be utilized.
-        */
-       public Set getSharedCode() throws IllegalActionException {
+        /** Create a EmbeddedFileActor.
+         *  @param actor The associated actor.
+         */
+        public EmbeddedFileActor(
+                ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor) {
+            super(actor);
+        }
 
-           ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent().getContainer()).changeEmbeddedCCode();
+        /** Before generating the shared code, call changeEmbeddedCCode (in ptolemy/actor/
+         *  lib/jni/EmbeddedCFileActor)to make sure the contents of the file have been saved
+         *  into the embeddedCCode parameter (in ptolmey/actor/lib/jni/EmbeddedCActor).  The
+         *  embeddedCCode parameter is set right before code generation in order for the most
+         *  recent revision of the file to be utilized.
+         */
+        public Set getSharedCode() throws IllegalActionException {
 
-           return super.getSharedCode();
-       }
-   }
+            ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent()
+                    .getContainer()).changeEmbeddedCCode();
 
+            return super.getSharedCode();
+        }
+    }
 
 }

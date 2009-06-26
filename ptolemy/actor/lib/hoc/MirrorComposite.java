@@ -102,7 +102,6 @@ public class MirrorComposite extends TypedCompositeActor implements
         _init(true);
     }
 
-
     /** Create an actor with a name and a container that optionally
      *  mirrors the ports that are instances of ParameterPort.
      *  The container argument must not be null, or a
@@ -119,8 +118,9 @@ public class MirrorComposite extends TypedCompositeActor implements
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MirrorComposite(CompositeEntity container, String name, boolean mirrorParameterPorts)
-            throws IllegalActionException, NameDuplicationException {
+    public MirrorComposite(CompositeEntity container, String name,
+            boolean mirrorParameterPorts) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         _init(mirrorParameterPorts);
     }
@@ -274,7 +274,8 @@ public class MirrorComposite extends TypedCompositeActor implements
                         while (entityPorts.hasNext()) {
                             ComponentPort insidePort = (ComponentPort) entityPorts
                                     .next();
-                            if (!_mirrorParameterPorts && (insidePort instanceof ParameterPort)) {
+                            if (!_mirrorParameterPorts
+                                    && (insidePort instanceof ParameterPort)) {
                                 continue;
                             }
                             String name = insidePort.getName();

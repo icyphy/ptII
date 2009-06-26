@@ -194,7 +194,6 @@ public class ArrowKeySensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-
     /** A flag indicating if the down arrow key has been pressed
      *  since the last firing of the actor.  <i>Pressed</i> and
      *  <i>Released</i> are are not allowed to both be true for the
@@ -256,72 +255,80 @@ public class ArrowKeySensor extends TypedAtomicActor {
          *  @param tableau The tableau responsible for this frame.  */
         public MyFrame() {
             // up-arrow call-backs
-            ActionListener myUpPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _upKeyPressed = true;
-                    _upKeyReleased = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myUpPressedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _upKeyPressed = true;
+                            _upKeyReleased = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
-            ActionListener myUpReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _upKeyReleased = true;
-                    _upKeyPressed = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myUpReleasedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _upKeyReleased = true;
+                            _upKeyPressed = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
             // left-arrow call-backs
-            ActionListener myLeftPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _leftKeyPressed = true;
-                    _leftKeyReleased = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myLeftPressedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _leftKeyPressed = true;
+                            _leftKeyReleased = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
-            ActionListener myLeftReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _leftKeyReleased = true;
-                    _leftKeyPressed = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myLeftReleasedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _leftKeyReleased = true;
+                            _leftKeyPressed = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
             // right-arrow call-backs
-            ActionListener myRightPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _rightKeyPressed = true;
-                    _rightKeyReleased = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myRightPressedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _rightKeyPressed = true;
+                            _rightKeyReleased = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
-            ActionListener myRightReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _rightKeyReleased = true;
-                    _rightKeyPressed = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myRightReleasedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _rightKeyReleased = true;
+                            _rightKeyPressed = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
             // down-arrow call-backs
-            ActionListener myDownPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _downKeyPressed = true;
-                    _downKeyReleased = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myDownPressedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _downKeyPressed = true;
+                            _downKeyReleased = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
-            ActionListener myDownReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    _downKeyReleased = true;
-                    _downKeyPressed = false;
-                    _tryCallingFireAtFirstValidTime();
-                }
-            });
+            ActionListener myDownReleasedListener = new ActionListenerExceptionCatcher(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _downKeyReleased = true;
+                            _downKeyPressed = false;
+                            _tryCallingFireAtFirstValidTime();
+                        }
+                    });
 
             getContentPane().setLayout(new BorderLayout());
 
@@ -384,11 +391,11 @@ public class ArrowKeySensor extends TypedAtomicActor {
         /* A mouse listener that requests focus for the source of any
          * mouse event it receives.
          */
-        private /*static*/ class FocusMouseListener implements MouseListener {
-                // FindBugs suggests making this class static so as to decrease
-                // the size of instances and avoid dangling references.
-                // However, Java does allow inner classes of inner classes to be
-                // static.
+        private/*static*/class FocusMouseListener implements MouseListener {
+            // FindBugs suggests making this class static so as to decrease
+            // the size of instances and avoid dangling references.
+            // However, Java does allow inner classes of inner classes to be
+            // static.
 
             // This is a copy of diva/gui/toolbox/FocusMouseListener.java
             // because we don't want the dependency on diva.
@@ -450,7 +457,8 @@ public class ArrowKeySensor extends TypedAtomicActor {
         }
     }
 
-    private static class ActionListenerExceptionCatcher implements ActionListener {
+    private static class ActionListenerExceptionCatcher implements
+            ActionListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -467,9 +475,11 @@ public class ArrowKeySensor extends TypedAtomicActor {
             try {
                 _actionListener.actionPerformed(e);
             } catch (Throwable ex) {
-                ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler.shortDescription(ex), ex);
+                ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler
+                        .shortDescription(ex), ex);
             }
         }
+
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
 

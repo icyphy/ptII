@@ -135,8 +135,8 @@ public class AttributeCriterion extends Criterion {
                     String expression = settable.getExpression();
                     VariableScope scope = new VariableScope(object);
                     try {
-                        ASTPtRootNode tree = new PtParser().generateParseTree(
-                                expression);
+                        ASTPtRootNode tree = new PtParser()
+                                .generateParseTree(expression);
                         Token token = new ParseTreeEvaluator()
                                 .evaluateParseTree(tree, scope);
 

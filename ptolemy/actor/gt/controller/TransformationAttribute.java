@@ -73,7 +73,7 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationAttribute extends Attribute implements Configurable,
-GTAttribute {
+        GTAttribute {
 
     public TransformationAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -108,17 +108,17 @@ GTAttribute {
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TransformationAttribute newObject =
-            (TransformationAttribute) super.clone(workspace);
+        TransformationAttribute newObject = (TransformationAttribute) super
+                .clone(workspace);
         try {
             newObject._configurer = new Configurer(workspace);
             newObject._configurer.setName("Configurer");
             new DEDirector(newObject._configurer, "_director");
-            newObject._configurer.setManager(new Manager(workspace,
-                    "_manager"));
+            newObject._configurer
+                    .setManager(new Manager(workspace, "_manager"));
             newObject._configurer.setConfiguredObject(newObject);
-            newObject._modelUpdater = (PteraModalModel) _modelUpdater.clone(
-                    workspace);
+            newObject._modelUpdater = (PteraModalModel) _modelUpdater
+                    .clone(workspace);
             newObject._modelUpdater.setContainer(newObject._configurer);
         } catch (KernelException e) {
             throw new InternalErrorException(e);
@@ -139,21 +139,22 @@ GTAttribute {
         }
 
         StringParameter typeParameter = (StringParameter) getAttribute("_type");
-        String type = typeParameter == null ? null :
-            typeParameter.getExpression();
+        String type = typeParameter == null ? null : typeParameter
+                .getExpression();
         if ("delayed".equals(type)) {
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    getContainer().requestChange(new ChangeRequest(this,
-                            "Perform delayed transformation.") {
-                        protected void _execute() throws Exception {
-                            try {
-                                executeTransformation();
-                            } finally {
-                                setContainer(null);
-                            }
-                        }
-                    });
+                    getContainer().requestChange(
+                            new ChangeRequest(this,
+                                    "Perform delayed transformation.") {
+                                protected void _execute() throws Exception {
+                                    try {
+                                        executeTransformation();
+                                    } finally {
+                                        setContainer(null);
+                                    }
+                                }
+                            });
                 }
             });
         } else if ("immediate".equals(type)) {
@@ -179,13 +180,13 @@ GTAttribute {
         }
 
         NamedObj container = getContainer();
-        List<ParserAttribute> parsers = container.attributeList(
-                ParserAttribute.class);
-        ParserAttribute parserAttribute = parsers.size() > 0 ?
-                parsers.get(0) :
-                new ParserAttribute(container, container.uniqueName("_parser"));
-        MoMLParser oldParser = parsers.size() > 0 ?
-                parserAttribute.getParser() : null;
+        List<ParserAttribute> parsers = container
+                .attributeList(ParserAttribute.class);
+        ParserAttribute parserAttribute = parsers.size() > 0 ? parsers.get(0)
+                : new ParserAttribute(container, container
+                        .uniqueName("_parser"));
+        MoMLParser oldParser = parsers.size() > 0 ? parserAttribute.getParser()
+                : null;
         parserAttribute.setParser(new MoMLParser());
         manager.enablePrintTimeAndMemory(false);
 
@@ -222,7 +223,7 @@ GTAttribute {
     public TransformationAttributeEditorFactory editorFactory;
 
     protected void _exportMoMLContents(Writer output, int depth)
-    throws IOException {
+            throws IOException {
         super._exportMoMLContents(output, depth);
 
         String sourceSpec = "";
@@ -231,14 +232,14 @@ GTAttribute {
             sourceSpec = " source=\"" + _configureSource + "\"";
         }
 
-        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec +
-                ">\n");
+        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
+                + ">\n");
         _modelUpdater.exportMoML(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
     private static void _clearURI(NamedObj object)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         URIAttribute attribute = (URIAttribute) object.getAttribute("_uri",
                 URIAttribute.class);
         if (attribute != null) {
@@ -257,16 +258,16 @@ GTAttribute {
         _configurer.setManager(new Manager(workspace(), "_manager"));
         _configurer.setConfiguredObject(this);
 
-        String moml = "<entity name=\"ModelUpdater\" " +
-                "class=\"ptolemy.actor.gt.controller.ModelUpdater\"/>";
+        String moml = "<entity name=\"ModelUpdater\" "
+                + "class=\"ptolemy.actor.gt.controller.ModelUpdater\"/>";
         MoMLParser parser = new MoMLParser();
         parser.setContext(_configurer);
         try {
             parser.parse(moml);
         } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Unable to populate " +
-                    "the transformation rule within \"" + getFullName() +
-                    "\".");
+            throw new IllegalActionException(this, e, "Unable to populate "
+                    + "the transformation rule within \"" + getFullName()
+                    + "\".");
         }
         _modelUpdater = (PteraModalModel) _configurer.getEntity("ModelUpdater");
 
@@ -281,13 +282,12 @@ GTAttribute {
 
     private Configurer _configurer;
 
-    private List<ExecutionListener> _executionListeners =
-        new LinkedList<ExecutionListener>();
+    private List<ExecutionListener> _executionListeners = new LinkedList<ExecutionListener>();
 
     private PteraModalModel _modelUpdater;
 
-    private class TransformationListener extends Attribute
-            implements ExecutionListener {
+    private class TransformationListener extends Attribute implements
+            ExecutionListener {
 
         public TransformationListener(Manager manager, String name,
                 CompositeEntity model) throws IllegalActionException,
@@ -304,9 +304,8 @@ GTAttribute {
 
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.INITIALIZING) {
-                ModelParameter modelAttribute =
-                    (ModelParameter) _modelUpdater.getController().getAttribute(
-                            "Model");
+                ModelParameter modelAttribute = (ModelParameter) _modelUpdater
+                        .getController().getAttribute("Model");
                 modelAttribute.setModel(_model);
             }
         }

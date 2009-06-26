@@ -1,6 +1,5 @@
 package ptolemy.codegen.c.domains.ptides.lib;
 
-
 /**
  * A code generation helper class for ptolemy.domains.ptides.lib.ActuatorOutputDevice
  * @author Jia Zou, Isaac Liu
@@ -15,7 +14,8 @@ public class ActuatorOutputDevice extends OutputDevice {
      * @param actor The associated actor.
      *
      */
-    public ActuatorOutputDevice(ptolemy.domains.ptides.lib.ActuatorOutputDevice actor) {
+    public ActuatorOutputDevice(
+            ptolemy.domains.ptides.lib.ActuatorOutputDevice actor) {
         super(actor);
     }
 }

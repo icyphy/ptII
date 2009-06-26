@@ -29,7 +29,6 @@
 //// Sequencer
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
@@ -66,7 +65,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Yellow (ctsay)
  */
-public class Sequencer extends Transformer implements SequenceActor, Rollbackable {
+public class Sequencer extends Transformer implements SequenceActor,
+        Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -98,7 +98,8 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
 
     private Token _nextToken;
 
-    private TreeMap _pending = (TreeMap)new TreeMap().$SET$CHECKPOINT($CHECKPOINT);
+    private TreeMap _pending = (TreeMap) new TreeMap()
+            .$SET$CHECKPOINT($CHECKPOINT);
 
     private int _sequenceNumberOfInput;
 
@@ -112,7 +113,8 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public Sequencer(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public Sequencer(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sequenceNumber = new TypedIOPort(this, "sequenceNumber", true, false);
         sequenceNumber.setTypeEquals(BaseType.INT);
@@ -127,8 +129,8 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        Sequencer newObject = (Sequencer)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Sequencer newObject = (Sequencer) super.clone(workspace);
         newObject.$ASSIGN$_pending(new TreeMap());
         return newObject;
     }
@@ -141,9 +143,10 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * <i>sequenceNumber</i> or <i>input</i> does not have a token.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
-        $ASSIGN$_sequenceNumberOfInput(((IntToken)sequenceNumber.get(0)).intValue());
+        $ASSIGN$_sequenceNumberOfInput(((IntToken) sequenceNumber.get(0))
+                .intValue());
         $ASSIGN$_nextToken(input.get(0));
         if (_sequenceNumberOfInput == _nextSequenceNumber) {
             output.send(0, _nextToken);
@@ -157,9 +160,10 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * @exception IllegalActionException If accessing the
      * <i>startingSequenceNumber</i> parameter causes an exception.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         $ASSIGN$_fireProducedOutput(false);
-        $ASSIGN$_nextSequenceNumber(((IntToken)startingSequenceNumber.getToken()).intValue());
+        $ASSIGN$_nextSequenceNumber(((IntToken) startingSequenceNumber
+                .getToken()).intValue());
         _pending.clear();
     }
 
@@ -168,20 +172,20 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * whether any pending tokens have subsequent sequence numbers.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         if (_fireProducedOutput) {
             $ASSIGN$SPECIAL$_nextSequenceNumber(11, _nextSequenceNumber);
             if (_pending.size() > 0) {
-                Integer nextKey = (Integer)_pending.firstKey();
+                Integer nextKey = (Integer) _pending.firstKey();
                 int next = nextKey.intValue();
                 while (next == _nextSequenceNumber) {
                     $ASSIGN$SPECIAL$_nextSequenceNumber(11, _nextSequenceNumber);
-                    Token token = (Token)_pending.remove(nextKey);
+                    Token token = (Token) _pending.remove(nextKey);
                     output.send(0, token);
                     if (_pending.size() == 0) {
                         break;
                     }
-                    nextKey = (Integer)_pending.firstKey();
+                    nextKey = (Integer) _pending.firstKey();
                     next = nextKey.intValue();
                 }
             }
@@ -199,7 +203,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * @return False if there are not enough tokens to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         $ASSIGN$_fireProducedOutput(false);
         if (!sequenceNumber.hasToken(0)) {
             return false;
@@ -212,61 +216,66 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
 
     private final boolean $ASSIGN$_fireProducedOutput(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_fireProducedOutput.add(null, _fireProducedOutput, $CHECKPOINT.getTimestamp());
+            $RECORD$_fireProducedOutput.add(null, _fireProducedOutput,
+                    $CHECKPOINT.getTimestamp());
         }
         return _fireProducedOutput = newValue;
     }
 
     private final int $ASSIGN$_nextSequenceNumber(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_nextSequenceNumber.add(null, _nextSequenceNumber, $CHECKPOINT.getTimestamp());
+            $RECORD$_nextSequenceNumber.add(null, _nextSequenceNumber,
+                    $CHECKPOINT.getTimestamp());
         }
         return _nextSequenceNumber = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_nextSequenceNumber(int operator, long newValue) {
+    private final int $ASSIGN$SPECIAL$_nextSequenceNumber(int operator,
+            long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_nextSequenceNumber.add(null, _nextSequenceNumber, $CHECKPOINT.getTimestamp());
+            $RECORD$_nextSequenceNumber.add(null, _nextSequenceNumber,
+                    $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _nextSequenceNumber += newValue;
-            case 1:
-                return _nextSequenceNumber -= newValue;
-            case 2:
-                return _nextSequenceNumber *= newValue;
-            case 3:
-                return _nextSequenceNumber /= newValue;
-            case 4:
-                return _nextSequenceNumber &= newValue;
-            case 5:
-                return _nextSequenceNumber |= newValue;
-            case 6:
-                return _nextSequenceNumber ^= newValue;
-            case 7:
-                return _nextSequenceNumber %= newValue;
-            case 8:
-                return _nextSequenceNumber <<= newValue;
-            case 9:
-                return _nextSequenceNumber >>= newValue;
-            case 10:
-                return _nextSequenceNumber >>>= newValue;
-            case 11:
-                return _nextSequenceNumber++;
-            case 12:
-                return _nextSequenceNumber--;
-            case 13:
-                return ++_nextSequenceNumber;
-            case 14:
-                return --_nextSequenceNumber;
-            default:
-                return _nextSequenceNumber;
+        case 0:
+            return _nextSequenceNumber += newValue;
+        case 1:
+            return _nextSequenceNumber -= newValue;
+        case 2:
+            return _nextSequenceNumber *= newValue;
+        case 3:
+            return _nextSequenceNumber /= newValue;
+        case 4:
+            return _nextSequenceNumber &= newValue;
+        case 5:
+            return _nextSequenceNumber |= newValue;
+        case 6:
+            return _nextSequenceNumber ^= newValue;
+        case 7:
+            return _nextSequenceNumber %= newValue;
+        case 8:
+            return _nextSequenceNumber <<= newValue;
+        case 9:
+            return _nextSequenceNumber >>= newValue;
+        case 10:
+            return _nextSequenceNumber >>>= newValue;
+        case 11:
+            return _nextSequenceNumber++;
+        case 12:
+            return _nextSequenceNumber--;
+        case 13:
+            return ++_nextSequenceNumber;
+        case 14:
+            return --_nextSequenceNumber;
+        default:
+            return _nextSequenceNumber;
         }
     }
 
     private final Token $ASSIGN$_nextToken(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_nextToken.add(null, _nextToken, $CHECKPOINT.getTimestamp());
+            $RECORD$_nextToken
+                    .add(null, _nextToken, $CHECKPOINT.getTimestamp());
         }
         return _nextToken = newValue;
     }
@@ -283,24 +292,32 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
 
     private final int $ASSIGN$_sequenceNumberOfInput(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_sequenceNumberOfInput.add(null, _sequenceNumberOfInput, $CHECKPOINT.getTimestamp());
+            $RECORD$_sequenceNumberOfInput.add(null, _sequenceNumberOfInput,
+                    $CHECKPOINT.getTimestamp());
         }
         return _sequenceNumberOfInput = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _fireProducedOutput = $RECORD$_fireProducedOutput.restore(_fireProducedOutput, timestamp, trim);
-        _nextSequenceNumber = $RECORD$_nextSequenceNumber.restore(_nextSequenceNumber, timestamp, trim);
-        _nextToken = (Token)$RECORD$_nextToken.restore(_nextToken, timestamp, trim);
-        _pending = (TreeMap)$RECORD$_pending.restore(_pending, timestamp, trim);
-        _sequenceNumberOfInput = $RECORD$_sequenceNumberOfInput.restore(_sequenceNumberOfInput, timestamp, trim);
+        _fireProducedOutput = $RECORD$_fireProducedOutput.restore(
+                _fireProducedOutput, timestamp, trim);
+        _nextSequenceNumber = $RECORD$_nextSequenceNumber.restore(
+                _nextSequenceNumber, timestamp, trim);
+        _nextToken = (Token) $RECORD$_nextToken.restore(_nextToken, timestamp,
+                trim);
+        _pending = (TreeMap) $RECORD$_pending
+                .restore(_pending, timestamp, trim);
+        _sequenceNumberOfInput = $RECORD$_sequenceNumberOfInput.restore(
+                _sequenceNumberOfInput, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -326,23 +343,22 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord $RECORD$_fireProducedOutput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_fireProducedOutput = new FieldRecord(
+            0);
 
-    private transient FieldRecord $RECORD$_nextSequenceNumber = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_nextSequenceNumber = new FieldRecord(
+            0);
 
     private transient FieldRecord $RECORD$_nextToken = new FieldRecord(0);
 
     private transient FieldRecord $RECORD$_pending = new FieldRecord(0);
 
-    private transient FieldRecord $RECORD$_sequenceNumberOfInput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_sequenceNumberOfInput = new FieldRecord(
+            0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_fireProducedOutput,
-            $RECORD$_nextSequenceNumber,
-            $RECORD$_nextToken,
-            $RECORD$_pending,
-            $RECORD$_sequenceNumberOfInput
-        };
+            $RECORD$_fireProducedOutput, $RECORD$_nextSequenceNumber,
+            $RECORD$_nextToken, $RECORD$_pending,
+            $RECORD$_sequenceNumberOfInput };
 
 }
-

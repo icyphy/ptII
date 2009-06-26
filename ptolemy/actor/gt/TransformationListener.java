@@ -43,5 +43,5 @@ import ptolemy.kernel.util.NamedObj;
  */
 public interface TransformationListener {
 
-   public void addObject(NamedObj object);
+    public void addObject(NamedObj object);
 }

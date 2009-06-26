@@ -87,8 +87,9 @@ public class CustomizeDocumentationAction extends FigureAction {
                 Configuration config = null;
                 for (Iterator it = configsList.iterator(); it.hasNext();) {
                     config = (Configuration) it.next();
-                    if (config != null)
+                    if (config != null) {
                         break;
+                    }
                 }
                 if (config == null) {
                     throw new InternalErrorException(target, null,

@@ -94,8 +94,8 @@ public class Execute extends GTEvent {
                         return data;
                     }
                     try {
-                        _effigy = new PtolemyEffigy(parentEffigy,
-                                parentEffigy.uniqueName("_executeEffigy"));
+                        _effigy = new PtolemyEffigy(parentEffigy, parentEffigy
+                                .uniqueName("_executeEffigy"));
                     } catch (NameDuplicationException e) {
                         throw new IllegalActionException(this, e,
                                 "Unexpected name duplication exception.");
@@ -104,41 +104,43 @@ public class Execute extends GTEvent {
                 _effigy.setModel(actor);
                 Manager oldManager = actor.getManager();
                 Manager manager = new Manager(actor.workspace(), "_manager");
-                synchronized(_managers) {
+                synchronized (_managers) {
                     _managers.add(manager);
                 }
                 actor.setManager(manager);
                 try {
                     _debug(new PteraDebugEvent(this, "Start model execution."));
                     manager.execute();
-                    _debug(new PteraDebugEvent(this, "Model execution finished."));
+                    _debug(new PteraDebugEvent(this,
+                            "Model execution finished."));
                 } finally {
-                    synchronized(_managers) {
+                    synchronized (_managers) {
                         _managers.remove(manager);
                     }
                     actor.workspace().remove(manager);
                     actor.setManager(oldManager);
                 }
             } catch (KernelException e) {
-                _debug(new PteraErrorEvent(this, "Error occurred while " +
-                        "executing model."));
-                throw new IllegalActionException(this, e, "Unable to execute " +
-                        "model.");
+                _debug(new PteraErrorEvent(this, "Error occurred while "
+                        + "executing model."));
+                throw new IllegalActionException(this, e, "Unable to execute "
+                        + "model.");
             } finally {
                 _effigy.setModel(null);
             }
         } else {
-            _debug(new PteraErrorEvent(this, "Unable to execute a model that is " +
-                    "not a CompositeActor."));
-            throw new IllegalActionException("Unable to execute a model that " +
-                    "is not a CompositeActor.");
+            _debug(new PteraErrorEvent(this,
+                    "Unable to execute a model that is "
+                            + "not a CompositeActor."));
+            throw new IllegalActionException("Unable to execute a model that "
+                    + "is not a CompositeActor.");
         }
 
         return data;
     }
 
     public void stop() {
-        synchronized(_managers) {
+        synchronized (_managers) {
             for (Manager manager : _managers) {
                 manager.stop();
             }

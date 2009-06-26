@@ -196,7 +196,7 @@ public abstract class PlotLive extends Plot implements Runnable {
             // synchronized (this) { is useless since the method is already
             // synchronized.
             // synchronized (this) {
-                notifyAll();
+            notifyAll();
             //}
         }
     }

@@ -45,8 +45,7 @@ public class IteratorAdapter implements Iterator {
 
     public Object next() throws NoSuchElementException {
         // FindBugs: throw NoSuchElementException here.
-        throw new NoSuchElementException(
-                "This method must be overridden");
+        throw new NoSuchElementException("This method must be overridden");
     }
 
     public void remove() {

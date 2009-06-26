@@ -56,7 +56,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 ////ProgramCodeGenerator
 
@@ -82,12 +81,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public ProgramCodeGenerator(NamedObj container, String name, String outputFileExtension, String templateExtension)
+    public ProgramCodeGenerator(NamedObj container, String name,
+            String outputFileExtension, String templateExtension)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension);
-        
+
         _templateExtension = templateExtension;
-        
+
         generateComment = new Parameter(this, "generateComment");
         generateComment.setTypeEquals(BaseType.BOOLEAN);
         generateComment.setExpression("true");
@@ -99,11 +99,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         measureTime = new Parameter(this, "measureTime");
         measureTime.setTypeEquals(BaseType.BOOLEAN);
         measureTime.setExpression("false");
-        
+
         run = new Parameter(this, "run");
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
-        
+
         generatorPackageList.setExpression("generic.program");
     }
 
@@ -115,23 +115,23 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  with the value true.
      */
     public Parameter generateComment;
-    
+
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the
      *  value false.
      */
     public Parameter inline;
-    
+
     /** If true, generate code to measure the execution time.
      *  The default value is a parameter with the value false.
      */
     public Parameter measureTime;
-    
+
     /** If true, then run the generated code. The default
      *  value is a parameter with the value true.
      */
     public Parameter run;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -144,10 +144,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  be resolved.
      */
     public String codeGenType(Type ptType) {
-    // Do not make this static as Java Codegen requires that it be
-    // non static.
-    // If this is static, then this command will fail:
-    // $PTII/bin/ptcg -generatorPackage ptolemy.codegen.java $PTII/ptolemy/codegen/java/actor/lib/colt/test/auto/ColtBinomialSelector.xml
+        // Do not make this static as Java Codegen requires that it be
+        // non static.
+        // If this is static, then this command will fail:
+        // $PTII/bin/ptcg -generatorPackage ptolemy.codegen.java $PTII/ptolemy/codegen/java/actor/lib/colt/test/auto/ColtBinomialSelector.xml
         if (ptType == BaseType.GENERAL) {
             return "Token";
         }
@@ -164,21 +164,22 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
-        String result =
-            ptType == BaseType.INT ? "Int" :
-            ptType == BaseType.LONG ? "Long" :
-            ptType == BaseType.STRING ? "String" :
-            ptType == BaseType.DOUBLE ? "Double" :
-            ptType == BaseType.BOOLEAN ? "Boolean" :
-            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
-            ptType == PointerToken.POINTER ? "Pointer" : null;
+        String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.LONG ? "Long"
+                        : ptType == BaseType.STRING ? "String"
+                                : ptType == BaseType.DOUBLE ? "Double"
+                                        : ptType == BaseType.BOOLEAN ? "Boolean"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        : ptType == PointerToken.POINTER ? "Pointer"
+                                                                : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
 
                 // This change breaks $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/colt/test/auto/BinomialSelectorTest.xml
                 if (isPrimitive(((ArrayType) ptType).getElementType())) {
-                    result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                    result = codeGenType(((ArrayType) ptType).getElementType())
+                            + "Array";
                 } else {
                     result = "Array";
                 }
@@ -189,8 +190,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             }
         }
         if (result == null || result.length() == 0) {
-            System.out.println(
-                    "Cannot resolved codegen type from Ptolemy type: " + ptType);
+            System.out
+                    .println("Cannot resolved codegen type from Ptolemy type: "
+                            + ptType);
         }
         return result;
     }
@@ -205,7 +207,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         try {
             if (generateComment.getToken() == BooleanToken.TRUE) {
                 return StringUtilities.getIndentPrefix(indentLevel)
-                + _formatComment(comment);
+                        + _formatComment(comment);
             }
         } catch (IllegalActionException e) {
             // do nothing.
@@ -224,7 +226,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         try {
             if (generateComment.getToken() == BooleanToken.TRUE) {
                 return _formatComment(comment);
-            } 
+            }
         } catch (IllegalActionException e) {
             // do nothing.
         }
@@ -256,7 +258,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return (code.replaceAll("/\\*[^*]*\\*/", "")
                 .replaceAll("[ \t\n\r]", "").length() > 0);
     }
-    
+
     /**
      * Return the code associated with initialization of the containing
      * composite actor. This method calls the generateInitializeCode()
@@ -297,7 +299,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeProcedureName()
-    throws IllegalActionException {
+            throws IllegalActionException {
         return "";
     }
 
@@ -367,7 +369,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     public String generatePostfireProcedureName() throws IllegalActionException {
         return "";
     }
-    
+
     /** Generate type conversion code.
      *
      *  @return The type conversion code.
@@ -397,7 +399,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *   director cannot be found.
      */
     public String generateVariableInitialization()
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(_eol + _eol);
         //code.append(comment(1, "Variable initialization "
@@ -416,7 +418,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        return ProgramCodeGeneratorAdapterStrategy.generateName(attribute) + "_";
+        return ProgramCodeGeneratorAdapterStrategy.generateName(attribute)
+                + "_";
     }
 
     /** Generate into the specified code stream the code associated with
@@ -464,10 +467,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return The set of modified variables.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    final public Set<Parameter> getModifiedVariables() throws IllegalActionException {
+    final public Set<Parameter> getModifiedVariables()
+            throws IllegalActionException {
         return _modifiedVariables;
     }
-    
 
     /**
      * Return The extention of the template files.
@@ -493,8 +496,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      * @return true if the given type is primitive, otherwise false.
      */
     final public boolean isPrimitive(Type ptType) {
-    // This method cannot be static as it calls
-    // codeGenType(), which is not static
+        // This method cannot be static as it calls
+        // codeGenType(), which is not static
         return _primitiveTypes.contains(codeGenType(ptType));
     }
 
@@ -506,11 +509,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     public static Type ptolemyType(String cgType) {
         Type result = cgType.equals("Int") ? BaseType.INT : cgType
                 .equals("Long") ? BaseType.LONG
-                        : cgType.equals("String") ? BaseType.STRING : cgType
-                                .equals("Boolean") ? BaseType.BOOLEAN : cgType
-                                        .equals("Double") ? BaseType.DOUBLE : cgType
-                                                .equals("Complex") ? BaseType.COMPLEX : cgType
-                                                        .equals("Pointer") ? PointerToken.POINTER : null;
+                : cgType.equals("String") ? BaseType.STRING : cgType
+                        .equals("Boolean") ? BaseType.BOOLEAN : cgType
+                        .equals("Double") ? BaseType.DOUBLE : cgType
+                        .equals("Complex") ? BaseType.COMPLEX : cgType
+                        .equals("Pointer") ? PointerToken.POINTER : null;
 
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
@@ -524,13 +527,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                     : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
                                             : elementType.equals("Fix") ? BaseType.FIX_MATRIX
                                                     : elementType
-                                                    .equals("Long") ? BaseType.LONG_MATRIX
+                                                            .equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
 
         }
         return result;
     }
-    
 
     /** Split a long function body into multiple functions.
 
@@ -554,18 +556,17 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception IOException If thrown will reading the code.
      */
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
-    throws IOException {
+            throws IOException {
         String[] results = { "", code };
         return results;
     }
-
 
     /**
      * Get the corresponding type in C from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
      * @return The C data type.
      */
-    public /*static*/ String targetType(Type ptType) {
+    public/*static*/String targetType(Type ptType) {
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
                 : ptType == BaseType.STRING ? "char*"
@@ -576,7 +577,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
@@ -592,7 +593,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *   top composite actor is unavailable.
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
-        ((ProgramCodeGeneratorAdapter) getAdapter(getContainer())).analyzeTypeConvert();
+        ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()))
+                .analyzeTypeConvert();
     }
 
     /** Return the value of the codeDirectory parameter.
@@ -603,7 +605,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  codeDirectory parameter.
      */
     protected File _codeDirectoryAsFile() throws IOException,
-    IllegalActionException {
+            IllegalActionException {
         // This method is here to avoid code duplication.
         // It is package protected so we can read it in ProgramCodeGeneratorAdapter
         File codeDirectoryFile = codeDirectory.asFile();
@@ -629,10 +631,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
     protected StringBuffer _finalPassOverCode(StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
-        StringTokenizer tokenizer = new StringTokenizer(
-                code.toString(), _eol + "\n");
+        StringTokenizer tokenizer = new StringTokenizer(code.toString(), _eol
+                + "\n");
 
         code = new StringBuffer();
 
@@ -644,7 +646,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         return code;
     }
-    
+
     /** Return a formatted comment containing the specified string. In
      *  this base class, the comments is a C-style comment, which
      *  begins with "\/*" and ends with "*\/" followed by the platform
@@ -667,7 +669,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _generateBodyCode() throws IllegalActionException {
 
         String code = "";
-        
+
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (_isTopLevel()) {
@@ -675,7 +677,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 code = _recordStartTime();
             }
         }
-        
+
         CompositeEntity model = (CompositeEntity) getContainer();
 
         // NOTE: The cast is safe because setContainer ensures
@@ -707,20 +709,19 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             ProgramCodeGeneratorAdapter compositeAdapter = (ProgramCodeGeneratorAdapter) getAdapter(model);
             code += compositeAdapter.generateFireCode();
         }
-        
-        
+
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (_isTopLevel()) {
             if (((BooleanToken) measureTime.getToken()).booleanValue()) {
-                
+
                 // FIXME: wrapup code not included in time measurement.
                 //      Is this what we want?
-                code+= _printExecutionTime();
+                code += _printExecutionTime();
             }
         }
         return code;
-        
+
     }
 
     /** Generate include files. This base class just returns an empty string.
@@ -762,7 +763,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         return code.toString();
     }
-    
+
     /** Generate code and append it to the given string buffer.
      *  Write the code to the directory specified by the codeDirectory
      *  parameter.  The file name is a sanitized version of the model
@@ -788,14 +789,15 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         _reset();
 
-        _sanitizedModelName = ProgramCodeGeneratorAdapterStrategy.generateName(_model);
+        _sanitizedModelName = ProgramCodeGeneratorAdapterStrategy
+                .generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
         // for it so that it can be loaded without restarting vergil.
         NamedObj container = getContainer();
         if (container instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
-            .getSanitizedName();
+                    .getSanitizedName();
         }
 
         boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
@@ -806,7 +808,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         // Report time consumed if appropriate.
         startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator.analyzeTypeConvert() consumed: ");
+                "CodeGenerator.analyzeTypeConvert() consumed: ");
 
         // Add include directories and libraries specified by actors.
         _addActorIncludeDirectories();
@@ -864,7 +866,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String includeFiles = _generateIncludeFiles();
 
         startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator: generating code consumed: ");
+                "CodeGenerator: generating code consumed: ");
 
         // The appending phase.
         code.append(generateCopyright());
@@ -961,25 +963,24 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
 
         startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator: appending code consumed: ");
+                "CodeGenerator: appending code consumed: ");
 
         code = _finalPassOverCode(code);
         startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator: final pass consumed: ");
+                "CodeGenerator: final pass consumed: ");
 
         super._generateCode(code);
 
         /*startTime =*/_printTimeAndMemory(startTime,
-        "CodeGenerator: writing code consumed: ");
+                "CodeGenerator: writing code consumed: ");
 
         _writeMakefile();
 
         _printTimeAndMemory(overallStartTime,
-        "CodeGenerator: All phases above consumed: ");
+                "CodeGenerator: All phases above consumed: ");
 
         return _executeCommands();
     }
-    
 
     /** Generate preinitialize code (if there is any).
      *  This method calls the generatePreinitializeCode() method
@@ -1004,11 +1005,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         } catch (Throwable throwable) {
             throw new IllegalActionException(adapter.getComponent(), throwable,
-            "Failed to generate preinitialize code");
+                    "Failed to generate preinitialize code");
         }
         return code.toString();
     }
-    
+
     /** Generate the code for printing the execution time since
      *  the code generated by _recordStartTime() was called.
      *  This base class only generates a comment.
@@ -1025,14 +1026,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _recordStartTime() {
         return comment("Record current time.");
     }
-    
 
     /** Reset the code generator.
      */
     protected void _reset() {
         super._reset();
         // Reset the indent to zero.
-        _indent = 0;        
+        _indent = 0;
         _newTypesUsed.clear();
         _tokenFuncUsed.clear();
         _typeFuncUsed.clear();
@@ -1092,7 +1092,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String[] results = null;
         try {
             results = splitLongBody(_LINES_PER_METHOD, prefix
-                    + ProgramCodeGeneratorAdapterStrategy.generateName(getContainer()), code);
+                    + ProgramCodeGeneratorAdapterStrategy
+                            .generateName(getContainer()), code);
         } catch (IOException ex) {
             // Ignore
             System.out.println("Warning: Failed to split code: " + ex);
@@ -1121,7 +1122,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-    "Pointer" });
+            "Pointer" });
 
     /** A set that contains all token functions referenced in the model.
      *  When the codegen kernel processes a $tokenFunc() macro, it must add
@@ -1138,10 +1139,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The current indent level when pretty printing code. */
     private int _indent;
-    
+
     /** Maximum number of lines in initialize(), postfire() and wrapup()
      *  methodS. This variable is used to make smaller methods so that
      *  compilers take less time.*/

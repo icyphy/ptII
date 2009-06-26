@@ -291,7 +291,7 @@ public class LineWriter extends Sink {
         String eol = "\n";
         Token eolToken = endOfLineCharacter.getToken();
         if (eolToken != null) {
-             eol = ((StringToken)eolToken).stringValue();
+            eol = ((StringToken) eolToken).stringValue();
         }
         // In this base class, the cast is safe.
         _writer.print(((StringToken) token).stringValue() + eol);

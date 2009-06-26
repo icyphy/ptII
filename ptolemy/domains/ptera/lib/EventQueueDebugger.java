@@ -55,8 +55,8 @@ import ptolemy.kernel.util.SingletonAttribute;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class EventQueueDebugger extends SingletonAttribute
-        implements EventQueueDebugListener, Initializable {
+public class EventQueueDebugger extends SingletonAttribute implements
+        EventQueueDebugListener, Initializable {
 
     /** Construct an attribute with the given container and name.
      *  If an attribute already exists with the same name as the one
@@ -122,8 +122,8 @@ public class EventQueueDebugger extends SingletonAttribute
             boolean isActive = ((BooleanToken) active.getToken())
                     .booleanValue();
             if (isActive) {
-                System.out.println("Schedule " + event.getName() + " at " +
-                        time + " at position " + position);
+                System.out.println("Schedule " + event.getName() + " at "
+                        + time + " at position " + position);
             }
         } catch (IllegalActionException e) {
             System.out.println(e.getMessage());
@@ -213,6 +213,6 @@ public class EventQueueDebugger extends SingletonAttribute
 
     /** The icon of the event queue debugger attribute. */
     private static final String _ICON_DESCRIPTION = "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"10\""
-        + "  style=\"fill:#C0C0C0\"/>" + "</svg>";
+            + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"10\""
+            + "  style=\"fill:#C0C0C0\"/>" + "</svg>";
 }

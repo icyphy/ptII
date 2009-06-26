@@ -144,8 +144,7 @@ public class NonStrictDelay extends Transformer {
                 _previousToken = AbsentToken.ABSENT;
             }
         } else {
-            throw new IllegalActionException(this,
-                    "Input is unknown.");
+            throw new IllegalActionException(this, "Input is unknown.");
         }
         return super.postfire();
     }

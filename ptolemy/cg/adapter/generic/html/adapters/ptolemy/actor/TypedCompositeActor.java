@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (zgang)
  */
 public class TypedCompositeActor extends HTMLCodeGeneratorAdapter {
-    
+
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
@@ -59,13 +59,13 @@ public class TypedCompositeActor extends HTMLCodeGeneratorAdapter {
     public String generateHTML() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getComponent().getName() + " contains: ");
-        code.append("<ul>" + _eol);        
+        code.append("<ul>" + _eol);
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateFireCode());
-        
+
         code.append("</ul>" + _eol);
         return /*processCode(code.toString())*/code.toString();
     }

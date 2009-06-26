@@ -52,17 +52,17 @@ public class PropertyTokenHelper extends PropertyHelper {
     }
 
     public PropertyTokenSolver getSolver() {
-        return (PropertyTokenSolver)_solver;
+        return (PropertyTokenSolver) _solver;
     }
 
-
-    public void addListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
+    public void addListener(boolean listenInputs, boolean listenOutputs)
+            throws IllegalActionException {
         Iterator propertyables = getPropertyables().iterator();
         while (propertyables.hasNext()) {
             Object propertyable = propertyables.next();
 
             if (propertyable instanceof IOPort) {
-                IOPort port = (IOPort)propertyable;
+                IOPort port = (IOPort) propertyable;
                 if (listenOutputs && (port.isOutput())) {
 
                     port.addIOPortEventListener(getSolver().getSentListener());
@@ -76,28 +76,31 @@ public class PropertyTokenHelper extends PropertyHelper {
         }
     }
 
-    public void removeListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
+    public void removeListener(boolean listenInputs, boolean listenOutputs)
+            throws IllegalActionException {
         Iterator propertyables = getPropertyables().iterator();
         while (propertyables.hasNext()) {
             Object propertyable = propertyables.next();
 
             if (propertyable instanceof IOPort) {
-                IOPort port = (IOPort)propertyable;
+                IOPort port = (IOPort) propertyable;
 
-                if (listenOutputs &&
-                    (port.isOutput())) {
-                    port.removeIOPortEventListener(getSolver().getSentListener());
+                if (listenOutputs && (port.isOutput())) {
+                    port.removeIOPortEventListener(getSolver()
+                            .getSentListener());
                 }
 
-                if (listenInputs &&
-                    (port.isInput())) {
-                    port.removeIOPortEventListener(getSolver().getGotListener());
+                if (listenInputs && (port.isInput())) {
+                    port
+                            .removeIOPortEventListener(getSolver()
+                                    .getGotListener());
                 }
             }
         }
     }
 
-    public void determineProperty() throws IllegalActionException, KernelException {
+    public void determineProperty() throws IllegalActionException,
+            KernelException {
         // determine ASTNodeHelpers
         List<IOPort> inputPortList = new ArrayList<IOPort>();
         List<IOPort> outputPortList = new ArrayList<IOPort>();
@@ -116,9 +119,10 @@ public class PropertyTokenHelper extends PropertyHelper {
                 } else {
                     outputPortList.add(port);
                 }
-//            } else if ((propertyable instanceof Attribute) && (!((propertyable instanceof StringAttribute)))) {
-            } else if ((propertyable instanceof Attribute) || (propertyable instanceof PortParameter)) {
-                attributeList.add((Attribute)propertyable);
+                //            } else if ((propertyable instanceof Attribute) && (!((propertyable instanceof StringAttribute)))) {
+            } else if ((propertyable instanceof Attribute)
+                    || (propertyable instanceof PortParameter)) {
+                attributeList.add((Attribute) propertyable);
             } else {
                 //FIXME: throw exception?
             }
@@ -133,7 +137,7 @@ public class PropertyTokenHelper extends PropertyHelper {
         while (helpers.hasNext()) {
             PropertyHelper helper = (PropertyHelper) helpers.next();
             if (helper instanceof PropertyTokenASTNodeHelper) {
-                ASTHelperList.add((PropertyTokenASTNodeHelper)helper);
+                ASTHelperList.add((PropertyTokenASTNodeHelper) helper);
             }
         }
 
@@ -148,8 +152,7 @@ public class PropertyTokenHelper extends PropertyHelper {
         // determine all subhelpers except attribute helpers
         helpers = helperList.iterator();
         while (helpers.hasNext()) {
-            PropertyTokenHelper helper =
-                (PropertyTokenHelper) helpers.next();
+            PropertyTokenHelper helper = (PropertyTokenHelper) helpers.next();
             if (!ASTHelperList.contains(helper)) {
                 helper.determineProperty();
             }
@@ -170,7 +173,6 @@ public class PropertyTokenHelper extends PropertyHelper {
         }
     }
 
-
     private boolean useChannel = false;
 
     /**
@@ -188,7 +190,8 @@ public class PropertyTokenHelper extends PropertyHelper {
         if (!useChannel) {
             list.addAll(((Entity) getComponent()).portList());
         } else {
-            for (IOPort port : (List<IOPort>) ((Entity) getComponent()).portList()) {
+            for (IOPort port : (List<IOPort>) ((Entity) getComponent())
+                    .portList()) {
                 for (int i = 0; i < port.getWidth(); i++) {
                     list.add(new Channel(port, i));
                 }
@@ -196,9 +199,9 @@ public class PropertyTokenHelper extends PropertyHelper {
         }
 
         // Add attributes.
-//        if (!getSolver().isListening()) {
-            list.addAll(_getPropertyableAttributes());
-//        }
+        //        if (!getSolver().isListening()) {
+        list.addAll(_getPropertyableAttributes());
+        //        }
 
         return list;
     }
@@ -208,12 +211,13 @@ public class PropertyTokenHelper extends PropertyHelper {
         return new ParseTreeTokenAnnotationEvaluator();
     }
 
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
-//        if (!getSolver().isListening()) {
-            return _getASTNodeHelpers();
-//        } else {
-//            return new LinkedList<PropertyHelper>();
-//        }
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
+        //        if (!getSolver().isListening()) {
+        return _getASTNodeHelpers();
+        //        } else {
+        //            return new LinkedList<PropertyHelper>();
+        //        }
     }
 
     protected List<IOPort> _getInnerSourcePortList(IOPort port) {
@@ -224,10 +228,10 @@ public class PropertyTokenHelper extends PropertyHelper {
         while (iterator.hasNext()) {
             IOPort connectedPort = (IOPort) iterator.next();
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput =
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();
+            boolean isCompositeInput = (connectedPort.getContainer() instanceof CompositeEntity)
+                    && isInput
+                    && port.depthInHierarchy() > connectedPort
+                            .depthInHierarchy();
 
             if (isInput && !isCompositeInput) {
                 result.add(connectedPort);
@@ -236,8 +240,8 @@ public class PropertyTokenHelper extends PropertyHelper {
         return result;
     }
 
-//  FIXME: RENAME? get ports from inside the actors connected to outPort
-//         move to use case?
+    //  FIXME: RENAME? get ports from inside the actors connected to outPort
+    //         move to use case?
     protected List<IOPort> _getInnerSinkPortList(IOPort port) {
         List<IOPort> result = new ArrayList<IOPort>();
 
@@ -247,10 +251,10 @@ public class PropertyTokenHelper extends PropertyHelper {
             IOPort connectedPort = (IOPort) iterator.next();
 
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput =
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();
+            boolean isCompositeOutput = (connectedPort.getContainer() instanceof CompositeEntity)
+                    && isInput
+                    && port.depthInHierarchy() > connectedPort
+                            .depthInHierarchy();
 
             if (!isInput && !isCompositeOutput) {
                 result.add(connectedPort);
@@ -259,16 +263,16 @@ public class PropertyTokenHelper extends PropertyHelper {
         return result;
     }
 
-
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     protected List<Channel> _getInnerSourceChannelList(IOPort port) {
         List<Channel> result = new ArrayList<Channel>();
 
         return result;
     }
 
-    protected List<Channel> _getInnerSinkChannelList(IOPort port) throws InvalidStateException, IllegalActionException {
+    protected List<Channel> _getInnerSinkChannelList(IOPort port)
+            throws InvalidStateException, IllegalActionException {
         List<Channel> result = new ArrayList<Channel>();
 
         Receiver[][] receivers = port.deepGetReceivers();
@@ -276,8 +280,8 @@ public class PropertyTokenHelper extends PropertyHelper {
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 IOPort sinkPort = receivers[i][j].getContainer();
-                result.add(new Channel(sinkPort,
-                        _getChannelNumber(receivers[i][j], sinkPort)));
+                result.add(new Channel(sinkPort, _getChannelNumber(
+                        receivers[i][j], sinkPort)));
             }
         }
 
@@ -303,8 +307,8 @@ public class PropertyTokenHelper extends PropertyHelper {
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 IOPort sinkPort = receivers[i][j].getContainer();
-                result.add(new Channel(sinkPort,
-                        _getChannelNumber(receivers[i][j], sinkPort)));
+                result.add(new Channel(sinkPort, _getChannelNumber(
+                        receivers[i][j], sinkPort)));
             }
         }
         return result;
@@ -321,10 +325,10 @@ public class PropertyTokenHelper extends PropertyHelper {
             IOPort connectedPort = (IOPort) iterator.next();
 
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput =
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && !isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();
+            boolean isCompositeOutput = (connectedPort.getContainer() instanceof CompositeEntity)
+                    && !isInput
+                    && port.depthInHierarchy() > connectedPort
+                            .depthInHierarchy();
 
             if (isInput || isCompositeOutput) {
                 result.add(connectedPort);
@@ -341,10 +345,10 @@ public class PropertyTokenHelper extends PropertyHelper {
         while (iterator.hasNext()) {
             IOPort connectedPort = (IOPort) iterator.next();
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput =
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();
+            boolean isCompositeInput = (connectedPort.getContainer() instanceof CompositeEntity)
+                    && isInput
+                    && port.depthInHierarchy() > connectedPort
+                            .depthInHierarchy();
 
             if (!isInput || isCompositeInput) {
                 result.add(connectedPort);
@@ -353,24 +357,30 @@ public class PropertyTokenHelper extends PropertyHelper {
         return result;
     }
 
-    protected void _determineInputPorts(List <IOPort>inputPortList) throws IllegalActionException {
+    protected void _determineInputPorts(List<IOPort> inputPortList)
+            throws IllegalActionException {
         // do nothing in base class
     }
 
-    protected void _determineOutputPorts(List <IOPort>outputPortList) throws IllegalActionException {
+    protected void _determineOutputPorts(List<IOPort> outputPortList)
+            throws IllegalActionException {
         // do nothing in base class
     }
 
-    protected void _determineAttributes(List <Attribute>attributeList, List <PropertyTokenASTNodeHelper>ASTNodeHelperList) throws KernelException {
+    protected void _determineAttributes(List<Attribute> attributeList,
+            List<PropertyTokenASTNodeHelper> ASTNodeHelperList)
+            throws KernelException {
         Iterator ASTNodeHelperIterator = ASTNodeHelperList.iterator();
         while (ASTNodeHelperIterator.hasNext()) {
-            PropertyTokenASTNodeHelper ASTNodeHelper=(PropertyTokenASTNodeHelper)ASTNodeHelperIterator.next();
+            PropertyTokenASTNodeHelper ASTNodeHelper = (PropertyTokenASTNodeHelper) ASTNodeHelperIterator
+                    .next();
             ASTNodeHelper.determineProperty();
             ASTNodeHelper.determineProperty(attributeList);
         }
     }
 
-    protected void _determineRefinement() throws IllegalActionException, KernelException {
+    protected void _determineRefinement() throws IllegalActionException,
+            KernelException {
         // do nothing in base class
     }
 }

@@ -87,7 +87,8 @@ public class FSMReceiver extends AbstractReceiver {
      */
     public List<Token> elementList() throws IllegalActionException {
         if (!_isKnown) {
-            throw new IllegalActionException(getContainer(), "Receiver status is unknown.");
+            throw new IllegalActionException(getContainer(),
+                    "Receiver status is unknown.");
         }
         List<Token> result = new LinkedList<Token>();
         if (_token != null) {
@@ -107,7 +108,8 @@ public class FSMReceiver extends AbstractReceiver {
                     "Attempt to get data from an empty recever.");
         }
         if (!_isKnown) {
-            throw new NoTokenException(getContainer(), "Receiver status is unknown.");
+            throw new NoTokenException(getContainer(),
+                    "Receiver status is unknown.");
         }
         return _token;
     }
@@ -120,14 +122,17 @@ public class FSMReceiver extends AbstractReceiver {
      */
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         if (!_isKnown) {
-            throw new NoTokenException(getContainer(), "Receiver status is unknown.");
+            throw new NoTokenException(getContainer(),
+                    "Receiver status is unknown.");
         }
         if (numberOfTokens <= 0) {
-            throw new IllegalArgumentException("Illegal argument to getArray():" + numberOfTokens);
+            throw new IllegalArgumentException(
+                    "Illegal argument to getArray():" + numberOfTokens);
         }
         if (numberOfTokens > 1) {
             throw new NoTokenException(getContainer(),
-                    "Receiver can only contain one token, but request is for " + numberOfTokens);
+                    "Receiver can only contain one token, but request is for "
+                            + numberOfTokens);
         }
         if (_token == null) {
             throw new NoTokenException(getContainer(), "Receiver is empty.");
@@ -171,7 +176,8 @@ public class FSMReceiver extends AbstractReceiver {
      */
     public boolean hasToken() {
         if (!_isKnown) {
-            throw new InternalErrorException(getContainer(), null, "Receiver status is not known.");
+            throw new InternalErrorException(getContainer(), null,
+                    "Receiver status is not known.");
         }
         return (_token != null);
     }
@@ -187,7 +193,8 @@ public class FSMReceiver extends AbstractReceiver {
      */
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (!_isKnown) {
-            throw new InternalErrorException(getContainer(), null, "Receiver status is not known.");
+            throw new InternalErrorException(getContainer(), null,
+                    "Receiver status is not known.");
         }
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -229,7 +236,8 @@ public class FSMReceiver extends AbstractReceiver {
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException, IllegalActionException {
         if (numberOfTokens != 1 || tokenArray.length < 1) {
-            throw new IllegalActionException(getContainer(), "Receiver cannot accept more than one token.");
+            throw new IllegalActionException(getContainer(),
+                    "Receiver cannot accept more than one token.");
         }
         put(tokenArray[0]);
     }

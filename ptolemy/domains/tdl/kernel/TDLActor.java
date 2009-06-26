@@ -186,10 +186,11 @@ public class TDLActor extends FSMActor {
                 .getContainer()).getExecutiveDirector();
 
         Time physicalTime = null;
-        if (topLevelDirector != null)
+        if (topLevelDirector != null) {
             physicalTime = topLevelDirector.getModelTime();
-        else
+        } else {
             physicalTime = executiveDirector.getModelTime();
+        }
         TDLCausalityInterface causalityInterface = (TDLCausalityInterface) ((CompositeActor) ((TDLModule) getContainer())
                 .getContainer()).getCausalityInterface();
         Dependency minimumDelay = causalityInterface.getMinimumDelay(port);
@@ -199,8 +200,9 @@ public class TDLActor extends FSMActor {
                             ((RealDependency) minimumDelay).value()).compareTo(
                             physicalTime) <= 0;
             return isSafe;
-        } else
+        } else {
             return true;
+        }
     }
 
 }

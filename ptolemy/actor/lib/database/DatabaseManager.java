@@ -109,7 +109,8 @@ public class DatabaseManager extends TypedAtomicActor {
         // Default database is the EECS database at Berkeley.
         // NOTE: the server and database name ("acgeecs")
         // are going to change in summer 2008...
-        database.setExpression("jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs");
+        database
+                .setExpression("jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs");
 
         userName = new StringParameter(this, "userName");
         userName.setExpression("ptolemy");
@@ -173,7 +174,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 _connection.close();
             } catch (SQLException e) {
                 throw new IllegalActionException(this, e,
-                "Failed to close the database connection.");
+                        "Failed to close the database connection.");
             }
             _connection = null;
         }
@@ -188,8 +189,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  @return The result as a string.
      *  @exception IllegalActionException If the statement fails.
      */
-    public String execute(String sql)
-            throws IllegalActionException {
+    public String execute(String sql) throws IllegalActionException {
         PreparedStatement statement = null;
         Connection connection = getConnection();
         try {
@@ -198,7 +198,7 @@ public class DatabaseManager extends TypedAtomicActor {
             if (connection == null) {
                 return "No database connection.";
             }
-            connection.setAutoCommit(false);  //use transaction!
+            connection.setAutoCommit(false); //use transaction!
             // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String
             // It would be nice if we offered a statement that takes a prepared
             // statement as input.
@@ -219,7 +219,7 @@ public class DatabaseManager extends TypedAtomicActor {
                     String[] columnNames = new String[columnCount];
                     int[] columnWidths = new int[columnCount];
                     for (int c = 0; c < columnCount; c++) {
-                        String columnName = metaData.getColumnName(c+1);
+                        String columnName = metaData.getColumnName(c + 1);
                         columnWidths[c] = columnName.length() + 1;
                         columnNames[c] = columnName;
                     }
@@ -229,7 +229,7 @@ public class DatabaseManager extends TypedAtomicActor {
                     while (resultSet.next()) {
                         String[] row = new String[columnCount];
                         for (int c = 0; c < columnCount; c++) {
-                            String value = resultSet.getString(c+1);
+                            String value = resultSet.getString(c + 1);
                             if (value == null) {
                                 value = "NULL";
                             }
@@ -244,7 +244,8 @@ public class DatabaseManager extends TypedAtomicActor {
                     for (String[] row : rows) {
                         for (int c = 0; c < columnCount; c++) {
                             resultString.append(row[c]);
-                            for (int i = 0; i <= columnWidths[c] - row[c].length(); i++) {
+                            for (int i = 0; i <= columnWidths[c]
+                                    - row[c].length(); i++) {
                                 resultString.append(" ");
                             }
                         }
@@ -253,7 +254,8 @@ public class DatabaseManager extends TypedAtomicActor {
                 } else {
                     int count = statement.getUpdateCount();
                     if (count != -1) {
-                        resultString.append("Statement OK. " + count + " rows affected.");
+                        resultString.append("Statement OK. " + count
+                                + " rows affected.");
                         resultString.append("\n");
                     } else {
                         connection.commit();
@@ -269,7 +271,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 // Not much to do here.
             }
             // Send the error message to the output.
-            return("Error:\n" + e.getMessage());
+            return ("Error:\n" + e.getMessage());
         }
     }
 
@@ -284,8 +286,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *   fails or is canceled.
      *  @exception IllegalActionException If the query fails.
      */
-    public ArrayToken executeQuery(String sql)
-            throws IllegalActionException {
+    public ArrayToken executeQuery(String sql) throws IllegalActionException {
         PreparedStatement statement = null;
         ArrayList<RecordToken> matches = new ArrayList<RecordToken>();
         try {
@@ -305,9 +306,10 @@ public class DatabaseManager extends TypedAtomicActor {
             int columnCount = metaData.getColumnCount();
             // For each matching row, construct a record token.
             while (rset.next()) {
-                HashMap<String,Token> map = new HashMap<String,Token>();
+                HashMap<String, Token> map = new HashMap<String, Token>();
                 for (int c = 1; c <= columnCount; c++) {
-                    String columnName = StringUtilities.sanitizeName(metaData.getColumnName(c));
+                    String columnName = StringUtilities.sanitizeName(metaData
+                            .getColumnName(c));
                     String value = rset.getString(c);
                     if (value == null) {
                         value = "";
@@ -317,8 +319,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 matches.add(new RecordToken(map));
             }
         } catch (SQLException e) {
-            throw new IllegalActionException(this, e,
-                    "Database query failed.");
+            throw new IllegalActionException(this, e, "Database query failed.");
         }
         int numberOfMatches = matches.size();
         ArrayToken result;
@@ -361,18 +362,16 @@ public class DatabaseManager extends TypedAtomicActor {
             if (connection == null) {
                 return -1;
             }
-            connection.setAutoCommit(false);  //use transaction!
+            connection.setAutoCommit(false); //use transaction!
             // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String
             // It would be nice if we offered a statement that takes a prepared
             // statement as input.
             statement = connection.prepareStatement(sql);
             int result = statement.executeUpdate();
             if (expectedResult >= 0 && result != expectedResult) {
-                  throw new IllegalActionException(this,
-                          "Update affected "
-                          + result
-                          + " rows, but should have affected "
-                          + expectedResult);
+                throw new IllegalActionException(this, "Update affected "
+                        + result + " rows, but should have affected "
+                        + expectedResult);
             }
             connection.commit();
             return result;
@@ -382,8 +381,7 @@ public class DatabaseManager extends TypedAtomicActor {
             } catch (SQLException e1) {
                 // Not much we can do here...
             }
-            throw new IllegalActionException(this, e,
-                    "Update failed.");
+            throw new IllegalActionException(this, e, "Update failed.");
         }
     }
 
@@ -394,20 +392,20 @@ public class DatabaseManager extends TypedAtomicActor {
      *  @return A database manager.
      *  @exception IllegalActionException If no database manager is found.
      */
-    public static DatabaseManager findDatabaseManager(String name, NamedObj actor)
-            throws IllegalActionException {
-        CompositeActor container = (CompositeActor)actor.getContainer();
+    public static DatabaseManager findDatabaseManager(String name,
+            NamedObj actor) throws IllegalActionException {
+        CompositeActor container = (CompositeActor) actor.getContainer();
         NamedObj database = container.getEntity(name);
         while (!(database instanceof DatabaseManager)) {
             // Work recursively up the tree.
-            container = (CompositeActor)container.getContainer();
+            container = (CompositeActor) container.getContainer();
             if (container == null) {
                 throw new IllegalActionException(actor,
-                    "Cannot find database manager named " + name);
+                        "Cannot find database manager named " + name);
             }
             database = container.getEntity(name);
         }
-        return (DatabaseManager)database;
+        return (DatabaseManager) database;
     }
 
     /** Get a connection to the database.
@@ -441,7 +439,8 @@ public class DatabaseManager extends TypedAtomicActor {
             query.addLine("database", "Database", database.stringValue());
             query.addLine("userName", "User name", userName.stringValue());
             query.addPassword("password", "Password", "");
-            ComponentDialog dialog = new ComponentDialog(frame, "Open Connection", query);
+            ComponentDialog dialog = new ComponentDialog(frame,
+                    "Open Connection", query);
 
             if (dialog.buttonPressed().equals("OK")) {
                 // Update the parameter values.
@@ -457,10 +456,9 @@ public class DatabaseManager extends TypedAtomicActor {
         if (_connection == null) {
             // Get database connection.
             try {
-                _connection = DriverManager.getConnection(
-                        database.getExpression(),
-                        userName.getExpression(),
-                        new String(_password));
+                _connection = DriverManager.getConnection(database
+                        .getExpression(), userName.getExpression(), new String(
+                        _password));
                 // If updating, use single transaction.
                 _connection.setAutoCommit(false);
             } catch (SQLException ex) {
@@ -472,28 +470,29 @@ public class DatabaseManager extends TypedAtomicActor {
                     // build path in Eclipse.
 
                     // Try the mysql driver
-                    DriverManager.registerDriver((java.sql.Driver)Class.forName("com.mysql.jdbc.Driver").newInstance());
-                    _connection = DriverManager.getConnection(
-                        database.getExpression(),
-                        userName.getExpression(),
-                        new String(_password));
+                    DriverManager.registerDriver((java.sql.Driver) Class
+                            .forName("com.mysql.jdbc.Driver").newInstance());
+                    _connection = DriverManager.getConnection(database
+                            .getExpression(), userName.getExpression(),
+                            new String(_password));
                     // If updating, use single transaction.
                     _connection.setAutoCommit(false);
                 } catch (Exception ex2) {
                     // Try the Oracle driver
                     try {
-                    DriverManager.registerDriver((java.sql.Driver)Class.forName("oracle.jdbc.OracleDriver").newInstance());
-                    _connection = DriverManager.getConnection(
-                        database.getExpression(),
-                        userName.getExpression(),
-                        new String(_password));
-                    // If updating, use single transaction.
-                    _connection.setAutoCommit(false);
+                        DriverManager.registerDriver((java.sql.Driver) Class
+                                .forName("oracle.jdbc.OracleDriver")
+                                .newInstance());
+                        _connection = DriverManager.getConnection(database
+                                .getExpression(), userName.getExpression(),
+                                new String(_password));
+                        // If updating, use single transaction.
+                        _connection.setAutoCommit(false);
                     } catch (Exception ex3) {
                         _password = null;
                         // Note that we throw the original exception.
                         throw new IllegalActionException(this, ex,
-                        "Failed to open connection to the database.");
+                                "Failed to open connection to the database.");
                     }
                 }
             }

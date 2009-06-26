@@ -357,7 +357,8 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      * @exception InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
+    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
+            IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 

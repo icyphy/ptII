@@ -38,7 +38,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-
 ///////////////////////////////////////////////////////////////////////
 ////ProgramCodeGeneratorAdapter
 
@@ -78,10 +77,10 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public ProgramCodeGeneratorAdapter(NamedObj component) {
         _component = component;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Find out each output port that needs to be converted for the
      * actor associated with this adapter. Then, mark these ports along
@@ -91,7 +90,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public void analyzeTypeConvert() throws IllegalActionException {
         _strategy.analyzeTypeConvert();
     }
-    
+
     /**
      * Generate the fire code. In this base class, add the name of the
      * associated component in the comment. It checks the inline parameter
@@ -137,10 +136,11 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void generateModeTransitionCode(StringBuffer code) throws IllegalActionException {
+    public void generateModeTransitionCode(StringBuffer code)
+            throws IllegalActionException {
         _strategy.generateModeTransitionCode(code);
     }
-    
+
     /**
      * Generate the postfire code. In this base class, do nothing. Subclasses
      * may extend this method to generate the postfire code of the associated
@@ -157,7 +157,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     /** Generate the prefire code of the associated composite actor.
     *  @return The prefire code of the associated composite actor.
     *  @exception IllegalActionException If illegal macro names are found.
-    */    
+    */
     public String generatePrefireCode() throws IllegalActionException {
         // FIXME: This is to be used in future re-structuring.
         return _strategy.generatePrefireCode();
@@ -182,10 +182,10 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateTypeConvertFireCode(boolean forComposite) throws IllegalActionException {
+    public String generateTypeConvertFireCode(boolean forComposite)
+            throws IllegalActionException {
         return _strategy.generateTypeConvertFireCode(forComposite);
     }
-
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
@@ -202,10 +202,11 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    public String generateVariableInitialization() throws IllegalActionException {
+    public String generateVariableInitialization()
+            throws IllegalActionException {
         return "";
     }
-    
+
     /**
      * Generate the wrapup code. In this base class, do nothing. Subclasses
      * may extend this method to generate the wrapup code of the associated
@@ -217,15 +218,17 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     public String generateWrapupCode() throws IllegalActionException {
         return _strategy.generateWrapupCode();
-    }    
+    }
 
     /** Get the code generator adapter associated with the given component.
      *  @param component The given component.
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    final public ProgramCodeGeneratorAdapter getAdapter(Object component) throws IllegalActionException {
-        return (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(component);
+    final public ProgramCodeGeneratorAdapter getAdapter(Object component)
+            throws IllegalActionException {
+        return (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(
+                component);
     }
 
     /** Get the code generator associated with this adapter class.
@@ -235,7 +238,6 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public ProgramCodeGenerator getCodeGenerator() {
         return _strategy.getCodeGenerator();
     }
-
 
     /** Get the files needed by the code generated from this adapter class.
      *  This base class returns an empty set.
@@ -247,7 +249,6 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         return _strategy.getHeaderFiles();
     }
 
-
     /** Return a set of directories to include for the generated code.
      *  @return A Set containing the contents of the actor's
      *   "includeDirectories" block in its template.
@@ -257,7 +258,6 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public Set<String> getIncludeDirectories() throws IllegalActionException {
         return _strategy.getIncludeDirectories();
     }
-
 
     /** Return a set of libraries to link in the generated code.
      *  @return A Set containing the libraries in the actor's
@@ -291,6 +291,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         return _strategy.getModifiedVariables();
 
     }
+
     /** Return the value or an expression in the target language for
      *  the specified parameter of the associated actor.  If the
      *  parameter is specified by an expression, then the expression
@@ -345,7 +346,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    public String getReference(String name, boolean isWrite) 
+    public String getReference(String name, boolean isWrite)
             throws IllegalActionException {
         return _strategy.getReference(name, isWrite);
     }
@@ -361,7 +362,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public Set<String> getSharedCode() throws IllegalActionException {
         return _strategy.getSharedCode();
     }
-    
+
     /** Get the strategy associated with this adapter.
      *  @return The associated strategy.
      *   @see #setStrategy
@@ -377,7 +378,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public NamedObj getComponent() {
         return _strategy.getComponent();
     }
-    
+
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.
      * @return The processed code.
@@ -386,7 +387,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     final public String processCode(String code) throws IllegalActionException {
         return _strategy.processCode(code);
     }
-    
+
     /** Set the code generator associated with this adapter class.
      *  @param codeGenerator The code generator associated with this
      *   adapter class.
@@ -399,13 +400,13 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     /** Set the strategy for generating code for this adapter.
      * @param strategy The strategy.
      * @see #getStrategy
-     */ 
+     */
     final public void setStrategy(Object strategy) {
-     _strategy = (ProgramCodeGeneratorAdapterStrategy) strategy;
-     _strategy.setComponent(_component);
-     _strategy.setAdapter(this);
+        _strategy = (ProgramCodeGeneratorAdapterStrategy) strategy;
+        _strategy.setComponent(_component);
+        _strategy.setAdapter(this);
     }
-    
+
     /**
      * Get the corresponding type in C from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
@@ -415,15 +416,14 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     final public String targetType(Type ptType) {
         return _strategy.targetType(ptType);
     }
-    
+
     public String toString() {
         return getComponent().toString() + "'s Adapter";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                    ////
-    
-    
+
     /**
      * Generate the fire code. This method is intended to be
      * overwritten by sub-classes to generate actor-specific code. 
@@ -433,7 +433,6 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
         return _strategy._generateFireCode();
     }
-    
 
     /**
      * Generate the type conversion statement for the particular offset of
@@ -449,10 +448,10 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * adapters for the ports or if the conversion cannot be handled.
      */
     protected String _generateTypeConvertStatement(Channel source,
-            Channel sink, int offset) throws IllegalActionException {    
+            Channel sink, int offset) throws IllegalActionException {
         return _strategy._generateTypeConvertStatement(source, sink, offset);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
@@ -461,20 +460,19 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  have the proper end of line character for use by other native tools.
      */
     protected final static String _eol;
-        // FIXME rodiers: This is defined multiple times, in different root classes
-        //              Not really what we want.
+    // FIXME rodiers: This is defined multiple times, in different root classes
+    //              Not really what we want.
 
     static {
         _eol = StringUtilities.getProperty("line.separator");
-    }      
-    
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The strategy for generating code for this adapter.*/
     private ProgramCodeGeneratorAdapterStrategy _strategy;
-    
+
     /** The associated component. */
     private NamedObj _component;
 }

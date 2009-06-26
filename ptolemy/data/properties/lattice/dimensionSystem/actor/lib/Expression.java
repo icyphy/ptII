@@ -55,15 +55,13 @@ public class Expression extends AtomicActor {
      * @exception IllegalActionException
      */
     public Expression(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Expression actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.Expression actor) throws IllegalActionException {
 
         super(solver, actor, false);
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Expression actor =
-            (ptolemy.actor.lib.Expression) getComponent();
+        ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
         setAtLeast(actor.output, actor.expression);
         return super.constraintList();
@@ -72,8 +70,7 @@ public class Expression extends AtomicActor {
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
 
-        ptolemy.actor.lib.Expression actor =
-            (ptolemy.actor.lib.Expression) getComponent();
+        ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
         result.add(actor.expression);
         return result;
     }

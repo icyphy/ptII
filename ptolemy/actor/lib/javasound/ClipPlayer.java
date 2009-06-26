@@ -189,18 +189,21 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     clip.addLineListener(this);
                     AudioInputStream stream = null;
                     try {
-                        stream = AudioSystem
-                            .getAudioInputStream(fileOrURL.asURL());
+                        stream = AudioSystem.getAudioInputStream(fileOrURL
+                                .asURL());
                     } catch (IOException ex) {
                         // Handle jar urls from WebStart or the installer
                         try {
-                            URL possibleJarURL = ClassUtilities.jarURLEntryResource(fileOrURL.getExpression());
+                            URL possibleJarURL = ClassUtilities
+                                    .jarURLEntryResource(fileOrURL
+                                            .getExpression());
 
                             stream = AudioSystem
-                                .getAudioInputStream(possibleJarURL);
+                                    .getAudioInputStream(possibleJarURL);
                         } catch (Exception ex2) {
-                            IOException ioException = new IOException("Failed to open \""
-                                    + fileOrURL.getExpression() + "\".");
+                            IOException ioException = new IOException(
+                                    "Failed to open \""
+                                            + fileOrURL.getExpression() + "\".");
                             ioException.initCause(ex);
                             throw ioException;
                         }

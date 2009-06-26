@@ -380,7 +380,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         // the criterion seems difficult. Hence, we check to be sure
         // that the test is worth doing.
         Time currentTime = getModelTime();
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         // Check the most common case first.
         if (periodValue == 0.0) {
             // All subsequent firings will be at the current time.
@@ -507,7 +507,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
 
                         if (_debugging) {
-                            _debug("Waiting for real time to pass: " + timeToWait);
+                            _debug("Waiting for real time to pass: "
+                                    + timeToWait);
                         }
 
                         try {

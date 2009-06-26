@@ -397,8 +397,6 @@ public class JTreePane extends JSplitPane {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
-        JTreePane _parent;
-
         Icon _icon;
 
         String _title;
@@ -410,7 +408,6 @@ public class JTreePane extends JSplitPane {
         Entry(JTreePane parent, Icon icon, String title, JComponent component) {
             _icon = icon;
             _title = title;
-            _parent = parent;
             _component = component;
             _enabled = true;
         }

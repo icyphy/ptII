@@ -81,38 +81,35 @@ public abstract class WithIconGraphController extends BasicGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Get a location for a port that hasn't got a location yet.
      * @param pane The GraphPane.
      * @param frame The BasicGraphFrame.
      * @param _prototype The port.
      * @return The location.
      */
-    static public double[] getNewPortLocation(GraphPane pane, BasicGraphFrame frame, IOPort _prototype) {
+    static public double[] getNewPortLocation(GraphPane pane,
+            BasicGraphFrame frame, IOPort _prototype) {
         Point2D center = frame.getCenter();
 
         Rectangle2D visiblePart = frame.getVisibleRectangle();
 
         double[] p;
         if (_prototype.isInput() && _prototype.isOutput()) {
-            p = _offsetFigure(center.getX(), (visiblePart
-                    .getY() + visiblePart.getHeight())
-                    - _PORT_OFFSET, NewPortAction.PASTE_OFFSET * 2, 0,
-                    pane, frame);
+            p = _offsetFigure(center.getX(), (visiblePart.getY() + visiblePart
+                    .getHeight())
+                    - _PORT_OFFSET, FigureAction.PASTE_OFFSET * 2, 0, pane,
+                    frame);
         } else if (_prototype.isInput()) {
-            p = _offsetFigure(
-                    visiblePart.getX() + _PORT_OFFSET, center
-                            .getY(), 0, NewPortAction.PASTE_OFFSET * 2,
-                            pane, frame);
+            p = _offsetFigure(visiblePart.getX() + _PORT_OFFSET, center.getY(),
+                    0, FigureAction.PASTE_OFFSET * 2, pane, frame);
         } else if (_prototype.isOutput()) {
-            p = _offsetFigure(visiblePart.getX()
-                    + visiblePart.getWidth() - _PORT_OFFSET,
-                    center.getY(), 0, NewPortAction.PASTE_OFFSET * 2,
-                    pane, frame);
+            p = _offsetFigure(visiblePart.getX() + visiblePart.getWidth()
+                    - _PORT_OFFSET, center.getY(), 0,
+                    FigureAction.PASTE_OFFSET * 2, pane, frame);
         } else {
             p = _offsetFigure(center.getX(), center.getY(),
-                    NewPortAction.PASTE_OFFSET * 2, NewPortAction.PASTE_OFFSET * 2,
-                    pane, frame);
+                    FigureAction.PASTE_OFFSET * 2,
+                    FigureAction.PASTE_OFFSET * 2, pane, frame);
         }
         return p;
     }
@@ -164,7 +161,6 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -190,8 +186,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
             visibleRectangle = pane.getCanvas().getVisibleSize();
         }
         double[] point = FigureAction.offsetFigure(x, y, xOffset, yOffset,
-                diva.canvas.connector.TerminalFigure.class,
-                foregroundLayer, visibleRectangle);
+                diva.canvas.connector.TerminalFigure.class, foregroundLayer,
+                visibleRectangle);
         return point;
     }
 
@@ -427,8 +423,9 @@ public abstract class WithIconGraphController extends BasicGraphController {
         protected double[] _offsetFigure(double x, double y, double xOffset,
                 double yOffset) {
 
-            double[] point = WithIconGraphController._offsetFigure(x, y, xOffset, yOffset,
-                    getGraphPane(), WithIconGraphController.this.getFrame());
+            double[] point = WithIconGraphController._offsetFigure(x, y,
+                    xOffset, yOffset, getGraphPane(),
+                    WithIconGraphController.this.getFrame());
             return point;
         }
     }

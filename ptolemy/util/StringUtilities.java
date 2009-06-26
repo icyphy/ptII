@@ -208,8 +208,7 @@ public class StringUtilities {
      */
     public static void exit(int returnValue) {
         try {
-            if (StringUtilities.getProperty("ptolemy.ptII.doNotExit")
-                    .length() > 0) {
+            if (StringUtilities.getProperty("ptolemy.ptII.doNotExit").length() > 0) {
                 return;
             }
         } catch (SecurityException ex) {
@@ -1026,13 +1025,13 @@ public class StringUtilities {
      */
     public static String usageString(String commandTemplate,
             String[][] commandOptions, String[] commandFlags) {
-        String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
+        String[][] commandFlagsWithDescriptions = new String[commandFlags.length][2];
         for (int i = 0; i < commandFlags.length; i++) {
             commandFlagsWithDescriptions[i][0] = commandFlags[i];
             commandFlagsWithDescriptions[i][1] = "";
         }
         return usageString(commandTemplate, commandOptions,
-                           commandFlagsWithDescriptions);
+                commandFlagsWithDescriptions);
     }
 
     /** Return a string that contains a description of how to use a
@@ -1073,8 +1072,7 @@ public class StringUtilities {
         for (i = 0; i < commandFlagsWithDescriptions.length; i++) {
             result.append(" " + commandFlagsWithDescriptions[i][0]);
             if (commandFlagsWithDescriptions[i][1].length() > 0) {
-                result.append("\t"
-                              + commandFlagsWithDescriptions[i][1]);
+                result.append("\t" + commandFlagsWithDescriptions[i][1]);
             }
             result.append("\n");
         }

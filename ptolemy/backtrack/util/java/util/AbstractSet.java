@@ -60,7 +60,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status updated to 1.4
  */
-public abstract class AbstractSet extends AbstractCollection implements Set, Rollbackable {
+public abstract class AbstractSet extends AbstractCollection implements Set,
+        Rollbackable {
 
     /**     
      * The main constructor, for use by subclasses.
@@ -78,7 +79,7 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
      * @return true if the given object is equal to this Set
      */
     public boolean equals(Object o) {
-        return (o == this || (o instanceof Set && ((Set)o).size() == size() && containsAll((Collection)o)));
+        return (o == this || (o instanceof Set && ((Set) o).size() == size() && containsAll((Collection) o)));
     }
 
     /**     
@@ -92,8 +93,9 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
         Iterator itr = iterator();
         int hash = 0;
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             hash += hashCode(itr.next());
+        }
         return hash;
     }
 
@@ -118,17 +120,22 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
         int count = c.size();
         Iterator i;
         if (oldsize < count) {
-            for (i = iterator(), count = oldsize; count > 0; count--) 
-                if (c.contains(i.next()))
+            for (i = iterator(), count = oldsize; count > 0; count--) {
+                if (c.contains(i.next())) {
                     i.remove();
-        } else
-            for (i = c.iterator(); count > 0; count--) 
+                }
+            }
+        } else {
+            for (i = c.iterator(); count > 0; count--) {
                 remove(i.next());
+            }
+        }
         return oldsize != size();
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -136,8 +143,6 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
         super.$RESTORE(timestamp, trim);
     }
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

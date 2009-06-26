@@ -64,21 +64,18 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @exception IllegalActionException
      */
     public AtomicActor(PropertyConstraintSolver solver,
-            ptolemy.actor.AtomicActor actor)
-            throws IllegalActionException {
+            ptolemy.actor.AtomicActor actor) throws IllegalActionException {
 
         super(solver, actor);
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.AtomicActor actor =
-            (ptolemy.actor.AtomicActor) getComponent();
+        ptolemy.actor.AtomicActor actor = (ptolemy.actor.AtomicActor) getComponent();
 
-        Property name = new PropertyToken(
-                new StringToken(actor.getName()));
+        Property name = new PropertyToken(new StringToken(actor.getName()));
 
-        PropertySet nameSet = new PropertySet(
-                getSolver().getLattice(), new Property[] {name});
+        PropertySet nameSet = new PropertySet(getSolver().getLattice(),
+                new Property[] { name });
 
         for (IOPort port : (List<IOPort>) actor.portList()) {
             setAtLeast(port, nameSet);

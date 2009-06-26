@@ -57,8 +57,7 @@ public class TrigFunction extends AtomicActor {
      * @exception IllegalActionException
      */
     public TrigFunction(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.TrigFunction actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.TrigFunction actor) throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();

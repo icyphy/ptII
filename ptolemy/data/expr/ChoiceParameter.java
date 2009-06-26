@@ -66,8 +66,8 @@ public class ChoiceParameter extends StringParameter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         if (!enumClass.isEnum()) {
-            throw new IllegalActionException("Only a Java enum class is " +
-                    "accepted as parameter to enumClass.");
+            throw new IllegalActionException("Only a Java enum class is "
+                    + "accepted as parameter to enumClass.");
         }
         int i = 0;
         for (Object enumObject : enumClass.getEnumConstants()) {

@@ -57,8 +57,7 @@ public class Pulse extends AtomicActor {
      * @param actor The given Source actor
      * @exception IllegalActionException
      */
-    public Pulse(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Pulse actor)
+    public Pulse(PropertyConstraintSolver solver, ptolemy.actor.lib.Pulse actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
@@ -69,9 +68,11 @@ public class Pulse extends AtomicActor {
     public List<Inequality> constraintList() throws IllegalActionException {
         ArrayToken valuesArray = (ArrayToken) _actor.values.getToken();
 
-        setEquals(_actor.output, _lattice.leastUpperBound(
-                        _lattice.convertJavaToCtype(valuesArray.getElement(0).getType(),valuesArray.getElement(0)),
-                        _lattice.convertJavaToCtype(valuesArray.getElement(1).getType(),valuesArray.getElement(1))));
+        setEquals(_actor.output, _lattice.leastUpperBound(_lattice
+                .convertJavaToCtype(valuesArray.getElement(0).getType(),
+                        valuesArray.getElement(0)), _lattice
+                .convertJavaToCtype(valuesArray.getElement(1).getType(),
+                        valuesArray.getElement(1))));
 
         return super.constraintList();
     }
@@ -80,14 +81,14 @@ public class Pulse extends AtomicActor {
     ////                         private variables                 ////
     private ptolemy.actor.lib.Pulse _actor;
     private Lattice _lattice;
-/*
-    protected List<Attribute> _getPropertyableAttributes() {
-        ptolemy.actor.lib.Expression actor =
-            (ptolemy.actor.lib.Expression) _component;
+    /*
+        protected List<Attribute> _getPropertyableAttributes() {
+            ptolemy.actor.lib.Expression actor =
+                (ptolemy.actor.lib.Expression) _component;
 
-        List<Attribute> result = super._getPropertyableAttributes();
-        result.add(actor.expression);
-        return result;
-    }
-*/
+            List<Attribute> result = super._getPropertyableAttributes();
+            result.add(actor.expression);
+            return result;
+        }
+    */
 }

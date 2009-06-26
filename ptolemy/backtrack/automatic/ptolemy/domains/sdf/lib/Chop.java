@@ -29,7 +29,6 @@
 //// Chop
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
-import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
@@ -208,7 +207,8 @@ public class Chop extends SDFTransformer implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public Chop(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public Chop(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         numberToRead = new Parameter(this, "numberToRead");
         numberToRead.setExpression("128");
@@ -232,22 +232,28 @@ public class Chop extends SDFTransformer implements Rollbackable {
      * @param attribute The attribute that has changed.
      * @exception IllegalActionException If the parameters are out of range.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == numberToRead) {
-            $ASSIGN$_numberToRead(((IntToken)numberToRead.getToken()).intValue());
+            $ASSIGN$_numberToRead(((IntToken) numberToRead.getToken())
+                    .intValue());
             if (_numberToRead <= 0) {
-                throw new IllegalActionException(this, "Invalid numberToRead: " + _numberToRead);
+                throw new IllegalActionException(this, "Invalid numberToRead: "
+                        + _numberToRead);
             }
         } else if (attribute == numberToWrite) {
-            $ASSIGN$_numberToWrite(((IntToken)numberToWrite.getToken()).intValue());
+            $ASSIGN$_numberToWrite(((IntToken) numberToWrite.getToken())
+                    .intValue());
             if (_numberToWrite <= 0) {
-                throw new IllegalActionException(this, "Invalid numberToWrite: " + _numberToRead);
+                throw new IllegalActionException(this,
+                        "Invalid numberToWrite: " + _numberToRead);
             }
             $ASSIGN$_buffer(new Token[_numberToWrite]);
         } else if (attribute == offset) {
-            $ASSIGN$_offsetValue(((IntToken)offset.getToken()).intValue());
+            $ASSIGN$_offsetValue(((IntToken) offset.getToken()).intValue());
         } else if (attribute == usePastInputs) {
-            $ASSIGN$_usePast(((BooleanToken)usePastInputs.getToken()).booleanValue());
+            $ASSIGN$_usePast(((BooleanToken) usePastInputs.getToken())
+                    .booleanValue());
         }
         if ((attribute == offset) || (attribute == usePastInputs)) {
             if (_offsetValue > 0) {
@@ -255,7 +261,8 @@ public class Chop extends SDFTransformer implements Rollbackable {
                 $ASSIGN$_pastNeedsInitializing(true);
             }
         }
-        if ((attribute == numberToRead) || (attribute == numberToWrite)||(attribute == offset)||(attribute == usePastInputs)) {
+        if ((attribute == numberToRead) || (attribute == numberToWrite)
+                || (attribute == offset) || (attribute == usePastInputs)) {
             $ASSIGN$_highLimit((_offsetValue + _numberToRead) - 1);
             if (_highLimit >= _numberToWrite) {
                 $ASSIGN$_highLimit(_numberToWrite - 1);
@@ -277,7 +284,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
      * the specified number of output tokens.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         int inputIndex = _inputIndex;
         int pastBufferIndex = 0;
@@ -309,11 +316,13 @@ public class Chop extends SDFTransformer implements Rollbackable {
             int destination = 0;
             if (startCopy < 0) {
                 destination = _pastBuffer.length - _numberToRead;
-                System.arraycopy($BACKUP$_pastBuffer(), _numberToRead, $BACKUP$_pastBuffer(), 0, destination);
+                System.arraycopy($BACKUP$_pastBuffer(), _numberToRead,
+                        $BACKUP$_pastBuffer(), 0, destination);
                 startCopy = 0;
                 length = _numberToRead;
             }
-            System.arraycopy(inBuffer, startCopy, $BACKUP$_pastBuffer(), destination, length);
+            System.arraycopy(inBuffer, startCopy, $BACKUP$_pastBuffer(),
+                    destination, length);
         }
         output.send(0, $BACKUP$_buffer(), _numberToWrite);
     }
@@ -323,21 +332,23 @@ public class Chop extends SDFTransformer implements Rollbackable {
      * gets initialized.
      * @exception IllegalActionException If the superclass throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_pastNeedsInitializing(true);
     }
 
     private final int $ASSIGN$_highLimit(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_highLimit.add(null, _highLimit, $CHECKPOINT.getTimestamp());
+            $RECORD$_highLimit
+                    .add(null, _highLimit, $CHECKPOINT.getTimestamp());
         }
         return _highLimit = newValue;
     }
 
     private final int $ASSIGN$_inputIndex(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_inputIndex.add(null, _inputIndex, $CHECKPOINT.getTimestamp());
+            $RECORD$_inputIndex.add(null, _inputIndex, $CHECKPOINT
+                    .getTimestamp());
         }
         return _inputIndex = newValue;
     }
@@ -351,21 +362,24 @@ public class Chop extends SDFTransformer implements Rollbackable {
 
     private final int $ASSIGN$_numberToRead(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_numberToRead.add(null, _numberToRead, $CHECKPOINT.getTimestamp());
+            $RECORD$_numberToRead.add(null, _numberToRead, $CHECKPOINT
+                    .getTimestamp());
         }
         return _numberToRead = newValue;
     }
 
     private final int $ASSIGN$_numberToWrite(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_numberToWrite.add(null, _numberToWrite, $CHECKPOINT.getTimestamp());
+            $RECORD$_numberToWrite.add(null, _numberToWrite, $CHECKPOINT
+                    .getTimestamp());
         }
         return _numberToWrite = newValue;
     }
 
     private final int $ASSIGN$_offsetValue(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_offsetValue.add(null, _offsetValue, $CHECKPOINT.getTimestamp());
+            $RECORD$_offsetValue.add(null, _offsetValue, $CHECKPOINT
+                    .getTimestamp());
         }
         return _offsetValue = newValue;
     }
@@ -379,9 +393,8 @@ public class Chop extends SDFTransformer implements Rollbackable {
 
     private final Token $ASSIGN$_buffer(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_buffer.add(new int[] {
-                    index0
-                }, _buffer[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_buffer.add(new int[] { index0 }, _buffer[index0],
+                    $CHECKPOINT.getTimestamp());
         }
         return _buffer[index0] = newValue;
     }
@@ -393,22 +406,23 @@ public class Chop extends SDFTransformer implements Rollbackable {
 
     private final Token[] $ASSIGN$_pastBuffer(Token[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_pastBuffer.add(null, _pastBuffer, $CHECKPOINT.getTimestamp());
+            $RECORD$_pastBuffer.add(null, _pastBuffer, $CHECKPOINT
+                    .getTimestamp());
         }
         return _pastBuffer = newValue;
     }
 
     private final Token $ASSIGN$_pastBuffer(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_pastBuffer.add(new int[] {
-                    index0
-                }, _pastBuffer[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_pastBuffer.add(new int[] { index0 }, _pastBuffer[index0],
+                    $CHECKPOINT.getTimestamp());
         }
         return _pastBuffer[index0] = newValue;
     }
 
     private final Token[] $BACKUP$_pastBuffer() {
-        $RECORD$_pastBuffer.backup(null, _pastBuffer, $CHECKPOINT.getTimestamp());
+        $RECORD$_pastBuffer.backup(null, _pastBuffer, $CHECKPOINT
+                .getTimestamp());
         return _pastBuffer;
     }
 
@@ -421,13 +435,15 @@ public class Chop extends SDFTransformer implements Rollbackable {
 
     private final boolean $ASSIGN$_pastNeedsInitializing(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_pastNeedsInitializing.add(null, _pastNeedsInitializing, $CHECKPOINT.getTimestamp());
+            $RECORD$_pastNeedsInitializing.add(null, _pastNeedsInitializing,
+                    $CHECKPOINT.getTimestamp());
         }
         return _pastNeedsInitializing = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
@@ -435,15 +451,21 @@ public class Chop extends SDFTransformer implements Rollbackable {
         _highLimit = $RECORD$_highLimit.restore(_highLimit, timestamp, trim);
         _inputIndex = $RECORD$_inputIndex.restore(_inputIndex, timestamp, trim);
         _lowLimit = $RECORD$_lowLimit.restore(_lowLimit, timestamp, trim);
-        _numberToRead = $RECORD$_numberToRead.restore(_numberToRead, timestamp, trim);
-        _numberToWrite = $RECORD$_numberToWrite.restore(_numberToWrite, timestamp, trim);
-        _offsetValue = $RECORD$_offsetValue.restore(_offsetValue, timestamp, trim);
-        _buffer = (Token[])$RECORD$_buffer.restore(_buffer, timestamp, trim);
-        _pastBuffer = (Token[])$RECORD$_pastBuffer.restore(_pastBuffer, timestamp, trim);
+        _numberToRead = $RECORD$_numberToRead.restore(_numberToRead, timestamp,
+                trim);
+        _numberToWrite = $RECORD$_numberToWrite.restore(_numberToWrite,
+                timestamp, trim);
+        _offsetValue = $RECORD$_offsetValue.restore(_offsetValue, timestamp,
+                trim);
+        _buffer = (Token[]) $RECORD$_buffer.restore(_buffer, timestamp, trim);
+        _pastBuffer = (Token[]) $RECORD$_pastBuffer.restore(_pastBuffer,
+                timestamp, trim);
         _usePast = $RECORD$_usePast.restore(_usePast, timestamp, trim);
-        _pastNeedsInitializing = $RECORD$_pastNeedsInitializing.restore(_pastNeedsInitializing, timestamp, trim);
+        _pastNeedsInitializing = $RECORD$_pastNeedsInitializing.restore(
+                _pastNeedsInitializing, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -487,20 +509,13 @@ public class Chop extends SDFTransformer implements Rollbackable {
 
     private transient FieldRecord $RECORD$_usePast = new FieldRecord(0);
 
-    private transient FieldRecord $RECORD$_pastNeedsInitializing = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_pastNeedsInitializing = new FieldRecord(
+            0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_highLimit,
-            $RECORD$_inputIndex,
-            $RECORD$_lowLimit,
-            $RECORD$_numberToRead,
-            $RECORD$_numberToWrite,
-            $RECORD$_offsetValue,
-            $RECORD$_buffer,
-            $RECORD$_pastBuffer,
-            $RECORD$_usePast,
-            $RECORD$_pastNeedsInitializing
-        };
+            $RECORD$_highLimit, $RECORD$_inputIndex, $RECORD$_lowLimit,
+            $RECORD$_numberToRead, $RECORD$_numberToWrite,
+            $RECORD$_offsetValue, $RECORD$_buffer, $RECORD$_pastBuffer,
+            $RECORD$_usePast, $RECORD$_pastNeedsInitializing };
 
 }
-

@@ -315,8 +315,7 @@ public abstract class GTIngredient {
      *  @param separator The separator charactor.
      *  @return The position of the separator, if found, or -1 otherwise.
      */
-    protected static int _findSeparator(String s, int startPos,
-            char separator) {
+    protected static int _findSeparator(String s, int startPos, char separator) {
         boolean inDblQuote = false;
         boolean inSngQuote = false;
         boolean escaped = false;
@@ -417,8 +416,8 @@ public abstract class GTIngredient {
                     inSngQuote = !inSngQuote;
                 }
 
-                if (!escaped && !inDblQuote && !inSngQuote &&
-                        c == FIELD_SEPARATOR) {
+                if (!escaped && !inDblQuote && !inSngQuote
+                        && c == FIELD_SEPARATOR) {
                     position = i;
                     break;
                 }

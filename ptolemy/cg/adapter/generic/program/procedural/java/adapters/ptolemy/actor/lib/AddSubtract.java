@@ -29,8 +29,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -102,7 +102,8 @@ public class AddSubtract extends ProgramCodeGeneratorAdapter {
             args.set(2, minusType);
             codeStream.appendCodeBlock("minusBlock", args);
         }
-        if (actor.output.isOutsideConnected() && actor.output.numberOfSinks() > 0) {
+        if (actor.output.isOutsideConnected()
+                && actor.output.numberOfSinks() > 0) {
             // If the AddSubtract is in a Composite and the output is connected
             // to a port that is not connected, then don't generate code
             // for the output.  See test/auto/CompositeWithUnconnectedPort.xml
@@ -135,8 +136,8 @@ public class AddSubtract extends ProgramCodeGeneratorAdapter {
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol
-                    + getCodeGenerator().comment("preinitialize "
-                            + getComponent().getName()));
+                    + getCodeGenerator().comment(
+                            "preinitialize " + getComponent().getName()));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

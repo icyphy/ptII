@@ -137,9 +137,8 @@ public class GraphicalLocator extends Locator {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GraphicalLocator newObject = (GraphicalLocator) super
-                .clone(workspace);
-        newObject._circle = (EllipseAttribute)getAttribute("_circle");
+        GraphicalLocator newObject = (GraphicalLocator) super.clone(workspace);
+        newObject._circle = (EllipseAttribute) getAttribute("_circle");
         return newObject;
     }
 

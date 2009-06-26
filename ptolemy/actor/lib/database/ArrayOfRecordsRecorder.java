@@ -160,7 +160,8 @@ public class ArrayOfRecordsRecorder extends Sink {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayOfRecordsRecorder newObject = (ArrayOfRecordsRecorder) super.clone(workspace);
+        ArrayOfRecordsRecorder newObject = (ArrayOfRecordsRecorder) super
+                .clone(workspace);
         newObject.input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
         return newObject;
     }
@@ -172,7 +173,7 @@ public class ArrayOfRecordsRecorder extends Sink {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            ArrayToken array = (ArrayToken)input.get(0);
+            ArrayToken array = (ArrayToken) input.get(0);
             records.setToken(array);
             records.setPersistent(true);
         }

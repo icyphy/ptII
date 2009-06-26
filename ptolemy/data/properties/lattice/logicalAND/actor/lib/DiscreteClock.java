@@ -60,7 +60,7 @@ public class DiscreteClock extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
     /**
      * Return the list of constraints that specifies the analysis
@@ -71,18 +71,16 @@ public class DiscreteClock extends AtomicActor {
      *  reading the values from the values parameter of the DiscreteClock
      *  actor, or the super class throws it.
      */
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
 
-        ptolemy.actor.lib.DiscreteClock actor =
-            (ptolemy.actor.lib.DiscreteClock) getComponent();
+        ptolemy.actor.lib.DiscreteClock actor = (ptolemy.actor.lib.DiscreteClock) getComponent();
 
         ArrayToken valuesToken = (ArrayToken) actor.values.getToken();
 
         boolean isStatic = true;
         for (int i = 1; i < valuesToken.length(); i++) {
-            if (!valuesToken.getElement(i - 1).equals(
-                    valuesToken.getElement(i))) {
+            if (!valuesToken.getElement(i - 1)
+                    .equals(valuesToken.getElement(i))) {
                 isStatic = false;
                 break;
             }

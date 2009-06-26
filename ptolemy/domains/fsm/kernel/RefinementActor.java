@@ -71,7 +71,7 @@ public interface RefinementActor extends Actor {
      *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
-    public void addRefinement(State state, String name,
-            Entity template, String className,
-            Configuration configuration) throws IllegalActionException;
+    public void addRefinement(State state, String name, Entity template,
+            String className, Configuration configuration)
+            throws IllegalActionException;
 }

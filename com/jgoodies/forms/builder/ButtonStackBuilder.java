@@ -38,6 +38,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.ConstantSize;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 /**
@@ -131,8 +132,9 @@ public final class ButtonStackBuilder extends PanelBuilder {
     public void addButtons(JButton[] buttons) {
         for (int i = 0; i < buttons.length; i++) {
             addGridded(buttons[i]);
-            if (i < buttons.length - 1)
+            if (i < buttons.length - 1) {
                 addRelatedGap();
+            }
         }
     }
 
@@ -191,7 +193,7 @@ public final class ButtonStackBuilder extends PanelBuilder {
      * @param size  a constant that describes the gap
      */
     public void addStrut(ConstantSize size) {
-        getLayout().appendRow(new RowSpec(RowSpec.TOP, size, RowSpec.NO_GROW));
+        getLayout().appendRow(new RowSpec(RowSpec.TOP, size, FormSpec.NO_GROW));
         nextRow();
     }
 

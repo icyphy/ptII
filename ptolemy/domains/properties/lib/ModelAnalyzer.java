@@ -99,7 +99,8 @@ public class ModelAnalyzer extends Transformer {
         ModelAnalyzer newObject = (ModelAnalyzer) super.clone(workspace);
         if (newObject._analyzerWrapper != null) {
             // FIXME: Why is this necessary?
-            newObject._analyzerWrapper = (AnalyzerAttribute)newObject._analyzerWrapper.getAttribute("_analyzerWrapper");
+            newObject._analyzerWrapper = (AnalyzerAttribute) newObject._analyzerWrapper
+                    .getAttribute("_analyzerWrapper");
         }
         return newObject;
     }

@@ -55,8 +55,9 @@ public class SeparatorComponentBuilder implements ComponentBuilder {
     public String getDeclaration(String name,
             java.util.Map<String, Object> beanProperties) {
         String text = (String) beanProperties.get(TEXT);
-        if (text == null)
+        if (text == null) {
             text = "";
+        }
         return "java.awt.Component "
                 + name
                 + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
@@ -66,8 +67,9 @@ public class SeparatorComponentBuilder implements ComponentBuilder {
     public java.awt.Component getInstance(
             java.util.Map<String, Object> beanProperties) throws Exception {
         String text = (String) beanProperties.get(TEXT);
-        if (text == null)
+        if (text == null) {
             text = "";
+        }
         return DefaultComponentFactory.getInstance().createSeparator(text);
     }
 

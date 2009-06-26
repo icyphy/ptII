@@ -31,9 +31,9 @@ import java.io.IOException;
 import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -83,8 +83,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
         ProgramCodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
-        return ProgramCodeGeneratorAdapterStrategy.copyFilesToCodeDirectory(compositeActor,
-                codeGenerator);
+        return ProgramCodeGeneratorAdapterStrategy.copyFilesToCodeDirectory(
+                compositeActor, codeGenerator);
     }
 
     /** Generate code for a given actor.
@@ -150,15 +150,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         try {
             // FindBugs wants this.
             if (!(compositeActor instanceof ptolemy.cg.lib.CompiledCompositeActor)) {
-                throw new InternalErrorException(
-                        compositeActor,
-                        null,
+                throw new InternalErrorException(compositeActor, null,
                         " is not an instance of "
                                 + "ptolemy.cg.lib.CompiledCompositeActor.");
             }
 
             ptolemy.cg.lib.CompiledCompositeActor actor = (ptolemy.cg.lib.CompiledCompositeActor) compositeActor;
-            List<?> codeGenerators = actor.attributeList(JavaCodeGenerator.class);
+            List<?> codeGenerators = actor
+                    .attributeList(JavaCodeGenerator.class);
 
             if (codeGenerators.size() == 0) {
                 // Add a codeGenerator
@@ -180,8 +179,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     .setBaseDirectory(codeGenerator.codeDirectory.asFile()
                             .toURI());
 
-            codeGenerator.generatorPackageList.setExpression(actor.generatorPackage
-                    .getExpression());
+            codeGenerator.generatorPackageList
+                    .setExpression(actor.generatorPackage.getExpression());
 
             codeGenerator.inline.setExpression(actor.inline.getExpression());
 

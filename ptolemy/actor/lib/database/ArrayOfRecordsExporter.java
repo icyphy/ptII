@@ -125,10 +125,10 @@ public class ArrayOfRecordsExporter extends LineWriter {
      *  @exception IllegalActionException If the input token cannot be read.
      */
     protected void _writeToken(Token token) throws IllegalActionException {
-        ArrayToken castToken = (ArrayToken)token;
-        ArrayToken columnsValue = (ArrayToken)columns.getToken();
+        ArrayToken castToken = (ArrayToken) token;
+        ArrayToken columnsValue = (ArrayToken) columns.getToken();
         for (int row = 0; row < castToken.length(); row++) {
-            RecordToken record = (RecordToken)castToken.getElement(row);
+            RecordToken record = (RecordToken) castToken.getElement(row);
             if (columnsValue.length() == 0) {
                 // Display all columns.
                 // FIXME: This really requires every record to be identical!
@@ -137,7 +137,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
                     Iterator labelSet = record.labelSet().iterator();
                     int column = 0;
                     while (labelSet.hasNext()) {
-                        String columnName = (String)labelSet.next();
+                        String columnName = (String) labelSet.next();
                         if (column > 0) {
                             // FIXME: Parameter for separator
                             _writer.print(",");
@@ -150,7 +150,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
                 Iterator labelSet = record.labelSet().iterator();
                 int column = 0;
                 while (labelSet.hasNext()) {
-                    String columnName = (String)labelSet.next();
+                    String columnName = (String) labelSet.next();
                     if (column > 0) {
                         // FIXME: Parameter for separator
                         _writer.print(",");

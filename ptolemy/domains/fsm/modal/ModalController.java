@@ -129,17 +129,15 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         if (target instanceof State) {
             State state = (State) target;
 
-            TreeMap<Class<? extends Entity>, String> map =
-                _getRefinementClasses();
+            TreeMap<Class<? extends Entity>, String> map = _getRefinementClasses();
             String refinementClass = null;
             boolean conflict = false;
-            RefinementSuggestion suggestion =
-                (RefinementSuggestion) target.getAttribute(
-                        "refinementSuggestion");
+            RefinementSuggestion suggestion = (RefinementSuggestion) target
+                    .getAttribute("refinementSuggestion");
             for (Object dropObject : dropObjects) {
                 if (suggestion != null) {
-                    String className = suggestion.getRefinementClass(
-                            (NamedObj) dropObject);
+                    String className = suggestion
+                            .getRefinementClass((NamedObj) dropObject);
                     if (refinementClass == null) {
                         refinementClass = className;
                     } else if (!refinementClass.equals(className)) {
@@ -165,8 +163,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
             }
 
             if (conflict || refinementClass == null) {
-                throw new IllegalActionException(this, "Unable to determine " +
-                        "the type of all the dropped objects.");
+                throw new IllegalActionException(this, "Unable to determine "
+                        + "the type of all the dropped objects.");
             }
 
             TypedActor[] refinements = state.getRefinement();
@@ -181,14 +179,14 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 }
             }
             if (refinement == null) {
-                CompositeEntity containerContainer =
-                    (CompositeEntity) state.getContainer().getContainer();
+                CompositeEntity containerContainer = (CompositeEntity) state
+                        .getContainer().getContainer();
                 String name = containerContainer.uniqueName(state.getName());
                 addRefinement(state, name, null, refinementClass, null);
                 merge = true;
                 refinement = (TypedActor) containerContainer.getEntity(name);
             }
-            target = (NamedObj)refinement;
+            target = (NamedObj) refinement;
         }
         MoMLChangeRequest request = new MoMLChangeRequest(this, target, moml);
         request.setUndoable(true);
@@ -212,8 +210,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     public State getRefinedState() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof ModalModel) {
-            List<?> controllers = ((ModalModel) container).entityList(
-                    ModalController.class);
+            List<?> controllers = ((ModalModel) container)
+                    .entityList(ModalController.class);
             for (Object controllerObject : controllers) {
                 ModalController controller = (ModalController) controllerObject;
                 List<?> states = controller.entityList(State.class);
@@ -276,8 +274,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
 
                 return port;
             } else {
-                ModalPort containerPort = container == null ? null :
-                    (ModalPort) container.getPort(name);
+                ModalPort containerPort = container == null ? null
+                        : (ModalPort) container.getPort(name);
                 if (containerPort == null) {
                     _mirrorDisable = true;
                     ((ModalModel) getContainer()).newPort(name);
@@ -364,8 +362,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private static class ClassComparator
-            implements Comparator<Class<? extends Entity>> {
+    private static class ClassComparator implements
+            Comparator<Class<? extends Entity>> {
 
         /** Compare class1 and class2, and return -1 if class1 is a subclass of
          *  class2, 1 if class2 is a subclass of class1, and otherwise, the
@@ -407,23 +405,23 @@ public class ModalController extends FSMActor implements DropTargetHandler,
             String className, final Configuration configuration)
             throws IllegalActionException {
         Attribute allowRefinement = state.getAttribute("_allowRefinement");
-        if (allowRefinement instanceof Parameter &&
-                !((BooleanToken) ((Parameter) allowRefinement).getToken())
+        if (allowRefinement instanceof Parameter
+                && !((BooleanToken) ((Parameter) allowRefinement).getToken())
                         .booleanValue()) {
-            throw new IllegalActionException(state, "State does not support " +
-                    "refinement.");
+            throw new IllegalActionException(state, "State does not support "
+                    + "refinement.");
         }
 
         final CompositeEntity container = (CompositeEntity) getContainer();
 
         if (container == null) {
-            throw new IllegalActionException(state, "State container has no " +
-                    "container!");
+            throw new IllegalActionException(state, "State container has no "
+                    + "container!");
         }
 
         if (container.getEntity(name) != null) {
-            throw new IllegalActionException(state, "There is already a " +
-                    "refinement with name " + name + ".");
+            throw new IllegalActionException(state, "There is already a "
+                    + "refinement with name " + name + ".");
         }
 
         String currentRefinements = state.refinementName.getExpression();
@@ -445,15 +443,13 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                     + "\"><property name=\"refinementName\" value=\""
                     + currentRefinements + "\"/></entity></group>";
         } else {
-            moml = "<group><entity name=\"" + name + "\" class=\""
-                    + className + "\"/>" + "<entity name=\""
-                    + state.getName(container)
+            moml = "<group><entity name=\"" + name + "\" class=\"" + className
+                    + "\"/>" + "<entity name=\"" + state.getName(container)
                     + "\"><property name=\"refinementName\" value=\""
                     + currentRefinements + "\"/></entity></group>";
         }
 
-        MoMLChangeRequest change = new MoMLChangeRequest(state, container,
-                moml) {
+        MoMLChangeRequest change = new MoMLChangeRequest(state, container, moml) {
             protected void _execute() throws Exception {
                 super._execute();
 
@@ -487,8 +483,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                         if (newPort instanceof RefinementPort
                                 && port instanceof IOPort) {
                             try {
-                                ((RefinementPort) newPort).setMirrorDisable(
-                                        true);
+                                ((RefinementPort) newPort)
+                                        .setMirrorDisable(true);
 
                                 if (((IOPort) port).isInput()) {
                                     ((RefinementPort) newPort).setInput(true);
@@ -499,8 +495,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                                 }
 
                                 if (((IOPort) port).isMultiport()) {
-                                    ((RefinementPort) newPort).setMultiport(
-                                            true);
+                                    ((RefinementPort) newPort)
+                                            .setMultiport(true);
                                 }
 
                                 /* No longer needed since Yuhong modified
@@ -515,29 +511,28 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                                 // Copy the location to the new port if any.
                                 // (tfeng 08/29/08)
                                 if (container instanceof ModalModel) {
-                                    FSMActor controller =((ModalModel)
-                                            container).getController();
-                                    if (controller != null &&
-                                            controller != container) {
+                                    FSMActor controller = ((ModalModel) container)
+                                            .getController();
+                                    if (controller != null
+                                            && controller != container) {
                                         Port controllerPort = controller
                                                 .getPort(port.getName());
                                         if (controllerPort != null) {
-                                            Location location = (Location)
-                                                    controllerPort.getAttribute(
-                                                            "_location",
+                                            Location location = (Location) controllerPort
+                                                    .getAttribute("_location",
                                                             Location.class);
                                             if (location != null) {
-                                                location = (Location)
-                                                        location.clone(
-                                                        newPort.workspace());
+                                                location = (Location) location
+                                                        .clone(newPort
+                                                                .workspace());
                                                 location.setContainer(newPort);
                                             }
                                         }
                                     }
                                 }
                             } finally {
-                                ((RefinementPort) newPort).setMirrorDisable(
-                                        false);
+                                ((RefinementPort) newPort)
+                                        .setMirrorDisable(false);
                             }
                         }
                     } finally {

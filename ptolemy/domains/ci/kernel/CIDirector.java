@@ -523,7 +523,8 @@ public class CIDirector extends Director {
      *  @return True if the actor is active.
      * @exception IllegalActionException
      */
-    protected static boolean _isActive(Actor actor) throws IllegalActionException {
+    protected static boolean _isActive(Actor actor)
+            throws IllegalActionException {
         //TODO: check all inputs and outputs have the same setting.
         boolean inputIsPush = false;
         boolean hasInput = false;

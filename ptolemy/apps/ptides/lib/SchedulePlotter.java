@@ -182,11 +182,11 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
      */
     private ArrayList nodes = new ArrayList();
 
-//    /**
-//     * Contains all nodes and is true for nodes on which actors are currently
-//     * executing.
-//     */
-//    private boolean[] nodeActive;
+    //    /**
+    //     * Contains all nodes and is true for nodes on which actors are currently
+    //     * executing.
+    //     */
+    //    private boolean[] nodeActive;
 
     /**
      * Contains the list of actors for each node.
@@ -238,7 +238,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             plot.clear(false);
             plot.clearLegends();
             nodes.addAll(nodesActors.keySet());
-//            nodeActive = new boolean[nodes.size()];
+            //            nodeActive = new boolean[nodes.size()];
             this.nodeActors = nodesActors;
             for (int i = 0; i < nodes.size(); i++) {
                 Actor node = (Actor) nodes.get(i);

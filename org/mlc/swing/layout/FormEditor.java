@@ -245,9 +245,10 @@ public class FormEditor extends JPanel {
 
     void setContainer(Container container) {
         java.awt.LayoutManager layoutManager = container.getLayout();
-        if (!(layoutManager instanceof ContainerLayout))
+        if (!(layoutManager instanceof ContainerLayout)) {
             throw new RuntimeException(
                     "Container layout must be of type ContainerLayout");
+        }
         this.container = container;
     }
 
@@ -457,8 +458,9 @@ public class FormEditor extends JPanel {
                     int col = table.columnAtPoint(p);
                     // support double-click:
                     Component component = table.getSelectedControl();
-                    if (component == null)
+                    if (component == null) {
                         return;
+                    }
 
                     /* invoke componentDef editor on double-clicked control */
                     String name = getComponentName(component);
@@ -480,11 +482,12 @@ public class FormEditor extends JPanel {
                             .getSelectedValue();
 
                     CellConstraints constraints = getComponentConstraints(thisComponent);
-                    if (constraints == null)
+                    if (constraints == null) {
                         throw new RuntimeException(
                                 "Unable to find constraints for component "
                                         + thisComponent + " in layout "
                                         + containerLayout.getName());
+                    }
                     int col = constraints.gridX;
                     int row = constraints.gridY;
 
@@ -498,8 +501,9 @@ public class FormEditor extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int index = componentList.locationToIndex(e.getPoint());
-                    if (index == -1)
+                    if (index == -1) {
                         return;
+                    }
 
                     // Get item
                     ListModel lm = ((DndList) e.getSource()).getModel();
@@ -510,11 +514,12 @@ public class FormEditor extends JPanel {
                     ComponentDef compDef = containerLayout
                             .getComponentDef(name);
                     CellConstraints constraints = getComponentConstraints(thisComponent);
-                    if (constraints == null)
+                    if (constraints == null) {
                         throw new RuntimeException(
                                 "Unable to find constraints for component "
                                         + thisComponent + " in layout "
                                         + containerLayout.getName());
+                    }
                     editComponent(compDef, thisComponent, constraints);
                 }
             }
@@ -536,8 +541,9 @@ public class FormEditor extends JPanel {
         Component[] children = container.getComponents();
         for (int index = 0; index < children.length; index++) {
             Component component = children[index];
-            if (component instanceof Container)
+            if (component instanceof Container) {
                 ((Container) component).doLayout();
+            }
         }
     }
 
@@ -608,13 +614,15 @@ public class FormEditor extends JPanel {
                         Component testComponent = sortedComponents
                                 .get(insertIndex);
                         String testName = getComponentName(testComponent);
-                        if (testName != null)
+                        if (testName != null) {
                             testName = testName.toUpperCase();
+                        }
                         if (insertComponentName.toUpperCase().compareTo(
-                                testName) <= 0)
+                                testName) <= 0) {
                             break;
-                        else
+                        } else {
                             insertIndex++;
+                        }
                     }
                     sortedComponents.add(insertIndex, insertComponent);
                 }
@@ -674,8 +682,9 @@ public class FormEditor extends JPanel {
         for (int index = 0; index < container.getComponentCount(); index++) {
             Component component = container.getComponent(index);
             CellConstraints constraints = getComponentConstraints(component);
-            if (constraints.gridX > column)
+            if (constraints.gridX > column) {
                 constraints.gridX++;
+            }
         }
 
         try {
@@ -693,8 +702,9 @@ public class FormEditor extends JPanel {
         for (int index = 0; index < container.getComponentCount(); index++) {
             Component component = container.getComponent(index);
             CellConstraints constraints = getComponentConstraints(component);
-            if (constraints.gridY > rowIndex)
+            if (constraints.gridY > rowIndex) {
                 constraints.gridY++;
+            }
         }
 
         try {
@@ -770,8 +780,9 @@ public class FormEditor extends JPanel {
     }
 
     public void updateLayout(Component component) {
-        if (suspendConstraintControlUpdates)
+        if (suspendConstraintControlUpdates) {
             return;
+        }
 
         CellConstraints constraints = getComponentConstraints(component);
 
@@ -819,8 +830,9 @@ public class FormEditor extends JPanel {
         }
 
         public Object getNextValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
+            }
             Integer next = constraints.gridX + constraints.gridWidth - 1 < containerLayout
                     .getColumnCount() ? Integer
                     .valueOf(constraints.gridWidth + 1) : null;
@@ -828,9 +840,9 @@ public class FormEditor extends JPanel {
         }
 
         public Object getPreviousValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
-            else {
+            } else {
                 Integer previous = constraints.gridWidth > 1 ? Integer
                         .valueOf(constraints.gridWidth - 1) : null;
                 return previous;
@@ -838,15 +850,17 @@ public class FormEditor extends JPanel {
         }
 
         public Object getValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return "";
-            else
+            } else {
                 return Integer.valueOf(constraints.gridWidth);
+            }
         }
 
         public void setValue(Object value) {
-            if (constraints == null || value == null)
+            if (constraints == null || value == null) {
                 return;
+            }
 
             //      Number val = (Number) value;
             constraints.gridWidth = ((Number) value).intValue();
@@ -881,9 +895,9 @@ public class FormEditor extends JPanel {
         }
 
         public Object getNextValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
-            else {
+            } else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < containerLayout
                         .getRowCount() ? Integer
                         .valueOf(constraints.gridHeight + 1) : null;
@@ -892,9 +906,9 @@ public class FormEditor extends JPanel {
         }
 
         public Object getPreviousValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return null;
-            else {
+            } else {
                 Integer previous = constraints.gridHeight > 1 ? Integer
                         .valueOf(constraints.gridHeight - 1) : null;
                 return previous;
@@ -902,15 +916,17 @@ public class FormEditor extends JPanel {
         }
 
         public Object getValue() {
-            if (constraints == null)
+            if (constraints == null) {
                 return "";
-            else
+            } else {
                 return Integer.valueOf(constraints.gridHeight);
+            }
         }
 
         public void setValue(Object value) {
-            if (constraints == null || value == null)
+            if (constraints == null || value == null) {
                 return;
+            }
             //      Number val = (Number) value;
             constraints.gridHeight = ((Number) value).intValue();
             super.fireStateChanged();
@@ -1031,8 +1047,9 @@ public class FormEditor extends JPanel {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
-                        if (nameField.getText().trim().length() == 0)
+                        if (nameField.getText().trim().length() == 0) {
                             throw new Exception("The name field is required");
+                        }
 
                         //            int currentCol = propertyTable.getSelectedColumn();
                         //            int currentRow = propertyTable.getSelectedRow();
@@ -1208,12 +1225,15 @@ public class FormEditor extends JPanel {
         }
 
         public Object getValueAt(int rowIndex, int columnIndex) {
-            if (rowIndex == 0 && columnIndex == 0)
+            if (rowIndex == 0 && columnIndex == 0) {
                 return null;
-            if (rowIndex == 0)
+            }
+            if (rowIndex == 0) {
                 return containerLayout.getColumnSpec(columnIndex - 1);
-            if (columnIndex == 0)
+            }
+            if (columnIndex == 0) {
                 return containerLayout.getRowSpec(rowIndex - 1);
+            }
 
             Component component = null;
 
@@ -1225,11 +1245,12 @@ public class FormEditor extends JPanel {
                 // this is our way of hiding them.
                 if (thisComponent.isVisible()) {
                     CellConstraints constraints = getComponentConstraints(thisComponent);
-                    if (constraints == null)
+                    if (constraints == null) {
                         throw new RuntimeException(
                                 "Unable to find constraints for component "
                                         + thisComponent + " in layout "
                                         + containerLayout.getName());
+                    }
                     if (columnIndex >= constraints.gridX
                             && columnIndex < constraints.gridX
                                     + constraints.gridWidth
@@ -1237,8 +1258,9 @@ public class FormEditor extends JPanel {
                             && rowIndex < constraints.gridY
                                     + constraints.gridHeight) {
                         component = thisComponent;
-                        if (component == topComponent)
+                        if (component == topComponent) {
                             break;
+                        }
                     }
                 }
             }
@@ -1322,9 +1344,10 @@ public class FormEditor extends JPanel {
                     // set it up properly in the table and assign the maps.
                     CellConstraints newConstraints = new CellConstraints(
                             columnIndex, rowIndex);
-                    if (newCD != null)
+                    if (newCD != null) {
                         containerLayout.addComponent(controlName, newCD,
                                 newConstraints);
+                    }
                     containerLayout.getCellConstraints().put(controlName,
                             newConstraints);
                     container.add(newControl, controlName);
@@ -1463,8 +1486,9 @@ public class FormEditor extends JPanel {
                     // component
                     // is bigger than one cell...
                     if (constraints.gridY + constraints.gridHeight - 1 >= rowIndex
-                            && constraints.gridHeight > 1)
+                            && constraints.gridHeight > 1) {
                         constraints.gridHeight--;
+                    }
                 }
             }
 
@@ -1496,15 +1520,16 @@ public class FormEditor extends JPanel {
                 Component component = container.getComponent(index);
                 CellConstraints constraints = getComponentConstraints(component);
 
-                if (constraints.gridX >= columnIndex && constraints.gridX > 1)
+                if (constraints.gridX >= columnIndex && constraints.gridX > 1) {
                     constraints.gridX--;
-                else {
+                } else {
                     // if the col deleted was within the span of the component and the
                     // component
                     // is bigger than one cell...
                     if (constraints.gridX + constraints.gridWidth - 1 >= columnIndex
-                            && constraints.gridWidth > 1)
+                            && constraints.gridWidth > 1) {
                         constraints.gridWidth--;
+                    }
                 }
             }
 
@@ -1569,8 +1594,9 @@ public class FormEditor extends JPanel {
         for (;;) {
             Component temp = containerLayout.getComponentByName(newname);
             // no such component, or found component was ourself, stop the search
-            if (temp == null || temp == comp)
+            if (temp == null || temp == comp) {
                 break; // exitloop
+            }
 
             newname = name + "_" + suffix;
             suffix++;
@@ -1580,16 +1606,18 @@ public class FormEditor extends JPanel {
 
     public boolean editComponent(ComponentDef componentDef,
             Component component, CellConstraints cellConstraints) {
-        if (componentDef.isContainer)
+        if (componentDef.isContainer) {
             return false; //punt!
+        }
 
         // get original name for remove
         String name = getComponentName(component);
 
         NewComponentDialog dlg = NewComponentDialog.editDialog(
                 (JFrame) layoutFrame, componentDef);
-        if (!dlg.succeeded())
+        if (!dlg.succeeded()) {
             return false;
+        }
 
         componentDef.name = uniqueName(dlg.getComponentName(), component);
         String newname = componentDef.name;

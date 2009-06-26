@@ -102,12 +102,14 @@ public abstract class AbstractFormBuilder {
      * @exception NullPointerException if the layout or container is null
      */
     public AbstractFormBuilder(FormLayout layout, Container container) {
-        if (layout == null)
+        if (layout == null) {
             throw new NullPointerException("The layout must not be null.");
+        }
 
-        if (container == null)
+        if (container == null) {
             throw new NullPointerException(
                     "The layout container must not be null.");
+        }
 
         this.container = container;
         this.layout = layout;

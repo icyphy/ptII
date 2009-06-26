@@ -129,12 +129,14 @@ public class StaticSchedulingDirector extends Director {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StaticSchedulingDirector newObject = (StaticSchedulingDirector) super.clone(workspace);
+        StaticSchedulingDirector newObject = (StaticSchedulingDirector) super
+                .clone(workspace);
         Scheduler scheduler = getScheduler();
         if (scheduler == null) {
             newObject._setScheduler(null);
         } else {
-            newObject._setScheduler((Scheduler)newObject.getAttribute(getScheduler().getName()));
+            newObject._setScheduler((Scheduler) newObject
+                    .getAttribute(getScheduler().getName()));
         }
         return newObject;
     }
@@ -190,8 +192,8 @@ public class StaticSchedulingDirector extends Director {
             } else if (returnValue == NOT_READY) {
                 // See de/test/auto/knownFailedTests/DESDFClockTest.xml
                 throw new IllegalActionException(this, actor, "Actor "
-                        + "is not ready to fire.  Perhaps "
-                        + actor.getName() + ".prefire() returned false? "
+                        + "is not ready to fire.  Perhaps " + actor.getName()
+                        + ".prefire() returned false? "
                         + "Try debugging the actor by selecting "
                         + "\"Listen to Actor\".  Also, for SDF check moml for "
                         + "tokenConsumptionRate on input.");

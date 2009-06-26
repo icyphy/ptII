@@ -149,7 +149,8 @@ public class EnabledComposite extends TypedCompositeActor {
         boolean prefireReturnValue = false;
         if (enable.isKnown(0)) {
             if (enable.hasToken(0)) {
-                prefireReturnValue = ((BooleanToken) enable.get(0)).booleanValue();
+                prefireReturnValue = ((BooleanToken) enable.get(0))
+                        .booleanValue();
                 if (prefireReturnValue) {
                     // This will call prefire() on the contained director.
                     prefireReturnValue = super.prefire();
@@ -169,14 +170,16 @@ public class EnabledComposite extends TypedCompositeActor {
      *  class to ensure that every output depends on the <i>enable</i>
      *  input port.
      */
-    private class CausalityInterfaceForEnabledComposite
-            extends CausalityInterfaceForComposites {
+    private class CausalityInterfaceForEnabledComposite extends
+            CausalityInterfaceForComposites {
         public CausalityInterfaceForEnabledComposite(Actor actor)
                 throws IllegalArgumentException {
             super(actor, BooleanDependency.OTIMES_IDENTITY);
         }
+
         protected void _computeActorDepth() throws IllegalActionException {
-            if (_actorDepthVersion == ((NamedObj)_actor).workspace().getVersion()) {
+            if (_actorDepthVersion == ((NamedObj) _actor).workspace()
+                    .getVersion()) {
                 return;
             }
             super._computeActorDepth();
@@ -188,14 +191,16 @@ public class EnabledComposite extends TypedCompositeActor {
                 _equivalenceClasses.put(input, allInputs);
             }
             // Next, fix the forward and backward dependencies.
-            Map<IOPort,Dependency> enableDependents = new HashMap<IOPort,Dependency>();
+            Map<IOPort, Dependency> enableDependents = new HashMap<IOPort, Dependency>();
             _forwardDependencies.put(enable, enableDependents);
             List<IOPort> outputs = _actor.outputPortList();
             for (IOPort output : outputs) {
-                enableDependents.put(output, _defaultDependency.oTimesIdentity());
-                Map<IOPort,Dependency> backward = _reverseDependencies.get(output);
+                enableDependents.put(output, _defaultDependency
+                        .oTimesIdentity());
+                Map<IOPort, Dependency> backward = _reverseDependencies
+                        .get(output);
                 if (backward == null) {
-                    backward = new HashMap<IOPort,Dependency>();
+                    backward = new HashMap<IOPort, Dependency>();
                     _reverseDependencies.put(output, backward);
                 }
                 backward.put(enable, _defaultDependency.oTimesIdentity());

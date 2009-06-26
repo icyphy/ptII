@@ -53,7 +53,7 @@ public class DirectoryListing extends CCodeGeneratorHelper {
     public DirectoryListing(ptolemy.actor.lib.io.DirectoryListing actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * Get the file path from the actor's directoryOrURL parameter. Read the
@@ -68,14 +68,14 @@ public class DirectoryListing extends CCodeGeneratorHelper {
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
 
-        ptolemy.actor.lib.io.DirectoryListing actor = 
-            (ptolemy.actor.lib.io.DirectoryListing) getComponent();
+        ptolemy.actor.lib.io.DirectoryListing actor = (ptolemy.actor.lib.io.DirectoryListing) getComponent();
         String fileNameString = FileReader.getFileName(actor.directoryOrURL);
         ArrayList args = new ArrayList();
         args.add(fileNameString);
         _codeStream.appendCodeBlock("fireBlock", args);
         return processCode(_codeStream.toString());
     }
+
     /**
      * Get the files needed by the code generated for the
      * DirectoryListing actor.

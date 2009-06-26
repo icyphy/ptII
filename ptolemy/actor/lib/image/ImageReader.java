@@ -138,17 +138,11 @@ public class ImageReader extends Source {
 
         if ((_image.getWidth(null) == -1) && (_image.getHeight(null) == -1)) {
             throw new IllegalActionException(this,
-                    "Image size is -1 x -1.  Failed to open '" + _url
-                            + "'");
+                    "Image size is -1 x -1.  Failed to open '" + _url + "'");
         }
 
         return super.prefire();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    // The URL as a string.
-    private String _fileRoot;
 
     // Image that is read in.
     private Image _image;

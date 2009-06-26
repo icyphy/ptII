@@ -87,7 +87,8 @@ public class Gaussian extends RandomSource implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Gaussian(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public Gaussian(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
         mean = new PortParameter(this, "mean", new DoubleToken(0.0));
@@ -103,7 +104,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
      * remain constant throughout an iteration.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         mean.update();
         standardDeviation.update();
@@ -114,9 +115,10 @@ public class Gaussian extends RandomSource implements Rollbackable {
      * Generate a new random number.
      * @exception IllegalActionException If parameter values are incorrect.
      */
-    protected void _generateRandomNumber() throws IllegalActionException  {
-        double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
-        double standardDeviationValue = ((DoubleToken)(standardDeviation.getToken())).doubleValue();
+    protected void _generateRandomNumber() throws IllegalActionException {
+        double meanValue = ((DoubleToken) (mean.getToken())).doubleValue();
+        double standardDeviationValue = ((DoubleToken) (standardDeviation
+                .getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
         $ASSIGN$_current((rawNum * standardDeviationValue) + meanValue);
     }
@@ -129,7 +131,8 @@ public class Gaussian extends RandomSource implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -140,9 +143,6 @@ public class Gaussian extends RandomSource implements Rollbackable {
 
     private transient FieldRecord $RECORD$_current = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_current
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_current };
 
 }
-

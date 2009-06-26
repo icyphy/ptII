@@ -250,9 +250,5 @@ public class DataMapEnvironment implements Environment {
         public boolean isList() {
             return _isList;
         }
-
-        public int getRepeatVal() {
-            return _repeatVal;
-        }
     }
 }

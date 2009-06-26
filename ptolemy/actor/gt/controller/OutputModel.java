@@ -60,13 +60,13 @@ public class OutputModel extends GTEvent {
 
         CompositeEntity entity = getModelParameter().getModel();
         PteraController container = (PteraController) getContainer();
-        RefinementPort destination = (RefinementPort) container.getPort(
-                _OUTPUT_PORT_NAME);
+        RefinementPort destination = (RefinementPort) container
+                .getPort(_OUTPUT_PORT_NAME);
         destination.broadcastClear();
         destination.broadcast(new ActorToken(entity));
 
-        _debug(new PteraDebugEvent(this, "Output model sent to " +
-                _OUTPUT_PORT_NAME + "."));
+        _debug(new PteraDebugEvent(this, "Output model sent to "
+                + _OUTPUT_PORT_NAME + "."));
 
         return data;
     }

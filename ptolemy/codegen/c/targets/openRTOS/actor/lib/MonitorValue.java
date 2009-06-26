@@ -51,7 +51,6 @@ public class MonitorValue extends CCodeGeneratorHelper {
         super(actor);
     }
 
-
     /**
      * Get the files needed by the code generated for the
      * MonitorValue actor.

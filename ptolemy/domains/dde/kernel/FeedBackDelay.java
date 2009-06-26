@@ -238,7 +238,8 @@ public class FeedBackDelay extends DDEActor {
      *  depending on IOPort.send().
      * @exception IllegalActionException
      */
-    private void _sendOutToken(Token token, Time time) throws IllegalActionException {
+    private void _sendOutToken(Token token, Time time)
+            throws IllegalActionException {
         Receiver[][] receivers = output.getRemoteReceivers();
 
         for (int i = 0; i < receivers.length; i++) {

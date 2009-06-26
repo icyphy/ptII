@@ -54,8 +54,9 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BoundedBufferNondeterministicDelay(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public BoundedBufferNondeterministicDelay(CompositeEntity container,
+            String name) throws NameDuplicationException,
+            IllegalActionException {
         super(container, name);
     }
 
@@ -70,7 +71,6 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Throw an IllegalActionException to indicate that this actor
      *  is used for code generation only.
      *  @exception IllegalActionException No simulation
@@ -79,7 +79,6 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
         throw new IllegalActionException(this, getName() + " can not run in "
                 + "simulation mode.");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////

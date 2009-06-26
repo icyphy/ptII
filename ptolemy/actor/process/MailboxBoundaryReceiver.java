@@ -198,7 +198,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
+    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
+            IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 

@@ -320,8 +320,8 @@ public class MultirateFSMDirector extends FSMDirector {
                 }
             }
 
-            IOPort controllerPort = (IOPort) controller.getPort(
-                    generateSimpleName(inputPort));
+            IOPort controllerPort = (IOPort) controller
+                    .getPort(generateSimpleName(inputPort));
             if (currentState == null) {
                 // Findbugs wants us to check for null
                 throw new IllegalActionException(getComponent(),
@@ -329,8 +329,8 @@ public class MultirateFSMDirector extends FSMDirector {
                                 + "': currentState == null");
             }
             Entity refinement = (Entity) currentState.getRefinement()[0];
-            IOPort refinementPort = (IOPort) refinement.getPort(
-                    generateSimpleName(inputPort));
+            IOPort refinementPort = (IOPort) refinement
+                    .getPort(generateSimpleName(inputPort));
             IOPort[] sinkPorts = { controllerPort, refinementPort };
 
             code.append("case " + configurationNumber + ":" + _eol);

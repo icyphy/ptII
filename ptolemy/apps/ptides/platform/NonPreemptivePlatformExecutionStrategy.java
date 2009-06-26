@@ -234,9 +234,10 @@ public class NonPreemptivePlatformExecutionStrategy extends
                     _displaySchedule(actorToFire, event.timeStamp
                             .getDoubleValue(),
                             ScheduleEventType.MISSEDEXECUTION);
-                    throw new IllegalActionException("missed execution, " + event.contents + " wanted to " +
-                                    "be fired at " + event.timeStamp + " but it is already " + physicalTime
-                                    );
+                    throw new IllegalActionException("missed execution, "
+                            + event.contents + " wanted to " + "be fired at "
+                            + event.timeStamp + " but it is already "
+                            + physicalTime);
                 } else if (physicalTime.compareTo(event.timeStamp) < 0) {
                     index++;
                     continue;
@@ -249,7 +250,8 @@ public class NonPreemptivePlatformExecutionStrategy extends
             }
             // assuming that sensors and actuators have WCET == 0.0, they should be able to preempt.
             if (!((PtidesActorProperties.isSensor(actorToFire) || PtidesActorProperties
-                    .isActuator(actorToFire)) && PtidesActorProperties.getWCET(actorToFire) == 0.0)
+                    .isActuator(actorToFire)) && PtidesActorProperties
+                    .getWCET(actorToFire) == 0.0)
                     && actorsFiring.size() > 0 || eventsToFire.size() == 0) {
                 return null;
             }

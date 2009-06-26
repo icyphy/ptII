@@ -182,9 +182,8 @@ public class FixToFix extends Converter {
         // If this is not done, then there may be problems with actor
         // oriented classes.
         newObject._quantization = new FixPointQuantization(
-                newObject._quantization.getPrecision(),
-                newObject._quantization.getOverflow(),
-                newObject._quantization.getRounding());
+                newObject._quantization.getPrecision(), newObject._quantization
+                        .getOverflow(), newObject._quantization.getRounding());
 
         return newObject;
     }

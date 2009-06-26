@@ -198,7 +198,8 @@ public class VisualModelReference extends ModelReference {
                         "Unrecognized option for closeOnPostfire: "
                                 + closeOnPostfireValue);
             }
-        } if (attribute == modelFileOrURL) {
+        }
+        if (attribute == modelFileOrURL) {
             super.attributeChanged(attribute);
             // If there was previously an effigy or tableau
             // associated with this model, then delete it.
@@ -349,8 +350,8 @@ public class VisualModelReference extends ModelReference {
                         // this actor.
 
                         if (_effigy == null) {
-                            _effigy = new PtolemyEffigy(myEffigy,
-                                    myEffigy.uniqueName(_model.getName()));
+                            _effigy = new PtolemyEffigy(myEffigy, myEffigy
+                                    .uniqueName(_model.getName()));
                             _effigy.setModel(_model);
 
                             // Since there is no tableau, this is probably not

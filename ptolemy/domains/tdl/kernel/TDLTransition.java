@@ -97,7 +97,6 @@ public class TDLTransition extends Transition {
     ///////////////////////////////////////////////////////////////////
     ////                         public parameter                  ////
 
-
     /**
      * The frequency of the transition.
      */
@@ -105,7 +104,6 @@ public class TDLTransition extends Transition {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /**
      * List of all ports that are used in this guard expression.
@@ -129,7 +127,6 @@ public class TDLTransition extends Transition {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
 
-
     /**
      * Compute the list of ports that are used in this guard expression.
      * @exception IllegalActionException Thrown if guard expression cannot be parsed.
@@ -148,13 +145,15 @@ public class TDLTransition extends Transition {
         ParseTreeFreeVariableCollector coll = new ParseTreeFreeVariableCollector();
         Set freeVars = coll.collectFreeVariables(guardParseTree);
 
-        for (Iterator it = freeVars.iterator(); it.hasNext(); ) {
+        for (Iterator it = freeVars.iterator(); it.hasNext();) {
             String name = (String) it.next();
-            for (Iterator sensorIt = ((TDLModule)this.getContainer().getContainer()).portList().iterator(); sensorIt.hasNext();) {
+            for (Iterator sensorIt = ((TDLModule) this.getContainer()
+                    .getContainer()).portList().iterator(); sensorIt.hasNext();) {
                 IOPort port = (IOPort) sensorIt.next();
                 if (port.getName().equals(name)) {
-                    if (port.isInput())
+                    if (port.isInput()) {
                         requiredSensors.add(port);
+                    }
                     requiredPorts.add(port);
                 }
             }
@@ -166,8 +165,8 @@ public class TDLTransition extends Transition {
      * @exception IllegalActionException Thrown if frequency parameter cannot be created.
      * @exception NameDuplicationException Thrown if The frequency parameter cannot be created.
      */
-    private void _init() throws
-            NameDuplicationException, IllegalActionException {
+    private void _init() throws NameDuplicationException,
+            IllegalActionException {
         outputActions.setVisibility(Settable.NONE);
         setActions.setVisibility(Settable.NONE);
         reset.setVisibility(Settable.NONE);
@@ -181,6 +180,5 @@ public class TDLTransition extends Transition {
         requiredPorts = new ArrayList();
         requiredSensors = new ArrayList();
     }
-
 
 }

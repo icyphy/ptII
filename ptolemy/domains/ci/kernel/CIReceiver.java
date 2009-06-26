@@ -87,7 +87,7 @@ public class CIReceiver extends AbstractReceiver {
                     "No more tokens in the CI receiver.");
         }
 
-        return (Token) _tokens.removeFirst();
+        return _tokens.removeFirst();
     }
 
     /** Return true. The receiver acts as an infinite FIFO buffer.
@@ -190,8 +190,8 @@ public class CIReceiver extends AbstractReceiver {
                 _initialize();
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(ex);
-                    // At this time IllegalActionExceptions are not allowed to happen.
-                    // Width inference should already have been done.
+                // At this time IllegalActionExceptions are not allowed to happen.
+                // Width inference should already have been done.
             }
         }
 

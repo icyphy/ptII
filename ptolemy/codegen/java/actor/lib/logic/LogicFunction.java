@@ -88,7 +88,6 @@ public class LogicFunction extends JavaCodeGeneratorHelper {
 
         codeBuffer.append(")");
 
-
         codeBuffer.append(");" + _eol);
         return processCode(codeBuffer.toString());
     }

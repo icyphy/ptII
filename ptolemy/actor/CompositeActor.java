@@ -266,7 +266,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (newObject.getContainer() instanceof CompositeActor) {
             newObject._relationWidthInference = null;
         } else {
-            newObject._relationWidthInference = new RelationWidthInference(newObject);
+            newObject._relationWidthInference = new RelationWidthInference(
+                    newObject);
         }
         return newObject;
     }
@@ -316,8 +317,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (castPort.isOpaque()) {
                 Manager manager = getManager();
 
-                if (castPort.isOutput()
-                        && (getDirector() != null)
+                if (castPort.isOutput() && (getDirector() != null)
                         && (manager != null)
                         && (manager.getState() != Manager.IDLE)
                         && (manager.getState() != Manager.INFERING_WIDTHS)
@@ -333,8 +333,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
 
-                if (castPort.isInput()
-                        && (getExecutiveDirector() != null)
+                if (castPort.isInput() && (getExecutiveDirector() != null)
                         && (manager != null)
                         && (manager.getState() != Manager.IDLE)
                         && (manager.getState() != Manager.INFERING_WIDTHS)
@@ -518,7 +517,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
             return _causalityInterface;
         }
         Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
-        _causalityInterface = new CausalityInterfaceForComposites(this, defaultDependency);
+        _causalityInterface = new CausalityInterfaceForComposites(this,
+                defaultDependency);
         _causalityInterfaceDirector = null;
         return _causalityInterface;
     }
@@ -608,17 +608,17 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
-      /** Determine whether widths are currently being inferred or not.
-      *  @return True When widths are currently being inferred.
-      */
-     public boolean inferringWidths() {
-         RelationWidthInference widthInferenceAlgorithm = _getWidthInferenceAlgorithm();
-         if (widthInferenceAlgorithm != null) {
-             return widthInferenceAlgorithm.inferringWidths();
-         } else {
-             return false;
-         }
-     }
+    /** Determine whether widths are currently being inferred or not.
+    *  @return True When widths are currently being inferred.
+    */
+    public boolean inferringWidths() {
+        RelationWidthInference widthInferenceAlgorithm = _getWidthInferenceAlgorithm();
+        if (widthInferenceAlgorithm != null) {
+            return widthInferenceAlgorithm.inferringWidths();
+        } else {
+            return false;
+        }
+    }
 
     /**
      *  Infer the width of the relations for which no width has been
@@ -943,7 +943,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         return _getWidthInferenceAlgorithm().needsWidthInference();
     }
 
-
     /** Notify the manager that the connectivity in the model changed
      *  (width of relation changed, relations added, linked to different ports, ...).
      *  This will invalidate the current width inference.
@@ -958,7 +957,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // Exception is not relevant when reporting changes.
         }
     }
-
 
     /** Return a new receiver of a type compatible with the local director.
      *  Derived classes may further specialize this to return a receiver
@@ -1823,7 +1821,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param addPiggyBackAtThisLevel True when the piggybacks directly in this composite
      *          actor should also be included.
      */
-    private void _getTransparentActorPiggybacks(Set<Executable> piggybacks, boolean addPiggyBackAtThisLevel) {
+    private void _getTransparentActorPiggybacks(Set<Executable> piggybacks,
+            boolean addPiggyBackAtThisLevel) {
         assert piggybacks != null;
         if (addPiggyBackAtThisLevel && _piggybacks != null) {
             piggybacks.addAll(_piggybacks);

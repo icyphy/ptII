@@ -37,20 +37,20 @@ import ptolemy.kernel.util.NamedObj;
 
 public class PropertyCombineCompositeHelper extends PropertyCombineHelper {
 
-    public PropertyCombineCompositeHelper(PropertyCombineSolver solver, Object component) {
+    public PropertyCombineCompositeHelper(PropertyCombineSolver solver,
+            Object component) {
         super(solver, component);
     }
 
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
         List<PropertyHelper> helpers = new ArrayList<PropertyHelper>();
 
-        CompositeEntity component =
-            (CompositeEntity) getComponent();
+        CompositeEntity component = (CompositeEntity) getComponent();
         Iterator iterator = component.entityList().iterator();
 
         while (iterator.hasNext()) {
-            NamedObj actor =
-                (NamedObj) iterator.next();
+            NamedObj actor = (NamedObj) iterator.next();
 
             helpers.add(_solver.getHelper(actor));
         }

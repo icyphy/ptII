@@ -162,8 +162,8 @@ public class MoMLVariableChecker {
                     PtParser ptParser = new PtParser();
                     ASTPtRootNode parseTree;
                     try {
-                        parseTree = ptParser.generateParseTree(
-                                settable.getExpression());
+                        parseTree = ptParser.generateParseTree(settable
+                                .getExpression());
                     } catch (Exception ex) {
                         // Skip things we can't parse, like StringAttributes
                         // that are docs.
@@ -182,15 +182,13 @@ public class MoMLVariableChecker {
                     ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
 
                     Set set = variableCollector.collectFreeVariables(parseTree,
-                            /*scope*/ null);
+                    /*scope*/null);
                     for (Iterator elements = set.iterator(); elements.hasNext();) {
                         String name = (String) elements.next();
 
                         // Look for the variable in parsedContainer
                         if (parsedContainer.getAttribute(name) == null) {
-                            _findUndefinedConstantsOrIdentifiers(
-                                    name,
-                                    name,
+                            _findUndefinedConstantsOrIdentifiers(name, name,
                                     container, parsedContainer);
                         }
                     }
@@ -287,23 +285,20 @@ public class MoMLVariableChecker {
                 ((NamedObj) exception.getNameable1()).toplevel().getName()
                         .length() + 2);
 
-
-        return _findUndefinedConstantsOrIdentifiers(variableName,
-                idException.nodeName(), container, parsedContainer);
+        return _findUndefinedConstantsOrIdentifiers(variableName, idException
+                .nodeName(), container, parsedContainer);
     }
 
-    private boolean _findUndefinedConstantsOrIdentifiers(
-            String variableName, String nodeName,
-            NamedObj container, TypedCompositeActor parsedContainer)
-            throws IllegalActionException {
+    private boolean _findUndefinedConstantsOrIdentifiers(String variableName,
+            String nodeName, NamedObj container,
+            TypedCompositeActor parsedContainer) throws IllegalActionException {
         boolean doRerun = false;
 
         Attribute masterAttribute = container.getAttribute(variableName);
         if (masterAttribute == null) {
             // Needed to find Parameters that are up scope
             NamedObj searchContainer = container;
-            while (searchContainer != null
-                   && masterAttribute == null) {
+            while (searchContainer != null && masterAttribute == null) {
                 masterAttribute = searchContainer.getAttribute(variableName);
                 searchContainer = searchContainer.getContainer();
             }

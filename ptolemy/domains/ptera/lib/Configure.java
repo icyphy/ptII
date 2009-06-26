@@ -135,8 +135,7 @@ public class Configure extends Event {
 
         _executeChangeRequests();
         ModelErrorHandler errorHandler = new BasicModelErrorHandler();
-        Map<NamedObj, ModelErrorHandler> oldErrorHandlers =
-            new HashMap<NamedObj, ModelErrorHandler>();
+        Map<NamedObj, ModelErrorHandler> oldErrorHandlers = new HashMap<NamedObj, ModelErrorHandler>();
         List<Settable> settables = attributeList(Settable.class);
         for (Settable settable : settables) {
             if (_isVisible(settable)) {
@@ -154,13 +153,13 @@ public class Configure extends Event {
                 if (query.hasEntries()) {
                     options = new JOptionPane(query,
                             JOptionPane.QUESTION_MESSAGE,
-                            JOptionPane.YES_NO_OPTION, null,
-                            new String[] {"Set", "Default"}, "Set");
+                            JOptionPane.YES_NO_OPTION, null, new String[] {
+                                    "Set", "Default" }, "Set");
                 } else {
                     options = new JOptionPane(query,
                             JOptionPane.INFORMATION_MESSAGE,
                             JOptionPane.CLOSED_OPTION, null,
-                            new String[] {"Close"}, "Close");
+                            new String[] { "Close" }, "Close");
                 }
                 JDialog dialog = new JDialog((Frame) null, getName(), true);
                 Listener listener = new Listener(dialog);
@@ -169,10 +168,8 @@ public class Configure extends Event {
                 dialog.setContentPane(options);
                 dialog.pack();
                 Toolkit toolkit = Toolkit.getDefaultToolkit();
-                int x = (toolkit.getScreenSize().width -
-                        dialog.getSize().width) / 2;
-                int y = (toolkit.getScreenSize().height -
-                        dialog.getSize().height) / 2;
+                int x = (toolkit.getScreenSize().width - dialog.getSize().width) / 2;
+                int y = (toolkit.getScreenSize().height - dialog.getSize().height) / 2;
                 dialog.setLocation(x, y);
 
                 success = true;
@@ -191,8 +188,8 @@ public class Configure extends Event {
                 }
             }
         } finally {
-            for (Map.Entry<NamedObj, ModelErrorHandler> entry
-                    : oldErrorHandlers.entrySet()) {
+            for (Map.Entry<NamedObj, ModelErrorHandler> entry : oldErrorHandlers
+                    .entrySet()) {
                 entry.getKey().setModelErrorHandler(entry.getValue());
             }
         }
@@ -255,8 +252,8 @@ public class Configure extends Event {
      *  @return true if the parameter is visible; false otherwise.
      */
     private boolean _isVisible(Settable settable) {
-        return !_ignoredParameters.contains(settable.getName()) &&
-                Configurer.isVisible(this, settable);
+        return !_ignoredParameters.contains(settable.getName())
+                && Configurer.isVisible(this, settable);
     }
 
     /** Set of the names of parameters that should not be listed in the dialog
@@ -280,8 +277,8 @@ public class Configure extends Event {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private static class Listener extends KeyAdapter
-            implements PropertyChangeListener {
+    private static class Listener extends KeyAdapter implements
+            PropertyChangeListener {
 
         /** React to a key being pressed in the dialog.
          *
@@ -301,9 +298,10 @@ public class Configure extends Event {
          */
         public void propertyChange(PropertyChangeEvent event) {
             String property = event.getPropertyName();
-            if (_dialog.isVisible() && event.getSource() instanceof JOptionPane
-                    && (property.equals(JOptionPane.VALUE_PROPERTY) ||
-                    property.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
+            if (_dialog.isVisible()
+                    && event.getSource() instanceof JOptionPane
+                    && (property.equals(JOptionPane.VALUE_PROPERTY) || property
+                            .equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
                 JOptionPane optionPane = (JOptionPane) event.getSource();
                 Object value = optionPane.getValue();
                 if (value instanceof String) {
@@ -370,9 +368,9 @@ public class Configure extends Event {
             }
 
             if (!_hasEntries) {
-                addText(Configure.this.getName() +
-                        " has no parameters to configure.",
-                        Color.black, SwingConstants.CENTER);
+                addText(Configure.this.getName()
+                        + " has no parameters to configure.", Color.black,
+                        SwingConstants.CENTER);
             }
         }
 

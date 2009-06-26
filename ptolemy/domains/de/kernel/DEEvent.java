@@ -185,10 +185,10 @@ public class DEEvent implements Comparable {
      *  @see #hashCode()
      */
     public boolean equals(Object object) {
-        if ( ! (object instanceof DEEvent)) {
+        if (!(object instanceof DEEvent)) {
             return false;
         }
-        return (compareTo(object) == 0 && ((DEEvent)object).actor() == _actor);
+        return (compareTo(object) == 0 && ((DEEvent) object).actor() == _actor);
     }
 
     /** Return true if this event has the same tag with the specified one,
@@ -216,8 +216,9 @@ public class DEEvent implements Comparable {
      */
     public int hashCode() {
         int primitiveFieldHash = _depth >>> _microstep;
-        int objectFieldHash = ((_actor != null) ? _actor.hashCode() : 1) >>>
-            ((_ioPort != null) ? _ioPort.hashCode() : 1);
+        int objectFieldHash = ((_actor != null) ? _actor.hashCode() : 1) >>> ((_ioPort != null) ? _ioPort
+                .hashCode()
+                : 1);
         // If the exclusive or of the primitive is 0, then just
         // return the xor of the hashes of the actor and ioport
         if (primitiveFieldHash == 0) {
@@ -260,14 +261,12 @@ public class DEEvent implements Comparable {
         }
         if (_ioPort != null) {
             return "DEEvent(time = " + _timestamp + ", microstep = "
-                    + _microstep + ", depth = " + _depth + ", dest = "
-                    + name + "."
-                    + _ioPort.getName() + ").";
+                    + _microstep + ", depth = " + _depth + ", dest = " + name
+                    + "." + _ioPort.getName() + ").";
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
-                    + _microstep + ", depth = " + _depth + ", dest = "
-                    + name + ")"
-                    + " -- A PURE EVENT.";
+                    + _microstep + ", depth = " + _depth + ", dest = " + name
+                    + ")" + " -- A PURE EVENT.";
         }
     }
 
@@ -307,7 +306,6 @@ public class DEEvent implements Comparable {
     /** The timestamp of the event. */
     protected Time _timestamp;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         package private   methods         ////
 
@@ -331,8 +329,8 @@ public class DEEvent implements Comparable {
         _depth = depth;
         _priority = 0;
         if (_actor != null) {
-            List<Priority> priorityList = ((NamedObj) _actor).attributeList(
-                    Priority.class);
+            List<Priority> priorityList = ((NamedObj) _actor)
+                    .attributeList(Priority.class);
             if (!priorityList.isEmpty()) {
                 Priority priority = priorityList.get(0);
                 _priority = ((IntToken) priority.getToken()).intValue();

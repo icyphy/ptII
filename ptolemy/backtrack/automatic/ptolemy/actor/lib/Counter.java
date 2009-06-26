@@ -29,7 +29,6 @@
 //// Counter
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -107,7 +106,8 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Counter(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public Counter(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         increment = new TypedIOPort(this, "increment", true, false);
         increment.setTypeEquals(BaseType.GENERAL);
@@ -133,7 +133,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
      * counter.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         $ASSIGN$_latestCount(_count);
         $ASSIGN$_consumed(false);
@@ -161,7 +161,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
      * Reset the count of inputs to zero.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_count(0);
     }
@@ -170,7 +170,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
      * Record the most recent output count as the actual count.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         $ASSIGN$_count(_latestCount);
         return super.postfire();
     }
@@ -184,48 +184,50 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
 
     private final int $ASSIGN$_latestCount(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT.getTimestamp());
+            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT
+                    .getTimestamp());
         }
         return _latestCount = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$_latestCount(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT.getTimestamp());
+            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT
+                    .getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _latestCount += newValue;
-            case 1:
-                return _latestCount -= newValue;
-            case 2:
-                return _latestCount *= newValue;
-            case 3:
-                return _latestCount /= newValue;
-            case 4:
-                return _latestCount &= newValue;
-            case 5:
-                return _latestCount |= newValue;
-            case 6:
-                return _latestCount ^= newValue;
-            case 7:
-                return _latestCount %= newValue;
-            case 8:
-                return _latestCount <<= newValue;
-            case 9:
-                return _latestCount >>= newValue;
-            case 10:
-                return _latestCount >>>= newValue;
-            case 11:
-                return _latestCount++;
-            case 12:
-                return _latestCount--;
-            case 13:
-                return ++_latestCount;
-            case 14:
-                return --_latestCount;
-            default:
-                return _latestCount;
+        case 0:
+            return _latestCount += newValue;
+        case 1:
+            return _latestCount -= newValue;
+        case 2:
+            return _latestCount *= newValue;
+        case 3:
+            return _latestCount /= newValue;
+        case 4:
+            return _latestCount &= newValue;
+        case 5:
+            return _latestCount |= newValue;
+        case 6:
+            return _latestCount ^= newValue;
+        case 7:
+            return _latestCount %= newValue;
+        case 8:
+            return _latestCount <<= newValue;
+        case 9:
+            return _latestCount >>= newValue;
+        case 10:
+            return _latestCount >>>= newValue;
+        case 11:
+            return _latestCount++;
+        case 12:
+            return _latestCount--;
+        case 13:
+            return ++_latestCount;
+        case 14:
+            return --_latestCount;
+        default:
+            return _latestCount;
         }
     }
 
@@ -237,16 +239,19 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _count = $RECORD$_count.restore(_count, timestamp, trim);
-        _latestCount = $RECORD$_latestCount.restore(_latestCount, timestamp, trim);
+        _latestCount = $RECORD$_latestCount.restore(_latestCount, timestamp,
+                trim);
         _consumed = $RECORD$_consumed.restore(_consumed, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -279,10 +284,6 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
     private transient FieldRecord $RECORD$_consumed = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_count,
-            $RECORD$_latestCount,
-            $RECORD$_consumed
-        };
+            $RECORD$_count, $RECORD$_latestCount, $RECORD$_consumed };
 
 }
-

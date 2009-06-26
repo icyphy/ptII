@@ -55,9 +55,11 @@ public class GPOutputDevice extends OutputDevice {
      *  @throws IllegalActionException 
      *  @throws NameDuplicationException 
      */
-    public GPOutputDevice(ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor) throws IllegalActionException, NameDuplicationException {
+    public GPOutputDevice(
+            ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor)
+            throws IllegalActionException, NameDuplicationException {
         super(actor);
-        
+
         Parameter pinParameter = actor.pin;
         StringParameter padParameter = actor.pad;
         _pinID = null;
@@ -66,23 +68,25 @@ public class GPOutputDevice extends OutputDevice {
         if (pinParameter != null) {
             _pinID = ((IntToken) pinParameter.getToken()).toString();
         } else {
-            throw new IllegalActionException("does not know what pin this output device is associated to.");
+            throw new IllegalActionException(
+                    "does not know what pin this output device is associated to.");
         }
         if (padParameter != null) {
             _padID = padParameter.stringValue();
         } else {
-            throw new IllegalActionException("does not know what pin this output device is associated to.");
+            throw new IllegalActionException(
+                    "does not know what pin this output device is associated to.");
         }
-        
+
     }
-    
+
     ////////////////////////////////////////////////////////////////////
     ////                     public methods                         ////
 
-
-    public String generateActuatorActuationFuncCode() throws IllegalActionException {
+    public String generateActuatorActuationFuncCode()
+            throws IllegalActionException {
         List args = new LinkedList();
-        
+
         args.add(_padID);
         args.add(_pinID);
 
@@ -105,9 +109,10 @@ public class GPOutputDevice extends OutputDevice {
     public String generateFireCode() throws IllegalActionException {
 
         List args = new LinkedList();
-        
+
         ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice) getComponent();
-        PtidesBasicDirector helper = (PtidesBasicDirector)_getHelper(actor.getDirector());
+        PtidesBasicDirector helper = (PtidesBasicDirector) _getHelper(actor
+                .getDirector());
 
         args.add((helper._actuators.get(actor)).toString());
 
@@ -116,16 +121,18 @@ public class GPOutputDevice extends OutputDevice {
 
         return processCode(_codeStream.toString());
     }
-    
-    public String generateHardwareInitializationCode() throws IllegalActionException {
+
+    public String generateHardwareInitializationCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         List args = new ArrayList();
         args.add(_padID);
         args.add(_pinID);
-        code.append(processCode(_codeStream.getCodeBlock("initializeGPOutput", args)));
+        code.append(processCode(_codeStream.getCodeBlock("initializeGPOutput",
+                args)));
         return code.toString();
     }
-    
+
     private String _pinID;
     private String _padID;
 }

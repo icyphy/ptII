@@ -50,11 +50,11 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 import javax.swing.text.html.StyleSheet;
-import javax.swing.text.Style;
 
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.StringAttribute;
@@ -172,27 +172,26 @@ public class HTMLViewer extends TableauFrame implements Printable,
                     // FIXME: Refactor this code, use DocApplicationSpecializer
 
                     StringAttribute getDocumentationActionClassNameStringAttribute = (StringAttribute) getConfiguration()
-                        .getAttribute("_getDocumentationActionClassName",
-                                StringAttribute.class);
+                            .getAttribute("_getDocumentationActionClassName",
+                                    StringAttribute.class);
                     String getDocumentationActionClassName = null;
                     if (getDocumentationActionClassNameStringAttribute != null) {
-                        getDocumentationActionClassName = getDocumentationActionClassNameStringAttribute.getExpression();
+                        getDocumentationActionClassName = getDocumentationActionClassNameStringAttribute
+                                .getExpression();
                     } else {
                         getDocumentationActionClassName = "ptolemy.vergil.basic.GetDocumentationAction";
                     }
-                    Class getDocumentationActionClass = Class.forName(getDocumentationActionClassName);
-                    Method getDocumentationMethod = getDocumentationActionClass.getMethod(
-                            "getDocumentation",
-                            new Class[] {Configuration.class,
-                                         String.class,
-                                         Effigy.class});
+                    Class getDocumentationActionClass = Class
+                            .forName(getDocumentationActionClassName);
+                    Method getDocumentationMethod = getDocumentationActionClass
+                            .getMethod("getDocumentation", new Class[] {
+                                    Configuration.class, String.class,
+                                    Effigy.class });
                     //GetDocumentationAction.getDocumentation(getConfiguration(),
                     //        event.getDescription().substring(6), getEffigy());
-                    getDocumentationMethod.invoke(null,
-                            new Object[] {
-                                getConfiguration(),
-                                event.getDescription().substring(6),
-                                getEffigy()});
+                    getDocumentationMethod.invoke(null, new Object[] {
+                            getConfiguration(),
+                            event.getDescription().substring(6), getEffigy() });
                 } catch (Throwable throwable) {
                     MessageHandler.error("Problem processing '"
                             + event.getDescription() + "'.", throwable);
@@ -419,33 +418,33 @@ public class HTMLViewer extends TableauFrame implements Printable,
         HTMLDocument doc = (HTMLDocument) pane.getDocument();
         StyleSheet styleSheet = doc.getStyleSheet();
 
-
         // Debugging code, useful for seeing what properties are set.
         Enumeration rules = styleSheet.getStyleNames();
         while (rules.hasMoreElements()) {
             String name = (String) rules.nextElement();
             Style rule = styleSheet.getStyle(name);
-            System.out.println("    ruleSS1: " + name + " " + rule.getName() + ": " + rule.toString());
+            System.out.println("    ruleSS1: " + name + " " + rule.getName()
+                    + ": " + rule.toString());
             Enumeration attributeNames = rule.getAttributeNames();
             while (attributeNames.hasMoreElements()) {
                 Object attributeName = attributeNames.nextElement();
-                System.out.println("      attrname: "
-                        + attributeName + " " + attributeName.getClass()
-                        + " getAttribute(): " + rule.getAttribute(attributeName)
-                        + " class: " + rule.getAttribute(attributeName).getClass()
-                                   );
+                System.out.println("      attrname: " + attributeName + " "
+                        + attributeName.getClass() + " getAttribute(): "
+                        + rule.getAttribute(attributeName) + " class: "
+                        + rule.getAttribute(attributeName).getClass());
 
             }
         }
 
         StyleSheet styleSheets[] = styleSheet.getStyleSheets();
-        for ( int i = 0; i < styleSheets.length; i++) {
-            System.out.println("  stylesSheet " + i + " "+ styleSheets[i]);
+        for (int i = 0; i < styleSheets.length; i++) {
+            System.out.println("  stylesSheet " + i + " " + styleSheets[i]);
             rules = styleSheets[i].getStyleNames();
             while (rules.hasMoreElements()) {
                 String name = (String) rules.nextElement();
                 Style rule = styleSheets[i].getStyle(name);
-                System.out.println("    rule: " + rule.getName() + ": " + rule.toString());
+                System.out.println("    rule: " + rule.getName() + ": "
+                        + rule.toString());
                 Enumeration attributeNames = rule.getAttributeNames();
                 while (attributeNames.hasMoreElements()) {
                     System.out.println("      attrname: "
@@ -454,12 +453,12 @@ public class HTMLViewer extends TableauFrame implements Printable,
             }
         }
 
-        Color background = null;
         try {
             // Get the background color of the HTML widget.
-            AttributeSet bodyAttribute = (AttributeSet) styleSheet.getStyle("body")
-                .getAttribute(javax.swing.text.StyleConstants.ResolveAttribute);
-            background = styleSheet.getBackground(bodyAttribute);
+            AttributeSet bodyAttribute = (AttributeSet) styleSheet.getStyle(
+                    "body").getAttribute(
+                    javax.swing.text.StyleConstants.ResolveAttribute);
+            styleSheet.getBackground(bodyAttribute);
         } catch (Exception ex) {
             System.err.println("Problem getting background color");
             ex.printStackTrace();
@@ -471,12 +470,11 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 Color shadow = UIManager.getColor("ToolBar.shadow");
                 String rgb = Integer.toHexString(shadow.getRGB());
                 String rule = "body {background: #"
-                        + rgb.substring(2, rgb.length())
-                        + "}";
+                        + rgb.substring(2, rgb.length()) + "}";
                 rule = "foo {thisisatest: bar}";
                 styleSheet.addRule(rule);
-                System.out.println("HTMLViewer: stylesheet: "
-                        + styleSheet + " shadow: " + shadow + "\n rule: " + rule);
+                System.out.println("HTMLViewer: stylesheet: " + styleSheet
+                        + " shadow: " + shadow + "\n rule: " + rule);
                 _HTMLEditorKit.setStyleSheet(styleSheet);
             } catch (Exception ex) {
                 System.err.println("Problem setting background color");
@@ -484,20 +482,20 @@ public class HTMLViewer extends TableauFrame implements Printable,
             }
             super._open();
         } finally {
-//             try {
-//                 if (background != null) {
-//                     // Restore the background color.
-//                     String rgb = Integer.toHexString(background.getRGB());
-//                     styleSheet.addRule("BODY {background: #"
-//                             + rgb.substring(2, rgb.length())
-//                             + ";}");
-//                     _HTMLEditorKit.setStyleSheet(styleSheet);
-//                 }
-//             } catch (Exception ex) {
-//                 System.out.println("Problem restoring background color.");
-//                 ex.printStackTrace();
-//             }
-         }
+            //             try {
+            //                 if (background != null) {
+            //                     // Restore the background color.
+            //                     String rgb = Integer.toHexString(background.getRGB());
+            //                     styleSheet.addRule("BODY {background: #"
+            //                             + rgb.substring(2, rgb.length())
+            //                             + ";}");
+            //                     _HTMLEditorKit.setStyleSheet(styleSheet);
+            //                 }
+            //             } catch (Exception ex) {
+            //                 System.out.println("Problem restoring background color.");
+            //                 ex.printStackTrace();
+            //             }
+        }
     }
 
     /** Set the scroller size.

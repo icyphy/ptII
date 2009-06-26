@@ -59,11 +59,10 @@ public class BooleanSwitch extends CCodeGeneratorHelper {
      * when getting the width for the port or the code block.
      */
     public String generateTrueOutputs() throws IllegalActionException {
-        ptolemy.actor.lib.BooleanSwitch actor =
-            (ptolemy.actor.lib.BooleanSwitch) getComponent();
+        ptolemy.actor.lib.BooleanSwitch actor = (ptolemy.actor.lib.BooleanSwitch) getComponent();
 
-        int width = Math.min(
-                actor.input.getWidth(), actor.trueOutput.getWidth());
+        int width = Math.min(actor.input.getWidth(), actor.trueOutput
+                .getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();
@@ -85,11 +84,10 @@ public class BooleanSwitch extends CCodeGeneratorHelper {
      * when getting the width for the port or the code block.
      */
     public String generateFalseOutputs() throws IllegalActionException {
-        ptolemy.actor.lib.BooleanSwitch actor =
-            (ptolemy.actor.lib.BooleanSwitch) getComponent();
+        ptolemy.actor.lib.BooleanSwitch actor = (ptolemy.actor.lib.BooleanSwitch) getComponent();
 
-        int width = Math.min(
-                actor.input.getWidth(), actor.trueOutput.getWidth());
+        int width = Math.min(actor.input.getWidth(), actor.trueOutput
+                .getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();

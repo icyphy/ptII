@@ -124,8 +124,6 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
     /** Open the container, if any, of the entity.
      *  If this entity has no container, then do nothing.
      */
@@ -142,6 +140,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             }
         }
     }
+
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
      */

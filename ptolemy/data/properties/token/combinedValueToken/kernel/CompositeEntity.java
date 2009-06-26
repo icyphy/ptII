@@ -56,7 +56,7 @@ public class CompositeEntity extends PropertyCombineCompositeHelper {
      */
     public CompositeEntity(PropertyCombineSolver solver,
             ptolemy.kernel.CompositeEntity entity)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         super(solver, entity);
     }

@@ -120,7 +120,8 @@ public class Slicer extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Slicer newObject = (Slicer) super.clone(workspace);
 
-        newObject._outputRate = (Parameter)newObject.getAttribute("_outputRate");
+        newObject._outputRate = (Parameter) newObject
+                .getAttribute("_outputRate");
         return newObject;
     }
 

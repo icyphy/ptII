@@ -50,7 +50,8 @@ public class EmbeddedJavaActor extends CompiledCompositeActor {
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
      */
-    public EmbeddedJavaActor(ptolemy.actor.lib.embeddedJava.EmbeddedJavaActor component) {
+    public EmbeddedJavaActor(
+            ptolemy.actor.lib.embeddedJava.EmbeddedJavaActor component) {
         super(component);
     }
 

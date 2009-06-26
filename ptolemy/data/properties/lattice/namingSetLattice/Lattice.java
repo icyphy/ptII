@@ -60,7 +60,6 @@ public class Lattice extends PropertySetLattice {
         super();
 
         // Add the empty set as the bottom.
-        addNodeWeight(new PropertySet(this,
-                new Property[0]));
+        addNodeWeight(new PropertySet(this, new Property[0]));
     }
 }

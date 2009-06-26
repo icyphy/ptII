@@ -62,23 +62,25 @@ public class MultiplyDivide extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
-        ptolemy.actor.lib.MultiplyDivide actor =
-            (ptolemy.actor.lib.MultiplyDivide) getComponent();
+    public List<Inequality> constraintList() throws IllegalActionException {
+        ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
         if (actor.multiply.getWidth() != 1 || actor.divide.getWidth() != 1) {
-            throw new IllegalActionException(actor, "The property analysis " +
-                            "currently supports only binary division (e.g. exactly 1 " +
-                            "connection to the multiply port and 1 connection " +
-                            "to the divide port.");
+            throw new IllegalActionException(
+                    actor,
+                    "The property analysis "
+                            + "currently supports only binary division (e.g. exactly 1 "
+                            + "connection to the multiply port and 1 connection "
+                            + "to the divide port.");
         }
 
         setAtLeast(actor.output, new FunctionTerm(actor.multiply, actor.divide));
-        setAtLeast(actor.multiply, new MultiplyFunctionTerm(actor.output, actor.divide));
-        setAtLeast(actor.divide, new DivideFunctionTerm(actor.output, actor.multiply));
+        setAtLeast(actor.multiply, new MultiplyFunctionTerm(actor.output,
+                actor.divide));
+        setAtLeast(actor.divide, new DivideFunctionTerm(actor.output,
+                actor.multiply));
 
         return super.constraintList();
     }
@@ -107,8 +109,8 @@ public class MultiplyDivide extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property multiplyProperty = (Property) getSolver().getProperty(_multiply);
-            Property divideProperty = (Property) getSolver().getProperty(_divide);
+            Property multiplyProperty = getSolver().getProperty(_multiply);
+            Property divideProperty = getSolver().getProperty(_divide);
 
             Property time = _lattice.getElement("TIME");
             Property position = _lattice.getElement("POSITION");
@@ -154,13 +156,10 @@ public class MultiplyDivide extends AtomicActor {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_multiply),
-                getPropertyTerm(_divide)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_multiply),
+                    getPropertyTerm(_divide) };
         }
     }
-
 
     // This class implements a monotonic function of the input port
     // type. The result of the function is the same as the input type
@@ -184,8 +183,8 @@ public class MultiplyDivide extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property outputProperty = (Property) getSolver().getProperty(_output);
-            Property divideProperty = (Property) getSolver().getProperty(_divide);
+            Property outputProperty = getSolver().getProperty(_output);
+            Property divideProperty = getSolver().getProperty(_divide);
 
             Property time = _lattice.getElement("TIME");
             Property position = _lattice.getElement("POSITION");
@@ -237,10 +236,8 @@ public class MultiplyDivide extends AtomicActor {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_output),
-                getPropertyTerm(_divide)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_output),
+                    getPropertyTerm(_divide) };
         }
     }
 
@@ -266,8 +263,8 @@ public class MultiplyDivide extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property outputProperty = (Property) getSolver().getProperty(_output);
-            Property multiplyProperty = (Property) getSolver().getProperty(_multiply);
+            Property outputProperty = getSolver().getProperty(_output);
+            Property multiplyProperty = getSolver().getProperty(_multiply);
 
             Property time = _lattice.getElement("TIME");
             Property position = _lattice.getElement("POSITION");
@@ -319,10 +316,8 @@ public class MultiplyDivide extends AtomicActor {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_output),
-                getPropertyTerm(_multiply)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_output),
+                    getPropertyTerm(_multiply) };
         }
     }
 }

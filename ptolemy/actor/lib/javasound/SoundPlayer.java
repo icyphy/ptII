@@ -143,8 +143,7 @@ public class SoundPlayer extends SoundActor {
         // Get a source data line from the default mixer.
         // NOTE: THis is really a target for audio data, not a source.
         try {
-            _sourceDataLine = AudioSystem
-                    .getSourceDataLine(format);
+            _sourceDataLine = AudioSystem.getSourceDataLine(format);
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
             _sourceDataLine.open(format, _bufferSize * _bytesPerSample

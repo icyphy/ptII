@@ -457,7 +457,7 @@ public class UtilityFunctions {
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(null, ex,
                         "UtilityFunctions.find: "
-                        + "cannot create an an Array of Integers");
+                                + "cannot create an an Array of Integers");
             }
         } else {
             return new ArrayToken(array.getElementType());
@@ -575,8 +575,8 @@ public class UtilityFunctions {
             // This should not happen since result should not be null.
             throw new InternalErrorException(null, ex,
                     "UtilityFunction.gaussian: "
-                    + "Cannot create the array that contains "
-                    + "Gaussian random numbers.");
+                            + "Cannot create the array that contains "
+                            + "Gaussian random numbers.");
         }
     }
 
@@ -606,10 +606,12 @@ public class UtilityFunctions {
             return new DoubleMatrixToken(result);
         } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException(null, ex,
+            throw new InternalErrorException(
+                    null,
+                    ex,
                     "UtilityFunction.gaussian: "
-                    + "Cannot create the DoubleMatrixToken that contains "
-                    + "Gaussian random numbers.");
+                            + "Cannot create the DoubleMatrixToken that contains "
+                            + "Gaussian random numbers.");
         }
     }
 
@@ -626,14 +628,15 @@ public class UtilityFunctions {
      */
     public static RecordToken getenv() throws IllegalActionException {
 
-        Map<String,Token> environmentMap = new HashMap<String,Token>();
+        Map<String, Token> environmentMap = new HashMap<String, Token>();
 
-        Map<String,String> environment = System.getenv();
+        Map<String, String> environment = System.getenv();
 
         Iterator environmentVariables = environment.entrySet().iterator();
         while (environmentVariables.hasNext()) {
-            Map.Entry pairs = (Map.Entry)environmentVariables.next();
-            environmentMap.put((String)(pairs.getKey()), new StringToken((String)(pairs.getValue())));
+            Map.Entry pairs = (Map.Entry) environmentVariables.next();
+            environmentMap.put((String) (pairs.getKey()), new StringToken(
+                    (String) (pairs.getValue())));
         }
         return new RecordToken(environmentMap);
     }
@@ -678,8 +681,7 @@ public class UtilityFunctions {
      *  @param string The string to be parsed and evaluated.
      *  @return A string representing an inferred type.
      */
-    public static String inferType(String string)
-            throws IllegalActionException {
+    public static String inferType(String string) throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         PtParser parser = new PtParser();
@@ -837,8 +839,8 @@ public class UtilityFunctions {
 
             String osName = StringUtilities.getProperty("os.name");
 
-            if (osName.startsWith("SunOS") || osName.startsWith("Linux") ||
-                osName.startsWith("Mac OS X")) {
+            if (osName.startsWith("SunOS") || osName.startsWith("Linux")
+                    || osName.startsWith("Mac OS X")) {
 
                 if (osName.startsWith("Mac OS X")) {
                     sharedLibrarySuffix = "dylib";
@@ -948,7 +950,8 @@ public class UtilityFunctions {
                             + ") and the classpath for '" + libraryPath
                             + "', but that was not found either.\n"
                             + "The Java classpath was: " + classpath
-                            + "\nIn addition, loadLibrary(\"" + shortLibraryName
+                            + "\nIn addition, loadLibrary(\""
+                            + shortLibraryName
                             + "\") was called, the exception for the "
                             + "loadLibrary() call was: " + ex2);
 
@@ -1109,8 +1112,7 @@ public class UtilityFunctions {
      *  @param y An unsigned byte.
      *  @return The maximum of x and y.
      */
-    public static UnsignedByteToken max(UnsignedByteToken x,
-            UnsignedByteToken y) {
+    public static UnsignedByteToken max(UnsignedByteToken x, UnsignedByteToken y) {
         if (x.intValue() > y.intValue()) {
             return x;
         } else {
@@ -1168,8 +1170,7 @@ public class UtilityFunctions {
      *  @param y An unsigned byte.
      *  @return The minimum of x and y.
      */
-    public static UnsignedByteToken min(UnsignedByteToken x,
-            UnsignedByteToken y) {
+    public static UnsignedByteToken min(UnsignedByteToken x, UnsignedByteToken y) {
         if (x.intValue() < y.intValue()) {
             return x;
         } else {
@@ -1271,8 +1272,8 @@ public class UtilityFunctions {
             // This should not happen since result should not be null.
             throw new InternalErrorException(null, ex,
                     "UtilityFunction.random: "
-                    + "Cannot create the array that contains "
-                    + "random numbers.");
+                            + "Cannot create the array that contains "
+                            + "random numbers.");
         }
     }
 
@@ -1295,10 +1296,12 @@ public class UtilityFunctions {
             return new DoubleMatrixToken(result);
         } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException(null, ex,
+            throw new InternalErrorException(
+                    null,
+                    ex,
                     "UtilityFunction.random: "
-                    + "Cannot create the DoubleMatrixToken that contains "
-                    + "random numbers.");
+                            + "Cannot create the DoubleMatrixToken that contains "
+                            + "random numbers.");
         }
     }
 
@@ -1560,13 +1563,13 @@ public class UtilityFunctions {
             // have the same type.
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.repeat: "
-                    + "Cannot construct an ArrayToken.");
+                            + "Cannot construct an ArrayToken.");
         } catch (IllegalArgumentException ex2) {
             // This should not happen since the elements of the array always
             // have the same type.
             throw new InternalErrorException(null, ex2,
                     "UtilityFunctions.repeat: "
-                    + "Cannot construct an ArrayToken.");
+                            + "Cannot construct an ArrayToken.");
         }
 
         return arrayToken;
@@ -1863,7 +1866,7 @@ public class UtilityFunctions {
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixComplex: "
-                    + "Cannot create a ComplexMatrixToken.");
+                            + "Cannot create a ComplexMatrixToken.");
         }
     }
 
@@ -1881,7 +1884,7 @@ public class UtilityFunctions {
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixDouble: "
-                    + "Cannot create a DoubleMatrixToken.");
+                            + "Cannot create a DoubleMatrixToken.");
         }
 
         return result;
@@ -1901,7 +1904,7 @@ public class UtilityFunctions {
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixInt: "
-                    + "Cannot create a IntMatrixToken.");
+                            + "Cannot create a IntMatrixToken.");
         }
 
         return result;
@@ -1921,7 +1924,7 @@ public class UtilityFunctions {
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixLong: "
-                    + "Cannot create a LongMatrixToken.");
+                            + "Cannot create a LongMatrixToken.");
         }
 
         return result;

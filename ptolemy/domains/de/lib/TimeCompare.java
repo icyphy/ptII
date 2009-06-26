@@ -146,25 +146,25 @@ public class TimeCompare extends DEActor {
         Iterator<Double> input1Iterator = _input1TimeStamps.iterator();
         Iterator<Double> input2Iterator = _input2TimeStamps.iterator();
         while (input1Iterator.hasNext() && input2Iterator.hasNext()) {
-                double input1 = input1Iterator.next();
-                double input2 = input2Iterator.next();
-                input2Iterator.remove();
+            double input1 = input1Iterator.next();
+            double input2 = input2Iterator.next();
+            input2Iterator.remove();
             double difference = input2 - input1;
 
-                if (nonnegative) {
-                    while (difference < 0.0 && input2Iterator.hasNext()) {
-                            input2 = input2Iterator.next();
+            if (nonnegative) {
+                while (difference < 0.0 && input2Iterator.hasNext()) {
+                    input2 = input2Iterator.next();
                     input2Iterator.remove();
-                            difference = input2 - input1;
-                    }
-                    if (difference >= 0.0) {
-                            input1Iterator.remove();
-                            output.send(0, new DoubleToken(difference));
-                    }
-                } else {
-                    input1Iterator.remove();
-                        output.send(0, new DoubleToken(difference));
+                    difference = input2 - input1;
                 }
+                if (difference >= 0.0) {
+                    input1Iterator.remove();
+                    output.send(0, new DoubleToken(difference));
+                }
+            } else {
+                input1Iterator.remove();
+                output.send(0, new DoubleToken(difference));
+            }
         }
     }
 

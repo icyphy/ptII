@@ -126,35 +126,37 @@ public class LinkController extends BasicEdgeController {
         List<?> configsList = Configuration.configurations();
 
         Configuration config = null;
-        for (Iterator<?> it = configsList.iterator(); it.hasNext(); ) {
-          config = (Configuration)it.next();
-          if (config != null)
-            break;
+        for (Iterator<?> it = configsList.iterator(); it.hasNext();) {
+            config = (Configuration) it.next();
+            if (config != null) {
+                break;
+            }
         }
 
         //If a MenuFactory has been defined in the configuration, use this
         //one; otherwise, use the default Ptolemy one:
         if (config != null && cmfCreator == null) {
-          cmfCreator = (ContextMenuFactoryCreator)
-                       config.getAttribute("contextMenuFactory");
+            cmfCreator = (ContextMenuFactoryCreator) config
+                    .getAttribute("contextMenuFactory");
         }
         if (cmfCreator != null) {
-          try {
-            _menuFactory = (PtolemyMenuFactory)
-                           cmfCreator.createContextMenuFactory(controller);
-          } catch (Exception ex) {
-            //do nothing - will default to ptii right-click menus
-            System.out.println("Unable to use the alternative right-click menu "
-                               + "handler that was specified in the "
-                               + "configuration; defaulting to ptii handler. "
-                               + "Exception was: " + ex);
-          }
+            try {
+                _menuFactory = (PtolemyMenuFactory) cmfCreator
+                        .createContextMenuFactory(controller);
+            } catch (Exception ex) {
+                //do nothing - will default to ptii right-click menus
+                System.out
+                        .println("Unable to use the alternative right-click menu "
+                                + "handler that was specified in the "
+                                + "configuration; defaulting to ptii handler. "
+                                + "Exception was: " + ex);
+            }
 
         }
         //if the above has failed in any way, _menuFactory will still be null,
         //in which case we should default to ptii context menus
         if (_menuFactory == null) {
-          _menuFactory = new PtolemyMenuFactory(controller);
+            _menuFactory = new PtolemyMenuFactory(controller);
         }
 
         _configureMenuFactory = new MenuActionFactory(_configureAction);
@@ -438,6 +440,5 @@ public class LinkController extends BasicEdgeController {
      * The MenuFactory constructs the right-click context menus
      */
     private static ContextMenuFactoryCreator cmfCreator;
-
 
 }

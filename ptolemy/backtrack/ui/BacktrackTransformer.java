@@ -216,12 +216,13 @@ public class BacktrackTransformer {
          *   actor's icon cannot be read and inserted into the new model.
          */
         public void filterEndElement(NamedObj container, String elementName,
-                StringBuffer currentCharData, String xmlFile) throws IllegalActionException {
+                StringBuffer currentCharData, String xmlFile)
+                throws IllegalActionException {
             if ((elementName.equals("entity") || elementName.equals("property"))
                     && container != null && container.getClassName() != null) {
                 if (_classStack.peek() != null
                         && container.getClassName().equals(
-                                _newClassName((String) _classStack.peek()))) {
+                                _newClassName(_classStack.peek()))) {
                     // Copy the original icon to the MoML.
                     _copyIcon(container);
 
@@ -263,8 +264,7 @@ public class BacktrackTransformer {
          */
         private void _copyIcon(NamedObj container)
                 throws IllegalActionException {
-            String iconFileName = ((String) _classStack.peek()).replace('.',
-                    '/')
+            String iconFileName = (_classStack.peek()).replace('.', '/')
                     + "Icon.xml";
 
             URL iconFile = getClass().getClassLoader()
@@ -310,8 +310,8 @@ public class BacktrackTransformer {
          *  @return The NamedObj returned by the parser.
          *  @exception Exception If the parsing is not successful.
          */
-        private NamedObj _parse(Reader reader, String systemID, NamedObj container)
-                throws Exception {
+        private NamedObj _parse(Reader reader, String systemID,
+                NamedObj container) throws Exception {
             if (_parser == null) {
                 _parser = new MoMLParser();
             }

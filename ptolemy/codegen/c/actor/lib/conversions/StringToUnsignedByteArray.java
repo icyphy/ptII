@@ -47,7 +47,8 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
      * Construct the StringToUnsignedByteArray helper.
      * @param actor the associated actor.
      */
-    public StringToUnsignedByteArray(ptolemy.actor.lib.conversions.StringToUnsignedByteArray actor) {
+    public StringToUnsignedByteArray(
+            ptolemy.actor.lib.conversions.StringToUnsignedByteArray actor) {
         super(actor);
     }
 

@@ -58,10 +58,12 @@ public class PropertyParameter extends StringParameter {
         String timesign;
         String ret = super.stringValue();
 
-        if (ret.matches(".*(with\\s+no\\s+time\\s+limit\\s*|in\\s+time\\s+(<|<=).*)"))
+        if (ret
+                .matches(".*(with\\s+no\\s+time\\s+limit\\s*|in\\s+time\\s+(<|<=).*)")) {
             timesign = "t";
-        else
+        } else {
             timesign = "u";
+        }
 
         return "mc {init} |=" + timesign + " " + ret.replace("\\", "\\\\");
     }

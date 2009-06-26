@@ -36,7 +36,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Property
 
@@ -60,16 +59,18 @@ public class Float extends LatticeProperty implements TypeProperty {
     }
 
     public Token getMinValue() {
-       return new DoubleToken(1.17549435E-38F);
+        return new DoubleToken(1.17549435E-38F);
     }
 
     public boolean hasMinMaxValue() {
-       return true;
+        return true;
     }
 
     public boolean isInRange(Token token) throws IllegalActionException {
-        if ((((ScalarToken)token).doubleValue() < ((ScalarToken)getMinValue()).doubleValue()) ||
-            (((ScalarToken)token).doubleValue() > ((ScalarToken)getMaxValue()).doubleValue())) {
+        if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
+                .doubleValue())
+                || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
+                        .doubleValue())) {
 
             return false;
         } else {

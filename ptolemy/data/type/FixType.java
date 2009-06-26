@@ -54,8 +54,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red
  */
-public class FixType extends StructuredType
-    implements Cloneable, Serializable {
+public class FixType extends StructuredType implements Cloneable, Serializable {
     /** Construct a new fix type, with no integer bits and no
      * fractional bits.  This (rather useless) type represents the
      * bottom of the FixPoint type lattice.
@@ -134,8 +133,7 @@ public class FixType extends StructuredType
      */
     public Type divide(Type rightArgumentType) {
         if (rightArgumentType instanceof FixType) {
-            Precision rPrecision = ((FixType) rightArgumentType)
-                    .getPrecision();
+            Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
             Precision newPrecision = FixPoint.dividePrecision(rPrecision,
                     _precision);
             FixType returnType = new FixType(newPrecision);

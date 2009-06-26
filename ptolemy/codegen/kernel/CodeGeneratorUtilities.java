@@ -87,7 +87,9 @@ public class CodeGeneratorUtilities {
                     value = value.substring(1, value.length() - 1);
                 }
 
-                substituteMap.put("@" + CodeGeneratorHelper.generateSimpleName(variable) + "@", value);
+                substituteMap.put("@"
+                        + CodeGeneratorHelper.generateSimpleName(variable)
+                        + "@", value);
             }
         }
 

@@ -99,8 +99,8 @@ public class Main extends KernelMain {
         // This snapshot should be last...
         addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
                 "outputDirector:" + _outputDirectory);
-        addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(), "outputDirectory:"
-                + _outputDirectory);
+        addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(),
+                "outputDirectory:" + _outputDirectory);
 
         // Disable the watch dog timer
         addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),

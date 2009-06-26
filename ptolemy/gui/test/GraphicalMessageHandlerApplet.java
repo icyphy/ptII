@@ -28,15 +28,13 @@
 
 package ptolemy.gui.test;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
+import javax.swing.UIManager;
 
 import ptolemy.gui.BasicJApplet;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.util.StringUtilities;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.VergilApplication;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicalMessageHandlerApplet
@@ -60,7 +58,8 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
         super.destroy();
         // Note: we used to call manager.terminate() here to get rid
         // of a lingering browser problem
-        System.out.println("FIXME: Need to destroy GraphicalMessageHandlerApplet");
+        System.out
+                .println("FIXME: Need to destroy GraphicalMessageHandlerApplet");
         stop();
     }
 
@@ -81,7 +80,7 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
      *  the first time that the start() method is called.
      *  In this class, this invokes {@link VergilApplication#main(String[])}
      */
-    public void init () {
+    public void init() {
         super.init();
         try {
             // Setting the look and feel causes problems with applets
@@ -90,7 +89,8 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
             // Unfortunately, it occurs well *after* the call below.
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Throwable throwable) {
-            throw new RuntimeException("Failed to set look and feel.", throwable);
+            throw new RuntimeException("Failed to set look and feel.",
+                    throwable);
         }
         try {
             java.util.Locale.setDefault(java.util.Locale.US);
@@ -101,9 +101,9 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
             // exception will be thrown.
         }
         GraphicalMessageHandler handler = new GraphicalMessageHandler();
-        GraphicalMessageHandler.setMessageHandler(handler);
+        MessageHandler.setMessageHandler(handler);
         Exception exception = new Exception("My Test Exception");
-        GraphicalMessageHandler.error("My Error Message.", exception);
+        MessageHandler.error("My Error Message.", exception);
     }
 
     /** Stop execution of the model. This method is called by the

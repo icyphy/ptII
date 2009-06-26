@@ -58,20 +58,17 @@ public class Sink extends AtomicActor {
      * @param actor The given Source actor
      * @exception IllegalActionException
      */
-    public Sink(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Sink actor)
+    public Sink(PropertyConstraintSolver solver, ptolemy.actor.lib.Sink actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
-    public Sink(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Sink actor,
-            boolean useDefaultConstraints)
-            throws IllegalActionException {
+    public Sink(PropertyConstraintSolver solver, ptolemy.actor.lib.Sink actor,
+            boolean useDefaultConstraints) throws IllegalActionException {
 
         super(solver, actor, useDefaultConstraints);
-     }
+    }
 
     protected void _setEffectiveTerms() {
         Entity actor = (Entity) getComponent();
@@ -79,11 +76,11 @@ public class Sink extends AtomicActor {
         Iterator ports = actor.portList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
-            if ((port.numLinks() <= 0) &&
-                (port.isOutput()) &&
-                (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER)) {
+            if ((port.numLinks() <= 0)
+                    && (port.isOutput())
+                    && (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER)) {
 
-                 getPropertyTerm(port).setEffective(false);
+                getPropertyTerm(port).setEffective(false);
             }
         }
 

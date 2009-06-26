@@ -501,25 +501,25 @@ public class ModelReference extends TypedAtomicActor implements
                 // Synchronizing here is not correct.
                 // See Workspace.wait(Object)
                 // synchronized (this) {
-                    while (_executing) {
-                        try {
-                            if (_debugging) {
-                                _debug("** Waiting for previous execution to finish.");
-                            }
-
-                            // Use workspace version of wait to release
-                            // read permission on the workspace.
-                            workspace().wait(this);
-                        } catch (InterruptedException ex) {
-                            // Cancel subsequent execution.
-                            getManager().finish();
-                            return;
+                while (_executing) {
+                    try {
+                        if (_debugging) {
+                            _debug("** Waiting for previous execution to finish.");
                         }
-                    }
 
-                    if (_debugging) {
-                        _debug("** Previous execution has finished.");
+                        // Use workspace version of wait to release
+                        // read permission on the workspace.
+                        workspace().wait(this);
+                    } catch (InterruptedException ex) {
+                        // Cancel subsequent execution.
+                        getManager().finish();
+                        return;
                     }
+                }
+
+                if (_debugging) {
+                    _debug("** Previous execution has finished.");
+                }
                 // }
             }
 

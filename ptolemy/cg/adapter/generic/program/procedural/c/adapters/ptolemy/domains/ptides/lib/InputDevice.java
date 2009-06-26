@@ -50,8 +50,9 @@ public abstract class InputDevice extends ProgramCodeGeneratorAdapter {
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         return "";
     }
-    
-    public String generateHardwareInitializationCode() throws IllegalActionException {
+
+    public String generateHardwareInitializationCode()
+            throws IllegalActionException {
         return "";
     }
 }

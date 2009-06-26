@@ -29,7 +29,7 @@ package ptolemy.domains.fsm.kernel.test;
 import java.net.URL;
 import java.util.Iterator;
 
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
@@ -60,7 +60,7 @@ public class DeadlockStates {
      *   be checked.
      */
     public DeadlockStates(String moml) throws Exception {
-        URL url = MoMLApplication.specToURL(moml);
+        URL url = ConfigurationApplication.specToURL(moml);
 
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse(). Also, a instance

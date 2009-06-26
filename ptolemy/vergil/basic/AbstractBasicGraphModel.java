@@ -111,7 +111,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
 
         // If this change request is not a structural change we won't
         // repaint the model.
-        if ((change != null) && (change.getSource() == this || !change.isStructuralChange())) {
+        if ((change != null)
+                && (change.getSource() == this || !change.isStructuralChange())) {
             return;
         }
 

@@ -131,21 +131,15 @@ public class PtolemyModelUtil {
             boolean hide) {
 
         String propertyString = "<property name=\"_hide\" class=\"ptolemy.data.expr.Parameter\" value=\""
-            + hide + "\"/>";
-        if (!hide ) {
+                + hide + "\"/>";
+        if (!hide) {
             propertyString = "<deleteProperty name=\"_hide\"/>";
         }
-        String moml = "<relation name=\""
-                    + relationName
-                    + "\" >"
-                    +
+        String moml = "<relation name=\"" + relationName + "\" >" +
 
-                    "<vertex name=\""
-                    + vertexName
-                    + "\">"
-                    + propertyString
-                    + "</vertex></relation>\n";
-            _momlChangeRequest.append(moml);
+        "<vertex name=\"" + vertexName + "\">" + propertyString
+                + "</vertex></relation>\n";
+        _momlChangeRequest.append(moml);
     }
 
     /**
@@ -196,7 +190,8 @@ public class PtolemyModelUtil {
     protected void _linkPortInside(String portName, String type2, String name2,
             int insideIndex) {
         String moml = "<link " + "port" + "=\"" + portName + "\" " + type2
-                + "=\"" + name2 + "\" insertInsideAt=\"" + insideIndex + "\"/>\n";
+                + "=\"" + name2 + "\" insertInsideAt=\"" + insideIndex
+                + "\"/>\n";
         _momlChangeRequest.append(moml);
     }
 
@@ -208,7 +203,7 @@ public class PtolemyModelUtil {
     protected void _removeRelation(Relation relation, CompositeActor actor) {
         StringBuffer moml = new StringBuffer();
         moml.append("<deleteRelation name=\"" + relation.getName() + "\"/>\n");
-       _momlChangeRequest.append(moml);
+        _momlChangeRequest.append(moml);
     }
 
     /**
@@ -407,12 +402,15 @@ public class PtolemyModelUtil {
     protected String _getUniqueString(CompositeActor actor, String prefix) {
         // build name cache for the first time
         if (_nameSet.isEmpty()) {
-            for (Object attribute : actor.attributeList())
-                _nameSet.add(((Attribute)attribute).getName());
-            for (Iterator iter = actor.containedObjectsIterator(); iter.hasNext();) {
+            for (Object attribute : actor.attributeList()) {
+                _nameSet.add(((Attribute) attribute).getName());
+            }
+            for (Iterator iter = actor.containedObjectsIterator(); iter
+                    .hasNext();) {
                 Object containedObject = iter.next();
-                if (containedObject instanceof NamedObj)
+                if (containedObject instanceof NamedObj) {
                     _nameSet.add(((NamedObj) containedObject).getName());
+                }
             }
         }
         int counter = 2;
@@ -420,7 +418,7 @@ public class PtolemyModelUtil {
         while (_nameSet.contains(candidate)) {
             candidate = _stripNumericSuffix(candidate);
             candidate += counter;
-            counter ++;
+            counter++;
         }
         _nameSet.add(candidate);
         return candidate;
@@ -479,8 +477,9 @@ public class PtolemyModelUtil {
         NamedObj obj = port.getContainer();
         if (obj instanceof Actor) {
             Actor actor = (Actor) obj;
-            if (actor.inputPortList().contains(port))
+            if (actor.inputPortList().contains(port)) {
                 return true;
+            }
         }
         return false;
     }
@@ -581,13 +580,14 @@ public class PtolemyModelUtil {
                         // here we can hide this relation!
                         try {
                             // Parameter hide = new Parameter(vertex, "_hide");
-                            if (show)
-                                if (vertex.getAttribute("_hide") != null)
+                            if (show) {
+                                if (vertex.getAttribute("_hide") != null) {
                                     util._hideVertex(relation.getName(), vertex
-                                        .getName(), false);
-                                else {/*nothing*/}
-                            else if (linkedObjects.size() == 2){ // only hide if exactly 2 linked objects
-                                    util._hideVertex(relation.getName(), vertex
+                                            .getName(), false);
+                                } else {/*nothing*/
+                                }
+                            } else if (linkedObjects.size() == 2) { // only hide if exactly 2 linked objects
+                                util._hideVertex(relation.getName(), vertex
                                         .getName(), true);
                             }
                         } catch (Exception e) {
@@ -668,8 +668,8 @@ public class PtolemyModelUtil {
      * @param insideIndex Index of the channel to be unlinked.
      */
     protected void _unlinkPortInside(String portName, int insideIndex) {
-        String moml = "<unlink " + "port" + "=\"" + portName + "\" insideIndex=\""
-                + insideIndex + "\"/>\n";
+        String moml = "<unlink " + "port" + "=\"" + portName
+                + "\" insideIndex=\"" + insideIndex + "\"/>\n";
         _momlChangeRequest.append(moml);
     }
 
@@ -679,11 +679,10 @@ public class PtolemyModelUtil {
      * @param relation2 Name of second relation to unlink.
      */
     protected void _unlinkRelations(String relation1, String relation2) {
-        String moml = "<unlink " + "relation1" + "=\"" + relation1 + "\" relation2=\""
-                + relation2 + "\"/>\n";
+        String moml = "<unlink " + "relation1" + "=\"" + relation1
+                + "\" relation2=\"" + relation2 + "\"/>\n";
         _momlChangeRequest.append(moml);
     }
-
 
     /**
      * StringBuffer for Requests of Model changes. In Ptolemy the main

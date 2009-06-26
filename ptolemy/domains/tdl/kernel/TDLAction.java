@@ -122,8 +122,11 @@ public class TDLAction {
     public boolean equals(Object obj) {
         if (obj instanceof TDLAction) {
             TDLAction action = (TDLAction) obj;
-            if ((this.time.equals(action.time)) && (this.object == action.object) && (this.actionType == action.actionType))
+            if ((this.time.equals(action.time))
+                    && (this.object == action.object)
+                    && (this.actionType == action.actionType)) {
                 return true;
+            }
         }
         return false;
     }
@@ -134,7 +137,7 @@ public class TDLAction {
     public int hashCode() {
         // See http://www.geocities.com/technofundo/tech/java/equalhash.html
         // for suggestions on hashCode
-        return 31 + time.hashCode() +  actionType + object.hashCode();
+        return 31 + time.hashCode() + actionType + object.hashCode();
     }
 
     /**
@@ -147,15 +150,17 @@ public class TDLAction {
     public boolean sameActionAs(TDLAction action, Time modePeriod) {
         long time1 = this.time.getLongValue() % modePeriod.getLongValue();
         long time2 = action.time.getLongValue() % modePeriod.getLongValue();
-        if (time1 == time2 && (this.object == action.object) && (this.actionType == action.actionType))
+        if (time1 == time2 && (this.object == action.object)
+                && (this.actionType == action.actionType)) {
             return true;
+        }
         return false;
     }
 
     /**
      * A class that compares two TDL actions.
      */
-    public static class TDLActionComparator implements Comparator  {
+    public static class TDLActionComparator implements Comparator {
 
         /**
          * Compare two TDLEvents. Two TDL Events are the same if all
@@ -170,12 +175,14 @@ public class TDLAction {
             TDLAction tdlEvent1 = (TDLAction) event1;
             TDLAction tdlEvent2 = (TDLAction) event2;
             long compareTime = tdlEvent1.time.compareTo(tdlEvent2.time);
-            if (compareTime != 0)
-                return (int)compareTime;
-            else if (tdlEvent1.actionType != tdlEvent2.actionType)
+            if (compareTime != 0) {
+                return (int) compareTime;
+            } else if (tdlEvent1.actionType != tdlEvent2.actionType) {
                 return tdlEvent1.actionType - tdlEvent2.actionType;
-            else
-                return tdlEvent1.object.toString().compareTo(tdlEvent2.object.toString());
+            } else {
+                return tdlEvent1.object.toString().compareTo(
+                        tdlEvent2.object.toString());
+            }
         }
     }
 }

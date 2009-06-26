@@ -76,8 +76,8 @@ public class DesignPatternIcon extends NameIcon {
             return _iconCache;
         }
 
-        BasicRectangle figure1 = new BasicRectangle(0, 0, 15, 10, Color.darkGray,
-                1.0f);
+        BasicRectangle figure1 = new BasicRectangle(0, 0, 15, 10,
+                Color.darkGray, 1.0f);
         BasicRectangle figure2 = new BasicRectangle(2, 2, 15, 10, Color.gray,
                 1.0f);
         BasicRectangle figure3 = new BasicRectangle(5, 5, 15, 10, _getFill(),

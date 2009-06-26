@@ -66,9 +66,9 @@ public class TypeConstant implements InequalityTerm {
     public boolean equals(Object object) {
         if (object instanceof TypeConstant) {
             if (_type == null) {
-                return ((TypeConstant)object)._type == null;
+                return ((TypeConstant) object)._type == null;
             }
-            return _type.equals(((TypeConstant)object)._type);
+            return _type.equals(((TypeConstant) object)._type);
         }
         return false;
     }

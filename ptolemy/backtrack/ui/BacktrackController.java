@@ -140,7 +140,7 @@ public class BacktrackController {
             return false;
         } else {
             for (Checkpoint checkpoint : checkpointsAndHandles.keySet()) {
-                long timestamp = ((Long) checkpointsAndHandles.get(checkpoint))
+                long timestamp = (checkpointsAndHandles.get(checkpoint))
                         .longValue();
                 checkpoint.rollback(timestamp, trim);
             }

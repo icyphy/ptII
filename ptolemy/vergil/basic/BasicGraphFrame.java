@@ -282,8 +282,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             NamedObj container = (NamedObj) _getGraphModel().getRoot();
 
             // NOTE: The order in the model must be respected.
-            Iterator<NamedObj> elements = container.sortContainedObjects(namedObjSet)
-                    .iterator();
+            Iterator<NamedObj> elements = container.sortContainedObjects(
+                    namedObjSet).iterator();
 
             while (elements.hasNext()) {
                 NamedObj element = elements.next();
@@ -380,9 +380,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     if (userObject instanceof Location) {
                         Location loc = (Location) userObject;
                         NamedObj locationContainer = loc.getContainer();
-                        if (locationContainer != null && (locationContainer instanceof IOPort)) {
-                            NamedObj portContainer = locationContainer.getContainer();
-                            if (portContainer != null && portContainer instanceof CompositeEntity) {
+                        if (locationContainer != null
+                                && (locationContainer instanceof IOPort)) {
+                            NamedObj portContainer = locationContainer
+                                    .getContainer();
+                            if (portContainer != null
+                                    && portContainer instanceof CompositeEntity) {
                                 // Remove element from selection
                                 model.removeSelection(selectedItem);
                                 selection.remove(selectedItem);
@@ -393,7 +396,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         }
 
                     }
-
 
                     if (!gotLocation) {
                         location[0] = ((Figure) selectedItem).getBounds()
@@ -415,14 +417,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         //      hierarchies
 
                         if (actual instanceof Entity) {
-                            for (IOPort port : (List<IOPort>) ((Entity) actual).portList()) {
-                                Iterator<?> outEdges =  graphModel.outEdges(port);
+                            for (IOPort port : (List<IOPort>) ((Entity) actual)
+                                    .portList()) {
+                                Iterator<?> outEdges = graphModel
+                                        .outEdges(port);
                                 while (outEdges.hasNext()) {
                                     Object obj = outEdges.next();
                                     selectedEdges.add(obj);
                                     selection.add(controller.getFigure(obj));
                                 }
-                                Iterator<?> inEdges =  graphModel.inEdges(port);
+                                Iterator<?> inEdges = graphModel.inEdges(port);
                                 while (inEdges.hasNext()) {
                                     Object obj = inEdges.next();
                                     selectedEdges.add(obj);
@@ -455,14 +459,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     Object object = objects.next();
 
                     if (!headOK
-                            && GraphUtilities.isContainedNode(head,
-                                    object, graphModel)) {
+                            && GraphUtilities.isContainedNode(head, object,
+                                    graphModel)) {
                         headOK = true;
                     }
 
                     if (!tailOK
-                            && GraphUtilities.isContainedNode(tail,
-                                    object, graphModel)) {
+                            && GraphUtilities.isContainedNode(tail, object,
+                                    graphModel)) {
                         tailOK = true;
                     }
                 }
@@ -470,13 +474,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // For the edges at the boundary.
                 if ((!headOK && tailOK) || (headOK && !tailOK)) {
 
-                    LinkElementProperties headProperties
-                        = LinkElementProperties.extractLinkProperties(head);
-                    LinkElementProperties tailProperties
-                        = LinkElementProperties.extractLinkProperties(tail);
+                    LinkElementProperties headProperties = LinkElementProperties
+                            .extractLinkProperties(head);
+                    LinkElementProperties tailProperties = LinkElementProperties
+                            .extractLinkProperties(tail);
 
-
-                    if (headProperties.port == null && tailProperties.port != null) {
+                    if (headProperties.port == null
+                            && tailProperties.port != null) {
                         //Swap head and tail
                         LinkElementProperties temp = headProperties;
                         headProperties = tailProperties;
@@ -487,13 +491,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                     boolean duplicateRelation = true;
                     if (headProperties.type == ElementInLinkType.RELATION) {
-                        relation = (IORelation) graphModel.getSemanticObject(headProperties.element);
+                        relation = (IORelation) graphModel
+                                .getSemanticObject(headProperties.element);
                         duplicateRelation = false;
                     } else if (tailProperties.type == ElementInLinkType.RELATION) {
-                        relation = (IORelation) graphModel.getSemanticObject(tailProperties.element);
+                        relation = (IORelation) graphModel
+                                .getSemanticObject(tailProperties.element);
                         duplicateRelation = false;
                     } else {
-                        relation = (IORelation) graphModel.getSemanticObject(userObject);
+                        relation = (IORelation) graphModel
+                                .getSemanticObject(userObject);
                         duplicateRelation = true;
                     }
 
@@ -503,10 +510,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         String portName = "port_" + i;
                         boolean isInput = headProperties.port.isInput();
                         boolean isOutput = headProperties.port.isOutput();
-                        newPorts.append("<port name=\""
-                                        + portName
-                                        + "\" class=\"ptolemy.actor.TypedIOPort"
-                                        + "\">\n");
+                        newPorts.append("<port name=\"" + portName
+                                + "\" class=\"ptolemy.actor.TypedIOPort"
+                                + "\">\n");
 
                         if (headProperties.port.isMultiport()) {
                             newPorts.append("<property name=\"multiport\"/>\n");
@@ -517,13 +523,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             // The relation must be outside.
                             // Create composite port.
                             if (isInput) {
-                                newPorts
-                                        .append("<property name=\"input\"/>");
+                                newPorts.append("<property name=\"input\"/>");
                             }
 
                             if (isOutput) {
-                                newPorts
-                                        .append("<property name=\"output\"/>");
+                                newPorts.append("<property name=\"output\"/>");
                             }
 
                             newPorts.append("\n</port>\n");
@@ -532,20 +536,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             // Note we can only partially reuse
                             // the relation name, one original relation
                             // can be two internal relations.
-                            String relationName = relation.getName()
-                                    + "_" + i;
-                            intRelations
-                                    .append("<relation name=\""
-                                            + relationName
-                                            + "\" class=\""
-                                            + "ptolemy.actor.TypedIORelation\"/>\n");
+                            String relationName = relation.getName() + "_" + i;
+                            intRelations.append("<relation name=\""
+                                    + relationName + "\" class=\""
+                                    + "ptolemy.actor.TypedIORelation\"/>\n");
                             intConnections.append("<link port=\""
                                     + entity.getName() + "."
-                                    + headProperties.port.getName() + "\" relation=\""
-                                    + relationName + "\"/>\n");
-                            intConnections.append("<link port=\""
-                                    + portName + "\" relation=\""
-                                    + relationName + "\"/>\n");
+                                    + headProperties.port.getName()
+                                    + "\" relation=\"" + relationName
+                                    + "\"/>\n");
+                            intConnections.append("<link port=\"" + portName
+                                    + "\" relation=\"" + relationName
+                                    + "\"/>\n");
 
                             // Create external links.
                             if (duplicateRelation) {
@@ -560,69 +562,55 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                                 if (otherEntity == container) {
                                     // This is a boundary port at a higher level.
-                                    extConnections
-                                            .append("<link port=\""
-                                                    + tailProperties.port
-                                                            .getName()
-                                                    + "\" relation=\""
-                                                    + relation
-                                                            .getName()
-                                                    + "\"/>\n");
+                                    extConnections.append("<link port=\""
+                                            + tailProperties.port.getName()
+                                            + "\" relation=\""
+                                            + relation.getName() + "\"/>\n");
                                 } else {
-                                    extConnections
-                                            .append("<link port=\""
-                                                    + otherEntity
-                                                            .getName()
-                                                    + "."
-                                                    + tailProperties.port
-                                                            .getName()
-                                                    + "\" relation=\""
-                                                    + relation
-                                                            .getName()
-                                                    + "\"/>\n");
+                                    extConnections.append("<link port=\""
+                                            + otherEntity.getName() + "."
+                                            + tailProperties.port.getName()
+                                            + "\" relation=\""
+                                            + relation.getName() + "\"/>\n");
                                 }
                             }
 
                             extConnections.append("<link port=\""
-                                    + compositeActorName + "."
-                                    + portName + "\" relation=\""
-                                    + relation.getName() + "\"/>\n");
+                                    + compositeActorName + "." + portName
+                                    + "\" relation=\"" + relation.getName()
+                                    + "\"/>\n");
                         } else {
                             // The port is outside the hierarchy.
                             // The relation must be inside.
-                            if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) ||
-                                    (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
-                                newPorts
-                                        .append("<property name=\"output\"/>");
+                            if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR)
+                                    || (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
+                                newPorts.append("<property name=\"output\"/>");
                             }
 
-                            if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) ||
-                                    (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
-                                newPorts
-                                        .append("<property name=\"input\"/>");
+                            if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR)
+                                    || (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
+                                newPorts.append("<property name=\"input\"/>");
                             }
 
                             newPorts.append("\n</port>\n");
 
-                            String relationName = relation.getName()
-                                    + "_" + i;
-                            extRelations
-                                    .append("<relation name=\""
-                                            + relationName
-                                            + "\" class=\""
-                                            + "ptolemy.actor.TypedIORelation\"/>\n");
+                            String relationName = relation.getName() + "_" + i;
+                            extRelations.append("<relation name=\""
+                                    + relationName + "\" class=\""
+                                    + "ptolemy.actor.TypedIORelation\"/>\n");
                             String entityPrefix = "";
-                            if (getModel() !=  entity) {
+                            if (getModel() != entity) {
                                 entityPrefix = entity.getName() + ".";
                             }
                             extConnections.append("<link port=\""
                                     + entityPrefix
-                                    + headProperties.port.getName() + "\" relation=\""
-                                    + relationName + "\"/>\n");
+                                    + headProperties.port.getName()
+                                    + "\" relation=\"" + relationName
+                                    + "\"/>\n");
                             extConnections.append("<link port=\""
-                                    + compositeActorName + "."
-                                    + portName + "\" relation=\""
-                                    + relationName + "\"/>\n");
+                                    + compositeActorName + "." + portName
+                                    + "\" relation=\"" + relationName
+                                    + "\"/>\n");
 
                             // Create external links.
                             if (duplicateRelation) {
@@ -636,22 +624,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                         .getContainer();
 
                                 String otherEntityPrefix = "";
-                                if (getModel() !=  otherEntity) {
-                                    otherEntityPrefix = otherEntity.getName() + ".";
+                                if (getModel() != otherEntity) {
+                                    otherEntityPrefix = otherEntity.getName()
+                                            + ".";
                                 }
 
-                                intConnections
-                                        .append("<link port=\""
-                                                + otherEntityPrefix
-                                                + tailProperties.port.getName()
-                                                + "\" relation=\""
-                                                + relation.getName()
-                                                + "\"/>\n");
+                                intConnections.append("<link port=\""
+                                        + otherEntityPrefix
+                                        + tailProperties.port.getName()
+                                        + "\" relation=\"" + relation.getName()
+                                        + "\"/>\n");
                             }
 
-                            intConnections.append("<link port=\""
-                                    + portName + "\" relation=\""
-                                    + relation.getName() + "\"/>\n");
+                            intConnections.append("<link port=\"" + portName
+                                    + "\" relation=\"" + relation.getName()
+                                    + "\"/>\n");
                         }
                     }
                     //                        } else if (!headOK && !tailOK) {
@@ -661,7 +648,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
                 ++i;
             }
-
 
             // System.out.println(" new ports:" + newPorts);
 
@@ -695,7 +681,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             // Generate the MoML to carry out the deletion.
 
-            moml.append(_deleteMoML(graphModel, selection.toArray(new Object[]{}), model));
+            moml.append(_deleteMoML(graphModel, selection
+                    .toArray(new Object[] {}), model));
 
             moml.append("<entity name=\"" + compositeActorName
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
@@ -715,7 +702,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // External relations and connections.
             moml.append(extRelations);
             moml.append(extConnections);
-
 
             moml.append("</group>\n");
 
@@ -799,7 +785,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  {@link ptolemy.actor.gui.PtolemyFrame}.
      */
     public void disposeSuper() {
-    // This method is used by Kepler for the tabbed pane interface.
+        // This method is used by Kepler for the tabbed pane interface.
         super.dispose();
     }
 
@@ -824,16 +810,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 if (model.getAttribute("_alternateGetMomlAction") == null) {
                     alternateGetMoml = new StringAttribute(model,
                             "_alternateGetMomlAction");
-                    alternateGetMoml.setExpression(
-                            DesignPatternGetMoMLAction.class.getName());
+                    alternateGetMoml
+                            .setExpression(DesignPatternGetMoMLAction.class
+                                    .getName());
                 }
 
                 if (model.getAttribute("_designPatternIcon") == null) {
                     icon = new DesignPatternIcon(model, "_designPatternIcon");
                 }
             } catch (Exception e) {
-                throw new InternalErrorException(null, e, "Fail to prepare " +
-                        "for exporting a design pattern.");
+                throw new InternalErrorException(null, e, "Fail to prepare "
+                        + "for exporting a design pattern.");
             }
 
             _prepareExportDesignPattern();
@@ -938,11 +925,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
         } else {
-            String currentWorkingDirectory = StringUtilities.getProperty(
-                    "user.dir");
+            String currentWorkingDirectory = StringUtilities
+                    .getProperty("user.dir");
             if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(new File(
-                        currentWorkingDirectory));
+                fileDialog
+                        .setCurrentDirectory(new File(currentWorkingDirectory));
             }
         }
 
@@ -961,13 +948,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         "Error reading input"));
             }
             if (model != null) {
-                Attribute attribute = model.getAttribute(
-                        "_alternateGetMomlAction");
+                Attribute attribute = model
+                        .getAttribute("_alternateGetMomlAction");
                 String className = DesignPatternGetMoMLAction.class.getName();
-                if (attribute == null ||
-                        !(attribute instanceof StringAttribute) ||
-                        !((StringAttribute) attribute).getExpression().equals(
-                                className)) {
+                if (attribute == null
+                        || !(attribute instanceof StringAttribute)
+                        || !((StringAttribute) attribute).getExpression()
+                                .equals(className)) {
                     report(new IllegalActionException(
                             "The model is not a design pattern."));
                 } else {
@@ -1615,8 +1602,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // We already printed a message, why print it again?
             } catch (Exception ex) {
                 try {
-            // FIXME: It seems wrong to call MessageHandler here,
-            // instead, we should throw an IllegalActionException?
+                    // FIXME: It seems wrong to call MessageHandler here,
+                    // instead, we should throw an IllegalActionException?
                     MessageHandler.warning(
                             "Invalid default library for the frame.", ex);
                 } catch (CancelException e) {
@@ -1649,9 +1636,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             _libraryContextMenuCreator = new PTreeMenuCreator();
             _libraryContextMenuCreator
-                .addMenuItemFactory(new OpenLibraryMenuItemFactory());
+                    .addMenuItemFactory(new OpenLibraryMenuItemFactory());
             _libraryContextMenuCreator
-                .addMenuItemFactory(new DocumentationMenuItemFactory());
+                    .addMenuItemFactory(new DocumentationMenuItemFactory());
             _library.addMouseListener(_libraryContextMenuCreator);
 
             _libraryScrollPane = new JScrollPane(_library);
@@ -1661,7 +1648,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // create the palette on the left.
             _palettePane = new JPanel();
             _palettePane.setBorder(null);
-            _palettePane.setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
+            _palettePane
+                    .setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
 
             _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
             if (_graphPanner != null) {
@@ -1903,7 +1891,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  used when trying to create the SizeAttribute.
      */
     protected SizeAttribute _createSizeAttribute()
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // Have to also record the size of the JGraph because
         // setting the size of the frame is ignored if we don't
         // also set the size of the JGraph. Why? Who knows. Swing.
@@ -1929,10 +1917,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param name The name of the exported model.
      *  @exception IOException If an I/O error occurs.
      */
-    protected void _exportDesignPattern(Writer writer, NamedObj model, String name)
-            throws IOException {
-        if (_query != null && _query.hasEntry("selected") &&
-                _query.getBooleanValue("selected")) {
+    protected void _exportDesignPattern(Writer writer, NamedObj model,
+            String name) throws IOException {
+        if (_query != null && _query.hasEntry("selected")
+                && _query.getBooleanValue("selected")) {
             try {
                 model.workspace().getReadAccess();
                 String elementName = model.getElementName();
@@ -1951,9 +1939,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     writer.write(">\n");
                 }
 
-                String[] attributeNames = {"_alternateGetMomlAction",
+                String[] attributeNames = { "_alternateGetMomlAction",
                         "_designPatternIcon", "_transformationBefore",
-                        "_transformationAfter"};
+                        "_transformationAfter" };
                 for (String attributeName : attributeNames) {
                     Attribute attribute = model.getAttribute(attributeName);
                     if (attribute != null) {
@@ -2181,10 +2169,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // If there is no parent that is a Frame, do nothing.
             // We know that: (parent == null) || (parent instanceof Frame)
             if (parent != null) {
-                WindowPropertiesAttribute properties =
-                    (WindowPropertiesAttribute) getModel().getAttribute(
-                            "_windowProperties",
-                            WindowPropertiesAttribute.class);
+                WindowPropertiesAttribute properties = (WindowPropertiesAttribute) getModel()
+                        .getAttribute("_windowProperties",
+                                WindowPropertiesAttribute.class);
 
                 if (properties == null) {
                     properties = new WindowPropertiesAttribute(getModel(),
@@ -2478,7 +2465,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-
     ///////////////////////////////////////////////////////////////////
     //// CopyAction
 
@@ -2521,6 +2507,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             cut();
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     //// DocumentationMenuItemFactory
 
@@ -2547,7 +2534,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //// EditPreferencesAction
@@ -2629,7 +2615,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /**
      * An enumerate to specifies what kind of element the element (head or tail) is in a link.
      */
-    private enum ElementInLinkType { PORT_IN_ACTOR, STANDALONE_PORT, RELATION }
+    private enum ElementInLinkType {
+        PORT_IN_ACTOR, STANDALONE_PORT, RELATION
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// ExecuteSystemAction
@@ -2658,18 +2646,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //        }
     //    }
 
-
     ///////////////////////////////////////////////////////////////////
     //// LinkElementProperties
     /**
      * A class that keeps stores basic properties of element (head, tail) in a link
      */
-    static private class LinkElementProperties
-    {
+    static private class LinkElementProperties {
         /**
          * Create a LinkElementProperties from the element (head or tail), a port if one is available and the ElementInLinkType
          */
-        LinkElementProperties(Object element, IOPort port, ElementInLinkType type) {
+        LinkElementProperties(Object element, IOPort port,
+                ElementInLinkType type) {
             this.element = element;
             this.port = port;
             this.type = type;
@@ -2684,18 +2671,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             if (element instanceof IOPort) {
                 //This is a port of an actor
                 elementPort = (IOPort) element;
-                elementType =  ElementInLinkType.PORT_IN_ACTOR;                         }
-            else if (element instanceof Location) {
+                elementType = ElementInLinkType.PORT_IN_ACTOR;
+            } else if (element instanceof Location) {
                 //Either a port (not one of an actor) or a relation
                 NamedObj elementContainer = ((Location) element).getContainer();
                 if (elementContainer instanceof IOPort) {
                     //This is a port
                     elementPort = (IOPort) elementContainer;
-                    elementType =  ElementInLinkType.STANDALONE_PORT;
+                    elementType = ElementInLinkType.STANDALONE_PORT;
                 } else {
                     //This is a relation
                     assert elementContainer instanceof IORelation;
-                    elementType =  ElementInLinkType.RELATION;
+                    elementType = ElementInLinkType.RELATION;
                 }
             }
             return new LinkElementProperties(element, elementPort, elementType);
@@ -2729,7 +2716,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Get the selection objects.
             // NOTE: The order in the model must be respected.
             HashSet<NamedObj> namedObjSet = _getSelectionSet();
-            final List<NamedObj> elements = container.sortContainedObjects(namedObjSet);
+            final List<NamedObj> elements = container
+                    .sortContainedObjects(namedObjSet);
 
             // Return if any is a derived object.
             if (_checkForImplied(elements)) {
@@ -2771,7 +2759,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Get the selection objects.
             // NOTE: The order in the model must be respected.
             HashSet<NamedObj> namedObjSet = _getSelectionSet();
-            final List<NamedObj> elements = container.sortContainedObjects(namedObjSet);
+            final List<NamedObj> elements = container
+                    .sortContainedObjects(namedObjSet);
 
             // Return if any is a derived object.
             if (_checkForImplied(elements)) {
@@ -2865,8 +2854,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
 
             // Add all the edges.
-            Iterator<?> i = GraphUtilities.partiallyContainedEdges(origComposite,
-                    model);
+            Iterator<?> i = GraphUtilities.partiallyContainedEdges(
+                    origComposite, model);
 
             while (i.hasNext()) {
                 Object origEdge = i.next();

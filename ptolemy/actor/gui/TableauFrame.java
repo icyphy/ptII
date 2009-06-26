@@ -54,9 +54,9 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
+import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
@@ -151,8 +151,9 @@ public class TableauFrame extends Top {
                 tableau.setFrame(this);
             }
         } catch (IllegalActionException e) {
-            throw new InternalErrorException("This frame of class " + getClass()
-                    + " is not compatible with tableau " + tableau.getName());
+            throw new InternalErrorException("This frame of class "
+                    + getClass() + " is not compatible with tableau "
+                    + tableau.getName());
         }
 
         setTableau(tableau);
@@ -170,7 +171,7 @@ public class TableauFrame extends Top {
      * @see #pack()
      */
     public TopPack getAlternateTopPack() {
-      return _topPack;
+        return _topPack;
     }
 
     /** Get the configuration at the top level of the hierarchy.
@@ -453,13 +454,12 @@ public class TableauFrame extends Top {
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
 
-
             // If the configuration has a _disableFileNew parameter that
             // is set to true, then we do not populate the File->New menu.
             boolean disableFileNew = false;
             try {
                 Parameter disableFileNewParameter = (Parameter) configuration
-                    .getAttribute("_disableFileNew", Parameter.class);
+                        .getAttribute("_disableFileNew", Parameter.class);
                 if (disableFileNewParameter != null) {
                     Token token = disableFileNewParameter.getToken();
                     if (token instanceof BooleanToken) {
@@ -509,11 +509,9 @@ public class TableauFrame extends Top {
                     item.addActionListener(menuListener);
                     if (name.equals("Graph Editor")) {
                         // From Daniel Crawl for Kepler
-                        item.setAccelerator(
-                            KeyStroke.getKeyStroke(
-                                KeyEvent.VK_N,
-                                Toolkit.getDefaultToolkit()
-                                    .getMenuShortcutKeyMask()));
+                        item.setAccelerator(KeyStroke.getKeyStroke(
+                                KeyEvent.VK_N, Toolkit.getDefaultToolkit()
+                                        .getMenuShortcutKeyMask()));
                     }
                     ((JMenu) _fileMenuItems[2]).add(item);
                 }
@@ -868,9 +866,10 @@ public class TableauFrame extends Top {
                     // Use nameToURL so this will work with WebStart
                     // and so that this class can be extended and we
                     // will still find the gif.
-                    url = FileUtilities.nameToURL(
-                            "$CLASSPATH/ptolemy/actor/gui/PtolemyIISmallIcon.gif", null,
-                            getClass().getClassLoader());
+                    url = FileUtilities
+                            .nameToURL(
+                                    "$CLASSPATH/ptolemy/actor/gui/PtolemyIISmallIcon.gif",
+                                    null, getClass().getClassLoader());
                 } catch (Throwable throwable) {
                     // Ignore, stick with the default
                 }
@@ -1303,7 +1302,7 @@ public class TableauFrame extends Top {
     class ViewMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
-            GraphicalMessageHandler.setContext(TableauFrame.this);
+            UndeferredGraphicalMessageHandler.setContext(TableauFrame.this);
             if (_factoryContainer != null) {
                 JMenuItem target = (JMenuItem) e.getSource();
                 String actionCommand = null;

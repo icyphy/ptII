@@ -29,8 +29,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -71,8 +71,8 @@ public class Ramp extends ProgramCodeGeneratorAdapter {
 
         CodeStream codeStream = getStrategy().getCodeStream();
         codeStream.append(_eol
-                + CodeStream.indent(getCodeGenerator().comment("initialize "
-                        + getComponent().getName())));
+                + CodeStream.indent(getCodeGenerator().comment(
+                        "initialize " + getComponent().getName())));
         if (actor.output.getType() == BaseType.STRING) {
             codeStream.appendCodeBlock("StringInitBlock");
         } else {
@@ -81,7 +81,8 @@ public class Ramp extends ProgramCodeGeneratorAdapter {
                 Type elementType = ((ArrayType) actor.output.getType())
                         .getElementType();
 
-                args.set(0, "TYPE_" + getCodeGenerator().codeGenType(elementType));
+                args.set(0, "TYPE_"
+                        + getCodeGenerator().codeGenType(elementType));
                 if (!actor.step.getType().equals(actor.output.getType())) {
                     codeStream.appendCodeBlock("ArrayConvertStepBlock", args);
                 }

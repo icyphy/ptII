@@ -34,7 +34,8 @@ import ptolemy.kernel.util.Settable;
 
 public class ExampleSet_CS extends PropertyConstraintSolver {
 
-    public ExampleSet_CS(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public ExampleSet_CS(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         propertyLattice.setExpression("exampleSetLattice");
         propertyLattice.setVisibility(Settable.NOT_EDITABLE);
@@ -58,20 +59,20 @@ public class ExampleSet_CS extends PropertyConstraintSolver {
         fsmConstraintType.setVisibility(Settable.NOT_EDITABLE);
 
         // Add default highlight colors
-//        StringAttribute highlightUnknownProperty = new StringAttribute(_highlighter, "unknown");
-//        highlightUnknownProperty.setExpression("Unknown");
-//        ColorAttribute highlightUnknownColor = new ColorAttribute(_highlighter, "unknownHighlightColor");
-//        highlightUnknownColor.setExpression("{0.0,0.0,0.0,1.0}");
-//
-//        StringAttribute highlightTrueProperty = new StringAttribute(_highlighter, "true");
-//        highlightTrueProperty.setExpression("True");
-//        ColorAttribute highlightTrueColor = new ColorAttribute(_highlighter, "trueHighlightColor");
-//        highlightTrueColor.setExpression("{0.0,0.8,0.2,1.0}");
-//
-//        StringAttribute highlightFalseProperty = new StringAttribute(_highlighter, "false");
-//        highlightFalseProperty.setExpression("False");
-//        ColorAttribute highlightFalseColor = new ColorAttribute(_highlighter, "falseHighlightColor");
-//        highlightFalseColor.setExpression("{0.0,0.2,1.0,1.0}");
+        //        StringAttribute highlightUnknownProperty = new StringAttribute(_highlighter, "unknown");
+        //        highlightUnknownProperty.setExpression("Unknown");
+        //        ColorAttribute highlightUnknownColor = new ColorAttribute(_highlighter, "unknownHighlightColor");
+        //        highlightUnknownColor.setExpression("{0.0,0.0,0.0,1.0}");
+        //
+        //        StringAttribute highlightTrueProperty = new StringAttribute(_highlighter, "true");
+        //        highlightTrueProperty.setExpression("True");
+        //        ColorAttribute highlightTrueColor = new ColorAttribute(_highlighter, "trueHighlightColor");
+        //        highlightTrueColor.setExpression("{0.0,0.8,0.2,1.0}");
+        //
+        //        StringAttribute highlightFalseProperty = new StringAttribute(_highlighter, "false");
+        //        highlightFalseProperty.setExpression("False");
+        //        ColorAttribute highlightFalseColor = new ColorAttribute(_highlighter, "falseHighlightColor");
+        //        highlightFalseColor.setExpression("{0.0,0.2,1.0,1.0}");
     }
 
 }

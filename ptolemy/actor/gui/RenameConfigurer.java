@@ -70,8 +70,8 @@ public class RenameConfigurer extends Query implements ChangeListener,
         setTextWidth(25);
         _object = object;
         addLine(_NAME_LABEL, _NAME_LABEL, object.getName());
-        addTextArea(_DISPLAY_NAME_LABEL, _DISPLAY_NAME_LABEL,
-                object.getDisplayName());
+        addTextArea(_DISPLAY_NAME_LABEL, _DISPLAY_NAME_LABEL, object
+                .getDisplayName());
 
         // By default, names are not shown for ports, and are shown
         // for everything else.  Note that ports are a little confusing,
@@ -132,7 +132,6 @@ public class RenameConfigurer extends Query implements ChangeListener,
                 moml.append("\"/>");
             }
 
-
             // Don't include the Show name check box for AbstractSettableAttributes
             // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3363
             if (!(_object instanceof AbstractSettableAttribute)) {
@@ -140,43 +139,47 @@ public class RenameConfigurer extends Query implements ChangeListener,
                 boolean showName = getBooleanValue("Show name");
 
                 if (_object instanceof Port) {
-                    boolean previousShowName = _isPropertySet(_object, "_showName");
+                    boolean previousShowName = _isPropertySet(_object,
+                            "_showName");
 
                     if (showName != previousShowName) {
                         if (showName) {
                             moml
-                                .append("<property name=\"_showName\" "
-                                        + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                        + " value=\"true\"/>");
-                        } else {
-                            if (!(_object.getAttribute("_showName") instanceof Parameter)) {
-                                moml.append("<deleteProperty name=\"_showName\"/>");
-                            } else {
-                                moml
                                     .append("<property name=\"_showName\" "
                                             + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                            + " value=\"false\"/>");
+                                            + " value=\"true\"/>");
+                        } else {
+                            if (!(_object.getAttribute("_showName") instanceof Parameter)) {
+                                moml
+                                        .append("<deleteProperty name=\"_showName\"/>");
+                            } else {
+                                moml
+                                        .append("<property name=\"_showName\" "
+                                                + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                                + " value=\"false\"/>");
                             }
                         }
                     }
                 } else {
-                    boolean previousShowName = !_isPropertySet(_object, "_hideName");
+                    boolean previousShowName = !_isPropertySet(_object,
+                            "_hideName");
 
                     if (showName != previousShowName) {
                         if (showName) {
                             if (!(_object.getAttribute("_hideName") instanceof Parameter)) {
-                                moml.append("<deleteProperty name=\"_hideName\"/>");
+                                moml
+                                        .append("<deleteProperty name=\"_hideName\"/>");
                             } else {
                                 moml
-                                    .append("<property name=\"_hideName\" "
-                                            + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                            + " value=\"false\"/>");
+                                        .append("<property name=\"_hideName\" "
+                                                + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                                + " value=\"false\"/>");
                             }
                         } else {
                             moml
-                                .append("<property name=\"_hideName\" "
-                                        + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                        + " value=\"true\"/>");
+                                    .append("<property name=\"_hideName\" "
+                                            + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                            + " value=\"true\"/>");
                         }
                     }
                 }

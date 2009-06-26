@@ -29,7 +29,6 @@
 //// SequentialClock
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.SequenceActor;
@@ -95,7 +94,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (yuhong)
  * @deprecated Use Clock instead.
  */
-public class SequentialClock extends TypedAtomicActor implements SequenceActor, Rollbackable {
+public class SequentialClock extends TypedAtomicActor implements SequenceActor,
+        Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -174,7 +174,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public SequentialClock(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public SequentialClock(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         period = new Parameter(this, "period", new DoubleToken(2.0));
@@ -186,7 +187,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         IntToken[] defaultValues = new IntToken[2];
         defaultValues[0] = new IntToken(1);
         defaultValues[1] = new IntToken(0);
-        ArrayToken defaultValueToken = new ArrayToken(BaseType.INT, defaultValues);
+        ArrayToken defaultValueToken = new ArrayToken(BaseType.INT,
+                defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
         output.setTypeAtLeast(ArrayType.elementType(values));
         attributeChanged(values);
@@ -202,22 +204,29 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @exception IllegalActionException If the offsets array is not
      * nondecreasing and nonnegative, or it is not a row vector.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == offsets) {
-            ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
+            ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             $ASSIGN$_offsets(new double[offsetsValue.length()]);
             double previous = 0.0;
             for (int i = 0; i < offsetsValue.length(); i++) {
-                $ASSIGN$_offsets(i, ((DoubleToken)offsetsValue.getElement(i)).doubleValue());
+                $ASSIGN$_offsets(i, ((DoubleToken) offsetsValue.getElement(i))
+                        .doubleValue());
                 if (_offsets[i] < previous) {
-                    throw new IllegalActionException(this, "Value of offsets is not nondecreasing " + "and nonnegative.");
+                    throw new IllegalActionException(this,
+                            "Value of offsets is not nondecreasing "
+                                    + "and nonnegative.");
                 }
                 previous = _offsets[i];
             }
         } else if (attribute == period) {
-            double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
             if (periodValue <= 0.0) {
-                throw new IllegalActionException(this, "Period is required to be positive.  " + "Period given: "+periodValue);
+                throw new IllegalActionException(this,
+                        "Period is required to be positive.  "
+                                + "Period given: " + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -233,10 +242,11 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        SequentialClock newObject = (SequentialClock)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SequentialClock newObject = (SequentialClock) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -250,7 +260,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * the value in the offsets parameter is encountered that is greater
      * than the period, or if there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, _currentValue);
     }
@@ -262,7 +272,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * fireAt() method of the director throws it, or if the director does not
      * agree to fire the actor at the specified time.
      */
-    public synchronized void initialize() throws IllegalActionException  {
+    public synchronized void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_firstFiring(true);
         $ASSIGN$_phase(0);
@@ -278,8 +288,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * scheduling the next firing, or if the length of the values and
      * offsets parameters don't match.
      */
-    public boolean postfire() throws IllegalActionException  {
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+    public boolean postfire() throws IllegalActionException {
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         if (_firstFiring) {
             $ASSIGN$_cycleStartTime(getDirector().getModelTime());
             $ASSIGN$_firstFiring(false);
@@ -290,7 +300,10 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
             $ASSIGN$_cycleStartTime(_cycleStartTime.add(periodValue));
         }
         if (_offsets[_phase] >= periodValue) {
-            throw new IllegalActionException(this, "Offset number " + _phase+" with value "+_offsets[_phase]+" must be less than the "+"period, which is "+periodValue);
+            throw new IllegalActionException(this, "Offset number " + _phase
+                    + " with value " + _offsets[_phase]
+                    + " must be less than the " + "period, which is "
+                    + periodValue);
         }
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);
         _fireAt(nextIterationTime);
@@ -302,10 +315,11 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @return True.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
-        ArrayToken val = (ArrayToken)(values.getToken());
+    public boolean prefire() throws IllegalActionException {
+        ArrayToken val = (ArrayToken) (values.getToken());
         if ((val == null) || (val.length() <= _phase)) {
-            throw new IllegalActionException(this, "Offsets and values parameters lengths do not match.");
+            throw new IllegalActionException(this,
+                    "Offsets and values parameters lengths do not match.");
         }
         $ASSIGN$_currentValue(val.getElement(_phase));
         return true;
@@ -313,21 +327,24 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
 
     private final Token $ASSIGN$_currentValue(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentValue.add(null, _currentValue, $CHECKPOINT.getTimestamp());
+            $RECORD$_currentValue.add(null, _currentValue, $CHECKPOINT
+                    .getTimestamp());
         }
         return _currentValue = newValue;
     }
 
     private final Time $ASSIGN$_cycleStartTime(Time newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_cycleStartTime.add(null, _cycleStartTime, $CHECKPOINT.getTimestamp());
+            $RECORD$_cycleStartTime.add(null, _cycleStartTime, $CHECKPOINT
+                    .getTimestamp());
         }
         return _cycleStartTime = newValue;
     }
 
     private final boolean $ASSIGN$_firstFiring(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_firstFiring.add(null, _firstFiring, $CHECKPOINT.getTimestamp());
+            $RECORD$_firstFiring.add(null, _firstFiring, $CHECKPOINT
+                    .getTimestamp());
         }
         return _firstFiring = newValue;
     }
@@ -341,9 +358,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
 
     private final double $ASSIGN$_offsets(int index0, double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_offsets.add(new int[] {
-                    index0
-                }, _offsets[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_offsets.add(new int[] { index0 }, _offsets[index0],
+                    $CHECKPOINT.getTimestamp());
         }
         return _offsets[index0] = newValue;
     }
@@ -360,54 +376,60 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
             $RECORD$_phase.add(null, _phase, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _phase += newValue;
-            case 1:
-                return _phase -= newValue;
-            case 2:
-                return _phase *= newValue;
-            case 3:
-                return _phase /= newValue;
-            case 4:
-                return _phase &= newValue;
-            case 5:
-                return _phase |= newValue;
-            case 6:
-                return _phase ^= newValue;
-            case 7:
-                return _phase %= newValue;
-            case 8:
-                return _phase <<= newValue;
-            case 9:
-                return _phase >>= newValue;
-            case 10:
-                return _phase >>>= newValue;
-            case 11:
-                return _phase++;
-            case 12:
-                return _phase--;
-            case 13:
-                return ++_phase;
-            case 14:
-                return --_phase;
-            default:
-                return _phase;
+        case 0:
+            return _phase += newValue;
+        case 1:
+            return _phase -= newValue;
+        case 2:
+            return _phase *= newValue;
+        case 3:
+            return _phase /= newValue;
+        case 4:
+            return _phase &= newValue;
+        case 5:
+            return _phase |= newValue;
+        case 6:
+            return _phase ^= newValue;
+        case 7:
+            return _phase %= newValue;
+        case 8:
+            return _phase <<= newValue;
+        case 9:
+            return _phase >>= newValue;
+        case 10:
+            return _phase >>>= newValue;
+        case 11:
+            return _phase++;
+        case 12:
+            return _phase--;
+        case 13:
+            return ++_phase;
+        case 14:
+            return --_phase;
+        default:
+            return _phase;
         }
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _currentValue = (Token)$RECORD$_currentValue.restore(_currentValue, timestamp, trim);
-        _cycleStartTime = (Time)$RECORD$_cycleStartTime.restore(_cycleStartTime, timestamp, trim);
-        _firstFiring = $RECORD$_firstFiring.restore(_firstFiring, timestamp, trim);
-        _offsets = (double[])$RECORD$_offsets.restore(_offsets, timestamp, trim);
+        _currentValue = (Token) $RECORD$_currentValue.restore(_currentValue,
+                timestamp, trim);
+        _cycleStartTime = (Time) $RECORD$_cycleStartTime.restore(
+                _cycleStartTime, timestamp, trim);
+        _firstFiring = $RECORD$_firstFiring.restore(_firstFiring, timestamp,
+                trim);
+        _offsets = (double[]) $RECORD$_offsets.restore(_offsets, timestamp,
+                trim);
         _phase = $RECORD$_phase.restore(_phase, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -444,12 +466,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
     private transient FieldRecord $RECORD$_phase = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_currentValue,
-            $RECORD$_cycleStartTime,
-            $RECORD$_firstFiring,
-            $RECORD$_offsets,
-            $RECORD$_phase
-        };
+            $RECORD$_currentValue, $RECORD$_cycleStartTime,
+            $RECORD$_firstFiring, $RECORD$_offsets, $RECORD$_phase };
 
 }
-

@@ -63,7 +63,7 @@ public class InitModel extends GTEvent {
     }
 
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == modelName) {
             _emptyModel = new TypedCompositeActor(new Workspace());
             try {

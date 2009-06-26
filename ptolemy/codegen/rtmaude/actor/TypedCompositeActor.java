@@ -71,27 +71,31 @@ public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
         // code for the actor, which is Maude term for the actor.
         // "entityList" method is used instead of "deepEntityList", because
         // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude
-        if (name.equals("actors"))
-            return new ListTerm<Actor>("none", _eol, c_actor.entityList(Actor.class)) {
-                    public String item(Actor v) throws IllegalActionException {
-                        return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
-                    }
-                }.generateCode();
+        if (name.equals("actors")) {
+            return new ListTerm<Actor>("none", _eol, c_actor
+                    .entityList(Actor.class)) {
+                public String item(Actor v) throws IllegalActionException {
+                    return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
+                }
+            }.generateCode();
+        }
 
-        if (name.equals("connections"))
-            return new ListTerm<IORelation>("none", _eol, c_actor.relationList()) {
-                    public String item(IORelation v) throws IllegalActionException {
-                        return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
-                    }
-                }.generateCode();
+        if (name.equals("connections")) {
+            return new ListTerm<IORelation>("none", _eol, c_actor
+                    .relationList()) {
+                public String item(IORelation v) throws IllegalActionException {
+                    return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
+                }
+            }.generateCode();
+        }
         return super._generateInfoCode(name, parameters);
     }
 
     @Override
-    public List<String> getBlockCodeList(String blockName, String ... args)
+    public List<String> getBlockCodeList(String blockName, String... args)
             throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
 
         List self = super.getBlockCodeList(blockName, args);
         self.addAll(directorHelper.getBlockCodeList(blockName, args));
@@ -101,11 +105,11 @@ public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
 
     @Override
     public String generateFireFunctionCode() throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
 
-        return super.generateFireFunctionCode() +
-            _eol + directorHelper.generateFireFunctionCode();
+        return super.generateFireFunctionCode() + _eol
+                + directorHelper.generateFireFunctionCode();
     }
 
     public Set getSharedCode() throws IllegalActionException {

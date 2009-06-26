@@ -820,7 +820,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             case DYNAMIC_NAME: {
                 AST __t39 = _t;
                 PtalonAST tmp44_AST = null;
-                tmp44_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp44_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp44_AST);
                 ASTPair __currentAST39 = currentAST.copy();
                 currentAST.root = currentAST.child;
@@ -828,12 +828,12 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                 match(_t, DYNAMIC_NAME);
                 _t = _t.getFirstChild();
                 PtalonAST tmp45_AST = null;
-                tmp45_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp45_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp45_AST);
                 match(_t, ID);
                 _t = _t.getNextSibling();
                 PtalonAST tmp46_AST = null;
-                tmp46_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp46_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp46_AST);
                 match(_t, EXPRESSION);
                 _t = _t.getNextSibling();
@@ -880,7 +880,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
 
         AST __t41 = _t;
         PtalonAST tmp47_AST = null;
-        tmp47_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+        tmp47_AST = (PtalonAST) astFactory.create(_t);
         astFactory.addASTChild(currentAST, tmp47_AST);
         ASTPair __currentAST41 = currentAST.copy();
         currentAST.root = currentAST.child;
@@ -903,7 +903,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             case DYNAMIC_NAME: {
                 AST __t43 = _t;
                 PtalonAST tmp48_AST = null;
-                tmp48_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp48_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp48_AST);
                 ASTPair __currentAST43 = currentAST.copy();
                 currentAST.root = currentAST.child;
@@ -962,8 +962,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                     case DYNAMIC_NAME: {
                         AST __t46 = _t;
                         PtalonAST tmp49_AST = null;
-                        tmp49_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp49_AST = (PtalonAST) astFactory.create(_t);
                         astFactory.addASTChild(currentAST, tmp49_AST);
                         ASTPair __currentAST46 = currentAST.copy();
                         currentAST.root = currentAST.child;
@@ -1275,7 +1274,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             case NEGATE: {
                 AST __t62 = _t;
                 PtalonAST tmp50_AST = null;
-                tmp50_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp50_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp50_AST);
                 ASTPair __currentAST62 = currentAST.copy();
                 currentAST.root = currentAST.child;
@@ -1289,8 +1288,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                     switch (_t.getType()) {
                     case ID: {
                         PtalonAST tmp51_AST = null;
-                        tmp51_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp51_AST = (PtalonAST) astFactory.create(_t);
                         astFactory.addASTChild(currentAST, tmp51_AST);
                         match(_t, ID);
                         _t = _t.getNextSibling();
@@ -1299,8 +1297,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                     case DYNAMIC_NAME: {
                         AST __t64 = _t;
                         PtalonAST tmp52_AST = null;
-                        tmp52_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp52_AST = (PtalonAST) astFactory.create(_t);
                         astFactory.addASTChild(currentAST, tmp52_AST);
                         ASTPair __currentAST64 = currentAST.copy();
                         currentAST.root = currentAST.child;
@@ -1308,14 +1305,12 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
                         match(_t, DYNAMIC_NAME);
                         _t = _t.getFirstChild();
                         PtalonAST tmp53_AST = null;
-                        tmp53_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp53_AST = (PtalonAST) astFactory.create(_t);
                         astFactory.addASTChild(currentAST, tmp53_AST);
                         match(_t, ID);
                         _t = _t.getNextSibling();
                         PtalonAST tmp54_AST = null;
-                        tmp54_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp54_AST = (PtalonAST) astFactory.create(_t);
                         astFactory.addASTChild(currentAST, tmp54_AST);
                         match(_t, EXPRESSION);
                         _t = _t.getNextSibling();
@@ -1337,7 +1332,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             case OPTIONAL: {
                 AST __t65 = _t;
                 PtalonAST tmp55_AST = null;
-                tmp55_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp55_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp55_AST);
                 ASTPair __currentAST65 = currentAST.copy();
                 currentAST.root = currentAST.child;

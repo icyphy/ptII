@@ -468,7 +468,7 @@ public class FIR extends SDFTransformer {
             Type tapsElementType = BaseType.UNKNOWN;
             Type tapsType = taps.getType();
             if (!tapsType.equals(BaseType.UNKNOWN)
-                    && ! tapsType.equals(BaseType.ARRAY_BOTTOM)) {
+                    && !tapsType.equals(BaseType.ARRAY_BOTTOM)) {
                 tapsElementType = ((ArrayType) taps.getType()).getElementType();
             }
             Type productType = inputType.multiply(tapsElementType);

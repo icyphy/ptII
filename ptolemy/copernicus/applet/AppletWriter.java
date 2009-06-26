@@ -135,7 +135,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String ptolemyHome = "";
         try {
             // If ptolemyHome has spaces in it, then we have problems.
-            ptolemyHome = StringUtilities.getProperty("ptolemy.ptII.dir").replace(" ", "\\ ");
+            ptolemyHome = StringUtilities.getProperty("ptolemy.ptII.dir")
+                    .replace(" ", "\\ ");
         } catch (SecurityException security) {
             throw new InternalErrorException(null, security, "Could not find "
                     + "'ptolemy.ptII.dir'" + " property.  Vergil should be "
@@ -143,7 +144,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         }
         return " templateDirectory:" + TEMPLATE_DIRECTORY_DEFAULT
-            + " ptIIJarsPath:" + ptolemyHome;
+                + " ptIIJarsPath:" + ptolemyHome;
     }
 
     /** Return the declared options.  The declared options for
@@ -188,12 +189,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // URL that names the model.
         _modelPath = PhaseOptions.getString(options, "modelPath");
 
-
         // The directory that code will be generated in.
         // $ptIIUserDirectory/$targetPath"
         _outputDirectory = PhaseOptions.getString(options, "outputDirectory");
 
-          // Determine where $PTII is so that we can find the right directory.
+        // Determine where $PTII is so that we can find the right directory.
         _ptIIJarsPath = PhaseOptions.getString(options, "ptIIJarsPath");
         try {
             if (_ptIIJarsPath == null) {
@@ -211,13 +211,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
         }
 
-        _ptIIUserDirectory = PhaseOptions.getString(options, "ptIIUserDirectory");
+        _ptIIUserDirectory = PhaseOptions.getString(options,
+                "ptIIUserDirectory");
         try {
             if (_ptIIUserDirectory == null) {
                 // NOTE: getProperty() will probably fail in applets, which
                 // is why this is in a try block.
                 // NOTE: This property is set by the vergil startup script.
-                _ptIIUserDirectory = StringUtilities.getProperty("ptolemy.ptII.dir");
+                _ptIIUserDirectory = StringUtilities
+                        .getProperty("ptolemy.ptII.dir");
             } else {
                 System.out.println("AppletWriter: ptIIUserDirectory = "
                         + _ptIIUserDirectory);
@@ -235,11 +237,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // The path relative to the ptIIUserDirectory to generate code in.
         // Defaults to ptolemy/copernicus/$codeGenerator/cg/$modelName
         _targetPath = PhaseOptions.getString(options, "targetPath");
-        if (_targetPath.length() > 0 && !_targetPath.substring(_targetPath.length() - 1).equals("/")) {
+        if (_targetPath.length() > 0
+                && !_targetPath.substring(_targetPath.length() - 1).equals("/")) {
             System.out.println("AppletWriter: appending / to targetPath");
             _targetPath += "/";
         }
-
 
         // Determine the value of _domainJar, which is the
         // path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -274,9 +276,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         // The JNLP file to be created
-        String jnlpSourceFileName = _outputDirectory + "/" + _sanitizedModelName + ".jnlp";
-        String jnlpJarFileName = _outputDirectory + "/signed_" + _sanitizedModelName + ".jar";
-        String jnlpUnsignedJarFileName = _outputDirectory + "/" + _sanitizedModelName + ".jar";
+        String jnlpSourceFileName = _outputDirectory + "/"
+                + _sanitizedModelName + ".jnlp";
+        String jnlpJarFileName = _outputDirectory + "/signed_"
+                + _sanitizedModelName + ".jar";
+        String jnlpUnsignedJarFileName = _outputDirectory + "/"
+                + _sanitizedModelName + ".jar";
 
         try {
             // If the code base is the current directory, then we
@@ -289,21 +294,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             StringBuffer jarFilesResults = new StringBuffer();
             StringBuffer jnlpJarFilesResults = new StringBuffer();
 
-
             // Include files like Foo/Foo.jar that include the model
             // and gifs for use in old-style applets.
             if (new File(jnlpUnsignedJarFileName).exists()) {
                 // Use this only in applets, we handle jnlp specially.
-                jarFilesResults.append(_targetPath + _sanitizedModelName + ".jar");
+                jarFilesResults.append(_targetPath + _sanitizedModelName
+                        + ".jar");
             }
-
 
             // This is the signed jar file that includes the .jnlp file
             // FIXME: what if we don't want a signed jar?
-            jnlpJarFilesResults.insert(0, "        <jar href=\""
-                    + _targetPath + "signed_" + _sanitizedModelName + ".jar\""
-                                       + _jarFileLengthAttribute(jnlpSourceFileName)
-                                       + "\n             main=\"true\"/>\n");
+            jnlpJarFilesResults.insert(0, "        <jar href=\"" + _targetPath
+                    + "signed_" + _sanitizedModelName + ".jar\""
+                    + _jarFileLengthAttribute(jnlpSourceFileName)
+                    + "\n             main=\"true\"/>\n");
 
             boolean sawSignedOnce = false;
 
@@ -317,18 +321,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
                 jarFilesResults.append(jarFileName);
 
-                jnlpJarFilesResults.append(_checkForJNLPExtensions(jarFileName));
+                jnlpJarFilesResults
+                        .append(_checkForJNLPExtensions(jarFileName));
 
                 // If the ptII/signed directory contains the jar file, then set
                 // signed to "signed/".  Otherwise, set signed to "".
-                String signed =  "";
-                String signedJarFileName = _ptIIJarsPath + File.separator + "signed"
-                    + File.separator + jarFileName;
+                String signed = "";
+                String signedJarFileName = _ptIIJarsPath + File.separator
+                        + "signed" + File.separator + jarFileName;
                 if (new File(signedJarFileName).exists()) {
                     signed = "signed/";
                     sawSignedOnce = true;
                 } else {
-                    if (new File(_ptIIJarsPath + File.separator + "signed").exists()) {
+                    if (new File(_ptIIJarsPath + File.separator + "signed")
+                            .exists()) {
                         sawSignedOnce = true;
                     }
                 }
@@ -336,19 +342,25 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     // We saw something in the signed directory, but this file
                     // is not there, so we sign it.
                     try {
-                        _signJarFile(_ptIIJarsPath + File.separator + jarFileName,
-                                signedJarFileName);
+                        _signJarFile(_ptIIJarsPath + File.separator
+                                + jarFileName, signedJarFileName);
                         signed = "signed" + File.separator;
                     } catch (Exception ex) {
-                        throw new InternalErrorException(null, ex, "Failed to sign \""
-                                + _ptIIJarsPath + File.separator + jarFileName
-                                + "\" and create \"" + signedJarFileName + "\"");
+                        throw new InternalErrorException(null, ex,
+                                "Failed to sign \"" + _ptIIJarsPath
+                                        + File.separator + jarFileName
+                                        + "\" and create \""
+                                        + signedJarFileName + "\"");
                     }
                 }
-                System.out.println("signedJarFile: " + signedJarFileName + " signed: \"" + signed + "\"");
+                System.out.println("signedJarFile: " + signedJarFileName
+                        + " signed: \"" + signed + "\"");
                 jnlpJarFilesResults.append("        <jar href=\""
-                        + signed + jarFileName + "\""
-                        + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
+                        + signed
+                        + jarFileName
+                        + "\""
+                        + _jarFileLengthAttribute(_ptIIJarsPath
+                                + File.separator + signed + jarFileName)
                         + "\n             download=\"eager\"/>\n");
             }
 
@@ -375,14 +387,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
                 // If the ptII/signed directory contains the jar file, then set
                 // signed to "signed/".  Otherwise, set signed to "".
-                String signed =  "";
+                String signed = "";
                 String signedJarFileName = _ptIIJarsPath + File.separator
-                    + "signed"
-                    + File.separator + jarFileName;
-                if (new File(signedJarFileName).exists()) {;
+                        + "signed" + File.separator + jarFileName;
+                if (new File(signedJarFileName).exists()) {
+                    ;
                     signed = "signed/";
                 } else {
-                    if (new File(_ptIIJarsPath + File.separator + "signed").exists()) {
+                    if (new File(_ptIIJarsPath + File.separator + "signed")
+                            .exists()) {
                         sawSignedOnce = true;
                     }
                 }
@@ -390,20 +403,25 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     // We saw something in the signed directory, but this file
                     // is not there, so we sign it.
                     try {
-                        _signJarFile(_ptIIJarsPath + File.separator + jarFileName,
-                                _ptIIJarsPath + File.separator + "signed"
-                                + File.separator + jarFileName);
+                        _signJarFile(_ptIIJarsPath + File.separator
+                                + jarFileName, _ptIIJarsPath + File.separator
+                                + "signed" + File.separator + jarFileName);
                         signed = "signed/";
                     } catch (Exception ex) {
-                        throw new InternalErrorException(null, ex, "Failed to sign \""
-                                + _ptIIJarsPath + File.separator + jarFileName
-                                + "\" and create \"" + signedJarFileName + "\"");
+                        throw new InternalErrorException(null, ex,
+                                "Failed to sign \"" + _ptIIJarsPath
+                                        + File.separator + jarFileName
+                                        + "\" and create \""
+                                        + signedJarFileName + "\"");
                     }
                 }
                 jnlpJarFilesResults.append("        <jar href=\""
-                                           + signed + jarFileName  + "\""
-                                           + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
-                                           + "\n             download=\"eager\"/>\n");
+                        + signed
+                        + jarFileName
+                        + "\""
+                        + _jarFileLengthAttribute(_ptIIJarsPath
+                                + File.separator + signed + jarFileName)
+                        + "\n             download=\"eager\"/>\n");
             }
 
             _vergilJarFiles = jarFilesResults.toString();
@@ -430,7 +448,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 ArrayToken boundsToken = (ArrayToken) ((RecordToken) windowProperties
                         .getToken()).get("bounds");
                 appletWidth = ((IntToken) boundsToken.getElement(2)).intValue();
-                appletHeight = ((IntToken) boundsToken.getElement(3)).intValue();
+                appletHeight = ((IntToken) boundsToken.getElement(3))
+                        .intValue();
             }
         } catch (IllegalActionException ex) {
             System.out.println("Warning: Failed to get applet width "
@@ -443,7 +462,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             if (vergilSize != null) {
                 IntMatrixToken vergilSizeToken = (IntMatrixToken) vergilSize
-                    .getToken();
+                        .getToken();
 
                 vergilWidth = vergilSizeToken.getElementAt(0, 0);
                 vergilHeight = vergilSizeToken.getElementAt(0, 1);
@@ -474,10 +493,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@ptIIJarsPath@", _ptIIJarsPath);
         _substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
         try {
-            _substituteMap.put("@ptIILocalURL@", new URL(new File(_outputDirectory).toURI().toURL(), _codeBase).toString());
+            _substituteMap.put("@ptIILocalURL@", new URL(new File(
+                    _outputDirectory).toURI().toURL(), _codeBase).toString());
         } catch (Exception ex) {
-            throw new InternalErrorException(null, ex, "Failed to create URL for \""
-                                             + _outputDirectory + "\"");
+            throw new InternalErrorException(null, ex,
+                    "Failed to create URL for \"" + _outputDirectory + "\"");
         }
         _substituteMap.put("@targetPath@", _targetPath);
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
@@ -583,46 +603,55 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // If we are generating only jnlp files to update the demos,
                 // then we might want to skip generating applets.
                 CodeGeneratorUtilities.substitute(_templateDirectory
-                        + "model.htm.in", _substituteMap, _outputDirectory + "/"
-                        + _sanitizedModelName + ".htm");
+                        + "model.htm.in", _substituteMap, _outputDirectory
+                        + "/" + _sanitizedModelName + ".htm");
                 CodeGeneratorUtilities.substitute(_templateDirectory
-                        + "modelVergil.htm.in", _substituteMap, _outputDirectory
-                        + "/" + _sanitizedModelName + "Vergil.htm");
+                        + "modelVergil.htm.in", _substituteMap,
+                        _outputDirectory + "/" + _sanitizedModelName
+                                + "Vergil.htm");
             }
-            if ( !(new File(_outputDirectory + File.separator + _sanitizedModelName + ".htm").exists())) {
+            if (!(new File(_outputDirectory + File.separator
+                    + _sanitizedModelName + ".htm").exists())) {
                 CodeGeneratorUtilities.substitute(_templateDirectory
                         + "modelJnlp.htm.in", _substituteMap, _outputDirectory
                         + "/" + _sanitizedModelName + ".htm");
             } else {
-                if ( !(new File(_outputDirectory + File.separator + _sanitizedModelName + "Vergil.htm").exists())) {
+                if (!(new File(_outputDirectory + File.separator
+                        + _sanitizedModelName + "Vergil.htm").exists())) {
                     CodeGeneratorUtilities.substitute(_templateDirectory
-                            + "modelJnlp.htm.in", _substituteMap, _outputDirectory
-                            + "/" + _sanitizedModelName + "Vergil.htm");
+                            + "modelJnlp.htm.in", _substituteMap,
+                            _outputDirectory + "/" + _sanitizedModelName
+                                    + "Vergil.htm");
                 } else {
                     CodeGeneratorUtilities.substitute(_templateDirectory
-                            + "modelJnlp.htm.in", _substituteMap, _outputDirectory
-                            + "/" + _sanitizedModelName + "JNLP.htm");
+                            + "modelJnlp.htm.in", _substituteMap,
+                            _outputDirectory + "/" + _sanitizedModelName
+                                    + "JNLP.htm");
                 }
             }
             CodeGeneratorUtilities.substitute(_templateDirectory
                     + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
 
-            _createJarFile(new File(jnlpUnsignedJarFileName),
-                           new File(_outputDirectory + "/" + new File(_outputDirectory).getName() + ".jar"),
-                           new String [] {
-                               "JNLP-INF/APPLICATION.JNLP",
-                               _sanitizedModelName + ".xml",
-                               "ptolemy/copernicus/applet/JNLPApplication.class",
-                               "ptolemy/actor/gui/jnlp/MenuApplication.class"},
-                           new File [] {
-                               new File(_outputDirectory + "/" + _sanitizedModelName + ".jnlp"),
-                               new File(newModelFileName),
-                               new File(_ptIIJarsPath + "/ptolemy/copernicus/applet/JNLPApplication.class"),
-                               new File(_ptIIJarsPath + "/ptolemy/actor/gui/jnlp/MenuApplication.class"),
-                           });
+            _createJarFile(
+                    new File(jnlpUnsignedJarFileName),
+                    new File(_outputDirectory + "/"
+                            + new File(_outputDirectory).getName() + ".jar"),
+                    new String[] { "JNLP-INF/APPLICATION.JNLP",
+                            _sanitizedModelName + ".xml",
+                            "ptolemy/copernicus/applet/JNLPApplication.class",
+                            "ptolemy/actor/gui/jnlp/MenuApplication.class" },
+                    new File[] {
+                            new File(_outputDirectory + "/"
+                                    + _sanitizedModelName + ".jnlp"),
+                            new File(newModelFileName),
+                            new File(
+                                    _ptIIJarsPath
+                                            + "/ptolemy/copernicus/applet/JNLPApplication.class"),
+                            new File(
+                                    _ptIIJarsPath
+                                            + "/ptolemy/actor/gui/jnlp/MenuApplication.class"), });
 
-            _signJarFile(jnlpUnsignedJarFileName,
-                    jnlpJarFileName);
+            _signJarFile(jnlpUnsignedJarFileName, jnlpJarFileName);
 
             // Copy $PTII/doc/default.css as well.
             File defaultStyleSheetDirectory = new File(_outputDirectory
@@ -631,7 +660,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 if (!defaultStyleSheetDirectory.mkdirs()) {
                     throw new InternalErrorException(
                             "Failed to create directory \""
-                            + defaultStyleSheetDirectory + "\"");
+                                    + defaultStyleSheetDirectory + "\"");
                 }
             }
 
@@ -659,9 +688,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             Object object = attributes.next();
             String className = object.getClass().getName();
             if (_debug) {
-                System.out.println("allAttributeJars1: " + object + " "
-                        + _getDomainJar(object
-                                .getClass().getPackage().getName()));
+                System.out.println("allAttributeJars1: "
+                        + object
+                        + " "
+                        + _getDomainJar(object.getClass().getPackage()
+                                .getName()));
             }
             if (className.contains("ptolemy.codegen")) {
                 if (_debug) {
@@ -670,8 +701,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
                 results.put(className, "ptolemy/codegen/codegen.jar");
             } else {
-                results.put(object.getClass().getName(),
-                        _getDomainJar(object.getClass().getPackage().getName()));
+                results.put(object.getClass().getName(), _getDomainJar(object
+                        .getClass().getPackage().getName()));
             }
         }
 
@@ -686,43 +717,42 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 if (_debug) {
                     System.out.println("allAttributeJars2: " + object);
                 }
-                results.putAll(_allAttributeJars((CompositeEntity)object));
+                results.putAll(_allAttributeJars((CompositeEntity) object));
 
             }
-//             attributes = composite.attributeList().iterator();
-//             while (attributes.hasNext()) {
-//                 Object object = attributes.next();
-//                 String className = object.getClass().getName();
-//                 System.out.println("allAttributeJars1: " + object);
-//                 if (className.contains("ptolemy.codegen")) {
-//                     results.put(className, "ptolemy/codegen/codegen.jar");
-//                 }
-//                 //results.put(object.getClass().getName(), _getDomainJar(object
-//                 //        .getClass().getPackage().getName()));
-//             }
+            //             attributes = composite.attributeList().iterator();
+            //             while (attributes.hasNext()) {
+            //                 Object object = attributes.next();
+            //                 String className = object.getClass().getName();
+            //                 System.out.println("allAttributeJars1: " + object);
+            //                 if (className.contains("ptolemy.codegen")) {
+            //                     results.put(className, "ptolemy/codegen/codegen.jar");
+            //                 }
+            //                 //results.put(object.getClass().getName(), _getDomainJar(object
+            //                 //        .getClass().getPackage().getName()));
+            //             }
         }
 
+        //         composites = _model.deepEntityList().iterator();
+        //         while (composites.hasNext()) {
+        //             Object object = composites.next();
+        //             System.out.println("allAttributeJars2: " + object);
+        //             if (object instanceof CompositeEntity) {
+        //                 CompositeEntity composite = (CompositeEntity)object;
 
-//         composites = _model.deepEntityList().iterator();
-//         while (composites.hasNext()) {
-//             Object object = composites.next();
-//             System.out.println("allAttributeJars2: " + object);
-//             if (object instanceof CompositeEntity) {
-//                 CompositeEntity composite = (CompositeEntity)object;
-
-//                 attributes = composite.attributeList().iterator();
-//                 while (attributes.hasNext()) {
-//                     Object object2 = attributes.next();
-//                     String className = object2.getClass().getName();
-//                     System.out.println("allAttributeJars3: " + object2);
-//                     if (className.contains("ptolemy.codegen")) {
-//                         results.put(className, "ptolemy/codegen/codegen.jar");
-//                     }
-//                     //results.put(object.getClass().getName(), _getDomainJar(object
-//                     //        .getClass().getPackage().getName()));
-//                 }
-//             }
-//         }
+        //                 attributes = composite.attributeList().iterator();
+        //                 while (attributes.hasNext()) {
+        //                     Object object2 = attributes.next();
+        //                     String className = object2.getClass().getName();
+        //                     System.out.println("allAttributeJars3: " + object2);
+        //                     if (className.contains("ptolemy.codegen")) {
+        //                         results.put(className, "ptolemy/codegen/codegen.jar");
+        //                     }
+        //                     //results.put(object.getClass().getName(), _getDomainJar(object
+        //                     //        .getClass().getPackage().getName()));
+        //                 }
+        //             }
+        //         }
 
         return results;
     }
@@ -738,8 +768,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             String className = object.getClass().getName();
             if (_debug) {
                 System.out.println("_allAtomicEntityJars: "
-                        + className + " "
-                        + _getDomainJar(object.getClass().getPackage().getName()));
+                        + className
+                        + " "
+                        + _getDomainJar(object.getClass().getPackage()
+                                .getName()));
             }
 
             if (className.contains("ptolemy.backtrack")) {
@@ -748,38 +780,36 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + className + " "
                             + "ptolemy/backtrack/backtrack.jar");
                 }
-                results.put(className,
-                        "ptolemy/backtrack/backtrack.jar");
+                results.put(className, "ptolemy/backtrack/backtrack.jar");
             } else if (className.contains("ptolemy.actor.lib.jai")) {
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars JAI: "
-                            + className + " "
-                            + "ptolemy/actor/lib/jai/jai.jar");
+                    System.out.println("_allAtomicEntityJars JAI: " + className
+                            + " " + "ptolemy/actor/lib/jai/jai.jar");
                 }
-                results.put(className,
-                        "ptolemy/actor/lib/jai/jai.jar");
+                results.put(className, "ptolemy/actor/lib/jai/jai.jar");
             } else if (className.contains("ptolemy.actor.lib.jmf")) {
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars JMF: "
-                            + className + " "
-                            + "ptolemy/actor/lib/jmf/jmf.jar");
+                    System.out.println("_allAtomicEntityJars JMF: " + className
+                            + " " + "ptolemy/actor/lib/jmf/jmf.jar");
                 }
-                results.put(className,
-                        "ptolemy/actor/lib/jmf/jmf.jar");
+                results.put(className, "ptolemy/actor/lib/jmf/jmf.jar");
 
             } else {
                 // Add in the entity
-                results.put(object.getClass().getName(),
-                        _getDomainJar(object.getClass().getPackage().getName()));
+                results.put(object.getClass().getName(), _getDomainJar(object
+                        .getClass().getPackage().getName()));
             }
 
             if (object instanceof AtomicActor) {
                 // Add in the Managers.
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars2: "
-                            + ((AtomicActor) object).getDirector().getClass().getName() + " "
+                            + ((AtomicActor) object).getDirector().getClass()
+                                    .getName()
+                            + " "
                             + _getDomainJar(((AtomicActor) object)
-                                    .getDirector().getClass().getPackage().getName()));
+                                    .getDirector().getClass().getPackage()
+                                    .getName()));
                 }
 
                 results.put(((AtomicActor) object).getDirector().getClass()
@@ -798,15 +828,24 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         Iterator opaqueEntities = _model.deepOpaqueEntityList().iterator();
 
         while (opaqueEntities.hasNext()) {
-            ComponentEntity componentEntity = (ComponentEntity) opaqueEntities.next();
+            ComponentEntity componentEntity = (ComponentEntity) opaqueEntities
+                    .next();
 
             if (_debug) {
-                System.out.println("_deepOpaqueEntityJars: " + componentEntity.getClass().getName());
+                System.out.println("_deepOpaqueEntityJars: "
+                        + componentEntity.getClass().getName());
             }
-            if (componentEntity.getClass().getName().contains("ptolemy.actor.lib.jni")) {
+            if (componentEntity.getClass().getName().contains(
+                    "ptolemy.actor.lib.jni")) {
 
                 if (_debug) {
-                    System.out.println("_deepOpaqueEntityJars1: " + ((CompositeActor) componentEntity).getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getClass());
+                    System.out.println("_deepOpaqueEntityJars1: "
+                            + ((CompositeActor) componentEntity).getClass()
+                                    .getName()
+                            + " "
+                            + _getDomainJar(((CompositeActor) componentEntity)
+                                    .getClass().getPackage().getName()) + " "
+                            + ((CompositeActor) componentEntity).getClass());
                 }
                 // This hack includes codegen.jar so that we can run codegen/demo/Butterfly/Butterfly.xml
                 results.put(((CompositeActor) componentEntity).getClass()
@@ -817,13 +856,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // gt/demo/BouncingBallX2/BouncingBallX2.xml has an SDF director
                 // with no internal AtomicActors.
                 if (_debug) {
-                    System.out.println("_deepOpaqueEntityJars2: " + ((CompositeActor) componentEntity).getDirector().getClass().getName() + " " +  _getDomainJar(((CompositeActor) componentEntity).getDirector()
-                                .getClass().getPackage().getName()) + " " + ((CompositeActor) componentEntity).getDirector().getClass());
+                    System.out.println("_deepOpaqueEntityJars2: "
+                            + ((CompositeActor) componentEntity).getDirector()
+                                    .getClass().getName()
+                            + " "
+                            + _getDomainJar(((CompositeActor) componentEntity)
+                                    .getDirector().getClass().getPackage()
+                                    .getName())
+                            + " "
+                            + ((CompositeActor) componentEntity).getDirector()
+                                    .getClass());
                 }
-                results.put(((CompositeActor) componentEntity).getDirector().getClass()
-                        .getName(), _getDomainJar(((CompositeActor) componentEntity)
-                        .getDirector().getClass().getPackage().getName()));
-
+                results.put(((CompositeActor) componentEntity).getDirector()
+                        .getClass().getName(),
+                        _getDomainJar(((CompositeActor) componentEntity)
+                                .getDirector().getClass().getPackage()
+                                .getName()));
 
             }
         }
@@ -834,13 +882,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private static String _checkForJNLPExtensions(String jarFileName) {
         StringBuffer result = new StringBuffer();
         if (jarFileName.contains("ptolemy/actor/lib/jai/jai.jar")) {
-            result.append("    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>\n");
+            result
+                    .append("    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>\n");
         }
         if (jarFileName.contains("ptolemy/actor/lib/jmf/jmf.jar")) {
-            result.append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
+            result
+                    .append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
         }
         if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {
-            result.append("   <extension href=\"http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp\"/>\n");
+            result
+                    .append("   <extension href=\"http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp\"/>\n");
         }
         return result.toString();
     }
@@ -908,11 +959,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (_debug) {
             System.out.println("AppletWriter cpjf: className: " + className
-                + "\tpotentialSourceJarFile: " + potentialSourceJarFile);
+                    + "\tpotentialSourceJarFile: " + potentialSourceJarFile);
         }
         if (potentialSourceJarFile.exists()) {
             if (_debug) {
-                System.out.println("AppletWriter cpjf: " + potentialSourceJarFile + " exists!");
+                System.out.println("AppletWriter cpjf: "
+                        + potentialSourceJarFile + " exists!");
             }
             jarFilesThatHaveBeenRequired.add(jarFile);
 
@@ -925,24 +977,23 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // Ptolemy II development trees will have jar files
                 // if 'make install' was run.
                 String signedSourceFileName = _ptIIJarsPath + File.separator
-                    + "signed" + File.separator + jarFile;
+                        + "signed" + File.separator + jarFile;
                 File signedSourceFile = new File(signedSourceFileName);
                 if (signedSourceFile.isFile()) {
-                    _copyFile(signedSourceFileName,
-                        _outputDirectory, jarFile);
+                    _copyFile(signedSourceFileName, _outputDirectory, jarFile);
                 } else {
-                    String sourceJarFileName = _ptIIJarsPath + File.separator + jarFile;
+                    String sourceJarFileName = _ptIIJarsPath + File.separator
+                            + jarFile;
                     try {
                         // FIXME: this will try to sign the applet jar files.
                         // Is this right?  It means applets will have more permissions
-                        _signJarFile (sourceJarFileName,
-                                _outputDirectory + File.separator + jarFile);
+                        _signJarFile(sourceJarFileName, _outputDirectory
+                                + File.separator + jarFile);
                     } catch (Exception ex) {
                         System.out.println("Warning, could not sign \""
                                 + sourceJarFileName + "\"");
                         ex.printStackTrace();
-                        _copyFile(sourceJarFileName,
-                                _outputDirectory, jarFile);
+                        _copyFile(sourceJarFileName, _outputDirectory, jarFile);
                     }
 
                 }
@@ -973,12 +1024,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         Iterator classNames = classMap.entrySet().iterator();
 
-        System.out.println("AppletWriter cjf: About to loop through jar files and copy as necessary");
+        System.out
+                .println("AppletWriter cjf: About to loop through jar files and copy as necessary");
         while (classNames.hasNext()) {
             Map.Entry entry = (Map.Entry) classNames.next();
             String className = (String) entry.getKey();
-            System.out.println("AppletWriter cjf: className: " + className + " jarFile: "
-                    + (String) entry.getValue());
+            System.out.println("AppletWriter cjf: className: " + className
+                    + " jarFile: " + (String) entry.getValue());
             if (jarFilesThatHaveBeenRequired.contains(classMap.get(className))) {
                 // If we have already possibly copied the jar file, then skip
                 System.out.println("AppletWriter cjf: already copied");
@@ -987,7 +1039,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             if (!_copyPotentialJarFile((String) entry.getValue(), className,
                     jarFilesThatHaveBeenRequired)) {
-                System.out.println("AppletWriter cjf: did not copy potential jar file");
+                System.out
+                        .println("AppletWriter cjf: did not copy potential jar file");
                 // The className could not be found in the classMap
                 // Under Web Start, the resource that contains a class
                 // will have a mangled name, so we copy the jar file.
@@ -1033,9 +1086,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     } else {
                         String warning = "Looking up '" + className
                                 + "'\nreturned the $PTII directory '"
-                                + _ptIIJarsPath
-                                + "' instead of a jar file.\n'" + jarFileName
-                                + "' was not present?\n";
+                                + _ptIIJarsPath + "' instead of a jar file.\n'"
+                                + jarFileName + "' was not present?\n";
 
                         if (_codeBase.equals(".")) {
                             // We only need print an error message if
@@ -1187,40 +1239,34 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         Map auxiliaryJarMap = new HashMap();
 
         String caltropJar = "ptolemy/caltrop/caltrop.jar";
-        auxiliaryJarMap.put("ptolemy.caltrop.actors.CalInterpreter",
-                caltropJar);
+        auxiliaryJarMap
+                .put("ptolemy.caltrop.actors.CalInterpreter", caltropJar);
 
         String coltJar = "ptolemy/actor/lib/colt/colt.jar";
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBeta", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBinomial", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBinomialSelector",
                 coltJar);
-        auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtBreitWigner", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBreitWigner", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtChiSquare", coltJar);
-        auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtExponential", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtExponential", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtExponentialPower",
                 coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtGamma", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtHyperGeometric",
                 coltJar);
-        auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtLogarithmic", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtLogarithmic", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtNegativeBinomial",
                 coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtNormal", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtPoisson", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtPoissonSlow", coltJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtRandomSource", coltJar);
         auxiliaryJarMap
-                .put("ptolemy.actor.lib.colt.ColtPoissonSlow", coltJar);
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtRandomSource",
-                coltJar);
-        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtSeedParameter",
-                coltJar);
+                .put("ptolemy.actor.lib.colt.ColtSeedParameter", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtStudentT", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtVonMises", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtZeta", coltJar);
-
 
         String gtJar = "ptolemy/actor/gt/gt.jar";
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelGenerator", gtJar);
@@ -1238,8 +1284,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
 
         String pythonJar = "ptolemy/actor/lib/python/python.jar";
-        auxiliaryJarMap.put("ptolemy.actor.lib.python.PythonScript",
-                pythonJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.python.PythonScript", pythonJar);
 
         classMap.put(director.getClass().getName(), _domainJar);
 
@@ -1251,12 +1296,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // classes from domains/space
         // domains/space requires multiple jars
         String spaceJar = "ptolemy/domains/space/space.jar";
-        auxiliaryJarMap.put("ptolemy.domains.space.Occupants",
-                spaceJar);
-        auxiliaryJarMap.put("ptolemy.domains.space.Region",
-                spaceJar);
-        auxiliaryJarMap.put("ptolemy.domains.space.Room",
-                spaceJar);
+        auxiliaryJarMap.put("ptolemy.domains.space.Occupants", spaceJar);
+        auxiliaryJarMap.put("ptolemy.domains.space.Region", spaceJar);
+        auxiliaryJarMap.put("ptolemy.domains.space.Room", spaceJar);
 
         // If classMap has any keys that match keys in auxiliaryJarMap,
         // then add the corresponding key and value;
@@ -1315,24 +1357,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
         }
 
-
         // Certain jar files require other jar files, so we add
         // them to auxliaryClassMap and copy them.
         Map auxiliaryClassMap = new HashMap();
 
-
-//         System.out.println("About to print jarFileThatHaveBeenRequired");
-//         Iterator jarFiles = jarFilesThatHaveBeenRequired.iterator();
-//         while (jarFiles.hasNext()) {
-//             System.out.println((String)jarFiles.next());
-//         }
+        //         System.out.println("About to print jarFileThatHaveBeenRequired");
+        //         Iterator jarFiles = jarFilesThatHaveBeenRequired.iterator();
+        //         while (jarFiles.hasNext()) {
+        //             System.out.println((String)jarFiles.next());
+        //         }
 
         if (jarFilesThatHaveBeenRequired.contains(caltropJar)) {
             // colt requires multiple jar files
-            auxiliaryClassMap.put("caltrop jar needs ptCal",
-                    "lib/ptCal.jar");
-            auxiliaryClassMap.put("ptCal jar needs saxon8",
-                    "lib/saxon8.jar");
+            auxiliaryClassMap.put("caltrop jar needs ptCal", "lib/ptCal.jar");
+            auxiliaryClassMap.put("ptCal jar needs saxon8", "lib/saxon8.jar");
             auxiliaryClassMap.put("saxon8 jar needs saxon8-dom",
                     "lib/saxon8-dom.jar");
             auxiliaryClassMap.put("CalInterpreter needs java_cup.jar",
@@ -1341,23 +1379,25 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (jarFilesThatHaveBeenRequired.contains(coltJar)) {
             // colt requires multiple jar files
-            auxiliaryClassMap.put("colt jar needs ptcolt",
-                    "lib/ptcolt.jar");
+            auxiliaryClassMap.put("colt jar needs ptcolt", "lib/ptcolt.jar");
         }
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/codegen/codegen.jar")) {
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/codegen/codegen.jar")) {
             auxiliaryClassMap.put("codgen jar needs embeddedJava",
-                "ptolemy/actor/lib/embeddedJava/embeddedJava.jar");
+                    "ptolemy/actor/lib/embeddedJava/embeddedJava.jar");
         }
         if (jarFilesThatHaveBeenRequired.contains(gtJar)
-                || jarFilesThatHaveBeenRequired.contains("ptolemy/domains/ptera/ptera.jar")) {
+                || jarFilesThatHaveBeenRequired
+                        .contains("ptolemy/domains/ptera/ptera.jar")) {
             if (jarFilesThatHaveBeenRequired.contains(gtJar)) {
                 // gt requires multiple jar files
                 auxiliaryClassMap.put("gt jar needs ptera jar",
                         "ptolemy/domains/ptera/ptera.jar");
             }
             auxiliaryClassMap.put("fullViewer needs both gt jar and ptera jar",
-                        gtJar);
-            auxiliaryClassMap.put("fullViewer needs vergil gt gt jar" ,"ptolemy/vergil/gt/gt.jar");
+                    gtJar);
+            auxiliaryClassMap.put("fullViewer needs vergil gt gt jar",
+                    "ptolemy/vergil/gt/gt.jar");
 
             auxiliaryClassMap.put("ptera jar needs vergil ptera jar",
                     "ptolemy/vergil/ptera/ptera.jar");
@@ -1371,11 +1411,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             auxiliaryClassMap.put("run needs jgoodies",
                     "com/jgoodies/jgoodies.jar");
 
-            auxiliaryClassMap.put("run needs mlc",
-                    "org/mlc/mlc.jar");
+            auxiliaryClassMap.put("run needs mlc", "org/mlc/mlc.jar");
 
-            auxiliaryClassMap.put("run needs bsh",
-                    "lib/bsh-2.0b4.jar");
+            auxiliaryClassMap.put("run needs bsh", "lib/bsh-2.0b4.jar");
 
             _configurationName = "-fullViewer";
         }
@@ -1385,14 +1423,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/codegen/codegen.jar");
         }
 
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/psdf/psdf.jar")) {
-            auxiliaryClassMap.put("psdf requires mapss",
-                    "lib/mapss.jar");
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/domains/psdf/psdf.jar")) {
+            auxiliaryClassMap.put("psdf requires mapss", "lib/mapss.jar");
         }
 
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/actor/ptalon/gt/gt.jar")
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/actor/ptalon/gt/gt.jar")
                 || jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
-            if (jarFilesThatHaveBeenRequired.contains("ptolemy/actor/ptalon/gt/gt.jar")) {
+            if (jarFilesThatHaveBeenRequired
+                    .contains("ptolemy/actor/ptalon/gt/gt.jar")) {
                 auxiliaryClassMap.put("ptalon/gt jar needs ptalon jar",
                         "ptolemy/actor/ptalon/ptalon.jar");
             }
@@ -1414,7 +1454,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/actor/lib/database/ojdbc6.jar");
         }
 
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/sdf/lib/vq/vq.jar")) {
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/domains/sdf/lib/vq/vq.jar")) {
             auxiliaryClassMap.put("vq needs its data",
                     "ptolemy/domains/sdf/lib/vq/data/data.jar");
         }
@@ -1439,12 +1480,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         return jarFilesThatHaveBeenRequired;
     }
 
-
     // find jar necessary jar files and optionally copy jar files into
     // _outputDirectory.  Note that we need look for jar files to find
     // diva.jar if we are using the FSM domain.
     // Return the jar files that have been copied
-    private Set _findVergilJarFiles(Director director, Set modelJarFiles) throws IOException {
+    private Set _findVergilJarFiles(Director director, Set modelJarFiles)
+            throws IOException {
         Map classMap = new HashMap();
 
         classMap.put("ptolemy.vergil.MoMLViewerApplet",
@@ -1470,7 +1511,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (jarFileNames.hasNext()) {
             String jarFileName = (String) jarFileNames.next();
             if (jarFileName.contains("ptolemy/actor/gt/gt.jar")) {
-                classMap.put("ptolemy.vergil.gt","ptolemy/vergil/gt/gt.jar");
+                classMap.put("ptolemy.vergil.gt", "ptolemy/vergil/gt/gt.jar");
             }
         }
 
@@ -1491,8 +1532,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String domainDomain = domainPackageDomain.substring(domainPackageDomain
                 .lastIndexOf(".") + 1);
 
-        String results = StringUtilities.substitute(domainPackageDomain, ".", "/") + "/"
-                + domainDomain + ".jar";
+        String results = StringUtilities.substitute(domainPackageDomain, ".",
+                "/")
+                + "/" + domainDomain + ".jar";
         if (results.equals("ptolemy/ptolemy.jar")) {
             return "ptolemy/ptsupport.jar";
         }
@@ -1501,18 +1543,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     /** Sign a jar file.
      */
-    private static void _signJarFile(String jarFileName, String signedJarFileName) throws Exception {
+    private static void _signJarFile(String jarFileName,
+            String signedJarFileName) throws Exception {
         // FIXME: Hardwired paths and passwords here.
-        String keystoreFileName = StringUtilities.getProperty("ptolemy.ptII.dir")
-            + File.separator + "ptKeystore";
-
+        String keystoreFileName = StringUtilities
+                .getProperty("ptolemy.ptII.dir")
+                + File.separator + "ptKeystore";
 
         String storePassword = "this.is.the.storePassword,change.it";
         String keyPassword = "this.is.the.keyPassword,change.it";
         String alias = "claudius";
 
-        String keystorePropertiesFileName = StringUtilities.getProperty("ptolemy.ptII.dir")
-            + File.separator + "ptKeystore.properties";
+        String keystorePropertiesFileName = StringUtilities
+                .getProperty("ptolemy.ptII.dir")
+                + File.separator + "ptKeystore.properties";
 
         Properties properties = new Properties();
         try {
@@ -1522,12 +1566,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             keyPassword = properties.getProperty("keyPassword");
             alias = properties.getProperty("alias");
         } catch (IOException ex) {
-            System.out.println("Warning: failed to read \"" + keystorePropertiesFileName
-                    + "\", using default store password, key password and alias:" + ex);
+            System.out
+                    .println("Warning: failed to read \""
+                            + keystorePropertiesFileName
+                            + "\", using default store password, key password and alias:"
+                            + ex);
         }
 
-        System.out.println("About to sign \"" + jarFileName + "\" and create \""
-                + signedJarFileName + "\"");
+        System.out.println("About to sign \"" + jarFileName
+                + "\" and create \"" + signedJarFileName + "\"");
         File signedJarFile = new File(signedJarFileName);
         File parent = signedJarFile.getParentFile();
         if (parent != null) {
@@ -1538,19 +1585,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
             }
         }
-        JarSigner.sign(jarFileName, signedJarFileName,
-                keystoreFileName, alias, storePassword.toCharArray(), keyPassword.toCharArray());
+        JarSigner.sign(jarFileName, signedJarFileName, keystoreFileName, alias,
+                storePassword.toCharArray(), keyPassword.toCharArray());
     }
 
     /** Create a jar file.
      *        Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
 
      */
-    private void _createJarFile(File jarFile, File optionalJarFile, String [] jarFileNames, File[] filesToBeJared)
-        throws Exception {
+    private void _createJarFile(File jarFile, File optionalJarFile,
+            String[] jarFileNames, File[] filesToBeJared) throws Exception {
 
-        System.out.println("AppletWriter: _createJarFile" +
-                jarFile + " " + jarFile.exists() + " " + optionalJarFile + " " + optionalJarFile.exists());
+        System.out.println("AppletWriter: _createJarFile" + jarFile + " "
+                + jarFile.exists() + " " + optionalJarFile + " "
+                + optionalJarFile.exists());
         byte buffer[] = new byte[1024];
 
         // Open archive file
@@ -1566,23 +1614,27 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             if (!jarFile.exists() && !optionalJarFile.exists()) {
                 outputStream = new FileOutputStream(jarFile);
-                jarOutputStream = new JarOutputStream(outputStream, new Manifest());
+                jarOutputStream = new JarOutputStream(outputStream,
+                        new Manifest());
             } else {
                 // One of the input jar files exist, so we read in the entries and write them
                 // to a temporary file.
                 renameJarFile = true;
 
-                temporaryJarFileName = File.createTempFile("AppletWriter", ".jar");
-                System.out.println("Temporary jar file: " + temporaryJarFileName);
+                temporaryJarFileName = File.createTempFile("AppletWriter",
+                        ".jar");
+                System.out.println("Temporary jar file: "
+                        + temporaryJarFileName);
                 outputJarFileName = temporaryJarFileName.getCanonicalPath();
                 outputStream = new FileOutputStream(temporaryJarFileName);
-                jarOutputStream = new JarOutputStream(outputStream, new Manifest());
+                jarOutputStream = new JarOutputStream(outputStream,
+                        new Manifest());
             }
 
             // Add the files first so that JNLP-INF/APPLICATION.JNLP is early in the file.
             for (int i = 0; i < filesToBeJared.length; i++) {
                 if (filesToBeJared[i] == null || !filesToBeJared[i].exists()
-                    || filesToBeJared[i].isDirectory()) {
+                        || filesToBeJared[i].isDirectory()) {
                     continue; // Just in case...
                 }
                 System.out.println("Adding " + filesToBeJared[i].getName());
@@ -1620,20 +1672,25 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         // generate FooBar.jar so that we get files like images etc.
                         inputStream = new FileInputStream(optionalJarFile);
                         jarInputStream = new JarInputStream(inputStream);
-                        jarFileNames = _updateJar(jarOutputStream, jarInputStream, jarFileNames);
+                        jarFileNames = _updateJar(jarOutputStream,
+                                jarInputStream, jarFileNames);
                     } finally {
                         if (inputStream != null) {
                             try {
                                 inputStream.close();
                             } catch (IOException ex) {
-                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (1.1)");
+                                System.out.println("Failed to close \""
+                                        + jarFile.getCanonicalPath()
+                                        + "\" (1.1)");
                             }
                         }
                         if (jarInputStream != null) {
                             try {
                                 jarInputStream.close();
                             } catch (IOException ex) {
-                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (1.2)");
+                                System.out.println("Failed to close \""
+                                        + jarFile.getCanonicalPath()
+                                        + "\" (1.2)");
                             }
                         }
                     }
@@ -1642,20 +1699,25 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     try {
                         inputStream = new FileInputStream(jarFile);
                         jarInputStream = new JarInputStream(inputStream);
-                        jarFileNames = _updateJar(jarOutputStream, jarInputStream, jarFileNames);
+                        jarFileNames = _updateJar(jarOutputStream,
+                                jarInputStream, jarFileNames);
                     } finally {
                         if (inputStream != null) {
                             try {
                                 inputStream.close();
                             } catch (IOException ex) {
-                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (2.1)");
+                                System.out.println("Failed to close \""
+                                        + jarFile.getCanonicalPath()
+                                        + "\" (2.1)");
                             }
                         }
                         if (jarInputStream != null) {
                             try {
                                 jarInputStream.close();
                             } catch (IOException ex) {
-                                System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (2.2)");
+                                System.out.println("Failed to close \""
+                                        + jarFile.getCanonicalPath()
+                                        + "\" (2.2)");
                             }
                         }
                     }
@@ -1666,14 +1728,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 try {
                     jarInputStream.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (3.1)");
+                    System.out.println("Failed to close \""
+                            + jarFile.getCanonicalPath() + "\" (3.1)");
                 }
             }
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\" (3.1.5)");
+                    System.out.println("Failed to close \""
+                            + jarFile.getCanonicalPath() + "\" (3.1.5)");
                 }
             }
             if (jarOutputStream != null) {
@@ -1688,7 +1752,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 try {
                     outputStream.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close outputStream: \"" + outputJarFileName + "\" (3.2)");
+                    System.out.println("Failed to close outputStream: \""
+                            + outputJarFileName + "\" (3.2)");
                 }
             }
 
@@ -1702,8 +1767,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
                 if (!temporaryJarFileName.renameTo(jarFile)) {
                     throw new IOException("Failed to rename \""
-                            + temporaryJarFileName + "\" to \""
-                            + jarFile + "\"");
+                            + temporaryJarFileName + "\" to \"" + jarFile
+                            + "\"");
                 }
             }
         }
@@ -1717,9 +1782,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      *  @return An array of jar file names that have already been
      *  added to the jar file _and_ that were added by this method.
      */
-    private String [] _updateJar(JarOutputStream jarOutputStream,
-            JarInputStream jarInputStream,
-            String [] jarFileNames) throws IOException {
+    private String[] _updateJar(JarOutputStream jarOutputStream,
+            JarInputStream jarInputStream, String[] jarFileNames)
+            throws IOException {
         JarEntry inputEntry;
         Set entriesAdded = new HashSet(Arrays.asList(jarFileNames));
         byte buffer[] = new byte[1024];
@@ -1740,9 +1805,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
             jarOutputStream.closeEntry();
         }
-        return (String [])entriesAdded.toArray(new String[0]);
+        return (String[]) entriesAdded.toArray(new String[0]);
     }
-
 
     // Return a Map that maps user specified classes to jar files.
     // The contents of _jnlpClassesToJars property is read, which,
@@ -1755,7 +1819,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private Map _userSpecifiedJars() {
         String parameterName = "_jnlpClassesToJars";
         Parameter jnlpClassesToJarsParameter = (Parameter) _model
-            .getAttribute(parameterName);
+                .getAttribute(parameterName);
         HashMap results = new HashMap();
         if (jnlpClassesToJarsParameter == null) {
             return results;
@@ -1764,20 +1828,23 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         Token jnlpClassesToJarsToken = null;
         try {
             jnlpClassesToJarsToken = jnlpClassesToJarsParameter.getToken();
-            if (! (jnlpClassesToJarsToken instanceof ArrayToken)) {
+            if (!(jnlpClassesToJarsToken instanceof ArrayToken)) {
                 return results;
             }
         } catch (Exception ex) {
-            System.out.println("Failed to parse " + parameterName
-                    + " " + jnlpClassesToJarsParameter);
+            System.out.println("Failed to parse " + parameterName + " "
+                    + jnlpClassesToJarsParameter);
             ex.printStackTrace();
             return results;
         }
 
         for (int i = 0; i < ((ArrayToken) jnlpClassesToJarsToken).length(); i++) {
-            ArrayToken classJarPair = (ArrayToken) ((ArrayToken) jnlpClassesToJarsToken).getElement(i);
-            String className = ((StringToken)(classJarPair.getElement(0))).stringValue();
-            String jarName = ((StringToken)(classJarPair.getElement(1))).stringValue();
+            ArrayToken classJarPair = (ArrayToken) ((ArrayToken) jnlpClassesToJarsToken)
+                    .getElement(i);
+            String className = ((StringToken) (classJarPair.getElement(0)))
+                    .stringValue();
+            String jarName = ((StringToken) (classJarPair.getElement(1)))
+                    .stringValue();
             System.out.println("_userSpecifiedJars(): adding " + className
                     + " " + jarName);
             results.put(className, jarName);

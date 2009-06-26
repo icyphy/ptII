@@ -154,13 +154,14 @@ public class TypeAttribute extends Parameter {
      *   an attribute with the name of this attribute that is not an instance
      *   of TypeAttribute.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         _checkContainer(container);
         try {
             workspace().getWriteAccess();
             if (container != null) {
-                List<TypeAttribute> attributes = container.attributeList(TypeAttribute.class);
+                List<TypeAttribute> attributes = container
+                        .attributeList(TypeAttribute.class);
                 for (TypeAttribute attribute : attributes) {
                     if (attribute != this) {
                         try {

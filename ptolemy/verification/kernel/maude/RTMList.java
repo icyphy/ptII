@@ -39,10 +39,11 @@ public class RTMList extends RTMTerm {
 
     public RTMList(String saperator, String emptyrepr) {
         super();
-        if (saperator.trim().equals(""))
+        if (saperator.trim().equals("")) {
             this.saperator = " ";
-        else
+        } else {
             this.saperator = " " + saperator.trim() + " ";
+        }
         this.empty = emptyrepr;
         this.items = new LinkedList<RTMTerm>();
     }
@@ -55,29 +56,32 @@ public class RTMList extends RTMTerm {
         add(new RTMFragment(s));
     }
 
-    public void addExp(String e, boolean isTime)  throws IllegalActionException {
+    public void addExp(String e, boolean isTime) throws IllegalActionException {
         add(new RTMPtExp(e, isTime));
     }
 
     public boolean isEmpty() {
-            return items.isEmpty();
+        return items.isEmpty();
     }
 
     @Override
     public String print(int indent, boolean newline) {
         StringBuffer rs = new StringBuffer("");
         if (items.size() > 0) {
-            if (newline)
+            if (newline) {
                 rs.append(front(indent));
+            }
             rs.append("(");
-            for (Iterator<RTMTerm> ti = items.iterator(); ti.hasNext(); ) {
+            for (Iterator<RTMTerm> ti = items.iterator(); ti.hasNext();) {
                 rs.append("\n" + ti.next().print(indent + indentWidth, true));
-                if (ti.hasNext()) rs.append(saperator);
+                if (ti.hasNext()) {
+                    rs.append(saperator);
+                }
             }
             rs.append(")");
-        }
-        else
+        } else {
             rs.append(empty);
+        }
         return rs.toString();
     }
 }

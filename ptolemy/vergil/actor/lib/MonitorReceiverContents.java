@@ -79,13 +79,10 @@ public class MonitorReceiverContents extends SingletonAttribute {
 
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" "
-                + "width=\"180\" height=\"20\" "
-                + "style=\"fill:#00FFFF\"/>\n"
-                + "<text x=\"-55\" y=\"5\" "
+                + "<rect x=\"-60\" y=\"-10\" " + "width=\"180\" height=\"20\" "
+                + "style=\"fill:#00FFFF\"/>\n" + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
-                + "MonitorReceiverContents\n" + "</text>\n"
-                + "</svg>\n");
+                + "MonitorReceiverContents\n" + "</text>\n" + "</svg>\n");
 
         // Hide the name.
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
@@ -108,24 +105,27 @@ public class MonitorReceiverContents extends SingletonAttribute {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
-    public void setContainer(final NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(final NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer == container) {
             return;
         }
-        if (previousContainer != null && previousContainer instanceof CompositeActor) {
+        if (previousContainer != null
+                && previousContainer instanceof CompositeActor) {
             // _piggybackContainer should be non-null, but we check anyway.
             if (_piggybackContainer != null) {
                 _piggybackContainer.removePiggyback(_executable);
             }
             _executable = null;
             // Also, remove all _showInfo attributes in the ports of the previous container.
-            List<Actor> entities = ((CompositeActor)previousContainer).deepEntityList();
+            List<Actor> entities = ((CompositeActor) previousContainer)
+                    .deepEntityList();
             for (Actor entity : entities) {
                 List<IOPort> ports = entity.inputPortList();
                 for (IOPort port : ports) {
-                    List<MonitorReceiverAttribute> attributes = port.attributeList(MonitorReceiverAttribute.class);
+                    List<MonitorReceiverAttribute> attributes = port
+                            .attributeList(MonitorReceiverAttribute.class);
                     for (MonitorReceiverAttribute attribute : attributes) {
                         attribute.setContainer(null);
                     }
@@ -145,12 +145,14 @@ public class MonitorReceiverContents extends SingletonAttribute {
                         // Add _showInfo attributes to any input port that does not already have one.
                         try {
                             workspace().getWriteAccess();
-                            List<Actor> entities = ((CompositeActor)container).deepEntityList();
+                            List<Actor> entities = ((CompositeActor) container)
+                                    .deepEntityList();
                             for (Actor entity : entities) {
                                 List<IOPort> ports = entity.inputPortList();
                                 for (IOPort port : ports) {
                                     if (port.getAttribute("_showInfo") == null) {
-                                        MonitorReceiverAttribute attribute = new MonitorReceiverAttribute(port, "_showInfo");
+                                        MonitorReceiverAttribute attribute = new MonitorReceiverAttribute(
+                                                port, "_showInfo");
                                         attribute.setPersistent(false);
                                     }
                                 }
@@ -165,10 +167,10 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     // Request repaint on postfire() and wrapup().
                     public boolean postfire() {
                         ChangeRequest request = new ChangeRequest(this,
-                                "SetVariable change request",
-                                false /*Not a structural change, we only want to refresh the GUI*/
-                              ) {
-                            protected void _execute() throws IllegalActionException {
+                                "SetVariable change request", false /*Not a structural change, we only want to refresh the GUI*/
+                        ) {
+                            protected void _execute()
+                                    throws IllegalActionException {
                             }
                         };
                         // To prevent prompting for saving the model, mark this
@@ -181,7 +183,8 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     public void wrapup() {
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true) {
-                            protected void _execute() throws IllegalActionException {
+                            protected void _execute()
+                                    throws IllegalActionException {
                             }
                         };
                         // To prevent prompting for saving the model, mark this
@@ -191,21 +194,46 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     }
 
                     // All other methods are empty.
-                    public void fire() throws IllegalActionException {}
-                    public boolean isFireFunctional() {return true;}
-                    public boolean isStrict() {return true;}
-                    public int iterate(int count) {return Executable.COMPLETED;}
-                    public boolean prefire() throws IllegalActionException {return true;}
-                    public void stop() {}
-                    public void stopFire() {}
-                    public void terminate() {}
-                    public void addInitializable(Initializable initializable) {}
-                    public void preinitialize() throws IllegalActionException {}
-                    public void removeInitializable(Initializable initializable) {}
+                    public void fire() throws IllegalActionException {
+                    }
+
+                    public boolean isFireFunctional() {
+                        return true;
+                    }
+
+                    public boolean isStrict() {
+                        return true;
+                    }
+
+                    public int iterate(int count) {
+                        return Executable.COMPLETED;
+                    }
+
+                    public boolean prefire() throws IllegalActionException {
+                        return true;
+                    }
+
+                    public void stop() {
+                    }
+
+                    public void stopFire() {
+                    }
+
+                    public void terminate() {
+                    }
+
+                    public void addInitializable(Initializable initializable) {
+                    }
+
+                    public void preinitialize() throws IllegalActionException {
+                    }
+
+                    public void removeInitializable(Initializable initializable) {
+                    }
                 };
             }
 
-            _piggybackContainer = (CompositeActor)container;
+            _piggybackContainer = (CompositeActor) container;
             _piggybackContainer.addPiggyback(_executable);
         }
     }

@@ -74,7 +74,7 @@ public interface ContainmentExtender {
      *   the contained object.
      */
     public NamedObj getContainedObject(String name)
-    throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Get the extended container.
      *

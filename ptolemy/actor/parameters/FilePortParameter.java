@@ -284,7 +284,7 @@ public class FilePortParameter extends PortParameter implements
                     // ModelReference.xml needed this under Webstart.
                     try {
                         URL possibleJarURL = ClassUtilities
-                            .jarURLEntryResource(name);
+                                .jarURLEntryResource(name);
 
                         if (possibleJarURL != null) {
                             file = new File(possibleJarURL.getFile());

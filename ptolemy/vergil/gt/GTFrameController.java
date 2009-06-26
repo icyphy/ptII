@@ -77,8 +77,8 @@ import diva.gui.toolbox.JCanvasPanner;
 public class GTFrameController implements ChangeListener, KeyListener {
 
     public CompositeEntity getActiveModel() {
-        AbstractBasicGraphModel graphModel =
-            (AbstractBasicGraphModel) getGraphController().getGraphModel();
+        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) getGraphController()
+                .getGraphModel();
         return (CompositeEntity) graphModel.getPtolemyModel();
     }
 
@@ -176,8 +176,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         }
     }
 
-    public static class GTActorGraphModel extends ActorGraphModel
-    implements UpdateController {
+    public static class GTActorGraphModel extends ActorGraphModel implements
+            UpdateController {
 
         public GTActorGraphModel(NamedObj composite) {
             super(composite);
@@ -202,8 +202,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         private boolean _updateStopped = false;
     }
 
-    public static class GTFSMGraphModel extends FSMGraphModel
-    implements UpdateController {
+    public static class GTFSMGraphModel extends FSMGraphModel implements
+            UpdateController {
 
         public GTFSMGraphModel(CompositeEntity composite) {
             super(composite);
@@ -333,9 +333,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         if (hasTabs()) {
             for (Component tab : _tabbedPane.getComponents()) {
                 if (tab instanceof JGraph) {
-                    AbstractBasicGraphModel graphModel =
-                        (AbstractBasicGraphModel) ((JGraph) tab).getGraphPane()
-                        .getGraphModel();
+                    AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) ((JGraph) tab)
+                            .getGraphPane().getGraphModel();
                     graphModel.removeListeners();
                 }
             }
@@ -347,8 +346,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
      *  @param newPane True to add the pane prior to the last pane.
      *  @return The pane.
      */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
-            boolean newPane) {
+    private JGraph _addTabbedPane(CompositeActorMatcher matcher, boolean newPane) {
         GraphPane pane = _createGraphPane(matcher);
         pane.getForegroundLayer().setPickHalo(2);
         pane.getForegroundEventLayer().setConsuming(false);

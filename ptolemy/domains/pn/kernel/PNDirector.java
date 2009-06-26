@@ -524,8 +524,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
-        if ((_writeBlockedQueues.isEmpty())
-                && (!_readBlockedQueues.isEmpty())) {
+        if ((_writeBlockedQueues.isEmpty()) && (!_readBlockedQueues.isEmpty())) {
             // There is a real deadlock.
             if (_debugging) {
                 _debug("Deadlock detected: no processes blocked on write, but some are blocked on read.");

@@ -72,7 +72,7 @@ public class SharedUtilities {
      * corresponding attribute (values).
      * @return The mappings for root ast nodes to attributes.
      */
-    public  Map<ASTPtRootNode, Attribute> getAttributes() {
+    public Map<ASTPtRootNode, Attribute> getAttributes() {
         return _attributes;
     }
 
@@ -159,11 +159,9 @@ public class SharedUtilities {
      */
     private HashSet<PropertySolver> _ranSolvers = new HashSet<PropertySolver>();
 
-    private Map<Attribute, ASTPtRootNode> _parseTrees =
-        new HashMap<Attribute, ASTPtRootNode>();
+    private Map<Attribute, ASTPtRootNode> _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
 
-    private Map<ASTPtRootNode, Attribute> _attributes =
-        new HashMap<ASTPtRootNode, Attribute>();
+    private Map<ASTPtRootNode, Attribute> _attributes = new HashMap<ASTPtRootNode, Attribute>();
 
     private ArrayList<String> _errors = new ArrayList<String>();
 

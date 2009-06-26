@@ -77,7 +77,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status missing javadoc, but complete to 1.4
  */
-public class LinkedList extends AbstractSequentialList implements List, Cloneable, Serializable, Rollbackable {
+public class LinkedList extends AbstractSequentialList implements List,
+        Cloneable, Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.2.
@@ -172,7 +173,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final Entry $ASSIGN$previous(Entry newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$previous.add(null, previous, $CHECKPOINT.getTimestamp());
+                $RECORD$previous
+                        .add(null, previous, $CHECKPOINT.getTimestamp());
             }
             if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -181,16 +183,19 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            data = (Object)$RECORD$data.restore(data, timestamp, trim);
-            next = (Entry)$RECORD$next.restore(next, timestamp, trim);
-            previous = (Entry)$RECORD$previous.restore(previous, timestamp, trim);
+            data = $RECORD$data.restore(data, timestamp, trim);
+            next = (Entry) $RECORD$next.restore(next, timestamp, trim);
+            previous = (Entry) $RECORD$previous.restore(previous, timestamp,
+                    trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -204,7 +209,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -223,10 +229,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         private transient FieldRecord $RECORD$previous = new FieldRecord(0);
 
         private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$data,
-                $RECORD$next,
-                $RECORD$previous
-            };
+                $RECORD$data, $RECORD$next, $RECORD$previous };
 
     }
 
@@ -299,8 +302,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
          * @throws ConcurrentModificationException if the list was modified
          */
         private void checkMod() {
-            if (knownMod != getModCount())
+            if (knownMod != getModCount()) {
                 throw new ConcurrentModificationException();
+            }
         }
 
         /**         
@@ -343,8 +347,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
          */
         public Object next() {
             checkMod();
-            if (next == null)
+            if (next == null) {
                 throw new NoSuchElementException();
+            }
             $ASSIGN$SPECIAL$position(11, position);
             $ASSIGN$lastReturned($ASSIGN$previous(next));
             $ASSIGN$next(lastReturned.getNext());
@@ -359,8 +364,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
          */
         public Object previous() {
             checkMod();
-            if (previous == null)
+            if (previous == null) {
                 throw new NoSuchElementException();
+            }
             $ASSIGN$SPECIAL$position(12, position);
             $ASSIGN$lastReturned($ASSIGN$next(previous));
             $ASSIGN$previous(lastReturned.getPrevious());
@@ -374,12 +380,14 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
          */
         public void remove() {
             checkMod();
-            if (lastReturned == null)
+            if (lastReturned == null) {
                 throw new IllegalStateException();
-                // Adjust the position to before the removed element, if the element
+            }
+            // Adjust the position to before the removed element, if the element
             // being removed is behind the cursor.
-            if (lastReturned == previous)
+            if (lastReturned == previous) {
                 $ASSIGN$SPECIAL$position(12, position);
+            }
             $ASSIGN$next(lastReturned.getNext());
             $ASSIGN$previous(lastReturned.getPrevious());
             removeEntry(lastReturned);
@@ -401,14 +409,16 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             Entry e = new Entry(o);
             e.setPrevious(previous);
             e.setNext(next);
-            if (previous != null)
+            if (previous != null) {
                 previous.setNext(e);
-            else
+            } else {
                 setFirstField(e);
-            if (next != null)
+            }
+            if (next != null) {
                 next.setPrevious(e);
-            else
+            } else {
                 setLastField(e);
+            }
             $ASSIGN$previous(e);
             $ASSIGN$lastReturned(null);
         }
@@ -421,48 +431,50 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
          */
         public void set(Object o) {
             checkMod();
-            if (lastReturned == null)
+            if (lastReturned == null) {
                 throw new IllegalStateException();
+            }
             lastReturned.setData(o);
         }
 
         private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                $RECORD$knownMod
+                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return knownMod += newValue;
-                case 1:
-                    return knownMod -= newValue;
-                case 2:
-                    return knownMod *= newValue;
-                case 3:
-                    return knownMod /= newValue;
-                case 4:
-                    return knownMod &= newValue;
-                case 5:
-                    return knownMod |= newValue;
-                case 6:
-                    return knownMod ^= newValue;
-                case 7:
-                    return knownMod %= newValue;
-                case 8:
-                    return knownMod <<= newValue;
-                case 9:
-                    return knownMod >>= newValue;
-                case 10:
-                    return knownMod >>>= newValue;
-                case 11:
-                    return knownMod++;
-                case 12:
-                    return knownMod--;
-                case 13:
-                    return ++knownMod;
-                case 14:
-                    return --knownMod;
-                default:
-                    return knownMod;
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
             }
         }
 
@@ -478,7 +490,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final Entry $ASSIGN$previous(Entry newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$previous.add(null, previous, $CHECKPOINT.getTimestamp());
+                $RECORD$previous
+                        .add(null, previous, $CHECKPOINT.getTimestamp());
             }
             if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -488,7 +501,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final Entry $ASSIGN$lastReturned(Entry newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT.getTimestamp());
+                $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT
+                        .getTimestamp());
             }
             if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -498,64 +512,70 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
 
         private final int $ASSIGN$position(int newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                $RECORD$position
+                        .add(null, position, $CHECKPOINT.getTimestamp());
             }
             return position = newValue;
         }
 
         private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                $RECORD$position
+                        .add(null, position, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return position += newValue;
-                case 1:
-                    return position -= newValue;
-                case 2:
-                    return position *= newValue;
-                case 3:
-                    return position /= newValue;
-                case 4:
-                    return position &= newValue;
-                case 5:
-                    return position |= newValue;
-                case 6:
-                    return position ^= newValue;
-                case 7:
-                    return position %= newValue;
-                case 8:
-                    return position <<= newValue;
-                case 9:
-                    return position >>= newValue;
-                case 10:
-                    return position >>>= newValue;
-                case 11:
-                    return position++;
-                case 12:
-                    return position--;
-                case 13:
-                    return ++position;
-                case 14:
-                    return --position;
-                default:
-                    return position;
+            case 0:
+                return position += newValue;
+            case 1:
+                return position -= newValue;
+            case 2:
+                return position *= newValue;
+            case 3:
+                return position /= newValue;
+            case 4:
+                return position &= newValue;
+            case 5:
+                return position |= newValue;
+            case 6:
+                return position ^= newValue;
+            case 7:
+                return position %= newValue;
+            case 8:
+                return position <<= newValue;
+            case 9:
+                return position >>= newValue;
+            case 10:
+                return position >>>= newValue;
+            case 11:
+                return position++;
+            case 12:
+                return position--;
+            case 13:
+                return ++position;
+            case 14:
+                return --position;
+            default:
+                return position;
             }
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-            next = (Entry)$RECORD$next.restore(next, timestamp, trim);
-            previous = (Entry)$RECORD$previous.restore(previous, timestamp, trim);
-            lastReturned = (Entry)$RECORD$lastReturned.restore(lastReturned, timestamp, trim);
+            next = (Entry) $RECORD$next.restore(next, timestamp, trim);
+            previous = (Entry) $RECORD$previous.restore(previous, timestamp,
+                    trim);
+            lastReturned = (Entry) $RECORD$lastReturned.restore(lastReturned,
+                    timestamp, trim);
             position = $RECORD$position.restore(position, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -569,7 +589,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -592,12 +613,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         private transient FieldRecord $RECORD$position = new FieldRecord(0);
 
         private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$knownMod,
-                $RECORD$next,
-                $RECORD$previous,
-                $RECORD$lastReturned,
-                $RECORD$position
-            };
+                $RECORD$knownMod, $RECORD$next, $RECORD$previous,
+                $RECORD$lastReturned, $RECORD$position };
 
     }
 
@@ -617,12 +634,14 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         Entry e;
         if (n < getSize() / 2) {
             e = getFirstField();
-            while (n-- > 0) 
+            while (n-- > 0) {
                 e = e.getNext();
+            }
         } else {
             e = getLastField();
-            while (++n < getSize()) 
+            while (++n < getSize()) {
                 e = e.getPrevious();
+            }
         }
         return e;
     }
@@ -635,9 +654,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     void removeEntry(Entry e) {
         setModCount(getModCount() + 1);
         setSize(getSize() - 1);
-        if (getSize() == 0)
+        if (getSize() == 0) {
             setFirstField(setLastField(null));
-        else {
+        } else {
             if (e == getFirstField()) {
                 setFirstField(e.getNext());
                 e.getNext().setPrevious(null);
@@ -657,8 +676,10 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
      */
     private void checkBoundsInclusive(int index) {
-        if (index < 0 || index > getSize())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+getSize());
+        if (index < 0 || index > getSize()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + getSize());
+        }
     }
 
     /**     
@@ -667,8 +688,10 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
      */
     private void checkBoundsExclusive(int index) {
-        if (index < 0 || index >= getSize())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+getSize());
+        if (index < 0 || index >= getSize()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + getSize());
+        }
     }
 
     /**     
@@ -693,8 +716,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @throws NoSuchElementException if the list is empty
      */
     public Object getFirst() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         return getFirstField().getData();
     }
 
@@ -704,8 +728,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @throws NoSuchElementException if the list is empty
      */
     public Object getLast() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         return getLastField().getData();
     }
 
@@ -715,15 +740,17 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @throws NoSuchElementException if the list is empty
      */
     public Object removeFirst() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         setModCount(getModCount() + 1);
         setSize(getSize() - 1);
         Object r = getFirstField().getData();
-        if (getFirstField().getNext() != null)
+        if (getFirstField().getNext() != null) {
             getFirstField().getNext().setPrevious(null);
-        else
+        } else {
             setLastField(null);
+        }
         setFirstField(getFirstField().getNext());
         return r;
     }
@@ -734,15 +761,17 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @throws NoSuchElementException if the list is empty
      */
     public Object removeLast() {
-        if (getSize() == 0)
+        if (getSize() == 0) {
             throw new NoSuchElementException();
+        }
         setModCount(getModCount() + 1);
         setSize(getSize() - 1);
         Object r = getLastField().getData();
-        if (getLastField().getPrevious() != null)
+        if (getLastField().getPrevious() != null) {
             getLastField().getPrevious().setNext(null);
-        else
+        } else {
             setFirstField(null);
+        }
         setLastField(getLastField().getPrevious());
         return r;
     }
@@ -754,9 +783,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     public void addFirst(Object o) {
         Entry e = new Entry(o);
         setModCount(getModCount() + 1);
-        if (getSize() == 0)
+        if (getSize() == 0) {
             setFirstField(setLastField(e));
-        else {
+        } else {
             e.setNext(getFirstField());
             getFirstField().setPrevious(e);
             setFirstField(e);
@@ -778,9 +807,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      */
     private void addLastEntry(Entry e) {
         setModCount(getModCount() + 1);
-        if (getSize() == 0)
+        if (getSize() == 0) {
             setFirstField(setLastField(e));
-        else {
+        } else {
             e.setPrevious(getLastField());
             getLastField().setNext(e);
             setLastField(e);
@@ -797,8 +826,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     public boolean contains(Object o) {
         Entry e = getFirstField();
         while (e != null) {
-            if (equals(o, e.getData()))
+            if (equals(o, e.getData())) {
                 return true;
+            }
             e = e.getNext();
         }
         return false;
@@ -864,16 +894,18 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     public boolean addAll(int index, Collection c) {
         checkBoundsInclusive(index);
         int csize = c.size();
-        if (csize == 0)
+        if (csize == 0) {
             return false;
+        }
         Iterator itr = c.iterator();
         Entry after = null;
         Entry before = null;
         if (index != getSize()) {
             after = getEntry(index);
             before = after.getPrevious();
-        } else
+        } else {
             before = getLastField();
+        }
         Entry e = new Entry(itr.next());
         e.setPrevious(before);
         Entry prev = e;
@@ -887,14 +919,16 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         setModCount(getModCount() + 1);
         setSize(getSize() + csize);
         prev.setNext(after);
-        if (after != null)
+        if (after != null) {
             after.setPrevious(e);
-        else
+        } else {
             setLastField(e);
-        if (before != null)
+        }
+        if (before != null) {
             before.setNext(firstNew);
-        else
+        } else {
             setFirstField(firstNew);
+        }
         return true;
     }
 
@@ -950,14 +984,16 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             Entry after = getEntry(index);
             e.setNext(after);
             e.setPrevious(after.getPrevious());
-            if (after.getPrevious() == null)
+            if (after.getPrevious() == null) {
                 setFirstField(e);
-            else
+            } else {
                 after.getPrevious().setNext(e);
+            }
             after.setPrevious(e);
             setSize(getSize() + 1);
-        } else
+        } else {
             addLastEntry(e);
+        }
     }
 
     /**     
@@ -982,8 +1018,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         int index = 0;
         Entry e = getFirstField();
         while (e != null) {
-            if (equals(o, e.getData()))
+            if (equals(o, e.getData())) {
                 return index;
+            }
             index++;
             e = e.getNext();
         }
@@ -999,8 +1036,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         int index = getSize() - 1;
         Entry e = getLastField();
         while (e != null) {
-            if (equals(o, e.getData()))
+            if (equals(o, e.getData())) {
                 return index;
+            }
             index--;
             e = e.getPrevious();
         }
@@ -1028,7 +1066,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     public Object clone() {
         LinkedList copy = null;
         try {
-            copy = (LinkedList)super.clone();
+            copy = (LinkedList) super.clone();
         } catch (CloneNotSupportedException ex) {
         }
         copy.clear();
@@ -1064,10 +1102,12 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @throws NullPointerException if a is null
      */
     public Object[] toArray(Object[] a) {
-        if (a.length < getSize())
-            a = (Object[])Array.newInstance(a.getClass().getComponentType(), getSize());
-        else if (a.length > getSize())
+        if (a.length < getSize()) {
+            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+                    getSize());
+        } else if (a.length > getSize()) {
             a[getSize()] = null;
+        }
         Entry e = getFirstField();
         for (int i = 0; i < getSize(); i++) {
             a[i] = e.getData();
@@ -1083,7 +1123,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @serialData the size of the list (int), followed by all the elements
      * (Object) in proper order
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         s.writeInt(getSize());
         Entry e = getFirstField();
@@ -1101,11 +1141,13 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
      * @serialData the size of the list (int), followed by all the elements
      * (Object) in proper order
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
         int i = s.readInt();
-        while (--i >= 0) 
+        while (--i >= 0) {
             addLastEntry(new Entry(s.readObject()));
+        }
     }
 
     void setFirstField(Entry first) {
@@ -1160,13 +1202,14 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        first = (Entry)$RECORD$first.restore(first, timestamp, trim);
-        last = (Entry)$RECORD$last.restore(last, timestamp, trim);
+        first = (Entry) $RECORD$first.restore(first, timestamp, trim);
+        last = (Entry) $RECORD$last.restore(last, timestamp, trim);
         size = $RECORD$size.restore(size, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
@@ -1178,10 +1221,6 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     private transient FieldRecord $RECORD$size = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$first,
-            $RECORD$last,
-            $RECORD$size
-        };
+            $RECORD$first, $RECORD$last, $RECORD$size };
 
 }
-

@@ -83,11 +83,10 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
         // This is always used to configure the container, so
         // we just use that.
 
-        MathematicalModelConverter modelConverter =
-            (MathematicalModelConverter) getContainer();
+        MathematicalModelConverter modelConverter = (MathematicalModelConverter) getContainer();
 
-        Effigy effigy = parent == null ? null :
-            ((TableauFrame) parent).getEffigy();
+        Effigy effigy = parent == null ? null : ((TableauFrame) parent)
+                .getEffigy();
 
         Tableau tableau;
         try {
@@ -109,7 +108,8 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
 
         if (frame == null) {
             try {
-                frame = new MathematicalModelConverterGUI(modelConverter, tableau);
+                frame = new MathematicalModelConverterGUI(modelConverter,
+                        tableau);
             } catch (KernelException e) {
                 throw new InternalErrorException(e);
             }
@@ -121,7 +121,6 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
 
         //try {
         //    int a = codeGenerator.generateCode();

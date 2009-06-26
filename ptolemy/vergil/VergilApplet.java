@@ -28,9 +28,6 @@
 
 package ptolemy.vergil;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.io.IOException;
 
 import ptolemy.gui.BasicJApplet;
@@ -78,23 +75,25 @@ public class VergilApplet extends BasicJApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String[][] newinfo = {
-                { "commandLineArguments", "", "Command Line Arguments suitable for VergilApplication" }, };
+        String[][] newinfo = { { "commandLineArguments", "",
+                "Command Line Arguments suitable for VergilApplication" }, };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
+
     /** Initialize the applet. This method is called by the browser
      *  or applet viewer to inform this applet that it has been
      *  loaded into the system. It is always called before
      *  the first time that the start() method is called.
      *  In this class, this invokes {@link VergilApplication#main(String[])}
      */
-    public void init () {
+    public void init() {
         super.init();
         String commandLineArguments = getParameter("commandLineArguments");
-        String [] vergilArguments = new String[0];
+        String[] vergilArguments = new String[0];
         if (commandLineArguments != null) {
             try {
-                vergilArguments = StringUtilities.tokenizeForExec(commandLineArguments);
+                vergilArguments = StringUtilities
+                        .tokenizeForExec(commandLineArguments);
             } catch (IOException ex) {
                 report("Failed to parse \"" + commandLineArguments + "\"", ex);
             }

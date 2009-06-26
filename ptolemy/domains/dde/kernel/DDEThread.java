@@ -114,7 +114,6 @@ public class DDEThread extends ProcessThread {
                     // Width inference should already have been done.
                 }
 
-
                 if (receivers == null) {
                     break;
                 }

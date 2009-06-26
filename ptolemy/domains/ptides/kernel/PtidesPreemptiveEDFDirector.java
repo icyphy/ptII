@@ -43,7 +43,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public PtidesPreemptiveEDFDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -73,13 +73,16 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  @return List of events of the same tag.
      *  @exception IllegalActionException
      */
-    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
+    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event)
+            throws IllegalActionException {
         List<DEEvent> eventList = super._getAllSameTagEventsFromQueue(event);
         for (int i = _peekingIndex; (i - 1) >= 0; i--) {
-            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(_peekingIndex-1);
+            DEEvent nextEvent = ((DEListEventQueue) _eventQueue)
+                    .get(_peekingIndex - 1);
             // FIXME: when causality interface for RealDependency works, replace this actor
             // by the same equivalence class.
-            if (nextEvent.hasTheSameTagAs(event) && (nextEvent.actor() == event.actor())) {
+            if (nextEvent.hasTheSameTagAs(event)
+                    && (nextEvent.actor() == event.actor())) {
                 eventList.add(nextEvent);
                 _peekingIndex--;
             } else {
@@ -94,10 +97,14 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  queue, and return the actor associated with it.
      *
      */
-    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
-        if (events.get(0) != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
-            throw new IllegalActionException("The event to get is not the event pointed " +
-                        "to by peeking index." + ", size " + events.size() + ", peek " + _peekingIndex);
+    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events)
+            throws IllegalActionException {
+        if (events.get(0) != ((DEListEventQueue) _eventQueue)
+                .get(_peekingIndex)) {
+            throw new IllegalActionException(
+                    "The event to get is not the event pointed "
+                            + "to by peeking index." + ", size "
+                            + events.size() + ", peek " + _peekingIndex);
         }
         // take from the event queue all the events from the event queue starting
         // for _peekingIndex. Here we assume _peekingIndex is the index of the smallest
@@ -106,7 +113,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         for (int i = 0; i < events.size(); i++) {
             // We always take the one from _peekingIndex because it points to the next
             // event in the queue once we take the previous one from the event queue.
-            ((DEListEventQueue)_eventQueue).take(_peekingIndex);
+            ((DEListEventQueue) _eventQueue).take(_peekingIndex);
         }
         return events.get(0).actor();
     }
@@ -142,7 +149,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  @return false if no event is found. returns false, otherwise returns true.
      *  @exception IllegalActionException
      */
-    protected boolean _getSmallestDeadlineSafeEventFromQueue() throws IllegalActionException {
+    protected boolean _getSmallestDeadlineSafeEventFromQueue()
+            throws IllegalActionException {
 
         // clear _eventToProcess.
         _eventToProcess = null;
@@ -150,15 +158,17 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         int result = 0;
 
         for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-            DEEvent event = ((DEListEventQueue)_eventQueue).get(eventIndex);
+            DEEvent event = ((DEListEventQueue) _eventQueue).get(eventIndex);
             IOPort port = event.ioPort();
             if (port == null) {
                 List<IOPort> inputPortList = event.actor().inputPortList();
                 if (inputPortList.size() == 0) {
-                    throw new IllegalActionException("When getting the deadline for " +
-                            "a pure event at " + event.actor() + ", this actor" +
-                            "does not have an input port, thus" +
-                    "unable to get relative deadline");
+                    throw new IllegalActionException(
+                            "When getting the deadline for "
+                                    + "a pure event at " + event.actor()
+                                    + ", this actor"
+                                    + "does not have an input port, thus"
+                                    + "unable to get relative deadline");
                 }
                 port = inputPortList.get(0);
             }
@@ -214,10 +224,11 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         // at the top of the stack.
         Time smallestStackDeadline = new Time(this, Double.POSITIVE_INFINITY);
         DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.peek();
-        List eventList = (List<DEEvent>)(doubleTimedEvent.contents);
-        DEEvent executingEvent = (DEEvent)eventList.get(0);
+        List eventList = (List<DEEvent>) (doubleTimedEvent.contents);
+        DEEvent executingEvent = (DEEvent) eventList.get(0);
         for (int i = 0; i < eventList.size(); i++) {
-            Time absExecutingDeadline = _getAbsoluteDeadline(((DEEvent)eventList.get(i)));
+            Time absExecutingDeadline = _getAbsoluteDeadline(((DEEvent) eventList
+                    .get(i)));
             if (absExecutingDeadline.compareTo(smallestStackDeadline) <= 0) {
                 smallestStackDeadline = absExecutingDeadline;
             }
@@ -227,9 +238,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
 
         // if we decide not to preempt because the one on stack has smaller deadline,
         // then we set _eventToProcess back to null;
-        if (smallestQueueDeadline.compareTo(smallestStackDeadline) > 0 ) {
+        if (smallestQueueDeadline.compareTo(smallestStackDeadline) > 0) {
             _eventToProcess = null;
-        } else if (smallestQueueDeadline.compareTo(smallestStackDeadline) == 0 ) {
+        } else if (smallestQueueDeadline.compareTo(smallestStackDeadline) == 0) {
             if (_eventToProcess.compareTo(executingEvent) >= 0) {
                 _eventToProcess = null;
             } // if the deadline and tag and depth are all equal, don't preempt.
@@ -237,21 +248,20 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
 
         if (_eventToProcess == null) {
             if (_debugging) {
-                _debug("We decided not to do preemption in this round, " +
-                        "but to keep executing " +
-                        executingEvent.actor() + " at physical time " +
-                        _getPhysicalTime());
+                _debug("We decided not to do preemption in this round, "
+                        + "but to keep executing " + executingEvent.actor()
+                        + " at physical time " + _getPhysicalTime());
             }
             return false;
         } else {
 
             if (_debugging) {
-                _debug("We decided to preempt the current " +
-                                "executing event at actor: " +
-                                executingEvent.actor() +
-                                " with another event at actor: " + _eventToProcess.actor() +
-                                ". This preemption happened at physical time " +
-                                _getPhysicalTime());
+                _debug("We decided to preempt the current "
+                        + "executing event at actor: " + executingEvent.actor()
+                        + " with another event at actor: "
+                        + _eventToProcess.actor()
+                        + ". This preemption happened at physical time "
+                        + _getPhysicalTime());
             }
 
             return true;
@@ -268,20 +278,25 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *
      *  FIXME: Currently the check in super method is commented out...
      */
-    protected boolean _safeToProcess(DEEvent event) throws IllegalActionException {
-//        boolean result = super._safeToProcess(event);
+    protected boolean _safeToProcess(DEEvent event)
+            throws IllegalActionException {
+        //        boolean result = super._safeToProcess(event);
         boolean result = false;
         if (result == true) {
             return result;
         } else {
             IOPort port = event.ioPort();
             if (port != null) {
-                Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
+                Parameter parameter = (Parameter) ((NamedObj) port)
+                        .getAttribute("minDelay");
                 if (parameter != null) {
-                    DoubleToken token = ((DoubleToken)((ArrayToken)parameter.getToken())
-                            .arrayValue()[((DETokenEvent)event).channel()]);
-                    Time waitUntilPhysicalTime = event.timeStamp().subtract(token.doubleValue());
-                    if (_getPhysicalTime().subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0) {
+                    DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
+                            .getToken()).arrayValue()[((DETokenEvent) event)
+                            .channel()]);
+                    Time waitUntilPhysicalTime = event.timeStamp().subtract(
+                            token.doubleValue());
+                    if (_getPhysicalTime().subtract(waitUntilPhysicalTime)
+                            .compareTo(_zero) >= 0) {
                         return true;
                     } else {
                         _setTimedInterrupt(waitUntilPhysicalTime);

@@ -46,11 +46,13 @@ public abstract class OutputDevice extends ProgramCodeGeneratorAdapter {
         super(actor);
     }
 
-    public String generateActuatorActuationFuncCode() throws IllegalActionException {
+    public String generateActuatorActuationFuncCode()
+            throws IllegalActionException {
         return "";
     }
-    
-    public String generateHardwareInitializationCode() throws IllegalActionException {
+
+    public String generateHardwareInitializationCode()
+            throws IllegalActionException {
         return "";
     }
 }

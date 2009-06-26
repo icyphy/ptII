@@ -801,7 +801,7 @@ public class ComponentPort extends Port {
             if (!(relation instanceof ComponentRelation)) {
                 throw new IllegalActionException(this, relation,
                         "Attempt to link to an incompatible relation "
-                        + "(expected ComponentRelation).");
+                                + "(expected ComponentRelation).");
             }
             // Check that the container is not a class or that
             // if it is, that this is an inside link.
@@ -1051,7 +1051,8 @@ public class ComponentPort extends Port {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 

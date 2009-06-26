@@ -116,16 +116,20 @@ class LayoutTable extends JTable implements DragSourceListener,
         Rectangle visible = getVisibleRect();
         Dimension size = getSize();
         int top = 0, left = 0, bottom = 0, right = 0;
-        if (visible.y > 0)
+        if (visible.y > 0) {
             top = visible.y + AUTOSCROLL_INSET_SIZE;
-        if (visible.x > 0)
+        }
+        if (visible.x > 0) {
             left = visible.x + AUTOSCROLL_INSET_SIZE;
-        if (visible.y + visible.height < size.height)
+        }
+        if (visible.y + visible.height < size.height) {
             bottom = size.height - visible.y - visible.height
                     + AUTOSCROLL_INSET_SIZE;
-        if (visible.x + visible.width < size.width)
+        }
+        if (visible.x + visible.width < size.width) {
             right = size.width - visible.x - visible.width
                     + AUTOSCROLL_INSET_SIZE;
+        }
         return new Insets(top, left, bottom, right);
     }
 
@@ -174,10 +178,11 @@ class LayoutTable extends JTable implements DragSourceListener,
         int row = rowAtPoint(relLoc);
         Component component = getControlAt(col, row);
 
-        if (col < 1 || row < 1 || component != null)
+        if (col < 1 || row < 1 || component != null) {
             context.setCursor(DragSource.DefaultMoveNoDrop);
-        else
+        } else {
             context.setCursor(DragSource.DefaultMoveDrop);
+        }
     }
 
     public void dropActionChanged(DragSourceDragEvent event) {
@@ -209,10 +214,11 @@ class LayoutTable extends JTable implements DragSourceListener,
     public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
         try {
             if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-                    DataFlavor.javaJVMLocalObjectMimeType)))
+                    DataFlavor.javaJVMLocalObjectMimeType))) {
                 dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
-            else
+            } else {
                 dropTargetDragEvent.rejectDrag();
+            }
         } catch (ClassNotFoundException cnfe) {
             cnfe.printStackTrace();
         }
@@ -227,9 +233,9 @@ class LayoutTable extends JTable implements DragSourceListener,
             //int row = rowAtPoint(location);
 
             if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-                    DataFlavor.javaJVMLocalObjectMimeType)))
+                    DataFlavor.javaJVMLocalObjectMimeType))) {
                 dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
-            else {
+            } else {
                 dropTargetDragEvent.rejectDrag();
             }
         } catch (ClassNotFoundException cnfe) {

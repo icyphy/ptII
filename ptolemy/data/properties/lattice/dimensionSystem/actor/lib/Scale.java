@@ -59,24 +59,22 @@ public class Scale extends AtomicActor {
      * @param actor The given Scale actor.
      * @exception IllegalActionException
      */
-    public Scale(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Scale actor)
+    public Scale(PropertyConstraintSolver solver, ptolemy.actor.lib.Scale actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
-        ptolemy.actor.lib.Scale actor =
-            (ptolemy.actor.lib.Scale) getComponent();
+    public List<Inequality> constraintList() throws IllegalActionException {
+        ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
 
-        setAtLeast(actor.output, new OutputFunctionTerm(actor.input, actor.factor));
-        setAtLeast(actor.input, new InputFunctionTerm(actor.output, actor.factor));
+        setAtLeast(actor.output, new OutputFunctionTerm(actor.input,
+                actor.factor));
+        setAtLeast(actor.input, new InputFunctionTerm(actor.output,
+                actor.factor));
 
         return super.constraintList();
     }
-
 
     // Added by Charles Shelton 05/11/09:
     // The factor parameter for the Scale actor must be added to the list of
@@ -87,7 +85,6 @@ public class Scale extends AtomicActor {
         result.add(((ptolemy.actor.lib.Scale) getComponent()).factor);
         return result;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -113,8 +110,8 @@ public class Scale extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property inputProperty = (Property) getSolver().getProperty(_input);
-            Property factorProperty = (Property) getSolver().getProperty(_factor);
+            Property inputProperty = getSolver().getProperty(_input);
+            Property factorProperty = getSolver().getProperty(_factor);
 
             Property time = _lattice.getElement("TIME");
             Property position = _lattice.getElement("POSITION");
@@ -124,13 +121,13 @@ public class Scale extends AtomicActor {
             Property unknown = _lattice.getElement("UNKNOWN");
             Property top = _lattice.getElement("TOP");
 
-            if ((inputProperty == speed && factorProperty == time) ||
-                (inputProperty == time && factorProperty == speed)) {
+            if ((inputProperty == speed && factorProperty == time)
+                    || (inputProperty == time && factorProperty == speed)) {
                 return position;
             }
 
-            if ((inputProperty == acceleration && factorProperty == time) ||
-                (inputProperty == time && factorProperty == acceleration)) {
+            if ((inputProperty == acceleration && factorProperty == time)
+                    || (inputProperty == time && factorProperty == acceleration)) {
                 return speed;
             }
 
@@ -161,10 +158,8 @@ public class Scale extends AtomicActor {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_input),
-                getPropertyTerm(_factor)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_input),
+                    getPropertyTerm(_factor) };
         }
     }
 
@@ -187,8 +182,8 @@ public class Scale extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property outputProperty = (Property) getSolver().getProperty(_output);
-            Property factorProperty = (Property) getSolver().getProperty(_factor);
+            Property outputProperty = getSolver().getProperty(_output);
+            Property factorProperty = getSolver().getProperty(_factor);
 
             Property time = _lattice.getElement("TIME");
             Property position = _lattice.getElement("POSITION");
@@ -237,10 +232,8 @@ public class Scale extends AtomicActor {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_output),
-                getPropertyTerm(_factor)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_output),
+                    getPropertyTerm(_factor) };
         }
     }
 

@@ -160,22 +160,23 @@ public class TableIcon extends DynamicEditorIcon {
         CompositeFigure result = new CompositeFigure();
         if (container != null) {
             try {
-                ArrayToken fieldsValue = (ArrayToken)fields.getToken();
+                ArrayToken fieldsValue = (ArrayToken) fields.getToken();
                 Attribute associatedAttribute = container
                         .getAttribute(variableName.getExpression());
                 if (associatedAttribute instanceof Variable) {
-                    Token value = ((Variable)associatedAttribute).getToken();
+                    Token value = ((Variable) associatedAttribute).getToken();
                     if (value instanceof ArrayToken) {
                         // Find the number of rows and columns.
-                        int numRows = ((ArrayToken)value).length();
+                        int numRows = ((ArrayToken) value).length();
                         int numColumns = fieldsValue.length();
                         if (numColumns == 0) {
                             // All columns should be included.
                             // Make a pass to figure out how many that is.
                             for (int i = 0; i < numRows; i++) {
-                                Token row = ((ArrayToken)value).getElement(i);
+                                Token row = ((ArrayToken) value).getElement(i);
                                 if (row instanceof RecordToken) {
-                                    int rowWidth = ((RecordToken)row).labelSet().size();
+                                    int rowWidth = ((RecordToken) row)
+                                            .labelSet().size();
                                     if (rowWidth > numColumns) {
                                         numColumns = rowWidth;
                                     }
@@ -193,16 +194,20 @@ public class TableIcon extends DynamicEditorIcon {
                         LabelFigure tableElement[][] = new LabelFigure[numRows][numColumns];
                         // Iterate over rows.
                         for (int i = 0; i < numRows; i++) {
-                            Token row = ((ArrayToken)value).getElement(i);
+                            Token row = ((ArrayToken) value).getElement(i);
                             if (row instanceof RecordToken) {
                                 if (fieldsValue.length() == 0) {
                                     // Display all fields.
-                                    Iterator labelSet = ((RecordToken)row).labelSet().iterator();
+                                    Iterator labelSet = ((RecordToken) row)
+                                            .labelSet().iterator();
                                     int j = 0;
                                     while (labelSet.hasNext()) {
-                                        String column = (String)labelSet.next();
-                                        tableElement[i][j] = _labelFigure((RecordToken)row, column);
-                                        Rectangle2D bounds = tableElement[i][j].getBounds();
+                                        String column = (String) labelSet
+                                                .next();
+                                        tableElement[i][j] = _labelFigure(
+                                                (RecordToken) row, column);
+                                        Rectangle2D bounds = tableElement[i][j]
+                                                .getBounds();
                                         double width = bounds.getWidth();
                                         if (width > columnWidth[j]) {
                                             columnWidth[j] = width;
@@ -219,9 +224,12 @@ public class TableIcon extends DynamicEditorIcon {
                                         if (j >= numColumns) {
                                             break;
                                         }
-                                        String column = ((StringToken)fieldsValue.getElement(j)).stringValue();
-                                        tableElement[i][j] = _labelFigure((RecordToken)row, column);
-                                        Rectangle2D bounds = tableElement[i][j].getBounds();
+                                        String column = ((StringToken) fieldsValue
+                                                .getElement(j)).stringValue();
+                                        tableElement[i][j] = _labelFigure(
+                                                (RecordToken) row, column);
+                                        Rectangle2D bounds = tableElement[i][j]
+                                                .getBounds();
                                         double width = bounds.getWidth();
                                         if (width > columnWidth[j]) {
                                             columnWidth[j] = width;
@@ -239,18 +247,22 @@ public class TableIcon extends DynamicEditorIcon {
                         double rowPosition = _VERTICAL_PADDING;
                         // Iterate over rows.
                         for (int i = 0; i < numRows; i++) {
-                            Token row = ((ArrayToken)value).getElement(i);
+                            Token row = ((ArrayToken) value).getElement(i);
                             if (row instanceof RecordToken) {
                                 if (fieldsValue.length() == 0) {
                                     // Display all fields.
-                                    Iterator labelSet = ((RecordToken)row).labelSet().iterator();
+                                    Iterator labelSet = ((RecordToken) row)
+                                            .labelSet().iterator();
                                     int j = 0;
                                     double columnPosition = _HORIZONTAL_PADDING;
                                     while (labelSet.hasNext()) {
-                                        /*String column = (String) */ labelSet.next();
-                                        tableElement[i][j].translateTo(columnPosition, rowPosition);
+                                        /*String column = (String) */labelSet
+                                                .next();
+                                        tableElement[i][j].translateTo(
+                                                columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);
-                                        columnPosition += columnWidth[j] + _HORIZONTAL_PADDING;
+                                        columnPosition += columnWidth[j]
+                                                + _HORIZONTAL_PADDING;
                                         j++;
                                     }
                                 } else {
@@ -258,9 +270,11 @@ public class TableIcon extends DynamicEditorIcon {
                                     double columnPosition = _HORIZONTAL_PADDING;
                                     for (int j = 0; j < fieldsValue.length(); j++) {
                                         // String column = ((StringToken)fieldsValue.getElement(j)).stringValue();
-                                        tableElement[i][j].translateTo(columnPosition, rowPosition);
+                                        tableElement[i][j].translateTo(
+                                                columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);
-                                        columnPosition += columnWidth[j] + _HORIZONTAL_PADDING;
+                                        columnPosition += columnWidth[j]
+                                                + _HORIZONTAL_PADDING;
                                     }
                                 }
                             }
@@ -278,7 +292,8 @@ public class TableIcon extends DynamicEditorIcon {
         // Double the padding below to allow for both sides.
         double width = Math.floor(bounds.getWidth()) + _HORIZONTAL_PADDING * 2;
         double height = Math.floor(bounds.getHeight()) + _VERTICAL_PADDING * 2;
-        Figure rectangle = new BasicRectangle(0, 0, width, height, boxColor.asColor(), 1);
+        Figure rectangle = new BasicRectangle(0, 0, width, height, boxColor
+                .asColor(), 1);
         CompositeFigure finalResult = new CompositeFigure(rectangle);
         finalResult.add(result);
         return finalResult;
@@ -288,7 +303,8 @@ public class TableIcon extends DynamicEditorIcon {
     ////                         protected members                 ////
 
     /** The font used. */
-    protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+    protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN,
+            12);
 
     /** The amount of padding to use around the edges. */
     protected static final double _HORIZONTAL_PADDING = 5.0;
@@ -307,7 +323,7 @@ public class TableIcon extends DynamicEditorIcon {
         Token token = row.get(column);
         String label = "";
         if (token instanceof StringToken) {
-            label = ((StringToken)token).stringValue();
+            label = ((StringToken) token).stringValue();
         } else if (token != null) {
             label = token.toString();
         }
@@ -323,8 +339,8 @@ public class TableIcon extends DynamicEditorIcon {
             // Ignore. Use black.
         }
 
-        LabelFigure tableElement = new LabelFigure(
-                label, _labelFont, 1.0, SwingConstants.NORTH_WEST, color);
+        LabelFigure tableElement = new LabelFigure(label, _labelFont, 1.0,
+                SwingConstants.NORTH_WEST, color);
         return tableElement;
     }
 
@@ -337,17 +353,19 @@ public class TableIcon extends DynamicEditorIcon {
         // Actually this is the intend since you want a unique color for
         // each specific object (hence it can't be completely random).
         int code = (new Random(hashCode).nextInt());
-        float red = ((code >> 16) & 0xff)/256.0f;
-        float green = ((code >> 8) & 0xff)/256.0f;
-        float blue = (code & 0xff)/256.0f;
+        float red = ((code >> 16) & 0xff) / 256.0f;
+        float green = ((code >> 8) & 0xff) / 256.0f;
+        float blue = (code & 0xff) / 256.0f;
         // Make sure the color is at least as dark as close to a pure red, green, or blue.
         // This means that the magnitude of the r,g,b vector is no greater than 1.0.
-        float magnitude = (float) Math.sqrt(red*red + green*green + blue*blue);
+        float magnitude = (float) Math.sqrt(red * red + green * green + blue
+                * blue);
         if (magnitude < 0.8f) {
             magnitude = 0.8f;
         }
 
-        Color result = new Color(red/magnitude, green/magnitude, blue/magnitude);
+        Color result = new Color(red / magnitude, green / magnitude, blue
+                / magnitude);
         return result;
     }
 }

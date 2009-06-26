@@ -168,9 +168,8 @@ public class DiscreteRandomSource extends RandomSource {
             throw exception;
         }
 
-        if (_pmf != null ) {
-            System.arraycopy(_pmf, 0,
-                    newObject._pmf, 0, _pmf.length) ;
+        if (_pmf != null) {
+            System.arraycopy(_pmf, 0, newObject._pmf, 0, _pmf.length);
         }
 
         return newObject;

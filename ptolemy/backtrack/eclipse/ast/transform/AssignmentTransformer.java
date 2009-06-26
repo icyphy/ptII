@@ -1172,8 +1172,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         List modifiers = field.modifiers();
         modifiers
                 .add(ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
-        modifiers
-                .add(ast.newModifier(Modifier.ModifierKeyword.TRANSIENT_KEYWORD));
+        modifiers.add(ast
+                .newModifier(Modifier.ModifierKeyword.TRANSIENT_KEYWORD));
         if (isStatic) {
             modifiers.add(ast
                     .newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));

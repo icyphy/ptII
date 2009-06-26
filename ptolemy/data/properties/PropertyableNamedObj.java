@@ -52,13 +52,13 @@ public class PropertyableNamedObj extends PropertyableObject {
     }
 
     public void highlight(String color) {
-        ColorAttribute highlightAttribute =
-            (ColorAttribute) _namedObj().getAttribute("_highlightColor");
+        ColorAttribute highlightAttribute = (ColorAttribute) _namedObj()
+                .getAttribute("_highlightColor");
 
         if (highlightAttribute == null) {
             try {
-                highlightAttribute = new ColorAttribute(
-                        _namedObj(), "_highlightColor");
+                highlightAttribute = new ColorAttribute(_namedObj(),
+                        "_highlightColor");
 
             } catch (NameDuplicationException e) {
                 // This shouldn't happen. If another attribute
@@ -72,13 +72,12 @@ public class PropertyableNamedObj extends PropertyableObject {
     }
 
     public void showProperty(String property) {
-        StringParameter showAttribute =
-            (StringParameter) _namedObj().getAttribute("_showInfo");
+        StringParameter showAttribute = (StringParameter) _namedObj()
+                .getAttribute("_showInfo");
 
         if (showAttribute == null) {
             try {
-                showAttribute = new StringParameter(
-                        _namedObj(), "_showInfo");
+                showAttribute = new StringParameter(_namedObj(), "_showInfo");
 
             } catch (NameDuplicationException e) {
                 // This shouldn't happen. If another attribute
@@ -92,13 +91,12 @@ public class PropertyableNamedObj extends PropertyableObject {
     }
 
     public void updateProperty(String useCase, Property property) {
-        PropertyAttribute attribute =
-            (PropertyAttribute) _namedObj().getAttribute(useCase);
+        PropertyAttribute attribute = (PropertyAttribute) _namedObj()
+                .getAttribute(useCase);
 
         if (attribute == null) {
             try {
-                attribute = new PropertyAttribute(
-                        _namedObj(), useCase);
+                attribute = new PropertyAttribute(_namedObj(), useCase);
 
             } catch (NameDuplicationException e) {
                 // This shouldn't happen. If another attribute
@@ -115,10 +113,8 @@ public class PropertyableNamedObj extends PropertyableObject {
         return (NamedObj) _object;
     }
 
-
     private void _removeAttribute(String name) {
-        Attribute highlightAttribute =
-            _namedObj().getAttribute(name);
+        Attribute highlightAttribute = _namedObj().getAttribute(name);
 
         if (highlightAttribute != null) {
             try {

@@ -36,7 +36,8 @@ import ptolemy.kernel.util.StringAttribute;
 
 public class TypeSystemCCS extends PropertyConstraintSolver {
 
-    public TypeSystemCCS(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public TypeSystemCCS(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         propertyLattice.setExpression("typeSystem_C");
         propertyLattice.setVisibility(Settable.NOT_EDITABLE);
@@ -54,53 +55,75 @@ public class TypeSystemCCS extends PropertyConstraintSolver {
         fsmConstraintType.setVisibility(Settable.NOT_EDITABLE);
 
         // Add default highlight colors
-        StringAttribute highlightUnknownProperty = new StringAttribute(_momlHandler, "unknown");
+        StringAttribute highlightUnknownProperty = new StringAttribute(
+                _momlHandler, "unknown");
         highlightUnknownProperty.setExpression("Unknown");
-        ColorAttribute highlightUnknownColor = new ColorAttribute(_momlHandler, "unknownHighlightColor");
+        ColorAttribute highlightUnknownColor = new ColorAttribute(_momlHandler,
+                "unknownHighlightColor");
         highlightUnknownColor.setExpression("{0.0,0.0,0.0,1.0}");
-        StringAttribute highlightConflictProperty = new StringAttribute(_momlHandler, "conflict");
+        StringAttribute highlightConflictProperty = new StringAttribute(
+                _momlHandler, "conflict");
         highlightConflictProperty.setExpression("Conflict");
-        ColorAttribute highlightConflictColor = new ColorAttribute(_momlHandler, "conflictHighlightColor");
+        ColorAttribute highlightConflictColor = new ColorAttribute(
+                _momlHandler, "conflictHighlightColor");
         highlightConflictColor.setExpression("{1.0,0.0,0.0,1.0}");
 
-        StringAttribute highlightIntProperty = new StringAttribute(_momlHandler, "int");
+        StringAttribute highlightIntProperty = new StringAttribute(
+                _momlHandler, "int");
         highlightIntProperty.setExpression("Int");
-        ColorAttribute highlightIntColor = new ColorAttribute(_momlHandler, "intHighlightColor");
+        ColorAttribute highlightIntColor = new ColorAttribute(_momlHandler,
+                "intHighlightColor");
         highlightIntColor.setExpression("{0.4,0.8,1.0,1.0}");
-        StringAttribute highlightSInt16Property = new StringAttribute(_momlHandler, "sint16");
+        StringAttribute highlightSInt16Property = new StringAttribute(
+                _momlHandler, "sint16");
         highlightSInt16Property.setExpression("SInt16");
-        ColorAttribute highlightSInt16Color = new ColorAttribute(_momlHandler, "sint16HighlightColor");
+        ColorAttribute highlightSInt16Color = new ColorAttribute(_momlHandler,
+                "sint16HighlightColor");
         highlightSInt16Color.setExpression("{0.0,0.4,1.0,1.0}");
-        StringAttribute highlightSInt32Property = new StringAttribute(_momlHandler, "sint32");
+        StringAttribute highlightSInt32Property = new StringAttribute(
+                _momlHandler, "sint32");
         highlightSInt32Property.setExpression("SInt32");
-        ColorAttribute highlightSInt32Color = new ColorAttribute(_momlHandler, "sint32HighlightColor");
+        ColorAttribute highlightSInt32Color = new ColorAttribute(_momlHandler,
+                "sint32HighlightColor");
         highlightSInt32Color.setExpression("{0.0,0.2,0.8,1.0}");
 
-        StringAttribute highlightUInt8Property = new StringAttribute(_momlHandler, "uint8");
+        StringAttribute highlightUInt8Property = new StringAttribute(
+                _momlHandler, "uint8");
         highlightUInt8Property.setExpression("UInt8");
-        ColorAttribute highlightUInt8Color = new ColorAttribute(_momlHandler, "uint8HighlightColor");
+        ColorAttribute highlightUInt8Color = new ColorAttribute(_momlHandler,
+                "uint8HighlightColor");
         highlightUInt8Color.setExpression("{0.6,1.0,0.6,1.0}");
-        StringAttribute highlightUInt16Property = new StringAttribute(_momlHandler, "uint16");
+        StringAttribute highlightUInt16Property = new StringAttribute(
+                _momlHandler, "uint16");
         highlightUInt16Property.setExpression("UInt16");
-        ColorAttribute highlightUInt16Color = new ColorAttribute(_momlHandler, "uint16HighlightColor");
+        ColorAttribute highlightUInt16Color = new ColorAttribute(_momlHandler,
+                "uint16HighlightColor");
         highlightUInt16Color.setExpression("{0.0,0.8,0.0,1.0}");
-        StringAttribute highlightUInt32Property = new StringAttribute(_momlHandler, "uint32");
+        StringAttribute highlightUInt32Property = new StringAttribute(
+                _momlHandler, "uint32");
         highlightUInt32Property.setExpression("UInt32");
-        ColorAttribute highlightUInt32Color = new ColorAttribute(_momlHandler, "uint32HighlightColor");
+        ColorAttribute highlightUInt32Color = new ColorAttribute(_momlHandler,
+                "uint32HighlightColor");
         highlightUInt32Color.setExpression("{0.0,0.6,0.2,1.0}");
 
-        StringAttribute highlightBooleanProperty = new StringAttribute(_momlHandler, "boolean");
+        StringAttribute highlightBooleanProperty = new StringAttribute(
+                _momlHandler, "boolean");
         highlightBooleanProperty.setExpression("Boolean");
-        ColorAttribute highlightBooleanColor = new ColorAttribute(_momlHandler, "booleanHighlightColor");
+        ColorAttribute highlightBooleanColor = new ColorAttribute(_momlHandler,
+                "booleanHighlightColor");
         highlightBooleanColor.setExpression("{1.0,0.6,0.2,1.0}");
 
-        StringAttribute highlightReal32Property = new StringAttribute(_momlHandler, "real32");
+        StringAttribute highlightReal32Property = new StringAttribute(
+                _momlHandler, "real32");
         highlightReal32Property.setExpression("Real32");
-        ColorAttribute highlightReal32Color = new ColorAttribute(_momlHandler, "real32HighlightColor");
+        ColorAttribute highlightReal32Color = new ColorAttribute(_momlHandler,
+                "real32HighlightColor");
         highlightReal32Color.setExpression("{0.8,0.6,1.0,1.0}");
-        StringAttribute highlightReal64Property = new StringAttribute(_momlHandler, "real64");
+        StringAttribute highlightReal64Property = new StringAttribute(
+                _momlHandler, "real64");
         highlightReal64Property.setExpression("Real64");
-        ColorAttribute highlightReal64Color = new ColorAttribute(_momlHandler, "real64HighlightColor");
+        ColorAttribute highlightReal64Color = new ColorAttribute(_momlHandler,
+                "real64HighlightColor");
         highlightReal64Color.setExpression("{0.6,0.0,0.6,1.0}");
     }
 

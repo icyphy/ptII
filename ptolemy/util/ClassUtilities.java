@@ -32,11 +32,10 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassUtilities
@@ -71,18 +70,18 @@ public class ClassUtilities {
      *  @param jarURL The Jar URL for which we are to look for directories.
      *  @return An list of Strings that name the directories
      */
-    public static List jarURLDirectories(URL jarURL)
-            throws IOException {
+    public static List jarURLDirectories(URL jarURL) throws IOException {
         List directories = new LinkedList();
-        JarURLConnection connection = (JarURLConnection)(jarURL.openConnection());
+        JarURLConnection connection = (JarURLConnection) (jarURL
+                .openConnection());
         String jarEntryName = connection.getEntryName();
         if (jarEntryName.endsWith("/")) {
             jarEntryName = jarEntryName.substring(0, jarEntryName.length() - 1);
         }
         JarFile jarFile = connection.getJarFile();
         Enumeration entries = jarFile.entries();
-        while ( entries.hasMoreElements()) {
-            JarEntry entry = (JarEntry)entries.nextElement();
+        while (entries.hasMoreElements()) {
+            JarEntry entry = (JarEntry) entries.nextElement();
             String name = entry.getName();
             int jarEntryIndex = name.indexOf(jarEntryName + "/");
             int jarEntrySlashIndex = jarEntryIndex + jarEntryName.length() + 1;
@@ -90,12 +89,10 @@ public class ClassUtilities {
             int nextSlashIndex = name.indexOf("/", jarEntrySlashIndex);
             int lastSlashIndex = name.indexOf("/", jarEntrySlashIndex);
 
-            if (jarEntryIndex > -1
-                    && jarEntrySlashIndex > -1
-                    && nextSlashIndex > -1
-                    && nextSlashIndex == lastSlashIndex
+            if (jarEntryIndex > -1 && jarEntrySlashIndex > -1
+                    && nextSlashIndex > -1 && nextSlashIndex == lastSlashIndex
                     && nextSlashIndex == name.length() - 1
-                    && entry.isDirectory() ) {
+                    && entry.isDirectory()) {
                 directories.add(name);
             }
         }

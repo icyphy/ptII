@@ -64,12 +64,12 @@ public class AtomicActor extends PropertyTokenHelper {
      * @exception IllegalActionException
      */
     public AtomicActor(PropertyTokenSolver solver,
-            ptolemy.actor.AtomicActor actor)
-            throws IllegalActionException {
+            ptolemy.actor.AtomicActor actor) throws IllegalActionException {
         super(solver, actor);
     }
 
-    public void determineProperty() throws IllegalActionException, KernelException {
+    public void determineProperty() throws IllegalActionException,
+            KernelException {
         super.determineProperty();
 
         Iterator ports = getPropertyables(IOPort.class).iterator();

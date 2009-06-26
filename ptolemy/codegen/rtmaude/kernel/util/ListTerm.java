@@ -55,24 +55,30 @@ public class ListTerm<T> {
         this.empty = empty;
         this.delimiter = delimiter;
     }
+
     public String generateCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         String v = null;
 
-        while (iter.hasNext() && (v = this.item(iter.next())) == null);
-        if (v != null) code.append(v);
+        while (iter.hasNext() && (v = this.item(iter.next())) == null) {
+            ;
+        }
+        if (v != null) {
+            code.append(v);
+        }
 
         while (iter.hasNext()) {
             v = this.item(iter.next());
-            if (v != null) {        // if null, it's screened out
+            if (v != null) { // if null, it's screened out
                 code.append(delimiter);
                 code.append(v);
             }
         }
-        if (code.length() > 0)
+        if (code.length() > 0) {
             return code.toString();
-        else
+        } else {
             return empty;
+        }
     }
 
     public String item(T v) throws IllegalActionException {

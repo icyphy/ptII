@@ -37,9 +37,10 @@ public class RTMFragment extends RTMTerm {
 
     @Override
     public String print(int indent, boolean newline) {
-        if (newline)
+        if (newline) {
             return front(indent) + this.frag;
-        else
+        } else {
             return this.frag;
+        }
     }
 }

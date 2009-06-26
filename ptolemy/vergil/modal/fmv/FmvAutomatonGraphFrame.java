@@ -297,8 +297,9 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                 }
 
                 try {
-                    if (smvFileWriter != null)
+                    if (smvFileWriter != null) {
                         smvFileWriter.close();
+                    }
                 } catch (Exception ex) {
                     MessageHandler
                             .error("Failed to perform the file closing process:\n"
@@ -415,7 +416,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     // /////////////////////////////////////////////////////////////////
     // // SMVFileFilter
     /** A file filter that accepts files that end with ".smv". */
-    protected static class SMVFileFilter extends javax.swing.filechooser.FileFilter {
+    protected static class SMVFileFilter extends
+            javax.swing.filechooser.FileFilter {
 
         /**
          * Return true if the file name ends with ".smv".

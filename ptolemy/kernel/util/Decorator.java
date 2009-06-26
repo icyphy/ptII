@@ -32,7 +32,6 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 ////Decorator
 
-
 /**
 A decorator is a class that decorates other NamedObj
 with extra attributes that are specific to both the decorator

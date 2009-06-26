@@ -181,8 +181,8 @@ public class CSPMultiSink extends CSPActor {
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,
-                    "At this time IllegalActionExceptions are not allowed to happen.\n" +
-                    "Width inference should already have been done.");
+                    "At this time IllegalActionExceptions are not allowed to happen.\n"
+                            + "Width inference should already have been done.");
         }
     }
 

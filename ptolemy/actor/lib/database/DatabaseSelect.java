@@ -100,7 +100,7 @@ public class DatabaseSelect extends Source {
 
         table = new StringParameter(this, "table");
         table.setExpression("v_spaces");
-}
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -162,7 +162,8 @@ public class DatabaseSelect extends Source {
         DatabaseSelect newObject = (DatabaseSelect) super.clone(workspace);
 
         try {
-            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.columns));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .arrayOf(newObject.columns));
         } catch (IllegalActionException ex) {
             // CloneNotSupportedException does not have a constructor
             // that takes a cause argument, so we use initCause
@@ -183,15 +184,16 @@ public class DatabaseSelect extends Source {
         pattern.update();
 
         String databaseName = databaseManager.stringValue();
-        DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
+        DatabaseManager database = DatabaseManager.findDatabaseManager(
+                databaseName, this);
         // Prepare query.
         // Construct a SQL query from the specified parameters.
         StringBuffer sqlQuery = new StringBuffer();
         sqlQuery.append("select ");
-        if (((BooleanToken)distinct.getToken()).booleanValue()) {
+        if (((BooleanToken) distinct.getToken()).booleanValue()) {
             sqlQuery.append("distinct ");
         }
-        RecordToken columnValue = (RecordToken)columns.getToken();
+        RecordToken columnValue = (RecordToken) columns.getToken();
         Iterator<String> columnEntries = columnValue.labelSet().iterator();
         int i = 0;
         while (columnEntries.hasNext()) {
@@ -204,7 +206,7 @@ public class DatabaseSelect extends Source {
         sqlQuery.append(" from ");
         sqlQuery.append(table.stringValue());
         sqlQuery.append(" where ");
-        sqlQuery.append(((StringToken)pattern.getToken()).stringValue());
+        sqlQuery.append(((StringToken) pattern.getToken()).stringValue());
 
         String orderByValue = orderBy.stringValue();
         if (!orderByValue.trim().equals("")) {

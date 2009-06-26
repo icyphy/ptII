@@ -63,7 +63,8 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  @Pt.AcceptedRating Red (cxh)
  @see MonitorReceiverContents
 */
-public class MonitorReceiverAttribute extends SingletonAttribute implements Settable {
+public class MonitorReceiverAttribute extends SingletonAttribute implements
+        Settable {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -136,12 +137,12 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements Sett
             if (!(container instanceof IOPort)) {
                 return "Not an IOPort";
             }
-            Receiver[][] receivers = ((IOPort)container).getReceivers();
+            Receiver[][] receivers = ((IOPort) container).getReceivers();
             if (receivers == null || receivers.length == 0) {
                 return "";
             }
             StringBuffer result = new StringBuffer();
-            if (((IOPort)container).isMultiport()) {
+            if (((IOPort) container).isMultiport()) {
                 result.append("{");
             }
             for (int i = 0; i < receivers.length; i++) {
@@ -167,7 +168,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements Sett
                     }
                 }
             }
-            if (((IOPort)container).isMultiport()) {
+            if (((IOPort) container).isMultiport()) {
                 result.append("}");
             }
             return result.toString();

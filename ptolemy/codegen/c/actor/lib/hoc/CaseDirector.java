@@ -95,8 +95,7 @@ public class CaseDirector extends Director {
             boolean fireRefinement = true;
             refinementCount++;
             CompositeActor refinement = (CompositeActor) refinements.next();
-            CodeGeneratorHelper refinementHelper =
-                (CodeGeneratorHelper) _getHelper(refinement);
+            CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
 
             // FIXME: the refinement name may contain '$' signs.
             String refinementName = refinement.getName();
@@ -111,19 +110,18 @@ public class CaseDirector extends Director {
                         code.append("} else if (!strcmp(");
                     }
 
-                    String controlVariable =
-                        _codeGenerator.generateVariableName(container.control);
+                    String controlVariable = _codeGenerator
+                            .generateVariableName(container.control);
 
-                    String controlType =
-                        codeGenType(container.control.getType());
+                    String controlType = codeGenType(container.control
+                            .getType());
 
                     if (!controlType.equals("String")) {
-                        controlVariable =
-                            "$convert_" + controlType + "_String(" +
-                            controlVariable + ")";
+                        controlVariable = "$convert_" + controlType
+                                + "_String(" + controlVariable + ")";
                     }
-                    code.append(controlVariable + ", \""
-                        + refinementName + "\")) {" + _eol);
+                    code.append(controlVariable + ", \"" + refinementName
+                            + "\")) {" + _eol);
                 }
             } else {
                 if (useSwitch) {
@@ -149,8 +147,7 @@ public class CaseDirector extends Director {
 
         if (defaultRefinement != null) {
             code.append("} else {" + _eol);
-            CodeGeneratorHelper defaultHelper =
-                (CodeGeneratorHelper) _getHelper(defaultRefinement);
+            CodeGeneratorHelper defaultHelper = (CodeGeneratorHelper) _getHelper(defaultRefinement);
             code.append(defaultHelper.generateFireCode());
         }
 

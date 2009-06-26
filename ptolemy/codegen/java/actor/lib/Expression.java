@@ -138,12 +138,12 @@ public class Expression extends JavaCodeGeneratorHelper {
             if (1 == 0) {
                 // Debugging
                 PtParser parser = new PtParser();
-                ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
-                                                                   .getExpression());
+                ASTPtRootNode parseTree = parser
+                        .generateParseTree(actor.expression.getExpression());
 
                 System.out.println("Expression trace:\n"
-                                   + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(parseTree,
-                                                                                          new VariableScope(actor)));
+                        + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(
+                                parseTree, new VariableScope(actor)));
             }
             PtParser parser = new PtParser();
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
@@ -194,7 +194,8 @@ public class Expression extends JavaCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
-        code.append(processCode(_javaParseTreeCodeGenerator.generateWrapupCode()));
+        code.append(processCode(_javaParseTreeCodeGenerator
+                .generateWrapupCode()));
 
         // Free up memory
         _javaParseTreeCodeGenerator = null;
@@ -245,8 +246,9 @@ public class Expression extends JavaCodeGeneratorHelper {
                 }
 
                 for (int i = 0; i < _actor.inputPortList().size(); i++) {
-                    if (generateSimpleName(((IOPort) _actor.inputPortList().get(i)))
-                            .equals(name)) {
+                    if (generateSimpleName(
+                            ((IOPort) _actor.inputPortList().get(i))).equals(
+                            name)) {
                         return new ObjectToken("$ref(" + name + ")");
                     }
                 }

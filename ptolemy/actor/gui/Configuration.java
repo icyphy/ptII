@@ -151,7 +151,8 @@ public class Configuration extends CompositeEntity implements
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public Configuration(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public Configuration(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _configurations.add(this);
         classesToRemove = new Parameter(this, "_classesToRemove",
@@ -164,7 +165,6 @@ public class Configuration extends CompositeEntity implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
 
     /** A Parameter that is an array of Strings where each element
      *  names a class to be removed.  The initial default value is
@@ -217,16 +217,17 @@ public class Configuration extends CompositeEntity implements
             } else {
                 Iterator filters = momlFilters.iterator();
                 while (filters.hasNext()) {
-                    MoMLFilter filter = (MoMLFilter)filters.next();
+                    MoMLFilter filter = (MoMLFilter) filters.next();
                     if (filter instanceof RemoveClasses) {
-                        removeClassesFilter = (RemoveClasses)filter;
+                        removeClassesFilter = (RemoveClasses) filter;
                         break;
                     }
                 }
             }
 
             // Get the token
-            ArrayToken classesToRemoveToken = (ArrayToken)classesToRemove.getToken();
+            ArrayToken classesToRemoveToken = (ArrayToken) classesToRemove
+                    .getToken();
             if (removeClassesFilter == null) {
                 // We did not find a RemoveGraphicalClasses, so create one.
                 removeClassesFilter = new RemoveClasses();
@@ -234,7 +235,7 @@ public class Configuration extends CompositeEntity implements
             }
 
             // We always clear
-            removeClassesFilter.clear();
+            RemoveClasses.clear();
 
             // _classesToRemove is an array of Strings where each element
             // names a class to be added to the MoMLFilter for removal.
@@ -254,15 +255,16 @@ public class Configuration extends CompositeEntity implements
             } else {
                 Iterator filters = momlFilters.iterator();
                 while (filters.hasNext()) {
-                    MoMLFilter filter = (MoMLFilter)filters.next();
+                    MoMLFilter filter = (MoMLFilter) filters.next();
                     if (filter instanceof RemoveGraphicalClasses) {
-                        removeGraphicalClassesFilter = (RemoveGraphicalClasses)filter;
+                        removeGraphicalClassesFilter = (RemoveGraphicalClasses) filter;
                         break;
                     }
                 }
             }
             // Get the token
-            BooleanToken removeGraphicalClassesToken = (BooleanToken)removeGraphicalClasses.getToken();
+            BooleanToken removeGraphicalClassesToken = (BooleanToken) removeGraphicalClasses
+                    .getToken();
             if (removeGraphicalClassesToken.booleanValue()) {
                 if (removeGraphicalClassesFilter == null) {
                     // We did not find a RemoveGraphicalClasses, so create one.
@@ -334,13 +336,13 @@ public class Configuration extends CompositeEntity implements
                             results.append(constraint.toString() + "\n");
                         }
                         results.append("Clone constraints:\n");
-                        Iterator cloneConstraintIterator = cloneConstraints.iterator();
+                        Iterator cloneConstraintIterator = cloneConstraints
+                                .iterator();
                         while (cloneConstraintIterator.hasNext()) {
                             Inequality constraint = (Inequality) cloneConstraintIterator
                                     .next();
                             results.append(constraint.toString() + "\n");
                         }
-
 
                     }
 
@@ -355,8 +357,7 @@ public class Configuration extends CompositeEntity implements
                         while (constraintIterator.hasNext()) {
                             Inequality constraint = (Inequality) constraintIterator
                                     .next();
-                            constraintsDescription
-                                    .add(constraint.toString());
+                            constraintsDescription.add(constraint.toString());
                         }
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(actor, throwable,
@@ -374,21 +375,20 @@ public class Configuration extends CompositeEntity implements
                             results.append("Master object of "
                                     + actor.getFullName()
                                     + " is missing constraint:\n"
-                                    + constraint.toString()
-                                    + ".\n");
+                                    + constraint.toString() + ".\n");
                         }
                     }
-
 
                     // Now do the same for the clone.
                     HashSet<String> cloneConstraintsDescription = new HashSet<String>();
                     try {
-                        Iterator constraintIterator = cloneConstraints.iterator();
+                        Iterator constraintIterator = cloneConstraints
+                                .iterator();
                         while (constraintIterator.hasNext()) {
                             Inequality constraint = (Inequality) constraintIterator
                                     .next();
-                            cloneConstraintsDescription
-                                    .add(constraint.toString());
+                            cloneConstraintsDescription.add(constraint
+                                    .toString());
                         }
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(actor, throwable,
@@ -402,11 +402,9 @@ public class Configuration extends CompositeEntity implements
                                 .next();
                         if (!cloneConstraintsDescription.contains(constraint
                                 .toString())) {
-                            results.append("Clone of "
-                                    + actor.getFullName()
+                            results.append("Clone of " + actor.getFullName()
                                     + " is missing constraint:\n"
-                                    + constraint.toString()
-                                    + ".\n");
+                                    + constraint.toString() + ".\n");
                         }
                     }
 
@@ -832,8 +830,8 @@ public class Configuration extends CompositeEntity implements
                         // the file does not have %20s.
                         // See
                         // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=153
-                        filename = StringUtilities.substitute(
-                            filename, "%20", " ");
+                        filename = StringUtilities.substitute(filename, "%20",
+                                " ");
                         file = new File(filename);
                         if (!file.canWrite()) {
                             effigy.setModifiable(false);
@@ -991,7 +989,8 @@ public class Configuration extends CompositeEntity implements
      *  @exception ClassNotFoundException If a class cannot be found.
      */
     private String _checkCloneFields(NamedObj namedObj)
-            throws CloneNotSupportedException, IllegalAccessException, ClassNotFoundException {
+            throws CloneNotSupportedException, IllegalAccessException,
+            ClassNotFoundException {
         NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
 
         StringBuffer results = new StringBuffer();
@@ -999,19 +998,20 @@ public class Configuration extends CompositeEntity implements
         Class namedObjClass = namedObj.getClass();
         // We check only the fields declared in this class.
         // FIXME: should we check all fields?
-        Field [] namedObjFields = namedObjClass.getDeclaredFields();
+        Field[] namedObjFields = namedObjClass.getDeclaredFields();
         for (int i = 0; i < namedObjFields.length; i++) {
             Field field = namedObjFields[i];
             // Tell the security manager we want to read private fields.
             // This will fail in an applet.
             field.setAccessible(true);
             Class fieldType = field.getType();
-            if ( !fieldType.isPrimitive()
+            if (!fieldType.isPrimitive()
                     && field.get(namedObj) != null
                     && !Modifier.isStatic(field.getModifiers())
                     /*&& !fieldType.isArray()*/
                     // Skip fields introduced by javascope
-                    && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
+                    && !fieldType.toString().equals(
+                            "COM.sun.suntest.javascope.database.CoverageUnit")
                     && !field.getName().equals("js$p")
                     // Skip fields introduced by backtracking
                     && !(field.getName().indexOf("$RECORD$") != -1)
@@ -1026,18 +1026,21 @@ public class Configuration extends CompositeEntity implements
 
                 // If an object is equal and the default hashCode() from
                 // Object is the same, then we have a problem.
-                if ( (field.get(namedObj)).equals(field.get(namedObjClone))
-                        && (System.identityHashCode(field.get(namedObj))
-                                == System.identityHashCode(field.get(namedObjClone)))) {
+                if ((field.get(namedObj)).equals(field.get(namedObjClone))
+                        && (System.identityHashCode(field.get(namedObj)) == System
+                                .identityHashCode(field.get(namedObjClone)))) {
 
                     // Determine what code should go in clone(W)
                     String assignment = field.getName();
                     // FIXME: extend this to more types
-                    if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(fieldType)) {
+                    if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(
+                            fieldType)) {
                         assignment = ".getPort(\"" + assignment + "\")";
                         //                       } else if (fieldType.isInstance( new Attribute())) {
-                    } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) {
-                        Attribute fieldAttribute = (Attribute)field.get(namedObjClone);
+                    } else if (Class.forName("ptolemy.kernel.util.Attribute")
+                            .isAssignableFrom(fieldType)) {
+                        Attribute fieldAttribute = (Attribute) field
+                                .get(namedObjClone);
 
                         if (fieldAttribute.getContainer() != namedObjClone) {
                             // If the attribute is actually contained by a Port
@@ -1046,26 +1049,26 @@ public class Configuration extends CompositeEntity implements
                             // tokenConsumptionRate and tokenProductionRate
                             // such as ConvolutionalCoder need this.
                             assignment = "."
-                                + fieldAttribute.getContainer().getName()
-                                + ".getAttribute(\"" + fieldAttribute.getName()
-                                + "\")";
+                                    + fieldAttribute.getContainer().getName()
+                                    + ".getAttribute(\""
+                                    + fieldAttribute.getName() + "\")";
                         } else {
-                            assignment = ".getAttribute(\"" + assignment + "\")";
+                            assignment = ".getAttribute(\"" + assignment
+                                    + "\")";
                         }
                     } else {
                         assignment = "\n\t/* Get the object method "
-                            + "or null?  */ "
-                            + assignment;
+                                + "or null?  */ " + assignment;
                     }
 
-                    String shortClassName = field.getType().getName()
-                        .substring(
-                                field.getType().getName().lastIndexOf(".")
-                                + 1);
+                    String shortClassName = field
+                            .getType()
+                            .getName()
+                            .substring(
+                                    field.getType().getName().lastIndexOf(".") + 1);
 
-                    results.append( "The " + field.getName()
-                            + " " + field.getType().getName()
-                            + " field"
+                    results.append("The " + field.getName() + " "
+                            + field.getType().getName() + " field"
                             + "\n\tin the clone of \""
                             + namedObjClass.getName()
                             + "\"\n\tdoes not point to an "
@@ -1074,10 +1077,8 @@ public class Configuration extends CompositeEntity implements
                             + "actor oriented classes."
                             + "\n\tThe clone(Workspace) "
                             + "method should have a line "
-                            + "like:\n newObject."
-                            + field.getName() + " = ("
-                            + shortClassName
-                            + ")newObject" + assignment
+                            + "like:\n newObject." + field.getName() + " = ("
+                            + shortClassName + ")newObject" + assignment
                             + ";\n");
                 }
             }

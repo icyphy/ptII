@@ -55,8 +55,8 @@ public class Region extends TypedCompositeActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Region(Workspace workspace)
-            throws NameDuplicationException, IllegalActionException {
+    public Region(Workspace workspace) throws NameDuplicationException,
+            IllegalActionException {
         super(workspace);
         _init();
     }
@@ -85,9 +85,11 @@ public class Region extends TypedCompositeActor {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         // Set the background color to white.
-        PtolemyPreferences preferences = new PtolemyPreferences(this, "preferences");
+        PtolemyPreferences preferences = new PtolemyPreferences(this,
+                "preferences");
         preferences.setPersistent(false);
         preferences.backgroundColor.setExpression("{1.0,1.0,1.0,1.0}");
     }

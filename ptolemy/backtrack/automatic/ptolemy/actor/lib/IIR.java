@@ -31,7 +31,6 @@
 //// IIR
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -133,7 +132,8 @@ public class IIR extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public IIR(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public IIR(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         numerator = new Parameter(this, "numerator");
         numerator.setExpression("{1.0}");
@@ -155,18 +155,23 @@ public class IIR extends Transformer implements Rollbackable {
      * @exception IllegalActionException If this method is invoked
      * with an unrecognized parameter.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == numerator) {
-            ArrayToken numeratorValue = (ArrayToken)numerator.getToken();
+            ArrayToken numeratorValue = (ArrayToken) numerator.getToken();
             $ASSIGN$_numerator(numeratorValue.arrayValue());
         } else if (attribute == denominator) {
-            ArrayToken denominatorValue = (ArrayToken)denominator.getToken();
+            ArrayToken denominatorValue = (ArrayToken) denominator.getToken();
             $ASSIGN$_denominator(denominatorValue.arrayValue());
-            if (!_denominator[0].isEqualTo(_denominator[0].one()).booleanValue()) {
+            if (!_denominator[0].isEqualTo(_denominator[0].one())
+                    .booleanValue()) {
                 try {
-                    MessageHandler.warning("First denominator value is required to be 1. " + "Using 1.");
+                    MessageHandler
+                            .warning("First denominator value is required to be 1. "
+                                    + "Using 1.");
                 } catch (CancelException ex) {
-                    throw new IllegalActionException(this, "Canceled parameter change.");
+                    throw new IllegalActionException(this,
+                            "Canceled parameter change.");
                 }
                 $ASSIGN$_denominator(0, _denominator[0].one());
             }
@@ -187,16 +192,19 @@ public class IIR extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class has
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        IIR newObject = (IIR)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        IIR newObject = (IIR) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.numerator));
-            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.denominator));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.numerator));
+            newObject.output.setTypeAtLeast(ArrayType
+                    .elementType(newObject.denominator));
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
-            ArrayToken numeratorValue = (ArrayToken)newObject.numerator.getToken();
+            ArrayToken numeratorValue = (ArrayToken) newObject.numerator
+                    .getToken();
             newObject.$ASSIGN$_numerator(numeratorValue.arrayValue());
-            ArrayToken denominatorValue = (ArrayToken)denominator.getToken();
+            ArrayToken denominatorValue = (ArrayToken) denominator.getToken();
             newObject.$ASSIGN$_denominator(denominatorValue.arrayValue());
         } catch (IllegalActionException ex) {
             CloneNotSupportedException throwable = new CloneNotSupportedException();
@@ -204,7 +212,8 @@ public class IIR extends Transformer implements Rollbackable {
             throw throwable;
         }
         newObject.$ASSIGN$_stateVector(new Token[_stateVector.length]);
-        System.arraycopy($BACKUP$_stateVector(), 0, newObject.$BACKUP$_stateVector(), 0, _stateVector.length);
+        System.arraycopy($BACKUP$_stateVector(), 0, newObject
+                .$BACKUP$_stateVector(), 0, _stateVector.length);
         return newObject;
     }
 
@@ -217,7 +226,7 @@ public class IIR extends Transformer implements Rollbackable {
      * filter state.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
             Token savedState = _stateVector[_currentTap];
@@ -233,7 +242,7 @@ public class IIR extends Transformer implements Rollbackable {
      * @exception IllegalActionException If the base class throws
      * it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         _initStateVector();
         $ASSIGN$_currentTap(0);
@@ -243,7 +252,7 @@ public class IIR extends Transformer implements Rollbackable {
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         $ASSIGN$_stateVector(_currentTap, _latestWindow);
         if ($ASSIGN$SPECIAL$_currentTap(14, _currentTap) < 0) {
             $ASSIGN$_currentTap(_stateVector.length - 1);
@@ -251,21 +260,26 @@ public class IIR extends Transformer implements Rollbackable {
         return super.postfire();
     }
 
-    private Token _computeOutput(Token xCurrent) throws IllegalActionException  {
+    private Token _computeOutput(Token xCurrent) throws IllegalActionException {
         for (int j = 1; j < _denominator.length; j++) {
-            xCurrent = xCurrent.subtract(_denominator[j].multiply(_stateVector[(_currentTap + j) % _stateVector.length]));
+            xCurrent = xCurrent.subtract(_denominator[j]
+                    .multiply(_stateVector[(_currentTap + j)
+                            % _stateVector.length]));
         }
         $ASSIGN$_stateVector(_currentTap, xCurrent);
         Token yCurrent = _numerator[0].zero();
         for (int k = 0; k < _numerator.length; k++) {
-            yCurrent = yCurrent.add(_numerator[k].multiply(_stateVector[(_currentTap + k) % _stateVector.length]));
+            yCurrent = yCurrent.add(_numerator[k]
+                    .multiply(_stateVector[(_currentTap + k)
+                            % _stateVector.length]));
         }
         return yCurrent;
     }
 
-    private void _initStateVector() throws IllegalActionException  {
+    private void _initStateVector() throws IllegalActionException {
         if (_numerator.length > 0) {
-            int stateSize = java.lang.Math.max(_numerator.length, _denominator.length);
+            int stateSize = java.lang.Math.max(_numerator.length,
+                    _denominator.length);
             $ASSIGN$_stateVector(new Token[stateSize]);
             Token zero = _numerator[0].zero();
             for (int j = 0; j < _stateVector.length; j++) {
@@ -276,115 +290,126 @@ public class IIR extends Transformer implements Rollbackable {
 
     private final Token[] $ASSIGN$_numerator(Token[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_numerator.add(null, _numerator, $CHECKPOINT.getTimestamp());
+            $RECORD$_numerator
+                    .add(null, _numerator, $CHECKPOINT.getTimestamp());
         }
         return _numerator = newValue;
     }
 
     private final Token[] $ASSIGN$_denominator(Token[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_denominator.add(null, _denominator, $CHECKPOINT.getTimestamp());
+            $RECORD$_denominator.add(null, _denominator, $CHECKPOINT
+                    .getTimestamp());
         }
         return _denominator = newValue;
     }
 
     private final Token $ASSIGN$_denominator(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_denominator.add(new int[] {
-                    index0
-                }, _denominator[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_denominator.add(new int[] { index0 },
+                    _denominator[index0], $CHECKPOINT.getTimestamp());
         }
         return _denominator[index0] = newValue;
     }
 
     private final Token[] $ASSIGN$_stateVector(Token[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_stateVector.add(null, _stateVector, $CHECKPOINT.getTimestamp());
+            $RECORD$_stateVector.add(null, _stateVector, $CHECKPOINT
+                    .getTimestamp());
         }
         return _stateVector = newValue;
     }
 
     private final Token $ASSIGN$_stateVector(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_stateVector.add(new int[] {
-                    index0
-                }, _stateVector[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_stateVector.add(new int[] { index0 },
+                    _stateVector[index0], $CHECKPOINT.getTimestamp());
         }
         return _stateVector[index0] = newValue;
     }
 
     private final Token[] $BACKUP$_stateVector() {
-        $RECORD$_stateVector.backup(null, _stateVector, $CHECKPOINT.getTimestamp());
+        $RECORD$_stateVector.backup(null, _stateVector, $CHECKPOINT
+                .getTimestamp());
         return _stateVector;
     }
 
     private final int $ASSIGN$_currentTap(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentTap.add(null, _currentTap, $CHECKPOINT.getTimestamp());
+            $RECORD$_currentTap.add(null, _currentTap, $CHECKPOINT
+                    .getTimestamp());
         }
         return _currentTap = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$_currentTap(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentTap.add(null, _currentTap, $CHECKPOINT.getTimestamp());
+            $RECORD$_currentTap.add(null, _currentTap, $CHECKPOINT
+                    .getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _currentTap += newValue;
-            case 1:
-                return _currentTap -= newValue;
-            case 2:
-                return _currentTap *= newValue;
-            case 3:
-                return _currentTap /= newValue;
-            case 4:
-                return _currentTap &= newValue;
-            case 5:
-                return _currentTap |= newValue;
-            case 6:
-                return _currentTap ^= newValue;
-            case 7:
-                return _currentTap %= newValue;
-            case 8:
-                return _currentTap <<= newValue;
-            case 9:
-                return _currentTap >>= newValue;
-            case 10:
-                return _currentTap >>>= newValue;
-            case 11:
-                return _currentTap++;
-            case 12:
-                return _currentTap--;
-            case 13:
-                return ++_currentTap;
-            case 14:
-                return --_currentTap;
-            default:
-                return _currentTap;
+        case 0:
+            return _currentTap += newValue;
+        case 1:
+            return _currentTap -= newValue;
+        case 2:
+            return _currentTap *= newValue;
+        case 3:
+            return _currentTap /= newValue;
+        case 4:
+            return _currentTap &= newValue;
+        case 5:
+            return _currentTap |= newValue;
+        case 6:
+            return _currentTap ^= newValue;
+        case 7:
+            return _currentTap %= newValue;
+        case 8:
+            return _currentTap <<= newValue;
+        case 9:
+            return _currentTap >>= newValue;
+        case 10:
+            return _currentTap >>>= newValue;
+        case 11:
+            return _currentTap++;
+        case 12:
+            return _currentTap--;
+        case 13:
+            return ++_currentTap;
+        case 14:
+            return --_currentTap;
+        default:
+            return _currentTap;
         }
     }
 
     private final Token $ASSIGN$_latestWindow(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestWindow.add(null, _latestWindow, $CHECKPOINT.getTimestamp());
+            $RECORD$_latestWindow.add(null, _latestWindow, $CHECKPOINT
+                    .getTimestamp());
         }
         return _latestWindow = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _numerator = (Token[])$RECORD$_numerator.restore(_numerator, timestamp, trim);
-        _denominator = (Token[])$RECORD$_denominator.restore(_denominator, timestamp, trim);
-        _stateVector = (Token[])$RECORD$_stateVector.restore(_stateVector, timestamp, trim);
+        _numerator = (Token[]) $RECORD$_numerator.restore(_numerator,
+                timestamp, trim);
+        _denominator = (Token[]) $RECORD$_denominator.restore(_denominator,
+                timestamp, trim);
+        _stateVector = (Token[]) $RECORD$_stateVector.restore(_stateVector,
+                timestamp, trim);
         _currentTap = $RECORD$_currentTap.restore(_currentTap, timestamp, trim);
-        _latestWindow = (Token)$RECORD$_latestWindow.restore(_latestWindow, timestamp, trim);
+        _latestWindow = (Token) $RECORD$_latestWindow.restore(_latestWindow,
+                timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -421,12 +446,7 @@ public class IIR extends Transformer implements Rollbackable {
     private transient FieldRecord $RECORD$_latestWindow = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_numerator,
-            $RECORD$_denominator,
-            $RECORD$_stateVector,
-            $RECORD$_currentTap,
-            $RECORD$_latestWindow
-        };
+            $RECORD$_numerator, $RECORD$_denominator, $RECORD$_stateVector,
+            $RECORD$_currentTap, $RECORD$_latestWindow };
 
 }
-

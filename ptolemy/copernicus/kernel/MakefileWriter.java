@@ -288,8 +288,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         if (!outputDirectoryFile.isDirectory()) {
             if (!outputDirectoryFile.mkdirs()) {
-                throw new RuntimeException(
-                        "Failed to create directory \""
+                throw new RuntimeException("Failed to create directory \""
                         + outputDirectoryFile + "\"");
             }
         }

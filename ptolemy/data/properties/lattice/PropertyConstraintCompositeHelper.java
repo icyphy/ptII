@@ -37,7 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 ////TypedCompositeActor
 
 /**
@@ -49,8 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintCompositeHelper
-extends PropertyConstraintHelper {
+public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper {
 
     /** Construct the property constraint helper associated
      *  with the given TypedCompositeActor.
@@ -59,9 +57,8 @@ extends PropertyConstraintHelper {
      *  @exception IllegalActionException
      * @exception IllegalActionException
      */
-    public PropertyConstraintCompositeHelper(
-            PropertyConstraintSolver solver, CompositeEntity component)
-    throws IllegalActionException {
+    public PropertyConstraintCompositeHelper(PropertyConstraintSolver solver,
+            CompositeEntity component) throws IllegalActionException {
 
         super(solver, component, false);
     }
@@ -72,13 +69,13 @@ extends PropertyConstraintHelper {
     /**
      *
      */
-    protected void _addDefaultConstraints(
-            ConstraintType actorConstraintType) throws IllegalActionException {
+    protected void _addDefaultConstraints(ConstraintType actorConstraintType)
+            throws IllegalActionException {
 
         for (PropertyHelper helper : _getSubHelpers()) {
 
-            ((PropertyConstraintHelper)helper)
-            ._addDefaultConstraints(actorConstraintType);
+            ((PropertyConstraintHelper) helper)
+                    ._addDefaultConstraints(actorConstraintType);
         }
     }
 
@@ -90,11 +87,11 @@ extends PropertyConstraintHelper {
      * @exception IllegalActionException Thrown if there is an error
      *  getting the helper for any contained entities.
      */
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
         List<PropertyHelper> helpers = super._getSubHelpers();
 
-        CompositeEntity component =
-            (CompositeEntity) getComponent();
+        CompositeEntity component = (CompositeEntity) getComponent();
 
         for (Object actor : component.entityList()) {
             helpers.add(_solver.getHelper(actor));
@@ -112,13 +109,13 @@ extends PropertyConstraintHelper {
 
         // Set up inter-actor constraints.
         for (Entity entity : (List<Entity>) actor.entityList()) {
-            PropertyConstraintHelper helper =
-                (PropertyConstraintHelper) _solver.getHelper(entity);
+            PropertyConstraintHelper helper = (PropertyConstraintHelper) _solver
+                    .getHelper(entity);
 
             boolean constraintSource = helper.isConstraintSource();
 
-            for (TypedIOPort port : (List<TypedIOPort>)
-                    helper._getConstraintedPorts(constraintSource)) {
+            for (TypedIOPort port : (List<TypedIOPort>) helper
+                    ._getConstraintedPorts(constraintSource)) {
 
                 _constraintObject(helper.interconnectConstraintType, port,
                         _getConstraintingPorts(constraintSource, port));
@@ -126,11 +123,10 @@ extends PropertyConstraintHelper {
         }
 
         // Set up inner composite connection constraints.
-        for (TypedIOPort port : (List<TypedIOPort>)
-                _getConstraintedInsidePorts(isConstraintSource())) {
+        for (TypedIOPort port : (List<TypedIOPort>) _getConstraintedInsidePorts(isConstraintSource())) {
 
-            _constraintObject(interconnectConstraintType, port,
-                    port.insidePortList());
+            _constraintObject(interconnectConstraintType, port, port
+                    .insidePortList());
         }
 
         return super.constraintList();
@@ -166,7 +162,7 @@ extends PropertyConstraintHelper {
      */
     protected List _getConstraintedInsidePorts(boolean constraintSource) {
         Actor actor = (Actor) getComponent();
-        return constraintSource ? actor.inputPortList() :
-            actor.outputPortList();
+        return constraintSource ? actor.inputPortList() : actor
+                .outputPortList();
     }
 }

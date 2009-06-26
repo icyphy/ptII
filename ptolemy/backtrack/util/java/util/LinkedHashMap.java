@@ -193,8 +193,9 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         Object cleanup() {
             if (this == getRoot()) {
                 setRoot(getSucc());
-                if (getSucc() != null)
+                if (getSucc() != null) {
                     getSucc().setPred(pred);
+                }
             } else if (getSucc() == null) {
                 getPred().setSucc(null);
                 getRoot().setPred(pred);
@@ -242,13 +243,16 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            pred = (LinkedHashEntry)$RECORD$pred.restore(pred, timestamp, trim);
-            succ = (LinkedHashEntry)$RECORD$succ.restore(succ, timestamp, trim);
+            pred = (LinkedHashEntry) $RECORD$pred
+                    .restore(pred, timestamp, trim);
+            succ = (LinkedHashEntry) $RECORD$succ
+                    .restore(succ, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
@@ -257,9 +261,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         private transient FieldRecord $RECORD$succ = new FieldRecord(0);
 
         private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$pred,
-                $RECORD$succ
-            };
+                $RECORD$pred, $RECORD$succ };
 
     }
 
@@ -323,7 +325,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * @throws IllegalArgumentException if (initialCapacity &lt; 0) ||
      * ! (loadFactor &gt; 0.0)
      */
-    public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) {
+    public LinkedHashMap(int initialCapacity, float loadFactor,
+            boolean accessOrder) {
         super(initialCapacity, loadFactor);
         this.accessOrder = accessOrder;
     }
@@ -345,8 +348,9 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     public boolean containsValue(Object value) {
         LinkedHashEntry e = getRoot();
         while (e != null) {
-            if (equals(value, e.getValueField()))
+            if (equals(value, e.getValueField())) {
                 return true;
+            }
             e = e.getSucc();
         }
         return false;
@@ -431,8 +435,9 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         LinkedHashEntry e = new LinkedHashEntry(key, value);
         e.setNext(getBuckets()[idx]);
         getBuckets()[idx] = e;
-        if (callRemove && removeEldestEntry(getRoot()))
+        if (callRemove && removeEldestEntry(getRoot())) {
             remove(getRoot().getKeyField());
+        }
     }
 
     /**     
@@ -449,11 +454,11 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * Generates a parameterized iterator. This allows traversal to follow
      * the doubly-linked list instead of the random bin order of HashMap.
      * @param type {
-@link #KEYS    }
-, {
-@link #VALUES    }
-, or {
-@link #ENTRIES    }
+    @link #KEYS    }
+    , {
+    @link #VALUES    }
+    , or {
+    @link #ENTRIES    }
 
      * @return the appropriate iterator
      */
@@ -489,13 +494,16 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
              * @throws NoSuchElementException if there is none
              */
             public Object next() {
-                if (getKnownMod() != getModCount())
+                if (getKnownMod() != getModCount()) {
                     throw new ConcurrentModificationException();
-                if (getCurrent() == null)
+                }
+                if (getCurrent() == null) {
                     throw new NoSuchElementException();
+                }
                 setLast(getCurrent());
                 setCurrent(getCurrent().getSucc());
-                return type == VALUES?getLast().getValueField():type == KEYS?getLast().getKeyField():getLast();
+                return type == VALUES ? getLast().getValueField()
+                        : type == KEYS ? getLast().getKeyField() : getLast();
             }
 
             /**             
@@ -505,10 +513,12 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
              * @throws IllegalStateException if called when there is no last element
              */
             public void remove() {
-                if (getKnownMod() != getModCount())
+                if (getKnownMod() != getModCount()) {
                     throw new ConcurrentModificationException();
-                if (getLast() == null)
+                }
+                if (getLast() == null) {
                     throw new IllegalStateException();
+                }
                 LinkedHashMap.this.remove(getLast().getKeyField());
                 setLast(null);
                 setKnownMod(getKnownMod() + 1);
@@ -559,11 +569,14 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
             }
 
-            private final LinkedHashEntry $ASSIGN$current(LinkedHashEntry newValue) {
+            private final LinkedHashEntry $ASSIGN$current(
+                    LinkedHashEntry newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$current.add(null, current, $CHECKPOINT.getTimestamp());
+                    $RECORD$current.add(null, current, $CHECKPOINT
+                            .getTimestamp());
                 }
-                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                if (newValue != null
+                        && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                     newValue.$SET$CHECKPOINT($CHECKPOINT);
                 }
                 return current = newValue;
@@ -573,7 +586,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
                     $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
                 }
-                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                if (newValue != null
+                        && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
                     newValue.$SET$CHECKPOINT($CHECKPOINT);
                 }
                 return last = newValue;
@@ -581,22 +595,27 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
             private final int $ASSIGN$knownMod(int newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
+                            .getTimestamp());
                 }
                 return knownMod = newValue;
             }
 
             public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                current = (LinkedHashEntry)$RECORD$current.restore(current, timestamp, trim);
-                last = (LinkedHashEntry)$RECORD$last.restore(last, timestamp, trim);
+                current = (LinkedHashEntry) $RECORD$current.restore(current,
+                        timestamp, trim);
+                last = (LinkedHashEntry) $RECORD$last.restore(last, timestamp,
+                        trim);
                 knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -610,7 +629,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 if ($CHECKPOINT != checkpoint) {
                     Checkpoint oldCheckpoint = $CHECKPOINT;
                     if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
                         FieldRecord.pushState($RECORDS);
                     }
                     $CHECKPOINT = checkpoint;
@@ -627,10 +647,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             private transient FieldRecord $RECORD$knownMod = new FieldRecord(0);
 
             private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                    $RECORD$current,
-                    $RECORD$last,
-                    $RECORD$knownMod
-                };
+                    $RECORD$current, $RECORD$last, $RECORD$knownMod };
 
             {
                 $CHECKPOINT.addObject(new _PROXY_());
@@ -658,20 +675,19 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        root = (LinkedHashEntry)$RECORD$root.restore(root, timestamp, trim);
+        root = (LinkedHashEntry) $RECORD$root.restore(root, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
     private transient FieldRecord $RECORD$root = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$root
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$root };
 
 }
 

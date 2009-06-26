@@ -20,11 +20,13 @@ public class Receiver extends CCodeGeneratorHelper {
         return "";
     }
 
-    public String generateCodeForHasToken(int channel) throws IllegalActionException{
+    public String generateCodeForHasToken(int channel)
+            throws IllegalActionException {
         return "1";
     }
 
-    public String generateCodeForPut(String token) throws IllegalActionException{
+    public String generateCodeForPut(String token)
+            throws IllegalActionException {
         return "";
     }
 

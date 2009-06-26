@@ -161,7 +161,7 @@ public class NonStrictDisplay extends Display {
             // is already where want it).
             try {
                 int lineOffset = textArea.getLineStartOffset(textArea
-                                                             .getLineCount() - 1);
+                        .getLineCount() - 1);
                 textArea.setCaretPosition(lineOffset);
             } catch (BadLocationException ex) {
                 // Ignore ... worst case is that the scrollbar

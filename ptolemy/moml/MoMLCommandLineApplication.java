@@ -104,7 +104,7 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
      *  @exception Throwable If there was a problem parsing
      *  or running the model.
      */
-    public MoMLCommandLineApplication(String [] args) throws Throwable {
+    public MoMLCommandLineApplication(String[] args) throws Throwable {
         MoMLParser parser = new MoMLParser();
 
         // The test suite calls MoMLSimpleApplication multiple times,
@@ -126,7 +126,7 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
-               args[args.length - 1]).toURI().toURL());
+                args[args.length - 1]).toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
@@ -142,8 +142,8 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
             if (arg.trim().startsWith("-")) {
                 if (i >= (args.length - 1)) {
                     throw new IllegalActionException("Cannot set "
-                                + "parameter " + arg + " when no value is "
-                                + "given.");
+                            + "parameter " + arg + " when no value is "
+                            + "given.");
                 }
 
                 // Save in case this is a parameter name and value.
@@ -156,16 +156,15 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
                     // Use a MoMLChangeRequest so that visual rendition (if
                     // any) is updated and listeners are notified.
                     String moml = "<property name=\"" + parameterName
-                        + "\" value=\"" + parameterValue + "\"/>";
+                            + "\" value=\"" + parameterValue + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
-                                                                      toplevel, moml);
-                        toplevel.requestChange(request);
+                            toplevel, moml);
+                    toplevel.requestChange(request);
                 }
 
                 // Now try for parameters in the director
                 if (toplevel instanceof CompositeActor) {
-                    Director director = ((CompositeActor) toplevel)
-                        .getDirector();
+                    Director director = (toplevel).getDirector();
 
                     if (director != null) {
                         attribute = director.getAttribute(parameterName);
@@ -174,20 +173,19 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
                             // Use a MoMLChangeRequest so that visual rendition (if
                             // any) is updated and listeners are notified.
                             String moml = "<property name=\"" + parameterName
-                                + "\" value=\"" + parameterValue + "\"/>";
+                                    + "\" value=\"" + parameterValue + "\"/>";
                             MoMLChangeRequest request = new MoMLChangeRequest(
-                                        this, director, moml);
+                                    this, director, moml);
                             director.requestChange(request);
-                            }
                         }
                     }
+                }
                 i++;
             } else {
                 // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
-                }
+                throw new IllegalActionException("Unrecognized option: " + arg);
             }
+        }
         _manager.execute();
 
         // PtExecuteApplication uses _activeCount to determine when

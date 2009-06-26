@@ -93,8 +93,8 @@ public class PteraGraphFrame extends FSMGraphFrame {
         if (child instanceof Event) {
             return child.exportMoML();
         } else {
-            return "<entity name=\"Event\" class=\"ptolemy.domains.ptera" +
-                    ".kernel.Event\">";
+            return "<entity name=\"Event\" class=\"ptolemy.domains.ptera"
+                    + ".kernel.Event\">";
         }
     }
 }

@@ -118,7 +118,8 @@ public class ParameterNameChanges implements MoMLFilter {
             _lastNameSeen = attributeValue;
 
             if (_currentlyProcessingActorWithParameterNameChanges) {
-                if (_propertyMap != null && _propertyMap.containsKey(attributeValue)) {
+                if (_propertyMap != null
+                        && _propertyMap.containsKey(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
                     _newName = (String) _propertyMap.get(attributeValue);
@@ -272,20 +273,21 @@ public class ParameterNameChanges implements MoMLFilter {
         {
             HashMap codegen = new HashMap();
             codegen.put("generateJNI", "generateEmbeddedCode");
-            _classesWithParameterNameChanges.put("ptolemy.codegen.kernel.CodeGenerator",
+            _classesWithParameterNameChanges.put(
+                    "ptolemy.codegen.kernel.CodeGenerator", codegen);
+        }
+        {
+            HashMap codegen = new HashMap();
+            codegen.put("generateJNI", "generateEmbeddedCode");
+            _classesWithParameterNameChanges.put(
+                    "ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
                     codegen);
         }
         {
             HashMap codegen = new HashMap();
             codegen.put("generateJNI", "generateEmbeddedCode");
-            _classesWithParameterNameChanges.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
-                    codegen);
-        }
-        {
-            HashMap codegen = new HashMap();
-            codegen.put("generateJNI", "generateEmbeddedCode");
-            _classesWithParameterNameChanges.put("ptolemy.codegen.c.kernel.CCodeGenerator",
-                    codegen);
+            _classesWithParameterNameChanges.put(
+                    "ptolemy.codegen.c.kernel.CCodeGenerator", codegen);
         }
 
     }

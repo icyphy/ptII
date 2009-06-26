@@ -104,14 +104,13 @@ public class NameCriterion extends Criterion {
         try {
             _name.getPattern();
         } catch (PatternSyntaxException e) {
-            throw new ValidationException("Regular expression \"" + _name +
-                    "\" cannot be compiled.", e);
+            throw new ValidationException("Regular expression \"" + _name
+                    + "\" cannot be compiled.", e);
         }
     }
 
-    private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("name", false, true, false)
-    };
+    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
+            "name", false, true, false) };
 
     private RegularExpressionString _name = new RegularExpressionString();
 }

@@ -58,7 +58,8 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  the port the channel resides is a multiport, if it is, then only a static
      *  variable is needed instead of an array of length 1.
      */
-    public String generateCodeForGet(String channel) throws IllegalActionException;
+    public String generateCodeForGet(String channel)
+            throws IllegalActionException;
 
     /** Generate code for HasToken.
      *  @param channel The channel for which the get code is generated.
@@ -67,7 +68,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  the port the channel resides is a multiport, if it is, then only a static
      *  variable is needed instead of an array of length 1.
      */
-//    public String generateCodeForHasToken(String channel) throws IllegalActionException;
+    //    public String generateCodeForHasToken(String channel) throws IllegalActionException;
 
     /** Generate the send code.
      *  @param channel The channel for which the send code is generated.
@@ -78,7 +79,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  variable is needed instead of an array of length 1.
      */
     public String generateCodeForSend(String channel, String dataToken)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Get the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
@@ -93,7 +94,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @see #setReadOffset(int, Object)
      */
     public Object getReadOffset(int channelNumber)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Get the write offset of a channel of the port.
      *  @param channelNumber The number of the channel.
@@ -102,7 +103,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @see #setWriteOffset(int, Object)
      */
     public Object getWriteOffset(int channelNumber)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Set the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
@@ -129,12 +130,13 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @param directorHelper The Director helper
      *  @return The offset.
      */
-    public String updateOffset(int rate, Director directorHelper) throws IllegalActionException;
+    public String updateOffset(int rate, Director directorHelper)
+            throws IllegalActionException;
 
     /** Update the write offset of the [multiple] connected ports.
      */
-    public String updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException;
-
+    public String updateConnectedPortsOffset(int rate, Director director)
+            throws IllegalActionException;
 
     /** Initialize the offsets.
      *  @return The code to initialize the offsets.

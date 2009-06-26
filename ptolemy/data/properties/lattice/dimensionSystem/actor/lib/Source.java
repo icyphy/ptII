@@ -35,7 +35,6 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 ////Source
 
 /**
@@ -56,18 +55,15 @@ public class Source extends AtomicActor {
      * @exception IllegalActionException
      */
     public Source(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Source actor)
-    throws IllegalActionException {
+            ptolemy.actor.lib.Source actor) throws IllegalActionException {
 
         super(solver, actor, false);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                            public methods                 ////
 
-    public List<Inequality> constraintList()
-    throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
         // add default constraints if no constraints specified in actor helper
 
@@ -79,7 +75,6 @@ public class Source extends AtomicActor {
         return super.constraintList();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -87,8 +82,9 @@ public class Source extends AtomicActor {
         ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
 
         for (TypedIOPort port : (List<TypedIOPort>) actor.portList()) {
-            if ((port.numLinks() <= 0) && (port.isInput()) &&
-                (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
+            if ((port.numLinks() <= 0)
+                    && (port.isInput())
+                    && (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
 
                 if (!isAnnotated(port)) {
                     getPropertyTerm(port).setEffective(false);

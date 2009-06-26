@@ -57,8 +57,7 @@ public class MonitorValue extends Sink {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.MonitorValue actor =
-            (ptolemy.actor.lib.MonitorValue) getComponent();
+        ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
         setEquals(actor.input, lattice.FALSE);

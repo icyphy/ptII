@@ -173,8 +173,7 @@ public class GraphMatcher extends GraphAnalyzer {
         _clearCaches();
 
         // Record the values of all the iterators.
-        Hashtable<ValueIterator, Token> records =
-            new Hashtable<ValueIterator, Token>();
+        Hashtable<ValueIterator, Token> records = new Hashtable<ValueIterator, Token>();
         try {
             GTTools.saveValues(pattern, records);
         } catch (IllegalActionException e) {
@@ -322,8 +321,7 @@ public class GraphMatcher extends GraphAnalyzer {
         if (_isCreated(object) || GTTools.isIgnored(object)) {
             result = true;
         } else if (object instanceof NamedObj) {
-            NamedObj optionalContainer = _getOptionalContainer(
-                    (NamedObj) object);
+            NamedObj optionalContainer = _getOptionalContainer((NamedObj) object);
             result = optionalContainer != null
                     && _ignoredOptionalObjects.containsKey(optionalContainer)
                     && _ignoredOptionalObjects.get(optionalContainer);
@@ -354,13 +352,11 @@ public class GraphMatcher extends GraphAnalyzer {
             NamedObj container = entity.getContainer();
             Token hierarchyFlatteningToken = _getAttribute(container,
                     HierarchyFlatteningAttribute.class, true, false, true);
-            boolean hierarchyFlattening = hierarchyFlatteningToken == null ?
-                    HierarchyFlatteningAttribute.DEFAULT
+            boolean hierarchyFlattening = hierarchyFlatteningToken == null ? HierarchyFlatteningAttribute.DEFAULT
                     : ((BooleanToken) hierarchyFlatteningToken).booleanValue();
             Token containerIgnoringToken = _getAttribute(container,
                     ContainerIgnoringAttribute.class, false, true, false);
-            boolean containerIgnoring = containerIgnoringToken == null ?
-                    ContainerIgnoringAttribute.DEFAULT
+            boolean containerIgnoring = containerIgnoringToken == null ? ContainerIgnoringAttribute.DEFAULT
                     : ((BooleanToken) containerIgnoringToken).booleanValue();
             return !hierarchyFlattening && !containerIgnoring;
         }
@@ -399,8 +395,8 @@ public class GraphMatcher extends GraphAnalyzer {
         LookbackEntry lists = null;
         while (entry != null) {
             lists = entry.getValue();
-            if (!_negation && !lists.isFinished() ||
-                    _negation && !lists.isNegated()) {
+            if (!_negation && !lists.isFinished() || _negation
+                    && !lists.isNegated()) {
                 break;
             }
             entry = entry.getPrevious();
@@ -471,8 +467,8 @@ public class GraphMatcher extends GraphAnalyzer {
 
         NamedObj patternObject = (NamedObj) anyEntry.getKey();
         NamedObj patternContainer = patternObject.getContainer();
-        while (patternContainer != null && _matchResult.containsKey(
-                patternContainer)) {
+        while (patternContainer != null
+                && _matchResult.containsKey(patternContainer)) {
             patternObject = patternContainer;
             patternContainer = patternContainer.getContainer();
         }
@@ -517,12 +513,12 @@ public class GraphMatcher extends GraphAnalyzer {
                 return false;
             }
         } else {
-            List<?> attributeList = patternObject.attributeList(
-                    GTIngredientsAttribute.class);
+            List<?> attributeList = patternObject
+                    .attributeList(GTIngredientsAttribute.class);
             if (!attributeList.isEmpty()) {
                 try {
-                    ruleList = ((GTIngredientsAttribute) attributeList.get(
-                            0)).getIngredientList();
+                    ruleList = ((GTIngredientsAttribute) attributeList.get(0))
+                            .getIngredientList();
                 } catch (MalformedStringException e) {
                     return false;
                 }
@@ -583,8 +579,8 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @return The value of the attribute, if found, or null otherwise.
      */
     private Token _getAttribute(NamedObj container,
-            Class<? extends Parameter> attributeClass,
-            boolean searchContainer, boolean patternOnly, boolean hostOnly) {
+            Class<? extends Parameter> attributeClass, boolean searchContainer,
+            boolean patternOnly, boolean hostOnly) {
 
         boolean isInHost = false;
 
@@ -729,8 +725,8 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         if (success) {
-            List<?> attributeMatchers = patternEntity.attributeList(
-                    AttributeMatcher.class);
+            List<?> attributeMatchers = patternEntity
+                    .attributeList(AttributeMatcher.class);
             if (!attributeMatchers.isEmpty()) {
                 for (Object attributeObject : attributeMatchers) {
                     if (!_isIgnored(attributeObject)) {
@@ -839,8 +835,8 @@ public class GraphMatcher extends GraphAnalyzer {
             Director hostDirector = null;
             if (patternEntity instanceof CompositeActor
                     && ((CompositeActor) patternEntity).isOpaque()) {
-                patternDirector =
-                    ((CompositeActor) patternEntity).getDirector();
+                patternDirector = ((CompositeActor) patternEntity)
+                        .getDirector();
                 if (_isIgnored(patternDirector)) {
                     patternDirector = null;
                 }
@@ -862,8 +858,8 @@ public class GraphMatcher extends GraphAnalyzer {
                 IndexedLists patternMarkedList = new IndexedLists();
                 IndexedLists hostMarkedList = new IndexedLists();
 
-                List<?> attributeMatchers = patternEntity.attributeList(
-                        AttributeMatcher.class);
+                List<?> attributeMatchers = patternEntity
+                        .attributeList(AttributeMatcher.class);
                 if (!attributeMatchers.isEmpty()) {
                     for (Object attributeObject : attributeMatchers) {
                         if (!_isIgnored(attributeObject)) {
@@ -1012,11 +1008,10 @@ public class GraphMatcher extends GraphAnalyzer {
             patternEntry.remove();
 
             if (patternObject instanceof NamedObj) {
-                optionalContainer = _getOptionalContainer(
-                        (NamedObj) patternObject);
+                optionalContainer = _getOptionalContainer((NamedObj) patternObject);
                 if (optionalContainer != null
-                        && !_ignoredOptionalObjects.containsKey(
-                                optionalContainer)) {
+                        && !_ignoredOptionalObjects
+                                .containsKey(optionalContainer)) {
                     _ignoredOptionalObjects.put(optionalContainer, false);
                     _clearCaches();
                 } else {
@@ -1191,7 +1186,7 @@ public class GraphMatcher extends GraphAnalyzer {
     private boolean _matchPort(Port patternPort, Port hostPort) {
         if (patternPort instanceof GTEntity
                 && !((GTEntity) patternPort).match(hostPort)) {
-           return false;
+            return false;
         }
 
         int matchSize = _matchResult.size();
@@ -1224,8 +1219,8 @@ public class GraphMatcher extends GraphAnalyzer {
             ObjectList patternList = new ObjectList();
             ObjectList hostList = new ObjectList();
 
-            List<?> attributeMatchers = patternPort.attributeList(
-                    AttributeMatcher.class);
+            List<?> attributeMatchers = patternPort
+                    .attributeList(AttributeMatcher.class);
             if (!attributeMatchers.isEmpty()) {
                 for (Object attributeObject : attributeMatchers) {
                     if (!_isIgnored(attributeObject)) {
@@ -1247,8 +1242,8 @@ public class GraphMatcher extends GraphAnalyzer {
                 hostList.add(hostContainer);
             }
 
-            boolean collapsing = _relationCollapsing(
-                    patternContainer.getContainer());
+            boolean collapsing = _relationCollapsing(patternContainer
+                    .getContainer());
 
             if (collapsing) {
                 _temporaryMatch.put(patternContainer, hostContainer);
@@ -1313,7 +1308,7 @@ public class GraphMatcher extends GraphAnalyzer {
             Relation hostRelation) {
         if (patternRelation instanceof GTEntity
                 && !((GTEntity) patternRelation).match(hostRelation)) {
-           return false;
+            return false;
         }
 
         int matchSize = _matchResult.size();
@@ -1329,8 +1324,8 @@ public class GraphMatcher extends GraphAnalyzer {
             ObjectList patternList = new ObjectList();
             ObjectList hostList = new ObjectList();
 
-            List<?> attributeMatchers = patternRelation.attributeList(
-                    AttributeMatcher.class);
+            List<?> attributeMatchers = patternRelation
+                    .attributeList(AttributeMatcher.class);
             if (!attributeMatchers.isEmpty()) {
                 for (Object attributeObject : attributeMatchers) {
                     if (!_isIgnored(attributeObject)) {
@@ -1454,18 +1449,18 @@ public class GraphMatcher extends GraphAnalyzer {
                 IOPort hostIOPort = (IOPort) hostPort;
 
                 if (patternIOPort instanceof Checkable) {
-                    Criterion criterion =
-                        ((Checkable) patternIOPort).getCriterion();
+                    Criterion criterion = ((Checkable) patternIOPort)
+                            .getCriterion();
                     return criterion.match(hostIOPort);
                 } else {
-                    boolean isInputEqual =
-                        patternIOPort.isInput() == hostIOPort.isInput();
-                    boolean isOutputEqual =
-                        patternIOPort.isOutput() == hostIOPort.isOutput();
-                    boolean isMultiportEqual =
-                        patternIOPort.isMultiport() == hostIOPort.isMultiport();
-                    boolean isNameEqual =
-                        patternIOPort.getName().equals(hostIOPort.getName());
+                    boolean isInputEqual = patternIOPort.isInput() == hostIOPort
+                            .isInput();
+                    boolean isOutputEqual = patternIOPort.isOutput() == hostIOPort
+                            .isOutput();
+                    boolean isMultiportEqual = patternIOPort.isMultiport() == hostIOPort
+                            .isMultiport();
+                    boolean isNameEqual = patternIOPort.getName().equals(
+                            hostIOPort.getName());
 
                     boolean isTypeCompatible = true;
                     if (patternIOPort instanceof TypedIOPort) {
@@ -1514,12 +1509,12 @@ public class GraphMatcher extends GraphAnalyzer {
             return false;
         }
 
-        List<?> attributeList = patternRelation.attributeList(
-                GTIngredientsAttribute.class);
+        List<?> attributeList = patternRelation
+                .attributeList(GTIngredientsAttribute.class);
         if (!attributeList.isEmpty()) {
             try {
-                GTIngredientList ruleList = ((GTIngredientsAttribute)
-                        attributeList.get(0)).getIngredientList();
+                GTIngredientList ruleList = ((GTIngredientsAttribute) attributeList
+                        .get(0)).getIngredientList();
                 if (ruleList != null) {
                     for (GTIngredient rule : ruleList) {
                         if (rule instanceof Criterion) {
@@ -1545,27 +1540,23 @@ public class GraphMatcher extends GraphAnalyzer {
     /** A map from objects to Booleans value that identify whether they are
      *  tagged to be created.
      */
-    private Map<Object, Boolean> _cachedCreatedObjects =
-        new HashMap<Object, Boolean>();
+    private Map<Object, Boolean> _cachedCreatedObjects = new HashMap<Object, Boolean>();
 
     /** A map from objects to Boolean values that identify whether they are
      *  tagged to be ignored.
      */
-    private Map<Object, Boolean> _cachedIgnoredObjects =
-        new HashMap<Object, Boolean>();
+    private Map<Object, Boolean> _cachedIgnoredObjects = new HashMap<Object, Boolean>();
 
     /** A map from objects to Boolean values that identify whether they are
      *  tagged to be negated.
      */
-    private Map<Object, Boolean> _cachedNegatedObjects =
-        new HashMap<Object, Boolean>();
+    private Map<Object, Boolean> _cachedNegatedObjects = new HashMap<Object, Boolean>();
 
     /** A map from objects to their optional containers. If it has been
      *  determined that they have no optional container, then the value would be
      *  Boolean.FALSE rather than a NamedObj.
      */
-    private Map<NamedObj, Object> _cachedOptionalContainers =
-        new HashMap<NamedObj, Object>();
+    private Map<NamedObj, Object> _cachedOptionalContainers = new HashMap<NamedObj, Object>();
 
     /** The callback to invoke in pattern matching.
      */
@@ -1578,8 +1569,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  invoked. If not all of them return true, a false is returned by the
      *  matcher without invoking the callback set by the user.
      */
-    private List<MatchCallback> _callbacksInPattern =
-        new LinkedList<MatchCallback>();
+    private List<MatchCallback> _callbacksInPattern = new LinkedList<MatchCallback>();
 
     /** A comparator to sort objects in a container by their types and names.
      */
@@ -1588,8 +1578,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** A map from objects to Boolean values that identify whether those objects
      *  have been ignored in the pattern matching.
      */
-    private Map<Object, Boolean> _ignoredOptionalObjects =
-        new HashMap<Object, Boolean>();
+    private Map<Object, Boolean> _ignoredOptionalObjects = new HashMap<Object, Boolean>();
 
     /** A list of lookback entries.
      */
@@ -1609,8 +1598,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** A map from parameters that are ValueIterators to their original values
      *  (which are changed by in pattern matching to different values).
      */
-    private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues =
-        new SequentialTwoWayHashMap<ValueIterator, Token>();
+    private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues = new SequentialTwoWayHashMap<ValueIterator, Token>();
 
     /** The variable that indicates whether the last match operation is
      *  successful.
@@ -1813,8 +1801,7 @@ public class GraphMatcher extends GraphAnalyzer {
          *  @exception IllegalActionException If values of some value iterators
          *   cannot be retrieved.
          */
-        ParameterIterator(ComponentEntity entity)
-                throws IllegalActionException {
+        ParameterIterator(ComponentEntity entity) throws IllegalActionException {
             List<?> valueIterators = entity.attributeList(ValueIterator.class);
             for (Object iteratorObject : valueIterators) {
                 ValueIterator iterator = (ValueIterator) iteratorObject;
@@ -1831,11 +1818,10 @@ public class GraphMatcher extends GraphAnalyzer {
                         excludedObjects);
                 while (nextChild != null) {
                     if (nextChild instanceof ComponentEntity) {
-                        valueIterators = nextChild.attributeList(
-                                ValueIterator.class);
+                        valueIterators = nextChild
+                                .attributeList(ValueIterator.class);
                         for (Object iteratorObject : valueIterators) {
-                            ValueIterator iterator =
-                                (ValueIterator) iteratorObject;
+                            ValueIterator iterator = (ValueIterator) iteratorObject;
                             Token initial = iterator.initial();
                             _parameterValues.put(iterator, initial);
                             _valueIterators.add(iterator);
@@ -1855,8 +1841,8 @@ public class GraphMatcher extends GraphAnalyzer {
             boolean terminate = false;
             boolean found = false;
             while (!terminate && !found) {
-                ListIterator<ValueIterator> iterators =
-                    _valueIterators.listIterator(i);
+                ListIterator<ValueIterator> iterators = _valueIterators
+                        .listIterator(i);
                 terminate = true;
                 while (iterators.hasPrevious()) {
                     ValueIterator iterator = iterators.previous();
@@ -1898,7 +1884,6 @@ public class GraphMatcher extends GraphAnalyzer {
 
         /** The value iterators in the entity provided to the constructor.
          */
-        private List<ValueIterator> _valueIterators =
-            new LinkedList<ValueIterator>();
+        private List<ValueIterator> _valueIterators = new LinkedList<ValueIterator>();
     }
 }

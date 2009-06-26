@@ -103,7 +103,6 @@ into a constraint solver.
  */
 public abstract class PropertySolverBase extends Attribute {
 
-
     /**
      * Construct a PropertySolverBase with the specified container and
      * name. If this is the first PropertySolver created in the model,
@@ -117,7 +116,7 @@ public abstract class PropertySolverBase extends Attribute {
      * attribute already in the container.
      */
     public PropertySolverBase(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sharedUtilitiesWrapper = new SharedParameter(this,
@@ -133,7 +132,7 @@ public abstract class PropertySolverBase extends Attribute {
         }
 
         Collection<SharedParameter> parameters = sharedUtilitiesWrapper
-        .sharedParameterSet();
+                .sharedParameterSet();
         for (SharedParameter parameter : parameters) {
             parameters = parameter.sharedParameterSet();
         }
@@ -191,7 +190,7 @@ public abstract class PropertySolverBase extends Attribute {
      * is found.
      */
     public PropertySolver findSolver(String identifier)
-    throws PropertyResolutionException {
+            throws PropertyResolutionException {
 
         for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
             if (solver.getUseCaseName().equals(identifier)) {
@@ -286,7 +285,7 @@ public abstract class PropertySolverBase extends Attribute {
     public Attribute getAttribute(ASTPtRootNode node) {
         Node root = node;
         Map<ASTPtRootNode, Attribute> attributes = getSharedUtilities()
-        .getAttributes();
+                .getAttributes();
 
         while (root.jjtGetParent() != null) {
             if (attributes.containsKey(root)) {
@@ -330,7 +329,7 @@ public abstract class PropertySolverBase extends Attribute {
      * be found or instantiated.
      */
     public PropertyHelper getHelper(Object object)
-    throws IllegalActionException {
+            throws IllegalActionException {
         return _getHelper(object);
     }
 
@@ -356,9 +355,9 @@ public abstract class PropertySolverBase extends Attribute {
      * @exception IllegalActionException
      */
     public ASTPtRootNode getParseTree(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Map<Attribute, ASTPtRootNode> parseTrees = getSharedUtilities()
-        .getParseTrees();
+                .getParseTrees();
 
         if (!parseTrees.containsKey(attribute)) {
 
@@ -424,7 +423,7 @@ public abstract class PropertySolverBase extends Attribute {
         // Get from the PropertyAttribute in the model.
         if (object instanceof NamedObj) {
             PropertyAttribute attribute = (PropertyAttribute) ((NamedObj) object)
-            .getAttribute(getExtendedUseCaseName());
+                    .getAttribute(getExtendedUseCaseName());
 
             if ((attribute != null) && (attribute.getProperty() != null)) {
                 return attribute.getProperty();
@@ -522,12 +521,11 @@ public abstract class PropertySolverBase extends Attribute {
      * cannot be instantiated.
      */
     protected PropertyHelper _getHelper(Object component)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         if (_helperStore.containsKey(component)) {
             return _helperStore.get(component);
         }
-
 
         if ((component instanceof IOPort) || (component instanceof Attribute)) {
             if (((NamedObj) component).getContainer() == null) {
@@ -556,7 +554,7 @@ public abstract class PropertySolverBase extends Attribute {
 
                 helperClass = Class.forName((componentClass.getName()
                         .replaceFirst("ptolemy", packageName)).replaceFirst(
-                                ".configuredSolvers.", "."));
+                        ".configuredSolvers.", "."));
 
             } catch (ClassNotFoundException e) {
                 // If helper class cannot be found, search the helper class
@@ -580,7 +578,7 @@ public abstract class PropertySolverBase extends Attribute {
         if (constructor == null) {
             throw new IllegalActionException(
                     "Cannot find constructor method in "
-                    + helperClass.getName());
+                            + helperClass.getName());
         }
 
         Object helperObject = null;
@@ -591,20 +589,19 @@ public abstract class PropertySolverBase extends Attribute {
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-            "Failed to create the helper class for property constraints.");
+                    "Failed to create the helper class for property constraints.");
         }
 
         if (!(helperObject instanceof PropertyHelper)) {
             throw new IllegalActionException(
                     "Cannot resolve property for this component: " + component
-                    + ". Its helper class does not"
-                    + " implement PropertyHelper.");
+                            + ". Its helper class does not"
+                            + " implement PropertyHelper.");
         }
         _helperStore.put(component, (PropertyHelper) helperObject);
 
         return (PropertyHelper) helperObject;
     }
-
 
     /**
      * Return the package name that contains the class of this solver.
@@ -621,8 +618,8 @@ public abstract class PropertySolverBase extends Attribute {
         // If the solver is in an OntologyAttribute, we
         // want to analyze the outside model.
         while (toplevel instanceof Configurer) {
-            NamedObj configuredObject = ((Configurer)
-                    toplevel).getConfiguredObject();
+            NamedObj configuredObject = ((Configurer) toplevel)
+                    .getConfiguredObject();
 
             if (configuredObject == null) {
                 return toplevel;
@@ -642,8 +639,8 @@ public abstract class PropertySolverBase extends Attribute {
 
         OntologyComposite container = (OntologyComposite) getContainer();
         for (Entity entity : (List<Entity>) container.entityList()) {
-            StringAttribute attribute = (StringAttribute)
-            ((Entity) entity).getAttribute(OntologyComposite.RULES);
+            StringAttribute attribute = (StringAttribute) (entity)
+                    .getAttribute(OntologyComposite.RULES);
 
             String userCode = attribute.getExpression();
 
@@ -657,15 +654,17 @@ public abstract class PropertySolverBase extends Attribute {
      * @param userCode
      * @exception IllegalActionException
      */
-    private void _compileUserCode(Entity entity, String userCode) throws IllegalActionException {
+    private void _compileUserCode(Entity entity, String userCode)
+            throws IllegalActionException {
 
         String ptRoot = StringUtilities.getProperty("ptolemy.ptII.dir");
 
-        String classname = _getPackageName() + entity.getClass()
-        .getName().replaceFirst("ptolemy", "");
+        String classname = _getPackageName()
+                + entity.getClass().getName().replaceFirst("ptolemy", "");
 
-        String packageName = _getPackageName() + entity.getClass()
-        .getPackage().getName().replaceFirst("ptolemy", "");
+        String packageName = _getPackageName()
+                + entity.getClass().getPackage().getName().replaceFirst(
+                        "ptolemy", "");
 
         String directoryPath = (ptRoot + "/" + packageName).replace(".", "/");
 
@@ -673,11 +672,12 @@ public abstract class PropertySolverBase extends Attribute {
             File file;
             File directory = FileUtilities.nameToFile(directoryPath, null);
             directory.mkdirs();
-            file = new File(directory, entity.getClass().getSimpleName() + ".java");
+            file = new File(directory, entity.getClass().getSimpleName()
+                    + ".java");
 
             // Set the file to delete on exit
-//            directory.deleteOnExit();
-//            file.deleteOnExit();
+            //            directory.deleteOnExit();
+            //            file.deleteOnExit();
 
             // Get the file name and extract a class name from it
             String filename = file.getCanonicalPath();
@@ -687,12 +687,6 @@ public abstract class PropertySolverBase extends Attribute {
             // Flush and close the stream
             out.flush();
             out.close();
-
-            String[] args = new String[] {
-                    "-classpath", ptRoot,
-                    //"-d", directoryPath,
-                    filename
-            };
 
             if (_executeCommands == null) {
                 // Append the results to a StringBuffer and to stderr/stdout.
@@ -712,7 +706,7 @@ public abstract class PropertySolverBase extends Attribute {
             //int status = com.sun.tools.javac.Main.compile(args);
 
             switch (status) {
-            case 0:  // OK
+            case 0: // OK
                 // Make the class file temporary as well
                 //new File(file.getParent(), classname + ".class").deleteOnExit();
                 try {
@@ -720,7 +714,7 @@ public abstract class PropertySolverBase extends Attribute {
                     Class.forName(classname);
                 } catch (Exception ex) {
                     throw new IllegalActionException(null, ex,
-                    "Cannot load the class file for: " + classname);
+                            "Cannot load the class file for: " + classname);
                 }
                 break;
             default:
@@ -728,8 +722,9 @@ public abstract class PropertySolverBase extends Attribute {
                         "Cannot compile user code for " + entity.getName());
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(
-                    null, ex, "Error occurs when compiling the user code for " + entity.getName());
+            throw new IllegalActionException(null, ex,
+                    "Error occurs when compiling the user code for "
+                            + entity.getName());
         }
     }
 

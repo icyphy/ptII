@@ -245,8 +245,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.actor.lib.gui.SequencePlotter",
                 "ptolemy.actor.lib.Discard");
 
-        _graphicalClasses.put("ptolemy.data.properties.gui.PropertyHighlighter",
-                null);
+        _graphicalClasses.put(
+                "ptolemy.data.properties.gui.PropertyHighlighter", null);
 
         _graphicalClasses.put("ptolemy.domains.sr.lib.NonStrictDisplay",
                 "ptolemy.actor.lib.Discard");
@@ -262,9 +262,10 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put(
                 "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put(
-                "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
-                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses
+                .put(
+                        "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
+                        "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.modal.modal.ModalTableauFactory",
@@ -278,12 +279,12 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.gt.GTTableau$Factory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.vergil.gt.GTTableau$ModalTableauFactory",
+        _graphicalClasses.put(
+                "ptolemy.vergil.gt.GTTableau$ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
 
         // 4/04 BooleanSwitch uses EditorIcon
         _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
-
 
         // 11/06 FSM uses StateIcon
         _graphicalClasses.put("ptolemy.vergil.fsm.StateIcon", null);
@@ -324,16 +325,16 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.ptera.EventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ptera.OctagonEventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ptera.TestIcon", null);
-        _graphicalClasses.put("ptolemy.vergil.ptera.TimeAdvanceEventIcon",
-                null);
+        _graphicalClasses
+                .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
 
         _graphicalClasses.put("ptolemy.vergil.gt.IterativeParameterIcon", null);
         _graphicalClasses.put("ptolemy.vergil.gt.StateMatcherIcon", null);
         _graphicalClasses.put("ptolemy.vergil.gt.TransformationAttributeIcon",
                 null);
 
-        _graphicalClasses.put("ptolemy.vergil.ptera.TimeAdvanceEventIcon",
-                null);
+        _graphicalClasses
+                .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
 
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon", null);
@@ -379,7 +380,6 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.basic.DocAttribute",
                 "ptolemy.kernel.util.Attribute");
 
-
         _graphicalClasses.put("ptolemy.domains.wireless.lib.GraphicalLocator",
                 "ptolemy.domains.wireless.lib.Locator");
 
@@ -392,26 +392,29 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Remove various graphical classes from curriculum
         _graphicalClasses.put(
                 "ptolemy.domains.curriculum.DependencyHighlighter", null);
-        _graphicalClasses.put(
-                "ptolemy.vergil.basic.DependencyHighlighter", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.DependencyHighlighter",
+                null);
         _graphicalClasses.put("ptolemy.domains.curriculum.HighlightEntities",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.NameIcon", null);
 
-    // Needed modal/demo/SystemLevelTypes/*.xml
+        // Needed modal/demo/SystemLevelTypes/*.xml
         _graphicalClasses.put("ptolemy.vergil.modal.StateIcon", null);
 
         // Exclude DependencyHighlighter
         _graphicalClasses.put("ptolemy.actor.gui.DependencyHighlighter", null);
 
-    // properties classes
-        _graphicalClasses.put("ptolemy.vergil.properties.ModelAttributeController",
-                null);
-        _graphicalClasses.put("ptolemy.domains.properties.kernel.ModelAttribute",
+        // properties classes
+        _graphicalClasses.put(
+                "ptolemy.vergil.properties.ModelAttributeController", null);
+        _graphicalClasses.put(
+                "ptolemy.domains.properties.kernel.ModelAttribute",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.domains.properties.kernel.OntologyAttribute",
+        _graphicalClasses.put(
+                "ptolemy.domains.properties.kernel.OntologyAttribute",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.domains.properties.kernel.PropertyLatticeAttribute",
+        _graphicalClasses.put(
+                "ptolemy.domains.properties.kernel.PropertyLatticeAttribute",
                 "ptolemy.kernel.util.Attribute");
 
     }

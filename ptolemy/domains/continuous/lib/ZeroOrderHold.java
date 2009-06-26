@@ -146,8 +146,7 @@ public class ZeroOrderHold extends Transformer {
         if (input.isKnown() && input.hasToken(0)) {
             _lastToken = input.get(0);
             if (_debugging) {
-                _debug("Reading an input "
-                        + _lastToken.toString());
+                _debug("Reading an input " + _lastToken.toString());
             }
             _fireAt(getDirector().getModelTime());
         }

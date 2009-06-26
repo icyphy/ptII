@@ -59,7 +59,7 @@ public class ImageReader extends PropertyConstraintHelper {
      */
     public ImageReader(PropertyConstraintSolver solver,
             ptolemy.actor.lib.image.ImageReader actor)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         super(solver, actor, false);
 
@@ -67,8 +67,7 @@ public class ImageReader extends PropertyConstraintHelper {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.image.ImageReader actor =
-            (ptolemy.actor.lib.image.ImageReader) getComponent();
+        ptolemy.actor.lib.image.ImageReader actor = (ptolemy.actor.lib.image.ImageReader) getComponent();
 
         setEquals(actor.output, _lattice.IMAGE);
         return super.constraintList();

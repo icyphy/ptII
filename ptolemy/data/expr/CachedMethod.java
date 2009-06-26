@@ -985,8 +985,7 @@ public class CachedMethod {
                         // or equivalent to the previous match.
                         preferredMethod = method;
                         // Kepler (jdk1.4?) requires this cast
-                        preferredConversions = conversions
-                                .clone();
+                        preferredConversions = conversions.clone();
                     }
                 }
             } catch (SecurityException security) {

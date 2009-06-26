@@ -154,9 +154,8 @@ public class TextEffigy extends Effigy {
                                 + "NullPointerException");
                     } catch (Exception ex) {
                         IOException exception = new IOException(
-                                "Failed to open '" + in
-                                + "\", base: \"" + base
-                                + "\"");
+                                "Failed to open '" + in + "\", base: \"" + base
+                                        + "\"");
                         exception.initCause(ex);
                         throw exception;
                     }

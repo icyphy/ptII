@@ -152,17 +152,17 @@ public class GTParameter extends Parameter {
                     ObjectToken objectToken = (ObjectToken) firstChild;
                     Object object = objectToken.getValue();
                     if (object instanceof NamedObj) {
-                        NamedObj patternObject = (NamedObj) _matchResult.getKey(
-                                object);
+                        NamedObj patternObject = (NamedObj) _matchResult
+                                .getKey(object);
                         if (patternObject != null) {
                             String methodName = node.getMethodName();
                             NamedObj patternChild = GTTools.getChild(
-                                    patternObject, methodName, true, true, true,
-                                    true);
+                                    patternObject, methodName, true, true,
+                                    true, true);
                             if (patternChild != null
                                     && _matchResult.containsKey(patternChild)) {
-                                Object hostChild =
-                                    _matchResult.get(patternChild);
+                                Object hostChild = _matchResult
+                                        .get(patternChild);
                                 _evaluatedChildToken = new ObjectToken(
                                         hostChild, hostChild.getClass());
                                 return;
@@ -238,8 +238,7 @@ public class GTParameter extends Parameter {
             // Resolve ports, entities and relations in the pattern.
             NamedObj patternChild = GTTools.getChild(_pattern, name, false,
                     true, true, true);
-            if (patternChild != null &&
-                    _matchResult.containsKey(patternChild)) {
+            if (patternChild != null && _matchResult.containsKey(patternChild)) {
                 // If found and there is a match (patternChild has not been
                 // ignored), return the matching object in the host.
                 NamedObj child = (NamedObj) _matchResult.get(patternChild);
@@ -253,11 +252,10 @@ public class GTParameter extends Parameter {
                     // the model that encloses the transformation rule).
                     NamedObj container = _pattern.getContainer();
                     if (container != null) {
-                        NamedObjVariable containerVar =
-                            NamedObjVariable.getNamedObjVariable(container,
-                                    true);
-                        ParserScope containerScope =
-                            containerVar.getParserScope();
+                        NamedObjVariable containerVar = NamedObjVariable
+                                .getNamedObjVariable(container, true);
+                        ParserScope containerScope = containerVar
+                                .getParserScope();
                         token = containerScope.get(name);
                         return token;
                     }
@@ -394,7 +392,7 @@ public class GTParameter extends Parameter {
          *  @exception IllegalActionException If an inference error occurs.
          */
         public void visitMethodCallNode(ASTPtMethodCallNode node)
-        throws IllegalActionException {
+                throws IllegalActionException {
             int argCount = node.jjtGetNumChildren();
             if (argCount == 1) {
                 Type firstChild = super._inferChild(node, 0);
@@ -402,17 +400,17 @@ public class GTParameter extends Parameter {
                     ObjectType objectType = (ObjectType) firstChild;
                     Object object = objectType.getValue();
                     if (object instanceof NamedObj) {
-                        NamedObj patternObject = (NamedObj) _matchResult.getKey(
-                                object);
+                        NamedObj patternObject = (NamedObj) _matchResult
+                                .getKey(object);
                         if (patternObject != null) {
                             String methodName = node.getMethodName();
                             NamedObj patternChild = GTTools.getChild(
-                                    patternObject, methodName, true, true, true,
-                                    true);
+                                    patternObject, methodName, true, true,
+                                    true, true);
                             if (patternChild != null
                                     && _matchResult.containsKey(patternChild)) {
-                                Object hostChild =
-                                    _matchResult.get(patternChild);
+                                Object hostChild = _matchResult
+                                        .get(patternChild);
                                 _setType(node, new ObjectType(hostChild,
                                         hostChild.getClass()));
                                 return;

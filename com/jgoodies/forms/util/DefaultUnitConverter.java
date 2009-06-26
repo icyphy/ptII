@@ -176,11 +176,13 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @exception NullPointerException     if the test string is <code>null</code>
      */
     public void setAverageCharacterWidthTestString(String newTestString) {
-        if (newTestString == null)
+        if (newTestString == null) {
             throw new NullPointerException("The test string must not be null.");
-        if (newTestString.length() == 0)
+        }
+        if (newTestString.length() == 0) {
             throw new IllegalArgumentException(
                     "The test string must not be empty.");
+        }
 
         String oldTestString = averageCharWidthTestString;
         averageCharWidthTestString = newTestString;

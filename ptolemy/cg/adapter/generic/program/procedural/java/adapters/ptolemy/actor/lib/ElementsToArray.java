@@ -63,22 +63,22 @@ public class ElementsToArray extends ProgramCodeGeneratorAdapter {
     @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
-        
+
         CodeStream codeStream = getStrategy().getCodeStream();
-        
+
         codeStream.append(super._generateFireCode());
         ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0).toString());
 
-        
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i).toString());
-            codeStream.append(getStrategy().generateBlockCode("fillArray", args));
+            codeStream.append(getStrategy()
+                    .generateBlockCode("fillArray", args));
         }
         codeStream.append(getStrategy().generateBlockCode("sendOutput"));
-        
+
         return processCode(codeStream.toString());
     }
 }

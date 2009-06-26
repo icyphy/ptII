@@ -422,18 +422,18 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             if (argCount == 3) {
                 if (argValues[0] instanceof FunctionToken) {
                     FunctionToken function = (FunctionToken) argValues[0];
-                    if (((FunctionType) function.getType()).getArgCount()
-                            != 2) {
-                        throw new IllegalActionException("The first argument " +
-                                "to the function \"fold\" must be a function " +
-                                "that accepts two arguments.");
+                    if (((FunctionType) function.getType()).getArgCount() != 2) {
+                        throw new IllegalActionException(
+                                "The first argument "
+                                        + "to the function \"fold\" must be a function "
+                                        + "that accepts two arguments.");
                     }
                     ptolemy.data.Token current = argValues[1];
                     if (argValues[2] instanceof ArrayToken) {
                         ArrayToken array = (ArrayToken) argValues[2];
                         for (int i = 0; i < array.length(); i++) {
                             current = function.apply(new ptolemy.data.Token[] {
-                                    current, array.getElement(i)});
+                                    current, array.getElement(i) });
                         }
                         _evaluatedChildToken = current;
                         return;
@@ -447,8 +447,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                     second = ConversionUtilities
                                             .convertJavaTypeToToken(second);
                                 }
-                                current = function.apply(new ptolemy.data.Token[] {
-                                        current, (ptolemy.data.Token) second});
+                                current = function
+                                        .apply(new ptolemy.data.Token[] {
+                                                current,
+                                                (ptolemy.data.Token) second });
                             }
                             _evaluatedChildToken = current;
                             return;
@@ -460,8 +462,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                     second = ConversionUtilities
                                             .convertJavaTypeToToken(second);
                                 }
-                                current = function.apply(new ptolemy.data.Token[] {
-                                        current, (ptolemy.data.Token) second});
+                                current = function
+                                        .apply(new ptolemy.data.Token[] {
+                                                current,
+                                                (ptolemy.data.Token) second });
                             }
                             _evaluatedChildToken = current;
                             return;
@@ -470,21 +474,21 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 }
             }
 
-            throw new IllegalActionException("The function \"fold\" is " +
-                    "a higher-order function that takes exactly 3 " +
-                    "arguments. The first argument must be a function " +
-                    "that takes 2 arguments. The second must be a value " +
-                    "that can be passed to the function as its first " +
-                    "argument. The third must be a list of values that " +
-                    "can be passed to the function as its second " +
-                    "argument.");
+            throw new IllegalActionException("The function \"fold\" is "
+                    + "a higher-order function that takes exactly 3 "
+                    + "arguments. The first argument must be a function "
+                    + "that takes 2 arguments. The second must be a value "
+                    + "that can be passed to the function as its first "
+                    + "argument. The third must be a list of values that "
+                    + "can be passed to the function as its second "
+                    + "argument.");
         }
 
         if (functionName.equals("object") && argCount == 1) {
             ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
             if (classNameNode instanceof ASTPtLeafNode) {
-                ptolemy.data.Token token =
-                    ((ASTPtLeafNode) classNameNode).getToken();
+                ptolemy.data.Token token = ((ASTPtLeafNode) classNameNode)
+                        .getToken();
                 if (token != null && token instanceof StringToken) {
                     String className = ((StringToken) token).stringValue();
                     _evaluatedChildToken = ObjectToken.object(className);
@@ -506,8 +510,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             if (argValues.length == 0) {
                 ptolemy.data.Token thisToken = _scope.get("this");
                 if (thisToken != null) {
-                    argTypes = new Type[] {thisToken.getType()};
-                    argValues = new ptolemy.data.Token[] {thisToken};
+                    argTypes = new Type[] { thisToken.getType() };
+                    argValues = new ptolemy.data.Token[] { thisToken };
                     result = _methodCall(node.getFunctionName(), argTypes,
                             argValues);
                     success = true;
@@ -1378,8 +1382,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param argValues An array of argument values.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    protected ptolemy.data.Token _methodCall(String methodName, Type[] argTypes,
-            Object[] argValues) throws IllegalActionException {
+    protected ptolemy.data.Token _methodCall(String methodName,
+            Type[] argTypes, Object[] argValues) throws IllegalActionException {
 
         CachedMethod method = CachedMethod.findMethod(methodName, argTypes,
                 CachedMethod.METHOD);
@@ -1399,27 +1403,27 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             Object object = objectToken.getValue();
             if (object != null) {
                 if (object instanceof NamedObj) {
-                    Object result = ((NamedObj) object).getAttribute(
-                            methodName);
+                    Object result = ((NamedObj) object)
+                            .getAttribute(methodName);
                     if (result == null && object instanceof Entity) {
                         result = ((Entity) object).getPort(methodName);
                     }
                     if (result == null && object instanceof CompositeEntity) {
-                        result = ((CompositeEntity) object).getEntity(
-                                methodName);
+                        result = ((CompositeEntity) object)
+                                .getEntity(methodName);
                         if (result == null) {
-                            result = ((CompositeEntity) object).getRelation(
-                                    methodName);
+                            result = ((CompositeEntity) object)
+                                    .getRelation(methodName);
                         }
                     }
 
                     if (result == null) {
-                        List attributes = ((NamedObj) object).attributeList(
-                                ContainmentExtender.class);
+                        List attributes = ((NamedObj) object)
+                                .attributeList(ContainmentExtender.class);
                         Iterator attrIterator = attributes.iterator();
                         while (result == null && attrIterator.hasNext()) {
-                            ContainmentExtender extender = (ContainmentExtender)
-                                    attrIterator.next();
+                            ContainmentExtender extender = (ContainmentExtender) attrIterator
+                                    .next();
                             result = extender.getContainedObject(methodName);
                         }
                     }
@@ -1460,9 +1464,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
 
             if (object == null) {
-                throw new IllegalActionException("The object on which method " +
-                        "\"" + methodName + "\" is invoked on is null, but " +
-                        "the method is not found or is not static.");
+                throw new IllegalActionException("The object on which method "
+                        + "\"" + methodName + "\" is invoked on is null, but "
+                        + "the method is not found or is not static.");
             }
         }
 
@@ -1560,7 +1564,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 boolean compatible = true;
                 for (int i = 0; compatible && i < argCount; i++) {
                     Class<?> argumentType = ConversionUtilities
-                            .convertTokenTypeToJavaType(argTypes[i+1]);
+                            .convertTokenTypeToJavaType(argTypes[i + 1]);
                     if (!parameterTypes[i].isAssignableFrom(argumentType)) {
                         compatible = false;
                     } else {
@@ -1568,20 +1572,21 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         if (argument instanceof ObjectToken) {
                             args[i] = ((ObjectToken) argument).getValue();
                         } else if (argument instanceof ptolemy.data.Token) {
-                            args[i] = ConversionUtilities.convertTokenToJavaType
-                                    ((ptolemy.data.Token) argument);
+                            args[i] = ConversionUtilities
+                                    .convertTokenToJavaType((ptolemy.data.Token) argument);
                         } else {
                             args[i] = argument;
                         }
                     }
                 }
-                if (compatible && (object != null
-                        || Modifier.isStatic(method.getModifiers()))) {
+                if (compatible
+                        && (object != null || Modifier.isStatic(method
+                                .getModifiers()))) {
                     try {
                         result = method.invoke(object, args);
                         if (result == null) {
-                            result = new ObjectToken(null,
-                                    method.getReturnType());
+                            result = new ObjectToken(null, method
+                                    .getReturnType());
                         }
                         break;
                     } catch (IllegalArgumentException e) {

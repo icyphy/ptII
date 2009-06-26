@@ -104,15 +104,15 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
         System.out.println("ClassWriter.internalTransform(" + phaseName + ", "
                 + options + ")");
 
-        String outputDirectory = PhaseOptions.getString(options, "outputDirectory");
+        String outputDirectory = PhaseOptions.getString(options,
+                "outputDirectory");
 
         if (!outputDirectory.equals("")) {
             File outputDirectoryFile = new File(outputDirectory);
 
             if (!outputDirectoryFile.isDirectory()) {
                 if (!outputDirectoryFile.mkdirs()) {
-                    throw new RuntimeException(
-                            "Failed to create directory \""
+                    throw new RuntimeException("Failed to create directory \""
                             + outputDirectoryFile + "\"");
                 }
             }
@@ -128,8 +128,8 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
                 // If we get an IOException, we might not have any idea
                 // of which directory was problematic
                 throw new RuntimeException("Creating class file for '"
-                        + theClass + "' in directory '" + outputDirectory + "' failed",
-                        ex);
+                        + theClass + "' in directory '" + outputDirectory
+                        + "' failed", ex);
             }
         }
     }
@@ -174,16 +174,13 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
     private void _create(File file) throws IOException {
         if (!file.getParentFile().isDirectory()) {
             if (!file.getParentFile().mkdirs()) {
-                throw new IOException(
-                        "Failed to create directory \""
+                throw new IOException("Failed to create directory \""
                         + file.getParentFile() + "\"");
             }
         }
 
         if (!file.exists() && !file.createNewFile()) {
-            throw new IOException(
-                    "Failed to create "
-                        + file + "\"");
+            throw new IOException("Failed to create " + file + "\"");
         }
     }
 }

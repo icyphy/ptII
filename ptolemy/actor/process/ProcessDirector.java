@@ -225,8 +225,9 @@ public class ProcessDirector extends Director {
                         return;
                     } finally {
                         if (outsideDirector != null) {
-                            ((ProcessDirector) outsideDirector).threadUnblocked(
-                                    Thread.currentThread(), null);
+                            ((ProcessDirector) outsideDirector)
+                                    .threadUnblocked(Thread.currentThread(),
+                                            null);
                         }
                     }
                 }
@@ -284,7 +285,8 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If the actor is not
      *  acceptable to the domain.  Not thrown in this base class.
      */
-    public synchronized void initialize(Actor actor) throws IllegalActionException {
+    public synchronized void initialize(Actor actor)
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Initializing actor: " + ((NamedObj) actor).getFullName());
         }
@@ -305,7 +307,7 @@ public class ProcessDirector extends Director {
 
         // Create threads.
         ProcessThread processThread = _newProcessThread(actor, this);
-         _activeThreads.add(processThread);
+        _activeThreads.add(processThread);
         assert _activeThreads.contains(processThread);
 
         _newActorThreadList.addFirst(processThread);
@@ -652,7 +654,7 @@ public class ProcessDirector extends Director {
         // block.
         int depth = 0;
         try {
-            synchronized(this) {
+            synchronized (this) {
                 _requestFinishOnReceivers();
 
                 // Now wake up threads that depend on the manager.

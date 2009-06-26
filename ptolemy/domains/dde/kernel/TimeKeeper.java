@@ -228,8 +228,8 @@ public class TimeKeeper {
                 receivers = port.getRemoteReceivers();
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(ex);
-                    // At this time IllegalActionExceptions are not allowed to happen.
-                    // Width inference should already have been done.
+                // At this time IllegalActionExceptions are not allowed to happen.
+                // Width inference should already have been done.
             }
 
             for (int i = 0; i < receivers.length; i++) {

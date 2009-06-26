@@ -117,8 +117,7 @@ public class SuperdenseDependency implements Dependency {
                     && _time == Double.POSITIVE_INFINITY) {
                 return true;
             }
-            return (_time == ((SuperdenseDependency) object)._time
-                    && _index == ((SuperdenseDependency) object)._index);
+            return (_time == ((SuperdenseDependency) object)._time && _index == ((SuperdenseDependency) object)._index);
         }
         return false;
     }
@@ -149,8 +148,7 @@ public class SuperdenseDependency implements Dependency {
     public Dependency oPlus(Dependency dependency) {
         // NOTE: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((SuperdenseDependency) dependency)._time < _time
-                || (((SuperdenseDependency) dependency)._time == _time
-                        && ((SuperdenseDependency) dependency)._index < _index)) {
+                || (((SuperdenseDependency) dependency)._time == _time && ((SuperdenseDependency) dependency)._index < _index)) {
             return dependency;
         }
         return this;
@@ -184,9 +182,8 @@ public class SuperdenseDependency implements Dependency {
         if (((SuperdenseDependency) dependency)._time == 0.0) {
             index = _index + ((SuperdenseDependency) dependency)._index;
         }
-        return new SuperdenseDependency(
-                _time + ((SuperdenseDependency) dependency)._time,
-                index);
+        return new SuperdenseDependency(_time
+                + ((SuperdenseDependency) dependency)._time, index);
     }
 
     /** Return the dependency that when multiplied by any other
@@ -236,7 +233,6 @@ public class SuperdenseDependency implements Dependency {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
 
     // NOTE: FindBugs suggests that both these fields be final
     // "MS: Field isn't final but should be (MS_SHOULD_BE_FINAL)

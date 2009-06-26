@@ -97,13 +97,13 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
             Token token = null;
 
             for (int i = 0; i < _getNode().jjtGetNumChildren(); i++) {
-                ptolemy.data.expr.ASTPtRootNode childNode =
-                    (ptolemy.data.expr.ASTPtRootNode) _getNode().jjtGetChild(i);
+                ptolemy.data.expr.ASTPtRootNode childNode = (ptolemy.data.expr.ASTPtRootNode) _getNode()
+                        .jjtGetChild(i);
 
-                Property childProperty =
-                    getSolver().getProperty(childNode);
+                Property childProperty = getSolver().getProperty(childNode);
 
-                if ((childProperty == null) || (childProperty == _lattice.getElement("UNKNOWN"))
+                if ((childProperty == null)
+                        || (childProperty == _lattice.getElement("UNKNOWN"))
                         || (childProperty == _lattice.getElement("FALSE"))) {
                     return childProperty;
                 } else if (!(childNode.isConstant() && childNode.isEvaluated())) {
@@ -112,16 +112,17 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
                     if (token == null) {
                         token = childNode.getToken();
                     } else {
-                        if (!(childNode.getToken().isEqualTo(token).booleanValue())) {
+                        if (!(childNode.getToken().isEqualTo(token)
+                                .booleanValue())) {
                             isAllSameTokenValue = false;
                         }
                     }
                 }
             }
 
-            return (isAllSameTokenValue) ? _lattice.getElement("TRUE") : _lattice.getElement("FALSE");
+            return (isAllSameTokenValue) ? _lattice.getElement("TRUE")
+                    : _lattice.getElement("FALSE");
         }
-
 
         public boolean isEffective() {
             return true;
@@ -142,14 +143,15 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
 
                     PropertyConstraintASTNodeHelper helper;
 
-                    helper = (PropertyConstraintASTNodeHelper) getSolver().getHelper(child);
+                    helper = (PropertyConstraintASTNodeHelper) getSolver()
+                            .getHelper(child);
                     InequalityTerm term = helper.getPropertyTerm(child);
 
                     terms.add(term);
                 }
             } catch (IllegalActionException e) {
                 throw new AssertionError(
-                "Unable to get the children property term(s).");
+                        "Unable to get the children property term(s).");
             }
 
             return terms.toArray(new InequalityTerm[0]);

@@ -85,8 +85,7 @@ public class OctagonEventIcon extends NameIcon {
             height += _spacingValue * 2.0;
             cornerWidth += _spacingValue * 1.8 / cornerWidth;
             polygon = _createOctagon(width, height, cornerWidth);
-            Figure outerFigure = new BasicFigure(polygon, null,
-                    _getLineWidth());
+            Figure outerFigure = new BasicFigure(polygon, null, _getLineWidth());
             outerFigure.translate(-_spacingValue, -_spacingValue);
             compositeFigure.add(0, outerFigure);
             figure = compositeFigure;
@@ -153,14 +152,12 @@ public class OctagonEventIcon extends NameIcon {
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
-            colorParameter = (Parameter) (getAttribute("fill",
-                    Parameter.class));
+            colorParameter = (Parameter) (getAttribute("fill", Parameter.class));
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
-                    Color color = new Color(
-                            (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
+                    Color color = new Color((float) ((ScalarToken) array
+                            .getElement(0)).doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
                                     .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
@@ -240,22 +237,22 @@ public class OctagonEventIcon extends NameIcon {
             height += _spacingValue * 2.0;
             cornerWidth += _spacingValue * 1.8 / cornerWidth;
             polygon = _createOctagon(width, height, cornerWidth);
-            Figure outerFigure = new BasicFigure(polygon, null,
-                    _getLineWidth());
+            Figure outerFigure = new BasicFigure(polygon, null, _getLineWidth());
             outerFigure.translate(-_spacingValue, -_spacingValue);
             compositeFigure.add(0, outerFigure);
             background = compositeFigure;
         }
-        background.translate((backBounds.getWidth() - width) / 2 - 3.0 , 0.0);
+        background.translate((backBounds.getWidth() - width) / 2 - 3.0, 0.0);
         figure.setBackgroundFigure(background);
 
-        label.translateTo(background.getBounds().getCenterX(),
-                backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0 -
-                _spacingValue);
+        label.translateTo(background.getBounds().getCenterX(), backBounds
+                .getMaxY()
+                + stringBounds.getHeight() / 2.0 - 1.0 - _spacingValue);
         figure.add(label);
     }
 
-    private Polygon2D _createOctagon(double width, double height, double cornerWidth) {
+    private Polygon2D _createOctagon(double width, double height,
+            double cornerWidth) {
         Polygon2D polygon = new Polygon2D.Double();
         polygon.moveTo(0.0, cornerWidth);
         polygon.lineTo(cornerWidth, 0.0);

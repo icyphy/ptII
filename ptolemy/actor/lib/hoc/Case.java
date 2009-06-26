@@ -89,8 +89,8 @@ public class Case extends MultiCompositeActor {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public Case(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public Case(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -238,10 +238,9 @@ public class Case extends MultiCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /** Initialize the class. */
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.Case");
 
         // Create the control port.

@@ -46,7 +46,8 @@ import ptolemy.data.type.Type;
 public class LocationType extends RecordType {
 
     public LocationType() {
-        super(new String[] {"x", "y"}, new Type[] {BaseType.INT, BaseType.INT});
+        super(new String[] { "x", "y" }, new Type[] { BaseType.INT,
+                BaseType.INT });
     }
 
     public static final LocationType LOCATION = new LocationType();

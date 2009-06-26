@@ -40,7 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
 
-    public PropertyCombineParseTreeEvaluator(Object object, PropertySolver solver) {
+    public PropertyCombineParseTreeEvaluator(Object object,
+            PropertySolver solver) {
         _solver = solver;
         _object = object;
     }
@@ -54,17 +55,19 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         super.visitLeafNode(node);
 
-        if (node.isEvaluated() &&
-            node.isConstant() &&
-            node.getToken().getType().equals(BaseType.STRING)) {
+        if (node.isEvaluated() && node.isConstant()
+                && node.getToken().getType().equals(BaseType.STRING)) {
 
-            String stringTokenValue = ((StringToken)node.getToken()).stringValue();
+            String stringTokenValue = ((StringToken) node.getToken())
+                    .stringValue();
             if (stringTokenValue.equalsIgnoreCase("token::combinedValueToken")) {
                 // PropertyCombineSolver?
 
                 // get attribue
-                PropertyAttribute propertyAttribute = (PropertyAttribute)(((IOPort)_object).getAttribute(stringTokenValue));
-                PropertyToken propertyToken = (PropertyToken)propertyAttribute.getProperty();
+                PropertyAttribute propertyAttribute = (PropertyAttribute) (((IOPort) _object)
+                        .getAttribute(stringTokenValue));
+                PropertyToken propertyToken = (PropertyToken) propertyAttribute
+                        .getProperty();
 
                 if ((propertyAttribute != null) && (propertyToken != null)) {
                     _evaluatedChildToken = propertyToken.getToken();
@@ -76,7 +79,8 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                 stringTokenValue = stringTokenValue.replaceFirst("token::", "");
 
                 // get solver
-                PropertyTokenSolver portValueSolver = (PropertyTokenSolver) _solver.findSolver(stringTokenValue);
+                PropertyTokenSolver portValueSolver = (PropertyTokenSolver) _solver
+                        .findSolver(stringTokenValue);
 
                 if (portValueSolver == null) {
                     // not found, treat as String
@@ -84,19 +88,23 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                     return;
                 } else {
                     // get helper and property
-                    PropertyToken propertyToken = (PropertyToken)portValueSolver.getProperty(_object);
+                    PropertyToken propertyToken = (PropertyToken) portValueSolver
+                            .getProperty(_object);
                     if (propertyToken != null) {
                         _evaluatedChildToken = propertyToken.getToken();
                     } else {
-                        _evaluatedChildToken = new StringToken(Token.NIL.toString());
+                        _evaluatedChildToken = new StringToken(Token.NIL
+                                .toString());
                     }
                 }
-            // PropertyConstraintSolver?
+                // PropertyConstraintSolver?
             } else if (stringTokenValue.startsWith("lattice::")) {
-                stringTokenValue = stringTokenValue.replaceFirst("lattice::", "");
+                stringTokenValue = stringTokenValue.replaceFirst("lattice::",
+                        "");
 
                 // get solver
-                PropertyConstraintSolver propertyConstraintSolver = (PropertyConstraintSolver) _solver.findSolver(stringTokenValue);
+                PropertyConstraintSolver propertyConstraintSolver = (PropertyConstraintSolver) _solver
+                        .findSolver(stringTokenValue);
 
                 if (propertyConstraintSolver == null) {
                     // not found, treat as String
@@ -104,11 +112,14 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                     return;
                 } else {
                     // get helper and property
-                    Property property = propertyConstraintSolver.getProperty(_object);
+                    Property property = propertyConstraintSolver
+                            .getProperty(_object);
                     if (property != null) {
-                        _evaluatedChildToken = new StringToken(property.toString());
+                        _evaluatedChildToken = new StringToken(property
+                                .toString());
                     } else {
-                        _evaluatedChildToken = new StringToken(Token.NIL.toString());
+                        _evaluatedChildToken = new StringToken(Token.NIL
+                                .toString());
                     }
                 }
             }

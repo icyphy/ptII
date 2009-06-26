@@ -78,6 +78,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -366,8 +367,7 @@ public class Query extends JPanel {
      *  @param foreground The foreground color for the text entry box.
      */
     public void addFileChooser(String name, String label, String defaultName,
-            URI base, File startingDirectory, Color background,
-            Color foreground) {
+            URI base, File startingDirectory, Color background, Color foreground) {
         addFileChooser(name, label, defaultName, base, startingDirectory, true,
                 false, false, background, foreground);
     }
@@ -389,8 +389,9 @@ public class Query extends JPanel {
             String defaultName, URI base, File startingDirectory,
             boolean allowFiles, boolean allowDirectories, Color background,
             Color foreground) {
-        return addFileChooser(name, label, defaultName, base, startingDirectory,
-                allowFiles, allowDirectories, false, background, foreground);
+        return addFileChooser(name, label, defaultName, base,
+                startingDirectory, allowFiles, allowDirectories, false,
+                background, foreground);
     }
 
     /** Create a FileChooser.
@@ -675,7 +676,7 @@ public class Query extends JPanel {
         top.setPreferredSize(new Dimension(-1, 5));
         panel.add(top, BorderLayout.NORTH);
 
-        JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+        JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
         panel.add(separator, BorderLayout.CENTER);
 
         JPanel bottom = new JPanel();
@@ -722,7 +723,6 @@ public class Query extends JPanel {
         slider.addChangeListener(new SliderListener(this, name));
         return slider;
     }
-
 
     /** Add text to the query.
      *  @param text The text to be added.
@@ -1698,8 +1698,8 @@ public class Query extends JPanel {
         preferredSize.width += 25;
 
         // Applets seem to need this, see CT/SigmaDelta
-        _widgetsHeight += widget.getPreferredSize().height + _insets.top +
-                _insets.bottom;
+        _widgetsHeight += widget.getPreferredSize().height + _insets.top
+                + _insets.bottom;
         preferredSize.height = _widgetsHeight;
 
         Toolkit tk = Toolkit.getDefaultToolkit();
@@ -1823,18 +1823,18 @@ public class Query extends JPanel {
     /** Listener for "line" and radio button entries.
      */
     public static class QueryActionListener implements ActionListener {
-    /** Construct a listener for line and radio button entries.
-     *  @param owner The owner query
-     *  @param name The name of the query
-     */
+        /** Construct a listener for line and radio button entries.
+         *  @param owner The owner query
+         *  @param name The name of the query
+         */
         public QueryActionListener(Query owner, String name) {
             _name = name;
             _owner = owner;
         }
 
         /** Call all registered QueryListeners.
-     *  @param event The event, ignored in this method.
-     */
+        *  @param event The event, ignored in this method.
+        */
         public void actionPerformed(ActionEvent event) {
             _owner._notifyListeners(_name);
         }
@@ -1847,11 +1847,11 @@ public class Query extends JPanel {
     /** Panel containing an entry box and color chooser.
      */
     public static class QueryColorChooser extends Box implements ActionListener {
-    /** Create a panel containing an entry box and a color chooser.
-     *  @param owner The owner query
-     *  @param name The name of the query
-     *  @param defaultColor  The initial default color of the color chooser.
-     */
+        /** Create a panel containing an entry box and a color chooser.
+         *  @param owner The owner query
+         *  @param name The name of the query
+         *  @param defaultColor  The initial default color of the color chooser.
+         */
         public QueryColorChooser(Query owner, String name, String defaultColor) {
             super(BoxLayout.X_AXIS);
             _owner = owner;
@@ -1909,16 +1909,16 @@ public class Query extends JPanel {
             }
         }
 
-    /** Get the selected color name.
-     *  @return the value of the text in the entry box.
-     */
+        /** Get the selected color name.
+         *  @return the value of the text in the entry box.
+         */
         public String getSelectedColor() {
             return _entryBox.getText();
         }
 
-    /** Set selected color name.
-     *  @param name The value of the text in the entry box.
-     */
+        /** Set selected color name.
+         *  @param name The value of the text in the entry box.
+         */
         public void setColor(String name) {
             _entryBox.setText(name);
         }
@@ -1936,16 +1936,16 @@ public class Query extends JPanel {
      *
      */
     public static class QueryFileChooser extends Box implements ActionListener {
-    /** Construct a query file chooser.  The background will be white and
-     *  the foreground will be black.
-     * @param owner The query object that owns the file chooser
-     * @param name The name of the query object
-     * @param defaultName The default name that appears in the text field
-     * @param base The base for this query file chooser
-     * @param startingDirectory the directory in which the file query is initially opened
-     * @param allowFiles true if files are allowed to be selected.
-     * @param allowDirectories if directories are allowed to be selected.
-     */
+        /** Construct a query file chooser.  The background will be white and
+         *  the foreground will be black.
+         * @param owner The query object that owns the file chooser
+         * @param name The name of the query object
+         * @param defaultName The default name that appears in the text field
+         * @param base The base for this query file chooser
+         * @param startingDirectory the directory in which the file query is initially opened
+         * @param allowFiles true if files are allowed to be selected.
+         * @param allowDirectories if directories are allowed to be selected.
+         */
         public QueryFileChooser(Query owner, String name, String defaultName,
                 URI base, File startingDirectory, boolean allowFiles,
                 boolean allowDirectories) {
@@ -1953,18 +1953,18 @@ public class Query extends JPanel {
                     allowDirectories, false, Color.white, Color.black);
         }
 
-    /** Construct a query file chooser.
-     * @param owner The query object that owns the file chooser
-     * @param name The name of the query object
-     * @param defaultName The default name that appears in the text field
-     * @param base The base for this query file chooser
-     * @param startingDirectory the directory in which the file query is initially opened
-     * @param allowFiles true if files are allowed to be selected.
-     * @param allowDirectories if directories are allowed to be selected.
-     * @param save Whether the file is to be saved or opened.
-     * @param background The color of the background.
-     * @param foreground The color of the foregriound.
-     */
+        /** Construct a query file chooser.
+         * @param owner The query object that owns the file chooser
+         * @param name The name of the query object
+         * @param defaultName The default name that appears in the text field
+         * @param base The base for this query file chooser
+         * @param startingDirectory the directory in which the file query is initially opened
+         * @param allowFiles true if files are allowed to be selected.
+         * @param allowDirectories if directories are allowed to be selected.
+         * @param save Whether the file is to be saved or opened.
+         * @param background The color of the background.
+         * @param foreground The color of the foregriound.
+         */
         public QueryFileChooser(Query owner, String name, String defaultName,
                 URI base, File startingDirectory, boolean allowFiles,
                 boolean allowDirectories, boolean save, Color background,
@@ -2017,8 +2017,8 @@ public class Query extends JPanel {
                 public void approveSelection() {
                     File file = getSelectedFile();
                     if (file.exists() && getDialogType() == SAVE_DIALOG) {
-                        String queryString = file.getName() +
-                                " already exists. Overwrite?";
+                        String queryString = file.getName()
+                                + " already exists. Overwrite?";
                         int selected = JOptionPane.showOptionDialog(null,
                                 queryString, "Confirm save",
                                 JOptionPane.YES_NO_OPTION,
@@ -2041,8 +2041,8 @@ public class Query extends JPanel {
             fileChooser.setApproveButtonMnemonic('S');
 
             if (_allowFiles && _allowDirectories) {
-                fileChooser.setFileSelectionMode(
-                        JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser
+                        .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             } else if (_allowFiles && !_allowDirectories) {
                 // This is the default.
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -2056,8 +2056,8 @@ public class Query extends JPanel {
                         "QueryFileChooser: nothing to be chosen.");
             }
 
-            int returnValue = _save ? fileChooser.showSaveDialog(_owner) :
-                fileChooser.showOpenDialog(_owner);
+            int returnValue = _save ? fileChooser.showSaveDialog(_owner)
+                    : fileChooser.showOpenDialog(_owner);
 
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 if (_base == null) {
@@ -2098,16 +2098,16 @@ public class Query extends JPanel {
             }
         }
 
-    /** Get the selected file name.
-     *  @return the value of the text in the entry box.
-     */
-    public String getSelectedFileName() {
+        /** Get the selected file name.
+         *  @return the value of the text in the entry box.
+         */
+        public String getSelectedFileName() {
             return _entryBox.getText();
         }
 
-    /** Set selected file name.
-     *  @param name The value of the text in the entry box.
-     */
+        /** Set selected file name.
+         *  @param name The value of the text in the entry box.
+         */
         public void setFileName(String name) {
             _entryBox.setText(name);
         }
@@ -2132,10 +2132,10 @@ public class Query extends JPanel {
     /** Listener for line entries, for when they lose the focus.
      */
     public static class QueryFocusListener implements FocusListener {
-    /** Construct a listener for when line entries lose the focus.
-     * @param owner The query object that owns the file chooser
-     * @param name The name of the query object
-     */
+        /** Construct a listener for when line entries lose the focus.
+         * @param owner The query object that owns the file chooser
+         * @param name The name of the query object
+         */
         public QueryFocusListener(Query owner, String name) {
             _name = name;
             _owner = owner;
@@ -2164,10 +2164,10 @@ public class Query extends JPanel {
     /** Listener for "CheckBox" and "Choice" entries.
      */
     public static class QueryItemListener implements ItemListener {
-    /** Create a listener for the CheckBox and Choice entries.
-     *  @param owner The owner query
-     *  @param name The name of the query
-     */
+        /** Create a listener for the CheckBox and Choice entries.
+         *  @param owner The owner query
+         *  @param name The name of the query
+         */
         public QueryItemListener(Query owner, String name) {
             _name = name;
             _owner = owner;
@@ -2213,10 +2213,10 @@ public class Query extends JPanel {
     /** Listener for changes in slider.
      */
     public static class SliderListener implements ChangeListener {
-    /** Construct a listener for changes in a slider.
-     * @param owner The query object that owns slider.
-     * @param name The name of the query object
-     */
+        /** Construct a listener for changes in a slider.
+         * @param owner The query object that owns slider.
+         * @param name The name of the query object
+         */
         public SliderListener(Query owner, String name) {
             _name = name;
             _owner = owner;

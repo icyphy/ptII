@@ -51,7 +51,8 @@ public abstract class InputDevice extends CCodeGeneratorHelper {
         return "";
     }
 
-    public String generateHardwareInitializationCode() throws IllegalActionException {
+    public String generateHardwareInitializationCode()
+            throws IllegalActionException {
         return "";
     }
 }

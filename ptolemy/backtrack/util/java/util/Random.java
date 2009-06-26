@@ -159,7 +159,7 @@ public class Random implements Serializable, Rollbackable {
      */
     protected synchronized int next(int bits) {
         $ASSIGN$seed((seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1));
-        return (int)(seed >>> (48 - bits));
+        return (int) (seed >>> (48 - bits));
     }
 
     /**     
@@ -188,15 +188,15 @@ public class Random implements Serializable, Rollbackable {
         int max = bytes.length & ~0x3;
         for (int i = 0; i < max; i += 4) {
             random = next(32);
-            bytes[i] = (byte)random;
-            bytes[i + 1] = (byte)(random >> 8);
-            bytes[i + 2] = (byte)(random >> 16);
-            bytes[i + 3] = (byte)(random >> 24);
+            bytes[i] = (byte) random;
+            bytes[i + 1] = (byte) (random >> 8);
+            bytes[i + 2] = (byte) (random >> 16);
+            bytes[i + 3] = (byte) (random >> 24);
         }
         if (max < bytes.length) {
             random = next(32);
             for (int j = max; j < bytes.length; j++) {
-                bytes[j] = (byte)random;
+                bytes[j] = (byte) random;
                 random >>= 8;
             }
         }
@@ -257,11 +257,13 @@ public class Random implements Serializable, Rollbackable {
      * @since 1.2
      */
     public int nextInt(int n) {
-        if (n <= 0)
+        if (n <= 0) {
             throw new IllegalArgumentException("n must be positive");
-        if ((n & -n) == n)
+        }
+        if ((n & -n) == n) {
             // i.e., n is a power of 2
-            return (int)((n * (long)next(31)) >> 31);
+            return (int) ((n * (long) next(31)) >> 31);
+        }
         int bits, val;
         do {
             bits = next(31);
@@ -281,7 +283,7 @@ public class Random implements Serializable, Rollbackable {
      * @return the next pseudorandom value
      */
     public long nextLong() {
-        return ((long)next(32) << 32) + next(32);
+        return ((long) next(32) << 32) + next(32);
     }
 
     /**     
@@ -309,7 +311,7 @@ public class Random implements Serializable, Rollbackable {
      * @return the next pseudorandom float
      */
     public float nextFloat() {
-        return next(24) / (float)(1 << 24);
+        return next(24) / (float) (1 << 24);
     }
 
     /**     
@@ -323,7 +325,7 @@ public class Random implements Serializable, Rollbackable {
      * @return the next pseudorandom double
      */
     public double nextDouble() {
-        return (((long)next(26) << 27) + next(27)) / (double)(1L << 53);
+        return (((long) next(26) << 27) + next(27)) / (double) (1L << 53);
     }
 
     /**     
@@ -378,14 +380,16 @@ public class Random implements Serializable, Rollbackable {
 
     private final boolean $ASSIGN$haveNextNextGaussian(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$haveNextNextGaussian.add(null, haveNextNextGaussian, $CHECKPOINT.getTimestamp());
+            $RECORD$haveNextNextGaussian.add(null, haveNextNextGaussian,
+                    $CHECKPOINT.getTimestamp());
         }
         return haveNextNextGaussian = newValue;
     }
 
     private final double $ASSIGN$nextNextGaussian(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$nextNextGaussian.add(null, nextNextGaussian, $CHECKPOINT.getTimestamp());
+            $RECORD$nextNextGaussian.add(null, nextNextGaussian, $CHECKPOINT
+                    .getTimestamp());
         }
         return nextNextGaussian = newValue;
     }
@@ -398,16 +402,20 @@ public class Random implements Serializable, Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(haveNextNextGaussian, timestamp, trim);
-        nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian, timestamp, trim);
+        haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(
+                haveNextNextGaussian, timestamp, trim);
+        nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian,
+                timestamp, trim);
         seed = $RECORD$seed.restore(seed, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -433,17 +441,15 @@ public class Random implements Serializable, Rollbackable {
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord $RECORD$haveNextNextGaussian = new FieldRecord(0);
+    private transient FieldRecord $RECORD$haveNextNextGaussian = new FieldRecord(
+            0);
 
     private transient FieldRecord $RECORD$nextNextGaussian = new FieldRecord(0);
 
     private transient FieldRecord $RECORD$seed = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$haveNextNextGaussian,
-            $RECORD$nextNextGaussian,
-            $RECORD$seed
-        };
+            $RECORD$haveNextNextGaussian, $RECORD$nextNextGaussian,
+            $RECORD$seed };
 
 }
-

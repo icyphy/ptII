@@ -90,7 +90,8 @@ public class PtidesBasicReceiver extends DEReceiver {
      */
     public boolean hasToken(int numberOfTokens) {
         try {
-            throw new IllegalActionException("This method should not be used in PtidesBasicReceiver");
+            throw new IllegalActionException(
+                    "This method should not be used in PtidesBasicReceiver");
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }

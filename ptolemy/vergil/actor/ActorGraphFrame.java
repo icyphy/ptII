@@ -89,8 +89,8 @@ import diva.gui.GUIUtilities;
  * @Pt.ProposedRating Red (neuendor)
  * @Pt.AcceptedRating Red (johnr)
  */
-public class ActorGraphFrame extends ExtendedGraphFrame
-        implements ActionListener {
+public class ActorGraphFrame extends ExtendedGraphFrame implements
+        ActionListener {
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -150,7 +150,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     /////////////////////////////////////////////////////////////////
     ////                        protected methods                ////
 
-
     /**
      * Initialize this class.
      * In this base class, the help file is set, and various
@@ -197,11 +196,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             GUIUtilities.addHotKey(_getRightComponent(),
                     _instantiateAttributeAction);
             GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
-            GUIUtilities.addHotKey(_getRightComponent(), _instantiateEntityAction);
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _instantiateEntityAction);
             _graphMenu.addSeparator();
             diva.gui.GUIUtilities.addHotKey(_getRightComponent(),
                     _createHierarchyAction);
-            diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
+            diva.gui.GUIUtilities.addMenuItem(_graphMenu,
+                    _createHierarchyAction);
         }
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
@@ -270,18 +271,19 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             // Only include the various actions if there is an actor library
             // The ptinyViewer configuration uses this.
             Configuration configuration = getConfiguration();
-            if ((configuration != null && configuration.getEntity("actor library") != null)
+            if ((configuration != null && configuration
+                    .getEntity("actor library") != null)
                     && item.getActionCommand().equals("Save As")) {
                 // Add a SaveAsDesignPattern here.
-                JMenuItem importItem = new JMenuItem(
-                        "Import Design Pattern", KeyEvent.VK_D);
-                JMenuItem exportItem = new JMenuItem(
-                        "Export Design Pattern", KeyEvent.VK_D);
+                JMenuItem importItem = new JMenuItem("Import Design Pattern",
+                        KeyEvent.VK_D);
+                JMenuItem exportItem = new JMenuItem("Export Design Pattern",
+                        KeyEvent.VK_D);
                 JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 4];
                 System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                newItems[i+1] = importItem;
+                newItems[i + 1] = importItem;
                 importItem.addActionListener(this);
-                newItems[i+2] = exportItem;
+                newItems[i + 2] = exportItem;
                 exportItem.addActionListener(this);
                 System.arraycopy(fileMenuItems, i, newItems, i + 4,
                         fileMenuItems.length - i);
@@ -345,8 +347,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     //                     private variables                     ////
 
     /** The most recent class name for instantiating an attribute. */
-    private String _lastAttributeClassName =
-        "ptolemy.vergil.kernel.attributes.EllipseAttribute";
+    private String _lastAttributeClassName = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
 
     /** The most recent class name for instantiating an entity. */
     private String _lastEntityClassName = "ptolemy.actor.lib.Ramp";
@@ -403,7 +404,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 Configuration configuration = (Configuration) effigy.toplevel();
                 try {
                     PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                            .getPtolemyPreferencesWithinConfiguration(configuration);
                     if (preferences != null) {
                         getCanvas().setBackground(
                                 preferences.backgroundColor.asColor());
@@ -411,13 +412,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         if (_backgroundWarningCount < 1) {
                             _backgroundWarningCount++;
                             if (configuration.getEntity("actor library") != null) {
-                                System.out.println("Failed to get PtolemyPreferences?  This can happen when there is no left hand library.");
+                                System.out
+                                        .println("Failed to get PtolemyPreferences?  This can happen when there is no left hand library.");
                             }
                         }
                     }
                 } catch (IllegalActionException ex) {
-                    System.err.println("Warning, failed to find Ptolemy Preferences "
-                                       + "or set the background, using default.");
+                    System.err
+                            .println("Warning, failed to find Ptolemy Preferences "
+                                    + "or set the background, using default.");
                     ex.printStackTrace();
                 }
             }
@@ -506,17 +509,17 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                 if ((director != null)
                                         && (_listeningTo != director)) {
                                     if (_listeningTo != null) {
-                                        _listeningTo.removeDebugListener(
-                                                _controller);
+                                        _listeningTo
+                                                .removeDebugListener(_controller);
                                     }
 
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
                                 } else {
-                                    MessageHandler.error(
-                                            "Cannot find the director. " +
-                                            "Possibly this is because this " +
-                                            "is a class, not an instance.");
+                                    MessageHandler
+                                            .error("Cannot find the director. "
+                                                    + "Possibly this is because this "
+                                                    + "is a class, not an instance.");
                                 }
 
                             } catch (NumberFormatException ex) {

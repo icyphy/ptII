@@ -137,8 +137,8 @@ public class Event extends State implements Initializable {
                 uniqueName("refinementExtender"));
         refinementExtender.description.setExpression("Ptera Refinement");
         refinementExtender.setPersistent(false);
-        refinementExtender.className.setExpression("ptolemy.domains.ptera" +
-                ".kernel.PteraController");
+        refinementExtender.className.setExpression("ptolemy.domains.ptera"
+                + ".kernel.PteraController");
 
         refinementName.setVisibility(Settable.NONE);
 
@@ -198,14 +198,13 @@ public class Event extends State implements Initializable {
      *   attributeChanged() method, or the parser scope cannot be updated.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute != isInitialState) {
             super.attributeChanged(attribute);
         }
 
         if (attribute == parameters) {
-            List<EventParameter> eventParameters = attributeList(
-                    EventParameter.class);
+            List<EventParameter> eventParameters = attributeList(EventParameter.class);
             for (EventParameter parameter : eventParameters) {
                 try {
                     parameter.setContainer(null);
@@ -232,12 +231,16 @@ public class Event extends State implements Initializable {
                             }
                         }
                         if (!compatible) {
-                            throw new IllegalActionException(this, "An " +
-                                    "attribute named \"" + name + "\" is " +
-                                    "found, but either it is not a variable, " +
-                                    "or its type is not compatible with the " +
-                                    "declared type of the parameter, which " +
-                                    "is " + type + ".");
+                            throw new IllegalActionException(
+                                    this,
+                                    "An "
+                                            + "attribute named \""
+                                            + name
+                                            + "\" is "
+                                            + "found, but either it is not a variable, "
+                                            + "or its type is not compatible with the "
+                                            + "declared type of the parameter, which "
+                                            + "is " + type + ".");
                         }
                     } else {
                         try {
@@ -249,9 +252,9 @@ public class Event extends State implements Initializable {
                                 parameter.setToken(defaultToken);
                             }
                         } catch (NameDuplicationException e) {
-                            throw new IllegalActionException(this, "Unable " +
-                                    "to create a parameter named \"" + name +
-                                    "\".");
+                            throw new IllegalActionException(this, "Unable "
+                                    + "to create a parameter named \"" + name
+                                    + "\".");
                         }
                     }
                 }
@@ -325,8 +328,8 @@ public class Event extends State implements Initializable {
                 i++;
             }
         } else if (arguments != null) {
-            throw new IllegalActionException(this, "Cannot handle arguments " +
-                    "of type " + arguments.getType() + ".");
+            throw new IllegalActionException(this, "Cannot handle arguments "
+                    + "of type " + arguments.getType() + ".");
         }
 
         StringBuffer buffer = new StringBuffer("Fire");
@@ -511,13 +514,12 @@ public class Event extends State implements Initializable {
     public void scheduleEvents() throws IllegalActionException {
         PteraController controller = getController();
         if (controller == null) {
-            throw new IllegalActionException(this, "To schedule events, the " +
-                    "container must be a PteraController.");
+            throw new IllegalActionException(this, "To schedule events, the "
+                    + "container must be a PteraController.");
         }
         PteraDirector director = controller.director;
 
-        List<SchedulingRelation> relations =
-            new LinkedList<SchedulingRelation>();
+        List<SchedulingRelation> relations = new LinkedList<SchedulingRelation>();
         relations.addAll(preemptiveTransitionList());
         relations.addAll(nonpreemptiveTransitionList());
 
@@ -527,10 +529,8 @@ public class Event extends State implements Initializable {
         ParserScope scope = _getParserScope();
         Time modelTime = getController().director.getModelTime();
 
-        final HashMap<SchedulingRelation, Time> times =
-            new HashMap<SchedulingRelation, Time>();
-        final HashMap<SchedulingRelation, Integer> priorities =
-            new HashMap<SchedulingRelation, Integer>();
+        final HashMap<SchedulingRelation, Time> times = new HashMap<SchedulingRelation, Time>();
+        final HashMap<SchedulingRelation, Integer> priorities = new HashMap<SchedulingRelation, Integer>();
         Iterator<SchedulingRelation> relationIterator = relations.iterator();
         while (relationIterator.hasNext()) {
             SchedulingRelation relation = relationIterator.next();
@@ -556,8 +556,8 @@ public class Event extends State implements Initializable {
                 } else {
                     int priority1 = priorities.get(relation1);
                     int priority2 = priorities.get(relation2);
-                    int priorityCompare = priority1 < priority2 ? -1 :
-                        priority1 > priority2 ? 1 : 0;
+                    int priorityCompare = priority1 < priority2 ? -1
+                            : priority1 > priority2 ? 1 : 0;
                     if (priorityCompare != 0) {
                         return lifo ? -priorityCompare : priorityCompare;
                     } else {
@@ -764,8 +764,8 @@ public class Event extends State implements Initializable {
      *  arguments do not match those of the defined parameters.
      */
     protected ParserScope _getParserScope() {
-        if (_parserScope == null || _parserScopeVersion != _workspace
-                .getVersion()) {
+        if (_parserScope == null
+                || _parserScopeVersion != _workspace.getVersion()) {
             _parserScope = new VariableScope(this, getController()
                     .getPortScope());
             TypedActor[] refinements;

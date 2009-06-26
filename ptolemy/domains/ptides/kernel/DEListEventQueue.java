@@ -55,7 +55,7 @@ public class DEListEventQueue implements DEEventQueue {
 
     /** Construct an empty event queue.
      */
-    public DEListEventQueue () {
+    public DEListEventQueue() {
         // Construct a calendar queue _cQueue with its default parameters:
         // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
         _listQueue = new LinkedList();
@@ -69,7 +69,7 @@ public class DEListEventQueue implements DEEventQueue {
 
     /** Get the smallest event from the event queue. */
     public DEEvent get() throws InvalidStateException {
-        DEEvent result = (DEEvent)_listQueue.getFirst();
+        DEEvent result = (DEEvent) _listQueue.getFirst();
         if (_debugging) {
             _debug("--- getting from queue: " + result);
         }
@@ -82,7 +82,7 @@ public class DEListEventQueue implements DEEventQueue {
      *  @exception InvalidStateException if get() method of the queue throws it.
      */
     public DEEvent get(int index) throws InvalidStateException {
-        DEEvent result = (DEEvent)_listQueue.get(index);
+        DEEvent result = (DEEvent) _listQueue.get(index);
         if (_debugging) {
             _debug("--- getting " + index + "th element from queue: " + result);
         }
@@ -124,11 +124,11 @@ public class DEListEventQueue implements DEEventQueue {
      *  @exception InvalidStateException
      */
     public DEEvent take() throws InvalidStateException {
-        DEEvent result = (DEEvent)_listQueue.remove();
+        DEEvent result = (DEEvent) _listQueue.remove();
         // put the token of this event into the destined receiver.
         if (result instanceof DETokenEvent) {
-            ((PtidesBasicReceiver)((DETokenEvent)result).receiver()).putToReceiver(
-                    ((DETokenEvent)result).token());
+            ((PtidesBasicReceiver) ((DETokenEvent) result).receiver())
+                    .putToReceiver(((DETokenEvent) result).token());
         }
         if (_debugging) {
             _debug("--- taking from queue: " + result);
@@ -151,11 +151,11 @@ public class DEListEventQueue implements DEEventQueue {
      *  @exception InvalidStateException
      */
     public DEEvent take(int index) throws InvalidStateException {
-        DEEvent result = (DEEvent)_listQueue.remove(index);
+        DEEvent result = (DEEvent) _listQueue.remove(index);
         // put the token of this event into the destined receiver.
         if (result instanceof DETokenEvent) {
-            ((PtidesBasicReceiver)((DETokenEvent)result).receiver()).putToReceiver(
-                    ((DETokenEvent)result).token());
+            ((PtidesBasicReceiver) ((DETokenEvent) result).receiver())
+                    .putToReceiver(((DETokenEvent) result).token());
         }
         if (_debugging) {
             _debug("--- taking " + index + "th element from queue: " + result);
@@ -203,7 +203,6 @@ public class DEListEventQueue implements DEEventQueue {
 
         return;
     }
-
 
     /** Send a debug message to all debug listeners that have registered.
      *  By convention, messages should not include a newline at the end.

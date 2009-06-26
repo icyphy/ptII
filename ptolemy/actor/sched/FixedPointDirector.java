@@ -119,8 +119,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (eal)
  */
-public class FixedPointDirector extends StaticSchedulingDirector
-        implements SuperdenseTimeDirector {
+public class FixedPointDirector extends StaticSchedulingDirector implements
+        SuperdenseTimeDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -298,9 +298,11 @@ public class FixedPointDirector extends StaticSchedulingDirector
         if (_isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
-                Director executiveDirector = ((CompositeActor)container).getExecutiveDirector();
+                Director executiveDirector = ((CompositeActor) container)
+                        .getExecutiveDirector();
                 if (executiveDirector instanceof SuperdenseTimeDirector) {
-                    _index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                    _index = ((SuperdenseTimeDirector) executiveDirector)
+                            .getIndex();
                 }
             }
         }
@@ -421,7 +423,7 @@ public class FixedPointDirector extends StaticSchedulingDirector
                 }
                 throw new IllegalActionException(actor, firstPort,
                         "Unknown inputs remain. Possible causality loop:\n"
-                        + unknownInputs);
+                                + unknownInputs);
             }
             if (!_actorsFinishedExecution.contains(actor)) {
                 if (!_postfireActor(actor)) {
@@ -547,7 +549,8 @@ public class FixedPointDirector extends StaticSchedulingDirector
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         boolean result = false;
-        Director executiveDirector = ((CompositeActor)getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((CompositeActor) getContainer())
+                .getExecutiveDirector();
         int outsideWidth = port.getWidth();
         for (int i = 0; i < port.getWidthInside(); i++) {
             if (port.isKnownInside(i)) {
@@ -605,7 +608,8 @@ public class FixedPointDirector extends StaticSchedulingDirector
 
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
-            FixedPointReceiver receiver = (FixedPointReceiver)receiverIterator.next();
+            FixedPointReceiver receiver = (FixedPointReceiver) receiverIterator
+                    .next();
             receiver.reset();
         }
     }
@@ -640,7 +644,8 @@ public class FixedPointDirector extends StaticSchedulingDirector
                         long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
 
                         if (_debugging) {
-                            _debug("Waiting for real time to pass: " + timeToWait);
+                            _debug("Waiting for real time to pass: "
+                                    + timeToWait);
                         }
 
                         try {

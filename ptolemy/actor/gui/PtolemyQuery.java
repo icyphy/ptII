@@ -216,14 +216,14 @@ public class PtolemyQuery extends Query implements QueryListener,
                             .getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
-               } else if (attribute instanceof CustomQueryBoxParameter) {
-            JLabel label = new JLabel(displayName + ": ");
-            label.setBackground(_background);
-            component = ((CustomQueryBoxParameter) attribute)
-                    .createQueryBox(this, attribute);
-            _addPair(name, label, component, component);
-            attachParameter(attribute, name);
-                  foundStyle = true;
+                } else if (attribute instanceof CustomQueryBoxParameter) {
+                    JLabel label = new JLabel(displayName + ": ");
+                    label.setBackground(_background);
+                    component = ((CustomQueryBoxParameter) attribute)
+                            .createQueryBox(this, attribute);
+                    _addPair(name, label, component, component);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
                 } else if (attribute instanceof FileParameter
                         || attribute instanceof FilePortParameter) {
                     // Specify the directory in which to start browsing
@@ -283,16 +283,16 @@ public class PtolemyQuery extends Query implements QueryListener,
                     }
 
                     boolean isOutput = false;
-                    if (attribute instanceof FileParameter &&
-                            ((FileParameter) attribute).isOutput()) {
+                    if (attribute instanceof FileParameter
+                            && ((FileParameter) attribute).isOutput()) {
                         isOutput = true;
                     }
 
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
-                    component = addFileChooser(name, displayName,
-                            attribute.getExpression(), base, directory,
-                            allowFiles, allowDirectories, isOutput,
+                    component = addFileChooser(name, displayName, attribute
+                            .getExpression(), base, directory, allowFiles,
+                            allowDirectories, isOutput,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
@@ -307,9 +307,8 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                     // NOTE: Make this always editable since Parameter
                     // supports a form of expressions for value propagation.
-                    component = addChoice(name, displayName,
-                            castAttribute.getChoices(),
-                            castAttribute.getExpression(), true,
+                    component = addChoice(name, displayName, castAttribute
+                            .getChoices(), castAttribute.getExpression(), true,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
@@ -343,8 +342,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         }
                     }
 
-                    component = addTextArea(name, displayName,
-                            attribute.getExpression(),
+                    component = addTextArea(name, displayName, attribute
+                            .getExpression(),
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute), heightValue,
                             widthValue);
@@ -447,7 +446,7 @@ public class PtolemyQuery extends Query implements QueryListener,
 
             while (entryNames.hasNext()) {
                 // Check whether entryName is in the list. If not, add it.
-                String name = (String) entryNames.next();
+                String name = entryNames.next();
 
                 if (name.equals(entryName)) {
                     found = true;
@@ -604,8 +603,7 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                     if (_dialog.buttonPressed().equals("Cancel")) {
                         if (_revertValue.containsKey(entryName)) {
-                            String revertValue = (String) _revertValue
-                                    .get(entryName);
+                            String revertValue = _revertValue.get(entryName);
 
                             // NOTE: Do not use setAndNotify() here because
                             // that checks whether the string entry has
@@ -860,7 +858,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                     String newValue = _getTranslatedExpression(attribute);
 
                     while (entryNames.hasNext()) {
-                        String name = (String) entryNames.next();
+                        String name = entryNames.next();
 
                         // Compare value against what is in
                         // already to avoid changing it again.
@@ -899,7 +897,7 @@ public class PtolemyQuery extends Query implements QueryListener,
         Iterator<Settable> attributes = _attributes.values().iterator();
 
         while (attributes.hasNext()) {
-            Settable attribute = (Settable) attributes.next();
+            Settable attribute = attributes.next();
             attribute.removeValueListener(this);
         }
     }

@@ -432,4 +432,3 @@ public interface List extends Collection, Rollbackable {
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }
-

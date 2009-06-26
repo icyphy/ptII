@@ -101,14 +101,14 @@ public class JavaCodeGenerator extends CodeGenerator {
 
     public String codeGenType(Type type) {
         //String ptolemyType = super.codeGenType(type);
-        String result =
-            type == BaseType.INT ? "Int" :
-            type == BaseType.LONG ? "Long" :
-            type == BaseType.STRING ? "String" :
-            type == BaseType.DOUBLE ? "Double" :
-            type == BaseType.BOOLEAN ? "Boolean" :
-            type == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
-            type == PointerToken.POINTER ? "Pointer" : null;
+        String result = type == BaseType.INT ? "Int"
+                : type == BaseType.LONG ? "Long"
+                        : type == BaseType.STRING ? "String"
+                                : type == BaseType.DOUBLE ? "Double"
+                                        : type == BaseType.BOOLEAN ? "Boolean"
+                                                : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        : type == PointerToken.POINTER ? "Pointer"
+                                                                : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -119,13 +119,15 @@ public class JavaCodeGenerator extends CodeGenerator {
             }
         }
         if (result == null || result.length() == 0) {
-            System.out.println(
-                    "Cannot resolved codegen type from Ptolemy type: " + type);
+            System.out
+                    .println("Cannot resolved codegen type from Ptolemy type: "
+                            + type);
         }
         if (result == null) {
             return null;
         }
-        return result.replace("Int", "Integer").replace("Integerger", "Integer");
+        return result.replace("Int", "Integer")
+                .replace("Integerger", "Integer");
         //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
@@ -140,8 +142,10 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("private final int NUM_TYPE = " + types.length + ";" + _eol);
-            code.append("private final int NUM_FUNC = " + functions.length + ";" + _eol);
+            code.append("private final int NUM_TYPE = " + types.length + ";"
+                    + _eol);
+            code.append("private final int NUM_FUNC = " + functions.length
+                    + ";" + _eol);
             code.append("//Token (*functionTable[NUM_TYPE][NUM_FUNC])"
                     + "(Token, ...)= {" + _eol);
 
@@ -240,13 +244,14 @@ public class JavaCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
-            mainEntryCode.append(_eol + _eol
-                    + "public static void main(String [] args) throws Exception {" + _eol
-                                 + _sanitizedModelName + " model = new "
-                                 + _sanitizedModelName + "();" + _eol
-                                 + "model.run();" + _eol
-                                 + "}" + _eol
-                                 + "public void run() throws Exception {" + _eol);
+            mainEntryCode
+                    .append(_eol
+                            + _eol
+                            + "public static void main(String [] args) throws Exception {"
+                            + _eol + _sanitizedModelName + " model = new "
+                            + _sanitizedModelName + "();" + _eol
+                            + "model.run();" + _eol + "}" + _eol
+                            + "public void run() throws Exception {" + _eol);
 
             String targetValue = target.getExpression();
             if (!targetValue.equals(_DEFAULT_TARGET)) {
@@ -254,9 +259,9 @@ public class JavaCodeGenerator extends CodeGenerator {
                         + "init();" + _eol);
             }
 
-         } else {
-            mainEntryCode.append(_eol + _eol + "public Object[] "
-                    + _eol + "fire (" + _eol);
+        } else {
+            mainEntryCode.append(_eol + _eol + "public Object[] " + _eol
+                    + "fire (" + _eol);
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -266,12 +271,12 @@ public class JavaCodeGenerator extends CodeGenerator {
                 if (addComma) {
                     mainEntryCode.append(", ");
                 }
-                mainEntryCode.append("Object[]" + CodeGeneratorHelper.generateSimpleName(inputPort));
+                mainEntryCode.append("Object[]"
+                        + CodeGeneratorHelper.generateSimpleName(inputPort));
                 addComma = true;
             }
 
             mainEntryCode.append("){" + _eol);
-
 
         }
 
@@ -285,10 +290,11 @@ public class JavaCodeGenerator extends CodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (isTopLevel()) {
-            return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
+            return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}"
+                    + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-            + _eol + "}" + _eol;
+                    + _eol + "}" + _eol;
         }
     }
 
@@ -362,11 +368,12 @@ public class JavaCodeGenerator extends CodeGenerator {
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .j file for each type.
             typeStreams[i] = new CodeStream(
-                    "$CLASSPATH/ptolemy/codegen/java/kernel/type/" + typesArray[i]
-                            + ".j", this);
+                    "$CLASSPATH/ptolemy/codegen/java/kernel/type/"
+                            + typesArray[i] + ".j", this);
 
             code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
-            code.append("private final short TYPE_" + typesArray[i] + " = " + i + ";"+ _eol);
+            code.append("private final short TYPE_" + typesArray[i] + " = " + i
+                    + ";" + _eol);
 
             // Dynamically generate all the types within the union.
             if (i > 0) {
@@ -384,10 +391,10 @@ public class JavaCodeGenerator extends CodeGenerator {
         boolean defineEmptyToken = false;
 
         for (int i = 0; i < functionsArray.length; i++) {
-             code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
-             if (functionsArray[i].equals("delete")) {
-                 defineEmptyToken = true;
-             }
+            code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
+            if (functionsArray[i].equals("delete")) {
+                defineEmptyToken = true;
+            }
         }
 
         //code.append("typedef struct token Token;" + _eol);
@@ -452,8 +459,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                     }
                 }
                 if (!_scalarDeleteTypes.contains(typesArray[i])
-                         || !functionsArray[j].equals("delete")) {
-                     // Skip Boolean_delete etc.
+                        || !functionsArray[j].equals("delete")) {
+                    // Skip Boolean_delete etc.
                     args.clear();
                     args.add(typeFunctionName);
                     sharedStream.appendCodeBlock("funcHeaderBlock", args);
@@ -470,8 +477,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         if (defineScalarDeleteMethod) {
             // Types that share the scalarDelete() method, which does nothing.
             // We use one method so as to reduce code size.
-             sharedStream.appendCodeBlock("scalarDeleteFunction");
-         }
+            sharedStream.appendCodeBlock("scalarDeleteFunction");
+        }
 
         code.append(sharedStream.toString());
 
@@ -524,7 +531,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                                         .contains(functionName)) {
 
                             //typeStreams[i].appendCodeBlock(typesArray[i] + "_"
-                                    //+ functionsArray[j]);
+                            //+ functionsArray[j]);
                             markFunctionCalled(functionName, null);
                         }
                     }
@@ -534,10 +541,10 @@ public class JavaCodeGenerator extends CodeGenerator {
                     // generated code because the function table makes
                     // reference to this label.
 
-                    System.out.println("Warning, failed to find " + typesArray[i] + "_"
-                                       + functionsArray[j]);
-//                     typeStreams[i].append("#define " + typesArray[i] + "_"
-//                             + functionsArray[j] + " MISSING " + _eol);
+                    System.out.println("Warning, failed to find "
+                            + typesArray[i] + "_" + functionsArray[j]);
+                    //                     typeStreams[i].append("#define " + typesArray[i] + "_"
+                    //                             + functionsArray[j] + " MISSING " + _eol);
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types.
@@ -594,7 +601,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Integer")
+        if (functions.contains("isCloseTo")
+                && _newTypesUsed.contains("Integer")
                 && !_newTypesUsed.contains("Double")) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
@@ -623,9 +631,9 @@ public class JavaCodeGenerator extends CodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(variable.getContainer());
-                code.append("static "
-                        + helper.targetType(variable.getType())
+                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(variable
+                        .getContainer());
+                code.append("static " + helper.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
             }
         }
@@ -657,8 +665,9 @@ public class JavaCodeGenerator extends CodeGenerator {
                 code.append(_INDENT1
                         + generateVariableName(variable)
                         + " = "
-                        + containerHelper.getParameterValue(CodeGeneratorHelper.generateSimpleName(variable),
-                                variable.getContainer()) + ";" + _eol);
+                        + containerHelper.getParameterValue(CodeGeneratorHelper
+                                .generateSimpleName(variable), variable
+                                .getContainer()) + ";" + _eol);
             }
         }
 
@@ -723,8 +732,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                 int openBracketCount = 0;
                 int commentCount = 0;
                 for (int i = 0; ((i + 1) < linesPerMethod && line != null)
-                         || openBracketCount > 0
-                         || commentCount > 0; i++) {
+                        || openBracketCount > 0 || commentCount > 0; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     if (line != null) {
@@ -738,8 +746,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                         }
 
                         if (!trimmedLine.startsWith("//")
-                            && !trimmedLine.startsWith("/*")
-                            && !trimmedLine.startsWith("*")) {
+                                && !trimmedLine.startsWith("/*")
+                                && !trimmedLine.startsWith("*")) {
                             // Look for curly braces in non-commented lines
                             // This code could be buggy . . .
                             if (line.trim().endsWith("{")) {
@@ -776,7 +784,6 @@ public class JavaCodeGenerator extends CodeGenerator {
         return results;
     }
 
-
     /**
      * Get the corresponding type in Java from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
@@ -803,13 +810,13 @@ public class JavaCodeGenerator extends CodeGenerator {
      *   include directories.
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
-//         ActorCodeGenerator helper = _getHelper(getContainer());
+        //         ActorCodeGenerator helper = _getHelper(getContainer());
 
-//         Set actorIncludeDirectories = helper.getIncludeDirectories();
-//         Iterator includeIterator = actorIncludeDirectories.iterator();
-//         while (includeIterator.hasNext()) {
-//             addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
-//         }
+        //         Set actorIncludeDirectories = helper.getIncludeDirectories();
+        //         Iterator includeIterator = actorIncludeDirectories.iterator();
+        //         while (includeIterator.hasNext()) {
+        //             addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
+        //         }
     }
 
     /** Add libraries specified by the actors in this model.
@@ -817,20 +824,20 @@ public class JavaCodeGenerator extends CodeGenerator {
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
-//         ActorCodeGenerator helper = _getHelper(getContainer());
+        //         ActorCodeGenerator helper = _getHelper(getContainer());
 
-//         Set actorLibraryDirectories = helper.getLibraryDirectories();
-//         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
-//         while (libraryDirectoryIterator.hasNext()) {
-//             addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
-//                     + "\"");
-//         }
+        //         Set actorLibraryDirectories = helper.getLibraryDirectories();
+        //         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
+        //         while (libraryDirectoryIterator.hasNext()) {
+        //             addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
+        //                     + "\"");
+        //         }
 
-//         Set actorLibraries = helper.getLibraries();
-//         Iterator librariesIterator = actorLibraries.iterator();
-//         while (librariesIterator.hasNext()) {
-//             addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
-//         }
+        //         Set actorLibraries = helper.getLibraries();
+        //         Iterator librariesIterator = actorLibraries.iterator();
+        //         while (librariesIterator.hasNext()) {
+        //             addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
+        //         }
     }
 
     /** Analyze the model to find out what connections need to be type
@@ -932,8 +939,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         // Note that foo does not have a value.
         // Nested ifdefs are not supported.
 
-        StringTokenizer tokenizer = new StringTokenizer(
-                code.toString(), _eol + "\n");
+        StringTokenizer tokenizer = new StringTokenizer(code.toString(), _eol
+                + "\n");
 
         code = new StringBuffer();
 
@@ -986,8 +993,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             String filename = getOutputFilename();
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
-            tokenizer = new StringTokenizer(code.toString(),
-                    _eol);
+            tokenizer = new StringTokenizer(code.toString(), _eol);
 
             code = new StringBuffer();
 
@@ -1059,8 +1065,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         //includingFiles.add("<string.h>");
 
         for (String file : (Set<String>) includingFiles) {
-            if (!file.equals("<math.h>")
-                && !file.equals("<stdio.h>")) {
+            if (!file.equals("<math.h>") && !file.equals("<stdio.h>")) {
                 code.append("import " + file + _eol);
             }
         }
@@ -1076,14 +1081,15 @@ public class JavaCodeGenerator extends CodeGenerator {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
 
-        endCode.append("Runtime runtime = Runtime.getRuntime();\n"
-                       + "long totalMemory = runtime.totalMemory() / 1024;\n"
-                       + "long freeMemory = runtime.freeMemory() / 1024;\n"
-                       + "System.out.println(System.currentTimeMillis() - startTime + \""
-                       + " ms. Memory: \" + totalMemory + \"K Free: \""
-                       + " + freeMemory + \"K (\" + "
-                       + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
-                       + " + \"%\");\n");
+        endCode
+                .append("Runtime runtime = Runtime.getRuntime();\n"
+                        + "long totalMemory = runtime.totalMemory() / 1024;\n"
+                        + "long freeMemory = runtime.freeMemory() / 1024;\n"
+                        + "System.out.println(System.currentTimeMillis() - startTime + \""
+                        + " ms. Memory: \" + totalMemory + \"K Free: \""
+                        + " + freeMemory + \"K (\" + "
+                        + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
+                        + " + \"%\");\n");
         return endCode.toString();
     }
 
@@ -1188,8 +1194,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             // the value of the generatorPackage.
             substituteMap = CodeGeneratorUtilities.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
-            substituteMap.put("@CLASSPATHSEPARATOR@",
-                              StringUtilities.getProperty("path.separator"));
+            substituteMap.put("@CLASSPATHSEPARATOR@", StringUtilities
+                    .getProperty("path.separator"));
             substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
@@ -1232,11 +1238,11 @@ public class JavaCodeGenerator extends CodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
                 } else {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                                      "# Unknown java property os.name \"" + osName
-                                      + "\" please edit ptolemy/codegen/c/"
-                                      + "kernel/JavaCodeGenerator.java and "
-                                      + "ptolemy/actor/lib/jni/"
-                                      + "CompiledCompositeActor.java");
+                            "# Unknown java property os.name \"" + osName
+                                    + "\" please edit ptolemy/codegen/c/"
+                                    + "kernel/JavaCodeGenerator.java and "
+                                    + "ptolemy/actor/lib/jni/"
+                                    + "CompiledCompositeActor.java");
                 }
 
             }
@@ -1379,8 +1385,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (!_overloadedFunctionSet.contains(name)) {
                 _overloadedFunctionSet.add(name);
 
-                String code = (helper == null) ? processCode(functionCode) :
-                        helper.processCode(functionCode);
+                String code = (helper == null) ? processCode(functionCode)
+                        : helper.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
@@ -1418,9 +1424,8 @@ public class JavaCodeGenerator extends CodeGenerator {
     /** A list of the primitive types supported by the code generator.
      */
     static {
-        _primitiveTypes = Arrays.asList(new String[] {
-                "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
-        "Pointer" });
+        _primitiveTypes = Arrays.asList(new String[] { "Integer", "Double",
+                "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
     }
 
     static {

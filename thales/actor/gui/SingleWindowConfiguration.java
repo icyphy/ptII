@@ -76,7 +76,7 @@ public class SingleWindowConfiguration extends Configuration {
      *   an entity already in the container.
      */
     public SingleWindowConfiguration(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

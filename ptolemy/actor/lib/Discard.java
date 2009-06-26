@@ -81,7 +81,8 @@ public class Discard extends Sink implements Configurable {
      *  @param text Ignored.
      *  @exception Exception Not thrown in this base class.
      */
-    public void configure(URL base, String source, String text) throws Exception {
+    public void configure(URL base, String source, String text)
+            throws Exception {
     }
 
     /** Read one token from each input channel and discard it.

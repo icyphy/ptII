@@ -42,7 +42,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PropertyConstraintHelper
 
@@ -55,9 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintASTNodeHelper
-    extends PropertyConstraintHelper {
-
+public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
 
     /**
      * Construct the property constraint helper associated
@@ -67,9 +64,8 @@ public class PropertyConstraintASTNodeHelper
      *  PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
      *  throws it.
      */
-    public PropertyConstraintASTNodeHelper(
-            PropertyConstraintSolver solver, ASTPtRootNode node)
-            throws IllegalActionException {
+    public PropertyConstraintASTNodeHelper(PropertyConstraintSolver solver,
+            ASTPtRootNode node) throws IllegalActionException {
         this(solver, node, true);
     }
 
@@ -83,9 +79,9 @@ public class PropertyConstraintASTNodeHelper
      * @exception IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
-    public PropertyConstraintASTNodeHelper(
-            PropertyConstraintSolver solver, ASTPtRootNode node,
-            boolean useDefaultConstraints) throws IllegalActionException {
+    public PropertyConstraintASTNodeHelper(PropertyConstraintSolver solver,
+            ASTPtRootNode node, boolean useDefaultConstraints)
+            throws IllegalActionException {
 
         super(solver, node, useDefaultConstraints);
     }
@@ -96,9 +92,8 @@ public class PropertyConstraintASTNodeHelper
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        boolean constraintParent =
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||
-            (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER);
+        boolean constraintParent = (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET)
+                || (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER);
 
         if (getComponent() instanceof ASTPtLeafNode) {
             ASTPtLeafNode node = (ASTPtLeafNode) getComponent();
@@ -109,8 +104,8 @@ public class PropertyConstraintASTNodeHelper
                 // to implement this.
             } else {
 
-                NamedObj namedObj = getNamedObject(
-                        getContainerEntity(node), node.getName());
+                NamedObj namedObj = getNamedObject(getContainerEntity(node),
+                        node.getName());
 
                 if (namedObj != null) {
                     // Set up one-direction constraint.
@@ -131,8 +126,7 @@ public class PropertyConstraintASTNodeHelper
             ASTPtRootNode node = (ASTPtRootNode) getComponent();
             List<Object> children = new ArrayList<Object>();
 
-            boolean isNone =
-                interconnectConstraintType == ConstraintType.NONE;
+            boolean isNone = interconnectConstraintType == ConstraintType.NONE;
 
             for (int i = 0; i < node.jjtGetNumChildren(); i++) {
 
@@ -153,26 +147,26 @@ public class PropertyConstraintASTNodeHelper
         return _union(_ownConstraints, _subHelperConstraints);
     }
 
-//    /**
-//     * @param node The given AST node.
-//     * @return The term
-//     * @exception IllegalActionException
-//     */
-//    public InequalityTerm[] getChildrenTerm(ptolemy.data.expr.ASTPtRootNode node) throws IllegalActionException {
-//        InequalityTerm children[] =
-//            new InequalityTerm[node.jjtGetNumChildren()];
-//
-//        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-//            Object child = node.jjtGetChild(i);
-//
-//            PropertyConstraintASTNodeHelper helper;
-//
-//            helper = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
-//            children[i] = helper.getPropertyTerm(child);
-//
-//        }
-//        return children;
-//    }
+    //    /**
+    //     * @param node The given AST node.
+    //     * @return The term
+    //     * @exception IllegalActionException
+    //     */
+    //    public InequalityTerm[] getChildrenTerm(ptolemy.data.expr.ASTPtRootNode node) throws IllegalActionException {
+    //        InequalityTerm children[] =
+    //            new InequalityTerm[node.jjtGetNumChildren()];
+    //
+    //        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+    //            Object child = node.jjtGetChild(i);
+    //
+    //            PropertyConstraintASTNodeHelper helper;
+    //
+    //            helper = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
+    //            children[i] = helper.getPropertyTerm(child);
+    //
+    //        }
+    //        return children;
+    //    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -188,7 +182,6 @@ public class PropertyConstraintASTNodeHelper
         list.add(getComponent());
         return list;
     }
-
 
     /**
      * Return the list of sub-helpers. In this base class,
@@ -208,8 +201,7 @@ public class PropertyConstraintASTNodeHelper
             return port;
         }
 
-        Variable result =
-            ModelScope.getScopedVariable(null, container, name);
+        Variable result = ModelScope.getScopedVariable(null, container, name);
 
         if (result != null) {
             return result;

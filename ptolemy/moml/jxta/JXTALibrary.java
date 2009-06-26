@@ -825,9 +825,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         if (!destDir.exists()) {
             if (!destDir.mkdirs()) {
-                throw new IOException(
-                        "Failed to create directory \""
-                        + destDir + "\"");
+                throw new IOException("Failed to create directory \"" + destDir
+                        + "\"");
             }
         }
 

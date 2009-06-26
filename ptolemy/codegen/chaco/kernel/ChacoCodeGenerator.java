@@ -83,7 +83,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
      *   exception or an error occurs when setting the file path.
      */
     public ChacoCodeGenerator(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         generatorPackage.setExpression("ptolemy.codegen.chaco");
@@ -102,7 +102,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Generate an array of distinct colors. The distinctness of two
      * colors is determined by the absolute difference in their RGB
@@ -128,21 +128,22 @@ public class ChacoCodeGenerator extends CodeGenerator {
      * @return An array size numberOfColors filled with distinct colors.
      */
     public static final String[] getDistinctColors(int numberOfColors) {
-        
+
         String[] colors = new String[numberOfColors];
-        
+
         // Approximate the cube root of numberOfColors.
-        int       numberOfDiscreteValues = 0;
-        int cube  = 0;
+        int numberOfDiscreteValues = 0;
+        int cube = 0;
         while (numberOfColors > cube) {
             numberOfDiscreteValues++;
-            cube = numberOfDiscreteValues * numberOfDiscreteValues * numberOfDiscreteValues;
+            cube = numberOfDiscreteValues * numberOfDiscreteValues
+                    * numberOfDiscreteValues;
         }
-        
-        float[]   colorValues         = new float[numberOfDiscreteValues];
-        int       rIndex;
-        int       gIndex;
-        int       bIndex;
+
+        float[] colorValues = new float[numberOfDiscreteValues];
+        int rIndex;
+        int gIndex;
+        int bIndex;
 
         // Generate a table of discrete values for RGB.
         for (int i = 0; i < numberOfDiscreteValues; i++) {
@@ -164,9 +165,8 @@ public class ChacoCodeGenerator extends CodeGenerator {
         bIndex = 0;
 
         for (int i = 0; i < colors.length; i++) {
-            colors[i] = "{" + colorValues[rIndex] + ", " +
-                    colorValues[gIndex] + ", " + 
-                    colorValues[bIndex] + ", 1.0}";
+            colors[i] = "{" + colorValues[rIndex] + ", " + colorValues[gIndex]
+                    + ", " + colorValues[bIndex] + ", 1.0}";
 
             // Now go to the next color values.
             bIndex++;
@@ -181,13 +181,13 @@ public class ChacoCodeGenerator extends CodeGenerator {
             bIndex %= numberOfDiscreteValues;
         }
         return colors;
-    } 
+    }
 
     /**
      * 
      */
     public int generateCode(StringBuffer code) throws KernelException {
-        
+
         if (action.getExpression().equals("CLEAR")) {
             transformGraph();
             return 0;
@@ -196,11 +196,11 @@ public class ChacoCodeGenerator extends CodeGenerator {
         if (action.getExpression().equals("TRANSFORM")) {
             if (_generated == false) {
                 throw new IllegalActionException(this, (Throwable) null,
-                "GENERATE first before TRANSFORM");
+                        "GENERATE first before TRANSFORM");
             }
             transformGraph();
             return 0;
-        } 
+        }
 
         _reset();
 
@@ -211,9 +211,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
         // Traversing through the actor list to see all actors
         CompositeEntity compositeActor = (CompositeEntity) getContainer();
         for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
-             _numVertices++;
-             _HashActorKey.put(actor, _numVertices);
-             _HashNumberKey.put(_numVertices, actor);
+            _numVertices++;
+            _HashActorKey.put(actor, _numVertices);
+            _HashNumberKey.put(_numVertices, actor);
         }
         code.append(_numVertices + " ");
 
@@ -226,10 +226,12 @@ public class ChacoCodeGenerator extends CodeGenerator {
             codeBuffer.append(_getVertexWeight(actor) + " ");
 
             // for each input port within the current actor being analyzed
-            for (TypedIOPort inputPort : (List<TypedIOPort>) actor.inputPortList()) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>) actor
+                    .inputPortList()) {
 
                 // for each source port that sends event to this input port
-                for (TypedIOPort sourcePort : (List<TypedIOPort>) inputPort.sourcePortList()) {
+                for (TypedIOPort sourcePort : (List<TypedIOPort>) inputPort
+                        .sourcePortList()) {
                     Actor sourceActor = (Actor) sourcePort.getContainer();
                     int outInt = (Integer) _HashActorKey.get(sourceActor);
                     codeBuffer.append(outInt + " ");
@@ -242,65 +244,97 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     // Add the edge weight from the model by traversing through
                     // the relations and ports connected to these relations
                     boolean foundFlag = false;
-                    while(foundFlag == false && middlePortListIt.hasNext()) {
-                        TypedIOPort middlePort = (TypedIOPort)middlePortListIt.next();
-                        
+                    while (foundFlag == false && middlePortListIt.hasNext()) {
+                        TypedIOPort middlePort = (TypedIOPort) middlePortListIt
+                                .next();
+
                         if (middlePort.equals(sourcePort)) {
-                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort));
+                            int temp = Integer
+                                    .parseInt((String) partialEdgeWeights
+                                            .get(middlePort));
                             codeBuffer.append(Integer.toString(temp) + " ");
                             foundFlag = true;
                         } else {
-                            for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
-                                List nextMiddlePortList = relation.linkedPortList(middlePort);
-                                Iterator nextMiddlePortListIt = nextMiddlePortList.listIterator();
-                                while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
-                                    TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
-                                    if (partialEdgeWeights.get(nextMiddlePort) == null ) {
+                            for (Relation relation : (List<Relation>) middlePort
+                                    .linkedRelationList()) {
+                                List nextMiddlePortList = relation
+                                        .linkedPortList(middlePort);
+                                Iterator nextMiddlePortListIt = nextMiddlePortList
+                                        .listIterator();
+                                while (foundFlag == false
+                                        && nextMiddlePortListIt.hasNext()) {
+                                    TypedIOPort nextMiddlePort = (TypedIOPort) nextMiddlePortListIt
+                                            .next();
+                                    if (partialEdgeWeights.get(nextMiddlePort) == null) {
                                         // if this port is part of a composite actor
                                         if (!nextMiddlePort.isOpaque()) {
-                                            int temp = Integer.parseInt(_getEdgeWeight(relation))
-                                            + Integer.parseInt((String)partialEdgeWeights.get(middlePort)); 
-                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+                                            int temp = Integer
+                                                    .parseInt(_getEdgeWeight(relation))
+                                                    + Integer
+                                                            .parseInt((String) partialEdgeWeights
+                                                                    .get(middlePort));
+                                            partialEdgeWeights.put(
+                                                    nextMiddlePort, Integer
+                                                            .toString(temp));
                                             // get the ports the port is connected to
                                             if (nextMiddlePort.isInput()) {
-                                                middlePortList.add(nextMiddlePort);
-                                            }else {
-                                                for(TypedIOPort hierarchicalConnectedPort :
-                                                    (List<TypedIOPort>) nextMiddlePort.deepInsidePortList()) {
-                                                    for (Relation hierarchicalRelation : (List<Relation>) hierarchicalConnectedPort.linkedRelationList()) {
-                                                        for (TypedIOPort relationPort : (List<TypedIOPort>) hierarchicalRelation.linkedPortList(hierarchicalConnectedPort)) {
-                                                            if (relationPort.equals(nextMiddlePort)) {
-                                                                int temp2 = Integer.parseInt(_getEdgeWeight(hierarchicalRelation))
-                                                                + Integer.parseInt((String)partialEdgeWeights.get(nextMiddlePort)); 
-                                                                partialEdgeWeights.put(hierarchicalConnectedPort, Integer.toString(temp2));
+                                                middlePortList
+                                                        .add(nextMiddlePort);
+                                            } else {
+                                                for (TypedIOPort hierarchicalConnectedPort : (List<TypedIOPort>) nextMiddlePort
+                                                        .deepInsidePortList()) {
+                                                    for (Relation hierarchicalRelation : (List<Relation>) hierarchicalConnectedPort
+                                                            .linkedRelationList()) {
+                                                        for (TypedIOPort relationPort : (List<TypedIOPort>) hierarchicalRelation
+                                                                .linkedPortList(hierarchicalConnectedPort)) {
+                                                            if (relationPort
+                                                                    .equals(nextMiddlePort)) {
+                                                                int temp2 = Integer
+                                                                        .parseInt(_getEdgeWeight(hierarchicalRelation))
+                                                                        + Integer
+                                                                                .parseInt((String) partialEdgeWeights
+                                                                                        .get(nextMiddlePort));
+                                                                partialEdgeWeights
+                                                                        .put(
+                                                                                hierarchicalConnectedPort,
+                                                                                Integer
+                                                                                        .toString(temp2));
                                                             }
                                                         }
                                                     }
-                                                    middlePortList.add(hierarchicalConnectedPort);
+                                                    middlePortList
+                                                            .add(hierarchicalConnectedPort);
                                                 }
                                             }
-                                                //List hierarchicalConnectedPortList = nextMiddlePort.deepConnectedPortList();
-//                                          List debugList = nextMiddlePort.deepInsidePortList();
-//                                          Iterator debugListIt = debugList.iterator();
-//                                          while(debugListIt.hasNext()) {
-//                                          TypedIOPort debugPort = (TypedIOPort)debugListIt.next();
-//                                          for(Relation debugRelation : (List<Relation>) debugPort.linkedRelationList()) {
-//                                          List debugPort2 = debugRelation.linkedPortList();
-//                                          debugPort2.get(1);
-//                                          }
-//                                          }
-//                                            int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
-//                                            Integer.parseInt(_getEdgeWeight(relation));
-//                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
-//
-//                                            // go into where this input port is connected to.
-//                                            middlePortList.add(nextMiddlePort);
+                                            //List hierarchicalConnectedPortList = nextMiddlePort.deepConnectedPortList();
+                                            //                                          List debugList = nextMiddlePort.deepInsidePortList();
+                                            //                                          Iterator debugListIt = debugList.iterator();
+                                            //                                          while(debugListIt.hasNext()) {
+                                            //                                          TypedIOPort debugPort = (TypedIOPort)debugListIt.next();
+                                            //                                          for(Relation debugRelation : (List<Relation>) debugPort.linkedRelationList()) {
+                                            //                                          List debugPort2 = debugRelation.linkedPortList();
+                                            //                                          debugPort2.get(1);
+                                            //                                          }
+                                            //                                          }
+                                            //                                            int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
+                                            //                                            Integer.parseInt(_getEdgeWeight(relation));
+                                            //                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+                                            //
+                                            //                                            // go into where this input port is connected to.
+                                            //                                            middlePortList.add(nextMiddlePort);
                                             middlePortList.remove(middlePort);
-                                            middlePortListIt = middlePortList.iterator();
-                                        } else if (nextMiddlePort.equals(sourcePort)) {
-                                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort)) + 
-                                            Integer.parseInt(_getEdgeWeight(relation));
-                                            codeBuffer.append(Integer.toString(temp) + " ");
+                                            middlePortListIt = middlePortList
+                                                    .iterator();
+                                        } else if (nextMiddlePort
+                                                .equals(sourcePort)) {
+                                            int temp = Integer
+                                                    .parseInt((String) partialEdgeWeights
+                                                            .get(middlePort))
+                                                    + Integer
+                                                            .parseInt(_getEdgeWeight(relation));
+                                            codeBuffer.append(Integer
+                                                    .toString(temp)
+                                                    + " ");
                                             foundFlag = true;
                                         }
                                     }
@@ -310,46 +344,48 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     }
                 }
             }
-                                      
-//                        
-//                        for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
-//                            List nextMiddlePortList = relation.linkedPortList(middlePort);
-//                            Iterator nextMiddlePortListIt = (Iterator) nextMiddlePortList.listIterator();
-//                            while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
-//                                TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
-//                                if (partialEdgeWeights.get(nextMiddlePort) == null) {
-//                                    if (!nextMiddlePort.isOpaque()) {
-//
-//                                        int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
-//                                        Integer.parseInt(_getEdgeWeight(relation));
-//                                        partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
-//
-//                                        // go into where this input port is connected to.
-//                                        middlePortList.add(nextMiddlePort);
-//                                        middlePortList.remove(middlePort);
-//                                        middlePortListIt = middlePortList.iterator();
-//
-//                                    } else if (nextMiddlePort.equals(sourcePort)) {
-//                                        int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort)) + 
-//                                        Integer.parseInt(_getEdgeWeight(relation));
-//                                        codeBuffer.append(Integer.toString(temp) + " ");
-//                                        foundFlag = true;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
 
-            for (TypedIOPort outputPort : (List<TypedIOPort>) actor.outputPortList()) {
+            //                        
+            //                        for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
+            //                            List nextMiddlePortList = relation.linkedPortList(middlePort);
+            //                            Iterator nextMiddlePortListIt = (Iterator) nextMiddlePortList.listIterator();
+            //                            while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
+            //                                TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
+            //                                if (partialEdgeWeights.get(nextMiddlePort) == null) {
+            //                                    if (!nextMiddlePort.isOpaque()) {
+            //
+            //                                        int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
+            //                                        Integer.parseInt(_getEdgeWeight(relation));
+            //                                        partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+            //
+            //                                        // go into where this input port is connected to.
+            //                                        middlePortList.add(nextMiddlePort);
+            //                                        middlePortList.remove(middlePort);
+            //                                        middlePortListIt = middlePortList.iterator();
+            //
+            //                                    } else if (nextMiddlePort.equals(sourcePort)) {
+            //                                        int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort)) + 
+            //                                        Integer.parseInt(_getEdgeWeight(relation));
+            //                                        codeBuffer.append(Integer.toString(temp) + " ");
+            //                                        foundFlag = true;
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
 
-                for (TypedIOPort sinkPort : (List<TypedIOPort>) outputPort.sinkPortList()) {
+            for (TypedIOPort outputPort : (List<TypedIOPort>) actor
+                    .outputPortList()) {
+
+                for (TypedIOPort sinkPort : (List<TypedIOPort>) outputPort
+                        .sinkPortList()) {
 
                     Actor tempActor = (Actor) sinkPort.getContainer();
                     int inInt = (Integer) _HashActorKey.get(tempActor);
                     codeBuffer.append(inInt + " ");
-                    
+
                     HashMap partialEdgeWeights = new HashMap();
                     partialEdgeWeights.put(outputPort, "0");
                     LinkedList middlePortList = new LinkedList();
@@ -358,65 +394,97 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     // Add the edge weight from the model by traversing through
                     // the relations and ports connected to these relations
                     boolean foundFlag = false;
-                    while(foundFlag == false && middlePortListIt.hasNext()) {
-                        TypedIOPort middlePort = (TypedIOPort)middlePortListIt.next();
+                    while (foundFlag == false && middlePortListIt.hasNext()) {
+                        TypedIOPort middlePort = (TypedIOPort) middlePortListIt
+                                .next();
                         if (middlePort.equals(sinkPort)) {
-                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort));
+                            int temp = Integer
+                                    .parseInt((String) partialEdgeWeights
+                                            .get(middlePort));
                             codeBuffer.append(Integer.toString(temp) + " ");
                             foundFlag = true;
                         } else {
-                            for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
-                                List nextMiddlePortList = relation.linkedPortList(middlePort);
-                                Iterator nextMiddlePortListIt = nextMiddlePortList.listIterator();
-                                while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
-                                    TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
-                                    if (partialEdgeWeights.get(nextMiddlePort) == null ) {
+                            for (Relation relation : (List<Relation>) middlePort
+                                    .linkedRelationList()) {
+                                List nextMiddlePortList = relation
+                                        .linkedPortList(middlePort);
+                                Iterator nextMiddlePortListIt = nextMiddlePortList
+                                        .listIterator();
+                                while (foundFlag == false
+                                        && nextMiddlePortListIt.hasNext()) {
+                                    TypedIOPort nextMiddlePort = (TypedIOPort) nextMiddlePortListIt
+                                            .next();
+                                    if (partialEdgeWeights.get(nextMiddlePort) == null) {
                                         // iF this port is part of a composite actor
                                         if (!nextMiddlePort.isOpaque()) {
-                                            int temp = Integer.parseInt(_getEdgeWeight(relation))
-                                            + Integer.parseInt((String)partialEdgeWeights.get(middlePort));
-                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+                                            int temp = Integer
+                                                    .parseInt(_getEdgeWeight(relation))
+                                                    + Integer
+                                                            .parseInt((String) partialEdgeWeights
+                                                                    .get(middlePort));
+                                            partialEdgeWeights.put(
+                                                    nextMiddlePort, Integer
+                                                            .toString(temp));
                                             // get the ports the port is connected to
                                             if (!nextMiddlePort.isInput()) {
-                                                middlePortList.add(nextMiddlePort);
-                                            }else {
-                                                for(TypedIOPort hierarchicalConnectedPort :
-                                                    (List<TypedIOPort>) nextMiddlePort.deepInsidePortList()) {
-                                                    for (Relation hierarchicalRelation : (List<Relation>) hierarchicalConnectedPort.linkedRelationList()) {
-                                                        for (TypedIOPort relationPort : (List<TypedIOPort>) hierarchicalRelation.linkedPortList(hierarchicalConnectedPort)) {
-                                                            if (relationPort.equals(nextMiddlePort)) {
-                                                                int temp2 = Integer.parseInt(_getEdgeWeight(hierarchicalRelation))
-                                                                + Integer.parseInt((String)partialEdgeWeights.get(nextMiddlePort)); 
-                                                                partialEdgeWeights.put(hierarchicalConnectedPort, Integer.toString(temp2));
+                                                middlePortList
+                                                        .add(nextMiddlePort);
+                                            } else {
+                                                for (TypedIOPort hierarchicalConnectedPort : (List<TypedIOPort>) nextMiddlePort
+                                                        .deepInsidePortList()) {
+                                                    for (Relation hierarchicalRelation : (List<Relation>) hierarchicalConnectedPort
+                                                            .linkedRelationList()) {
+                                                        for (TypedIOPort relationPort : (List<TypedIOPort>) hierarchicalRelation
+                                                                .linkedPortList(hierarchicalConnectedPort)) {
+                                                            if (relationPort
+                                                                    .equals(nextMiddlePort)) {
+                                                                int temp2 = Integer
+                                                                        .parseInt(_getEdgeWeight(hierarchicalRelation))
+                                                                        + Integer
+                                                                                .parseInt((String) partialEdgeWeights
+                                                                                        .get(nextMiddlePort));
+                                                                partialEdgeWeights
+                                                                        .put(
+                                                                                hierarchicalConnectedPort,
+                                                                                Integer
+                                                                                        .toString(temp2));
                                                             }
                                                         }
                                                     }
-                                                    middlePortList.add(hierarchicalConnectedPort);
+                                                    middlePortList
+                                                            .add(hierarchicalConnectedPort);
                                                 }
                                             }
-                                                //List hierarchicalConnectedPortList = nextMiddlePort.deepConnectedPortList();
-//                                          List debugList = nextMiddlePort.deepInsidePortList();
-//                                          Iterator debugListIt = debugList.iterator();
-//                                          while(debugListIt.hasNext()) {
-//                                          TypedIOPort debugPort = (TypedIOPort)debugListIt.next();
-//                                          for(Relation debugRelation : (List<Relation>) debugPort.linkedRelationList()) {
-//                                          List debugPort2 = debugRelation.linkedPortList();
-//                                          debugPort2.get(1);
-//                                          }
-//                                          }
-//                                            int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
-//                                            Integer.parseInt(_getEdgeWeight(relation));
-//                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
-//
-//                                            // go into where this input port is connected to.
-//                                            middlePortList.add(nextMiddlePort);
+                                            //List hierarchicalConnectedPortList = nextMiddlePort.deepConnectedPortList();
+                                            //                                          List debugList = nextMiddlePort.deepInsidePortList();
+                                            //                                          Iterator debugListIt = debugList.iterator();
+                                            //                                          while(debugListIt.hasNext()) {
+                                            //                                          TypedIOPort debugPort = (TypedIOPort)debugListIt.next();
+                                            //                                          for(Relation debugRelation : (List<Relation>) debugPort.linkedRelationList()) {
+                                            //                                          List debugPort2 = debugRelation.linkedPortList();
+                                            //                                          debugPort2.get(1);
+                                            //                                          }
+                                            //                                          }
+                                            //                                            int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
+                                            //                                            Integer.parseInt(_getEdgeWeight(relation));
+                                            //                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+                                            //
+                                            //                                            // go into where this input port is connected to.
+                                            //                                            middlePortList.add(nextMiddlePort);
                                             middlePortList.remove(middlePort);
-                                            middlePortListIt = middlePortList.iterator();
+                                            middlePortListIt = middlePortList
+                                                    .iterator();
 
-                                        } else if (nextMiddlePort.equals(sinkPort)) {
-                                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort)) + 
-                                            Integer.parseInt(_getEdgeWeight(relation));
-                                            codeBuffer.append(Integer.toString(temp) + " ");
+                                        } else if (nextMiddlePort
+                                                .equals(sinkPort)) {
+                                            int temp = Integer
+                                                    .parseInt((String) partialEdgeWeights
+                                                            .get(middlePort))
+                                                    + Integer
+                                                            .parseInt(_getEdgeWeight(relation));
+                                            codeBuffer.append(Integer
+                                                    .toString(temp)
+                                                    + " ");
                                             foundFlag = true;
                                         }
                                     }
@@ -440,8 +508,6 @@ public class ChacoCodeGenerator extends CodeGenerator {
         return 0;
     }
 
-    
-
     /**
      * Testing main for the ChacoCodeGenerator.
      * @param args The given command-line arguments.
@@ -451,27 +517,24 @@ public class ChacoCodeGenerator extends CodeGenerator {
         System.out.println(_arrayToString(getDistinctColors(27)));
         System.out.println(_arrayToString(getDistinctColors(28)));
     }
-        
-    
+
     public void transformGraph() throws KernelException {
 
         if (!_isClearMode()) {
             _readChacoOutputFile();
         }
-        
+
         // Traverse through the graph and annotate each port whether
         // it is a _isMpiBuffer (send/receive)
         _annotateMpiPorts();
 
         // Repaint the GUI.
-        getContainer().requestChange(new ChangeRequest(this,
-        "Repaint the GUI.") {
-            protected void _execute() throws Exception {}
-        });        
-    }    
-    
-    
-    
+        getContainer().requestChange(
+                new ChangeRequest(this, "Repaint the GUI.") {
+                    protected void _execute() throws Exception {
+                    }
+                });
+    }
 
     /**
      * Return the String representation of a Object array.
@@ -486,8 +549,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
         }
         return result.toString() + "}";
     }
-    
-    
+
     private void _annotateMpiPorts() throws IllegalActionException {
         int count = 1;
         int mpiBufferId = 0;
@@ -500,7 +562,8 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
             Parameter partitionAttribute = _getPartitionParameter(actor);
 
-            for (TypedIOPort inputPort : (List<TypedIOPort>) actor.inputPortList()) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>) actor
+                    .inputPortList()) {
 
                 // Clear the _isMpiBuffer parameter if it already exists
                 _removeAttribute(inputPort, "_mpiBuffer");
@@ -512,13 +575,14 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 }
 
                 int channel = 0;
-                for (TypedIOPort sourcePort : (List<TypedIOPort>) inputPort.sourcePortList()) {
+                for (TypedIOPort sourcePort : (List<TypedIOPort>) inputPort
+                        .sourcePortList()) {
                     Actor sourceActor = (Actor) sourcePort.getContainer();
 
-                    Parameter attrTemp =  _getPartitionParameter(sourceActor);
+                    Parameter attrTemp = _getPartitionParameter(sourceActor);
 
-                    if (!partitionAttribute.getExpression()
-                            .equals(attrTemp.getExpression())) {
+                    if (!partitionAttribute.getExpression().equals(
+                            attrTemp.getExpression())) {
 
                         StringAttribute mpiBuffer = _getMpiAttribute(inputPort);
 
@@ -528,8 +592,8 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         if (mpiBufferValue.equals("")) {
                             mpiBufferValue = "receiver";
                         }
-                        mpiBufferValue = mpiBufferValue.concat("_ch["
-                                + channel + "]" + "id[" + mpiBufferId + "]");
+                        mpiBufferValue = mpiBufferValue.concat("_ch[" + channel
+                                + "]" + "id[" + mpiBufferId + "]");
 
                         mpiBuffer.setExpression(mpiBufferValue);
                         showInfo.setExpression(mpiBufferValue);
@@ -539,10 +603,12 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         // Annotate local buffer.
                         StringAttribute localBuffer = _getLocalAttribute(inputPort);
                         if (!_isClearMode()) {
-                            String localBufferValue = localBuffer.getExpression();
+                            String localBufferValue = localBuffer
+                                    .getExpression();
 
                             localBufferValue = localBufferValue.concat("_ch["
-                                    + channel + "]" + "id[" + localBufferId + "]");
+                                    + channel + "]" + "id[" + localBufferId
+                                    + "]");
                             localBuffer.setExpression(localBufferValue);
                         }
 
@@ -552,7 +618,8 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 }
             }
 
-            for (TypedIOPort outputPort : (List<TypedIOPort>) actor.outputPortList()) {
+            for (TypedIOPort outputPort : (List<TypedIOPort>) actor
+                    .outputPortList()) {
 
                 // Clear the _isMpiBuffer parameter if it already exists
                 _removeAttribute(outputPort, "_mpiBuffer");
@@ -560,12 +627,13 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 if (!_isClearMode()) {
                     continue;
                 }
-                
+
                 int sinkIndex = 0;
-                for (TypedIOPort sinkPort : (List<TypedIOPort>) outputPort.sinkPortList()) {
+                for (TypedIOPort sinkPort : (List<TypedIOPort>) outputPort
+                        .sinkPortList()) {
 
                     Actor sinkActor = (Actor) sinkPort.getContainer();
-                    Parameter sinkPartitionAttribute =  _getPartitionParameter(sinkActor);
+                    Parameter sinkPartitionAttribute = _getPartitionParameter(sinkActor);
 
                     if (!partitionAttribute.getExpression().equals(
                             sinkPartitionAttribute.getExpression())) {
@@ -588,11 +656,10 @@ public class ChacoCodeGenerator extends CodeGenerator {
         Parameter numConnections = _getNumConnectionsParameter();
         numConnections.setExpression(Integer.toString(mpiBufferId));
     }
-    
 
     private String _getVertexWeight(Actor actor) {
-        Parameter vertexParam = (Parameter) 
-        ((NamedObj) actor).getAttribute("_vertexWeight");
+        Parameter vertexParam = (Parameter) ((NamedObj) actor)
+                .getAttribute("_vertexWeight");
 
         if (vertexParam == null) {
             return "1";
@@ -602,8 +669,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private static String _getEdgeWeight(Relation relation) {
-        Parameter edgeParam = (Parameter) 
-        relation.getAttribute("_edgeWeight");
+        Parameter edgeParam = (Parameter) relation.getAttribute("_edgeWeight");
 
         if (edgeParam == null) {
             return "1";
@@ -620,17 +686,18 @@ public class ChacoCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException  If the super class throws it.
      */
     protected String _writeCode(StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
         String tempCodeFileName = super._writeCode(code);
-        if (tempCodeFileName.endsWith(".chaco"))
+        if (tempCodeFileName.endsWith(".chaco")) {
             //tempCodeFileName.substring(0, tempCodeFileName.indexOf(".")).concat(".graph");
             tempCodeFileName = tempCodeFileName.replaceAll(".chaco", ".graph");
+        }
         return tempCodeFileName;
     }
-    
+
     protected void _writeChacoInputFile(String code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         try {
             // Create file 
             FileWriter fstream = new FileWriter(_codeFileName);
@@ -644,10 +711,10 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     protected void _readChacoOutputFile() throws IllegalActionException {
-        
+
         String codeFileNameWritten = this.getCodeFileName();
         codeFileNameWritten = codeFileNameWritten.replaceAll(".graph", ".out");
-        
+
         File file = new File(codeFileNameWritten);
         FileInputStream fis = null;
         BufferedReader reader = null;
@@ -658,11 +725,11 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
             int actorNum = 1;
             String rankString = null;
-            while ( (rankString = reader.readLine()) != null) {
+            while ((rankString = reader.readLine()) != null) {
 
                 // this statement reads the line from the file and print it to
                 // the console.
-                
+
                 Actor actor = (Actor) _HashNumberKey.get(actorNum);
 
                 Parameter parameter = _getPartitionParameter(actor);
@@ -670,7 +737,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
                 actorNum++;
 
-                _rankNumbers.add(rankString);                
+                _rankNumbers.add(rankString);
             }
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
@@ -679,20 +746,20 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 try {
                     fis.close();
                 } catch (Exception ex) {
-                    System.err.println("Failed to close " +  file + " " + ex);
+                    System.err.println("Failed to close " + file + " " + ex);
                 }
             }
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (Exception ex) {
-                    System.err.println("Failed to close " +  file + " " + ex);
+                    System.err.println("Failed to close " + file + " " + ex);
                 }
             }
         }
 
     }
-    
+
     private void _reset() {
         _HashActorKey.clear();
         _HashNumberKey.clear();
@@ -711,7 +778,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 _colorMap.put(rankNumbers.next(), color);
             }
         }
-        
+
         // Insert the highlight color attributes.
         CompositeEntity compositeActor = (CompositeEntity) getContainer();
         for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
@@ -722,8 +789,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
             } else {
                 Parameter actorPartition = _getPartitionParameter(actor);
-                String color = (String) _colorMap.get(actorPartition.getExpression());
-                
+                String color = (String) _colorMap.get(actorPartition
+                        .getExpression());
+
                 ColorAttribute colorAttribute = _getHighlightAttribute((NamedObj) actor);
                 colorAttribute.setExpression(color);
             }
@@ -731,9 +799,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private ColorAttribute _getHighlightAttribute(NamedObj actor)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ColorAttribute attribute = (ColorAttribute) actor
-        .getAttribute("_highlightColor");
+                .getAttribute("_highlightColor");
 
         try {
             if (_isClearMode() && attribute != null) {
@@ -741,8 +809,8 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 return null;
             }
 
-            return (attribute != null) ? attribute
-                    : new ColorAttribute(actor, "_highlightColor");
+            return (attribute != null) ? attribute : new ColorAttribute(actor,
+                    "_highlightColor");
         } catch (NameDuplicationException e) {
             assert false;
         }
@@ -754,9 +822,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private Parameter _getPartitionParameter(Actor actor)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Parameter attribute = (Parameter) ((NamedObj) actor)
-        .getAttribute("_partition");
+                .getAttribute("_partition");
 
         try {
             if (attribute == null) {
@@ -769,13 +837,13 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private Parameter _getNumConnectionsParameter()
-    throws IllegalActionException {
+            throws IllegalActionException {
 
-        Director director = ((TypedCompositeActor) 
-                getContainer()).getDirector();
+        Director director = ((TypedCompositeActor) getContainer())
+                .getDirector();
 
-        Parameter attribute = (Parameter) 
-        director.getAttribute("_numberOfMpiConnections");
+        Parameter attribute = (Parameter) director
+                .getAttribute("_numberOfMpiConnections");
 
         try {
             if (attribute == null) {
@@ -788,10 +856,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private StringAttribute _getLocalAttribute(TypedIOPort port)
-    throws IllegalActionException {
-        StringAttribute attribute = 
-            (StringAttribute) port.getAttribute("_localBuffer");
-
+            throws IllegalActionException {
+        StringAttribute attribute = (StringAttribute) port
+                .getAttribute("_localBuffer");
 
         try {
             if (attribute == null) {
@@ -804,9 +871,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private StringAttribute _getMpiAttribute(TypedIOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringAttribute result = (StringAttribute) ((NamedObj) port)
-        .getAttribute("_mpiBuffer");
+                .getAttribute("_mpiBuffer");
 
         if (result == null) {
             try {
@@ -819,10 +886,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private StringAttribute _getShowInfoAttribute(TypedIOPort port)
-    throws IllegalActionException {
-        StringAttribute attribute = 
-            (StringAttribute) port.getAttribute("_showInfo");
-
+            throws IllegalActionException {
+        StringAttribute attribute = (StringAttribute) port
+                .getAttribute("_showInfo");
 
         try {
             if (attribute == null) {

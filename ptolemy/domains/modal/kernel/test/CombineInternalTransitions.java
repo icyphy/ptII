@@ -28,7 +28,7 @@ package ptolemy.domains.modal.kernel.test;
 
 import java.net.URL;
 
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.modal.kernel.ia.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
@@ -58,7 +58,7 @@ public class CombineInternalTransitions {
      *  @exception Exception If the operation failed.
      */
     public CombineInternalTransitions(String moml) throws Exception {
-        URL url = MoMLApplication.specToURL(moml);
+        URL url = ConfigurationApplication.specToURL(moml);
 
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse(). Also, a instance

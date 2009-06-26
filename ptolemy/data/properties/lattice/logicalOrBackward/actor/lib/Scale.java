@@ -53,18 +53,17 @@ public class Scale extends AtomicActor {
      * @param actor the associated actor
      * @exception IllegalActionException
      */
-    public Scale(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Scale actor) throws IllegalActionException {
+    public Scale(PropertyConstraintSolver solver, ptolemy.actor.lib.Scale actor)
+            throws IllegalActionException {
         super(solver, actor, false);
-   }
+    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Scale actor =
-            (ptolemy.actor.lib.Scale) getComponent();
+        ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
 
-        if (((ScalarToken)actor.factor.getToken()).doubleValue()==0) {
+        if (((ScalarToken) actor.factor.getToken()).doubleValue() == 0) {
             setAtLeast(actor.input, lattice.FALSE);
         } else {
             setAtLeast(actor.input, actor.output);
@@ -74,4 +73,3 @@ public class Scale extends AtomicActor {
     }
 
 }
-

@@ -157,8 +157,8 @@ public class GUIAction extends Attribute {
     public NamedObj getModel() {
         JFrame frame = getFrame();
         if (!(frame instanceof PtolemyFrame)) {
-            throw new InternalErrorException("The current frame has " +
-                    "no model.");
+            throw new InternalErrorException("The current frame has "
+                    + "no model.");
         }
         return ((PtolemyFrame) frame).getModel();
     }
@@ -202,8 +202,7 @@ public class GUIAction extends Attribute {
                     URL url = _parser.fileNameToURL(_momlSource, null);
                     InputStreamReader reader = null;
                     try {
-                        reader = new InputStreamReader(
-                                url.openStream());
+                        reader = new InputStreamReader(url.openStream());
 
                         int bufferSize = 1024;
                         char[] buffer = new char[bufferSize];
@@ -220,35 +219,29 @@ public class GUIAction extends Attribute {
                     } finally {
                         if (reader != null) {
                             try {
-                            reader.close();
+                                reader.close();
                             } catch (IOException ex) {
-                            throw new InternalErrorException(
-                                    "Failed to close \"" + url +
-                                    "\".");
+                                throw new InternalErrorException(
+                                        "Failed to close \"" + url + "\".");
                             }
                         }
                     }
                 }
                 moml = _momlText;
             }
-            MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    model, moml) {
+            MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml) {
                 protected void _postParse(MoMLParser parser) {
-                    Iterator topObjects =
-                        parser.topObjectsCreated().iterator();
+                    Iterator topObjects = parser.topObjectsCreated().iterator();
                     while (topObjects.hasNext()) {
-                        NamedObj topObject =
-                            (NamedObj) topObjects.next();
-                        if (topObject.attributeList(Location.class)
-                                .isEmpty()) {
+                        NamedObj topObject = (NamedObj) topObjects.next();
+                        if (topObject.attributeList(Location.class).isEmpty()) {
                             try {
-                                Location location = new Location(
-                                        topObject, topObject.uniqueName(
-                                                "_location"));
+                                Location location = new Location(topObject,
+                                        topObject.uniqueName("_location"));
                                 Point2D center = ((BasicGraphFrame) getFrame())
                                         .getCenter();
-                                location.setLocation(new double[]{
-                                        center.getX(), center.getY()});
+                                location.setLocation(new double[] {
+                                        center.getX(), center.getY() });
                             } catch (KernelException e) {
                                 throw new InternalErrorException(e);
                             }
@@ -321,10 +314,11 @@ public class GUIAction extends Attribute {
 
         boolean lsidFlag = true;
         try {
-            String lsidString = ((StringAttribute) (object.getAttribute(
-                    "entityId"))).getExpression();
-            if ((lsidString == null) || (lsidString.equals("")))
+            String lsidString = ((StringAttribute) (object
+                    .getAttribute("entityId"))).getExpression();
+            if ((lsidString == null) || (lsidString.equals(""))) {
                 lsidFlag = false;
+            }
         } catch (Exception eee) {
             lsidFlag = false;
         }
@@ -351,22 +345,20 @@ public class GUIAction extends Attribute {
         }
 
         if (alternateGetMomlActionAttribute != null) {
-            String alternateGetMomlClassName =
-                alternateGetMomlActionAttribute.getExpression();
-            Class getMomlClass = Class.forName(
-                    alternateGetMomlClassName);
+            String alternateGetMomlClassName = alternateGetMomlActionAttribute
+                    .getExpression();
+            Class getMomlClass = Class.forName(alternateGetMomlClassName);
             Object getMomlAction = getMomlClass.newInstance();
             try {
-                Method getMomlMethod = getMomlClass.getMethod(
-                        "getMoml", new Class[] {NamedObj.class,
-                                String.class});
+                Method getMomlMethod = getMomlClass.getMethod("getMoml",
+                        new Class[] { NamedObj.class, String.class });
                 return (String) getMomlMethod.invoke(getMomlAction,
-                        new Object[] { object, name});
+                        new Object[] { object, name });
             } catch (NoSuchMethodException e) {
             }
         }
 
-        return "<group name=\"auto\">\n" + object.exportMoML(name) +
-                "</group>\n";
+        return "<group name=\"auto\">\n" + object.exportMoML(name)
+                + "</group>\n";
     }
 }

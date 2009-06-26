@@ -38,7 +38,7 @@ public interface PropertyTerm extends InequalityTerm {
 
     public boolean isEffective();
 
-    public void setEffective (boolean isEffective);
+    public void setEffective(boolean isEffective);
 
     /** Return an array of constants contained in this term.
      *  If this term is a variable, return an array of size zero;

@@ -29,8 +29,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.IllegalActionException;
@@ -88,15 +88,20 @@ public class Test extends ProgramCodeGeneratorAdapter {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i).toString());
             if (getCodeGenerator().isPrimitive(actor.input.getType())) {
-                inputType = getCodeGenerator().codeGenType(actor.input.getType());
+                inputType = getCodeGenerator().codeGenType(
+                        actor.input.getType());
             } else {
                 inputType = "Token";
-                  ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled("equals_Token_Token", (JavaCodeGeneratorAdapterStrategy) getStrategy());
-                  ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled("isCloseTo_Token_Token", (JavaCodeGeneratorAdapterStrategy) getStrategy());
+                ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled(
+                        "equals_Token_Token",
+                        (JavaCodeGeneratorAdapterStrategy) getStrategy());
+                ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled(
+                        "isCloseTo_Token_Token",
+                        (JavaCodeGeneratorAdapterStrategy) getStrategy());
             }
 
-            codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
-                    args);
+            codeStream
+                    .appendCodeBlock(inputType + "Block" + multiChannel, args);
         }
         return processCode(codeStream.toString());
     }

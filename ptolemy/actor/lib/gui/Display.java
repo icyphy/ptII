@@ -461,8 +461,8 @@ public class Display extends AbstractPlaceableActor {
                 // to destroy the original window.
                 textEffigy.identifier.setExpression(getFullName());
 
-                DisplayWindowTableau tableau = new DisplayWindowTableau(
-                        this, textEffigy, "tableau");
+                DisplayWindowTableau tableau = new DisplayWindowTableau(this,
+                        textEffigy, "tableau");
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
@@ -560,9 +560,9 @@ public class Display extends AbstractPlaceableActor {
          *  @exception NameDuplicationException If the name coincides with an
          *   attribute already in the container.
          */
-        public DisplayWindowTableau(
-                Display display, TextEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
+        public DisplayWindowTableau(Display display, TextEffigy container,
+                String name) throws IllegalActionException,
+                NameDuplicationException {
             super(container, name);
 
             String title = display.title.stringValue();

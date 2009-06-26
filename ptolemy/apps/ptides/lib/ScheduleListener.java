@@ -70,9 +70,9 @@ public interface ScheduleListener {
      */
     public void initialize(Hashtable nodesActors);
 
-        /**
-         * Type of schedule event.
-         */
+    /**
+     * Type of schedule event.
+     */
     public static enum ScheduleEventType {
         /** Started the execution of an actor. */
         START,

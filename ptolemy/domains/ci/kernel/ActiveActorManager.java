@@ -67,7 +67,8 @@ public class ActiveActorManager extends PtolemyThread {
      *  @param director The director of the actor.
      * @exception IllegalActionException
      */
-    public ActiveActorManager(Actor actor, CIDirector director) throws IllegalActionException {
+    public ActiveActorManager(Actor actor, CIDirector director)
+            throws IllegalActionException {
         super();
         _actor = actor;
         _director = director;

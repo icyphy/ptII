@@ -42,7 +42,6 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// RelationWidthChanges
 
-
 /** When this class is registered with the MoMLParser.setMoMLFilter()
  method, it will cause MoMLParser to filter so that models from
  earlier releases will run in the current release.
@@ -100,18 +99,19 @@ public class RelationWidthChanges implements MoMLFilter {
                     _currentlyProcessingRelation = false;
                     _currentlyProcessingWidth = false;
 
-                    if (_changedNeeded(container, xmlFile) && attributeValue.equals("0")) {
-                            MoMLParser.setModified(true);
-                            return Integer.toString(IORelation.WIDTH_TO_INFER);
+                    if (_changedNeeded(container, xmlFile)
+                            && attributeValue.equals("0")) {
+                        MoMLParser.setModified(true);
+                        return Integer.toString(IORelation.WIDTH_TO_INFER);
                     }
                 }
-            }
-            else {
-                if (attributeValue.equals("width") && element.equals("property")) {
+            } else {
+                if (attributeValue.equals("width")
+                        && element.equals("property")) {
                     _currentlyProcessingWidth = true;
                 }
             }
-        } else  if (element.equals("relation") && attributeName.equals("class")) {
+        } else if (element.equals("relation") && attributeName.equals("class")) {
             _currentlyProcessingRelation = true;
         }
         return attributeValue;
@@ -144,8 +144,9 @@ public class RelationWidthChanges implements MoMLFilter {
             VersionAttribute version = (VersionAttribute) container;
             try {
                 if (xmlFile != null) {
-                    _changesNeededForXmlFile.put(xmlFile,
-                            version != null && version.isLessThan(new VersionAttribute("7.2.devel")));
+                    _changesNeededForXmlFile.put(xmlFile, version != null
+                            && version.isLessThan(new VersionAttribute(
+                                    "7.2.devel")));
                 }
             } catch (IllegalActionException e) {
                 // We don't expect that this fails.
@@ -179,7 +180,6 @@ public class RelationWidthChanges implements MoMLFilter {
         return Integer.toHexString(hashCode());
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
 
@@ -191,7 +191,8 @@ public class RelationWidthChanges implements MoMLFilter {
      */
     private boolean _changedNeeded(NamedObj container, String xmlFile) {
         // First Check whether we already have the version
-        Boolean changesNeeded = xmlFile != null ? _changesNeededForXmlFile.get(xmlFile) : null;
+        Boolean changesNeeded = xmlFile != null ? _changesNeededForXmlFile
+                .get(xmlFile) : null;
         if (changesNeeded != null && changesNeeded) {
             return _changesNeededForXmlFile.get(xmlFile);
         } else {
@@ -206,7 +207,8 @@ public class RelationWidthChanges implements MoMLFilter {
             Attribute version = toplevel.getAttribute("_createdBy");
             if (version != null) {
                 try {
-                    return ((VersionAttribute) version).isLessThan(new VersionAttribute("7.2.devel"));
+                    return ((VersionAttribute) version)
+                            .isLessThan(new VersionAttribute("7.2.devel"));
                 } catch (IllegalActionException e) {
                 }
             }

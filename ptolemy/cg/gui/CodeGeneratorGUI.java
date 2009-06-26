@@ -85,8 +85,9 @@ public class CodeGeneratorGUI extends PtolemyFrame {
      *   configuration attribute.
      *  @exception NameDuplicationException If a name collision occurs.
      */
-    public CodeGeneratorGUI(final GenericCodeGenerator codeGenerator, Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+    public CodeGeneratorGUI(final GenericCodeGenerator codeGenerator,
+            Tableau tableau) throws IllegalActionException,
+            NameDuplicationException {
         super(codeGenerator, tableau);
 
         this._statusBar.setVisible(false);
@@ -182,8 +183,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         // If we execute any commands, print the output in the text area.
         codeGenerator.setExecuteCommands(exec);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                upper, exec);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper,
+                exec);
         splitPane.setOneTouchExpandable(true);
 
         // Adjust the divider so that the control panel does not

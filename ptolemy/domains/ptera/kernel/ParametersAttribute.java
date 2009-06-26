@@ -86,8 +86,8 @@ public class ParametersAttribute extends StringParameter {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ParametersAttribute attribute = (ParametersAttribute) super.clone(
-                workspace);
+        ParametersAttribute attribute = (ParametersAttribute) super
+                .clone(workspace);
         attribute._parseTree = null;
         attribute._parseTreeVersion = -1;
         return attribute;
@@ -147,17 +147,16 @@ public class ParametersAttribute extends StringParameter {
      *   cannot be evaluated.
      */
     private void _parse() throws IllegalActionException {
-        if (_parseTree == null || _parseTreeVersion != _workspace
-                .getVersion()) {
+        if (_parseTree == null || _parseTreeVersion != _workspace.getVersion()) {
             try {
                 String function = "function" + getExpression() + " 1";
                 _parseTree = (ASTPtFunctionDefinitionNode) new PtParser()
                         .generateParseTree(function);
                 _parseTreeVersion = _workspace.getVersion();
             } catch (Exception e) {
-                throw new IllegalActionException(this, e, "The parameter " +
-                        "list must be in the form of (v1 : type1, v2 : " +
-                        "type2, ...).");
+                throw new IllegalActionException(this, e, "The parameter "
+                        + "list must be in the form of (v1 : type1, v2 : "
+                        + "type2, ...).");
             }
         }
     }

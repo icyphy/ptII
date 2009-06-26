@@ -328,4 +328,3 @@ public interface Map extends Rollbackable {
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }
-

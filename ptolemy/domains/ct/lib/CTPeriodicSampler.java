@@ -142,7 +142,8 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CTPeriodicSampler newObject = (CTPeriodicSampler) super.clone(workspace);
+        CTPeriodicSampler newObject = (CTPeriodicSampler) super
+                .clone(workspace);
         newObject.output.setWidthEquals(newObject.input, true);
 
         return newObject;
@@ -234,7 +235,6 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
 
         return true;
     }
-
 
     /** Make sure the actor runs inside a CT domain.
      *  @exception IllegalActionException If the director is not

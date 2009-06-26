@@ -202,7 +202,7 @@ public class ProcessThread extends PtolemyThread {
 
                     if (firingsRecordable != null) {
                         firingsRecordable
-                            .recordFiring(FiringEvent.BEFORE_PREFIRE);
+                                .recordFiring(FiringEvent.BEFORE_PREFIRE);
                     }
 
                     if (_actor.prefire()) {
@@ -231,7 +231,7 @@ public class ProcessThread extends PtolemyThread {
                         }
                     } else if (firingsRecordable != null) {
                         firingsRecordable
-                            .recordFiring(FiringEvent.AFTER_PREFIRE);
+                                .recordFiring(FiringEvent.AFTER_PREFIRE);
                     }
                 }
             }
@@ -269,8 +269,7 @@ public class ProcessThread extends PtolemyThread {
                             + "threw TerminateProcessException.");
                 } else if (thrownWhenIterate instanceof InterruptedException) {
                     // Process was terminated by call to stop();
-                    _debug("-- Thread was interrupted: "
-                            + thrownWhenIterate);
+                    _debug("-- Thread was interrupted: " + thrownWhenIterate);
                 } else if (thrownWhenIterate instanceof InterruptedIOException
                         || ((thrownWhenIterate != null) && thrownWhenIterate
                                 .getCause() instanceof InterruptedIOException)) {

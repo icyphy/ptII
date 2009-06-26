@@ -177,7 +177,7 @@ public class SRDirector extends FixedPointDirector {
         // the criterion seems difficult. Hence, we check to be sure
         // that the test is worth doing.
         Time currentTime = getModelTime();
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         // Check the most common case first.
         if (periodValue == 0.0) {
             // All subsequent firings will be at the current time.
@@ -241,9 +241,10 @@ public class SRDirector extends FixedPointDirector {
 
         // In case we are embedded within a timed director, request a first
         // firing.
-        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector != null) {
-            executiveDirector.fireAtCurrentTime((Actor)getContainer());
+            executiveDirector.fireAtCurrentTime((Actor) getContainer());
         }
     }
 
@@ -284,7 +285,8 @@ public class SRDirector extends FixedPointDirector {
                     // If the enclosing director supports superdense time, then
                     // make sure we are at index zero before agreeing to fire.
                     if (executiveDirector instanceof SuperdenseTimeDirector) {
-                        int index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                        int index = ((SuperdenseTimeDirector) executiveDirector)
+                                .getIndex();
                         if (index == 0) {
                             return super.prefire();
                         }
@@ -311,7 +313,8 @@ public class SRDirector extends FixedPointDirector {
                         // If the enclosing director supports superdense time, then
                         // make sure we are at index zero before agreeing to fire.
                         if (executiveDirector instanceof SuperdenseTimeDirector) {
-                            int index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
+                            int index = ((SuperdenseTimeDirector) executiveDirector)
+                                    .getIndex();
                             if (index == 0) {
                                 return super.prefire();
                             }

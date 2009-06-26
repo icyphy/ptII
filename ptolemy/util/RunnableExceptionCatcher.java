@@ -43,7 +43,7 @@ Ptolemy Message Handler.
 @Pt.AcceptedRating Green (rodiers)
 */
 
-public class RunnableExceptionCatcher implements Runnable{
+public class RunnableExceptionCatcher implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -62,9 +62,11 @@ public class RunnableExceptionCatcher implements Runnable{
         try {
             _runnable.run();
         } catch (Throwable e) {
-            ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler.shortDescription(e), e);
+            ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler
+                    .shortDescription(e), e);
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

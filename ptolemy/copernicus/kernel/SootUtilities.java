@@ -1079,7 +1079,7 @@ public class SootUtilities {
             SootClass class2 = ((RefType) type2).getSootClass();
             return derivesFrom(class1, class2);
         } else if (/* type1 instanceof Type && */
-                type2 instanceof RefType) {
+        type2 instanceof RefType) {
             Type elementType1 = ((ArrayType) type1).baseType;
 
             // FIXME: FindBugs: Impossible cast from soot.RefType to
@@ -1519,8 +1519,7 @@ public class SootUtilities {
             inlinee = (SootMethod) methodList.get(0);
         } else {
             StringBuffer message = new StringBuffer("Can't resolve "
-                    + targetMethod + " on baseClass "
-                    + baseClass + "\n");
+                    + targetMethod + " on baseClass " + baseClass + "\n");
 
             for (int i = 0; i < methodList.size(); i++) {
                 message.append("target = " + methodList.get(i) + "\n");

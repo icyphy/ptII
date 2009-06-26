@@ -59,8 +59,8 @@ public class GTEvent extends Event {
 
         refinementExtender = new RefinementExtender(this,
                 uniqueName("refinementExtender"));
-        refinementExtender.description.setExpression(
-                "Embedded Transformation Controller");
+        refinementExtender.description
+                .setExpression("Embedded Transformation Controller");
         refinementExtender.setPersistent(false);
         refinementExtender.moveToFirst();
         _setRefinementExtender();
@@ -90,9 +90,9 @@ public class GTEvent extends Event {
             }
         }
         if (actorParameter == null) {
-            throw new IllegalActionException("Unable to find the Model " +
-                    "parameter in the Ptera controller of type " +
-                    "ModelParameter.");
+            throw new IllegalActionException("Unable to find the Model "
+                    + "parameter in the Ptera controller of type "
+                    + "ModelParameter.");
         }
         return actorParameter;
     }
@@ -111,16 +111,16 @@ public class GTEvent extends Event {
         if (refinementExtender != null) {
             if (container instanceof PteraController) {
                 PteraController controller = (PteraController) container;
-                if (controller.getPort("modelInput") != null &&
-                        controller.getPort("modelOutput") != null) {
-                    refinementExtender.className.setExpression("ptolemy." +
-                            "actor.gt.controller." +
-                            "EmbeddedTransformationControllerWithPorts");
+                if (controller.getPort("modelInput") != null
+                        && controller.getPort("modelOutput") != null) {
+                    refinementExtender.className.setExpression("ptolemy."
+                            + "actor.gt.controller."
+                            + "EmbeddedTransformationControllerWithPorts");
                     return;
                 }
             }
-            refinementExtender.className.setExpression("ptolemy.actor.gt." +
-                    "controller.EmbeddedTransformationController");
+            refinementExtender.className.setExpression("ptolemy.actor.gt."
+                    + "controller.EmbeddedTransformationController");
         }
     }
 }

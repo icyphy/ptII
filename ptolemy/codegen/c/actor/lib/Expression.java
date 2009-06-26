@@ -76,8 +76,7 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     protected String _generateFireCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG =
-            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
@@ -97,13 +96,11 @@ public class Expression extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG =
-            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
-        code.append(processCode(parseTreeCG
-                .generateInitializeCode()));
+        code.append(processCode(parseTreeCG.generateInitializeCode()));
         return code.toString();
     }
 
@@ -119,8 +116,7 @@ public class Expression extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        CParseTreeCodeGenerator parseTreeCG =
-            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
@@ -132,16 +128,14 @@ public class Expression extends CCodeGeneratorHelper {
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());
 
-            parseTreeCG.evaluateParseTree(parseTree,
-                    new VariableScope(actor));
+            parseTreeCG.evaluateParseTree(parseTree, new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
             throw new IllegalActionException(actor, ex, "Expression \""
                     + actor.expression.getExpression() + "\" invalid.");
         }
 
-        code.append(processCode(parseTreeCG
-                .generatePreinitializeCode()));
+        code.append(processCode(parseTreeCG.generatePreinitializeCode()));
         return code.toString();
     }
 
@@ -156,12 +150,10 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        CParseTreeCodeGenerator parseTreeCG =
-            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         Set codeBlocks = super.getSharedCode();
-        codeBlocks.add(processCode(parseTreeCG
-                .generateSharedCode()));
+        codeBlocks.add(processCode(parseTreeCG.generateSharedCode()));
         return codeBlocks;
     }
 
@@ -176,8 +168,7 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG =
-            (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
+        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
@@ -241,8 +232,8 @@ public class Expression extends CCodeGeneratorHelper {
                 }
 
                 for (int i = 0; i < _actor.inputPortList().size(); i++) {
-                    if ((generateSimpleName((IOPort) _actor.inputPortList().get(i)))
-                            .equals(name)) {
+                    if ((generateSimpleName((IOPort) _actor.inputPortList()
+                            .get(i))).equals(name)) {
                         return new ObjectToken("$ref(" + name + ")");
                     }
                 }

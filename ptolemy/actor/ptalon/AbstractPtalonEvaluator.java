@@ -683,7 +683,7 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     public void enterTransformation(boolean incremental)
-    throws PtalonRuntimeException {
+            throws PtalonRuntimeException {
         throw new PtalonRuntimeException("Transformation is not implemented.");
     }
 
@@ -960,8 +960,8 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     public void optionalObject(String name) throws PtalonRuntimeException {
-        throw new PtalonRuntimeException("Optional objects are not " +
-                "implemented.");
+        throw new PtalonRuntimeException("Optional objects are not "
+                + "implemented.");
     }
 
     /** Pop out of the scope of the current for statement and into its

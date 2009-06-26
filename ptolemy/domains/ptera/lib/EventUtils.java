@@ -101,8 +101,8 @@ public class EventUtils {
             if (effigy != null) {
                 return effigy;
             }
-            ContainmentExtender extender = (ContainmentExtender)
-                    toplevel.getAttribute("_containmentExtender",
+            ContainmentExtender extender = (ContainmentExtender) toplevel
+                    .getAttribute("_containmentExtender",
                             ContainmentExtender.class);
             object = toplevel;
             if (extender != null) {
@@ -125,11 +125,11 @@ public class EventUtils {
     public static Tableau getTableau(Event event,
             StringParameter referredTableau, TableauParameter defaultTableau)
             throws IllegalActionException {
-        TableauParameter parameter = getTableauParameter(event, referredTableau,
-                defaultTableau);
+        TableauParameter parameter = getTableauParameter(event,
+                referredTableau, defaultTableau);
         if (parameter == null) {
-            throw new IllegalActionException("referredTableau has not been " +
-                    "specified in " + event.getName() + ".");
+            throw new IllegalActionException("referredTableau has not been "
+                    + "specified in " + event.getName() + ".");
         }
         Tableau tableau = (Tableau) ((ObjectToken) parameter.getToken())
                 .getValue();
@@ -157,9 +157,9 @@ public class EventUtils {
             Variable variable = ModelScope.getScopedVariable(null, event,
                     tableauName);
             if (variable == null || !(variable instanceof TableauParameter)) {
-                throw new IllegalActionException(event, "Unable to find " +
-                        "variable with name \"" + tableauName + "\", or the " +
-                        "variable is not an instanceof TableauParameter.");
+                throw new IllegalActionException(event, "Unable to find "
+                        + "variable with name \"" + tableauName + "\", or the "
+                        + "variable is not an instanceof TableauParameter.");
             }
             return (TableauParameter) variable;
         }

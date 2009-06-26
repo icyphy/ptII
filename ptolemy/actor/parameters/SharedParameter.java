@@ -420,7 +420,8 @@ public class SharedParameter extends Parameter implements Initializable {
         super.setExpression(expression);
 
         if (!_suppressingPropagation) {
-            Iterator<SharedParameter> sharedParameters = sharedParameterSet().iterator();
+            Iterator<SharedParameter> sharedParameters = sharedParameterSet()
+                    .iterator();
 
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = sharedParameters.next();
@@ -462,7 +463,8 @@ public class SharedParameter extends Parameter implements Initializable {
         super.setToken(token);
 
         if (!_suppressingPropagation) {
-            Iterator<SharedParameter> sharedParameters = sharedParameterSet().iterator();
+            Iterator<SharedParameter> sharedParameters = sharedParameterSet()
+                    .iterator();
 
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = sharedParameters.next();
@@ -562,7 +564,8 @@ public class SharedParameter extends Parameter implements Initializable {
         }
 
         if (!_suppressingPropagation) {
-            Iterator<SharedParameter> sharedParameters = sharedParameterSet().iterator();
+            Iterator<SharedParameter> sharedParameters = sharedParameterSet()
+                    .iterator();
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = sharedParameters.next();
                 if (sharedParameter != this) {

@@ -68,10 +68,9 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
-    
+
     /** Generate code and append it to the given string buffer.
      *  Write the code to the directory specified by the codeDirectory
      *  parameter.  The file name is a sanitized version of the model
@@ -88,26 +87,30 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
-    protected int _generateCode(StringBuffer code) throws KernelException {;
+    protected int _generateCode(StringBuffer code) throws KernelException {
+        ;
         // FIXME: We should put in some default html version info.
         // e.g. <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         // <html xmlns="http://www.w3.org/1999/xhtml"xml:lang="en" lang="en" dir="ltr">
         code.append("<html>" + _eol);
 
-        code.append("<head>" + _eol);        
-        code.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" + _eol);
+        code.append("<head>" + _eol);
+        code
+                .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"
+                        + _eol);
         code.append("<title>" + toplevel().getName() + "</title>" + _eol);
-        code.append("</head>" + _eol);        
+        code.append("</head>" + _eol);
 
-        code.append("<body>" + _eol);        
-        code.append(((HTMLCodeGeneratorAdapter)getAdapter(toplevel())).generateHTML());        
-        code.append("</body>" + _eol);        
+        code.append("<body>" + _eol);
+        code.append(((HTMLCodeGeneratorAdapter) getAdapter(toplevel()))
+                .generateHTML());
+        code.append("</body>" + _eol);
 
         code.append("</html>" + _eol);
-        
+
         return super._generateCode(code);
     }
-    
+
     /** Return the filter class to find adapters. All
      *  adapters have to extend this class.
      *  @return The base class for the adapters.  
@@ -115,11 +118,10 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
     protected Class<?> _getAdapterClassFilter() {
         return HTMLCodeGeneratorAdapter.class;
     }
-        
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return a formatted comment containing the specified string. In
      *  this base class, the comments is a HTML-style comment, which
      *  begins with "<!--" and ends with "-->" followed by the platform
@@ -133,5 +135,4 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
         return "<!-- " + comment + " -->" + _eol;
     }
 
-    
 }

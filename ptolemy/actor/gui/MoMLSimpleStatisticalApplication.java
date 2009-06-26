@@ -72,7 +72,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)
  */
-public class MoMLSimpleStatisticalApplication extends ptolemy.moml.MoMLSimpleApplication {
+public class MoMLSimpleStatisticalApplication extends
+        ptolemy.moml.MoMLSimpleApplication {
     /** Parse the xml file and run it.
      *  @param args The command line arguments
      *  @exception Exception If there was a problem parsing
@@ -212,7 +213,7 @@ public class MoMLSimpleStatisticalApplication extends ptolemy.moml.MoMLSimpleApp
                 if (!arg.startsWith("-")) {
                     // Assume the argument is a file name or URL.
                     // Attempt to read it.
-                    URL inURL = MoMLApplication.specToURL(arg);
+                    URL inURL = ConfigurationApplication.specToURL(arg);
 
                     // Strangely, the XmlParser does not want as base the
                     // directory containing the file, but rather the
@@ -226,13 +227,13 @@ public class MoMLSimpleStatisticalApplication extends ptolemy.moml.MoMLSimpleApp
                     long startTime = System.currentTimeMillis();
                     _toplevel = (CompositeActor) _parser.parse(base, inURL);
                     System.out.println("Opened \"" + base + "\": "
-                                       + Manager.timeAndMemory(startTime));
+                            + Manager.timeAndMemory(startTime));
                     long statisticsStartTime = System.currentTimeMillis();
                     System.out.println(_toplevel.statistics(null));
                     long statisticsEndTime = System.currentTimeMillis();
                     System.out.println("Generating statistics took"
-                                       + (statisticsEndTime - statisticsStartTime)
-                                       + " ms. ");
+                            + (statisticsEndTime - statisticsStartTime)
+                            + " ms. ");
                 } else {
                     // Argument not recognized.
                     return false;

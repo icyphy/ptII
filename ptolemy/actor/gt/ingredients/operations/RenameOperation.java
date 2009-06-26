@@ -90,8 +90,7 @@ public class RenameOperation extends Operation {
             for (int i = 0; i < _valueParseTree.jjtGetNumChildren(); i++) {
                 ASTPtRootNode child = (ASTPtRootNode) _valueParseTree
                         .jjtGetChild(i);
-                if (!(child.isConstant()
-                        && child.getToken() instanceof StringToken)) {
+                if (!(child.isConstant() && child.getToken() instanceof StringToken)) {
                     ASTPtLeafNode newNode = _evaluate(child, evaluator, scope);
                     buffer.append(_parseTreeWriter
                             .parseTreeToExpression(newNode));
@@ -101,10 +100,8 @@ public class RenameOperation extends Operation {
                 }
             }
             name = buffer.toString();
-        } else if (!(_valueParseTree.isConstant()
-                && _valueParseTree.getToken() instanceof StringToken)) {
-            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator,
-                    scope);
+        } else if (!(_valueParseTree.isConstant() && _valueParseTree.getToken() instanceof StringToken)) {
+            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator, scope);
             name = _parseTreeWriter.parseTreeToExpression(newRoot);
         } else {
             name = _name.get();
@@ -168,9 +165,8 @@ public class RenameOperation extends Operation {
         _valueParseTree = new PtParser().generateStringParseTree(_name.get());
     }
 
-    private static final OperationElement[] _ELEMENTS = {
-        new StringOperationElement("name", false, true)
-    };
+    private static final OperationElement[] _ELEMENTS = { new StringOperationElement(
+            "name", false, true) };
 
     private PtolemyExpressionString _name;
 

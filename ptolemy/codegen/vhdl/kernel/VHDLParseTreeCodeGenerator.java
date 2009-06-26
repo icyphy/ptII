@@ -282,8 +282,8 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
             Type valueType = tokens[i].getType();
 
             if (_isPrimitive(valueType)) {
-                _fireCode.insert(nextIndex, "$new("
-                        + _codeGenType(valueType) + "(");
+                _fireCode.insert(nextIndex, "$new(" + _codeGenType(valueType)
+                        + "(");
                 _fireCode.append("))");
             }
 
@@ -301,8 +301,7 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
         if (_codeGenType(elementType).equals("Token")) {
             _fireCode.append(", -1");
         } else {
-            _fireCode.append(", TYPE_"
-                    + _codeGenType(elementType));
+            _fireCode.append(", TYPE_" + _codeGenType(elementType));
         }
         _fireCode.append("))");
 
@@ -1571,7 +1570,6 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** The wrapup() method code. */
     protected StringBuffer _wrapupCode = new StringBuffer();
 
-
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
@@ -1580,8 +1578,8 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    private /*static*/ String _codeGenType(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
+    private/*static*/String _codeGenType(Type ptType) {
+        // FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
 
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
@@ -1617,7 +1615,7 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * @return true if the given type is primitive, otherwise false.
      */
     private boolean _isPrimitive(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
+        // FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
         return _primitiveTypes.contains(_codeGenType(ptType));
     }
 

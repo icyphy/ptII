@@ -80,7 +80,6 @@ public class TransformationAttributeController extends AttributeController {
                 new LookInsideAction()));
     }
 
-
     public static class Factory extends NodeControllerFactory {
 
         public Factory(NamedObj container, String name)
@@ -93,8 +92,8 @@ public class TransformationAttributeController extends AttributeController {
         }
     }
 
-    private static class Listener extends TransformationListener
-    implements ChangeListener, WindowListener {
+    private static class Listener extends TransformationListener implements
+            ChangeListener, WindowListener {
 
         public void changeExecuted(ChangeRequest change) {
             if (_child.isModified()) {
@@ -109,11 +108,11 @@ public class TransformationAttributeController extends AttributeController {
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.PREINITIALIZING) {
                 try {
-                    _model = (CompositeEntity) GTTools.cleanupModel(
-                            _parent.getModel());
+                    _model = (CompositeEntity) GTTools.cleanupModel(_parent
+                            .getModel());
                 } catch (IllegalActionException e) {
-                    throw new InternalErrorException(null, e, "Unable to " +
-                            "clean up model.");
+                    throw new InternalErrorException(null, e, "Unable to "
+                            + "clean up model.");
                 }
             }
             super.managerStateChanged(manager);
@@ -193,8 +192,7 @@ public class TransformationAttributeController extends AttributeController {
         public void actionPerformed(ActionEvent event) {
             super.actionPerformed(event);
 
-            TransformationAttribute attribute =
-                (TransformationAttribute) getTarget();
+            TransformationAttribute attribute = (TransformationAttribute) getTarget();
             BasicGraphFrame actorFrame = (BasicGraphFrame) getFrame();
             Configuration configuration = actorFrame.getConfiguration();
             try {
@@ -206,8 +204,8 @@ public class TransformationAttributeController extends AttributeController {
                         frame);
                 listener._addListeners();
             } catch (Exception e) {
-                throw new InternalErrorException(null, e, "Unable to create " +
-                        "transformation editor for " + attribute.getName());
+                throw new InternalErrorException(null, e, "Unable to create "
+                        + "transformation editor for " + attribute.getName());
             }
         }
     }

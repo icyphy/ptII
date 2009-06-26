@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib.jni;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -66,7 +65,7 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
      *   by the proposed container.
      */
     public EmbeddedCFileActor(CompositeEntity container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         codeBlockFile = new FileParameter(this, "codeBlockFile");
@@ -96,11 +95,12 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
                 // Is there a better way of reading in file into a string???
                 try {
                     String str;
-                    while ((str = reader.readLine()) !=null) {
+                    while ((str = reader.readLine()) != null) {
                         code.append(str + "\n");
                     }
                 } catch (IOException e) {
-                    throw new IllegalActionException ("Could not read file" + codeBlockFile.getExpression());
+                    throw new IllegalActionException("Could not read file"
+                            + codeBlockFile.getExpression());
                 }
                 embeddedCCode.setExpression(code.toString());
             }
@@ -143,15 +143,15 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
-    protected void setEmbeddedActor()
-            throws IllegalActionException, NameDuplicationException{
+    protected void setEmbeddedActor() throws IllegalActionException,
+            NameDuplicationException {
         _embeddedActor = new EmbeddedFileActor(this, "EmbeddedFileActor");
     }
 
-   /**
-    * The file parameter that specifies the file that contains the C Code that
-    * this actor should use during execution and/or code generation.
-    */
+    /**
+     * The file parameter that specifies the file that contains the C Code that
+     * this actor should use during execution and/or code generation.
+     */
     public FileParameter codeBlockFile;
 
     ////////////////////////////////////////////////////////////////////
@@ -161,8 +161,8 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
      *  placeholder.  It serves the same purpose as the EmbeddedActor
      *  inside the EmbeddedCActor.
      */
-    public static class EmbeddedFileActor
-        extends ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
+    public static class EmbeddedFileActor extends
+            ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
         /** Create a new instance of EmbeddedFileActor.
          *  @param container The container.
          *  @param name The name of this actor within the container.
@@ -172,7 +172,7 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
          *   an entity already in the container.
          */
         public EmbeddedFileActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
             // In case an exception occurs and wrapup can't destroy
             // it, at least make sure it isn't saved.

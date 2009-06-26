@@ -31,12 +31,11 @@ import ptolemy.data.FloatToken;
 import ptolemy.data.Token;
 import ptolemy.data.properties.Property;
 
-
 public class PropertyToken extends Property {
 
     private Token _token;
 
-    public PropertyToken (Token token) {
+    public PropertyToken(Token token) {
         _token = token;
     }
 
@@ -69,15 +68,15 @@ public class PropertyToken extends Property {
     }
 
     public String toString() {
-// FIXME: Charles Shelton 05/27/09 - How do we distinguish between an empty string token and an unresolved property (null) token?
+        // FIXME: Charles Shelton 05/27/09 - How do we distinguish between an empty string token and an unresolved property (null) token?
         return (_token == null ? "" : _token.toString());
     }
 
     public boolean equals(Object object) {
         if (object instanceof PropertyToken) {
             PropertyToken property = (PropertyToken) object;
-            if ((property.getToken() instanceof DoubleToken) ||
-                (property.getToken() instanceof FloatToken)) {
+            if ((property.getToken() instanceof DoubleToken)
+                    || (property.getToken() instanceof FloatToken)) {
 
                 // need to do string compare because of truncated floating point
                 // numbers in MoML file

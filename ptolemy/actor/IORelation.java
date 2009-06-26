@@ -56,7 +56,6 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// IORelation
 
-
 /**
  This class mediates connections between ports that can send data to
  one another via message passing. One purpose of this relation is to
@@ -149,7 +148,6 @@ public class IORelation extends ComponentRelation {
      */
     public Parameter width;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -231,7 +229,8 @@ public class IORelation extends ComponentRelation {
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    public Receiver[][] deepReceivers(IOPort except) throws InvalidStateException, IllegalActionException {
+    public Receiver[][] deepReceivers(IOPort except)
+            throws InvalidStateException, IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -321,8 +320,10 @@ public class IORelation extends ComponentRelation {
                     if (container instanceof CompositeActor) {
                         ((CompositeActor) container).inferWidths();
                     } else {
-                        throw new IllegalActionException(this, "Can't infer the widths " +
-                        "of the relations since no container or container is not a CompositeActor.");
+                        throw new IllegalActionException(
+                                this,
+                                "Can't infer the widths "
+                                        + "of the relations since no container or container is not a CompositeActor.");
                     }
 
                     assert _inferredWidthVersion == _workspace.getVersion();
@@ -331,8 +332,7 @@ public class IORelation extends ComponentRelation {
                 return _inferredWidth;
             }
             return width;
-        } else
-        {
+        } else {
             if (width == 0) {
                 return _inferWidth();
             }
@@ -548,12 +548,14 @@ public class IORelation extends ComponentRelation {
         // on the width of relations. Hence we check with the director who is aware or changes
         // related to the connectivity.
         int width = _getUserWidth();
-        boolean widthInferenceValid = width != WIDTH_TO_INFER || _inferredWidthVersion == _workspace.getVersion();
+        boolean widthInferenceValid = width != WIDTH_TO_INFER
+                || _inferredWidthVersion == _workspace.getVersion();
         if (!widthInferenceValid) {
             Nameable container = getContainer();
 
             if (container instanceof CompositeActor) {
-                widthInferenceValid = !((CompositeActor) container).needsWidthInference();
+                widthInferenceValid = !((CompositeActor) container)
+                        .needsWidthInference();
                 if (widthInferenceValid) {
                     _inferredWidthVersion = _workspace.getVersion();
                 }
@@ -711,7 +713,8 @@ public class IORelation extends ComponentRelation {
                 setWidth(otherWidth);
             } else {
                 throw new IllegalActionException(this, relation,
-                        "Relations have different widths: " + _getUserWidth() + " != "
+                        "Relations have different widths: " + _getUserWidth()
+                                + " != "
                                 + ((IORelation) relation)._getUserWidth());
             }
         }
@@ -745,7 +748,8 @@ public class IORelation extends ComponentRelation {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -807,8 +811,8 @@ public class IORelation extends ComponentRelation {
      */
     void _setInferredWidth(int width) throws IllegalActionException {
         assert _getUserWidth() == WIDTH_TO_INFER;
-            // Precondition: you should only infer the width in case it
-            // is not set by the user.
+        // Precondition: you should only infer the width in case it
+        // is not set by the user.
         assert width >= 0;
         _inferredWidthVersion = _workspace.getVersion();
         _inferredWidth = width;
@@ -979,7 +983,6 @@ public class IORelation extends ComponentRelation {
         return _inferredWidth;
     }
 
-
     /** Create an initialize the width parameter. */
     private void _init() {
         try {
@@ -1031,8 +1034,8 @@ public class IORelation extends ComponentRelation {
 
                 // Check legitimacy of the change.
                 if (width < 0 && width != WIDTH_TO_INFER) {
-                    throw new IllegalActionException(this,
-                            "" + width + " is not a valid width for this relation." );
+                    throw new IllegalActionException(this, "" + width
+                            + " is not a valid width for this relation.");
                 }
 
                 /* rodiers: I'd rather keep the following exception since it makes the
@@ -1051,8 +1054,7 @@ public class IORelation extends ComponentRelation {
                  }
                  */
 
-
-                 _cachedWidth = width;
+                _cachedWidth = width;
 
                 // Set the width of all relations in the relation group.
                 Iterator<?> relations = relationGroupList().iterator();
@@ -1075,13 +1077,13 @@ public class IORelation extends ComponentRelation {
                     }
                 }
 
-
                 // Invalidate schedule and type resolution.
                 Nameable container = getContainer();
 
                 if (container instanceof CompositeActor) {
                     ((CompositeActor) container).notifyConnectivityChange();
-                    Director director = ((CompositeActor) container).getDirector();
+                    Director director = ((CompositeActor) container)
+                            .getDirector();
 
                     if (director != null) {
                         director.invalidateSchedule();
@@ -1102,7 +1104,7 @@ public class IORelation extends ComponentRelation {
                 // do some initialization in the connectionsChanged method that they
                 // don't do at other points of time.
 
-                for  (Object port : linkedPortList()) {
+                for (Object port : linkedPortList()) {
                     IOPort p = (IOPort) port;
                     Entity portContainer = (Entity) p.getContainer();
 
@@ -1216,7 +1218,8 @@ public class IORelation extends ComponentRelation {
                 Nameable container = getContainer();
 
                 if (container instanceof CompositeActor) {
-                    Director director = ((CompositeActor) container).getDirector();
+                    Director director = ((CompositeActor) container)
+                            .getDirector();
 
                     if (director != null) {
                         director.invalidateSchedule();
@@ -1232,12 +1235,10 @@ public class IORelation extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         packaged variables                 ////
 
-
     /** Indicate whether the new or the old width inference algo should be used
      *  This is a packaged field.
      */
     public static final boolean _USE_NEW_WIDTH_INFERENCE_ALGO = true;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

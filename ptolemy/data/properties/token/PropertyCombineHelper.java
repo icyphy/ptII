@@ -37,7 +37,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyHelper;
-import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.PropertySolverBase;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -51,11 +51,11 @@ public class PropertyCombineHelper extends PropertyHelper {
     }
 
     public PropertyCombineSolver getSolver() {
-        return (PropertyCombineSolver)_solver;
+        return (PropertyCombineSolver) _solver;
     }
 
-    public void determineProperty()
-    throws IllegalActionException, NameDuplicationException {
+    public void determineProperty() throws IllegalActionException,
+            NameDuplicationException {
 
         Iterator portIterator = getPropertyables().iterator();
 
@@ -63,24 +63,27 @@ public class PropertyCombineHelper extends PropertyHelper {
             IOPort port = (IOPort) portIterator.next();
 
             // Get the shared parser.
-            PtParser parser = PropertySolver.getParser();
+            PtParser parser = PropertySolverBase.getParser();
 
             // create parse tree
-            ASTPtRootNode parseTree = parser.generateParseTree(getSolver().getPropertyExpression());
+            ASTPtRootNode parseTree = parser.generateParseTree(getSolver()
+                    .getPropertyExpression());
 
             // do evaluation for port
-            PropertyCombineParseTreeEvaluator evaluator = new PropertyCombineParseTreeEvaluator(port, _solver);
+            PropertyCombineParseTreeEvaluator evaluator = new PropertyCombineParseTreeEvaluator(
+                    port, _solver);
             Token token = evaluator.evaluateParseTree(parseTree);
-            PropertyToken property = (PropertyToken) new PropertyToken(token);
-            if (!((getSolver().getUnconnectedPorts()) && port.connectedPortList().isEmpty())) {
+            PropertyToken property = new PropertyToken(token);
+            if (!((getSolver().getUnconnectedPorts()) && port
+                    .connectedPortList().isEmpty())) {
                 setEquals(port, property);
             }
         }
 
         Iterator helpers = _getSubHelpers().iterator();
         while (helpers.hasNext()) {
-            PropertyCombineHelper helper =
-                (PropertyCombineHelper) helpers.next();
+            PropertyCombineHelper helper = (PropertyCombineHelper) helpers
+                    .next();
             helper.determineProperty();
         }
     }
@@ -101,7 +104,7 @@ public class PropertyCombineHelper extends PropertyHelper {
     }
 
     public void setEquals(Object object, Property property) {
-// FIXME: Charles Shelton 05/27/09 - Thomas Mandl's code doesn't call super.setEquals.  We will keep it for now.
+        // FIXME: Charles Shelton 05/27/09 - Thomas Mandl's code doesn't call super.setEquals.  We will keep it for now.
         super.setEquals(object, property);
         if (property != null) {
             getSolver().putToken(object, (PropertyToken) property);
@@ -113,7 +116,8 @@ public class PropertyCombineHelper extends PropertyHelper {
         return new ParseTreeAnnotationEvaluator();
     }
 
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
         return new ArrayList<PropertyHelper>();
     }
 

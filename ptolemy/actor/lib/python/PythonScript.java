@@ -226,8 +226,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PythonScript newObject = (PythonScript) super.clone(workspace);
 
         newObject._class = null;
@@ -515,8 +514,9 @@ public class PythonScript extends TypedAtomicActor {
                         // If the inner exception is TerminateProcessException,
                         // then get the exception and rethrow it.
                         if (ex instanceof PyException) {
-                            PyException pyException = (PyException)ex;
-                            Object exceptionValue = pyException.value.__tojava__(Exception.class);
+                            PyException pyException = (PyException) ex;
+                            Object exceptionValue = pyException.value
+                                    .__tojava__(Exception.class);
                             if (exceptionValue instanceof Exception) {
                                 Exception innerException = (Exception) exceptionValue;
                                 if (innerException instanceof TerminateProcessException) {

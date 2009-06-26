@@ -30,7 +30,6 @@
 //// ComputeHistogram
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -150,7 +149,8 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public ComputeHistogram(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public ComputeHistogram(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -168,7 +168,8 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
         inputCount = new PortParameter(this, "inputCount");
         inputCount.setExpression("10");
         inputCount.setTypeEquals(BaseType.INT);
-        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("inputCount");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
@@ -181,14 +182,20 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the bin width is not positive.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
-        if ((attribute == minimumValue) || (attribute == maximumValue)||(attribute == numberOfBins)) {
-            $ASSIGN$_minimumValue(((DoubleToken)minimumValue.getToken()).doubleValue());
-            $ASSIGN$_maximumValue(((DoubleToken)maximumValue.getToken()).doubleValue());
-            $ASSIGN$_numberOfBins(((IntToken)numberOfBins.getToken()).intValue());
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if ((attribute == minimumValue) || (attribute == maximumValue)
+                || (attribute == numberOfBins)) {
+            $ASSIGN$_minimumValue(((DoubleToken) minimumValue.getToken())
+                    .doubleValue());
+            $ASSIGN$_maximumValue(((DoubleToken) maximumValue.getToken())
+                    .doubleValue());
+            $ASSIGN$_numberOfBins(((IntToken) numberOfBins.getToken())
+                    .intValue());
             double width = (_maximumValue - _minimumValue) / _numberOfBins;
             if (width <= 0.0) {
-                throw new IllegalActionException(this, "Invalid bin width (must be positive): " + width);
+                throw new IllegalActionException(this,
+                        "Invalid bin width (must be positive): " + width);
             }
             $ASSIGN$_binWidth(width);
             $ASSIGN$_bins(new int[_numberOfBins]);
@@ -204,10 +211,11 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        ComputeHistogram newObject = (ComputeHistogram)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ComputeHistogram newObject = (ComputeHistogram) super.clone(workspace);
         newObject.$ASSIGN$_bins(new int[_numberOfBins]);
-        System.arraycopy($BACKUP$_bins(), 0, newObject.$BACKUP$_bins(), 0, _bins.length);
+        System.arraycopy($BACKUP$_bins(), 0, newObject.$BACKUP$_bins(), 0,
+                _bins.length);
         return newObject;
     }
 
@@ -216,14 +224,14 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * and update the histogram.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         $ASSIGN$_bins(new int[_numberOfBins]);
         inputCount.update();
-        int count = ((IntToken)inputCount.getToken()).intValue();
+        int count = ((IntToken) inputCount.getToken()).intValue();
         for (int i = 0; i < count; i++) {
             if (input.hasToken(0)) {
-                DoubleToken curToken = (DoubleToken)input.get(0);
+                DoubleToken curToken = (DoubleToken) input.get(0);
                 double curValue = curToken.doubleValue();
                 _addPoint(curValue);
             }
@@ -243,13 +251,15 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * <i>blockSize</i> parameter.
      * @exception IllegalActionException If the superclass throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
-        int count = ((IntToken)inputCount.getToken()).intValue();
+    public boolean prefire() throws IllegalActionException {
+        int count = ((IntToken) inputCount.getToken()).intValue();
         return (input.hasToken(0, count) && super.prefire());
     }
 
     private void _addPoint(double value) {
-        int bin = (int)(Math.round((value - (_minimumValue + (_binWidth * 0.5))) / _binWidth));
+        int bin = (int) (Math
+                .round((value - (_minimumValue + (_binWidth * 0.5)))
+                        / _binWidth));
         if ((bin >= 0) && (bin < _numberOfBins)) {
             $ASSIGN$SPECIAL$_bins(11, bin, _bins[bin]);
         }
@@ -262,45 +272,45 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
         return _bins = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_bins(int operator, int index0, long newValue) {
+    private final int $ASSIGN$SPECIAL$_bins(int operator, int index0,
+            long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_bins.add(new int[] {
-                    index0
-                }, _bins[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_bins.add(new int[] { index0 }, _bins[index0], $CHECKPOINT
+                    .getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return _bins[index0] += newValue;
-            case 1:
-                return _bins[index0] -= newValue;
-            case 2:
-                return _bins[index0] *= newValue;
-            case 3:
-                return _bins[index0] /= newValue;
-            case 4:
-                return _bins[index0] &= newValue;
-            case 5:
-                return _bins[index0] |= newValue;
-            case 6:
-                return _bins[index0] ^= newValue;
-            case 7:
-                return _bins[index0] %= newValue;
-            case 8:
-                return _bins[index0] <<= newValue;
-            case 9:
-                return _bins[index0] >>= newValue;
-            case 10:
-                return _bins[index0] >>>= newValue;
-            case 11:
-                return _bins[index0]++;
-            case 12:
-                return _bins[index0]--;
-            case 13:
-                return ++_bins[index0];
-            case 14:
-                return --_bins[index0];
-            default:
-                return _bins[index0];
+        case 0:
+            return _bins[index0] += newValue;
+        case 1:
+            return _bins[index0] -= newValue;
+        case 2:
+            return _bins[index0] *= newValue;
+        case 3:
+            return _bins[index0] /= newValue;
+        case 4:
+            return _bins[index0] &= newValue;
+        case 5:
+            return _bins[index0] |= newValue;
+        case 6:
+            return _bins[index0] ^= newValue;
+        case 7:
+            return _bins[index0] %= newValue;
+        case 8:
+            return _bins[index0] <<= newValue;
+        case 9:
+            return _bins[index0] >>= newValue;
+        case 10:
+            return _bins[index0] >>>= newValue;
+        case 11:
+            return _bins[index0]++;
+        case 12:
+            return _bins[index0]--;
+        case 13:
+            return ++_bins[index0];
+        case 14:
+            return --_bins[index0];
+        default:
+            return _bins[index0];
         }
     }
 
@@ -311,14 +321,16 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
 
     private final double $ASSIGN$_minimumValue(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_minimumValue.add(null, _minimumValue, $CHECKPOINT.getTimestamp());
+            $RECORD$_minimumValue.add(null, _minimumValue, $CHECKPOINT
+                    .getTimestamp());
         }
         return _minimumValue = newValue;
     }
 
     private final double $ASSIGN$_maximumValue(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_maximumValue.add(null, _maximumValue, $CHECKPOINT.getTimestamp());
+            $RECORD$_maximumValue.add(null, _maximumValue, $CHECKPOINT
+                    .getTimestamp());
         }
         return _maximumValue = newValue;
     }
@@ -332,24 +344,30 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
 
     private final int $ASSIGN$_numberOfBins(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_numberOfBins.add(null, _numberOfBins, $CHECKPOINT.getTimestamp());
+            $RECORD$_numberOfBins.add(null, _numberOfBins, $CHECKPOINT
+                    .getTimestamp());
         }
         return _numberOfBins = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _bins = (int[])$RECORD$_bins.restore(_bins, timestamp, trim);
-        _minimumValue = $RECORD$_minimumValue.restore(_minimumValue, timestamp, trim);
-        _maximumValue = $RECORD$_maximumValue.restore(_maximumValue, timestamp, trim);
+        _bins = (int[]) $RECORD$_bins.restore(_bins, timestamp, trim);
+        _minimumValue = $RECORD$_minimumValue.restore(_minimumValue, timestamp,
+                trim);
+        _maximumValue = $RECORD$_maximumValue.restore(_maximumValue, timestamp,
+                trim);
         _binWidth = $RECORD$_binWidth.restore(_binWidth, timestamp, trim);
-        _numberOfBins = $RECORD$_numberOfBins.restore(_numberOfBins, timestamp, trim);
+        _numberOfBins = $RECORD$_numberOfBins.restore(_numberOfBins, timestamp,
+                trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -386,12 +404,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
     private transient FieldRecord $RECORD$_numberOfBins = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_bins,
-            $RECORD$_minimumValue,
-            $RECORD$_maximumValue,
-            $RECORD$_binWidth,
-            $RECORD$_numberOfBins
-        };
+            $RECORD$_bins, $RECORD$_minimumValue, $RECORD$_maximumValue,
+            $RECORD$_binWidth, $RECORD$_numberOfBins };
 
 }
-

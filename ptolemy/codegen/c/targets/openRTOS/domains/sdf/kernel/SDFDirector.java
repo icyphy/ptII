@@ -39,8 +39,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-
-
 ////GiottoDirector
 
 /**
@@ -55,51 +53,49 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 
 //at the moment I'm not sure exactly what should go in this specific implementation. It will be filled out as the semester progresses.
-public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirector {
+public class SDFDirector extends
+        ptolemy.codegen.c.domains.sdf.kernel.SDFDirector {
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
     }
 
-
-    public double _getWCET()throws IllegalActionException
-    {
-        double myWCET = 0.0;
+    public double _getWCET() throws IllegalActionException {
         // go through all my actors and get their WCET and multiply that by the firing count
         // for now assume that each actor is fired once
-        double wcet=0;
-        double actorFrequency =0;
+        double wcet = 0;
+        double actorFrequency = 0;
         double actorWCET = 0;
         int actorCount = 0;
-        for (Actor actor : (List<Actor>)
-                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
+                .getContainer()).deepEntityList()) {
             actorCount++;
-            Attribute frequency = ((Entity)actor).getAttribute("frequency");
-            Attribute WCET = ((Entity)actor).getAttribute("WCET");
+            Attribute frequency = ((Entity) actor).getAttribute("frequency");
+            Attribute WCET = ((Entity) actor).getAttribute("WCET");
 
-            if (actor instanceof CompositeActor)
-            {
+            if (actor instanceof CompositeActor) {
                 if (_debugging) {
                     _debug("Composite Actor in SDFDirector, if it has a director I need to ask it for it's WCET");
                 }
-            }
-            else {
+            } else {
 
                 if (frequency == null) {
                     actorFrequency = 1;
                 } else {
-                    actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+                    actorFrequency = ((IntToken) ((Variable) frequency)
+                            .getToken()).intValue();
                 }
                 if (WCET == null) {
                     actorWCET = 0.01;
                 } else {
-                    actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+                    actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
+                            .doubleValue();
                 }
             }
-            wcet+= actorFrequency *actorWCET;
+            wcet += actorFrequency * actorWCET;
 
         }
         if (_debugging) {
-            _debug("sdf director has wcet of "+wcet);
+            _debug("sdf director has wcet of " + wcet);
         }
         return wcet;
 

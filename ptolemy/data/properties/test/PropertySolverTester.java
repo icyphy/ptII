@@ -111,7 +111,6 @@ public class PropertySolverTester {
      */
     public static int testProperties(String[] args) throws Exception {
 
-
         if (args.length == 0) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.data.properties.PropertySolver model.xml "

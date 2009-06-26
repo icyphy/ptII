@@ -760,8 +760,8 @@ public class SemanticHighlightingReconciler implements
 
                     CompilationUnit ast = JavaPlugin.getDefault()
                             .getASTProvider().getAST(
-                                            EditorUtility.getEditorInputJavaElement(
-                                                            _editor, false),
+                                    EditorUtility.getEditorInputJavaElement(
+                                            _editor, false),
                                     ASTProvider.WAIT_YES, monitor);
                     reconciled(ast, false, monitor);
 
@@ -997,8 +997,7 @@ public class SemanticHighlightingReconciler implements
 
             // TODO: use binary search
             for (int i = 0, n = _removedPositions.size(); i < n; i++) {
-                HighlightedPosition position = (HighlightedPosition) _removedPositions
-                        .get(i);
+                HighlightedPosition position = _removedPositions.get(i);
 
                 if (position == null) {
                     continue;
@@ -1027,8 +1026,7 @@ public class SemanticHighlightingReconciler implements
         private void _retainPositions(int offset, int length) {
             // TODO: use binary search
             for (int i = 0, n = _removedPositions.size(); i < n; i++) {
-                HighlightedPosition position = (HighlightedPosition) _removedPositions
-                        .get(i);
+                HighlightedPosition position = _removedPositions.get(i);
 
                 if (position != null && position.isContained(offset, length)) {
                     _removedPositions.set(i, null);

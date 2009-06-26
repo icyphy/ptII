@@ -286,7 +286,7 @@ public class GRDirector extends StaticSchedulingDirector {
             // There could be an intervening FSMDirector, etc.
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector instanceof GRDirector) {
-                viewScreen = ((GRDirector)executiveDirector)._getViewScreen();
+                viewScreen = ((GRDirector) executiveDirector)._getViewScreen();
             } else {
                 if (executiveDirector == null) {
                     throw new IllegalActionException(this,
@@ -297,8 +297,8 @@ public class GRDirector extends StaticSchedulingDirector {
         }
 
         // Set the view screen for all the actors.
-        Iterator actors = ((TypedCompositeActor)container)
-                .deepEntityList().iterator();
+        Iterator actors = ((TypedCompositeActor) container).deepEntityList()
+                .iterator();
 
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
@@ -353,8 +353,8 @@ public class GRDirector extends StaticSchedulingDirector {
         // instances of SceneGraphToken going to a higher-level
         // GRDirector, so producing those outputs in postfire()
         // is OK.
-        Iterator outports = ((Actor)getContainer())
-                .outputPortList().iterator();
+        Iterator outports = ((Actor) getContainer()).outputPortList()
+                .iterator();
         while (outports.hasNext() && !_stopRequested) {
             IOPort p = (IOPort) outports.next();
             transferOutputs(p);

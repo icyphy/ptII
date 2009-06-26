@@ -74,49 +74,49 @@ public class PropertyTokenFSMHelper extends PropertyTokenCompositeHelper {
     public List<Object> getPropertyables() throws IllegalActionException {
         List<Object> result = super.getPropertyables();
 
-//        if (!getSolver().isListening()) {
-            ptolemy.domains.fsm.kernel.FSMActor actor =
-                (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
-
-            Iterator states = actor.entityList(State.class).iterator();
-            while (states.hasNext()) {
-                State state = (State) states.next();
-
-                Iterator transitions =
-                    state.outgoingPort.linkedRelationList().iterator();
-
-                while (transitions.hasNext()) {
-                    Transition transition = (Transition) transitions.next();
-                    result.add(transition.guardExpression);
-                }
-
-//            }
-        }
-
-        return result;
-    }
-
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
-        List<PropertyHelper> helpers = new ArrayList<PropertyHelper>();
-//        if (!getSolver().isListening()) {
-            helpers.addAll(_getASTNodeHelpers());
-//        }
-        return helpers;
-    }
-
-    protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
-
-        List<ASTPtRootNode> result = super._getAttributeParseTrees();
-
-        ptolemy.domains.fsm.kernel.FSMActor actor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        //        if (!getSolver().isListening()) {
+        ptolemy.domains.fsm.kernel.FSMActor actor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         Iterator states = actor.entityList(State.class).iterator();
         while (states.hasNext()) {
             State state = (State) states.next();
 
-            Iterator transitions =
-                state.outgoingPort.linkedRelationList().iterator();
+            Iterator transitions = state.outgoingPort.linkedRelationList()
+                    .iterator();
+
+            while (transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+                result.add(transition.guardExpression);
+            }
+
+            //            }
+        }
+
+        return result;
+    }
+
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
+        List<PropertyHelper> helpers = new ArrayList<PropertyHelper>();
+        //        if (!getSolver().isListening()) {
+        helpers.addAll(_getASTNodeHelpers());
+        //        }
+        return helpers;
+    }
+
+    protected List<ASTPtRootNode> _getAttributeParseTrees()
+            throws IllegalActionException {
+
+        List<ASTPtRootNode> result = super._getAttributeParseTrees();
+
+        ptolemy.domains.fsm.kernel.FSMActor actor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+
+        Iterator states = actor.entityList(State.class).iterator();
+        while (states.hasNext()) {
+            State state = (State) states.next();
+
+            Iterator transitions = state.outgoingPort.linkedRelationList()
+                    .iterator();
 
             while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
@@ -126,9 +126,9 @@ public class PropertyTokenFSMHelper extends PropertyTokenCompositeHelper {
 
                 } catch (IllegalActionException ex) {
                     throw new AssertionError(
-                            "Problem parsing the guard expression: " +
-                            transition.getGuardExpression() + "\n" +
-                            KernelException.stackTraceToString(ex));
+                            "Problem parsing the guard expression: "
+                                    + transition.getGuardExpression() + "\n"
+                                    + KernelException.stackTraceToString(ex));
                 }
 
                 OutputActionsAttribute outputActions = transition.outputActions;

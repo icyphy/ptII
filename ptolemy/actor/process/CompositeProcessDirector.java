@@ -483,7 +483,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    protected boolean _areActorsExternallyBlocked() throws InvalidStateException, IllegalActionException {
+    protected boolean _areActorsExternallyBlocked()
+            throws InvalidStateException, IllegalActionException {
         Iterator blockedReceivers = _blockedReceivers.iterator();
 
         while (blockedReceivers.hasNext()) {
@@ -617,8 +618,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   iterations are not allowed; return true otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected boolean _resolveDeadlock()
-            throws IllegalActionException {
+    protected boolean _resolveDeadlock() throws IllegalActionException {
         if (_debugging) {
             _debug("Resolving Deadlock");
         }
@@ -628,7 +628,7 @@ public class CompositeProcessDirector extends ProcessDirector {
 
         int depth = 0;
         try {
-            synchronized(this) {
+            synchronized (this) {
                 if (_areThreadsDeadlocked()) {
                     if (_areActorsExternallyBlocked()) {
                         // There are actors that are blocked on a communication
@@ -640,7 +640,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                                     // introducing a race condition, because we have to release
                                     // the lock on the _director before calling workspace.wait(_director).
                                     if (depth == 0) {
-                                        depth = workspace.releaseReadPermission();
+                                        depth = workspace
+                                                .releaseReadPermission();
                                     }
                                     wait();
                                 } catch (InterruptedException e) {
@@ -662,8 +663,9 @@ public class CompositeProcessDirector extends ProcessDirector {
                                                 + "deadlocked.");
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
-                                ((CompositeProcessDirector) execDir).threadBlocked(
-                                        Thread.currentThread(), null);
+                                ((CompositeProcessDirector) execDir)
+                                        .threadBlocked(Thread.currentThread(),
+                                                null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC
@@ -682,8 +684,9 @@ public class CompositeProcessDirector extends ProcessDirector {
                                                 + "deadlocked.");
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
-                                ((CompositeProcessDirector) execDir).threadBlocked(
-                                        Thread.currentThread(), null);
+                                ((CompositeProcessDirector) execDir)
+                                        .threadBlocked(Thread.currentThread(),
+                                                null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC
@@ -700,7 +703,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                                     // introducing a race condition, because we have to release
                                     // the lock on the _director before calling workspace.wait(_director).
                                     if (depth == 0) {
-                                        depth = workspace.releaseReadPermission();
+                                        depth = workspace
+                                                .releaseReadPermission();
                                     }
                                     wait();
                                 } catch (InterruptedException e) {
@@ -724,7 +728,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                                     // introducing a race condition, because we have to release
                                     // the lock on the _director before calling workspace.wait(_director).
                                     if (depth == 0) {
-                                        depth = workspace.releaseReadPermission();
+                                        depth = workspace
+                                                .releaseReadPermission();
                                     }
                                     wait();
                                 } catch (InterruptedException e) {

@@ -93,8 +93,8 @@ public class FixedPointScheduler extends Scheduler {
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "No container.");
         }
-        CausalityInterfaceForComposites causality
-                = (CausalityInterfaceForComposites)compositeActor.getCausalityInterface();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) compositeActor
+                .getCausalityInterface();
         List<Actor> sortedActors;
         try {
             sortedActors = causality.topologicalSort();

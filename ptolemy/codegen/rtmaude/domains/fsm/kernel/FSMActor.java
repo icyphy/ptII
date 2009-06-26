@@ -60,19 +60,21 @@ public class FSMActor extends Entity {
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor fa =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
-        if (name.equals("initState"))
+        ptolemy.domains.fsm.kernel.FSMActor fa = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        if (name.equals("initState")) {
             return fa.getInitialState().getName();
+        }
         if (name.equals("transitions")) {
             ArrayList transitions = new ArrayList();
-            for (State s : (List<State>)fa.entityList(State.class))
+            for (State s : (List<State>) fa.entityList(State.class)) {
                 transitions.addAll(s.outgoingPort.linkedRelationList());
-            return new ListTerm<Transition>("emptyTransitionSet", " ;" + _eol, transitions) {
-                    public String item(Transition t) throws IllegalActionException {
-                        return ((RTMaudeAdaptor) _getHelper(t)).generateTermCode();
-                    }
-                }.generateCode();
+            }
+            return new ListTerm<Transition>("emptyTransitionSet", " ;" + _eol,
+                    transitions) {
+                public String item(Transition t) throws IllegalActionException {
+                    return ((RTMaudeAdaptor) _getHelper(t)).generateTermCode();
+                }
+            }.generateCode();
         }
         return super._generateInfoCode(name, parameters);
     }

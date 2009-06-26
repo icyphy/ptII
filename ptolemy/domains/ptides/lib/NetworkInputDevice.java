@@ -112,12 +112,11 @@ public class NetworkInputDevice extends InputDevice {
 
     /** label of the microstep that's transmitterd within the RecordToken.
      */
-    private static final String microstep= "microstep";
+    private static final String microstep = "microstep";
 
     /** label of the payload that's transmitterd within the RecordToken.
      */
     private static final String payload = "payload";
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
@@ -142,15 +141,17 @@ public class NetworkInputDevice extends InputDevice {
             RecordToken record = (RecordToken) input.get(0);
 
             if (record.labelSet().size() != 3) {
-                throw new IllegalActionException("the record has a size not equal to 3: "
-                        + "Here we assume the Record is of types: timestamp"
-                        + " + microstep + token");
+                throw new IllegalActionException(
+                        "the record has a size not equal to 3: "
+                                + "Here we assume the Record is of types: timestamp"
+                                + " + microstep + token");
             }
 
             Time recordTimeStamp = new Time(getDirector(),
-                    ((DoubleToken)(record.get(timestamp))).doubleValue());
+                    ((DoubleToken) (record.get(timestamp))).doubleValue());
 
-            int recordMicrostep = ((IntToken)(record.get(microstep))).intValue();
+            int recordMicrostep = ((IntToken) (record.get(microstep)))
+                    .intValue();
 
             // The NetworkInputDevice parses the incoming token from
             // the network, which is a 3 element RecordToken, and
@@ -176,8 +177,8 @@ public class NetworkInputDevice extends InputDevice {
         input.setTypeAtMost(type);
 
         HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(new PortFunction(),
-                output.getTypeTerm());
+        Inequality inequality = new Inequality(new PortFunction(), output
+                .getTypeTerm());
         typeConstraints.add(inequality);
         return typeConstraints;
     }
@@ -204,6 +205,7 @@ public class NetworkInputDevice extends InputDevice {
                         "Invalid type for input port");
             }
         }
+
         /** Return the type variable in this inequality term. If the
          *  type of the input port is not declared, return an one
          *  element array containing the inequality term representing

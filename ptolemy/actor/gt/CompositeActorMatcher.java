@@ -175,8 +175,8 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
         NamedObj container = getContainer();
         if (container instanceof TransformationRule) {
             NamedObj containerContainer = container.getContainer();
-            if (containerContainer instanceof EntityLibrary ||
-                    containerContainer instanceof Configurer) {
+            if (containerContainer instanceof EntityLibrary
+                    || containerContainer instanceof Configurer) {
                 // Do not update appearance if the containing TransformationRule
                 // is in the actor library or in a Configurer, so opening the
                 // folder of the actor library would not cause a moml change.
@@ -226,7 +226,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-    throws IOException {
+            throws IOException {
         super._exportMoMLContents(output, depth);
         GTEntityUtils.exportPortProperties(this, output, depth);
     }
@@ -237,22 +237,21 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
     /** The default icon description.
      */
     private static final String _ICON_DESCRIPTION = "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\""
-        + "  style=\"fill:#FF0000\"/>"
-        + "<rect x=\"2\" y=\"2\" width=\"56\" height=\"36\""
-        + "  style=\"fill:#C0C0C0\"/>"
-        + "<rect x=\"6\" y=\"17\" width=\"16\" height=\"10\""
-        + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
-        + "<rect x=\"38\" y=\"25\" width=\"16\" height=\"10\""
-        + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
-        + "<line x1=\"26\" y1=\"22\" x2=\"30\" y2=\"22\""
-        + "  style=\"stroke:#404040\"/>"
-        + "<line x1=\"30\" y1=\"22\" x2=\"30\" y2=\"30\""
-        + "  style=\"stroke:#404040\"/>"
-        + "<line x1=\"30\" y1=\"30\" x2=\"34\" y2=\"30\""
-        + "  style=\"stroke:#404040\"/>"
-        + "<text x=\"16\" y=\"14\""
-        + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
-        + "  match</text>" + "</svg>";
+            + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\""
+            + "  style=\"fill:#FF0000\"/>"
+            + "<rect x=\"2\" y=\"2\" width=\"56\" height=\"36\""
+            + "  style=\"fill:#C0C0C0\"/>"
+            + "<rect x=\"6\" y=\"17\" width=\"16\" height=\"10\""
+            + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
+            + "<rect x=\"38\" y=\"25\" width=\"16\" height=\"10\""
+            + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
+            + "<line x1=\"26\" y1=\"22\" x2=\"30\" y2=\"22\""
+            + "  style=\"stroke:#404040\"/>"
+            + "<line x1=\"30\" y1=\"22\" x2=\"30\" y2=\"30\""
+            + "  style=\"stroke:#404040\"/>"
+            + "<line x1=\"30\" y1=\"30\" x2=\"34\" y2=\"30\""
+            + "  style=\"stroke:#404040\"/>" + "<text x=\"16\" y=\"14\""
+            + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
+            + "  match</text>" + "</svg>";
 
 }

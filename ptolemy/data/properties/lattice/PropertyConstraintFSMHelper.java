@@ -61,7 +61,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelper {
+public class PropertyConstraintFSMHelper extends
+        PropertyConstraintCompositeHelper {
 
     /**
      * Construct a helper for the given FSMActor. This is the
@@ -84,14 +85,11 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         // recursively call constraintList() of its children.
         //super.constraintList();
 
-        HashMap<NamedObj, List<ASTPtRootNode>> outputActionMap =
-            new HashMap<NamedObj, List<ASTPtRootNode>>();
+        HashMap<NamedObj, List<ASTPtRootNode>> outputActionMap = new HashMap<NamedObj, List<ASTPtRootNode>>();
 
-        HashMap<NamedObj, List<ASTPtRootNode>> setActionMap =
-            new HashMap<NamedObj, List<ASTPtRootNode>>();
+        HashMap<NamedObj, List<ASTPtRootNode>> setActionMap = new HashMap<NamedObj, List<ASTPtRootNode>>();
 
-        ptolemy.domains.fsm.kernel.FSMActor actor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor actor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         List propertyableList = getPropertyables();
 
@@ -99,8 +97,8 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
 
         while (states.hasNext()) {
             State state = (State) states.next();
-            Iterator transitions =
-                state.outgoingPort.linkedRelationList().iterator();
+            Iterator transitions = state.outgoingPort.linkedRelationList()
+                    .iterator();
 
             while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
@@ -114,23 +112,29 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
                         NamedObj namedObj = (NamedObj) propertyable;
 
                         OutputActionsAttribute outputActions = transition.outputActions;
-                        if (outputActions.getDestinationNameList().contains(namedObj.getName())) {
+                        if (outputActions.getDestinationNameList().contains(
+                                namedObj.getName())) {
                             // do not consider multiple assigenments to same output from one action since
                             // only the last assignment in the expression is actually effective
-                            ASTPtRootNode parseTree = outputActions.getParseTree(namedObj.getName());
+                            ASTPtRootNode parseTree = outputActions
+                                    .getParseTree(namedObj.getName());
                             if (!outputActionMap.containsKey(namedObj)) {
-                                outputActionMap.put(namedObj, new ArrayList<ASTPtRootNode>());
+                                outputActionMap.put(namedObj,
+                                        new ArrayList<ASTPtRootNode>());
                             }
                             outputActionMap.get(namedObj).add(parseTree);
                         }
 
                         CommitActionsAttribute setActions = transition.setActions;
-                        if (setActions.getDestinationNameList().contains(namedObj.getName())) {
+                        if (setActions.getDestinationNameList().contains(
+                                namedObj.getName())) {
                             // do not consider multiple assigenments to same output from one action since
                             // only the last assignment in the expression is actually effective
-                            ASTPtRootNode parseTree = setActions.getParseTree(namedObj.getName());
+                            ASTPtRootNode parseTree = setActions
+                                    .getParseTree(namedObj.getName());
                             if (!setActionMap.containsKey(namedObj)) {
-                                setActionMap.put(namedObj, new ArrayList<ASTPtRootNode>());
+                                setActionMap.put(namedObj,
+                                        new ArrayList<ASTPtRootNode>());
                             }
                             setActionMap.get(namedObj).add(parseTree);
                         }
@@ -139,16 +143,14 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
             }
         }
 
-        boolean constraintSource =
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+        boolean constraintSource = (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET)
+                || (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
 
         Iterator outputActions = outputActionMap.entrySet().iterator();
         while (outputActions.hasNext()) {
             Entry entry = (Entry) outputActions.next();
             Object destination = entry.getKey();
-            List<Object> expressions =
-                (List<Object>) entry.getValue();
+            List<Object> expressions = (List<Object>) entry.getValue();
 
             if (constraintSource) {
                 Iterator roots = expressions.iterator();
@@ -158,10 +160,12 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
                     List<Object> sinkAsList = new ArrayList<Object>();
                     sinkAsList.add(destination);
 
-                    _constraintObject(interconnectConstraintType, root, sinkAsList);
+                    _constraintObject(interconnectConstraintType, root,
+                            sinkAsList);
                 }
             } else {
-                _constraintObject(interconnectConstraintType, destination, expressions);
+                _constraintObject(interconnectConstraintType, destination,
+                        expressions);
             }
         }
 
@@ -169,8 +173,7 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         while (setActions.hasNext()) {
             Entry entry = (Entry) setActions.next();
             Object destination = entry.getKey();
-            List<Object> expressions =
-                (List<Object>) entry.getValue();
+            List<Object> expressions = (List<Object>) entry.getValue();
 
             if (constraintSource) {
                 Iterator roots = expressions.iterator();
@@ -180,21 +183,24 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
                     List<Object> sinkAsList = new ArrayList<Object>();
                     sinkAsList.add(destination);
 
-                    _constraintObject(interconnectConstraintType, root, sinkAsList);
+                    _constraintObject(interconnectConstraintType, root,
+                            sinkAsList);
                 }
             } else {
-                _constraintObject(interconnectConstraintType, destination, expressions);
+                _constraintObject(interconnectConstraintType, destination,
+                        expressions);
             }
         }
-        _checkIneffectiveOutputPorts(actor, outputActionMap.keySet(), setActionMap.keySet());
+        _checkIneffectiveOutputPorts(actor, outputActionMap.keySet(),
+                setActionMap.keySet());
 
         return _union(_ownConstraints, _subHelperConstraints);
     }
 
     public List<ASTPtRootNode> getParseTrees(State state) {
         List<ASTPtRootNode> result = new LinkedList<ASTPtRootNode>();
-        Iterator transitions =
-            state.outgoingPort.linkedRelationList().iterator();
+        Iterator transitions = state.outgoingPort.linkedRelationList()
+                .iterator();
 
         while (transitions.hasNext()) {
             Transition transition = (Transition) transitions.next();
@@ -223,11 +229,11 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         }
     }
 
-    protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
+    protected List<ASTPtRootNode> _getAttributeParseTrees()
+            throws IllegalActionException {
         List<ASTPtRootNode> result = super._getAttributeParseTrees();
 
-        ptolemy.domains.fsm.kernel.FSMActor actor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor actor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         Iterator states = actor.entityList(State.class).iterator();
         while (states.hasNext()) {
@@ -247,15 +253,14 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
 
-        ptolemy.domains.fsm.kernel.FSMActor actor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor actor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         Iterator states = actor.entityList(State.class).iterator();
         while (states.hasNext()) {
             State state = (State) states.next();
 
-            Iterator transitions =
-                state.outgoingPort.linkedRelationList().iterator();
+            Iterator transitions = state.outgoingPort.linkedRelationList()
+                    .iterator();
 
             while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
@@ -273,20 +278,20 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
      * @return The list of sub-helpers.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException {
         return _getASTNodeHelpers();
     }
 
-    private void _checkIneffectiveOutputPorts(
-            FSMActor actor,
-            Set<NamedObj> setDestinations1,
-            Set<NamedObj> setDestinations2) {
+    private void _checkIneffectiveOutputPorts(FSMActor actor,
+            Set<NamedObj> setDestinations1, Set<NamedObj> setDestinations2) {
 
         Iterator outputs = actor.outputPortList().iterator();
         while (outputs.hasNext()) {
             IOPort output = (IOPort) outputs.next();
             if ((!setDestinations1.isEmpty()) && (!setDestinations2.isEmpty())) {
-                if ((!setDestinations1.contains(output)) && (!setDestinations2.contains(output))) {
+                if ((!setDestinations1.contains(output))
+                        && (!setDestinations2.contains(output))) {
                     getPropertyTerm(output).setEffective(false);
                 }
             } else if (setDestinations1.isEmpty()) {

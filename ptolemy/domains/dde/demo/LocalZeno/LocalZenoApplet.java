@@ -347,12 +347,12 @@ public class LocalZenoApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _fixWidth(ComponentRelation connect) throws IllegalActionException {
+    private void _fixWidth(ComponentRelation connect)
+            throws IllegalActionException {
         if (connect instanceof IORelation) {
             ((IORelation) connect).setWidth(1);
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

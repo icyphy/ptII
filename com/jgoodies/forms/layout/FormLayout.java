@@ -329,12 +329,14 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @exception NullPointerException if colSpecs or rowSpecs is null
      */
     public FormLayout(ColumnSpec[] colSpecs, RowSpec[] rowSpecs) {
-        if (colSpecs == null)
+        if (colSpecs == null) {
             throw new NullPointerException(
                     "The column specifications must not be null.");
-        if (rowSpecs == null)
+        }
+        if (rowSpecs == null) {
             throw new NullPointerException(
                     "The row specifications must not be null.");
+        }
 
         this.colSpecs = new ArrayList(Arrays.asList(colSpecs));
         this.rowSpecs = new ArrayList(Arrays.asList(rowSpecs));
@@ -679,14 +681,16 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *     has not been added to the container
      */
     public CellConstraints getConstraints(Component component) {
-        if (component == null)
+        if (component == null) {
             throw new NullPointerException("The component must not be null.");
+        }
 
         CellConstraints constraints = (CellConstraints) constraintMap
                 .get(component);
-        if (constraints == null)
+        if (constraints == null) {
             throw new NullPointerException(
                     "The component has not been added to the container.");
+        }
 
         return (CellConstraints) constraints.clone();
     }
@@ -700,10 +704,12 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *     is <code>null</code>
      */
     public void setConstraints(Component component, CellConstraints constraints) {
-        if (component == null)
+        if (component == null) {
             throw new NullPointerException("The component must not be null.");
-        if (constraints == null)
+        }
+        if (constraints == null) {
             throw new NullPointerException("The constraints must not be null.");
+        }
 
         constraints.ensureValidGridBounds(getColumnCount(), getRowCount());
         constraintMap.put(component, constraints.clone());
@@ -1073,15 +1079,18 @@ public final class FormLayout implements LayoutManager2, Serializable {
         for (Iterator i = constraintMap.entrySet().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
             Component component = (Component) entry.getKey();
-            if (!component.isVisible())
+            if (!component.isVisible()) {
                 continue;
+            }
 
             CellConstraints constraints = (CellConstraints) entry.getValue();
-            if (constraints.gridWidth == 1)
+            if (constraints.gridWidth == 1) {
                 colComponents[constraints.gridX - 1].add(component);
+            }
 
-            if (constraints.gridHeight == 1)
+            if (constraints.gridHeight == 1) {
                 rowComponents[constraints.gridY - 1].add(component);
+            }
         }
     }
 
@@ -1129,8 +1138,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
             for (Iterator i = constraintMap.entrySet().iterator(); i.hasNext();) {
                 Map.Entry entry = (Map.Entry) i.next();
                 Component component = (Component) entry.getKey();
-                if (!component.isVisible())
+                if (!component.isVisible()) {
                     continue;
+                }
 
                 CellConstraints constraints = (CellConstraints) entry
                         .getValue();
@@ -1316,11 +1326,13 @@ public final class FormLayout implements LayoutManager2, Serializable {
             int totalMinSize, int totalPrefSize, int[] minSizes, int[] prefSizes) {
 
         // If we have less space than the total min size answer the min sizes.
-        if (totalSize < totalMinSize)
+        if (totalSize < totalMinSize) {
             return minSizes;
+        }
         // If we have more space than the total pref size answer the pref sizes.
-        if (totalSize >= totalPrefSize)
+        if (totalSize >= totalPrefSize) {
             return prefSizes;
+        }
 
         int count = formSpecs.size();
         int[] sizes = new int[count];
@@ -1396,8 +1408,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
             int totalPrefSize, int[] inputSizes) {
         double totalFreeSpace = totalSize - totalPrefSize;
         // Do nothing if there's no free space.
-        if (totalFreeSpace < 0)
+        if (totalFreeSpace < 0) {
             return inputSizes;
+        }
 
         // Compute the total weight.
         int count = formSpecs.size();
@@ -1408,8 +1421,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
         }
 
         // Do nothing if there's no resizing column.
-        if (totalWeight == 0.0)
+        if (totalWeight == 0.0) {
             return inputSizes;
+        }
 
         int[] sizes = new int[count];
 
@@ -1481,8 +1495,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
                 maximumFixedSpan = 0;
             }
             table[i] = maximumFixedSpan;
-            if (maximumFixedSpan < Integer.MAX_VALUE)
+            if (maximumFixedSpan < Integer.MAX_VALUE) {
                 maximumFixedSpan++;
+            }
         }
         return table;
     }

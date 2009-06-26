@@ -29,8 +29,8 @@
 //// RandomSource
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import java.util.Random;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.backtrack.Checkpoint;
@@ -151,13 +151,16 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public RandomSource(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public RandomSource(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
         seed.setTypeEquals(BaseType.LONG);
-        resetOnEachRun = new SharedParameter(this, "resetOnEachRun", RandomSource.class, "false");
+        resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
+                RandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
-        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(trigger, "_showName")
+                .setToken(BooleanToken.TRUE);
     }
 
     /**
@@ -167,9 +170,10 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception IllegalActionException If the change is not acceptable
      * to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == seed) {
-            long seedValue = ((LongToken)(seed.getToken())).longValue();
+            long seedValue = ((LongToken) (seed.getToken())).longValue();
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
             }
@@ -186,8 +190,8 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        RandomSource newObject = (RandomSource)(super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RandomSource newObject = (RandomSource) (super.clone(workspace));
         newObject._needNewGenerator = true;
         return newObject;
     }
@@ -197,7 +201,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * of the iteration.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (_needNewGenerator) {
             _createGenerator();
@@ -216,9 +220,10 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * sure that two identical sequences will not be returned.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
-        if (_random == null || ((BooleanToken)resetOnEachRun.getToken()).booleanValue()) {
+        if (_random == null
+                || ((BooleanToken) resetOnEachRun.getToken()).booleanValue()) {
             _createGenerator();
         }
         _needNew = true;
@@ -229,7 +234,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception IllegalActionException If the base class throws it.
      * @return True if it is ok to continue.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         _needNew = true;
         return super.postfire();
     }
@@ -239,8 +244,8 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception IllegalActionException If thrown while reading the
      * seed Token.
      */
-    protected void _createGenerator() throws IllegalActionException  {
-        long seedValue = ((LongToken)(seed.getToken())).longValue();
+    protected void _createGenerator() throws IllegalActionException {
+        long seedValue = ((LongToken) (seed.getToken())).longValue();
         _generatorSeed = seedValue;
         if (seedValue == 0L) {
             seedValue = System.currentTimeMillis() + hashCode();
@@ -258,16 +263,19 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * Derived classes may throw it if there are problems getting parameter
      * values.
      */
-    protected abstract void _generateRandomNumber() throws IllegalActionException ;
+    protected abstract void _generateRandomNumber()
+            throws IllegalActionException;
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -293,8 +301,6 @@ public abstract class RandomSource extends Source implements Rollbackable {
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

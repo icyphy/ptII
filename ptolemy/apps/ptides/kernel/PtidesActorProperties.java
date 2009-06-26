@@ -142,9 +142,9 @@ public class PtidesActorProperties {
         } catch (ClassCastException ex) {
             throw new IllegalActionException(actor,
                     "Actor has an attribute _executionTime, but "
-                    + "it is not a Parameter or its value is not"
-                    + " a double. It is: "
-                    + ((NamedObj) actor).getAttribute("_executionTime"));
+                            + "it is not a Parameter or its value is not"
+                            + " a double. It is: "
+                            + ((NamedObj) actor).getAttribute("_executionTime"));
         }
     }
 

@@ -104,8 +104,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 true));
         fillOnWrapup.setTypeEquals(BaseType.BOOLEAN);
 
-        automaticRescale = new Parameter(this, "automaticRescale", new BooleanToken(
-                false));
+        automaticRescale = new Parameter(this, "automaticRescale",
+                new BooleanToken(false));
         automaticRescale.setTypeEquals(BaseType.BOOLEAN);
 
         legend = new StringAttribute(this, "legend");
@@ -477,8 +477,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             Iterator<String> texts = _configureTexts.iterator();
 
             while (sources.hasNext()) {
-                String source = (String) sources.next();
-                String text = (String) texts.next();
+                String source = sources.next();
+                String text = texts.next();
 
                 if ((source != null) && !source.trim().equals("")) {
                     output.write(_getIndentPrefix(depth)
@@ -514,9 +514,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             Iterator<URL> bases = _configureBases.iterator();
 
             while (sources.hasNext()) {
-                URL base = (URL) bases.next();
-                String source = (String) sources.next();
-                String text = (String) texts.next();
+                URL base = bases.next();
+                String source = sources.next();
+                String text = texts.next();
 
                 try {
                     configure(base, source, text);

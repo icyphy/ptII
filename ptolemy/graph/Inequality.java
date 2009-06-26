@@ -87,8 +87,8 @@ public class Inequality {
      */
     public boolean equals(Object object) {
         if (object instanceof Inequality) {
-            return (((Inequality)object)._greaterTerm.equals(_greaterTerm)
-                && ((Inequality)object)._lesserTerm.equals(_lesserTerm));
+            return (((Inequality) object)._greaterTerm.equals(_greaterTerm) && ((Inequality) object)._lesserTerm
+                    .equals(_lesserTerm));
         }
         return false;
     }

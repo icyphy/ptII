@@ -107,10 +107,12 @@ public class KielerGraphUtil {
      * @param parentNode Parent node of the point coordinates.
      * @return Kieler KPoint with the absolute coordinates.
      */
-    protected static KPoint _getAbsoluteKPoint(KPoint relativeKPoint, KNode parentNode) {
+    protected static KPoint _getAbsoluteKPoint(KPoint relativeKPoint,
+            KNode parentNode) {
         float offsetX = 0, offsetY = 0;
         while (parentNode != null) {
-            KShapeLayout parentLayout = KimlLayoutUtil.getShapeLayout(parentNode);
+            KShapeLayout parentLayout = KimlLayoutUtil
+                    .getShapeLayout(parentNode);
             offsetX += parentLayout.getXpos();
             offsetY += parentLayout.getYpos();
             parentNode = parentNode.getParent();
@@ -132,8 +134,9 @@ public class KielerGraphUtil {
      */
     protected static KNode _getParent(KEdge edge) {
         KNode source = edge.getSource();
-        if (source != null)
+        if (source != null) {
             return source.getParent();
+        }
         return null;
     }
 
@@ -146,11 +149,15 @@ public class KielerGraphUtil {
      *         Float.MAX_VALUE, if the parent does not contain any children.
      */
     protected static KPoint _getUpperLeftCorner(KNode parent) {
-        float x=Float.MAX_VALUE, y=Float.MAX_VALUE;
+        float x = Float.MAX_VALUE, y = Float.MAX_VALUE;
         for (KNode kNode : parent.getChildren()) {
             KShapeLayout layout = KimlLayoutUtil.getShapeLayout(kNode);
-            if (layout.getXpos() < x) x = layout.getXpos();
-            if (layout.getYpos() < y) y = layout.getYpos();
+            if (layout.getXpos() < x) {
+                x = layout.getXpos();
+            }
+            if (layout.getYpos() < y) {
+                y = layout.getYpos();
+            }
         }
 
         KPoint kPoint = KLayoutDataFactory.eINSTANCE.createKPoint();
@@ -172,9 +179,9 @@ public class KielerGraphUtil {
      */
     protected static Point2D _shrinkCoordinates(Rectangle2D originalBounds,
             Rectangle2D shrunkBounds, int direction, float offset) {
-        double widthDiff = (originalBounds.getWidth() - shrunkBounds.getWidth()) ;
+        double widthDiff = (originalBounds.getWidth() - shrunkBounds.getWidth());
         double heightDiff = (originalBounds.getHeight() - shrunkBounds
-                .getHeight()) ;
+                .getHeight());
         Point2D.Double location = new Point2D.Double();
         switch (direction) {
         case SwingConstants.NORTH:

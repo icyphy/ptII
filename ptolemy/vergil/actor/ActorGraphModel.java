@@ -124,8 +124,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
     /** This implementation will delegate to the implementation in the parent
      *  class and will additionally update the model in case it is necessary.
      *  This is typically the case when a link is created to another link.
@@ -189,7 +187,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             dispatchGraphEvent(e);
         }
     }
-
 
     /** Return the model for the given composite object.
      *  In this class, return an instance of CompositePtolemyModel
@@ -508,6 +505,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         }
         return false;
     }
+
     /** Make sure that there is a Link object representing every
      *  link connected to the given relation.  Create links if necessary.
      */
@@ -526,7 +524,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         // existing links to them, and then create links to any
         // remaining objects in the list.
         if (relation.getName().equals("relation")) {
-            int i = 0; i++;
+            int i = 0;
+            i++;
         }
         List<?> linkedObjects = relation.linkedObjectsList();
         int linkedObjectsCount = linkedObjects.size();
@@ -554,8 +553,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 continue;
             }
 
-            if (tailObj != relation && headObj != relation &&
-                    linkedObjectsCount > 2) {
+            if (tailObj != relation && headObj != relation
+                    && linkedObjectsCount > 2) {
                 // When the link is a direct link between two ports but the
                 // relation has more than 2 ends, the link is corrupted and
                 // should be deleted. This could happen as a result of model
@@ -747,7 +746,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     private PortModel _portModel = new PortModel();
 
     private VertexModel _vertexModel = new VertexModel();
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -1051,9 +1049,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public void addNewVertexToLink(final StringBuffer moml,
                 final StringBuffer failmoml, final CompositeEntity container,
-                Link oldLink,
-                String newRelationName,
-                double x, double y) {
+                Link oldLink, String newRelationName, double x, double y) {
 
             final String vertexName = "vertex1";
             ComponentRelation relation = oldLink.getRelation();
@@ -1073,8 +1069,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             // Create the relation.
             moml.append("<relation name=\"" + newRelationName + "\">\n");
-            moml.append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\"" +
-                    " value=\"" + width + "\"></property>");
+            moml
+                    .append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\""
+                            + " value=\"" + width + "\"></property>");
             moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
             moml.append(x + ", " + y);
             moml.append("}\"/>\n");
@@ -1095,26 +1092,24 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
 
             if (oldHeadSemantic != null) {
-                int headRelationIndex = (oldHeadSemantic instanceof IOPort)
-                            ? IOPort.getRelationIndex((IOPort) oldHeadSemantic,
-                                        relation, headIsActorPort)
-                            : -1;
-                _linkWithRelation(moml, failmoml, container,
-                        oldHeadSemantic, headRelationIndex,
-                        newRelationName);
+                int headRelationIndex = (oldHeadSemantic instanceof IOPort) ? IOPort
+                        .getRelationIndex((IOPort) oldHeadSemantic, relation,
+                                headIsActorPort)
+                        : -1;
+                _linkWithRelation(moml, failmoml, container, oldHeadSemantic,
+                        headRelationIndex, newRelationName);
             }
 
             NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
 
             if (oldTailSemantic != null) {
-                int tailRelationIndex = (oldTailSemantic instanceof IOPort)
-                            ? IOPort.getRelationIndex((IOPort) oldTailSemantic,
-                                    relation, tailIsActorPort)
-                            : -1;
+                int tailRelationIndex = (oldTailSemantic instanceof IOPort) ? IOPort
+                        .getRelationIndex((IOPort) oldTailSemantic, relation,
+                                tailIsActorPort)
+                        : -1;
 
-                _linkWithRelation(moml, failmoml, container,
-                        oldTailSemantic, tailRelationIndex,
-                        newRelationName);
+                _linkWithRelation(moml, failmoml, container, oldTailSemantic,
+                        tailRelationIndex, newRelationName);
             }
         }
 
@@ -1215,15 +1210,18 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         private double[] _getNewLocation(NamedObj semanticHead,
                 NamedObj semanticTail, boolean headIsActorPort,
                 boolean tailIsActorPort) {
-            double[] headLocation = _getLocation(headIsActorPort ? semanticHead.getContainer() : semanticHead).getLocation();
-            double[] tailLocation = _getLocation(tailIsActorPort ? semanticTail.getContainer() : semanticTail).getLocation();
+            double[] headLocation = _getLocation(
+                    headIsActorPort ? semanticHead.getContainer()
+                            : semanticHead).getLocation();
+            double[] tailLocation = _getLocation(
+                    tailIsActorPort ? semanticTail.getContainer()
+                            : semanticTail).getLocation();
             double[] newLocation = new double[2];
             newLocation[0] = (headLocation[0] + tailLocation[0]) / 2.0;
             newLocation[1] = (headLocation[1] + tailLocation[1]) / 2.0;
             newLocation = SnapConstraint.constrainPoint(newLocation);
             return newLocation;
         }
-
 
         /** Append moml to the given buffer that connects a link with the
          *  given head and tail.  Names in the moml that is written will be
@@ -1339,47 +1337,47 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param relationIndex The index of the relation at the port.
          *  @param relationName The name of the relation.
          */
-         private void _linkWithRelation(final StringBuffer moml,
-                 final StringBuffer failmoml, final CompositeEntity container,
-                 NamedObj semanticObject, int relationIndex, String relationName) {
+        private void _linkWithRelation(final StringBuffer moml,
+                final StringBuffer failmoml, final CompositeEntity container,
+                NamedObj semanticObject, int relationIndex, String relationName) {
 
-             if (semanticObject instanceof ComponentPort) {
-                 moml.append("<link port=\"" + semanticObject.getName(container)
-                         + "\" relation=\"" + relationName);
-                 if (relationIndex != -1) {
-                     moml.append("\" insertAt=\"" + relationIndex);
-                 }
-                 moml.append("\"/>\n");
+            if (semanticObject instanceof ComponentPort) {
+                moml.append("<link port=\"" + semanticObject.getName(container)
+                        + "\" relation=\"" + relationName);
+                if (relationIndex != -1) {
+                    moml.append("\" insertAt=\"" + relationIndex);
+                }
+                moml.append("\"/>\n");
 
-                 // Record moml so that we can blow away these
-                 // links in case we can't create them
-                 failmoml.append("<unlink port=\""
-                         + semanticObject.getName(container) + "\" relation=\""
-                         + relationName + "\"/>\n");
-             } else if (semanticObject instanceof Relation) {
-                 moml.append("<link relation1=\"" + semanticObject.getName(container)
-                         + "\" relation2=\"" + relationName
-                         + "\"/>\n");
-                 failmoml.append("<unlink relation1=\""
-                         + semanticObject.getName(container) + "\" relation2=\""
-                         + relationName + "\"/>\n");
-             } else {
-                 throw new RuntimeException("Link failed: " + "Object = "
-                     + semanticObject + ", Relation = " + relationName);
-             }
-         }
+                // Record moml so that we can blow away these
+                // links in case we can't create them
+                failmoml.append("<unlink port=\""
+                        + semanticObject.getName(container) + "\" relation=\""
+                        + relationName + "\"/>\n");
+            } else if (semanticObject instanceof Relation) {
+                moml.append("<link relation1=\""
+                        + semanticObject.getName(container) + "\" relation2=\""
+                        + relationName + "\"/>\n");
+                failmoml.append("<unlink relation1=\""
+                        + semanticObject.getName(container) + "\" relation2=\""
+                        + relationName + "\"/>\n");
+            } else {
+                throw new RuntimeException("Link failed: " + "Object = "
+                        + semanticObject + ", Relation = " + relationName);
+            }
+        }
 
-         /** Connect the given edge to the given head or tail node.
-          *  This class queues a new change request with the ptolemy model
-          *  to make this modification.
-          *  @param edge The edge, which is assumed to be a link.
-          *  @param newLinkHeadOrTail The new head or tail for the edge,
-          *  which is assumed to be a location representing a port,
-          *  a port or a vertex.
-          *  @param isHead True when newLinkHeadOrTail represents the head
-          *  @see #setHead()
-          *  @see #setTail()
-          */
+        /** Connect the given edge to the given head or tail node.
+         *  This class queues a new change request with the ptolemy model
+         *  to make this modification.
+         *  @param edge The edge, which is assumed to be a link.
+         *  @param newLinkHeadOrTail The new head or tail for the edge,
+         *  which is assumed to be a location representing a port,
+         *  a port or a vertex.
+         *  @param isHead True when newLinkHeadOrTail represents the head
+         *  @see #setHead()
+         *  @see #setTail()
+         */
         private void _setHeadOrTail(final Object edge,
                 final Object newLinkHeadOrTail, final boolean isHead) {
             final Link link = (Link) edge;
@@ -1452,16 +1450,18 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         // In case the head is a port of an actor in the current composite
                         // actor the head will be an IOPort, if it is a port of the current
                         // composite actor it will be a Locatable
-                        boolean headIsActorPort
-                            = oldHeadSemantic != null ? oldLink.getHead() instanceof IOPort
-                                    : linkTail instanceof IOPort;
+                        boolean headIsActorPort = oldHeadSemantic != null ? oldLink
+                                .getHead() instanceof IOPort
+                                : linkTail instanceof IOPort;
                         boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
 
                         final NamedObj toplevel = getPtolemyModel();
-                        String newRelationName = toplevel.uniqueName("relation");
+                        String newRelationName = toplevel
+                                .uniqueName("relation");
 
                         double[] newLocation = _getNewLocation(
-                                oldHeadSemantic != null ? oldHeadSemantic : (NamedObj) getSemanticObject(linkTail),
+                                oldHeadSemantic != null ? oldHeadSemantic
+                                        : (NamedObj) getSemanticObject(linkTail),
                                 oldTailSemantic, headIsActorPort,
                                 tailIsActorPort);
 
@@ -1472,16 +1472,16 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
                         if (isHead) {
                             _linkWithRelation(moml, failmoml, container,
-                                    ((NamedObj) getSemanticObject(linkTail)), -1,
-                                    newRelationName);
+                                    ((NamedObj) getSemanticObject(linkTail)),
+                                    -1, newRelationName);
                         } else {
                             _linkWithRelation(moml, failmoml, container,
-                                    ((NamedObj) getSemanticObject(linkHead)), -1,
-                                    newRelationName);
+                                    ((NamedObj) getSemanticObject(linkHead)),
+                                    -1, newRelationName);
                         }
 
-                        failmoml.append("<deleteRelation name=\"" + newRelationName
-                                + "\"/>\n");
+                        failmoml.append("<deleteRelation name=\""
+                                + newRelationName + "\"/>\n");
 
                         appendedMoML = true;
                     }
@@ -1583,7 +1583,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             request.setUndoable(true);
             container.requestChange(request);
         }
-
 
         /** Append moml to the given buffer that disconnects a link with the
          *  given head, tail, and relation. Names in the returned moml will be

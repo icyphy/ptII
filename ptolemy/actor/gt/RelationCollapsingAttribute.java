@@ -50,8 +50,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationCollapsingAttribute extends Parameter
-implements GTAttribute {
+public class RelationCollapsingAttribute extends Parameter implements
+        GTAttribute {
 
     public RelationCollapsingAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -60,8 +60,7 @@ implements GTAttribute {
         setTypeEquals(BaseType.BOOLEAN);
         setToken(BooleanToken.getInstance(!DEFAULT));
 
-        editorFactory = new VisibleParameterEditorFactory(this,
-                "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,

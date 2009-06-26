@@ -34,7 +34,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.AbstractFigure;
@@ -329,14 +328,6 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
          */
         public boolean isNormal(int direction) {
             return _attachSite.isNormal(direction);
-        }
-
-        /** Set the point location of the site. This method throws
-         * an exception.
-         */
-        public void setPoint(Point2D point) {
-            throw new UnsupportedOperationException(
-                    "Terminal connection points cannot be moved");
         }
 
         /** Translate the site by the indicated distance. This

@@ -140,8 +140,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = c.iterator();
         boolean modified = false;
         int pos = c.size();
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             modified |= add(itr.next());
+        }
         return modified;
     }
 
@@ -178,9 +179,11 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean contains(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
-            if (equals(o, itr.next()))
+        while (--pos >= 0) {
+            if (equals(o, itr.next())) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -198,9 +201,11 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean containsAll(Collection c) {
         Iterator itr = c.iterator();
         int pos = c.size();
-        while (--pos >= 0) 
-            if (!contains(itr.next()))
+        while (--pos >= 0) {
+            if (!contains(itr.next())) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -235,11 +240,12 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean remove(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             if (equals(o, itr.next())) {
                 itr.remove();
                 return true;
             }
+        }
         return false;
     }
 
@@ -281,11 +287,12 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             if (c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
             }
+        }
         return modified;
     }
 
@@ -328,11 +335,12 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0) {
             if (!c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
             }
+        }
         return modified;
     }
 
@@ -348,8 +356,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         int size = size();
         Object[] a = new Object[size];
-        for (int pos = 0; pos < size; pos++) 
+        for (int pos = 0; pos < size; pos++) {
             a[pos] = itr.next();
+        }
         return a;
     }
 
@@ -376,13 +385,16 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      */
     public Object[] toArray(Object[] a) {
         int size = size();
-        if (a.length < size)
-            a = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
-        else if (a.length > size)
+        if (a.length < size) {
+            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+                    size);
+        } else if (a.length > size) {
             a[size] = null;
+        }
         Iterator itr = iterator();
-        for (int pos = 0; pos < size; pos++) 
+        for (int pos = 0; pos < size; pos++) {
             a[pos] = itr.next();
+        }
         return a;
     }
 
@@ -402,13 +414,15 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         boolean hasNext = itr.hasNext();
         while (hasNext) {
             Object o = itr.next();
-            if (o == this)
+            if (o == this) {
                 r.append("<this>");
-            else
+            } else {
                 r.append(o);
+            }
             hasNext = itr.hasNext();
-            if (hasNext)
+            if (hasNext) {
                 r.append(", ");
+            }
         }
         r.append("]");
         return r.toString();
@@ -421,9 +435,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * @return o1 == null ? o2 == null : o1.equals(o2)
      */
     // Package visible for use throughout java.util.
-        // It may be inlined since it is final.
-static final boolean equals(Object o1, Object o2) {
-        return o1 == null?o2 == null:o1.equals(o2);
+    // It may be inlined since it is final.
+    static final boolean equals(Object o1, Object o2) {
+        return o1 == null ? o2 == null : o1.equals(o2);
     }
 
     /**     
@@ -432,19 +446,21 @@ static final boolean equals(Object o1, Object o2) {
      * @return o1 == null ? 0 : o1.hashCode()
      */
     // Package visible for use throughout java.util.
-        // It may be inlined since it is final.
-static final int hashCode(Object o) {
-        return o == null?0:o.hashCode();
+    // It may be inlined since it is final.
+    static final int hashCode(Object o) {
+        return o == null ? 0 : o.hashCode();
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -470,8 +486,6 @@ static final int hashCode(Object o) {
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

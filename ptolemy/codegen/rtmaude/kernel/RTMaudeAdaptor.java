@@ -68,10 +68,10 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         _parseTreeCodeGenerator = getParseTreeCodeGenerator();
     }
 
-    public List<String> getBlockCodeList(String blockName, String ... args)
+    public List<String> getBlockCodeList(String blockName, String... args)
             throws IllegalActionException {
         List<String> rl = new LinkedList();
-        rl.add(_generateBlockCode(blockName,args));
+        rl.add(_generateBlockCode(blockName, args));
         return rl;
     }
 
@@ -81,7 +81,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @return The block code
      * @exception IllegalActionException
      */
-    protected String _generateBlockCode(String blockName, String ... args)
+    protected String _generateBlockCode(String blockName, String... args)
             throws IllegalActionException {
         return super._generateBlockCode(blockName, Arrays.asList(args));
     }
@@ -91,19 +91,21 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             String refType) throws IllegalActionException {
 
         //FIXME: too specific.
-        if (refType != null && refType.equals("String"))
+        if (refType != null && refType.equals("String")) {
             return "# " + ref;
+        }
         if (castType != null && castType.equals("time")) {
             return "toTime(" + ref + ")";
-        }
-        else
+        } else {
             return super._generateTypeConvertMethod(ref, castType, refType);
+        }
     }
 
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        if (name.equals("name"))
+        if (name.equals("name")) {
             return getComponent().getName();
+        }
 
         throw new IllegalActionException("Unknown RTMaudeObj Information");
     }
@@ -113,17 +115,20 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             throws IllegalActionException {
         if (macro.equals("info") || macro.equals("block")) {
             String[] args = parameter.split("(?<!\\\\),");
-            for (int i = 1 ; i < args.length ; i++)
-                if (args[i].contains("$"))
+            for (int i = 1; i < args.length; i++) {
+                if (args[i].contains("$")) {
                     args[i] = processCode(args[i]);
+                }
+            }
 
             ArrayList<String> largs = new ArrayList(Arrays.asList(args));
             String aName = largs.remove(0);
 
-            if (macro.equals("info"))
+            if (macro.equals("info")) {
                 return _generateInfoCode(aName, largs);
-            else
+            } else {
                 return _generateBlockCode(aName, largs);
+            }
         }
         if (macro.equals("indent")) {
             return _eol + CodeStream.indent(1, processCode(parameter));
@@ -133,23 +138,24 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
 
     @Override
     public String generateFireCode() throws IllegalActionException {
-        String comment = _codeGenerator.comment("Fire " +
-                ((getComponent() instanceof CompositeActor) ? "Composite Actor: " : "") +
-                generateName(getComponent()));
+        String comment = _codeGenerator
+                .comment("Fire "
+                        + ((getComponent() instanceof CompositeActor) ? "Composite Actor: "
+                                : "") + generateName(getComponent()));
 
-        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE)
-            return processCode(comment +
-                    _generateFireCode() + generateTypeConvertFireCode());
-        else
+        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
+            return processCode(comment + _generateFireCode()
+                    + generateTypeConvertFireCode());
+        } else {
             return processCode(comment + generateTermCode());
+        }
     }
 
     @Override
     public String generateFireFunctionCode() throws IllegalActionException {
-        return _generateBlockCode("fireFuncBlock",
-                generateTermCode(),
-                CodeStream.indent(1,_generateFireCode() + generateTypeConvertFireCode())
-                );
+        return _generateBlockCode("fireFuncBlock", generateTermCode(),
+                CodeStream.indent(1, _generateFireCode()
+                        + generateTypeConvertFireCode()));
     }
 
     /**
@@ -159,52 +165,48 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @exception IllegalActionException
      */
     public String generateTermCode() throws IllegalActionException {
-        return _generateBlockCode(defaultTermBlock);    // term block
+        return _generateBlockCode(defaultTermBlock); // term block
     }
 
     public String generateEntryCode() throws IllegalActionException {
         HashSet<String> inc_set;
-        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE)
+        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
             inc_set = new HashSet(getBlockCodeList("moduleName"));
-        else
+        } else {
             inc_set = new HashSet(getBlockCodeList("funcModuleName"));
+        }
 
-        return _generateBlockCode("mainEntry",
-                CodeStream.indent(2,
-                        new ListTerm<String>("ACTOR-BASE", " +" + _eol,
-                                inc_set).generateCode())
-            );
+        return _generateBlockCode("mainEntry", CodeStream.indent(2,
+                new ListTerm<String>("ACTOR-BASE", " +" + _eol, inc_set)
+                        .generateCode()));
     }
 
     public String generateExitCode() throws IllegalActionException {
         HashSet<String> check_inc_set = new HashSet<String>();
         StringBuffer commands = new StringBuffer();
-        ptolemy.data.Token bound = ((RTMaudeCodeGenerator)_codeGenerator).
-                            simulation_bound.getToken();
+        ptolemy.data.Token bound = ((RTMaudeCodeGenerator) _codeGenerator).simulation_bound
+                .getToken();
 
         check_inc_set.add("INIT");
         check_inc_set.addAll(getBlockCodeList("checkModuleName"));
 
-
-        if ( bound != null ) {
-            if (bound.toString().equals("Infinity"))
+        if (bound != null) {
+            if (bound.toString().equals("Infinity")) {
                 commands.append("(rew {init} .)");
-            else
-                commands.append("(trew {init} in time <= " +
-                        IntToken.convert(bound).toString() + " .)");
+            } else {
+                commands.append("(trew {init} in time <= "
+                        + IntToken.convert(bound).toString() + " .)");
+            }
         }
 
-        for (PropertyParameter p : (List<PropertyParameter>)
-                _codeGenerator.attributeList(PropertyParameter.class)) {
+        for (PropertyParameter p : (List<PropertyParameter>) _codeGenerator
+                .attributeList(PropertyParameter.class)) {
             commands.append("(" + p.stringValue() + " .)" + _eol);
         }
 
-        return _generateBlockCode("mainExit",
-                CodeStream.indent(2,
-                        new ListTerm<String>("MODELCHECK-BASE", " +" + _eol,
-                                check_inc_set).generateCode()),
-                commands.toString()
-        );
+        return _generateBlockCode("mainExit", CodeStream.indent(2,
+                new ListTerm<String>("MODELCHECK-BASE", " +" + _eol,
+                        check_inc_set).generateCode()), commands.toString());
     }
 
     /** Return a new parse tree code generator to use with expressions.

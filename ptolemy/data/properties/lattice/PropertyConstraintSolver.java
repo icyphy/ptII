@@ -711,7 +711,6 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-
     /** Add choices to the parameters.
      *  @exception IllegalActionException If there is a problem
      *  accessing files or parameters.

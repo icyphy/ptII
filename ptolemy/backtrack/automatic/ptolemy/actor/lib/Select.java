@@ -30,7 +30,6 @@
 //// Select
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -106,12 +105,14 @@ public class Select extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public Select(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public Select(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.INT);
-        StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
@@ -120,7 +121,7 @@ public class Select extends Transformer implements Rollbackable {
      * it on the output.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(_control)) {
             output.send(0, input.get(_control));
@@ -132,7 +133,7 @@ public class Select extends Transformer implements Rollbackable {
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_control(0);
     }
@@ -146,11 +147,12 @@ public class Select extends Transformer implements Rollbackable {
      * @return True if the actor is ready to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         if (control.hasToken(0)) {
-            $ASSIGN$_control(((IntToken)control.get(0)).intValue());
+            $ASSIGN$_control(((IntToken) control.get(0)).intValue());
         }
-        if ((_control < 0) || (_control > input.getWidth())||!input.hasToken(_control)) {
+        if ((_control < 0) || (_control > input.getWidth())
+                || !input.hasToken(_control)) {
             return false;
         }
         return super.prefire();
@@ -164,14 +166,16 @@ public class Select extends Transformer implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _control = $RECORD$_control.restore(_control, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -199,9 +203,6 @@ public class Select extends Transformer implements Rollbackable {
 
     private transient FieldRecord $RECORD$_control = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_control
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_control };
 
 }
-

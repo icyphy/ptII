@@ -72,7 +72,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status updated to 1.4
  */
-public abstract class AbstractSequentialList extends AbstractList implements Rollbackable {
+public abstract class AbstractSequentialList extends AbstractList implements
+        Rollbackable {
 
     /**     
      * The main constructor, for use by subclasses.
@@ -142,8 +143,9 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
         Iterator ci = c.iterator();
         int size = c.size();
         ListIterator i = listIterator(index);
-        for (int pos = size; pos > 0; pos--) 
+        for (int pos = size; pos > 0; pos--) {
             i.add(ci.next());
+        }
         return size > 0;
     }
 
@@ -156,8 +158,10 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
      */
     public Object get(int index) {
         // This is a legal listIterator position, but an illegal get.
-        if (index == size())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
+        if (index == size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + size());
+        }
         return listIterator(index).next();
     }
 
@@ -182,8 +186,10 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
      */
     public Object remove(int index) {
         // This is a legal listIterator position, but an illegal remove.
-        if (index == size())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
+        if (index == size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + size());
+        }
         ListIterator i = listIterator(index);
         Object removed = i.next();
         i.remove();
@@ -208,8 +214,10 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
      */
     public Object set(int index, Object o) {
         // This is a legal listIterator position, but an illegal set.
-        if (index == size())
-            throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
+        if (index == size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                    + size());
+        }
         ListIterator i = listIterator(index);
         Object old = i.next();
         i.set(o);
@@ -217,7 +225,8 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -225,8 +234,6 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
         super.$RESTORE(timestamp, trim);
     }
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

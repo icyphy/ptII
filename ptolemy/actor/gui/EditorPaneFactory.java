@@ -120,17 +120,17 @@ public class EditorPaneFactory extends Attribute {
      *  @return An instance of the PtolemyQuery class that is created
      *  with styles according to the type given in each visible attribute.
      */
-    public static Component createEditorPane(NamedObj object,
-            PtolemyQuery query) {
-        List<Settable> parameters = new LinkedList<Settable>(object.attributeList(Settable.class));
-
+    public static Component createEditorPane(NamedObj object, PtolemyQuery query) {
+        List<Settable> parameters = new LinkedList<Settable>(object
+                .attributeList(Settable.class));
 
         // Get decorated attributes
         NamedObj toplevel = object.toplevel();
 
         List<?> decorators = toplevel.attributeList(Decorator.class);
         for (Object decorator : decorators) {
-            List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator).getDecoratorAttributes(object);
+            List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator)
+                    .getDecoratorAttributes(object);
 
             for (DecoratedAttribute decoratedAttribute : decoratedAttributes) {
                 Attribute attribute = decoratedAttribute.getAttribute();

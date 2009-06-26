@@ -184,9 +184,7 @@ public class RecordDisassembler extends AtomicActor {
         protected InequalityTerm[] _getDependentTerms() {
             ptolemy.actor.lib.RecordDisassembler actor = (ptolemy.actor.lib.RecordDisassembler) getComponent();
 
-            return new InequalityTerm[] {
-                (InequalityTerm) getPropertyTerm(actor.input)
-            };
+            return new InequalityTerm[] { (InequalityTerm) getPropertyTerm(actor.input) };
         }
 
         /*

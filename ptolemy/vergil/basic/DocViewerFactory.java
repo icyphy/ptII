@@ -103,9 +103,9 @@ public class DocViewerFactory extends EditorFactory {
             } else {
                 Effigy effigy = ((TableauFrame) parent).getEffigy();
                 try {
-                    DocEffigy newEffigy = new DocEffigy((CompositeEntity) effigy
-                            .getContainer(), effigy.getContainer().uniqueName(
-                            "parentClass"));
+                    DocEffigy newEffigy = new DocEffigy(
+                            (CompositeEntity) effigy.getContainer(), effigy
+                                    .getContainer().uniqueName("parentClass"));
                     newEffigy.setDocAttribute(doc);
                     DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                     tableau.show();

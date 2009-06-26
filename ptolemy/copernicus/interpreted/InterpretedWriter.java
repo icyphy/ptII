@@ -122,15 +122,15 @@ public class InterpretedWriter extends SceneTransformer implements
         File outputDirectoryFile = new File(_outputDirectory);
 
         if (outputDirectoryFile.isDirectory()) {
-            System.out
-                    .println(" Warning: '" + outputDirectoryFile + "' already exists.");
+            System.out.println(" Warning: '" + outputDirectoryFile
+                    + "' already exists.");
         }
 
         if (!outputDirectoryFile.isDirectory()) {
             if (!outputDirectoryFile.mkdirs()) {
                 throw new InternalErrorException(
-                            "Failed to create directory \""
-                            + outputDirectoryFile + "\"");
+                        "Failed to create directory \"" + outputDirectoryFile
+                                + "\"");
             }
         }
 

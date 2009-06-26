@@ -127,8 +127,7 @@ public class FFT extends SDFTransformer {
         Token[] inTokenArray = input.get(0, _transformSize);
 
         for (int i = 0; i < _transformSize; i++) {
-            _inComplexArray[i] = ((ScalarToken) inTokenArray[i])
-                    .complexValue();
+            _inComplexArray[i] = ((ScalarToken) inTokenArray[i]).complexValue();
         }
 
         Complex[] outComplexArray = SignalProcessing.FFTComplexOut(

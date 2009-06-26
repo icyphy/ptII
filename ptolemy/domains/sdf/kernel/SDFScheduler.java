@@ -764,20 +764,23 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             StringBuffer portParameterMessageBuffer = new StringBuffer();
             Set portParametersFound = new HashSet();
             Set containersSeen = new HashSet();
-            for (Iterator actors = actorList.iterator();
-                 actors.hasNext()
-                     && count < 100; count++) {
+            for (Iterator actors = actorList.iterator(); actors.hasNext()
+                    && count < 100; count++) {
                 NamedObj actor = (NamedObj) (actors.next());
                 NamedObj actorContainer = actor.getContainer();
                 if (actorContainer instanceof CompositeActor
-                        && !((CompositeActor)actorContainer).isOpaque()
+                        && !((CompositeActor) actorContainer).isOpaque()
                         && !containersSeen.contains(actorContainer)) {
                     containersSeen.add(actorContainer);
-                    List portParameters = actorContainer.attributeList(PortParameter.class);
+                    List portParameters = actorContainer
+                            .attributeList(PortParameter.class);
                     for (Object portParameter : portParameters) {
                         if (!portParametersFound.contains(portParameter)) {
                             portParametersFound.add(portParameter);
-                            portParameterMessageBuffer.append(((PortParameter)portParameter).getFullName() + " ");
+                            portParameterMessageBuffer
+                                    .append(((PortParameter) portParameter)
+                                            .getFullName()
+                                            + " ");
                             if (count > 100) {
                                 break;
                             }
@@ -786,14 +789,15 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 }
             }
             if (portParameterMessageBuffer.length() > 0) {
-                messageBuffer.append("Note that some of the unreached actors are in "
-                        + "transparent composite actors that have PortParameters.  "
-                        + "A transparent composite actor is composite actor that has "
-                        + "no local director.  Transparent composite actors and "
-                        + "PortParameters are not compatible, the workaround is to "
-                        + "insert a director or remove the PortParameter.  "
-                        + "\nThe PortParameters:\n"
-                        + portParameterMessageBuffer.toString());
+                messageBuffer
+                        .append("Note that some of the unreached actors are in "
+                                + "transparent composite actors that have PortParameters.  "
+                                + "A transparent composite actor is composite actor that has "
+                                + "no local director.  Transparent composite actors and "
+                                + "PortParameters are not compatible, the workaround is to "
+                                + "insert a director or remove the PortParameter.  "
+                                + "\nThe PortParameters:\n"
+                                + portParameterMessageBuffer.toString());
                 if (count >= 99) {
                     messageBuffer.append("...");
                 }
@@ -1687,21 +1691,21 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if (unscheduledActorList.size() > 0) {
             StringBuffer message = new StringBuffer(
                     "Actors remain that cannot be scheduled!\n"
-                    + "\nNote that there are many reasons why a graph cannot be "
-                    + "scheduled:\n"
-                    + "* SDF Graphs with feedback loops should have an actor "
-                    + "with a delay in the loop, such as VariableDelay."
-                    + "* The SDF director has an \"allowDisconnectedGraphs\""
-                    + "parameter, which, when true, permits disconnected "
-                    + "SDF graphs.\n"
-                    + "* The token consumption rate and production rates might "
-                    + "be mismatched.  Usually, actors produce one token or consume "
-                    + "one token on a port.  To produce or consume multiple tokens "
-                    + "per firing, add a \"tokenConsumptionRate\" or "
-                    + "\"tokenConsumptionRate\" parameter to the appropriate port.\n"
-                    + "For details, see the SDF chapter in Volume Three of the Ptolemy II "
-                    + "design doc at http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm\n"
-                    + "Unscheduled actors:\n");
+                            + "\nNote that there are many reasons why a graph cannot be "
+                            + "scheduled:\n"
+                            + "* SDF Graphs with feedback loops should have an actor "
+                            + "with a delay in the loop, such as VariableDelay."
+                            + "* The SDF director has an \"allowDisconnectedGraphs\""
+                            + "parameter, which, when true, permits disconnected "
+                            + "SDF graphs.\n"
+                            + "* The token consumption rate and production rates might "
+                            + "be mismatched.  Usually, actors produce one token or consume "
+                            + "one token on a port.  To produce or consume multiple tokens "
+                            + "per firing, add a \"tokenConsumptionRate\" or "
+                            + "\"tokenConsumptionRate\" parameter to the appropriate port.\n"
+                            + "For details, see the SDF chapter in Volume Three of the Ptolemy II "
+                            + "design doc at http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm\n"
+                            + "Unscheduled actors:\n");
 
             // Only display the first 100 connected or disconnected actors.
             int count = 0;

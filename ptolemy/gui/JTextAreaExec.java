@@ -174,8 +174,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      */
     public void appendToPath(String directoryName) {
         if (_debug) {
-            stdout("JTextArea.appendToPath(): "
-                    + directoryName + "\n");
+            stdout("JTextArea.appendToPath(): " + directoryName + "\n");
         }
 
         // Might be Path, might be PATH
@@ -187,13 +186,11 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                 keyPath = "Path";
             }
             if (_debug) {
-                stdout("JTextArea.appendToPath() Path: "
-                        + path + "\n");
+                stdout("JTextArea.appendToPath() Path: " + path + "\n");
             }
         } else {
             if (_debug) {
-                stdout("JTextArea.appendToPath() PATH: "
-                        + path + "\n");
+                stdout("JTextArea.appendToPath() PATH: " + path + "\n");
             }
         }
 
@@ -205,11 +202,11 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             }
             _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
-                    + File.pathSeparatorChar);
+                            + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging
-                for ( int i = 0; i < _envp.length; i++) {
+                for (int i = 0; i < _envp.length; i++) {
                     stdout("JTextArea.appendToPath() " + _envp[i]);
                 }
             }
@@ -246,7 +243,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             // is Path.  Updating PATH is wrong, the subprocess will
             // not see the change.  So, we search the env for a direct
             // match
-            Map<String,String> environmentMap = System.getenv();
+            Map<String, String> environmentMap = System.getenv();
 
             if (_debug) {
                 stdout("JTextArea.getenv(" + key + "), _envp null, returning: "
@@ -255,18 +252,20 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
             return environmentMap.get(key);
         }
-        for ( int i = 0; i < _envp.length; i++) {
+        for (int i = 0; i < _envp.length; i++) {
             String envpKey = _envp[i].substring(0, _envp[i].indexOf("="));
             if (key.length() == envpKey.length()
-                    && key.regionMatches(false /*ignoreCase*/,
-                            0, envpKey, 0, envpKey.length())) {
+                    && key.regionMatches(false /*ignoreCase*/, 0, envpKey, 0,
+                            envpKey.length())) {
 
                 if (_debug) {
-                    stdout("JTextArea.getenv(" + key
-                            + "), \"" + envpKey
+                    stdout("JTextArea.getenv("
+                            + key
+                            + "), \""
+                            + envpKey
                             + "\"\n\t_envp not null, returning: "
-                            + _envp[i].substring(key.length() + 1,
-                                    _envp[i].length()));
+                            + _envp[i].substring(key.length() + 1, _envp[i]
+                                    .length()));
                 }
                 return _envp[i].substring(key.length() + 1, _envp[i].length());
             }
@@ -483,7 +482,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                             // FIXME: If we get a segfault in the subprocess, then it
                             // would be nice to get the error in the display.  However,
                             // there is no data to be found in the process error stream?
-                            appendJTextArea("Warning, process returned " + _subprocessReturnCode);
+                            appendJTextArea("Warning, process returned "
+                                    + _subprocessReturnCode);
 
                             synchronized (this) {
                                 _process = null;
@@ -494,7 +494,6 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                         synchronized (this) {
                             _process = null;
                         }
-
 
                     } catch (InterruptedException interrupted) {
                         appendJTextArea("InterruptedException: " + interrupted);

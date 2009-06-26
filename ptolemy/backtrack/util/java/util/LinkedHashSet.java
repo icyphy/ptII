@@ -84,7 +84,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.4
  * @status updated to 1.4
  */
-public class LinkedHashSet extends HashSet implements Set, Cloneable, Serializable, Rollbackable {
+public class LinkedHashSet extends HashSet implements Set, Cloneable,
+        Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.4.
@@ -144,7 +145,8 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable, Serializab
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -152,8 +154,6 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable, Serializab
         super.$RESTORE(timestamp, trim);
     }
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

@@ -180,7 +180,8 @@ public class SubscriptionAggregator extends Subscriber {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SubscriptionAggregator newObject = (SubscriptionAggregator) super.clone(workspace);
+        SubscriptionAggregator newObject = (SubscriptionAggregator) super
+                .clone(workspace);
         newObject._channelDoesNotMatch = new HashSet();
         newObject._channelMatches = new HashSet();
         newObject._relations = new LinkedList();
@@ -203,8 +204,8 @@ public class SubscriptionAggregator extends Subscriber {
         if (width == 0) {
             throw new IllegalActionException(this,
                     "SubscriptionAggregator has no matching Publisher, "
-                                             + "channel was \""
-                                             + channel.getExpression() + "\".");
+                            + "channel was \"" + channel.getExpression()
+                            + "\".");
         }
         Token result = null;
         for (int i = 0; i < width; i++) {
@@ -274,7 +275,6 @@ public class SubscriptionAggregator extends Subscriber {
         }
         return result;
     }
-
 
     /** Update the connection to the publishers, if there are any.
      *  @exception IllegalActionException If creating the link

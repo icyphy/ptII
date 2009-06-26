@@ -353,10 +353,11 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
                         //then unblock it. Else put the newly removed
                         //process back on the event queue.
                         if (newTime.equals(getModelTime())) {
-                            if (unblockedActors.contains(actor))
+                            if (unblockedActors.contains(actor)) {
                                 continue;
-                            else
+                            } else {
                                 unblockedActors.add(actor);
+                            }
                             _informOfDelayUnblock();
                         } else {
                             _eventQueue.put(new TimedEvent(newTime, actor));

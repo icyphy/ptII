@@ -31,8 +31,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,8 @@ import ptolemy.kernel.util.IllegalActionException;
  o @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterStrategy {
+public class JavaCodeGeneratorAdapterStrategy extends
+        ProgramCodeGeneratorAdapterStrategy {
     /**
      * Create a new instance of the C code generator adapter.
      */
@@ -87,10 +88,11 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
      *   not well-formed.
      */
     public String getNewInvocation(String constructorString)
-    throws IllegalActionException {
-        addFunctionUsed("new");        
+            throws IllegalActionException {
+        addFunctionUsed("new");
         return super.getNewInvocation(constructorString);
     }
+
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */
@@ -109,7 +111,6 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
         return (JavaCodeGenerator) _codeGenerator;
     }
 
-
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
      *  @param isStatic True if the method is static.
@@ -118,9 +119,9 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
      *   not well-formed.
      */
     public String getFunctionInvocation(String functionString, boolean isStatic)
-    throws IllegalActionException {
+            throws IllegalActionException {
         // Record the referenced type function in the infoTable.
-        super.getFunctionInvocation(functionString, isStatic); 
+        super.getFunctionInvocation(functionString, isStatic);
 
         // FIXME: lots of duplicated code from superclass here.
         functionString = processCode(functionString);
@@ -139,8 +140,8 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
-                    + "String was:\n:" + functionString);
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                            + "String was:\n:" + functionString);
         }
 
         String typeOrToken = functionString.substring(0, commaIndex).trim();
@@ -148,19 +149,20 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
                 openFuncParenIndex).trim();
 
         String argumentList = functionString.substring(openFuncParenIndex + 1)
-        .trim();
+                .trim();
 
         if (isStatic) {
 
             if (argumentList.length() == 0) {
                 throw new IllegalActionException(
-                "Static type function requires at least one argument(s).");
+                        "Static type function requires at least one argument(s).");
             }
 
             //return "functionTable[(int)" + typeOrToken + "][FUNC_"
             //+ functionName + "](" + argumentList;
 
-            String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
+            String methodType = typeOrToken
+                    .substring(typeOrToken.indexOf('_') + 1);
             return methodType + "_" + functionName + "(" + argumentList;
 
         } else {
@@ -173,7 +175,8 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
             //return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
             //+ functionName + "](" + typeOrToken + argumentList;
             //String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
-            getCodeGenerator().markFunctionCalled(functionName + "_Token_Token", this);
+            getCodeGenerator().markFunctionCalled(
+                    functionName + "_Token_Token", this);
             return functionName + "_Token_Token(" + typeOrToken + argumentList;
         }
     }
@@ -188,15 +191,16 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
         Set<String> files = super.getHeaderFiles();
         files.addAll(_includeFiles);
         return files;
-    }    
+    }
 
     protected String _replaceMacro(String macro, String parameter)
-    throws IllegalActionException {
+            throws IllegalActionException {
         String result = super._replaceMacro(macro, parameter);
 
         if (result != null) {
             if (macro.equals("cgType")) {
-                return result.replace("Int", "Integer").replace("Integereger", "Integer");
+                return result.replace("Int", "Integer").replace("Integereger",
+                        "Integer");
             }
             return result;
         }
@@ -208,15 +212,16 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
             TypedIOPort port = getPort(parameter);
 
             if (port == null) {
-                throw new IllegalActionException(parameter
-                        + " is not a port. $refinePrimitiveType macro takes in a port.");
+                throw new IllegalActionException(
+                        parameter
+                                + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (isPrimitive(port.getType())) {
                 return ".payload/*jcgh*/." + codeGenType(port.getType());
             } else {
                 return "";
             }
-        }  else if (macro.equals("lcCgType")) {
+        } else if (macro.equals("lcCgType")) {
             String cgType = _replaceMacro("cgType", parameter);
             if (cgType.equals("Integer")) {
                 return "int";
@@ -235,7 +240,6 @@ public class JavaCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapte
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////

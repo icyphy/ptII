@@ -71,8 +71,9 @@ public abstract class LayoutStyle {
      * @return MacLayoutStyle on Mac, WindowsLayoutStyle on all other platforms
      */
     private static LayoutStyle initialLayoutStyle() {
-        if (isOSMac())
+        if (isOSMac()) {
             return MacLayoutStyle.INSTANCE;
+        }
         return WindowsLayoutStyle.INSTANCE;
     }
 

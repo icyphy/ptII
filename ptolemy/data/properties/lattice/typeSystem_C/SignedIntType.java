@@ -48,7 +48,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class SignedIntType extends LatticeProperty implements TypeProperty {
+public abstract class SignedIntType extends LatticeProperty implements
+        TypeProperty {
 
     public SignedIntType(PropertyLattice lattice) {
         super(lattice);
@@ -61,24 +62,26 @@ public abstract class SignedIntType extends LatticeProperty implements TypePrope
     }
 
     public Token getMaxValue() {
-        return new LongToken((long)Math.pow(2, getNumberBits()-1)-1);
-   }
+        return new LongToken((long) Math.pow(2, getNumberBits() - 1) - 1);
+    }
 
-   public Token getMinValue() {
-       return new LongToken((long)-Math.pow(2, getNumberBits()-1));
-   }
+    public Token getMinValue() {
+        return new LongToken((long) -Math.pow(2, getNumberBits() - 1));
+    }
 
-   public boolean hasMinMaxValue() {
-       return true;
-   }
+    public boolean hasMinMaxValue() {
+        return true;
+    }
 
-   public boolean isInRange(Token token) throws IllegalActionException {
-       if ((((ScalarToken)token).longValue() < ((ScalarToken)getMinValue()).longValue()) ||
-           (((ScalarToken)token).longValue() > ((ScalarToken)getMaxValue()).longValue())) {
+    public boolean isInRange(Token token) throws IllegalActionException {
+        if ((((ScalarToken) token).longValue() < ((ScalarToken) getMinValue())
+                .longValue())
+                || (((ScalarToken) token).longValue() > ((ScalarToken) getMaxValue())
+                        .longValue())) {
 
-           return false;
-       } else {
-           return true;
-       }
-   }
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

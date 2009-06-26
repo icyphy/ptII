@@ -121,9 +121,8 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
      */
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(2,
-                        "Fire Composite "
-                        + generateSimpleName(getComponent())));
+        code.append(_codeGenerator.comment(2, "Fire Composite "
+                + generateSimpleName(getComponent())));
 
         code.append(super._generateFireCode());
 
@@ -137,7 +136,8 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         StringBuffer tempCode = new StringBuffer();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            if (inputPort instanceof ParameterPort && inputPort.isOutsideConnected()) {
+            if (inputPort instanceof ParameterPort
+                    && inputPort.isOutsideConnected()) {
 
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();
@@ -150,8 +150,9 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
             }
         }
         if (tempCode.length() > 0) {
-            code.append(_codeGenerator.comment("Update "
-                    + generateSimpleName(getComponent()) + "'s port parameters"));
+            code.append(_codeGenerator
+                    .comment("Update " + generateSimpleName(getComponent())
+                            + "'s port parameters"));
             code.append(tempCode);
         }
 
@@ -239,9 +240,8 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         String code = resetOutputPortsOffset();
         if (code.length() > 0) {
             initializeCode.append(_eol
-                    + _codeGenerator.comment(
-                            generateSimpleName(getComponent())
-                                    + "'s output offset initialization"));
+                    + _codeGenerator.comment(generateSimpleName(getComponent())
+                            + "'s output offset initialization"));
             initializeCode.append(code);
         }
 

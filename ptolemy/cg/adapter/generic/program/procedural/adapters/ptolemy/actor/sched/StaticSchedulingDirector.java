@@ -44,10 +44,10 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
-import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -90,7 +90,6 @@ public class StaticSchedulingDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-
     /** Return whether the channels in multiports can be dynamically
      *  referenced using the $ref macro.
      *  @return True when the channels in multiports can be dynamically
@@ -100,12 +99,14 @@ public class StaticSchedulingDirector extends Director {
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
-    final public Boolean allowDynamicMultiportReference() throws IllegalActionException {
-        return ((BooleanToken) ((Parameter) getCodeGenerator().getDecoratorAttribute(getComponent(), "allowDynamicMultiportReference").getAttribute())
+    final public Boolean allowDynamicMultiportReference()
+            throws IllegalActionException {
+        return ((BooleanToken) ((Parameter) getCodeGenerator()
+                .getDecoratorAttribute(getComponent(),
+                        "allowDynamicMultiportReference").getAttribute())
                 .getToken()).booleanValue();
     }
-        
-    
+
     /** Create and return the decorated attributes for the corresponding Ptolemy Component.
      *  @param genericCodeGenerator The code generator that is the decorator for the
      *  corresponding Ptolemy Component.
@@ -114,29 +115,32 @@ public class StaticSchedulingDirector extends Director {
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
-     */    
+     */
     public List<DecoratedAttribute> createDecoratedAttributes(
-            GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException  {
-        
+            GenericCodeGenerator genericCodeGenerator)
+            throws IllegalActionException, NameDuplicationException {
+
         List<DecoratedAttribute> decoratedAttributes = new LinkedList<DecoratedAttribute>();
         Parameter padBuffers = new Parameter(this, "padBuffers");
         padBuffers.setTypeEquals(BaseType.BOOLEAN);
         padBuffers.setExpression("true");
 
-        decoratedAttributes.add(new DecoratedAttribute(padBuffers, genericCodeGenerator));
+        decoratedAttributes.add(new DecoratedAttribute(padBuffers,
+                genericCodeGenerator));
 
         /** If true, then channels in multiports can be dynamically
          *  referenced using the $ref macro.
          */
         Parameter allowDynamicMultiportReference = new Parameter(this,
-        "allowDynamicMultiportReference");
+                "allowDynamicMultiportReference");
         allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
         allowDynamicMultiportReference.setExpression("false");
-        
-        decoratedAttributes.add(new DecoratedAttribute(allowDynamicMultiportReference, genericCodeGenerator));
-        
+
+        decoratedAttributes.add(new DecoratedAttribute(
+                allowDynamicMultiportReference, genericCodeGenerator));
+
         return decoratedAttributes;
-    }   
+    }
 
     /** Generate the code for the firing of actors according to the SDF
      *  schedule.
@@ -148,8 +152,8 @@ public class StaticSchedulingDirector extends Director {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(CodeStream.indent(getCodeGenerator()
-                .comment("The firing of the StaticSchedulingDirector")));
+        code.append(CodeStream.indent(getCodeGenerator().comment(
+                "The firing of the StaticSchedulingDirector")));
         boolean inline = ((BooleanToken) getCodeGenerator().inline.getToken())
                 .booleanValue();
 
@@ -165,7 +169,8 @@ public class StaticSchedulingDirector extends Director {
             // FIXME: Before looking for a adapter class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
-            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter((NamedObj) actor);
 
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
@@ -179,12 +184,13 @@ public class StaticSchedulingDirector extends Director {
 
                 int count = firing.getIterationCount();
                 if (count > 1) {
-                    code.append("for (int i = 0; i < " + count
-                            + " ; i++) {" + _eol);
+                    code.append("for (int i = 0; i < " + count + " ; i++) {"
+                            + _eol);
                 }
 
-                code.append(ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj)
-                 actor) + "();" + _eol);
+                code.append(ProgramCodeGeneratorAdapterStrategy
+                        .generateName((NamedObj) actor)
+                        + "();" + _eol);
 
                 _generateUpdatePortOffsetCode(code, actor);
 
@@ -229,8 +235,8 @@ public class StaticSchedulingDirector extends Director {
                 // Declare iteration outside of the loop to avoid
                 // mode" with gcc-3.3.3
                 code.append(_eol + "int iteration;" + _eol);
-                code.append("for (iteration = 0; iteration < "
-                        + iterationCount + "; iteration ++) {" + _eol);
+                code.append("for (iteration = 0; iteration < " + iterationCount
+                        + "; iteration ++) {" + _eol);
             }
         }
 
@@ -238,8 +244,8 @@ public class StaticSchedulingDirector extends Director {
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
-        ProgramCodeGeneratorAdapter modelAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(_director
-                .getContainer());
+        ProgramCodeGeneratorAdapter modelAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(_director.getContainer());
         modelAdapter.generateModeTransitionCode(code);
 
         /*if (callPostfire) {
@@ -247,8 +253,7 @@ public class StaticSchedulingDirector extends Director {
                     + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
          */
-        _generateUpdatePortOffsetCode(code,
-                (Actor) _director.getContainer());
+        _generateUpdatePortOffsetCode(code, (Actor) _director.getContainer());
 
         code.append(generatePostfireCode());
 
@@ -305,8 +310,8 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    public String getReference(String name, boolean isWrite, ProgramCodeGeneratorAdapter target)
-    throws IllegalActionException {
+    public String getReference(String name, boolean isWrite,
+            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
 
         name = processCode(name);
         String castType = _getCastType(name);
@@ -338,12 +343,13 @@ public class StaticSchedulingDirector extends Director {
 
                 // Then use the parameter (attribute) instead.
             } else {
-                String result = getReference(
-                        port, channelAndOffset, forComposite, isWrite, target);
+                String result = getReference(port, channelAndOffset,
+                        forComposite, isWrite, target);
 
                 String refType = getStrategy().codeGenType(port.getType());
 
-                return getStrategy().generateTypeConvertMethod(result, castType, refType);
+                return getStrategy().generateTypeConvertMethod(result,
+                        castType, refType);
             }
         }
 
@@ -353,14 +359,14 @@ public class StaticSchedulingDirector extends Director {
         if (attribute != null) {
             String refType = _getRefType(attribute);
 
-            String result = _getReference(target,
-                    attribute, channelAndOffset);
+            String result = _getReference(target, attribute, channelAndOffset);
 
-            return getStrategy().generateTypeConvertMethod(result, castType, refType);
+            return getStrategy().generateTypeConvertMethod(result, castType,
+                    refType);
         }
 
-        throw new IllegalActionException(target.getComponent(), "Reference not found: "
-                + name);
+        throw new IllegalActionException(target.getComponent(),
+                "Reference not found: " + name);
     }
 
     /**
@@ -379,10 +385,9 @@ public class StaticSchedulingDirector extends Director {
      * @throws IllegalActionException If the helper throws it while
      *  generating the label.     
      */
-    public String getReference(TypedIOPort port,
-            String[] channelAndOffset,
-            boolean forComposite,
-            boolean isWrite, ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+    public String getReference(TypedIOPort port, String[] channelAndOffset,
+            boolean forComposite, boolean isWrite,
+            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
@@ -394,14 +399,14 @@ public class StaticSchedulingDirector extends Director {
             // when the channel specification is not an integer.
             if (dynamicReferencesAllowed) {
                 try {
-                    channelNumber =
-                        (Integer.valueOf(channelAndOffset[0])).intValue();
+                    channelNumber = (Integer.valueOf(channelAndOffset[0]))
+                            .intValue();
                 } catch (Exception ex) {
                     isChannelNumberInt = false;
                 }
             } else {
-                channelNumber =
-                    (Integer.valueOf(channelAndOffset[0])).intValue();
+                channelNumber = (Integer.valueOf(channelAndOffset[0]))
+                        .intValue();
             }
         }
 
@@ -409,10 +414,11 @@ public class StaticSchedulingDirector extends Director {
             if (port.isOutput()) {
                 throw new IllegalActionException(
                         "Variable channel reference not supported"
-                        + " for output ports");
+                                + " for output ports");
             } else {
 
-                return ProgramCodeGeneratorAdapterStrategy.generatePortReference(port, channelAndOffset, isWrite);
+                return ProgramCodeGeneratorAdapterStrategy
+                        .generatePortReference(port, channelAndOffset, isWrite);
             }
         }
 
@@ -434,7 +440,8 @@ public class StaticSchedulingDirector extends Director {
 
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
-                result.append(ProgramCodeGeneratorAdapterStrategy.generateName(target.getComponent()));
+                result.append(ProgramCodeGeneratorAdapterStrategy
+                        .generateName(target.getComponent()));
                 result.append("_");
                 result.append(port.getName());
                 return result.toString();
@@ -442,9 +449,11 @@ public class StaticSchedulingDirector extends Director {
 
             Channel sourceChannel = new Channel(port, channelNumber);
 
-            List<Channel> typeConvertSinks = target.getStrategy().getTypeConvertSinkChannels(sourceChannel);
+            List<Channel> typeConvertSinks = target.getStrategy()
+                    .getTypeConvertSinkChannels(sourceChannel);
 
-            List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
+            List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy
+                    .getSinkChannels(port, channelNumber);
 
             boolean hasTypeConvertReference = false;
 
@@ -454,31 +463,40 @@ public class StaticSchedulingDirector extends Director {
                 int sinkChannelNumber = channel.channelNumber;
 
                 // Type convert.
-                if (typeConvertSinks.contains(channel) &&
-                        getStrategy().isPrimitive(((TypedIOPort) sourceChannel.port).getType())) {
+                if (typeConvertSinks.contains(channel)
+                        && getStrategy().isPrimitive(
+                                ((TypedIOPort) sourceChannel.port).getType())) {
 
                     if (!hasTypeConvertReference) {
                         if (i != 0) {
                             result.append(" = ");
                         }
-                        result.append(ProgramCodeGeneratorAdapterStrategy.getTypeConvertReference(sourceChannel));
+                        result.append(ProgramCodeGeneratorAdapterStrategy
+                                .getTypeConvertReference(sourceChannel));
 
                         if (dynamicReferencesAllowed && port.isInput()) {
                             if (channelAndOffset[1].trim().length() > 0) {
-                                result.append("[" + channelAndOffset[1].trim() + "]");
+                                result.append("[" + channelAndOffset[1].trim()
+                                        + "]");
                             } else {
-                                result.append("[" +
-                                        ProgramCodeGeneratorAdapterStrategy.generateChannelOffset(
-                                                port, isWrite, channelAndOffset[0]) + "]");
+                                result.append("["
+                                        + ProgramCodeGeneratorAdapterStrategy
+                                                .generateChannelOffset(port,
+                                                        isWrite,
+                                                        channelAndOffset[0])
+                                        + "]");
                             }
                         } else {
-                            int rate = Math.max(
-                                    DFUtilities.getTokenProductionRate(sourceChannel.port),
-                                    DFUtilities.getTokenConsumptionRate(sourceChannel.port));
+                            int rate = Math
+                                    .max(
+                                            DFUtilities
+                                                    .getTokenProductionRate(sourceChannel.port),
+                                            DFUtilities
+                                                    .getTokenConsumptionRate(sourceChannel.port));
                             if (rate > 1
                                     && channelAndOffset[1].trim().length() > 0) {
-                                result.append("["
-                                        + channelAndOffset[1].trim() + "]");
+                                result.append("[" + channelAndOffset[1].trim()
+                                        + "]");
                             }
                         }
                         hasTypeConvertReference = true;
@@ -490,7 +508,8 @@ public class StaticSchedulingDirector extends Director {
                     if (i != 0) {
                         result.append(" = ");
                     }
-                    result.append(ProgramCodeGeneratorAdapterStrategy.generateName(sinkPort));
+                    result.append(ProgramCodeGeneratorAdapterStrategy
+                            .generateName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
@@ -498,8 +517,8 @@ public class StaticSchedulingDirector extends Director {
                     if (channelAndOffset[1].equals("")) {
                         channelAndOffset[1] = "0";
                     }
-                    result.append(_ports.generateOffset(sinkPort, channelAndOffset[1],
-                            sinkChannelNumber, true));
+                    result.append(_ports.generateOffset(sinkPort,
+                            channelAndOffset[1], sinkChannelNumber, true));
                 }
             }
 
@@ -514,7 +533,8 @@ public class StaticSchedulingDirector extends Director {
 
         if (ProgramCodeGeneratorAdapterStrategy.checkLocal(forComposite, port)) {
 
-            result.append(ProgramCodeGeneratorAdapterStrategy.generateName(port));
+            result.append(ProgramCodeGeneratorAdapterStrategy
+                    .generateName(port));
 
             //if (!channelAndOffset[0].equals("")) {
             if (port.isMultiport()) {
@@ -531,7 +551,6 @@ public class StaticSchedulingDirector extends Director {
         // FIXME: when does this happen?
         return "";
     }
-
 
     /** Generate a variable declaration for the <i>period</i> parameter,
      *  if there is one.
@@ -566,10 +585,11 @@ public class StaticSchedulingDirector extends Director {
      *   and there are variables that depend on this one.
      */
     final public Boolean padBuffers() throws IllegalActionException {
-        return ((BooleanToken) ((Parameter) getCodeGenerator().getDecoratorAttribute(getComponent(), "padBuffers").getAttribute())
-                .getToken()).booleanValue();
+        return ((BooleanToken) ((Parameter) getCodeGenerator()
+                .getDecoratorAttribute(getComponent(), "padBuffers")
+                .getAttribute()).getToken()).booleanValue();
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -584,11 +604,12 @@ public class StaticSchedulingDirector extends Director {
      * @throws IllegalActionException If the helper throws it while
      *  generating the label.
      */
-    protected String _getReference(ProgramCodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
-        throws IllegalActionException {
+    protected String _getReference(ProgramCodeGeneratorAdapter target,
+            Attribute attribute, String[] channelAndOffset)
+            throws IllegalActionException {
         return "";
     }
-    
+
     /** Update the offsets of the buffers associated with the ports connected
      *  with the given port in its downstream.
      *
@@ -599,8 +620,8 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException If thrown while reading or writing
      *   offsets, or getting the buffer size, or if the rate is less than 0.
      */
-    final protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
-            int rate) throws IllegalActionException {
+    final protected void _updateConnectedPortsOffset(IOPort port,
+            StringBuffer code, int rate) throws IllegalActionException {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
@@ -619,17 +640,18 @@ public class StaticSchedulingDirector extends Director {
     *  @exception IllegalActionException If thrown while reading or writing
     *   offsets, or getting the buffer size, or if the rate is less than 0.
     */
-   protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
-   throws IllegalActionException {
-       if (rate == 0) {
-           return;
-       } else if (rate < 0) {
-           throw new IllegalActionException(port, "the rate: " + rate
-                   + " is negative.");
-       }
+    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
+            throws IllegalActionException {
+        if (rate == 0) {
+            return;
+        } else if (rate < 0) {
+            throw new IllegalActionException(port, "the rate: " + rate
+                    + " is negative.");
+        }
 
-       code.append(_ports.updateOffset(port, rate));
-   }
+        code.append(_ports.updateOffset(port, rate));
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -668,8 +690,8 @@ public class StaticSchedulingDirector extends Director {
         // Get the cast type (if any), so we can add the proper convert method.
         StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            throw new IllegalActionException(getComponent(), "Invalid cast type: "
-                    + refName);
+            throw new IllegalActionException(getComponent(),
+                    "Invalid cast type: " + refName);
         }
 
         if (tokenizer2.countTokens() == 2) {
@@ -691,7 +713,7 @@ public class StaticSchedulingDirector extends Director {
      *  specified in the given string is illegal.
      */
     private String[] _getChannelAndOffset(String name)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         String[] result = { "", "" };
 
@@ -700,8 +722,10 @@ public class StaticSchedulingDirector extends Director {
         //     "port, offset", or
         //     "port#channel, offset".
 
-        int poundIndex = ProgramCodeGeneratorAdapterStrategy.indexOf("#", name, 0);
-        int commaIndex = ProgramCodeGeneratorAdapterStrategy.indexOf(",", name, 0);
+        int poundIndex = ProgramCodeGeneratorAdapterStrategy.indexOf("#", name,
+                0);
+        int commaIndex = ProgramCodeGeneratorAdapterStrategy.indexOf(",", name,
+                0);
 
         if (commaIndex < 0) {
             commaIndex = name.length();
@@ -720,7 +744,6 @@ public class StaticSchedulingDirector extends Director {
         return result;
     }
 
-
     private String _getRefName(String name) throws IllegalActionException {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
@@ -736,8 +759,8 @@ public class StaticSchedulingDirector extends Director {
         // Get the cast type (if any), so we can add the proper convert method.
         StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            throw new IllegalActionException(getComponent(), "Invalid cast type: "
-                    + refName);
+            throw new IllegalActionException(getComponent(),
+                    "Invalid cast type: " + refName);
         }
 
         if (tokenizer2.countTokens() == 2) {
@@ -763,7 +786,7 @@ public class StaticSchedulingDirector extends Director {
         /** Create a PortInfo instance.
          *  @param port The port for which we are doing
          *  extra bookkeeping to generate code.
-         */         
+         */
         public PortInfo(IOPort port) {
             _port = port;
         }
@@ -774,7 +797,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #setBufferSize(int, int)
          */
         public int getBufferSize(int channelNumber)
-            throws IllegalActionException {
+                throws IllegalActionException {
             ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
 
             if (_bufferSizes.get(channel) == null) {
@@ -785,7 +808,6 @@ public class StaticSchedulingDirector extends Director {
 
             return _bufferSizes.get(channel);
         }
-
 
         /**
          * Return the buffer size of a given port, which is the maximum of
@@ -799,26 +821,24 @@ public class StaticSchedulingDirector extends Director {
         public int getBufferSize() throws IllegalActionException {
             int bufferSize = 1;
 
-                int length = 0;
+            int length = 0;
 
-                if (_port.isInput()) {
-                    length = _port.getWidth();
-                } else {
-                    length = _port.getWidthInside();
+            if (_port.isInput()) {
+                length = _port.getWidth();
+            } else {
+                length = _port.getWidthInside();
+            }
+
+            for (int i = 0; i < length; i++) {
+                int channelBufferSize = getBufferSize(i);
+
+                if (channelBufferSize > bufferSize) {
+                    bufferSize = channelBufferSize;
                 }
-
-                for (int i = 0; i < length; i++) {
-                    int channelBufferSize = getBufferSize(i);
-
-                    if (channelBufferSize > bufferSize) {
-                        bufferSize = channelBufferSize;
-                    }
-                }
-
+            }
 
             return bufferSize;
         }
-
 
         /** Generate the initialize code for this director.
          *  The initialize code for the director is generated by appending the
@@ -831,10 +851,11 @@ public class StaticSchedulingDirector extends Director {
             StringBuffer code = new StringBuffer();
 
             Iterator<?> actors = ((CompositeActor) _director.getContainer())
-            .deepEntityList().iterator();
+                    .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj) actor);
+                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                        .getAdapter((NamedObj) actor);
                 // Initialize code for the actor.
                 code.append(adapterObject.generateInitializeCode());
 
@@ -848,15 +869,14 @@ public class StaticSchedulingDirector extends Director {
 
                 for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                     if (port.isOutsideConnected()) {
-                        ProgramCodeGeneratorAdapter portAdapter =
-                            (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(port);
+                        ProgramCodeGeneratorAdapter portAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                                .getAdapter(port);
                         code.append(portAdapter.generateInitializeCode());
                     }
                 }
             }
             return code.toString();
         }
-
 
         /**Generate the expression that represents the offset in the generated
          * code.
@@ -867,32 +887,33 @@ public class StaticSchedulingDirector extends Director {
          * @exception IllegalActionException If there is problems getting the port
          *  buffer size or the offset in the channel and offset map.
          */
-        public String generateOffset(String offset, int channel, boolean isWrite) throws IllegalActionException {
+        public String generateOffset(String offset, int channel, boolean isWrite)
+                throws IllegalActionException {
 
             //Receiver receiver = _getReceiver(offset, channel, _port);
 
-         // FIXME rodiers: reintroduce PN! (but somewhere else)
+            // FIXME rodiers: reintroduce PN! (but somewhere else)
             if (false) {
-            /*
-            if (_isPthread() && receiver instanceof PNQueueReceiver) {
-                String result;
-                if (offset.length() == 0 || offset.equals("0")) {
-                    result = (isWrite) ?
-                            "$getWriteOffset(" : "$getReadOffset(";
-                } else {
-                    result = (isWrite) ?
-                            "$getAdvancedWriteOffset(" : "$getAdvancedReadOffset(";
-                    result += offset + ", ";
-                }
+                /*
+                if (_isPthread() && receiver instanceof PNQueueReceiver) {
+                    String result;
+                    if (offset.length() == 0 || offset.equals("0")) {
+                        result = (isWrite) ?
+                                "$getWriteOffset(" : "$getReadOffset(";
+                    } else {
+                        result = (isWrite) ?
+                                "$getAdvancedWriteOffset(" : "$getAdvancedReadOffset(";
+                        result += offset + ", ";
+                    }
 
-                // FIXME: why does this depend on PN?
-                PNDirector pnDirector = (PNDirector) _getAdapter(director);
-                result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
-                result += "&" + pnDirector.generateDirectorHeader() + ")";
-                return "[" + result + "]";
-                */
+                    // FIXME: why does this depend on PN?
+                    PNDirector pnDirector = (PNDirector) _getAdapter(director);
+                    result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
+                    result += "&" + pnDirector.generateDirectorHeader() + ")";
+                    return "[" + result + "]";
+                    */
                 return "";
-            // End FIXME rodiers
+                // End FIXME rodiers
             } else {
                 return _generateOffset(offset, channel, isWrite);
             }
@@ -905,13 +926,11 @@ public class StaticSchedulingDirector extends Director {
          *  @see #setReadOffset(int, Object)
          */
         public Object getReadOffset(int channelNumber)
-            throws IllegalActionException {
+                throws IllegalActionException {
             ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             return _readOffsets.get(channel);
 
         }
-
-
 
         /** Get the write offset of a channel of the port.
          *  @param channelNumber The number of the channel.
@@ -920,7 +939,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #setWriteOffset(int, Object)
          */
         public Object getWriteOffset(int channelNumber)
-        throws IllegalActionException {
+                throws IllegalActionException {
             ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             return _writeOffsets.get(channel);
 
@@ -945,15 +964,13 @@ public class StaticSchedulingDirector extends Director {
                 if (readOffset instanceof Integer) {
                     _ports.setReadOffset(_port, i, Integer.valueOf(0));
                 } else {
-                    code.append(((String) readOffset)
-                            + " = 0;" + _eol);
+                    code.append(((String) readOffset) + " = 0;" + _eol);
                 }
                 Object writeOffset = _ports.getWriteOffset(_port, i);
                 if (writeOffset instanceof Integer) {
                     _ports.setWriteOffset(_port, i, Integer.valueOf(0));
                 } else {
-                    code.append(((String) writeOffset)
-                            + " = 0;" + _eol);
+                    code.append(((String) writeOffset) + " = 0;" + _eol);
                 }
             }
             return code.toString();
@@ -968,7 +985,6 @@ public class StaticSchedulingDirector extends Director {
             ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             _bufferSizes.put(channel, bufferSize);
         }
-
 
         /** Set the read offset of a channel of the port.
          *  @param channelNumber The number of the channel that is being set.
@@ -990,8 +1006,6 @@ public class StaticSchedulingDirector extends Director {
             _writeOffsets.put(channel, writeOffset);
         }
 
-
-
         /** Update the offsets of the buffers associated with the ports connected
          *  with the given port in its downstream.
          *
@@ -1000,12 +1014,16 @@ public class StaticSchedulingDirector extends Director {
          *  @exception IllegalActionException If thrown while reading or writing
          *   offsets, or getting the buffer size, or if the rate is less than 0.
          */
-        public String updateConnectedPortsOffset(int rate) throws IllegalActionException {
+        public String updateConnectedPortsOffset(int rate)
+                throws IllegalActionException {
             boolean padBuffers = padBuffers();
 
             StringBuffer code = new StringBuffer();
-            code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
-                                                   + ProgramCodeGeneratorAdapterStrategy.generateName(_port)));
+            code.append(getCodeGenerator().comment(
+                    _eol
+                            + "....Begin updateConnectedPortsOffset...."
+                            + ProgramCodeGeneratorAdapterStrategy
+                                    .generateName(_port)));
 
             if (rate == 0) {
                 return "";
@@ -1022,7 +1040,8 @@ public class StaticSchedulingDirector extends Director {
             }
 
             for (int j = 0; j < length; j++) {
-                List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy.getSinkChannels(_port, j);
+                List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy
+                        .getSinkChannels(_port, j);
 
                 for (int k = 0; k < sinkChannels.size(); k++) {
                     Channel channel = (Channel) sinkChannels.get(k);
@@ -1037,15 +1056,15 @@ public class StaticSchedulingDirector extends Director {
 
                     // FIXME rodiers: reintroduce PN specifics (but somewhere else)
                     if (false) {
-                    /*if (_isPthread() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
-                        code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
+                        /*if (_isPthread() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
+                            code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
 
-                    } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
+                        } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
-                        // PNReceiver.
-                        code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
-                        */
-                     // End FIXME rodiers
+                            // PNReceiver.
+                            code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
+                            */
+                        // End FIXME rodiers
                     } else {
 
                         if (offsetObject instanceof Integer) {
@@ -1055,31 +1074,40 @@ public class StaticSchedulingDirector extends Director {
                             if (bufferSize != 0) {
                                 offset = (offset + rate) % bufferSize;
                             }
-                            _ports.setWriteOffset(sinkPort, sinkChannelNumber, Integer
-                                    .valueOf(offset));
+                            _ports.setWriteOffset(sinkPort, sinkChannelNumber,
+                                    Integer.valueOf(offset));
                         } else { // If offset is a variable.
-                            String offsetVariable = (String) _ports.getWriteOffset(
-                                    sinkPort, sinkChannelNumber);
+                            String offsetVariable = (String) _ports
+                                    .getWriteOffset(sinkPort, sinkChannelNumber);
 
                             if (padBuffers) {
                                 int modulo = _ports.getBufferSize(sinkPort,
                                         sinkChannelNumber) - 1;
                                 code.append(offsetVariable + " = ("
-                                        + offsetVariable + " + " + rate + ")&" + modulo
-                                        + ";" + _eol);
+                                        + offsetVariable + " + " + rate + ")&"
+                                        + modulo + ";" + _eol);
                             } else {
-                                code.append(offsetVariable + " = ("
-                                        + offsetVariable + " + " + rate
-                                        + ") % "
-                                        + _ports.getBufferSize(sinkPort,
-                                                sinkChannelNumber) + ";" + _eol);
+                                code
+                                        .append(offsetVariable
+                                                + " = ("
+                                                + offsetVariable
+                                                + " + "
+                                                + rate
+                                                + ") % "
+                                                + _ports.getBufferSize(
+                                                        sinkPort,
+                                                        sinkChannelNumber)
+                                                + ";" + _eol);
                             }
                         }
                     }
                 }
             }
-            code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
-                                                   + ProgramCodeGeneratorAdapterStrategy.generateName(_port)));
+            code.append(getCodeGenerator().comment(
+                    _eol
+                            + "....End updateConnectedPortsOffset...."
+                            + ProgramCodeGeneratorAdapterStrategy
+                                    .generateName(_port)));
             return code.toString();
         }
 
@@ -1090,13 +1118,15 @@ public class StaticSchedulingDirector extends Director {
          *  @exception IllegalActionException If thrown while getting a token,
          *  adapter, read offset or buffer size.
          */
-        public String updateOffset(int rate)
-        throws IllegalActionException {
+        public String updateOffset(int rate) throws IllegalActionException {
 
             //Receiver receiver = _getReceiver(null, 0, _port);
 
-            String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...."
-                                                     + ProgramCodeGeneratorAdapterStrategy.generateName(_port));
+            String code = getCodeGenerator().comment(
+                    _eol
+                            + "....Begin updateOffset...."
+                            + ProgramCodeGeneratorAdapterStrategy
+                                    .generateName(_port));
 
             //        int width = 0;
             //        if (port.isInput()) {
@@ -1108,39 +1138,41 @@ public class StaticSchedulingDirector extends Director {
             for (int i = 0; i < _port.getWidth(); i++) {
                 // FIXME rodiers: reintroduce PN specifics (but somewhere else)
                 if (false) {
-                /*
-                if (MpiPNDirector.isMpiReceiveBuffer(port, i)) {
-                    // do nothing.
-                } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
+                    /*
+                    if (MpiPNDirector.isMpiReceiveBuffer(port, i)) {
+                        // do nothing.
+                    } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
-                    // FIXME: this is kind of hacky.
-                    //PNDirector pnDirector = (PNDirector)//directorAdapter;
-                    _getAdapter(((Actor) port.getContainer()).getExecutiveDirector());
+                        // FIXME: this is kind of hacky.
+                        //PNDirector pnDirector = (PNDirector)//directorAdapter;
+                        _getAdapter(((Actor) port.getContainer()).getExecutiveDirector());
 
-                    List<Channel> channels = PNDirector.getReferenceChannels(port, i);
+                        List<Channel> channels = PNDirector.getReferenceChannels(port, i);
 
-                    for (Channel channel : channels) {
-                        code += _updatePNOffset(rate, channel.port,
-                                channel.channelNumber, directorAdapter, false);
-                    }
-                    code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-                                                       + ProgramCodeGeneratorAdapterStrategy.generateName(port));
-                */
-                 // End FIXME rodiers
+                        for (Channel channel : channels) {
+                            code += _updatePNOffset(rate, channel.port,
+                                    channel.channelNumber, directorAdapter, false);
+                        }
+                        code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
+                                                           + ProgramCodeGeneratorAdapterStrategy.generateName(port));
+                    */
+                    // End FIXME rodiers
                 } else {
                     code += _updateOffset(i, rate);
-                    code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
-                                                       + ProgramCodeGeneratorAdapterStrategy.generateName(_port));
+                    code += getCodeGenerator().comment(
+                            _eol
+                                    + "\n....End updateOffset...."
+                                    + ProgramCodeGeneratorAdapterStrategy
+                                            .generateName(_port));
                 }
             }
             return code;
         }
 
-
-
-        private ProgramCodeGeneratorAdapterStrategy.Channel _getChannel(int channelNumber) {
-            return new ProgramCodeGeneratorAdapterStrategy.Channel((ptolemy.actor.IOPort)
-                    _port, channelNumber);
+        private ProgramCodeGeneratorAdapterStrategy.Channel _getChannel(
+                int channelNumber) {
+            return new ProgramCodeGeneratorAdapterStrategy.Channel(
+                    (ptolemy.actor.IOPort) _port, channelNumber);
         }
 
         /**
@@ -1153,8 +1185,8 @@ public class StaticSchedulingDirector extends Director {
          * @exception IllegalActionException If there is problems getting the port
          *  buffer size or the offset in the channel and offset map.
          */
-        private String _generateOffset(String offsetString, int channel, boolean isWrite)
-        throws IllegalActionException {
+        private String _generateOffset(String offsetString, int channel,
+                boolean isWrite) throws IllegalActionException {
 
             boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
             boolean padBuffers = padBuffers();
@@ -1162,7 +1194,6 @@ public class StaticSchedulingDirector extends Director {
             //if (MpiPNDirector.isLocalBuffer(port, channel)) {
             //    int i = 1;
             //}
-
 
             // When dynamic references are allowed, any input ports require
             // offsets.
@@ -1193,7 +1224,7 @@ public class StaticSchedulingDirector extends Director {
                 if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                     int offset = ((Integer) offsetObject).intValue()
-                    + (Integer.valueOf(offsetString)).intValue();
+                            + (Integer.valueOf(offsetString)).intValue();
 
                     offset %= getBufferSize(channel);
                     temp = Integer.toString(offset);
@@ -1220,12 +1251,12 @@ public class StaticSchedulingDirector extends Director {
                     //              } else
                     if (padBuffers) {
                         int modulo = getBufferSize(channel) - 1;
-                        temp = "(" + offsetObject.toString() + " + " + offsetString
-                        + ")&" + modulo;
+                        temp = "(" + offsetObject.toString() + " + "
+                                + offsetString + ")&" + modulo;
                     } else {
                         int modulo = getBufferSize(channel);
-                        temp = "(" + offsetObject.toString() + " + " + offsetString
-                        + ")%" + modulo;
+                        temp = "(" + offsetObject.toString() + " + "
+                                + offsetString + ")%" + modulo;
                     }
                 }
 
@@ -1253,41 +1284,40 @@ public class StaticSchedulingDirector extends Director {
                         result = "[" + offsetObject + "&" + modulo + "]";
                     } else {
                         result = "[" + offsetObject + "%"
-                        + getBufferSize(channel) + "]";
+                                + getBufferSize(channel) + "]";
                     }
                 }
             }
             return result;
         }
 
-
-//        private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
-//            Receiver[][] receivers = port.getReceivers();
-//
-//            // For output ports getReceivers always returns an empty table.
-//            if (receivers.length == 0) {
-//                return null;
-//            }
-//
-//            int staticOffset = -1;
-//            Receiver receiver = null;
-//            if (offset != null) {
-//                try {
-//                    staticOffset = Integer.parseInt(offset);
-//                    receiver = receivers[channel][staticOffset];
-//                } catch (Exception ex) {
-//                    staticOffset = -1;
-//                }
-//            }
-//
-//            if (staticOffset == -1) {
-//                // FIXME: Assume all receivers are the same type for the channel.
-//                // However, this may not be true.
-//                assert (receivers.length > 0);
-//                receiver = receivers[channel][0];
-//            }
-//            return receiver;
-//        }
+        //        private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
+        //            Receiver[][] receivers = port.getReceivers();
+        //
+        //            // For output ports getReceivers always returns an empty table.
+        //            if (receivers.length == 0) {
+        //                return null;
+        //            }
+        //
+        //            int staticOffset = -1;
+        //            Receiver receiver = null;
+        //            if (offset != null) {
+        //                try {
+        //                    staticOffset = Integer.parseInt(offset);
+        //                    receiver = receivers[channel][staticOffset];
+        //                } catch (Exception ex) {
+        //                    staticOffset = -1;
+        //                }
+        //            }
+        //
+        //            if (staticOffset == -1) {
+        //                // FIXME: Assume all receivers are the same type for the channel.
+        //                // However, this may not be true.
+        //                assert (receivers.length > 0);
+        //                receiver = receivers[channel][0];
+        //            }
+        //            return receiver;
+        //        }
 
         /**
          * Return true if the given string can be parse as an integer; otherwise,
@@ -1312,14 +1342,14 @@ public class StaticSchedulingDirector extends Director {
          *  @exception IllegalActionException If thrown while getting a token,
          *  adapter, read offset or buffer size.
          */
-        private String _updateOffset(int channel, int rate) throws IllegalActionException {
+        private String _updateOffset(int channel, int rate)
+                throws IllegalActionException {
             StringBuffer code = new StringBuffer();
             boolean padBuffers = padBuffers();
 
             // Update the offset for each channel.
             if (getReadOffset(channel) instanceof Integer) {
-                int offset = ((Integer) getReadOffset(channel))
-                .intValue();
+                int offset = ((Integer) getReadOffset(channel)).intValue();
                 if (getBufferSize(channel) != 0) {
                     offset = (offset + rate) % getBufferSize(channel);
                 }
@@ -1328,12 +1358,12 @@ public class StaticSchedulingDirector extends Director {
                 String offsetVariable = (String) getReadOffset(channel);
                 if (padBuffers) {
                     int modulo = getBufferSize(channel) - 1;
-                    code.append(offsetVariable + " = (" + offsetVariable +
-                            " + " + rate + ")&" + modulo + ";" + _eol);
+                    code.append(offsetVariable + " = (" + offsetVariable
+                            + " + " + rate + ")&" + modulo + ";" + _eol);
                 } else {
-                    code.append(offsetVariable + " = (" + offsetVariable +
-                            " + " + rate + ") % " +
-                            getBufferSize(channel) + ";" + _eol);
+                    code.append(offsetVariable + " = (" + offsetVariable
+                            + " + " + rate + ") % " + getBufferSize(channel)
+                            + ";" + _eol);
                 }
             }
             return code.toString();
@@ -1343,30 +1373,26 @@ public class StaticSchedulingDirector extends Director {
         /** A HashMap that keeps track of the bufferSizes of each channel
          *  of the actor.
          */
-        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes =
-            new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer>();
+        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes = new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer>();
 
         /** The port for which we are doing extra bookkeeping to generate code.
-         */ 
+         */
         private IOPort _port;
 
         /** A HashMap that keeps track of the read offsets of each input channel of
          *  the actor.
          */
-        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _readOffsets =
-            new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
+        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _readOffsets = new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
 
         /** A HashMap that keeps track of the write offsets of each input channel of
          *  the actor.
          */
-        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _writeOffsets =
-            new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
+        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _writeOffsets = new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
 
     }
 
     /** A helper class that allows generating code for ports.*/
-    protected class Ports
-    {
+    protected class Ports {
 
         /**Generate the expression that represents the offset in the generated
          * code.
@@ -1378,10 +1404,12 @@ public class StaticSchedulingDirector extends Director {
          * @exception IllegalActionException If there is problems getting the port
          *  buffer size or the offset in the channel and offset map.
          */
-        public String generateOffset(IOPort port, String offset, int channel, boolean isWrite) throws IllegalActionException {
+        public String generateOffset(IOPort port, String offset, int channel,
+                boolean isWrite) throws IllegalActionException {
             return _getPortInfo(port).generateOffset(offset, channel, isWrite);
 
         }
+
         /** Get the buffer size of channel of the port.
          *  @param channelNumber The number of the channel that is being set.
          *  @param port The given port.
@@ -1389,7 +1417,8 @@ public class StaticSchedulingDirector extends Director {
          * @exception IllegalActionException
          *  @see #setBufferSize(IOPort, int, int)
          */
-        public int getBufferSize(IOPort port, int channelNumber) throws IllegalActionException {
+        public int getBufferSize(IOPort port, int channelNumber)
+                throws IllegalActionException {
             return _getPortInfo(port).getBufferSize(channelNumber);
         }
 
@@ -1417,7 +1446,8 @@ public class StaticSchedulingDirector extends Director {
          *   be found.
          *  @see #setReadOffset(IOPort, int, Object)
          */
-        public Object getReadOffset(IOPort inputPort, int channelNumber) throws IllegalActionException {
+        public Object getReadOffset(IOPort inputPort, int channelNumber)
+                throws IllegalActionException {
             return _getPortInfo(inputPort).getReadOffset(channelNumber);
         }
 
@@ -1432,7 +1462,8 @@ public class StaticSchedulingDirector extends Director {
          *   be found.
          *  @see #setWriteOffset(IOPort, int, Object)
          */
-        public Object getWriteOffset(IOPort port, int channelNumber) throws IllegalActionException {
+        public Object getWriteOffset(IOPort port, int channelNumber)
+                throws IllegalActionException {
             return _getPortInfo(port).getWriteOffset(channelNumber);
         }
 
@@ -1441,7 +1472,8 @@ public class StaticSchedulingDirector extends Director {
          *  @return The code to initialize the offsets.
          *  @exception IllegalActionException Thrown if offsets can't be initialized.
          */
-        public String initializeOffsets(IOPort port) throws IllegalActionException {
+        public String initializeOffsets(IOPort port)
+                throws IllegalActionException {
             return _getPortInfo(port).initializeOffsets();
         }
 
@@ -1454,7 +1486,6 @@ public class StaticSchedulingDirector extends Director {
         public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
             _getPortInfo(port).setBufferSize(channelNumber, bufferSize);
         }
-
 
         /** Set the read offset in a buffer of a given channel from which a token
          *  should be read.
@@ -1494,10 +1525,10 @@ public class StaticSchedulingDirector extends Director {
          *  @exception IllegalActionException If thrown while reading or writing
          *   offsets, or getting the buffer size, or if the rate is less than 0.
          */
-        public String updateConnectedPortsOffset(IOPort port, int rate) throws IllegalActionException {
+        public String updateConnectedPortsOffset(IOPort port, int rate)
+                throws IllegalActionException {
             return _getPortInfo(port).updateConnectedPortsOffset(rate);
         }
-
 
         /** Update the read offset.
          *  @param port The given port.
@@ -1506,8 +1537,8 @@ public class StaticSchedulingDirector extends Director {
          *  @exception IllegalActionException If thrown while getting a token,
          *  adapter, read offset or buffer size.
          */
-        public String updateOffset(IOPort port, int rate) throws IllegalActionException
-        {
+        public String updateOffset(IOPort port, int rate)
+                throws IllegalActionException {
             return _getPortInfo(port).updateOffset(rate);
         }
 
@@ -1529,8 +1560,8 @@ public class StaticSchedulingDirector extends Director {
 
         private Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
     }
-    
+
     /** The meta information about the ports in the container. */
     protected Ports _ports = new Ports();
-    
+
 }

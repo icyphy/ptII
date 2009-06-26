@@ -77,8 +77,7 @@ public abstract class ModelScope implements ParserScope {
                 }
             }
             if (container instanceof CompositeEntity) {
-                for (Object entity : ((CompositeEntity) container)
-                        .entityList()) {
+                for (Object entity : ((CompositeEntity) container).entityList()) {
                     identifiers.add(((Entity) entity).getName());
                 }
 
@@ -139,7 +138,8 @@ public abstract class ModelScope implements ParserScope {
             //        (NamedObj) extender));
 
             // This is safer, but does it include everything?
-            for (Iterator attributes = extender.attributeList().iterator(); attributes.hasNext();) {
+            for (Iterator attributes = extender.attributeList().iterator(); attributes
+                    .hasNext();) {
                 Attribute attribute = (Attribute) attributes.next();
                 if (attribute instanceof Variable) {
                     nameSet.add(attribute.getName());
@@ -172,14 +172,13 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                List attributes = (container).attributeList(
-                        ContainmentExtender.class);
+                List attributes = (container)
+                        .attributeList(ContainmentExtender.class);
                 Iterator attrIterator = attributes.iterator();
                 NamedObj extendedContainer = null;
-                while (extendedContainer == null
-                        && attrIterator.hasNext()) {
-                    ContainmentExtender extender = (ContainmentExtender)
-                            attrIterator.next();
+                while (extendedContainer == null && attrIterator.hasNext()) {
+                    ContainmentExtender extender = (ContainmentExtender) attrIterator
+                            .next();
                     try {
                         extendedContainer = extender.getExtendedContainer();
                     } catch (IllegalActionException e) {
@@ -235,13 +234,13 @@ public abstract class ModelScope implements ParserScope {
                             // lazy mechanism, forcing the actor to populate its
                             // contents.
                             if (!(container instanceof LazyComposite)) {
-                                ComponentEntity entity =
-                                    ((CompositeEntity) container).getEntity(part);
+                                ComponentEntity entity = ((CompositeEntity) container)
+                                        .getEntity(part);
                                 if (entity != null) {
                                     result = entity;
                                 } else {
-                                    ComponentRelation relation = ((CompositeEntity)
-                                            container).getRelation(part);
+                                    ComponentRelation relation = ((CompositeEntity) container)
+                                            .getRelation(part);
                                     if (relation != null) {
                                         result = relation;
                                     }
@@ -251,14 +250,13 @@ public abstract class ModelScope implements ParserScope {
                     }
                 }
                 if (lookup && result == null) {
-                    List attributes = (container).attributeList(
-                            ContainmentExtender.class);
+                    List attributes = (container)
+                            .attributeList(ContainmentExtender.class);
                     Iterator attrIterator = attributes.iterator();
                     NamedObj extendedContainer = null;
-                    while (extendedContainer == null
-                            && attrIterator.hasNext()) {
-                        ContainmentExtender extender = (ContainmentExtender)
-                                attrIterator.next();
+                    while (extendedContainer == null && attrIterator.hasNext()) {
+                        ContainmentExtender extender = (ContainmentExtender) attrIterator
+                                .next();
                         try {
                             extendedContainer = extender.getExtendedContainer();
                         } catch (IllegalActionException e) {
@@ -299,8 +297,9 @@ public abstract class ModelScope implements ParserScope {
      */
     public static Variable getScopedVariable(Variable exclude,
             NamedObj container, String name) {
-        if (name.equals("MST"))
+        if (name.equals("MST")) {
             name = "MST";
+        }
         String insideName = name.replaceAll("::", ".");
 
         while (container != null) {
@@ -309,14 +308,13 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                List attributes = (container).attributeList(
-                        ContainmentExtender.class);
+                List attributes = (container)
+                        .attributeList(ContainmentExtender.class);
                 Iterator attrIterator = attributes.iterator();
                 NamedObj extendedContainer = null;
-                while (extendedContainer == null
-                        && attrIterator.hasNext()) {
-                    ContainmentExtender extender = (ContainmentExtender)
-                            attrIterator.next();
+                while (extendedContainer == null && attrIterator.hasNext()) {
+                    ContainmentExtender extender = (ContainmentExtender) attrIterator
+                            .next();
                     try {
                         extendedContainer = extender.getExtendedContainer();
                     } catch (IllegalActionException e) {
@@ -334,7 +332,6 @@ public abstract class ModelScope implements ParserScope {
 
         return null;
     }
-
 
     /** Check to see whether a preference of the specified name is
      *  defined in the specified context, and if it is, return its value.
@@ -361,7 +358,6 @@ public abstract class ModelScope implements ParserScope {
         // If no scoped variable is found, try for a defined constant.
         return Constants.get(preferenceName);
     }
-
 
     // Search in the container for an attribute with the given name.
     // Search recursively in any instance of ScopeExtender in the

@@ -92,7 +92,7 @@ public class ChannelPort extends WirelessIOPort {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ChannelPort newObject = (ChannelPort)super.clone(workspace);
+        ChannelPort newObject = (ChannelPort) super.clone(workspace);
         newObject._sourcePortList = null;
         newObject._sourcePortListVersion = -1;
         newObject._sinkPortList = null;

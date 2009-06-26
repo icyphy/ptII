@@ -125,7 +125,7 @@ public class EditablePlot extends Plot {
         double[][] result = new double[2][size];
 
         for (int i = 0; i < size; i++) {
-            PlotPoint pt =  pts.get(i);
+            PlotPoint pt = pts.get(i);
             result[0][i] = pt.x;
             result[1][i] = pt.y;
         }

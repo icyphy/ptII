@@ -187,8 +187,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
         if (port instanceof IOPort) {
             IOPort castPort = (IOPort) port;
             Manager manager = getManager();
-            if (castPort.isInput()
-                    && (getDirector() != null)
+            if (castPort.isInput() && (getDirector() != null)
                     && (manager != null)
                     && (manager.getState() != Manager.IDLE)
                     && (manager.getState() != Manager.INFERING_WIDTHS)
@@ -198,7 +197,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
                     castPort.createReceivers();
                 } catch (IllegalActionException ex) {
                     // Should never happen.
-                    throw new InternalErrorException(this, ex, "Cannot create receivers.");
+                    throw new InternalErrorException(this, ex,
+                            "Cannot create receivers.");
                 } finally {
                     // Note that this does not increment the workspace version.
                     // We have not changed the structure of the model.
@@ -254,8 +254,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
-    public void declareDelayDependency(IOPort input, IOPort output, double timeDelay)
-            throws IllegalActionException {
+    public void declareDelayDependency(IOPort input, IOPort output,
+            double timeDelay) throws IllegalActionException {
         CausalityInterface causality = getCausalityInterface();
         if (timeDelay == 0.0) {
             causality.declareDelayDependency(input, output, 0.0, 1);
@@ -304,7 +304,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
      * @exception IllegalActionException Thrown in subclasses if causality
      * interface cannot be computed.
      */
-    public CausalityInterface getCausalityInterface() throws IllegalActionException {
+    public CausalityInterface getCausalityInterface()
+            throws IllegalActionException {
         Director director = getDirector();
         if (_causalityInterface != null
                 && _causalityInterfaceDirector == director) {
@@ -314,7 +315,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
         if (director != null) {
             defaultDependency = director.defaultDependency();
         }
-        _causalityInterface = new DefaultCausalityInterface(this, defaultDependency);
+        _causalityInterface = new DefaultCausalityInterface(this,
+                defaultDependency);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
     }
@@ -516,8 +518,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
             // we rethrow with this as the Nameable.
 
             if (ex.getNameable1() == null) {
-                throw new IllegalActionException(this, ex,
-                                                 ex.getMessage());
+                throw new IllegalActionException(this, ex, ex.getMessage());
             } else {
                 throw ex;
             }
@@ -740,7 +741,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
-    public void removeDependency(IOPort input, IOPort output) throws IllegalActionException {
+    public void removeDependency(IOPort input, IOPort output)
+            throws IllegalActionException {
         CausalityInterface causality = getCausalityInterface();
         causality.removeDependency(input, output);
     }

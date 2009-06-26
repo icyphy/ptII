@@ -65,10 +65,8 @@ public class PxgraphApplet extends PlotApplet {
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PxgraphApplet "
-                + PlotBox.PTPLOT_RELEASE
-                + ": A data plotter.\n"
-                + "By: Edward A. Lee and\n "
+        return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE
+                + ": A data plotter.\n" + "By: Edward A. Lee and\n "
                 + "Christopher Hylands\n"
                 + "($Id$)";
     }

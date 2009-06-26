@@ -61,8 +61,9 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public PtidesBasicPreemptiveEDFDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+    public PtidesBasicPreemptiveEDFDirector(CompositeEntity container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
     }
 
@@ -78,9 +79,9 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
         IOPort port = _eventQueue.get().ioPort();
         if (port == null) {
             if (_debugging) {
-                _debug("We decided to preempt the current " +
-                                "executing event with a pure event at " +
-                                _eventQueue.get().actor());
+                _debug("We decided to preempt the current "
+                        + "executing event with a pure event at "
+                        + _eventQueue.get().actor());
             }
             // FIXME: for now, if the event is pure event, always preempt whatever that is
             // processing. This is because a pure event is caused by an input event, and
@@ -89,20 +90,22 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
         }
         Time absNextDeadline = _getAbsoluteDeadline(_eventQueue.get());
         DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.peek();
-        List eventList = (List<DEEvent>)(doubleTimedEvent.contents);
+        List eventList = (List<DEEvent>) (doubleTimedEvent.contents);
         for (int i = 0; i < eventList.size(); i++) {
-            Time absExecutingDeadline = _getAbsoluteDeadline((DEEvent)eventList.get(i));
+            Time absExecutingDeadline = _getAbsoluteDeadline((DEEvent) eventList
+                    .get(i));
             if (absExecutingDeadline.compareTo(absNextDeadline) <= 0) {
                 return false;
             }
         }
         if (_debugging) {
-            _debug("We decided to preempt the current " +
-                            "executing event at actor: " +
-                            ((DEEvent)eventList.get(0)).actor() +
-                            " with another event at actor: " + _eventQueue.get().actor() +
-                            ". This preemption happened at physical time " +
-                            _getPhysicalTime());
+            _debug("We decided to preempt the current "
+                    + "executing event at actor: "
+                    + ((DEEvent) eventList.get(0)).actor()
+                    + " with another event at actor: "
+                    + _eventQueue.get().actor()
+                    + ". This preemption happened at physical time "
+                    + _getPhysicalTime());
         }
         return true;
     }

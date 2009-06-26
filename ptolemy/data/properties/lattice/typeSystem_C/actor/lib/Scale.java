@@ -50,8 +50,8 @@ public class Scale extends AtomicActor {
      * Construct an Const helper.
      * @param actor the associated actor
      */
-    public Scale(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Scale actor) throws IllegalActionException {
+    public Scale(PropertyConstraintSolver solver, ptolemy.actor.lib.Scale actor)
+            throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;

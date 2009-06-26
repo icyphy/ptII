@@ -58,8 +58,7 @@ public class Sequence extends AtomicActor {
      * @exception IllegalActionException
      */
     public Sequence(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Sequence actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.Sequence actor) throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
@@ -69,8 +68,9 @@ public class Sequence extends AtomicActor {
     public List<Inequality> constraintList() throws IllegalActionException {
         ArrayToken valuesArray = (ArrayToken) _actor.values.getToken();
 
-        for (int i=0; i < valuesArray.length(); i++) {
-            setEquals(_actor.output, _lattice.convertJavaToCtype(valuesArray.getElement(i).getType(),valuesArray.getElement(i)));
+        for (int i = 0; i < valuesArray.length(); i++) {
+            setEquals(_actor.output, _lattice.convertJavaToCtype(valuesArray
+                    .getElement(i).getType(), valuesArray.getElement(i)));
         }
 
         return super.constraintList();

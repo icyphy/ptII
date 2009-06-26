@@ -208,8 +208,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * @since 1.0.6
      */
     public JComponent createSeparator(JLabel label) {
-        if (label == null)
+        if (label == null) {
             throw new NullPointerException("The label must not be null.");
+        }
 
         JPanel panel = new JPanel(new TitledSeparatorLayout(!Utilities
                 .isLafAqua()));
@@ -421,7 +422,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
 
                 int alignment = label.getHorizontalAlignment();
                 int y = insets.top;
-                if (alignment == JLabel.LEFT) {
+                if (alignment == SwingConstants.LEFT) {
                     int x = insets.left;
                     label.setBounds(x, y, labelWidth, labelHeight);
                     x += labelWidth;
@@ -429,7 +430,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
                     int separatorWidth = size.width - insets.right - x;
                     separator1.setBounds(x, y + vOffset, separatorWidth,
                             separatorHeight);
-                } else if (alignment == JLabel.RIGHT) {
+                } else if (alignment == SwingConstants.RIGHT) {
                     int x = insets.left + width - labelWidth;
                     label.setBounds(x, y, labelWidth, labelHeight);
                     x -= hGap;

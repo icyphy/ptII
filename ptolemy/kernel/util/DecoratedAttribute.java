@@ -72,8 +72,10 @@ public class DecoratedAttribute {
     public DecoratedAttribute(Attribute attribute, Decorator decorator) {
         _decorator = decorator;
         _attribute = attribute;
-        _attribute.setDisplayName(_attribute.getDisplayName() + " (decorated by " + _decorator.getDecoratorName() +  ")");
+        _attribute.setDisplayName(_attribute.getDisplayName()
+                + " (decorated by " + _decorator.getDecoratorName() + ")");
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

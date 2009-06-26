@@ -24,12 +24,14 @@ public class DEReceiver extends ptolemy.codegen.c.actor.Receiver {
         return "";
     }
 
-    public String generateCodeForHasToken(int channel) throws IllegalActionException{
+    public String generateCodeForHasToken(int channel)
+            throws IllegalActionException {
         IOPort port = getReceiver().getContainer();
         return "Event_Head_" + generateName(port) + "[" + channel + "] != NULL";
     }
 
-    public String generateCodeForPut(PartialResult token) throws IllegalActionException{
+    public String generateCodeForPut(PartialResult token)
+            throws IllegalActionException {
         return "";
     }
 

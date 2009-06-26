@@ -54,7 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-
 ////Director
 
 /**
@@ -90,61 +89,63 @@ public class Director extends CodeGeneratorHelper {
          *  @exception IllegalActionException If thrown while creating
          *  offset variables.
          */
-        public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-            StringBuffer code = new StringBuffer();
-            Iterator actors = ((CompositeActor) _director.getContainer())
-            .deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-                code.append(helperObject.createOffsetVariablesIfNeeded());
-            }
-            return code.toString();
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(helperObject.createOffsetVariablesIfNeeded());
         }
+        return code.toString();
+    }
 
-        /**
-         * Generate the code for sending data to the specified port channel.
-         * This returns an empty string. Subclasses may override this method
-         * to generate domain-specific code for sending data.
-         * @param port The specified port.
-         * @param channel The specified channel.
-         * @param dataToken The data to send.
-         * @return An empty string in this base class.
-         * @exception IllegalActionException Not thrown in this base class.
-         */
-        public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
-            return "";
-        }
-
-        /**
-         * Generate the code for getting data from the specified port channel.
-         * This returns an empty string. Subclasses may override this method
-         * to generate domain-specific code for getting data.
-         * @param port The specified port.
-         * @param channel The specified channel.
-         * @return An empty string in this base class.
-         * @exception IllegalActionException Not thrown in this base class.
-         */
-        public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
-            return "";
-        }
-
-        /** Generate the code for the firing of actors.
-     *  In this base class, it is attempted to fire all the actors once.
-     *  In subclasses such as the helpers for SDF and Giotto directors, the
-     *  firings of actors observe the associated schedule. In addition,
-     *  some special handling is needed, e.g., the iteration limit in SDF
-     *  and time advancement in Giotto.
-     *  @return The generated code.
-     *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating fire code for the actor.
+    /**
+     * Generate the code for sending data to the specified port channel.
+     * This returns an empty string. Subclasses may override this method
+     * to generate domain-specific code for sending data.
+     * @param port The specified port.
+     * @param channel The specified channel.
+     * @param dataToken The data to send.
+     * @return An empty string in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
+    public String generateCodeForSend(IOPort port, int channel, String dataToken)
+            throws IllegalActionException {
+        return "";
+    }
+
+    /**
+     * Generate the code for getting data from the specified port channel.
+     * This returns an empty string. Subclasses may override this method
+     * to generate domain-specific code for getting data.
+     * @param port The specified port.
+     * @param channel The specified channel.
+     * @return An empty string in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateCodeForGet(IOPort port, int channel)
+            throws IllegalActionException {
+        return "";
+    }
+
+    /** Generate the code for the firing of actors.
+    *  In this base class, it is attempted to fire all the actors once.
+    *  In subclasses such as the helpers for SDF and Giotto directors, the
+    *  firings of actors observe the associated schedule. In addition,
+    *  some special handling is needed, e.g., the iteration limit in SDF
+    *  and time advancement in Giotto.
+    *  @return The generated code.
+    *  @exception IllegalActionException If the helper associated with
+    *   an actor throws it while generating fire code for the actor.
+    */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment("The firing of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -164,7 +165,7 @@ public class Director extends CodeGeneratorHelper {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -191,7 +192,8 @@ public class Director extends CodeGeneratorHelper {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainLoop() throws IllegalActionException {
-        return generatePrefireCode() + generateFireCode() + generatePostfireCode();
+        return generatePrefireCode() + generateFireCode()
+                + generatePostfireCode();
     }
 
     /** Generate the initialize code for this director.
@@ -204,10 +206,10 @@ public class Director extends CodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment(1,
-        "The initialization of the director."));
+                "The initialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -224,8 +226,7 @@ public class Director extends CodeGeneratorHelper {
 
             for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                 if (port.isOutsideConnected()) {
-                    CodeGeneratorHelper portHelper =
-                        (CodeGeneratorHelper) _getHelper(port);
+                    CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
                     code.append(portHelper.generateInitializeCode());
                 }
             }
@@ -246,9 +247,9 @@ public class Director extends CodeGeneratorHelper {
      * @exception IllegalActionException If there is problems getting
      * the port buffer size or the offset in the channel and offset map.
      */
-    public String generateOffset(String offsetString, IOPort port,
-            int channel, boolean isWrite, CodeGeneratorHelper helper)
-    throws IllegalActionException {
+    public String generateOffset(String offsetString, IOPort port, int channel,
+            boolean isWrite, CodeGeneratorHelper helper)
+            throws IllegalActionException {
         assert false;
         return "";
         //return helper._generateOffset(offsetString, port, channel, isWrite);
@@ -267,7 +268,7 @@ public class Director extends CodeGeneratorHelper {
         code.append(_codeGenerator.comment(0, "The postfire of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -290,7 +291,7 @@ public class Director extends CodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         boolean addedDirectorComment = false;
         while (actors.hasNext()) {
@@ -300,11 +301,11 @@ public class Director extends CodeGeneratorHelper {
             // If a helper generates preinitialization code, then
             // print a comment
             String helperObjectPreinitializationCode = helperObject
-            .generatePreinitializeCode();
+                    .generatePreinitializeCode();
 
             if (!addedDirectorComment
                     && CodeGenerator
-                    .containsCode(helperObjectPreinitializationCode)) {
+                            .containsCode(helperObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(_codeGenerator.comment(0,
                         "The preinitialization of the director."));
@@ -325,9 +326,9 @@ public class Director extends CodeGeneratorHelper {
      *   while generating mode transition code.
      */
     public void generateModeTransitionCode(StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -342,7 +343,7 @@ public class Director extends CodeGeneratorHelper {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         code.append(CodeStream.indent(_codeGenerator
                 .comment("Transfer tokens to the inside")));
 
@@ -379,9 +380,8 @@ public class Director extends CodeGeneratorHelper {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-    throws IllegalActionException {
-        code.append(_codeGenerator
-                .comment("Transfer tokens to the outside"));
+            throws IllegalActionException {
+        code.append(_codeGenerator.comment("Transfer tokens to the outside"));
 
         CodeGeneratorHelper _compositeActorHelper = (CodeGeneratorHelper) _getHelper(_director
                 .getContainer());
@@ -415,7 +415,7 @@ public class Director extends CodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -431,11 +431,11 @@ public class Director extends CodeGeneratorHelper {
      *   director cannot be found.
      */
     public String generateVariableInitialization()
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -459,7 +459,7 @@ public class Director extends CodeGeneratorHelper {
         code.append(_codeGenerator.comment(1, "The wrapup of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -488,8 +488,9 @@ public class Director extends CodeGeneratorHelper {
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
-    throws IllegalActionException {
-        return helper.getReference(port, channelAndOffset, forComposite, isWrite);
+            throws IllegalActionException {
+        return helper.getReference(port, channelAndOffset, forComposite,
+                isWrite);
     }
 
     /**
@@ -509,7 +510,6 @@ public class Director extends CodeGeneratorHelper {
         return helper.getReference(attribute, channelAndOffset);
     }
 
-
     /**
      * Return the reference channels for the specified port channel.
      * If the port channel is input or contained by an opaque CompositeActor,
@@ -521,8 +521,8 @@ public class Director extends CodeGeneratorHelper {
      * @exception IllegalActionException If {@link #getSinkChannels(IOPort, int)}
      *  throws it.
      */
-    public static List<Channel> getReferenceChannels(IOPort port, int channelNumber)
-    throws IllegalActionException {
+    public static List<Channel> getReferenceChannels(IOPort port,
+            int channelNumber) throws IllegalActionException {
 
         boolean forComposite = false;
 
@@ -535,8 +535,8 @@ public class Director extends CodeGeneratorHelper {
         if ((port.isOutput() && !forComposite)
                 || (port.isInput() && forComposite)) {
 
-            List sinkChannels =
-                CodeGeneratorHelper.getSinkChannels(port, channelNumber);
+            List sinkChannels = CodeGeneratorHelper.getSinkChannels(port,
+                    channelNumber);
 
             return sinkChannels;
         }
@@ -551,8 +551,6 @@ public class Director extends CodeGeneratorHelper {
         return result;
     }
 
-
-
     /** Return the buffer size of a given channel (i.e, a given port
      *  and a given channel number). In this base class, this method
      *  always returns 1.
@@ -563,7 +561,7 @@ public class Director extends CodeGeneratorHelper {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
+            throws IllegalActionException {
         return 1;
     }
 
@@ -615,7 +613,7 @@ public class Director extends CodeGeneratorHelper {
         }
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -639,7 +637,7 @@ public class Director extends CodeGeneratorHelper {
     protected int _ceilToPowerOfTwo(int value) throws IllegalActionException {
         if (value < 1) {
             throw new IllegalActionException(getComponent(),
-            "The given integer must be a positive integer.");
+                    "The given integer must be a positive integer.");
         }
 
         int powerOfTwo = 1;
@@ -670,7 +668,7 @@ public class Director extends CodeGeneratorHelper {
      *   offsets, or getting the buffer size, or if the rate is less than 0.
      */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
@@ -708,8 +706,6 @@ public class Director extends CodeGeneratorHelper {
 
     ////////////////////////////////////////////////////////////////////
     ////                     protected variables                    ////
-
-
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
@@ -758,53 +754,56 @@ public class Director extends CodeGeneratorHelper {
         // director.
         if (_debugging) {
             _debug("getWCET from Director in codegen Actor package called");
-         }
-        double wcet=0;
-        double actorFrequency =0;
+        }
+        double wcet = 0;
+        double actorFrequency = 0;
         double actorWCET = 0;
-        for (Actor actor : (List<Actor>)
-                ((TypedCompositeActor) this._director.getContainer()).deepEntityList()) {
-            Attribute frequency = ((Entity)actor).getAttribute("frequency");
-//            ptolemy.actor.Director director = actor.getDirector();
-//            if (director.getClassName().contains("FSM")) {
-//                // FIXME: This means that codegen depends on the targets.
-//                ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
-//                return fsmDir._getWCET();
-//
-//            }
-//            if (director.getClassName().contains("SDF")) {
-//                // FIXME: This means that codegen depends on the targets.
-//                ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector sdfDir = new ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector((ptolemy.domains.sdf.kernel.SDFDirector)this._director);
-//                return sdfDir._getWCET();
-//            }
-//            if (director.getClassName().contains("Giotto")) {
-//                // FIXME: This means that codegen depends on the targets.
-//                ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
-//                return giottoDir._getWCET();
-//
-//            }
-            Attribute WCET = ((Entity)actor).getAttribute("WCET");
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) this._director
+                .getContainer()).deepEntityList()) {
+            Attribute frequency = ((Entity) actor).getAttribute("frequency");
+            //            ptolemy.actor.Director director = actor.getDirector();
+            //            if (director.getClassName().contains("FSM")) {
+            //                // FIXME: This means that codegen depends on the targets.
+            //                ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
+            //                return fsmDir._getWCET();
+            //
+            //            }
+            //            if (director.getClassName().contains("SDF")) {
+            //                // FIXME: This means that codegen depends on the targets.
+            //                ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector sdfDir = new ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector((ptolemy.domains.sdf.kernel.SDFDirector)this._director);
+            //                return sdfDir._getWCET();
+            //            }
+            //            if (director.getClassName().contains("Giotto")) {
+            //                // FIXME: This means that codegen depends on the targets.
+            //                ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
+            //                return giottoDir._getWCET();
+            //
+            //            }
+            Attribute WCET = ((Entity) actor).getAttribute("WCET");
 
             if (_debugging) {
                 _debug(actor.getFullName());
-             }
+            }
 
             if (frequency == null) {
                 actorFrequency = 1;
             } else {
-                actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+                actorFrequency = ((IntToken) ((Variable) frequency).getToken())
+                        .intValue();
             }
             if (WCET == null) {
                 actorWCET = 0.01;
             } else {
-                actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+                actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
+                        .doubleValue();
             }
 
-            wcet+= actorFrequency *actorWCET;
+            wcet += actorFrequency * actorWCET;
         }
 
         if (_debugging) {
-            _debug("director "+this.getFullName()+" thinks the WCET is: "+wcet);
+            _debug("director " + this.getFullName() + " thinks the WCET is: "
+                    + wcet);
         }
 
         return wcet;

@@ -80,7 +80,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * attribute already in the container.
      */
     public PropertySolver(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         action = new SharedParameter(this, "action", PropertySolver.class,
@@ -154,8 +154,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         if (!errors.isEmpty()) {
             String errorMessage = errors.toString();
 
-                throw new PropertyResolutionException(
-                        this, errorMessage);
+            throw new PropertyResolutionException(this, errorMessage);
         }
     }
 
@@ -187,7 +186,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * the value for the highlightColor attribute in the
      * property-able object.
      */
-     public void displayProperties() throws IllegalActionException {
+    public void displayProperties() throws IllegalActionException {
         // Do nothing if we are not in a mode that allows display.
         if (!(isResolve() || isView())) {
             return;
@@ -211,7 +210,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @return The previous resolved property for the given object.
      */
     public Property getPreviousProperty(Object object) {
-        return (Property) _previousProperties.get(object);
+        return _previousProperties.get(object);
     }
 
     /**
@@ -264,14 +263,14 @@ public abstract class PropertySolver extends PropertySolverBase {
     public static String getTrainedExceptionMismatchMessage(String exception,
             String trainedException) {
         return "The generated exception:" + _eol
-        + "-------------------------------------------------------"
-        + _eol + exception + _eol
-        + "-------------------------------------------------------"
-        + _eol + " does not match the trained exception:" + _eol
-        + "-------------------------------------------------------"
-        + _eol + trainedException + _eol
-        + "-------------------------------------------------------"
-        + _eol;
+                + "-------------------------------------------------------"
+                + _eol + exception + _eol
+                + "-------------------------------------------------------"
+                + _eol + " does not match the trained exception:" + _eol
+                + "-------------------------------------------------------"
+                + _eol + trainedException + _eol
+                + "-------------------------------------------------------"
+                + _eol;
     }
 
     /**
@@ -300,7 +299,6 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
         map.put(field, current.longValue() + increment.longValue());
     }
-
 
     /**
      * Invoke the solver directly.
@@ -355,7 +353,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      */
     public boolean isIdentifiable(String usecase) {
         return usecase.equals(getName()) || usecase.equals(getUseCaseName())
-        || usecase.equals(getExtendedUseCaseName());
+                || usecase.equals(getExtendedUseCaseName());
     }
 
     /** True if the solver is in clearing mode; otherwise false. */
@@ -365,8 +363,8 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /** True if the solver is in resolution mode; otherwise false. */
     public boolean isResolve() {
-        return ((action.getExpression().equals(ANNOTATE)) ||
-                (action.getExpression().equals(TRAINING)));
+        return ((action.getExpression().equals(ANNOTATE)) || (action
+                .getExpression().equals(TRAINING)));
     }
 
     /**
@@ -414,7 +412,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *  creating or updating the trained exception attribute.
      */
     public void recordTrainedException(String exceptionMessage)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringAttribute attribute = (StringAttribute) getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
         if (attribute == null) {
 
@@ -460,8 +458,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * Resolve the properties (invoked from a ModelAnalyzer).
      * @exception KernelException
      */
-    public boolean resolveProperties(NamedObj analyzer)
-    throws KernelException {
+    public boolean resolveProperties(NamedObj analyzer) throws KernelException {
         return resolveProperties(analyzer, false);
     }
 
@@ -476,7 +473,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @exception IllegalActionException TODO
      */
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
-    throws KernelException {
+            throws KernelException {
 
         boolean success = true;
 
@@ -523,7 +520,8 @@ public abstract class PropertySolver extends PropertySolverBase {
                 // Clear the display properties of the previous invoked solver.
                 // If no solver is invoked previously, at least clear
                 // the previous highlighting for this solver.
-                if (previousSolver == null || previousSolver.getContainer() == null) {
+                if (previousSolver == null
+                        || previousSolver.getContainer() == null) {
                     previousSolver = this;
                 }
 
@@ -534,9 +532,9 @@ public abstract class PropertySolver extends PropertySolverBase {
                 // If we are in ANNOTATE_ALL or TRAINING mode, then keep
                 // all the intermediate results.
                 boolean keepIntermediates =
-                    // actionValue.equals(ANNOTATE_ALL) ||
-                    ((BooleanToken) all.getToken()).booleanValue()
-                    || actionValue.equals(TRAINING);
+                // actionValue.equals(ANNOTATE_ALL) ||
+                ((BooleanToken) all.getToken()).booleanValue()
+                        || actionValue.equals(TRAINING);
 
                 for (String solverName : _dependentUseCases) {
                     PropertySolver dependentSolver = findSolver(solverName);
@@ -567,7 +565,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
             // Remove '\r' characters to make Windows-Linux comparable strings.
             String trainedException = failedSolver.getTrainedException()
-            .replaceAll("\r", "");
+                    .replaceAll("\r", "");
             String exception = ex.getMessage().replaceAll("\r", "");
             if (isTesting()) {
                 if (!exception.equals(trainedException)) {
@@ -580,9 +578,9 @@ public abstract class PropertySolver extends PropertySolverBase {
 
                     // ask the user if this is expected,
                     boolean doRecord = MessageHandler
-                    .yesNoQuestion(PropertySolver
-                            .getTrainedExceptionMismatchMessage(
-                                    exception, trainedException)
+                            .yesNoQuestion(PropertySolver
+                                    .getTrainedExceptionMismatchMessage(
+                                            exception, trainedException)
                                     + "Do you want to record it?");
 
                     if (doRecord) {
@@ -681,15 +679,15 @@ public abstract class PropertySolver extends PropertySolverBase {
                         if (_analyzer == null) {
                             // Get user's decision.
                             userDecision = MessageHandler
-                            .yesNoQuestion("Resolved auxilary property for \""
-                                    + getExtendedUseCaseName()
-                                    + "\" is different from previous. "
-                                    + "Update this property?");
+                                    .yesNoQuestion("Resolved auxilary property for \""
+                                            + getExtendedUseCaseName()
+                                            + "\" is different from previous. "
+                                            + "Update this property?");
                         } else {
                             // Suppress the dialog.
-                            userDecision = ((Parameter) _analyzer.getAttribute(
-                            "overwriteDependentProperties")).getToken()
-                            == BooleanToken.TRUE;
+                            userDecision = ((Parameter) _analyzer
+                                    .getAttribute("overwriteDependentProperties"))
+                                    .getToken() == BooleanToken.TRUE;
 
                         }
                         // Remember that we have made a decision.
@@ -751,9 +749,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         // Use a FilenameFilter so that we can access files via
         // Web Start.
         try {
-            URI directoryURI = new URI(FileUtilities.nameToURL(
-                            directoryPath, null, null).toExternalForm()
-                    .replaceAll(" ", "%20"));
+            URI directoryURI = new URI(FileUtilities.nameToURL(directoryPath,
+                    null, null).toExternalForm().replaceAll(" ", "%20"));
             File directory = null;
             try {
                 try {
@@ -761,16 +758,14 @@ public abstract class PropertySolver extends PropertySolverBase {
                 } catch (Throwable throwable) {
                     throw new InternalErrorException(this, throwable,
                             "Failed to find directories in the URI: \""
-                            + directoryURI
-                            + "\"");
+                                    + directoryURI + "\"");
                 }
                 DirectoryNameFilter filter = new DirectoryNameFilter();
                 File[] directories = directory.listFiles(filter);
                 if (directories == null) {
                     throw new InternalErrorException(this, null,
-                            "Failed to find directories in \""
-                            + directoryPath
-                            + "\"");
+                            "Failed to find directories in \"" + directoryPath
+                                    + "\"");
                 } else {
                     for (int i = 0; i < directories.length; i++) {
                         String directoryName = directories[i].getName();
@@ -783,8 +778,8 @@ public abstract class PropertySolver extends PropertySolverBase {
                         throw throwable;
                     } else {
                         // We have a jar URL, we are probably in Web Start
-                        List<String> directories =  ClassUtilities.jarURLDirectories(
-                                directoryURI.toURL());
+                        List<String> directories = ClassUtilities
+                                .jarURLDirectories(directoryURI.toURL());
                         for (String directoryFullPath : directories) {
                             // Get the name of just the directory
                             String directoryName = directoryFullPath;
@@ -793,8 +788,8 @@ public abstract class PropertySolver extends PropertySolverBase {
                             //        + " " + directoryName.length()
                             //        + " " + directoryName);
                             if (directoryName.lastIndexOf("/") > -1) {
-                                if (directoryName.lastIndexOf("/")
-                                        == directoryName.length() - 1) {
+                                if (directoryName.lastIndexOf("/") == directoryName
+                                        .length() - 1) {
                                     // Remove the trailing /
                                     directoryName = directoryName.substring(0,
                                             directoryName.length() - 1);
@@ -803,7 +798,8 @@ public abstract class PropertySolver extends PropertySolverBase {
                                 }
 
                                 directoryName = directoryName
-                                    .substring(directoryName.lastIndexOf("/") + 1);
+                                        .substring(directoryName
+                                                .lastIndexOf("/") + 1);
                                 //System.out.println("PropertyConstraintSolver2: "
                                 //    + directoryName);
                             }
@@ -816,16 +812,14 @@ public abstract class PropertySolver extends PropertySolverBase {
                     System.err.println("Tried to look in jarURL");
                     throwable2.printStackTrace();
                     throw new IllegalActionException(this, throwable,
-                            "Failed to process "
-                            + directoryURI);
+                            "Failed to process " + directoryURI);
                 }
             }
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "Failed to find directories in \""
-                    + directoryPath
-                    + "\", the parameter \"" + parameter.getFullName()
-                    + "\"cannot be set.");
+                    "Failed to find directories in \"" + directoryPath
+                            + "\", the parameter \"" + parameter.getFullName()
+                            + "\"cannot be set.");
         }
     }
 
@@ -850,13 +844,13 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @exception IllegalActionException
      */
     protected PropertyAttribute _getPropertyAttribute(NamedObj propertyable)
-    throws IllegalActionException {
+            throws IllegalActionException {
         PropertyAttribute attribute = null;
 
         // write results to attribute
         if (getExtendedUseCaseName().startsWith("lattice")) {
             attribute = (PropertyConstraintAttribute) propertyable
-            .getAttribute(getExtendedUseCaseName());
+                    .getAttribute(getExtendedUseCaseName());
 
             if (attribute == null) {
                 try {
@@ -870,7 +864,7 @@ public abstract class PropertySolver extends PropertySolverBase {
             }
         } else if (getExtendedUseCaseName().startsWith("token")) {
             attribute = (PropertyTokenAttribute) propertyable
-            .getAttribute(getExtendedUseCaseName());
+                    .getAttribute(getExtendedUseCaseName());
             if (attribute == null) {
                 try {
                     attribute = new PropertyTokenAttribute(propertyable,
@@ -883,7 +877,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         } else {
             // FIXME: Error checking?
             throw new PropertyResolutionException(this, propertyable,
-            "Failed to get the PropertyAttribute.");
+                    "Failed to get the PropertyAttribute.");
         }
         return attribute;
     }
@@ -916,7 +910,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * the trained property.
      */
     protected void _regressionTest(NamedObj namedObj, Property property)
-    throws PropertyResolutionException {
+            throws PropertyResolutionException {
 
         Property previousProperty = getPreviousProperty(namedObj);
 
@@ -934,8 +928,9 @@ public abstract class PropertySolver extends PropertySolverBase {
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-        if ((previousProperty == null && property != null) ||
-            (previousProperty != null && !previousProperty.equals(property))) {
+        if ((previousProperty == null && property != null)
+                || (previousProperty != null && !previousProperty
+                        .equals(property))) {
 
             addErrors(_eol + "Property \"" + getUseCaseName()
                     + "\" resolution failed for " + namedObj.getFullName()
@@ -952,8 +947,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *
      * @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _resolveProperties(NamedObj analyzer)
-    throws KernelException {
+    protected void _resolveProperties(NamedObj analyzer) throws KernelException {
 
         System.out.println("Invoking \"" + getName() + "\" ("
                 + getExtendedUseCaseName() + "):");
@@ -981,7 +975,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * The system-specific end-of-line character.
      */
     protected static final String _eol = StringUtilities
-    .getProperty("line.separator");
+            .getProperty("line.separator");
 
     /** The display label for "annotate" in the action choices */
     protected static final String ANNOTATE = "ANNOTATE";
@@ -1067,23 +1061,24 @@ public abstract class PropertySolver extends PropertySolverBase {
      */
     private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
 
-  protected void _initializeStatistics() {
-      _stats.put("has trained resolution errors", false);
-      _stats.put("# of trained resolution errors", 0);
-      _stats.put("# of helpers", 0);
-      _stats.put("# of propertyables", 0);
-      _stats.put("# of resolved properties", 0);
-      _stats.put("# of manual annotations", 0);
-  }
+    protected void _initializeStatistics() {
+        _stats.put("has trained resolution errors", false);
+        _stats.put("# of trained resolution errors", 0);
+        _stats.put("# of helpers", 0);
+        _stats.put("# of propertyables", 0);
+        _stats.put("# of resolved properties", 0);
+        _stats.put("# of manual annotations", 0);
+    }
 
-  protected void _addErrorStatistics() {
-      Integer errorCount = (Integer)_stats.get("# of trained resolution errors");
-      if (errorCount == null) {
-          errorCount = 0;
-      }
-      _stats.put("# of trained resolution errors", errorCount + _sharedUtilities.getErrors().size());
-  }
-
+    protected void _addErrorStatistics() {
+        Integer errorCount = (Integer) _stats
+                .get("# of trained resolution errors");
+        if (errorCount == null) {
+            errorCount = 0;
+        }
+        _stats.put("# of trained resolution errors", errorCount
+                + _sharedUtilities.getErrors().size());
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -1106,8 +1101,7 @@ public abstract class PropertySolver extends PropertySolverBase {
             try {
                 File file = new File(directory, name);
 
-                if (!file.isDirectory()
-                        || file.getName().equals("CVS")
+                if (!file.isDirectory() || file.getName().equals("CVS")
                         || file.getName().equals(".svn")) {
                     return false;
                 }

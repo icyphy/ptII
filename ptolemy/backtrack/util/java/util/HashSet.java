@@ -76,7 +76,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * @since 1.2
  * @status updated to 1.4
  */
-public class HashSet extends AbstractSet implements Set, Cloneable, Serializable, Rollbackable {
+public class HashSet extends AbstractSet implements Set, Cloneable,
+        Serializable, Rollbackable {
 
     /**     
      * Compatible with JDK 1.2.
@@ -156,11 +157,11 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
     public Object clone() {
         HashSet copy = null;
         try {
-            copy = (HashSet)super.clone();
+            copy = (HashSet) super.clone();
         } catch (CloneNotSupportedException x) {
             // Impossible to get here.
         }
-        copy.$ASSIGN$map((HashMap)map.clone());
+        copy.$ASSIGN$map((HashMap) map.clone());
         return copy;
     }
 
@@ -191,7 +192,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
      */
     public Iterator iterator() {
         // Avoid creating intermediate keySet() object by using non-public API.
-        return map.iterator(HashMap.KEYS);
+        return map.iterator(AbstractMap.KEYS);
     }
 
     /**     
@@ -230,15 +231,16 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
      * of the backing store, followed by the set size (int),
      * then a listing of its elements (Object) in no order
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
         // Avoid creating intermediate keySet() object by using non-public API.
-        Iterator it = map.iterator(HashMap.KEYS);
+        Iterator it = map.iterator(AbstractMap.KEYS);
         s.writeInt(map.getBuckets().length);
         s.writeFloat(map.loadFactor);
         s.writeInt(map.getSize());
-        while (it.hasNext()) 
+        while (it.hasNext()) {
             s.writeObject(it.next());
+        }
     }
 
     /**     
@@ -250,11 +252,13 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
      * of the backing store, followed by the set size (int),
      * then a listing of its elements (Object) in no order
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
         $ASSIGN$map(init(s.readInt(), s.readFloat()));
-        for (int size = s.readInt(); size > 0; size--) 
+        for (int size = s.readInt(); size > 0; size--) {
             map.put(s.readObject(), "");
+        }
     }
 
     private final HashMap $ASSIGN$map(HashMap newValue) {
@@ -268,20 +272,18 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        map = (HashMap)$RECORD$map.restore(map, timestamp, trim);
+        map = (HashMap) $RECORD$map.restore(map, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
     private transient FieldRecord $RECORD$map = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$map
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map };
 
 }
-

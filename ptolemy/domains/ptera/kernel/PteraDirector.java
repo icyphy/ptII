@@ -201,10 +201,8 @@ public class PteraDirector extends Director implements TimedDirector,
         newObject._controller = null;
         newObject._controllerVersion = -1;
         newObject._eventQueue = new LinkedList<TimedEvent>();
-        newObject._eventsListeningToPorts = new HashMap<Port,
-                Set<TimedEvent>>();
-        newObject._eventsListeningToVariables = new HashMap<Variable,
-                Set<TimedEvent>>();
+        newObject._eventsListeningToPorts = new HashMap<Port, Set<TimedEvent>>();
+        newObject._eventsListeningToVariables = new HashMap<Variable, Set<TimedEvent>>();
         newObject._initializedRefinements = new HashSet<TypedActor>();
         return newObject;
     }
@@ -230,7 +228,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *   cannot be retrieved.
      */
     public TimedEvent findFirst(Event event, boolean findRefinements)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Set<TypedActor> refinementSet = new HashSet<TypedActor>();
         TypedActor[] refinements = event.getRefinement();
         if (refinements != null) {
@@ -241,8 +239,9 @@ public class PteraDirector extends Director implements TimedDirector,
             }
         }
         for (TimedEvent timedEvent : _eventQueue) {
-            if (!timedEvent.canceled && (timedEvent.contents == event
-                    || refinementSet.contains(timedEvent.contents))) {
+            if (!timedEvent.canceled
+                    && (timedEvent.contents == event || refinementSet
+                            .contains(timedEvent.contents))) {
                 return timedEvent;
             }
         }
@@ -309,14 +308,14 @@ public class PteraDirector extends Director implements TimedDirector,
             }
 
             Set<TimedEvent> timedEvents = new LinkedHashSet<TimedEvent>();
-            Iterator<Map.Entry<Port, Set<TimedEvent>>> entryIterator =
-                _eventsListeningToPorts.entrySet().iterator();
+            Iterator<Map.Entry<Port, Set<TimedEvent>>> entryIterator = _eventsListeningToPorts
+                    .entrySet().iterator();
             ParserScope scope = controller.getPortScope();
             while (entryIterator.hasNext()) {
                 Map.Entry<Port, Set<TimedEvent>> entry = entryIterator.next();
                 Port port = entry.getKey();
-                BooleanToken token = (BooleanToken) scope.get(port.getName() +
-                        "_isPresent");
+                BooleanToken token = (BooleanToken) scope.get(port.getName()
+                        + "_isPresent");
                 if (token != null && token.booleanValue()) {
                     timedEvents.addAll(entry.getValue());
                     entryIterator.remove();
@@ -378,8 +377,8 @@ public class PteraDirector extends Director implements TimedDirector,
      *   this Ptera model at the requested time).
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        if (getContainer() instanceof ModalModel &&
-                actor instanceof RefinementActor) {
+        if (getContainer() instanceof ModalModel
+                && actor instanceof RefinementActor) {
             Event event = (Event) ((RefinementActor) actor).getRefinedState();
             if (event != null) {
                 TimedEvent timedEvent = new TimedEvent(actor, time, null, null,
@@ -465,8 +464,8 @@ public class PteraDirector extends Director implements TimedDirector,
             }
         }
 
-        if (_delegateFireAt && (topTime == null ||
-                topTime.compareTo(timedEvent.timeStamp) > 0)) {
+        if (_delegateFireAt
+                && (topTime == null || topTime.compareTo(timedEvent.timeStamp) > 0)) {
             _requestFiring();
         }
     }
@@ -754,8 +753,8 @@ public class PteraDirector extends Director implements TimedDirector,
      */
     public void valueChanged(Settable settable) {
         Variable variable = (Variable) settable;
-        Set<TimedEvent> eventList = _eventsListeningToVariables.remove(
-                variable);
+        Set<TimedEvent> eventList = _eventsListeningToVariables
+                .remove(variable);
         if (eventList != null) {
             variable.removeValueListener(this);
             Time modelTime = getModelTime();
@@ -887,8 +886,8 @@ public class PteraDirector extends Director implements TimedDirector,
     protected void _insertInitialEvents() throws IllegalActionException {
         PteraController controller = getController();
         if (_isInController()) {
-            PteraModalModel modalModel =
-                (PteraModalModel) getContainer().getContainer();
+            PteraModalModel modalModel = (PteraModalModel) getContainer()
+                    .getContainer();
             _currentTime = modalModel.getDirector().getModelTime();
 
             Iterator<?> entities = controller.deepEntityList().iterator();
@@ -934,8 +933,8 @@ public class PteraDirector extends Director implements TimedDirector,
                 _requestFiring();
             }
         } else {
-            TimedEvent newEvent = new TimedEvent(controller, _currentTime, null,
-                    null, false);
+            TimedEvent newEvent = new TimedEvent(controller, _currentTime,
+                    null, null, false);
             _addEvent(newEvent);
             _initializedRefinements.add(controller);
             if (_isEmbedded()) {
@@ -988,8 +987,8 @@ public class PteraDirector extends Director implements TimedDirector,
                     iterator.previous();
                     iterator.add(event);
 
-                    _notifyEventQueueDebugListeners(true, false, position, time,
-                            contents, event.arguments);
+                    _notifyEventQueueDebugListeners(true, false, position,
+                            time, contents, event.arguments);
 
                     break;
                 }
@@ -1077,9 +1076,9 @@ public class PteraDirector extends Director implements TimedDirector,
                 data = event.refire(timedEvent.arguments, timedEvent.data);
             }
             if (data != null) {
-                TimedEvent timedEvent2 = new TimedEvent(event,
-                        getModelTime().add(data.getTimeAdvance()),
-                        timedEvent.arguments, data,
+                TimedEvent timedEvent2 = new TimedEvent(event, getModelTime()
+                        .add(data.getTimeAdvance()), timedEvent.arguments,
+                        data,
                         // If it is a refiring, do not reinitialize the
                         // refinement.
                         false);
@@ -1152,8 +1151,8 @@ public class PteraDirector extends Director implements TimedDirector,
             boolean postfire = actor.postfire();
             boolean ending = false;
             if (postfire && actor instanceof PteraController) {
-                PteraDirector director = (PteraDirector) ((PteraController)
-                        actor).getDirector();
+                PteraDirector director = (PteraDirector) ((PteraController) actor)
+                        .getDirector();
                 ending = director._ending;
             }
             if (!postfire || ending) {
@@ -1222,8 +1221,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *   initialized or fired.
      */
     private synchronized void _initializeAndFireRefinement(
-            TypedActor refinement, boolean reset)
-            throws IllegalActionException {
+            TypedActor refinement, boolean reset) throws IllegalActionException {
         _fireAtReceived = false;
         if (reset || !_initializedRefinements.contains(refinement)) {
             refinement.initialize();
@@ -1268,8 +1266,7 @@ public class PteraDirector extends Director implements TimedDirector,
 
         for (DebugListener listener : listeners) {
             if (listener instanceof EventQueueDebugListener) {
-                EventQueueDebugListener eventListener =
-                    (EventQueueDebugListener) listener;
+                EventQueueDebugListener eventListener = (EventQueueDebugListener) listener;
                 if (isInsert) {
                     if (contents instanceof Event) {
                         eventListener.insertEvent(position, time,
@@ -1346,13 +1343,11 @@ public class PteraDirector extends Director implements TimedDirector,
 
     /** A table that maps any port to the set of events that are listening to it
         during an execution. */
-    private Map<Port, Set<TimedEvent>> _eventsListeningToPorts =
-        new HashMap<Port, Set<TimedEvent>>();
+    private Map<Port, Set<TimedEvent>> _eventsListeningToPorts = new HashMap<Port, Set<TimedEvent>>();
 
     /** A table that maps any variable to the set of events that are listening
         to it during an execution. */
-    private Map<Variable, Set<TimedEvent>> _eventsListeningToVariables =
-        new HashMap<Variable, Set<TimedEvent>>();
+    private Map<Variable, Set<TimedEvent>> _eventsListeningToVariables = new HashMap<Variable, Set<TimedEvent>>();
 
     /** Whether fireAt() has been received from a refinement when that
      *  refinement is initialized.

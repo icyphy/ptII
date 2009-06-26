@@ -89,8 +89,8 @@ public class NonStrictTest extends CCodeGeneratorHelper {
         if (isPrimitive(inputType)) {
             blockName = inputTypeString + blockName;
         } else {
-            if (multiChannel.length() == 0 &&
-                    (actor.input.getType() instanceof ArrayType)) {
+            if (multiChannel.length() == 0
+                    && (actor.input.getType() instanceof ArrayType)) {
                 blockName = "Array" + blockName;
             } else {
                 blockName = "Token" + blockName;
@@ -101,8 +101,7 @@ public class NonStrictTest extends CCodeGeneratorHelper {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
 
-            _codeStream.appendCodeBlock(blockName + multiChannel,
-                    args);
+            _codeStream.appendCodeBlock(blockName + multiChannel, args);
         }
         return processCode(_codeStream.toString());
     }

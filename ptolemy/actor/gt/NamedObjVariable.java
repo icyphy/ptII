@@ -69,7 +69,8 @@ public class NamedObjVariable extends Variable {
             boolean autoCreate) throws IllegalActionException {
         try {
             container.workspace().getReadAccess();
-            List<?> attributes = container.attributeList(NamedObjVariable.class);
+            List<?> attributes = container
+                    .attributeList(NamedObjVariable.class);
             if (attributes.isEmpty()) {
                 if (autoCreate) {
                     try {

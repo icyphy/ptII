@@ -95,10 +95,8 @@ public class IOPortEvent implements DebugEvent {
         _vectorLength = SINGLETOKEN;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Return the port that caused this event.
      * @return The port.
@@ -179,7 +177,7 @@ public class IOPortEvent implements DebugEvent {
         } else if (_event == GET_END) {
             buffer.append(" read ");
         } else if (_event == SEND_END) {
-            buffer.append(" wrote " );
+            buffer.append(" wrote ");
         }
         if (_vectorLength != SINGLETOKEN) {
             buffer.append(_vectorLength);

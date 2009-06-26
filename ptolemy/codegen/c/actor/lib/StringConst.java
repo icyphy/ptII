@@ -56,7 +56,8 @@ public class StringConst extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
         ptolemy.actor.lib.StringConst actor = (ptolemy.actor.lib.StringConst) getComponent();
-        if (actor.output.isOutsideConnected() && actor.output.numberOfSinks() > 0) {
+        if (actor.output.isOutsideConnected()
+                && actor.output.numberOfSinks() > 0) {
             // If the actor is in a Composite and the output is connected
             // to a port that is not connected, then don't generate code
             // for the output.  See test/auto/StringConstComposite.xml

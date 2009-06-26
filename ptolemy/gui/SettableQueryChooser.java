@@ -39,17 +39,17 @@ package ptolemy.gui;
  */
 public interface SettableQueryChooser {
 
-  /**
-   * Set the string representation of the query.
-   * @param value the string value
-   * @see #getQueryValue()
-   */
-  public void setQueryValue(String value);
+    /**
+     * Set the string representation of the query.
+     * @param value the string value
+     * @see #getQueryValue()
+     */
+    public void setQueryValue(String value);
 
-  /**
-   * Return a string representation of the query.
-   * @return the string value
-   * @see #setQueryValue(String)
-   */
-  public String getQueryValue();
+    /**
+     * Return a string representation of the query.
+     * @return the string value
+     * @see #setQueryValue(String)
+     */
+    public String getQueryValue();
 }

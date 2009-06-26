@@ -257,4 +257,3 @@ public interface Set extends Collection, Rollbackable {
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }
-

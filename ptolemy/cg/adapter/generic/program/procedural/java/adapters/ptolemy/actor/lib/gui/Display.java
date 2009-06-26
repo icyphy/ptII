@@ -65,7 +65,7 @@ public class Display extends ProgramCodeGeneratorAdapter {
         code.append(super._generateFireCode());
 
         ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
-        
+
         ProgramCodeGeneratorAdapterStrategy strategy = getStrategy();
 
         String type = strategy.codeGenType(actor.input.getType());
@@ -79,7 +79,8 @@ public class Display extends ProgramCodeGeneratorAdapter {
         if (title.trim().length() > 0) {
             args.add(title);
         } else {
-            args.add(strategy.generateSimpleName(actor));
+            args.add(ProgramCodeGeneratorAdapterStrategy
+                    .generateSimpleName(actor));
         }
 
         args.add(Integer.valueOf(0));

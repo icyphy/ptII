@@ -68,7 +68,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         return translateParseTree(pt);
     }
 
-    public String translateParseTree(ASTPtRootNode root) throws IllegalActionException {
+    public String translateParseTree(ASTPtRootNode root)
+            throws IllegalActionException {
         StringWriter writer = new StringWriter();
         _writer = new PrintWriter(writer);
         root.visit(this);
@@ -80,63 +81,69 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             String res = node.getToken().toString();
-            try {       // when number
+            try { // when number
                 double num = Double.parseDouble(res);
-                if (isTime)
+                if (isTime) {
                     _writer.print("#r(" + _toRational(num) + ")");
-                else
-                {
+                } else {
                     _writer.print("#f(" + num + ")");
                 }
-            }
-            catch (NumberFormatException e) {
-                if (res.equals("true") || res.equals("false"))
+            } catch (NumberFormatException e) {
+                if (res.equals("true") || res.equals("false")) {
                     _writer.print("#b(" + res + ")");
-                else
+                } else {
                     _writer.print(res);
+                }
             }
         } else {
-            _writer.print(_transformLeaf(node.getName()));        // when variable identifier
+            _writer.print(_transformLeaf(node.getName())); // when variable identifier
         }
     }
 
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node) throws IllegalActionException {
-        _writer.print("(| ");                     // (| instead {
+    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
+            throws IllegalActionException {
+        _writer.print("(| "); // (| instead {
         _printChildrenSeparated(node, ", ");
-        _writer.print(" |)");                     // |) instead }
+        _writer.print(" |)"); // |) instead }
     }
 
-    public void visitLogicalNode(ASTPtLogicalNode node) throws IllegalActionException {
+    public void visitLogicalNode(ASTPtLogicalNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
 
-    public void visitBitwiseNode(ASTPtBitwiseNode node) throws IllegalActionException {
+    public void visitBitwiseNode(ASTPtBitwiseNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
 
-    public void visitPowerNode(ASTPtPowerNode node) throws IllegalActionException {
+    public void visitPowerNode(ASTPtPowerNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, "^");
         _writer.print(")");
     }
 
-    public void visitProductNode(ASTPtProductNode node) throws IllegalActionException {
+    public void visitProductNode(ASTPtProductNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getLexicalTokenList());
         _writer.print(")");
     }
 
-    public void visitRelationalNode(ASTPtRelationalNode node) throws IllegalActionException {
+    public void visitRelationalNode(ASTPtRelationalNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
 
-    public void visitShiftNode(ASTPtShiftNode node) throws IllegalActionException {
+    public void visitShiftNode(ASTPtShiftNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
@@ -148,7 +155,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
-    public void visitUnaryNode(ASTPtUnaryNode node) throws IllegalActionException {
+    public void visitUnaryNode(ASTPtUnaryNode node)
+            throws IllegalActionException {
         _writer.print("(");
         if (node.isMinus()) {
             _writer.print("- ");
@@ -161,7 +169,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node) throws IllegalActionException {
+    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChild(node, 0);
         _writer.print(" ? ");
@@ -178,8 +187,9 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(" $ (");
         for (int i = 1; i < node.jjtGetNumChildren(); i++) {
             _printChild(node, i);
-            if ( i < node.jjtGetNumChildren() - 1)
+            if (i < node.jjtGetNumChildren() - 1) {
                 _writer.print(", ");
+            }
         }
         _writer.print("))");
     }
@@ -193,8 +203,10 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
 
         // Notice : type constraints are omitted.
         for (int i = 0; i < n; i++) {
-            if (i > 0) _writer.print(", ");
-            _writer.print(RTMTerm.transId( (String)args.get(i) ));
+            if (i > 0) {
+                _writer.print(", ");
+            }
+            _writer.print(RTMTerm.transId((String) args.get(i)));
         }
 
         _writer.print(") ");
@@ -202,7 +214,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node) throws IllegalActionException {
+    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
+            throws IllegalActionException {
         int n = 0;
         int rowCount = node.getRowCount();
         int columnCount = node.getColumnCount();
@@ -211,35 +224,43 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
                 _printChild(node, n++);
-                if (j < columnCount - 1) _writer.print(", ");
+                if (j < columnCount - 1) {
+                    _writer.print(", ");
+                }
             }
-            if (i < rowCount - 1) _writer.print("; ");
+            if (i < rowCount - 1) {
+                _writer.print("; ");
+            }
         }
         _writer.print("]");
     }
 
-    public void visitMethodCallNode(ASTPtMethodCallNode node) throws IllegalActionException {
+    public void visitMethodCallNode(ASTPtMethodCallNode node)
+            throws IllegalActionException {
         _writer.print("(");
         _printChild(node, 0);
-        _writer.print(" .. ");                           // -> instead of .
-        _writer.print(RTMTerm.transId(node.getMethodName()));      //
+        _writer.print(" .. "); // -> instead of .
+        _writer.print(RTMTerm.transId(node.getMethodName())); //
         _writer.print(" $ (");
         for (int i = 1; i < node.jjtGetNumChildren(); i++) {
-            if (i > 1) _writer.print(", ");
+            if (i > 1) {
+                _writer.print(", ");
+            }
             _printChild(node, i);
         }
         _writer.print("))");
     }
-
 
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         Iterator names = node.getFieldNames().iterator();
         _writer.print("{");
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            if (i > 0) _writer.print(", ");
-            _writer.print("(" + RTMTerm.transId(names.next().toString()));          //
-            _writer.print(" <- ");      // <- instead =
+            if (i > 0) {
+                _writer.print(", ");
+            }
+            _writer.print("(" + RTMTerm.transId(names.next().toString())); //
+            _writer.print(" <- "); // <- instead =
             _printChild(node, i);
             _writer.print(")");
         }
@@ -259,7 +280,12 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         Iterator separators = separatorList.iterator();
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            if (i > 0) _writer.print(" " + _transformOp(((Token) separators.next()).image) + " ");
+            if (i > 0) {
+                _writer
+                        .print(" "
+                                + _transformOp(((Token) separators.next()).image)
+                                + " ");
+            }
             _printChild(node, i);
         }
     }
@@ -267,51 +293,61 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
     private void _printChildrenSeparated(ASTPtRootNode node, String string)
             throws IllegalActionException {
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            if (i > 0) _writer.print(" " + _transformOp(string) + " ");
+            if (i > 0) {
+                _writer.print(" " + _transformOp(string) + " ");
+            }
             _printChild(node, i);
         }
     }
 
     private static String _transformOp(String op) {
-        if (op.equals("<")) return "lessThan";
-        else if (op.equals(">")) return "greaterThan";
-        else if (op.equals("==")) return "equals";
-        else return op;
-        // && ||
-        // & | #
-        //<< >> >>>
+        if (op.equals("<")) {
+            return "lessThan";
+        } else if (op.equals(">")) {
+            return "greaterThan";
+        } else if (op.equals("==")) {
+            return "equals";
+        } else {
+            return op;
+            // && ||
+            // & | #
+            //<< >> >>>
+        }
     }
 
     private static String _transformLeaf(String id) {
         Matcher m = Pattern.compile("(.*)_isPresent").matcher(id);
-        if (m.matches())
+        if (m.matches()) {
             return "isPresent(" + RTMTerm.transId(m.group(1)) + ")";
-        else
+        } else {
             return RTMTerm.transId(id);
+        }
 
         // Infinity ...
     }
 
     private static String _toRational(double f) {
         double base = 1.0;
-        while (Math.ceil(f * base) != f * base)
+        while (Math.ceil(f * base) != f * base) {
             base = base * 10.0;
+        }
 
-        int gcd = _GCD((int)f, (int)base);
-        int nn = ((int)(f * base)) / gcd, nd = ((int)base) / gcd;
+        int gcd = _GCD((int) f, (int) base);
+        int nn = ((int) (f * base)) / gcd, nd = ((int) base) / gcd;
 
-        if (nd > 1)
+        if (nd > 1) {
             return nn + "/" + nd;
-        else
+        } else {
             return nn + "";
+        }
     }
 
-    private static int _GCD(int a, int b)
-    {
-       if (b == 0)
-           return a;
-       else
-           return _GCD(b, a % b);
+    private static int _GCD(int a, int b) {
+        if (b == 0) {
+            return a;
+        } else {
+            return _GCD(b, a % b);
+        }
     }
 
 }

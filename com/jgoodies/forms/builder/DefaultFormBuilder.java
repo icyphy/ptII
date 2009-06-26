@@ -852,13 +852,15 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      * @param gapRowSpec  the row specification to check for
      */
     private void ensureHasGapRow(RowSpec gapRowSpec) {
-        if ((getRow() == 1) || (getRow() <= getRowCount()))
+        if ((getRow() == 1) || (getRow() <= getRowCount())) {
             return;
+        }
 
         if (getRow() <= getRowCount()) {
             RowSpec rowSpec = getCursorRowSpec();
-            if ((rowSpec == gapRowSpec))
+            if ((rowSpec == gapRowSpec)) {
                 return;
+            }
         }
         appendRow(gapRowSpec);
         nextLine();
@@ -869,8 +871,9 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      * if the cursor is beyond the form's bottom.
      */
     private void ensureHasComponentLine() {
-        if (getRow() <= getRowCount())
+        if (getRow() <= getRowCount()) {
             return;
+        }
         appendRow(FormFactory.PREF_ROWSPEC);
         if (isRowGroupingEnabled()) {
             getLayout().addGroupedRow(getRow());

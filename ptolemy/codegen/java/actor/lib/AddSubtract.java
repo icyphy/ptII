@@ -99,7 +99,8 @@ public class AddSubtract extends JavaCodeGeneratorHelper {
             args.set(2, minusType);
             _codeStream.appendCodeBlock("minusBlock", args);
         }
-        if (actor.output.isOutsideConnected() && actor.output.numberOfSinks() > 0) {
+        if (actor.output.isOutsideConnected()
+                && actor.output.numberOfSinks() > 0) {
             // If the AddSubtract is in a Composite and the output is connected
             // to a port that is not connected, then don't generate code
             // for the output.  See test/auto/CompositeWithUnconnectedPort.xml

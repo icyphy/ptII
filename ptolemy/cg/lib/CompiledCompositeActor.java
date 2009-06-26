@@ -186,7 +186,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public void fire() throws IllegalActionException {
 
-        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken()).booleanValue();
+        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken())
+                .booleanValue();
         if (invoked) {
             if (_debugging) {
                 _debug("Calling fire()");
@@ -276,7 +277,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         super.initialize();
 
-        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken()).booleanValue();
+        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken())
+                .booleanValue();
         if (invoked) {
             if (_generatedCodeVersion != _workspace.getVersion()) {
 
@@ -296,8 +298,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         ++_version;
                         _updateSanitizedActorName();
                     }
-                    String generatorPackageString = generatorPackage.getExpression();
-                    if (generatorPackageString.equals("generic.program.procedural.c")) {
+                    String generatorPackageString = generatorPackage
+                            .getExpression();
+                    if (generatorPackageString
+                            .equals("generic.program.procedural.c")) {
                         _generateAndCompileJNICode();
                     }
                     _generateAndCompileEmbeddedCode();
@@ -333,11 +337,17 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     } catch (UnsupportedClassVersionError ex) {
                         // This can occur if we have two different
                         // machines sharing ~/codegen.
-                        throw new IllegalActionException(this, ex,
+                        throw new IllegalActionException(
+                                this,
+                                ex,
                                 "Unsupported class version in the class \""
-                                        + className + "\" from \"" + url
+                                        + className
+                                        + "\" from \""
+                                        + url
                                         + "\".  Try deleting the \""
-                                        + className + "\" class in \"" + url
+                                        + className
+                                        + "\" class in \""
+                                        + url
                                         + "\".\nThis problem can also occur "
                                         + "if the version of java that is "
                                         + "running Ptolemy and the version "
@@ -415,7 +425,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken()).booleanValue();
+        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken())
+                .booleanValue();
 
         if (invoked) {
             if (_objectWrapper == null) {
@@ -474,16 +485,17 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                             + executeCommands.buffer.toString());
         }
     }
-    
+
     /** Generate and compile Java code.
      *  @exception IllegalActionException If the adapter class cannot
      *  be found, or if the static generateCode(TypedCompositeActor)
      *  method in the adapter class cannot be found or invoked.
      */
-    protected void _generateAndCompileEmbeddedCode() throws IllegalActionException {
+    protected void _generateAndCompileEmbeddedCode()
+            throws IllegalActionException {
         _invokeAdapterMethod("generateCode");
     }
-    
+
     /** Generate and compile the JNI code.
      *  @exception IllegalActionException If thrown while getting the path
      *  to the shared object, while writing the Java file, or while
@@ -541,8 +553,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             Writer writer = null;
             try {
                 if (_debugging) {
-                    _debugAndSystemOut("Generate \"" + codeFileName + "\" in \""
-                            + codeDirectory.getBaseDirectory() + "\"");
+                    _debugAndSystemOut("Generate \"" + codeFileName
+                            + "\" in \"" + codeDirectory.getBaseDirectory()
+                            + "\"");
                 }
 
                 writer = FileUtilities.openForWriting(codeFileName,
@@ -561,7 +574,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         _compileJNICode();
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -637,7 +649,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         }
         return false;
     }
-    
+
     /** Send a debug message to all debug listeners that have registered.
      * Then print the message to System.out.
      * @param message The given debug message.
@@ -671,7 +683,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             }
         }
         return arguments.toString();
-    }    
+    }
 
     /** Invoke a method in the corresponding adapter class.
      *  @param methodName The name of a method in the adapter class.
@@ -685,7 +697,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throws IllegalActionException {
         // We use reflection to avoid a compile time dependency
         // on the codegen package.
-        String packageName = "ptolemy.cg.adapter." + generatorPackage.stringValue() + ".adapters";
+        String packageName = "ptolemy.cg.adapter."
+                + generatorPackage.stringValue() + ".adapters";
         String adapterClassName = getClass().getName().replaceFirst("ptolemy",
                 packageName + ".ptolemy");
 
@@ -738,12 +751,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.cg.lib.CompiledCompositeActor");
-/*
-        if (!_pointerTypeInitialized) {
-            Constants.add("pointer", new PointerToken());
-            _pointerTypeInitialized = true;
-        }
-*/
+        /*
+                if (!_pointerTypeInitialized) {
+                    Constants.add("pointer", new PointerToken());
+                    _pointerTypeInitialized = true;
+                }
+        */
         try {
             generatorPackage = new StringParameter(this, "generatorPackage");
             generatorPackage.setExpression("generic.program.procedural.java");
@@ -776,7 +789,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     "Problem setting up coSimulation parameter");
         }
     }
-    
+
     /** Get the name of the shared object.
      *  @param sanitizedActorName The sanitized actor name on
      *  which to base the name of the shared object.
@@ -790,9 +803,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         String generatorPackageString = generatorPackage.getExpression();
         String fileName = "";
         try {
-            if (generatorPackageString.equals("generic.program.procedural.java")) {
+            if (generatorPackageString
+                    .equals("generic.program.procedural.java")) {
                 fileName = sanitizedActorName + ".class";
-            } else if (generatorPackageString.equals("generic.program.procedural.c")) {
+            } else if (generatorPackageString
+                    .equals("generic.program.procedural.c")) {
                 String osName = StringUtilities.getProperty("os.name");
                 if (osName != null) {
                     if (osName.startsWith("Windows")) {
@@ -804,11 +819,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     }
                 }
             } else {
-                throw new IllegalActionException(this,
-                "generatorPackage " + generatorPackage + " not supported.");
+                throw new IllegalActionException(this, "generatorPackage "
+                        + generatorPackage + " not supported.");
             }
             sharedObjectPath = codeDirectory.asFile().getCanonicalPath()
-            + File.separator + fileName;
+                    + File.separator + fileName;
             sharedObjectPath = sharedObjectPath.replace("\\", "/");
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -831,8 +846,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             tokenHolder = new int[numberOfChannels][];
         } else if (type == BaseType.DOUBLE) {
             tokenHolder = new double[numberOfChannels][];
-        /*} else if (type == PointerToken.POINTER) {
-            tokenHolder = new int[numberOfChannels][];*/
+            /*} else if (type == PointerToken.POINTER) {
+                tokenHolder = new int[numberOfChannels][];*/
         } else if (type == BaseType.BOOLEAN) {
             tokenHolder = new boolean[numberOfChannels][];
         } else {
@@ -869,15 +884,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                             }
                             ((double[][]) tokenHolder)[i] = doubleTokens;
 
-                        /*} else if (type == PointerToken.POINTER) {
+                            /*} else if (type == PointerToken.POINTER) {
 
-                            int[] intTokens = new int[rate];
-                            for (int k = 0; k < rate; k++) {
-                                intTokens[k] = ((PointerToken) tokens[k])
-                                        .getValue();
-                            }
-                            ((int[][]) tokenHolder)[i] = intTokens;
-                        */
+                                int[] intTokens = new int[rate];
+                                for (int k = 0; k < rate; k++) {
+                                    intTokens[k] = ((PointerToken) tokens[k])
+                                            .getValue();
+                                }
+                                ((int[][]) tokenHolder)[i] = intTokens;
+                            */
                         } else if (type == BaseType.BOOLEAN) {
 
                             boolean[] booleanTokens = new boolean[rate];
@@ -944,16 +959,16 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 }
             }
 
-        /*} else if (type == PointerToken.POINTER) {
+            /*} else if (type == PointerToken.POINTER) {
 
-            int[][] tokens = (int[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new PointerToken(tokens[i][k]);
-                    port.send(i, token);
+                int[][] tokens = (int[][]) outputTokens;
+                for (int i = 0; i < port.getWidthInside(); i++) {
+                    for (int k = 0; k < rate; k++) {
+                        Token token = new PointerToken(tokens[i][k]);
+                        port.send(i, token);
+                    }
                 }
-            }
-        */
+            */
         } else if (type == BaseType.BOOLEAN) {
 
             boolean[][] tokens = (boolean[][]) outputTokens;
@@ -975,16 +990,16 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     private void _updateSanitizedActorName() {
         _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
         // Used to be
-            // Remove leading underscore
-            // if (_sanitizedActorName.charAt(0) == '_') {
-            //    _sanitizedActorName = _sanitizedActorName.replaceFirst("_", "");
-            // }
+        // Remove leading underscore
+        // if (_sanitizedActorName.charAt(0) == '_') {
+        //    _sanitizedActorName = _sanitizedActorName.replaceFirst("_", "");
+        // }
         // But _ has a special meaning in JNI and javah will add things after a _
         // Remove all underscores to avoid confusion for JNI
         // related functions.  Each time a .dll file is
         // generated, we must use a different name for it so
         // that it can be loaded without restarting vergil.
-        
+
         _sanitizedActorName = _sanitizedActorName.replace("_", "") + _version;
 
     }

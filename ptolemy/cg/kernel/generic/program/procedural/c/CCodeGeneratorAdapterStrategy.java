@@ -35,9 +35,8 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
@@ -78,7 +77,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterStrategy {
+public class CCodeGeneratorAdapterStrategy extends
+        ProgramCodeGeneratorAdapterStrategy {
     /**
      * Create a new instance of the C code generator adapter.
      */
@@ -107,7 +107,6 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
         return (CCodeGenerator) _codeGenerator;
     }
 
-
     /** Get the files needed by the code generated from this adapter class.
      *  This base class returns an empty set.
      *  @return A set of strings that are header files needed by the code
@@ -129,7 +128,7 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
         String javaHome = StringUtilities.getProperty("java.home");
 
         ExecuteCommands executeCommands = getCodeGenerator()
-            .getExecuteCommands();
+                .getExecuteCommands();
         if (executeCommands == null) {
             executeCommands = new StreamExec();
         }
@@ -155,10 +154,11 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
         }
 
         String jreBinClientPath = javaHome + File.separator + "bin"
-            + File.separator + "client";
-        executeCommands.stdout(_eol + _eol
-                + "CCodeGeneratorAdapter: appended to path "
-                + jreBinClientPath);
+                + File.separator + "client";
+        executeCommands
+                .stdout(_eol + _eol
+                        + "CCodeGeneratorAdapter: appended to path "
+                        + jreBinClientPath);
 
         executeCommands.appendToPath(jreBinClientPath);
 
@@ -170,17 +170,19 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
         if (!(new File(javaHome + "/include").isDirectory())) {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
-            File potentialJavaHomeParentFile = new File(javaHome).getParentFile();
+            File potentialJavaHomeParentFile = new File(javaHome)
+                    .getParentFile();
             // Loop through twice, once with the parent, once with
             // C:/Program Files/Java.  This is lame, but easy
             for (int loop = 2; loop > 0; loop--) {
                 // Get all the directories that have include/jni.h under them.
-                File [] jdkFiles = potentialJavaHomeParentFile.listFiles(
-                        new FileFilter() {
+                File[] jdkFiles = potentialJavaHomeParentFile
+                        .listFiles(new FileFilter() {
                             public boolean accept(File pathname) {
-                                return new File(pathname, "/include/jni.h").canRead();
+                                return new File(pathname, "/include/jni.h")
+                                        .canRead();
                             }
-                    });
+                        });
                 if (jdkFiles != null && jdkFiles.length >= 1) {
                     // Sort and get the last directory, which should
                     // be the most recent JDK.
@@ -189,7 +191,8 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
                     break;
                 } else {
                     // Not found, please try again.
-                    potentialJavaHomeParentFile = new File("C:\\Program Files\\Java");
+                    potentialJavaHomeParentFile = new File(
+                            "C:\\Program Files\\Java");
                 }
             }
         }
@@ -208,58 +211,63 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
         String jvmLoaderDirective = "-ljvm";
         String libjvmAbsoluteDirectory = "";
         if (platform.equals("win32")) {
-            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-                                          + platform + "\"");
+            getCodeGenerator().addInclude(
+                    "-I\"" + javaHome + "/include/" + platform + "\"");
 
             // The directive we use to find jvm.dll, which is usually in
             // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
             jvmLoaderDirective = "-ljvm";
 
-            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir")
+                    .replace('\\', '/');
             String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
-            libjvmAbsoluteDirectory = ptIIDir + "/"
-                + libjvmRelativeDirectory;
+            libjvmAbsoluteDirectory = ptIIDir + "/" + libjvmRelativeDirectory;
             String libjvmFileName = "libjvm.dll.a";
             String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
 
-            if ( !(new File(libjvmPath).canRead()) ) {
+            if (!(new File(libjvmPath).canRead())) {
                 // If we are under WebStart or running from jar files, we
                 // will need to copy libjvm.dll.a from the jar file
                 // that gcc can find it.
                 URL libjvmURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
+                        .getResource(
+                                libjvmRelativeDirectory + "/" + libjvmFileName);
                 if (libjvmURL != null) {
                     String libjvmAbsolutePath = null;
                     try {
                         // Look for libjvm.dll.a in the codegen directory
-                        File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
+                        File libjvmFileCopy = new File(
+                                getCodeGenerator().codeDirectory.asFile(),
+                                "libjvm.dll.a");
 
                         if (!libjvmFileCopy.canRead()) {
                             // Create libjvm.dll.a in the codegen directory
                             FileUtilities.binaryCopyURLToFile(libjvmURL,
-                                                              libjvmFileCopy);
+                                    libjvmFileCopy);
                         }
 
                         libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
                         if (libjvmFileCopy.canRead()) {
-                            libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
-                                                                            '/');
-                            libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
-                                                                                       libjvmAbsolutePath.lastIndexOf("/"));
+                            libjvmAbsolutePath = libjvmAbsolutePath.replace(
+                                    '\\', '/');
+                            libjvmAbsoluteDirectory = libjvmAbsolutePath
+                                    .substring(0, libjvmAbsolutePath
+                                            .lastIndexOf("/"));
 
                             // Get rid of everything before the last /lib
                             // and the .dll.a
                             jvmLoaderDirective = "-l"
-                                + libjvmAbsolutePath.substring(
-                                                               libjvmAbsolutePath.lastIndexOf("/lib") + 4,
-                                                               libjvmAbsolutePath.length() - 6);
+                                    + libjvmAbsolutePath.substring(
+                                            libjvmAbsolutePath
+                                                    .lastIndexOf("/lib") + 4,
+                                            libjvmAbsolutePath.length() - 6);
 
                         }
                     } catch (Exception ex) {
-                        throw new IllegalActionException(getComponent(),
-                                                         ex, "Could not copy \"" + libjvmURL
-                                                         + "\" to the file system, path was: \""
-                                                         + libjvmAbsolutePath + "\"");
+                        throw new IllegalActionException(getComponent(), ex,
+                                "Could not copy \"" + libjvmURL
+                                        + "\" to the file system, path was: \""
+                                        + libjvmAbsolutePath + "\"");
                     }
                 }
             }
@@ -269,11 +277,10 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
             }
         } else {
             // Solaris, Linux etc.
-            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-                                          + platform + "\"");
+            getCodeGenerator().addInclude(
+                    "-I\"" + javaHome + "/include/" + platform + "\"");
         }
-        getCodeGenerator().addLibrary(
-                "-L\"" + libjvmAbsoluteDirectory + "\"");
+        getCodeGenerator().addLibrary("-L\"" + libjvmAbsoluteDirectory + "\"");
         getCodeGenerator().addLibrary(jvmLoaderDirective);
 
         Set<String> files = new HashSet<String>();
@@ -314,12 +321,12 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
         // The references are associated with their own adapter, so we need
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
-        + source.channelNumber + ", " + offset;
-        String sourceRef = ((ProgramCodeGeneratorAdapter) _getAdapter(source.port
-                .getContainer())).getReference(sourcePortChannel);
+                + source.channelNumber + ", " + offset;
+        String sourceRef = (_getAdapter(source.port.getContainer()))
+                .getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
-        + ", " + offset;
+                + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
         // the inside receiver of an output port.
@@ -328,8 +335,8 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((ProgramCodeGeneratorAdapter) _getAdapter(sink.port
-                .getContainer())).getReference(sinkPortChannel, true);
+        String sinkRef = (_getAdapter(sink.port.getContainer())).getReference(
+                sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -349,8 +356,8 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
         String sinkCodeGenType = codeGenType(sinkType);
 
         if (!sinkCodeGenType.equals(sourceCodeGenType)) {
-            result = "$convert_" + sourceCodeGenType + "_"
-            + sinkCodeGenType + "(" + result + ")";
+            result = "$convert_" + sourceCodeGenType + "_" + sinkCodeGenType
+                    + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";" + _eol;
     }
@@ -378,8 +385,9 @@ public class CCodeGeneratorAdapterStrategy extends ProgramCodeGeneratorAdapterSt
             TypedIOPort port = getPort(parameter);
 
             if (port == null) {
-                throw new IllegalActionException(parameter
-                        + " is not a port. $refinePrimitiveType macro takes in a port.");
+                throw new IllegalActionException(
+                        parameter
+                                + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (isPrimitive(port.getType())) {
                 return ".payload." + codeGenType(port.getType());

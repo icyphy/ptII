@@ -65,10 +65,10 @@ public class GPOutputDevice extends ActuatorOutputDevice {
         pin.setExpression("7");
         pad = new StringParameter(this, "pad");
         pad.setExpression("A");
-}
+    }
 
-///////////////////////////////////////////////////////////////////
-////                       parameters                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       parameters                          ////
 
     /** Which pad (A-G) and pin (0-7) of GPIO to use.
      * FIXME: Verify user has set value between 0 and 7

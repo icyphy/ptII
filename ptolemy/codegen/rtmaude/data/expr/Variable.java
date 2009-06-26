@@ -28,7 +28,6 @@
 package ptolemy.codegen.rtmaude.data.expr;
 
 import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 ////PropertyParameter

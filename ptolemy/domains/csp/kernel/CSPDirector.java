@@ -329,7 +329,8 @@ public class CSPDirector extends CompositeProcessDirector implements
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    private String _receiverStatus() throws InvalidStateException, IllegalActionException {
+    private String _receiverStatus() throws InvalidStateException,
+            IllegalActionException {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor) getContainer();
 

@@ -167,14 +167,16 @@ public class Rotate3D extends GRTransform {
         if (pivotLocation.getPort().isOutsideConnected()) {
             pivotLocation.update();
 
-            DoubleMatrixToken pivot = (DoubleMatrixToken) pivotLocation.getToken();
+            DoubleMatrixToken pivot = (DoubleMatrixToken) pivotLocation
+                    .getToken();
 
             _baseX = (float) pivot.getElementAt(0, 0);
             _baseY = (float) pivot.getElementAt(0, 1);
             _baseZ = (float) pivot.getElementAt(0, 2);
 
             Transform3D bottomTransform = new Transform3D();
-            bottomTransform.setTranslation(new Vector3d(-_baseX, -_baseY, -_baseZ));
+            bottomTransform.setTranslation(new Vector3d(-_baseX, -_baseY,
+                    -_baseZ));
             _bottomTranslate.setTransform(bottomTransform);
         }
     }

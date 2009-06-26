@@ -102,7 +102,7 @@ public class NetworkOutputDevice extends OutputDevice {
 
     /** label of the microstep that's transmitterd within the RecordToken.
      */
-    private static final String microstep= "microstep";
+    private static final String microstep = "microstep";
 
     /** label of the payload that's transmitterd within the RecordToken.
      */
@@ -128,11 +128,11 @@ public class NetworkOutputDevice extends OutputDevice {
 
         if (input.hasToken(0)) {
 
-            String[] labels = new String[]{timestamp, microstep, payload};
-            Token[] values = new Token[]{
-                    new DoubleToken(ptidesDirector.getModelTime().getDoubleValue()),
-                    new IntToken(ptidesDirector.getMicrostep()),
-                    input.get(0)};
+            String[] labels = new String[] { timestamp, microstep, payload };
+            Token[] values = new Token[] {
+                    new DoubleToken(ptidesDirector.getModelTime()
+                            .getDoubleValue()),
+                    new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
             RecordToken record = new RecordToken(labels, values);
 
             output.send(0, record);
@@ -155,8 +155,8 @@ public class NetworkOutputDevice extends OutputDevice {
         RecordType outputType = (RecordType) output.getType();
 
         HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(input.getTypeTerm(),
-                    outputType.getTypeTerm(payload));
+        Inequality inequality = new Inequality(input.getTypeTerm(), outputType
+                .getTypeTerm(payload));
         typeConstraints.add(inequality);
         return typeConstraints;
     }

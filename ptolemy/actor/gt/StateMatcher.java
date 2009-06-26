@@ -71,7 +71,7 @@ import ptolemy.vergil.gt.StateMatcherController;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class StateMatcher extends State implements GTEntity, TypedActor,
-ValueListener {
+        ValueListener {
 
     /**
      * @param container
@@ -164,7 +164,8 @@ ValueListener {
         if (director != null) {
             defaultDependency = director.defaultDependency();
         }
-        _causalityInterface = new DefaultCausalityInterface(this, defaultDependency);
+        _causalityInterface = new DefaultCausalityInterface(this,
+                defaultDependency);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
     }
@@ -257,8 +258,8 @@ ValueListener {
     }
 
     public boolean match(NamedObj object) {
-        return object instanceof State ||
-                object.getClass().getName().equals(
+        return object instanceof State
+                || object.getClass().getName().equals(
                         "ptolemy.domains.modal.kernel.State");
     }
 
@@ -285,7 +286,7 @@ ValueListener {
     }
 
     public void setContainer(CompositeEntity container)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         Attribute factory = getAttribute("_controllerFactory");

@@ -240,7 +240,6 @@ public class PtidesReceiver extends AbstractReceiver {
     /** The set in which this receiver stores tokens. */
     protected TreeSet<Event> _queue = new TreeSet<Event>(new TimeComparator());
 
-
     /**
      * An Event is an aggregation consisting of a Token, a time stamp and
      * destination Receiver. Both the token and destination receiver are allowed

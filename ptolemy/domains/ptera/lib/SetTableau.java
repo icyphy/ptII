@@ -28,6 +28,7 @@
 package ptolemy.domains.ptera.lib;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Point;
 
 import javax.swing.JFrame;
@@ -133,8 +134,7 @@ public class SetTableau extends Event {
             frame.setResizable(isResizable);
         }
 
-        IntMatrixToken newLocation =
-            (IntMatrixToken) screenLocation.getToken();
+        IntMatrixToken newLocation = (IntMatrixToken) screenLocation.getToken();
         Point location = frame.getLocation();
         int x = newLocation.getElementAt(0, 0);
         if (x >= 0) {
@@ -146,8 +146,7 @@ public class SetTableau extends Event {
         }
         frame.setLocation(location);
 
-        IntMatrixToken newSize =
-            (IntMatrixToken) screenSize.getToken();
+        IntMatrixToken newSize = (IntMatrixToken) screenSize.getToken();
         Dimension size = frame.getSize();
         int width = newSize.getElementAt(0, 0);
         if (width >= 0) {
@@ -162,15 +161,13 @@ public class SetTableau extends Event {
         TableauState newState = (TableauState) state.getChosenValue();
         switch (newState) {
         case ICONIFIED:
-            if ((frame.getExtendedState() & JFrame.ICONIFIED) !=
-                    JFrame.ICONIFIED) {
-                frame.setExtendedState(JFrame.ICONIFIED);
+            if ((frame.getExtendedState() & Frame.ICONIFIED) != Frame.ICONIFIED) {
+                frame.setExtendedState(Frame.ICONIFIED);
             }
             break;
         case MAXIMIZED:
-            if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) !=
-                    JFrame.MAXIMIZED_BOTH) {
-                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH) {
+                frame.setExtendedState(Frame.MAXIMIZED_BOTH);
             }
             break;
         case NORMAL:
@@ -179,8 +176,8 @@ public class SetTableau extends Event {
             // &amp; 0) to 0, which will always compare equal.  This
             // may indicate a logic error or typo."
 
-            if ((frame.getExtendedState() & JFrame.NORMAL) != JFrame.NORMAL) {
-                frame.setExtendedState(JFrame.NORMAL);
+            if ((frame.getExtendedState() & Frame.NORMAL) != Frame.NORMAL) {
+                frame.setExtendedState(Frame.NORMAL);
             }
             break;
         }

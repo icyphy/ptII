@@ -148,18 +148,17 @@ public class StringMatches extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StringMatches newObject = (StringMatches) super.clone(workspace);
         String patternValue = null;
         try {
             patternValue = ((StringToken) newObject.pattern.getToken())
-                .stringValue();
+                    .stringValue();
             newObject._pattern = Pattern.compile(patternValue);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "Failed to compile regular expression \""
-                    + patternValue + "\"");
+                    "Failed to compile regular expression \"" + patternValue
+                            + "\"");
         }
         return newObject;
     }

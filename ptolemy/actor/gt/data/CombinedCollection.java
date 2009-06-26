@@ -153,8 +153,9 @@ public class CombinedCollection<E> implements Collection<E> {
             }
         }
 
-        if (array.length > size)
+        if (array.length > size) {
             array[size] = null;
+        }
 
         return array;
     }

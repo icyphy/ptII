@@ -65,8 +65,8 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
      *  @exception IllegalArgumentException If the actor parameter is not
      *  an instance of CompositeEntity.
      */
-    public TDLCausalityInterface(Actor actor,
-            Dependency defaultDependency) throws IllegalArgumentException {
+    public TDLCausalityInterface(Actor actor, Dependency defaultDependency)
+            throws IllegalArgumentException {
         super(actor, defaultDependency);
         if (!(actor instanceof CompositeEntity)) {
             throw new IllegalArgumentException("Cannot create an instance of "
@@ -132,8 +132,9 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                 if (container instanceof Actor) {
                     Director executiveDirector = _actor.getExecutiveDirector();
                     if (executiveDirector instanceof TDLModuleDirector) {
-                        minimumDelay = ((TDLCausalityInterface)((Actor)container)
-                                .getCausalityInterface())._getMinimumDelay(port, visitedPorts);
+                        minimumDelay = ((TDLCausalityInterface) ((Actor) container)
+                                .getCausalityInterface())._getMinimumDelay(
+                                port, visitedPorts);
                     } else {
                         minimumDelay = getDefaultDependency();
                     }
@@ -141,7 +142,7 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                     minimumDelay = getDefaultDependency();
                 }
             } else {
-            // else if port is input port of any actor in this actor
+                // else if port is input port of any actor in this actor
                 Collection<IOPort> equivalentPorts = (((Actor) port
                         .getContainer()).getCausalityInterface())
                         .equivalentPorts(port);
@@ -156,8 +157,10 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                                 minimumDelay = dependency;
                             }
                         }
-                        if (sourcePorts.size() == 0)
-                            minimumDelay = getDefaultDependency().oTimesIdentity();
+                        if (sourcePorts.size() == 0) {
+                            minimumDelay = getDefaultDependency()
+                                    .oTimesIdentity();
+                        }
                     }
                 }
                 // set minimum delay for all ports in this equivalence class

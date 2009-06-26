@@ -53,24 +53,20 @@ public class Const extends Source {
      * @param actor The given Const actor
      * @exception IllegalActionException
      */
-    public Const(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Const actor)
+    public Const(PropertyConstraintSolver solver, ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
 
         super(solver, actor);
         _actor = actor;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _actor.value);
         return super.constraintList();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

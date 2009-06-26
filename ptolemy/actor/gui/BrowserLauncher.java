@@ -770,7 +770,7 @@ public class BrowserLauncher {
                 Class linker = Class.forName("com.apple.mrj.jdirect.Linker");
                 Constructor constructor = linker
                         .getConstructor(new Class[] { Class.class });
-                /*linkage = */ constructor
+                /*linkage = */constructor
                         .newInstance(new Object[] { BrowserLauncher.class });
             } catch (ClassNotFoundException cnfe) {
                 errorMessage = cnfe.getMessage();

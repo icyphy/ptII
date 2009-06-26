@@ -27,7 +27,6 @@
  */
 package ptolemy.verification.lib;
 
-
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -35,7 +34,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-
 
 //////////////////////////////////////////////////////////////////////////
 ////SMVLegacyCodeActor
@@ -84,13 +82,12 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
         // particular C code in the library.
         embeddedSMVCode.setVisibility(Settable.EXPERT);
 
-        String code = "\n/* The file contains contents in formats acceptable by SMV.\n" +
-                     " * Currently there is no content checking functionality.\n" +
-                     " * It is the designer's responsibility to keep it correct.\n" +
-                     " *\n" +
-                     " * The module name and the corresponding input parameter \n" +
-                     " * would be generated automatically.\n" +
-                     " */";
+        String code = "\n/* The file contains contents in formats acceptable by SMV.\n"
+                + " * Currently there is no content checking functionality.\n"
+                + " * It is the designer's responsibility to keep it correct.\n"
+                + " *\n"
+                + " * The module name and the corresponding input parameter \n"
+                + " * would be generated automatically.\n" + " */";
         embeddedSMVCode.setExpression(code);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -111,7 +108,6 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
      *  function.
      */
     public StringAttribute embeddedSMVCode;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -135,4 +131,3 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
     ////                         private methods                   ////
 
 }
-

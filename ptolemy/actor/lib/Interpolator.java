@@ -212,8 +212,7 @@ public class Interpolator extends SequenceSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Interpolator newObject = (Interpolator) super.clone(workspace);
 
         newObject._indexes = new int[_indexes.length];
@@ -221,7 +220,7 @@ public class Interpolator extends SequenceSource {
 
         newObject._interpolation = new Interpolation();
 
-        if (_values == null ) {
+        if (_values == null) {
             newObject._values = null;
         } else {
             newObject._values = new double[_values.length];

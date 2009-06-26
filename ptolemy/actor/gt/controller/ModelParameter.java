@@ -118,8 +118,8 @@ public class ModelParameter extends Parameter implements Initializable {
             model = new TypedCompositeActor(new Workspace());
             _token = new ActorToken(model);
             _tokenVersion = -1;
-        } else if (_token == null ||
-                _tokenVersion != model.workspace().getVersion()) {
+        } else if (_token == null
+                || _tokenVersion != model.workspace().getVersion()) {
             _token = new ActorToken(model);
             _tokenVersion = model.workspace().getVersion();
         }
@@ -160,7 +160,7 @@ public class ModelParameter extends Parameter implements Initializable {
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (oldContainer instanceof Initializable) {
             ((Initializable) oldContainer).removeInitializable(this);

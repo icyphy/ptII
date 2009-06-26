@@ -59,12 +59,11 @@ public class Interpolator extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    protected String  _generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
         LinkedList args = new LinkedList();
-        ptolemy.actor.lib.Interpolator actor =
-            (ptolemy.actor.lib.Interpolator) getComponent();
+        ptolemy.actor.lib.Interpolator actor = (ptolemy.actor.lib.Interpolator) getComponent();
         ArrayToken indexesValue = (ArrayToken) actor.indexes.getToken();
         int length = indexesValue.length();
         args.add(length);
@@ -72,5 +71,5 @@ public class Interpolator extends CCodeGeneratorHelper {
 
         code.append(_generateBlockCode("fireBlock", args));
         return code.toString();
-   }
+    }
 }

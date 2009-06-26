@@ -170,8 +170,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
              */
 
             Manager manager = getManager();
-            if ((manager != null)
-                    && (manager.getState() != Manager.IDLE)
+            if ((manager != null) && (manager.getState() != Manager.IDLE)
                     && (manager.getState() != Manager.INFERING_WIDTHS)
                     && (manager.getState() != Manager.PREINITIALIZING)) {
                 _reinitializeInnerActors();
@@ -191,13 +190,12 @@ public class NondeterministicMerge extends TypedCompositeActor {
         super.initialize();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Construct a NondeterministicMerge. */
-    private void _constructor()
-            throws NameDuplicationException, IllegalActionException {
+    private void _constructor() throws NameDuplicationException,
+            IllegalActionException {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -221,7 +219,6 @@ public class NondeterministicMerge extends TypedCompositeActor {
         /*PNDirector director = */new MergeDirector(this, "director");
     }
 
-
     /** Create the contained actors to handle the inputs.
      */
     private void _reinitializeInnerActors() {
@@ -234,8 +231,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
             inputWidth = input.getWidth();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,
-                    "At this time IllegalActionExceptions are not allowed to happen.\n" +
-                    "Width inference should already have been done.");
+                    "At this time IllegalActionExceptions are not allowed to happen.\n"
+                            + "Width inference should already have been done.");
         }
 
         for (int i = 0; i < inputWidth; i++) {
@@ -262,7 +259,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 }
             } else {
                 try {
-                    /*Actor localActor =*/ new ChannelActor(i, this);
+                    /*Actor localActor =*/new ChannelActor(i, this);
 
                     // NOTE: Probably don't want this overhead.
                     // ((NamedObj)localActor).addDebugListener(this);
@@ -273,7 +270,6 @@ public class NondeterministicMerge extends TypedCompositeActor {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -281,24 +277,6 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *  ports of the container.
      */
     private class ChannelActor extends TypedAtomicActor {
-        /** Construct an actor in the specified container with the specified
-         *  name. The index is set to 0.  This method is used by t
-         *  shallow code generator, which requires a (container, name)
-         *  constructor.
-         *  @param container The container.
-         *  @param name The name.
-         *  @exception NameDuplicationException If an actor
-         *   with an identical name already exists in the container.
-         *  @exception IllegalActionException If the actor cannot be contained
-         *   by the proposed container.
-         */
-        public ChannelActor(NondeterministicMerge container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-            _channelIndex = 0;
-            _channelValue = new IntToken(_channelIndex);
-        }
-
         public ChannelActor(int index, NondeterministicMerge container)
                 throws IllegalActionException, NameDuplicationException {
             super(container, "ChannelActor" + index);
@@ -350,11 +328,11 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 // NOTE: synchronizing is neither allowed
                 // nor necessary here. See workspace().wait(Object).
                 // synchronized (this) {
-                    try {
-                        workspace().wait(this);
-                    } catch (InterruptedException ex) {
-                        // Ignore and continue executing.
-                    }
+                try {
+                    workspace().wait(this);
+                } catch (InterruptedException ex) {
+                    // Ignore and continue executing.
+                }
                 // }
             }
         }

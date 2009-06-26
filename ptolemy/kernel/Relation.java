@@ -442,7 +442,8 @@ public class Relation extends NamedObj {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 

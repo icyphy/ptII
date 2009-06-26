@@ -230,8 +230,7 @@ public class ClassChanges implements MoMLFilter {
                 "ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition");
 
         // Moved InterfaceAutomatonTransition
-        _classChanges.put(
-                "ptolemy.domains.fsm.kernel.InterfaceAutomaton",
+        _classChanges.put("ptolemy.domains.fsm.kernel.InterfaceAutomaton",
                 "ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton");
 
         // Moved InterfaceAutomatonTransition
@@ -240,8 +239,7 @@ public class ClassChanges implements MoMLFilter {
                 "ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition");
 
         // Moved InterfaceAutomatonTransition
-        _classChanges.put(
-                "ptolemy.domains.modal.kernel.InterfaceAutomaton",
+        _classChanges.put("ptolemy.domains.modal.kernel.InterfaceAutomaton",
                 "ptolemy.domains.modal.kernel.ia.InterfaceAutomaton");
 
         // Moved ModalTableauFactory
@@ -322,19 +320,19 @@ public class ClassChanges implements MoMLFilter {
                 "ptolemy.vergil.actor.lib.ModelDisplay");
 
         _classChanges.put("ptolemy.domains.sr.lib.ButtonTime",
-                          "ptolemy.domains.sr.lib.gui.ButtonTime");
+                "ptolemy.domains.sr.lib.gui.ButtonTime");
 
         _classChanges.put("ptolemy.domains.sr.lib.NonStrictDisplay",
-                          "ptolemy.domains.sr.lib.gui.NonStrictDisplay");
+                "ptolemy.domains.sr.lib.gui.NonStrictDisplay");
 
         _classChanges.put("ptolemy.actor.lib.CodegenActor",
-                          "ptolemy.actor.lib.jni.CodegenActor");
+                "ptolemy.actor.lib.jni.CodegenActor");
 
         _classChanges.put("ptolemy.codegen.c.actor.lib.CodegenActor",
-                          "ptolemy.codegen.c.actor.lib.jni.CodegenActor");
+                "ptolemy.codegen.c.actor.lib.jni.CodegenActor");
 
         _classChanges.put("ptolemy.codegen.kernel.Director",
-                          "ptolemy.codegen.actor.Director");
+                "ptolemy.codegen.actor.Director");
 
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
@@ -347,7 +345,7 @@ public class ClassChanges implements MoMLFilter {
         }
 
         _classChanges.put("ptolemy.data.unit.UnitAttribute",
-                          "ptolemy.moml.unit.UnitAttribute");
+                "ptolemy.moml.unit.UnitAttribute");
     }
 
     // Set of class names that are obsolete and should be simply

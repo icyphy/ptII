@@ -16,5 +16,4 @@ public class DynamicResult implements PartialResult {
         return false;
     }
 
-
 }

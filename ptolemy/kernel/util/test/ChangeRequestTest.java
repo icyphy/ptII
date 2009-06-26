@@ -76,7 +76,8 @@ public class ChangeRequestTest implements ChangeListener {
         _top.addChangeListener(this);
         _const = new Const(_top, "const");
         _rec = new Recorder(_top, "rec");
-        IORelation relation = (IORelation) _top.connect(_const.output, _rec.input);
+        IORelation relation = (IORelation) _top.connect(_const.output,
+                _rec.input);
         relation.setWidth(1);
     }
 

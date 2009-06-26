@@ -16,5 +16,4 @@ public class StaticResult implements PartialResult {
         return true;
     }
 
-
 }

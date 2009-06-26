@@ -36,11 +36,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
-import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
@@ -66,7 +66,9 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
  */
-public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+public class SDFDirector
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -106,16 +108,18 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment("SDFDirector: "
-                + "Transfer tokens to the inside.")));
+        code.append(CodeStream.indent(getCodeGenerator().comment(
+                "SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
-        CompositeActor container = (CompositeActor) getComponent().getContainer();
-        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator().getAdapter(container);
+        CompositeActor container = (CompositeActor) getComponent()
+                .getContainer();
+        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
+                .getAdapter(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode.getToken())
-                        .booleanValue()) {
+                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+                        .getToken()).booleanValue()) {
 
             // FindBugs wants this instanceof check.
             if (!(inputPort instanceof TypedIOPort)) {
@@ -132,20 +136,17 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                             + portName + i;
 
                     if (type == BaseType.INT) {
-                        code.append("int[] "
-                                + tokensFromOneChannel
-                                + " = (int[])(" + portName + "[" + String.valueOf(i)
-                                + "]);" + _eol);
+                        code.append("int[] " + tokensFromOneChannel
+                                + " = (int[])(" + portName + "["
+                                + String.valueOf(i) + "]);" + _eol);
                     } else if (type == BaseType.DOUBLE) {
-                        code.append("double[] "
-                                + tokensFromOneChannel
-                                + " = (double[])" + portName + "[" + String.valueOf(i)
-                                + "];" + _eol);
+                        code.append("double[] " + tokensFromOneChannel
+                                + " = (double[])" + portName + "["
+                                + String.valueOf(i) + "];" + _eol);
                     } else if (type == BaseType.BOOLEAN) {
-                        code.append("boolean[] "
-                                + tokensFromOneChannel
-                                + " = (boolean[])" + portName + "[" + String.valueOf(i)
-                                + "];" + _eol);
+                        code.append("boolean[] " + tokensFromOneChannel
+                                + " = (boolean[])" + portName + "["
+                                + String.valueOf(i) + "];" + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -162,8 +163,8 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                                     + pointerToTokensFromOneChannel + "[" + k
                                     + "];" + _eol);
                         } else {*/
-                            code.append(" = " + tokensFromOneChannel
-                                    + "[" + k + "];" + _eol);
+                        code.append(" = " + tokensFromOneChannel + "[" + k
+                                + "];" + _eol);
                         //}
                     }
                 }
@@ -179,11 +180,11 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorAdapter.getReference(
-                                "@" + name + "," + k));
+                        code.append(compositeActorAdapter.getReference("@"
+                                + name + "," + k));
                         code.append(" = " + _eol);
-                        code.append(compositeActorAdapter.getReference(
-                                name + "," + k));
+                        code.append(compositeActorAdapter.getReference(name
+                                + "," + k));
                         code.append(";" + _eol);
                     }
                 }
@@ -197,7 +198,6 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         _updateConnectedPortsOffset(inputPort, code, rate);
     }
 
-
     /** Generate code for transferring enough tokens to fulfill the output
      *  production rate.
      *  @param outputPort The port to transfer tokens.
@@ -206,25 +206,26 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment("SDFDirector: "
-                + "Transfer tokens to the outside.")));
+        code.append(CodeStream.indent(getCodeGenerator().comment(
+                "SDFDirector: " + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator().getAdapter(container);
+        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
+                .getAdapter(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode.getToken())
-                        .booleanValue()) {
+                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+                        .getToken()).booleanValue()) {
 
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();
 
                 code.append("Object[] tokensToAllOutputPorts = "
-                        + " new Object["
-                        + String.valueOf(numberOfOutputPorts) + "];" + _eol);
+                        + " new Object[" + String.valueOf(numberOfOutputPorts)
+                        + "];" + _eol);
             }
 
             String portName = outputPort.getName();
@@ -242,20 +243,23 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
             // Find construct correct array type.
             if (type == BaseType.INT) {
-                code.append("int[][] " + tokensToThisPort + " ="
-                        + " new int[ "+ String.valueOf(numberOfChannels) + "][" + rate + "];" + _eol);
+                code.append("int[][] " + tokensToThisPort + " =" + " new int[ "
+                        + String.valueOf(numberOfChannels) + "][" + rate + "];"
+                        + _eol);
 
             } else if (type == BaseType.DOUBLE) {
                 code.append("double[][] " + tokensToThisPort + " ="
-                        + " new double[ "+ String.valueOf(numberOfChannels) + "][" + rate + "];" + _eol);
+                        + " new double[ " + String.valueOf(numberOfChannels)
+                        + "][" + rate + "];" + _eol);
             } else if (type == BaseType.BOOLEAN) {
                 code.append("boolean[][] " + tokensToThisPort + " ="
-                        + " new boolean[ "+ String.valueOf(numberOfChannels) + "][" + rate + "];" + _eol);
+                        + " new boolean[ " + String.valueOf(numberOfChannels)
+                        + "][" + rate + "];" + _eol);
 
             } else {
                 // FIXME: need to deal with other types
             }
-            
+
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 String portNameWithChannelNumber = portName;
                 if (outputPort.isMultiport()) {
@@ -271,13 +275,14 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                                 + "] = " + "(int) " + portReference + ";"
                                 + _eol);
                     } else {*/
-                        code.append(tokensToThisPort + "[" + i + "][" + k
-                                + "] = " + portReference + ";" + _eol);
+                    code.append(tokensToThisPort + "[" + i + "][" + k + "] = "
+                            + portReference + ";" + _eol);
                     //}
                 }
             }
-            code.append("tokensToAllOutputPorts [" + String.valueOf(_portNumber) + "] = "
-                    + tokensToThisPort + ";" + _eol);
+            code.append("tokensToAllOutputPorts ["
+                    + String.valueOf(_portNumber) + "] = " + tokensToThisPort
+                    + ";" + _eol);
 
             _portNumber++;
 
@@ -294,8 +299,8 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                         code.append(CodeStream.indent(compositeActorAdapter
                                 .getReference(name + "," + k)));
                         code.append(" =" + _eol);
-                        code.append(CodeStream.indent(compositeActorAdapter.getReference("@" + name
-                                        + "," + k)));
+                        code.append(CodeStream.indent(compositeActorAdapter
+                                .getReference("@" + name + "," + k)));
                         code.append(";" + _eol);
                     }
                 }
@@ -318,7 +323,6 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
@@ -327,17 +331,20 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      *   director cannot be found.
      */
     @Override
-    protected String _generateVariableDeclaration(ProgramCodeGeneratorAdapter target) throws IllegalActionException {        
+    protected String _generateVariableDeclaration(
+            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        String name = ProgramCodeGeneratorAdapterStrategy.generateName(target.getComponent());
+        String name = ProgramCodeGeneratorAdapterStrategy.generateName(target
+                .getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
         if (referencedParameterDeclaration.length() > 1) {
             code.append(_eol
-                    + codeGenerator.comment(name + "'s referenced parameter declarations."));
+                    + codeGenerator.comment(name
+                            + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
 
@@ -345,7 +352,8 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         String inputVariableDeclaration = _generateInputVariableDeclaration(target);
         if (inputVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + codeGenerator.comment(name + "'s input variable declarations."));
+                    + codeGenerator.comment(name
+                            + "'s input variable declarations."));
             code.append(inputVariableDeclaration);
         }
 
@@ -353,7 +361,8 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         String outputVariableDeclaration = _generateOutputVariableDeclaration(target);
         if (outputVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + codeGenerator.comment(name + "'s output variable declarations."));
+                    + codeGenerator.comment(name
+                            + "'s output variable declarations."));
             code.append(outputVariableDeclaration);
         }
 
@@ -361,13 +370,13 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
         if (typeConvertVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + codeGenerator.comment(name + "'s type convert variable declarations."));
+                    + codeGenerator.comment(name
+                            + "'s type convert variable declarations."));
             code.append(typeConvertVariableDeclaration);
         }
 
         return processCode(code.toString());
-    }    
-
+    }
 
     /**
      * Return an unique label for the given attribute referenced
@@ -380,8 +389,9 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      *  generating the label.
      */
     @Override
-    protected String _getReference(ProgramCodeGeneratorAdapter target, Attribute attribute, String[] channelAndOffset)
-    throws IllegalActionException {
+    protected String _getReference(ProgramCodeGeneratorAdapter target,
+            Attribute attribute, String[] channelAndOffset)
+            throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -396,28 +406,29 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
         if (!channelAndOffset[0].equals("")) {
             throw new IllegalActionException(target.getComponent(),
-            "a parameter cannot have channel number.");
+                    "a parameter cannot have channel number.");
         }
 
         if (!channelAndOffset[1].equals("")) {
             // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
             // We are not certain that attribute is parameter.
-            Type elementType = ((ArrayType) ((Parameter) attribute)
-                    .getType()).getElementType();
+            Type elementType = ((ArrayType) ((Parameter) attribute).getType())
+                    .getElementType();
 
             //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "(" 
-                    + getStrategy().codeGenType(elementType).replace("Array", "Token").replace("Matrix", "Token")
+            result.insert(0, "("
+                    + getStrategy().codeGenType(elementType).replace("Array",
+                            "Token").replace("Matrix", "Token")
                     + ")(/*JCGH44*/Array_get(");
             if (getStrategy().isPrimitive(elementType)) {
-                result.insert(0, "("); 
+                result.insert(0, "(");
             }
 
             result.append(" ," + channelAndOffset[1] + ")");
 
-
             if (getStrategy().isPrimitive(elementType)) {
-                String cgType = getStrategy().codeGenType(elementType).toLowerCase();
+                String cgType = getStrategy().codeGenType(elementType)
+                        .toLowerCase();
                 if (cgType.equals("integer")) {
                     cgType = "int";
                 }
@@ -426,9 +437,7 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                     cgType = "";
                     operator = "toString()";
                 }
-                result.append(".payload/*jcgh2*/))."
-                        + cgType
-                        + operator);
+                result.append(".payload/*jcgh2*/))." + cgType + operator);
             } else {
                 result.append(")");
             }
@@ -439,9 +448,8 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                      ////
 
-
     private void _portVariableDeclaration(StringBuffer code, TypedIOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         code.append("static " + targetType(port.getType()) + " "
                 + ProgramCodeGeneratorAdapterStrategy.generateName(port));
@@ -481,13 +489,13 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      *  @exception IllegalActionException If thrown while
      *  getting port information.
      */
-    private String _generateInputVariableDeclaration(ProgramCodeGeneratorAdapter target)
-        throws IllegalActionException {
+    private String _generateInputVariableDeclaration(
+            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> inputPorts = ((Actor) target.getComponent()).inputPortList()
-        .iterator();
+        Iterator<?> inputPorts = ((Actor) target.getComponent())
+                .inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
@@ -508,19 +516,20 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      *  @exception IllegalActionException If thrown while
      *  getting port information.
      */
-    private String _generateOutputVariableDeclaration(ProgramCodeGeneratorAdapter target)
-    throws IllegalActionException {
+    private String _generateOutputVariableDeclaration(
+            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> outputPorts = ((Actor) target.getComponent()).outputPortList()
-        .iterator();
+        Iterator<?> outputPorts = ((Actor) target.getComponent())
+                .outputPortList().iterator();
 
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
 
             // If either the output port is a dangling port or
             // the output port has inside receivers.
-            if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
+            if (!outputPort.isOutsideConnected()
+                    || outputPort.isInsideConnected()) {
                 _portVariableDeclaration(code, outputPort);
             }
         }
@@ -534,36 +543,39 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      *  @exception IllegalActionException If thrown while
      *  getting modified variable information.
      */
-    private String _generateReferencedParameterDeclaration(ProgramCodeGeneratorAdapter target)
-    throws IllegalActionException {
+    private String _generateReferencedParameterDeclaration(
+            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         if (_referencedParameters.containsKey(target)) {
 
-            for (Parameter parameter : _referencedParameters.get(target)) {                 
+            for (Parameter parameter : _referencedParameters.get(target)) {
                 // avoid duplicate declaration.
-                if (!getCodeGenerator().getModifiedVariables().contains(parameter)) {
+                if (!getCodeGenerator().getModifiedVariables().contains(
+                        parameter)) {
                     code.append("static " + targetType(parameter.getType())
-                            + " " + getStrategy().generateVariableName(parameter) + ";"
-                            + _eol);
+                            + " "
+                            + getStrategy().generateVariableName(parameter)
+                            + ";" + _eol);
                 }
             }
         }
 
         return code.toString();
     }
-    
+
     /** Generate type convert variable declarations.
      *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      *  @return a String that declares type convert variables.
      *  @exception IllegalActionException If thrown while
      *  getting port information.
      */
-    private String _generateTypeConvertVariableDeclaration(ProgramCodeGeneratorAdapter target)
-    throws IllegalActionException {
+    private String _generateTypeConvertVariableDeclaration(
+            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> channels = target.getStrategy().getTypeConvertChannels().iterator();
+        Iterator<?> channels = target.getStrategy().getTypeConvertChannels()
+                .iterator();
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
             Type portType = ((TypedIOPort) channel.port).getType();
@@ -573,7 +585,9 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                 code.append("static ");
                 code.append(targetType(portType));
                 //getStrategy();
-                code.append(" " + ProgramCodeGeneratorAdapterStrategy.getTypeConvertReference(channel));
+                code.append(" "
+                        + ProgramCodeGeneratorAdapterStrategy
+                                .getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
                 int bufferSize = Math.max(DFUtilities
@@ -582,18 +596,18 @@ public class SDFDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
                 if (bufferSize > 1) {
                     //code.append("[" + bufferSize + "]");
-                    code.append("[] = new "+ targetType(portType) + "[" + bufferSize + "]");
+                    code.append("[] = new " + targetType(portType) + "["
+                            + bufferSize + "]");
                 }
                 code.append(";" + _eol);
             }
         }
         return code.toString();
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private members                        ////
 
-    
     private int _portNumber = 0;
 
 }

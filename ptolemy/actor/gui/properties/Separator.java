@@ -29,6 +29,7 @@ package ptolemy.actor.gui.properties;
 
 import javax.swing.JComponent;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
@@ -146,15 +147,15 @@ public class Separator extends GUIProperty {
         if (attribute == orientation) {
             String value = orientation.stringValue();
             if (value.equalsIgnoreCase("Horizontal")) {
-                ((JSeparator) getComponent()).setOrientation(
-                        JSeparator.HORIZONTAL);
+                ((JSeparator) getComponent())
+                        .setOrientation(SwingConstants.HORIZONTAL);
             } else if (value.equalsIgnoreCase("Vertical")) {
-                ((JSeparator) getComponent()).setOrientation(
-                        JSeparator.VERTICAL);
+                ((JSeparator) getComponent())
+                        .setOrientation(SwingConstants.VERTICAL);
             } else {
-                throw new IllegalActionException(this, "Orientation of a " +
-                        "separator must be either \"Horozontal\" or " +
-                        "\"Vertical\".");
+                throw new IllegalActionException(this, "Orientation of a "
+                        + "separator must be either \"Horozontal\" or "
+                        + "\"Vertical\".");
             }
         } else {
             super.attributeChanged(attribute);

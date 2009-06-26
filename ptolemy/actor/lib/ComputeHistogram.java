@@ -194,8 +194,7 @@ public class ComputeHistogram extends TypedAtomicActor {
         ComputeHistogram newObject = (ComputeHistogram) super.clone(workspace);
 
         newObject._bins = new int[_numberOfBins];
-        System.arraycopy(_bins, 0, newObject._bins,
-                         0, _bins.length);
+        System.arraycopy(_bins, 0, newObject._bins, 0, _bins.length);
         return newObject;
     }
 

@@ -196,11 +196,12 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         // Avoid a dependency on diva/gui/GUIUtilities.java here, but
         // add some code duplication.
         JMenuItem item = _editMenu.add(formatAction);
-        item.setText((String)formatAction.getValue(Action.NAME));
+        item.setText((String) formatAction.getValue(Action.NAME));
         item.setMnemonic((Integer) formatAction.getValue(Action.MNEMONIC_KEY));
         item.setToolTipText((String) formatAction.getValue("tooltip"));
 
-        KeyStroke key = (KeyStroke) formatAction.getValue(Action.ACCELERATOR_KEY);
+        KeyStroke key = (KeyStroke) formatAction
+                .getValue(Action.ACCELERATOR_KEY);
         item.setAccelerator(key);
         formatAction.putValue("menuItem", item);
         // End of duplicated code from diva GUIUtilities.

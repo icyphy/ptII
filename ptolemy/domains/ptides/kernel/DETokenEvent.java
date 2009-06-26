@@ -63,8 +63,7 @@ public class DETokenEvent extends DEEvent {
      *  but its value cannot be obtained, which should be an integer.
      */
     public DETokenEvent(Actor actor, Time timeStamp, int microstep, int depth,
-            Token token, Receiver receiver)
-            throws IllegalActionException {
+            Token token, Receiver receiver) throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
         _token = token;
         _receiver = receiver;
@@ -82,8 +81,8 @@ public class DETokenEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public DETokenEvent(IOPort ioPort, int channel, Time timeStamp, int microstep, int depth,
-            Token token, Receiver receiver)
+    public DETokenEvent(IOPort ioPort, int channel, Time timeStamp,
+            int microstep, int depth, Token token, Receiver receiver)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
         _channel = channel;
@@ -107,7 +106,7 @@ public class DETokenEvent extends DEEvent {
      */
     public boolean equals(Object object) {
         boolean result = super.equals(object);
-        if (result == true && ((DETokenEvent)object).token() == _token) {
+        if (result == true && ((DETokenEvent) object).token() == _token) {
             return true;
         } else {
             return false;
@@ -140,13 +139,12 @@ public class DETokenEvent extends DEEvent {
         if (_ioPort != null) {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
-                    + _token + ", dest = " + name + "."
-                    + _ioPort.getName() + "." + _channel + ").";
+                    + _token + ", dest = " + name + "." + _ioPort.getName()
+                    + "." + _channel + ").";
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
-                    + _token + ", dest = " + name + ")"
-                    + " -- A PURE EVENT.";
+                    + _token + ", dest = " + name + ")" + " -- A PURE EVENT.";
         }
     }
 

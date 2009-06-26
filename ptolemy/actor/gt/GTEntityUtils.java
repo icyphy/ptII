@@ -146,8 +146,8 @@ public class GTEntityUtils {
                     String portID = criterion.getPortID(list);
                     preservedPortNames.add(portID);
 
-                    TypedIOPort port = (TypedIOPort)
-                            ((ComponentEntity) entity).getPort(portID);
+                    TypedIOPort port = (TypedIOPort) ((ComponentEntity) entity)
+                            .getPort(portID);
                     boolean isInput = criterion.isInput();
                     boolean isOutput = criterion.isOutput();
                     boolean isMultiport = !criterion.isMultiportEnabled()
@@ -157,10 +157,9 @@ public class GTEntityUtils {
                             port.setInput(isInput);
                             port.setOutput(isOutput);
                         } else {
-                            MoMLChangeRequest request =
-                                new MoMLChangeRequest(entity, object,
-                                        "<deletePort name=\"" + port.getName()
-                                        + "\"/>");
+                            MoMLChangeRequest request = new MoMLChangeRequest(
+                                    entity, object, "<deletePort name=\""
+                                            + port.getName() + "\"/>");
                             request.setUndoable(true);
                             request.setMergeWithPreviousUndo(true);
                             request.execute();
@@ -178,8 +177,7 @@ public class GTEntityUtils {
                     port.setMultiport(isMultiport);
                 } else if (ingredient instanceof SubclassCriterion
                         && !isIconSet && !foundPersistentIcon) {
-                    SubclassCriterion criterion =
-                        (SubclassCriterion) ingredient;
+                    SubclassCriterion criterion = (SubclassCriterion) ingredient;
                     final String superclass = criterion.getSuperclass();
                     object.requestChange(new ChangeRequest(entity,
                             "Deferred load actor icon action.") {
@@ -192,8 +190,9 @@ public class GTEntityUtils {
                 i++;
             }
             if (!isIconSet && !foundPersistentIcon) {
-                object.requestChange(new RestoreAppearanceChangeRequest(
-                        entity));
+                object
+                        .requestChange(new RestoreAppearanceChangeRequest(
+                                entity));
             }
 
             ComponentEntity component = (ComponentEntity) entity;
@@ -317,9 +316,8 @@ public class GTEntityUtils {
      */
     private static void _setIconDescription(GTEntity entity,
             String iconDescription) throws Exception {
-        SingletonConfigurableAttribute description =
-            new SingletonConfigurableAttribute((NamedObj) entity,
-                    "_iconDescription");
+        SingletonConfigurableAttribute description = new SingletonConfigurableAttribute(
+                (NamedObj) entity, "_iconDescription");
         description.configure(null, null, iconDescription);
     }
 
@@ -383,11 +381,11 @@ public class GTEntityUtils {
                 List<?> editorIconList = actor.attributeList(EditorIcon.class);
                 for (Object editorIconObject : editorIconList) {
                     EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                    EditorIcon icon = (EditorIcon) editorIcon.clone(
-                            ((NamedObj) _entity).workspace());
+                    EditorIcon icon = (EditorIcon) editorIcon
+                            .clone(((NamedObj) _entity).workspace());
                     icon.setName("_icon");
-                    EditorIcon oldIcon =
-                        (EditorIcon) ((NamedObj) _entity).getAttribute("_icon");
+                    EditorIcon oldIcon = (EditorIcon) ((NamedObj) _entity)
+                            .getAttribute("_icon");
                     if (oldIcon != null) {
                         oldIcon.setContainer(null);
                     }

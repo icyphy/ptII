@@ -39,6 +39,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.ConstantSize;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.util.LayoutStyle;
 
@@ -260,8 +261,9 @@ public final class ButtonBarBuilder extends PanelBuilder {
         for (int i = 0; i < length; i++) {
             int index = leftToRight ? i : length - 1 - i;
             addGridded(buttons[index]);
-            if (i < buttons.length - 1)
+            if (i < buttons.length - 1) {
                 addRelatedGap();
+            }
         }
     }
 
@@ -281,8 +283,9 @@ public final class ButtonBarBuilder extends PanelBuilder {
         for (int i = 0; i < length; i++) {
             int index = leftToRight ? i : length - 1 - i;
             addGriddedGrowing(buttons[index]);
-            if (i < buttons.length - 1)
+            if (i < buttons.length - 1) {
                 addRelatedGap();
+            }
         }
     }
 
@@ -369,7 +372,7 @@ public final class ButtonBarBuilder extends PanelBuilder {
      */
     public void addStrut(ConstantSize size) {
         getLayout().appendColumn(
-                new ColumnSpec(ColumnSpec.LEFT, size, ColumnSpec.NO_GROW));
+                new ColumnSpec(ColumnSpec.LEFT, size, FormSpec.NO_GROW));
         nextColumn();
     }
 

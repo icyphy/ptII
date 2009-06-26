@@ -58,9 +58,9 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     private final static int SOURCE_FILE = 0;
-    
+
     private final static int ASSEMBLY_FILE = 1;
 
     ///////////////////////////////////////////////////////////////////
@@ -82,6 +82,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
         _generateAssemblyFile();
         return result;
     }
+
     /**
      * Return the name of the output file.
      * @return The output file name.
@@ -92,7 +93,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
         String extension = null;
         if (_generateFile == SOURCE_FILE) {
             extension = ".c";
-        } else if (_generateFile == ASSEMBLY_FILE){
+        } else if (_generateFile == ASSEMBLY_FILE) {
             extension = ".S";
         }
 
@@ -104,7 +105,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      * 
      */
     protected void _generateAssemblyFile() throws IllegalActionException {
-        PtidesBasicDirector director = (PtidesBasicDirector)getAdapter(getContainer());
+        PtidesBasicDirector director = (PtidesBasicDirector) getAdapter(getContainer());
         _writeCode(director.generateAsseblyFile());
     }
 

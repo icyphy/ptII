@@ -64,7 +64,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     }
 
     public void enterTransformation(boolean incremental)
-    throws PtalonRuntimeException {
+            throws PtalonRuntimeException {
         _isInTransformation = true;
         _isIncrementalTransformation = incremental;
         _negatedObjects.clear();
@@ -81,9 +81,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     public void negateObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
-            throw new PtalonRuntimeException("Objects can be marked negated " +
-                    "only in the pattern but not in the transformation " +
-                    "following the \"=>\" or \"=>+\" mark.");
+            throw new PtalonRuntimeException("Objects can be marked negated "
+                    + "only in the pattern but not in the transformation "
+                    + "following the \"=>\" or \"=>+\" mark.");
         }
         try {
             NamedObj object = _getObject(name);
@@ -92,9 +92,8 @@ public class TransformationEvaluator extends PtalonEvaluator {
                     throw new PtalonRuntimeException("Object \"" + name + "\" "
                             + "has already been marked negated.");
                 }
-                _removeAttributes(object, new Class<?>[] {
-                        NegationAttribute.class
-                });
+                _removeAttributes(object,
+                        new Class<?>[] { NegationAttribute.class });
                 new NegationAttribute(object, object.uniqueName("_negated"));
                 _negatedObjects.add(object);
             }
@@ -107,9 +106,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     public void optionalObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
-            throw new PtalonRuntimeException("Objects can be marked optional " +
-                    "only in the pattern but not in the transformation " +
-                    "following the \"=>\" or \"=>+\" mark.");
+            throw new PtalonRuntimeException("Objects can be marked optional "
+                    + "only in the pattern but not in the transformation "
+                    + "following the \"=>\" or \"=>+\" mark.");
         }
         try {
             NamedObj object = _getObject(name);
@@ -118,9 +117,8 @@ public class TransformationEvaluator extends PtalonEvaluator {
                     throw new PtalonRuntimeException("Object \"" + name + "\" "
                             + "has already been marked optional.");
                 }
-                _removeAttributes(object, new Class<?>[] {
-                        OptionAttribute.class
-                });
+                _removeAttributes(object,
+                        new Class<?>[] { OptionAttribute.class });
                 new OptionAttribute(object, object.uniqueName("_optional"));
                 _optionalObjects.add(object);
             }
@@ -133,27 +131,30 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     public void preserveObject(String name) throws PtalonRuntimeException {
         if (_isIncrementalTransformation) {
-            throw new PtalonRuntimeException("Objects can be marked " +
-                    "preserved only in incremental transformations (declared " +
-                    "with \"=>\" but not \"=>+\").");
+            throw new PtalonRuntimeException(
+                    "Objects can be marked "
+                            + "preserved only in incremental transformations (declared "
+                            + "with \"=>\" but not \"=>+\").");
         }
         try {
             NamedObj object = _getObject(name);
             if (object != null) {
                 if (GTTools.isCreated(object)) {
-                    throw new PtalonRuntimeException("Object \"" + name + "\"" +
-                            " is created in the transformation, so it cannot " +
-                            "be preserved.");
+                    throw new PtalonRuntimeException(
+                            "Object \""
+                                    + name
+                                    + "\""
+                                    + " is created in the transformation, so it cannot "
+                                    + "be preserved.");
                 }
                 if (_preservedObjects.contains(object)) {
                     throw new PtalonRuntimeException("Object \"" + name + "\" "
                             + "has already been marked removed.");
                 }
-                _removeAttributes(object, new Class<?>[] {
-                        PreservationAttribute.class
-                });
-                new PreservationAttribute(object, object.uniqueName(
-                        "_preserved"));
+                _removeAttributes(object,
+                        new Class<?>[] { PreservationAttribute.class });
+                new PreservationAttribute(object, object
+                        .uniqueName("_preserved"));
                 _preservedObjects.add(object);
             }
         } catch (PtalonScopeException e) {
@@ -165,25 +166,27 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     public void removeObject(String name) throws PtalonRuntimeException {
         if (!_isIncrementalTransformation) {
-            throw new PtalonRuntimeException("Objects can be marked removed " +
-                    "only in incremental transformations (declared with " +
-                    "\"=>+\").");
+            throw new PtalonRuntimeException("Objects can be marked removed "
+                    + "only in incremental transformations (declared with "
+                    + "\"=>+\").");
         }
         try {
             NamedObj object = _getObject(name);
             if (object != null) {
                 if (GTTools.isCreated(object)) {
-                    throw new PtalonRuntimeException("Object \"" + name + "\"" +
-                            " is created in the transformation, so it cannot " +
-                            "be removed.");
+                    throw new PtalonRuntimeException(
+                            "Object \""
+                                    + name
+                                    + "\""
+                                    + " is created in the transformation, so it cannot "
+                                    + "be removed.");
                 }
                 if (_removedObjects.contains(object)) {
                     throw new PtalonRuntimeException("Object \"" + name + "\" "
                             + "has already been marked removed.");
                 }
-                _removeAttributes(object, new Class<?>[] {
-                        PreservationAttribute.class
-                });
+                _removeAttributes(object,
+                        new Class<?>[] { PreservationAttribute.class });
                 _removedObjects.add(object);
             }
         } catch (PtalonScopeException e) {
@@ -213,8 +216,8 @@ public class TransformationEvaluator extends PtalonEvaluator {
         } else if (_isPreservingTransformation()) {
             try {
                 GTTools.deepRemoveAttributes(object, CreationAttribute.class);
-                new PreservationAttribute(object, object.uniqueName(
-                        "_preserved"));
+                new PreservationAttribute(object, object
+                        .uniqueName("_preserved"));
             } catch (Exception e) {
                 throw new PtalonRuntimeException("Unable to create attribute.",
                         e);
@@ -223,7 +226,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     }
 
     private NamedObj _getObject(String name) throws PtalonScopeException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
         String type = _getType(name);
         String uniqueId = _actor.getMappedName(name);
         NamedObj object = null;
@@ -238,7 +241,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     }
 
     private void _removeAttributes(NamedObj object, Class<?>[] attributeClasses)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         List<?> attributes = object.attributeList();
         List<Attribute> removedAttributes = new LinkedList<Attribute>();
         for (Object attributeObject : attributes) {

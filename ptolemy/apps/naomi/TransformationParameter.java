@@ -49,8 +49,8 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationParameter extends NaomiParameter
-        implements CompositeNaomiAttribute {
+public class TransformationParameter extends NaomiParameter implements
+        CompositeNaomiAttribute {
 
     /**
      *  @param container
@@ -90,8 +90,8 @@ public class TransformationParameter extends NaomiParameter
         try {
             ((NamedObj) container.clone(new Workspace())).exportMoML(writer);
         } catch (CloneNotSupportedException e) {
-            throw new IllegalActionException(null, e, "Unable to clone the " +
-                    "associated object.");
+            throw new IllegalActionException(null, e, "Unable to clone the "
+                    + "associated object.");
         }
     }
 }

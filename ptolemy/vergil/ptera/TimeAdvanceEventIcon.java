@@ -75,17 +75,16 @@ public class TimeAdvanceEventIcon extends EventIcon {
         LabelFigure label = new LabelFigure(event.getTimeAdvanceText(), _FONT,
                 2.0, SwingConstants.CENTER);
         Rectangle2D labelBounds = label.getBounds();
-        RoundedRectangle background = new RoundedRectangle(0, 0,
-                labelBounds.getWidth() + 12, labelBounds.getHeight() + 6,
-                Color.white, 1.0f, 6.0f, 6.0f);
+        RoundedRectangle background = new RoundedRectangle(0, 0, labelBounds
+                .getWidth() + 12, labelBounds.getHeight() + 6, Color.white,
+                1.0f, 6.0f, 6.0f);
         Rectangle2D backgroundBounds = background.getBounds();
 
         figure.add(background);
         figure.add(label);
 
-        background.translate(
-                bounds.getMaxX() - backgroundBounds.getCenterX() - 5,
-                bounds.getMinY() - backgroundBounds.getCenterY());
+        background.translate(bounds.getMaxX() - backgroundBounds.getCenterX()
+                - 5, bounds.getMinY() - backgroundBounds.getCenterY());
         label.translateTo(bounds.getMaxX() - 5, bounds.getMinY());
         return figure;
     }

@@ -62,12 +62,10 @@ public class Integrator extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
-        ptolemy.domains.continuous.lib.Integrator actor =
-            (ptolemy.domains.continuous.lib.Integrator) getComponent();
+    public List<Inequality> constraintList() throws IllegalActionException {
+        ptolemy.domains.continuous.lib.Integrator actor = (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
         // TODO: write a monotonic function.
         setAtLeast(actor.state, new FunctionTerm(actor.derivative));
@@ -98,7 +96,7 @@ public class Integrator extends PropertyConstraintHelper {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property inputProperty = (Property) getSolver().getProperty(_derivative);
+            Property inputProperty = getSolver().getProperty(_derivative);
 
             if (inputProperty == _lattice.getElement("SPEED")) {
                 return _lattice.getElement("POSITION");
@@ -113,8 +111,8 @@ public class Integrator extends PropertyConstraintHelper {
                 return _lattice.getElement("UNITLESS");
             }
 
-            if (inputProperty == null ||
-                    inputProperty == _lattice.getElement("UNKNOWN")) {
+            if (inputProperty == null
+                    || inputProperty == _lattice.getElement("UNKNOWN")) {
                 return _lattice.getElement("UNKNOWN");
             } else {
                 return _lattice.getElement("TOP");
@@ -129,9 +127,7 @@ public class Integrator extends PropertyConstraintHelper {
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] {
-                getPropertyTerm(_derivative)
-            };
+            return new InequalityTerm[] { getPropertyTerm(_derivative) };
         }
     }
 }

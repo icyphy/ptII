@@ -89,8 +89,7 @@ public class StreamExec implements ExecuteCommands {
     public void appendToPath(String directoryName) {
         // FIXME: Code Duplication from JTextAreaExec.java
         if (_debug) {
-            stdout("StreamExec.appendToPath(): "
-                    + directoryName + "\n");
+            stdout("StreamExec.appendToPath(): " + directoryName + "\n");
         }
 
         // Might be Path, might be PATH
@@ -102,13 +101,11 @@ public class StreamExec implements ExecuteCommands {
                 keyPath = "Path";
             }
             if (_debug) {
-                stdout("StreamExec.appendToPath() Path: "
-                        + path + "\n");
+                stdout("StreamExec.appendToPath() Path: " + path + "\n");
             }
         } else {
             if (_debug) {
-                stdout("StreamExec.appendToPath() PATH: "
-                        + path + "\n");
+                stdout("StreamExec.appendToPath() PATH: " + path + "\n");
             }
         }
 
@@ -120,11 +117,11 @@ public class StreamExec implements ExecuteCommands {
             }
             _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
-                    + File.pathSeparatorChar);
+                            + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging
-                for ( int i = 0; i < _envp.length; i++) {
+                for (int i = 0; i < _envp.length; i++) {
                     stdout("StreamExec.appendToPath() " + _envp[i]);
                 }
             }
@@ -162,12 +159,12 @@ public class StreamExec implements ExecuteCommands {
             // is Path.  Updating PATH is wrong, the subprocess will
             // not see the change.  So, we search the env for a direct
             // match
-            Map<String,String> environmentMap = System.getenv();
+            Map<String, String> environmentMap = System.getenv();
             return environmentMap.get(key);
         }
-        for ( int i = 0; i < _envp.length; i++) {
-            if (key.regionMatches(false /*ignoreCase*/,
-                            0, _envp[i], 0, key.length())) {
+        for (int i = 0; i < _envp.length; i++) {
+            if (key.regionMatches(false /*ignoreCase*/, 0, _envp[i], 0, key
+                    .length())) {
                 return _envp[i].substring(key.length() + 1, _envp[i].length());
             }
         }
@@ -245,10 +242,10 @@ public class StreamExec implements ExecuteCommands {
         // and
         // ptolemy.gui.JTextAreaExec, which extends JPanel
 
-        Map<String,String> env = new HashMap(System.getenv());
+        Map<String, String> env = new HashMap(System.getenv());
 
         env.put(key, value + env.get(key));
-        String [] envp = new String[env.size()];
+        String[] envp = new String[env.size()];
 
         int i = 0;
         Iterator entries = env.entrySet().iterator();

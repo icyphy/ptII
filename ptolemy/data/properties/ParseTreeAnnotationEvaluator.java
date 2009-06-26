@@ -74,7 +74,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *
      */
     public void visitAssignmentNode(ASTPtAssignmentNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ((ASTPtRootNode) node.jjtGetChild(0)).visit(this);
         Object object = _evaluatedObject;
 
@@ -83,8 +83,8 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         if (_evaluatedObject instanceof Property) {
             _helper.setEquals(object, (Property) _evaluatedObject);
         } else {
-            throw _unsupportedVisitException(
-                    "Unknown assignment object: " + _evaluatedObject);
+            throw _unsupportedVisitException("Unknown assignment object: "
+                    + _evaluatedObject);
         }
     }
 
@@ -92,18 +92,19 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _helper.getComponent());
+        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _helper
+                .getComponent());
 
         if (_evaluatedObject == null) {
-            throw _unsupportedVisitException(
-                    "Cannot resolve label: " + node.getName());
+            throw _unsupportedVisitException("Cannot resolve label: "
+                    + node.getName());
         }
 
         // FIXME: Not handling AST constraint yet.
     }
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         String name = node.getMethodName();
         ((ASTPtRootNode) node.jjtGetChild(0)).visit(this);
 
@@ -112,8 +113,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         // (x.y.step).getPort()
         if (name.equals("getPort")) {
             if (_evaluatedObject instanceof PortParameter) {
-                _evaluatedObject =
-                ((PortParameter)_evaluatedObject).getPort();
+                _evaluatedObject = ((PortParameter) _evaluatedObject).getPort();
             }
 
             if (!(_evaluatedObject instanceof Port)) {
@@ -122,8 +122,8 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
 
         } else if (name.equals("getParameter")) {
             if (_evaluatedObject instanceof ParameterPort) {
-                _evaluatedObject =
-                ((ParameterPort)_evaluatedObject).getParameter();
+                _evaluatedObject = ((ParameterPort) _evaluatedObject)
+                        .getParameter();
             }
 
             if (!(_evaluatedObject instanceof Parameter)) {
@@ -132,8 +132,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
 
         if (_evaluatedObject == null) {
-            throw _unsupportedVisitException(
-                    "Cannot resolve label: " + name);
+            throw _unsupportedVisitException("Cannot resolve label: " + name);
         }
     }
 
@@ -143,14 +142,15 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         if (dotIndex >= 0) {
             String subContainerName = name.substring(0, dotIndex);
             if (container instanceof CompositeActor) {
-                Object object = ((CompositeActor)container).getEntity(subContainerName);
+                Object object = ((CompositeActor) container)
+                        .getEntity(subContainerName);
                 if (object != null) {
                     return _resolveLabel(name.substring(dotIndex + 1), object);
                 }
             }
         } else {
             if (container instanceof CompositeActor) {
-                Object object = ((CompositeActor)container).getEntity(name);
+                Object object = ((CompositeActor) container).getEntity(name);
                 if (object != null) {
                     return object;
                 }
@@ -160,7 +160,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
                 if (name.endsWith(".getPort")) {
                     name = name.replace(".getPort", "");
                 }
-                Object object = ((Entity)container).getPort(name);
+                Object object = ((Entity) container).getPort(name);
                 if (object != null) {
                     return object;
                 }
@@ -170,19 +170,19 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
                 if (name.endsWith(".getParameter")) {
                     name = name.replace(".getParameter", "");
                 }
-                Object object = ((NamedObj)container).getAttribute(name);
+                Object object = ((NamedObj) container).getAttribute(name);
                 if (object != null) {
                     return object;
                 }
             }
 
             if (container instanceof Entity) {
-                Object object = ((Entity)container).getPort(name);
+                Object object = ((Entity) container).getPort(name);
                 if (object != null) {
                     return object;
                 }
 
-                object = ((NamedObj)container).getAttribute(name);
+                object = ((NamedObj) container).getAttribute(name);
                 if (object != null) {
                     return object;
                 }
@@ -191,8 +191,6 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
         return null;
     }
-
-
 
     /** Return an exception that describes an unsupported node type.
      *  @param name The name of the node type.
@@ -210,6 +208,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
             return node.getName();
         }
     }
+
     protected PropertyHelper _helper;
 
     protected Object _evaluatedObject;

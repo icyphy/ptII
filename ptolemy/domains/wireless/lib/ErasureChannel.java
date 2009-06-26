@@ -136,7 +136,6 @@ public class ErasureChannel extends AtomicWirelessChannel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -145,7 +144,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ErasureChannel newObject = (ErasureChannel)super.clone(workspace);
+        ErasureChannel newObject = (ErasureChannel) super.clone(workspace);
         newObject._random = new Random();
         return newObject;
     }

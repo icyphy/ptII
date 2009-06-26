@@ -62,7 +62,8 @@ import ptolemy.gui.UndoListener;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class TextEditor extends TableauFrame implements DocumentListener, Printable {
+public class TextEditor extends TableauFrame implements DocumentListener,
+        Printable {
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -172,15 +173,14 @@ public class TextEditor extends TableauFrame implements DocumentListener, Printa
         // be generally useful.
         graphics2D.setFont(getFont().deriveFont(9.0f));
 
-        double bottomMargin = format.getHeight()
-            - format.getImageableHeight()
-            - format.getImageableY();
+        double bottomMargin = format.getHeight() - format.getImageableHeight()
+                - format.getImageableY();
 
         double lineHeight = graphics2D.getFontMetrics().getHeight()
-            - (graphics2D.getFontMetrics().getLeading()/2);
+                - (graphics2D.getFontMetrics().getLeading() / 2);
 
-        int linesPerPage = (int)Math.floor(
-                (format.getHeight() - format.getImageableY() - bottomMargin)
+        int linesPerPage = (int) Math.floor((format.getHeight()
+                - format.getImageableY() - bottomMargin)
                 / lineHeight);
 
         int startLine = linesPerPage * index;
@@ -191,15 +191,15 @@ public class TextEditor extends TableauFrame implements DocumentListener, Printa
 
         //int pageCount = (text.getLineCount()/linesPerPage) + 1;
         int endLine = startLine + linesPerPage;
-        int linePosition = (int)Math.ceil(format.getImageableY() + lineHeight);
+        int linePosition = (int) Math.ceil(format.getImageableY() + lineHeight);
 
         for (int line = startLine; line < endLine; line++) {
             try {
-                String linetext = text.getText(
-                        text.getLineStartOffset(line),
-                        text.getLineEndOffset(line) -
-                        text.getLineStartOffset(line));
-                graphics2D.drawString(linetext, (int)format.getImageableX(), linePosition);
+                String linetext = text.getText(text.getLineStartOffset(line),
+                        text.getLineEndOffset(line)
+                                - text.getLineStartOffset(line));
+                graphics2D.drawString(linetext, (int) format.getImageableX(),
+                        linePosition);
             } catch (BadLocationException e) {
                 // Ignore. Never a bad location.
             }

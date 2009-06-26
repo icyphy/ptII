@@ -315,9 +315,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         if (!result.equals(time)) {
             throw new IllegalActionException(this,
                     "Director is unable to fire the actor at the requested time: "
-                    + time
-                    + ". It responds it will fire it at: "
-                    + result);
+                            + time + ". It responds it will fire it at: "
+                            + result);
         }
     }
 

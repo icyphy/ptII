@@ -173,8 +173,9 @@ public class JAIConstant extends Source {
             Float[] floatValues = new Float[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                floatValues[i] = Float.valueOf((float) (((ScalarToken) values[i])
-                        .doubleValue()));
+                floatValues[i] = Float
+                        .valueOf((float) (((ScalarToken) values[i])
+                                .doubleValue()));
             }
 
             parameters.add(floatValues);
@@ -182,7 +183,8 @@ public class JAIConstant extends Source {
             Integer[] intValues = new Integer[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                intValues[i] = Integer.valueOf(((ScalarToken) values[i]).intValue());
+                intValues[i] = Integer.valueOf(((ScalarToken) values[i])
+                        .intValue());
             }
 
             parameters.add(intValues);
@@ -190,8 +192,8 @@ public class JAIConstant extends Source {
             Short[] shortValues = new Short[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                shortValues[i] = Short.valueOf((short) (((ScalarToken) values[i])
-                        .intValue()));
+                shortValues[i] = Short
+                        .valueOf((short) (((ScalarToken) values[i]).intValue()));
             }
 
             parameters.add(shortValues);

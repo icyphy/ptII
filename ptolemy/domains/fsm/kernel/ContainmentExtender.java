@@ -73,7 +73,7 @@ public class ContainmentExtender extends Attribute implements
      *   an attribute already in the container.
      */
     public ContainmentExtender(RefinementActor container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super((NamedObj) container, name);
         setPersistent(false);
     }
@@ -92,7 +92,7 @@ public class ContainmentExtender extends Attribute implements
      *   an attribute already in the container.
      */
     public ContainmentExtender(State container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -105,7 +105,7 @@ public class ContainmentExtender extends Attribute implements
      *   state cannot be found, or if a comma-separated list is malformed.
      */
     public NamedObj getContainedObject(String name)
-    throws IllegalActionException {
+            throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof State) {
             return ((State) container).getObjectInRefinement(name);

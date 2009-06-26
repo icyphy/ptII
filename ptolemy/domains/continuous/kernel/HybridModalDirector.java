@@ -99,7 +99,8 @@ public class HybridModalDirector extends FSMDirector implements
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HybridModalDirector newObject = (HybridModalDirector) super.clone(workspace);
+        HybridModalDirector newObject = (HybridModalDirector) super
+                .clone(workspace);
         newObject._enclosingContinuousDirector = null;
         newObject._enclosingContinuousDirectorVersion = -1;
         /* FIXME
@@ -398,8 +399,9 @@ public class HybridModalDirector extends FSMDirector implements
             // the new state.
             NamedObj container = getContainer();
             if (container instanceof Actor) {
-                Director executiveDirector = ((Actor)container).getExecutiveDirector();
-                executiveDirector.fireAtCurrentTime((Actor)container);
+                Director executiveDirector = ((Actor) container)
+                        .getExecutiveDirector();
+                executiveDirector.fireAtCurrentTime((Actor) container);
             }
         }
         return super.postfire();
@@ -717,6 +719,7 @@ public class HybridModalDirector extends FSMDirector implements
         public ActorsFiredIterator() {
             _iterator = _stateRefinementsToPostfire.iterator();
         }
+
         public boolean hasNext() {
             if (_iterator.hasNext()) {
                 return true;
@@ -724,12 +727,15 @@ public class HybridModalDirector extends FSMDirector implements
             _iterator = _transitionRefinementsToPostfire.iterator();
             return _iterator.hasNext();
         }
+
         public Object next() {
             return _iterator.next();
         }
+
         public void remove() {
             // Ignore.
         }
+
         private Iterator _iterator;
     }
 }

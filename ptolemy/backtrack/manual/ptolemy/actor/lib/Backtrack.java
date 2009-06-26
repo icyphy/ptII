@@ -122,7 +122,7 @@ public class Backtrack extends TypedAtomicActor {
                 oldPort.setContainer(null);
             }
             newObject._checkpoint = new TypedIOPort(newObject, "checkpoint",
-                                                     true, false);
+                    true, false);
             newObject._checkpoint.setTypeEquals(BaseType.BOOLEAN);
 
             // These ports do not follow the naming convention, so we have
@@ -132,8 +132,8 @@ public class Backtrack extends TypedAtomicActor {
             if (oldPort != null) {
                 oldPort.setContainer(null);
             }
-            newObject._rollback = new TypedIOPort(newObject, "rollback",
-                                                  true, false);
+            newObject._rollback = new TypedIOPort(newObject, "rollback", true,
+                    false);
             newObject._rollback.setTypeEquals(BaseType.LONG);
 
             oldPort = newObject.getPort("handle");
@@ -141,7 +141,8 @@ public class Backtrack extends TypedAtomicActor {
                 oldPort.setContainer(null);
             }
 
-             newObject._handle = new TypedIOPort(newObject, "handle", false, true);
+            newObject._handle = new TypedIOPort(newObject, "handle", false,
+                    true);
             newObject._handle.setTypeEquals(BaseType.LONG);
         } catch (Exception ex) {
             // CloneNotSupportedException does not have a constructor
@@ -172,8 +173,8 @@ public class Backtrack extends TypedAtomicActor {
 
         boolean checkpointTrigger = false;
         if (_checkpoint.isOutsideConnected() && _checkpoint.hasToken(0)) {
-            checkpointTrigger =
-                ((BooleanToken) _checkpoint.get(0)).booleanValue();
+            checkpointTrigger = ((BooleanToken) _checkpoint.get(0))
+                    .booleanValue();
         }
 
         if (_rollback.isOutsideConnected() && _rollback.hasToken(0)) {
@@ -209,8 +210,7 @@ public class Backtrack extends TypedAtomicActor {
 
             if (handles != null) {
                 for (Checkpoint checkpointObject : handles.keySet()) {
-                    long handle = ((Long) handles.get(checkpointObject))
-                            .longValue();
+                    long handle = (handles.get(checkpointObject)).longValue();
                     checkpointObject.rollback(handle);
                 }
             }

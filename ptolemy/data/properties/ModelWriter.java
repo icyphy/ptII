@@ -72,9 +72,8 @@ public class ModelWriter extends Transformer {
         try {
             token.getEntity().exportMoML(writer);
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot write to \"" +
-                    modelFile.stringValue() + "\".");
+            throw new IllegalActionException(this, ex, "Cannot write to \""
+                    + modelFile.stringValue() + "\".");
         }
 
         modelFile.close();

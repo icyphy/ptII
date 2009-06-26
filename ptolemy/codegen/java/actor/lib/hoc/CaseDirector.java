@@ -72,8 +72,7 @@ public class CaseDirector extends Director {
 
         StringBuffer code = new StringBuffer();
 
-        ((BooleanToken) _codeGenerator.inline.getToken())
-                .booleanValue();
+        ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
 
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
                 .getContainer();
@@ -131,7 +130,7 @@ public class CaseDirector extends Director {
                 }
             } else {
                 if (useIf) {
-                    code.append(_INDENT2 + "} else {" +_eol);
+                    code.append(_INDENT2 + "} else {" + _eol);
                 } else if (useSwitch) {
                     code.append(_INDENT2 + "default: ");
                 } else {

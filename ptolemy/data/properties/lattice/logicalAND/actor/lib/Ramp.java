@@ -48,8 +48,7 @@ public class Ramp extends Source {
 
     /**
      */
-    public Ramp(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Ramp actor)
+    public Ramp(PropertyConstraintSolver solver, ptolemy.actor.lib.Ramp actor)
             throws IllegalActionException {
 
         super(solver, actor);
@@ -59,7 +58,8 @@ public class Ramp extends Source {
     public List<Inequality> constraintList() throws IllegalActionException {
         if (_actor.step.getPort().connectedPortList().isEmpty()) {
             setAtLeast(_actor.output, _actor.step);
-            if (_actor.step.getToken().isEqualTo(new IntToken(0)).booleanValue()) {
+            if (_actor.step.getToken().isEqualTo(new IntToken(0))
+                    .booleanValue()) {
                 setAtLeast(_actor.output, _lattice.getElement("TRUE"));
             } else {
                 setAtLeast(_actor.output, _lattice.getElement("FALSE"));

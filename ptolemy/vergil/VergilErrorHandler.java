@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.ErrorHandler;
@@ -94,7 +94,7 @@ public class VergilErrorHandler implements ErrorHandler {
 
         // Get the context w.r.t. which the dialog should be iconified.
         // FIXME: This pattern window actually is never set.
-        Component parentWindow = GraphicalMessageHandler.getContext();
+        Component parentWindow = UndeferredGraphicalMessageHandler.getContext();
 
         // If the element is longer than 80 characters, we split it
         // into shorter new line separated strings.

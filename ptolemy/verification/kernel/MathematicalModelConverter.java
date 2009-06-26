@@ -140,27 +140,24 @@ public class MathematicalModelConverter extends Attribute {
 
         switch (modelType) {
         case Kripke:
-            if (_model instanceof CompositeActor)
-                systemDescription.append(
-                        SMVUtility.generateSMVDescription(
-                                (CompositeActor) _model.clone(),
-                                inputTemporalFormula, formulaType.toString(),
-                                String.valueOf(variableSpanSize)));
-            else // FSMActor
-                systemDescription.append(
-                        ((FmvAutomaton)_model.clone()).convertToSMVFormat(
-                            inputTemporalFormula, formulaType,
-                            variableSpanSize));
+            if (_model instanceof CompositeActor) {
+                systemDescription.append(SMVUtility.generateSMVDescription(
+                        (CompositeActor) _model.clone(), inputTemporalFormula,
+                        formulaType.toString(), String
+                                .valueOf(variableSpanSize)));
+            } else {
+                systemDescription.append(((FmvAutomaton) _model.clone())
+                        .convertToSMVFormat(inputTemporalFormula, formulaType,
+                                variableSpanSize));
+            }
             break;
         case CTA:
-            systemDescription.append(
-                    REDUtility.generateREDDescription(
-                            (CompositeActor) _model.clone(),
-                            inputTemporalFormula, formulaType,
-                            variableSpanSize, delayActorBufferSize));
+            systemDescription.append(REDUtility.generateREDDescription(
+                    (CompositeActor) _model.clone(), inputTemporalFormula,
+                    formulaType, variableSpanSize, delayActorBufferSize));
             break;
         case Maude:
-            if (_model instanceof CompositeActor)
+            if (_model instanceof CompositeActor) {
                 if (template.getExpression().trim().equals("")) {
                     systemDescription.append(RTMaudeUtility
                             .generateRTMDescription((CompositeActor) _model,
@@ -171,6 +168,7 @@ public class MathematicalModelConverter extends Attribute {
                                     (CompositeActor) _model,
                                     inputTemporalFormula));
                 }
+            }
             break;
         }
 
@@ -195,7 +193,8 @@ public class MathematicalModelConverter extends Attribute {
         if (_model instanceof CompositeActor || _model instanceof FSMActor) {
 
             if (REDUtility.isValidModelForVerification((CompositeActor) _model)
-                    || SMVUtility.isValidModelForVerification((CompositeActor) _model)
+                    || SMVUtility
+                            .isValidModelForVerification((CompositeActor) _model)
                     || _model instanceof FSMActor) {
 
                 StringBuffer systemDescription = generateCode(modelType,
@@ -231,23 +230,24 @@ public class MathematicalModelConverter extends Attribute {
                         if (smvFolder.exists()) {
                             while (smvFolder.exists() == true) {
                                 folderName = "SystemGeneratedTempFolder"
-                                        + Integer.toString(rd
-                                                .nextInt(10000)) + "/";
+                                        + Integer.toString(rd.nextInt(10000))
+                                        + "/";
                                 smvFolder = new File(folderName);
                             }
                             // Now create the directory.
                             boolean isOpened = smvFolder.mkdir();
                             if (isOpened == false) {
-                                throw new IllegalActionException("Failed to " +
-                                        "invoke NuSMV correctly: \nUnable to " +
-                                        "open a temp folder.");
+                                throw new IllegalActionException(
+                                        "Failed to "
+                                                + "invoke NuSMV correctly: \nUnable to "
+                                                + "open a temp folder.");
                             }
                         } else {
                             boolean isOpened = smvFolder.mkdir();
                             if (isOpened == false) {
-                                throw new IllegalActionException("Failed to " +
-                                        "invoke NuSMV correctly:\nUnable to " +
-                                        "open a temp folder.");
+                                throw new IllegalActionException("Failed to "
+                                        + "invoke NuSMV correctly:\nUnable to "
+                                        + "open a temp folder.");
                             }
 
                         }
@@ -258,8 +258,7 @@ public class MathematicalModelConverter extends Attribute {
                         FileWriter writer = null;
                         try {
                             writer = new FileWriter(smvFile);
-                            writer.write(systemDescription
-                                    .toString());
+                            writer.write(systemDescription.toString());
 
                         } finally {
                             if (writer != null) {
@@ -285,9 +284,10 @@ public class MathematicalModelConverter extends Attribute {
                         }
                         _deleteFolder(smvFolder);
                         return returnStringBuffer;
-                    } else
+                    } else {
                         MessageHandler
-                        .error("The functionality for invoking RED is not implemented.\n");
+                                .error("The functionality for invoking RED is not implemented.\n");
+                    }
                 }
 
             } else {
@@ -329,14 +329,16 @@ public class MathematicalModelConverter extends Attribute {
     public enum ModelType {
         CTA {
             public String toString() {
-                return "Communicating Timed Automata (Acceptable by RED " +
-                        "under DE)";
+                return "Communicating Timed Automata (Acceptable by RED "
+                        + "under DE)";
             }
-        }, Kripke {
+        },
+        Kripke {
             public String toString() {
                 return "Kripke Structures (Acceptable by NuSMV under SR)";
             }
-        }, Maude {
+        },
+        Maude {
             public String toString() {
                 return "Real-time Maude Translation(under SR or DE)";
             }
@@ -344,16 +346,12 @@ public class MathematicalModelConverter extends Attribute {
     }
 
     public enum FormulaType {
-        CTL,
-        LTL,
-        TCTL,
-        Buffer {
+        CTL, LTL, TCTL, Buffer {
             public String toString() {
                 return "Buffer Overflow";
             }
         },
-        Risk,
-        Reachability
+        Risk, Reachability
     }
 
     public enum OutputType {

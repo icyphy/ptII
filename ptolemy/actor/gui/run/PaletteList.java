@@ -172,15 +172,17 @@ public class PaletteList extends JList implements DragSourceListener,
         // return a tooltip for the specific entry in the list
         // Get item index
         int index = locationToIndex(evt.getPoint());
-        if (index == -1)
+        if (index == -1) {
             return "";
+        }
 
         // Get item
         Object o = this.getModel().getElementAt(index);
         if (o instanceof ComponentDef) {
             ComponentDef thisItem = (ComponentDef) o;
-            if (thisItem != null)
+            if (thisItem != null) {
                 return thisItem.getDescription();
+            }
         }
         return "";
     }

@@ -498,10 +498,11 @@ public class SMVUtility {
                                     if (b == true) {
                                         if (returnVariableSet
                                                 .contains(characterOfSubGuard[0]
-                                                        .trim()) == false)
+                                                        .trim()) == false) {
                                             returnVariableSet
                                                     .add(characterOfSubGuard[0]
                                                             .trim());
+                                        }
                                     }
                                 }
                             }
@@ -599,11 +600,13 @@ public class SMVUtility {
                             VariableInfo newVariable = new VariableInfo("1",
                                     "0");
                             _variableInfo.put(lValue_isPresent, newVariable);
-                            if (returnVariableSet.contains(lValue_isPresent) == false)
+                            if (returnVariableSet.contains(lValue_isPresent) == false) {
                                 returnVariableSet.add(lValue_isPresent);
+                            }
                         } else {
-                            if (returnVariableSet.contains(lValue_isPresent) == false)
+                            if (returnVariableSet.contains(lValue_isPresent) == false) {
                                 returnVariableSet.add(lValue_isPresent);
+                            }
                         }
 
                         // MODIFICATION 2008.07.21 Add up "lValue_value" for the
@@ -616,11 +619,13 @@ public class SMVUtility {
                             VariableInfo newVariable = new VariableInfo("1",
                                     "0");
                             _variableInfo.put(lValue_value, newVariable);
-                            if (returnVariableSet.contains(lValue_value) == false)
+                            if (returnVariableSet.contains(lValue_value) == false) {
                                 returnVariableSet.add(lValue_value);
+                            }
                         } else {
-                            if (returnVariableSet.contains(lValue_value) == false)
+                            if (returnVariableSet.contains(lValue_value) == false) {
                                 returnVariableSet.add(lValue_value);
+                            }
                         }
                     }
                 }
@@ -2943,8 +2948,9 @@ public class SMVUtility {
                 // Use a new HashSet and copy all contents to avoid later
                 // modification.
                 HashSet<String> newSignalOfferedSet = new HashSet<String>();
-                if (signalOfferedSet != null)
+                if (signalOfferedSet != null) {
                     newSignalOfferedSet.addAll(signalOfferedSet);
+                }
                 _globalSignalRetrivalInfo.put(controller.getName(),
                         newSignalOfferedSet);
 
@@ -4945,9 +4951,11 @@ public class SMVUtility {
                             // SUBSYSTEM UNDER A REFINEMENT OF A STATE.
                             if (i == 0) {
                                 if (i == innerInfoList.size() - 1) {
-                                    if (refinementStateName.equalsIgnoreCase("")) {
+                                    if (refinementStateName
+                                            .equalsIgnoreCase("")) {
                                         frontAttachment.append(" ( "
-                                                + info._preCondition + " ) ;\n\n  ");
+                                                + info._preCondition
+                                                + " ) ;\n\n  ");
                                     } else {
                                         frontAttachment.append(" ("
                                                 + refinementStateActivePremise
@@ -4955,17 +4963,17 @@ public class SMVUtility {
                                                 + " ) ;\n\n  ");
                                     }
                                 } else {
-                                if (refinementStateName.equalsIgnoreCase("")) {
-                                    frontAttachment.append(" ( "
-                                            + info._preCondition + " )  ");
-                                } else {
-                                    frontAttachment.append(" ("
-                                            + refinementStateActivePremise
-                                            + " & " + info._preCondition
-                                            + " )  ");
+                                    if (refinementStateName
+                                            .equalsIgnoreCase("")) {
+                                        frontAttachment.append(" ( "
+                                                + info._preCondition + " )  ");
+                                    } else {
+                                        frontAttachment.append(" ("
+                                                + refinementStateActivePremise
+                                                + " & " + info._preCondition
+                                                + " )  ");
+                                    }
                                 }
-                                }
-
 
                             } else if (i == innerInfoList.size() - 1) {
                                 if (info._preCondition.contains("!")) {

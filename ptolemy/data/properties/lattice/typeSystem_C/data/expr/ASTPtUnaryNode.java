@@ -52,26 +52,30 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ASTPtUnaryNode extends ASTPtRootNode {
 
     public ASTPtUnaryNode(PropertyConstraintSolver solver,
-            ptolemy.data.expr.ASTPtUnaryNode node) throws IllegalActionException {
+            ptolemy.data.expr.ASTPtUnaryNode node)
+            throws IllegalActionException {
         super(solver, node);
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.data.expr.ASTPtUnaryNode node =
-            (ptolemy.data.expr.ASTPtUnaryNode) getComponent();
+        ptolemy.data.expr.ASTPtUnaryNode node = (ptolemy.data.expr.ASTPtUnaryNode) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
         if (node.isMinus()) {
             _useDefaultConstraints = false;
 
             if (node.isConstant() && node.isEvaluated()) {
-                setEquals(node, lattice.convertJavaToCtype(node.getToken().getType(), node.getToken()));
+                setEquals(node, lattice.convertJavaToCtype(node.getToken()
+                        .getType(), node.getToken()));
             } else {
                 // get extendedFirstValueToken from helper
-                PropertySolver solver = getSolver().findSolver("extendedFirstValueToken");
-                PropertyToken propertyToken = (PropertyToken) solver.getProperty(node);
+                PropertySolver solver = getSolver().findSolver(
+                        "extendedFirstValueToken");
+                PropertyToken propertyToken = (PropertyToken) solver
+                        .getProperty(node);
                 Token valueToken = propertyToken.getToken();
-                setEquals(node, lattice.convertJavaToCtype(valueToken.getType(), valueToken));
+                setEquals(node, lattice.convertJavaToCtype(
+                        valueToken.getType(), valueToken));
             }
         }
 

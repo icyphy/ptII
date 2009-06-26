@@ -76,9 +76,9 @@ public class TableauParameter extends Parameter implements Initializable {
     }
 
     public void addInitializable(Initializable initializable) {
-        throw new InternalErrorException("The addInitializable() method is " +
-                "not implemented in TableauParameter, and should not be " +
-                "invoked.");
+        throw new InternalErrorException("The addInitializable() method is "
+                + "not implemented in TableauParameter, and should not be "
+                + "invoked.");
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -109,8 +109,8 @@ public class TableauParameter extends Parameter implements Initializable {
     public void removeInitializable(Initializable initializable) {
     }
 
-    public void setContainer(NamedObj container)
-    throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (oldContainer instanceof Initializable) {
             ((Initializable) oldContainer).removeInitializable(this);

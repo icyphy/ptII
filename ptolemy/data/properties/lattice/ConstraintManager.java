@@ -72,15 +72,17 @@ public class ConstraintManager {
      * @return The list of constrainting terms for the given object.
      */
     public List<PropertyTerm> getConstraintingTerms(Object object) {
-        boolean least = _solver.solvingFixedPoint.getExpression().equals("least");
+        boolean least = _solver.solvingFixedPoint.getExpression().equals(
+                "least");
 
         if (least) {
-            return (List<PropertyTerm>) _greaterTermMap.get(_solver.getPropertyTerm(object));
+            return (List<PropertyTerm>) _greaterTermMap.get(_solver
+                    .getPropertyTerm(object));
         } else {
-            return (List<PropertyTerm>) _lesserTermMap.get(_solver.getPropertyTerm(object));
+            return (List<PropertyTerm>) _lesserTermMap.get(_solver
+                    .getPropertyTerm(object));
         }
     }
-
 
     /** The property constraint solver that uses this manager. */
     private PropertyConstraintSolver _solver;
@@ -91,4 +93,3 @@ public class ConstraintManager {
     /** The multi-map of the lesser terms (key) to the greater terms (values). */
     private MultiMap _lesserTermMap = new MultiHashMap();
 }
-

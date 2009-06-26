@@ -32,7 +32,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptera.kernel;
 
-import java.util.Collection;
 import java.util.Set;
 
 import ptolemy.data.Token;
@@ -155,7 +154,7 @@ public class VariableScope extends ModelScope {
     public Set<?> identifierSet() throws IllegalActionException {
         Set<String> set = getAllScopedVariableNames(null, _container);
         if (_superScope != null) {
-            set.addAll((Collection<String>) _superScope.identifierSet());
+            set.addAll(_superScope.identifierSet());
         }
         return set;
     }

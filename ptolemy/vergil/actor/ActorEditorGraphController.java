@@ -126,11 +126,14 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
-            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
+            diva.gui.GUIUtilities
+                    .addToolBarButton(toolbar, _newInputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
-            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                    _newOutputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
-            diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
+            diva.gui.GUIUtilities
+                    .addToolBarButton(toolbar, _newInoutPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newInputMultiportAction);

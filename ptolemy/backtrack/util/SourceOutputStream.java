@@ -79,8 +79,8 @@ public class SourceOutputStream extends FileOutputStream {
 
         if (!rootFile.exists()) {
             if (!rootFile.mkdirs()) {
-                throw new IOException("Failed to make directory \""
-                        + root + "\"");
+                throw new IOException("Failed to make directory \"" + root
+                        + "\"");
             }
         }
 

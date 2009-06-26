@@ -48,14 +48,15 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating
  */
 public class PtidesTopLevelDirector extends Director
-/* CompositeProcessDirector implements TimedDirector*/ {
+/* CompositeProcessDirector implements TimedDirector*/{
 
     /** Construct the code generator helper associated with the given
      *  PTIDESDirector.
      *  @param ptidesTopLevelDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesTopLevelDirector
      */
-    public PtidesTopLevelDirector(ptolemy.domains.ptides.kernel.PtidesTopLevelDirector ptidesTopLevelDirector) {
+    public PtidesTopLevelDirector(
+            ptolemy.domains.ptides.kernel.PtidesTopLevelDirector ptidesTopLevelDirector) {
         super(ptidesTopLevelDirector);
     }
 
@@ -68,8 +69,8 @@ public class PtidesTopLevelDirector extends Director
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-//        code.append(CodeGeneratorHelper.generateName(_director
-//                .getContainer()) + "();" + _eol);
+        //        code.append(CodeGeneratorHelper.generateName(_director
+        //                .getContainer()) + "();" + _eol);
         code.append("while (true) {}" + _eol);
         return code.toString();
     }

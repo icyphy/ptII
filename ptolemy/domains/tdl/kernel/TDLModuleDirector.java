@@ -158,9 +158,9 @@ public class TDLModuleDirector extends ModalDirector {
                         // before reading a sensor, return control to the outside to see if other actors want to fire
                         doneAction = ((TDLActor) getController())
                                 .inputIsSafeToProcess((IOPort) action.object);
-                        ((TDLActor) getController())
-                                .readInput(node, (IOPort) action.object,
-                                        modePeriod.getLongValue());
+                        ((TDLActor) getController()).readInput(node,
+                                (IOPort) action.object, modePeriod
+                                        .getLongValue());
                         if (doneAction) {
                             scheduleEventsAfterAction(node);
                         }
@@ -168,9 +168,9 @@ public class TDLModuleDirector extends ModalDirector {
                         _updateInputPort((IOPort) obj);
                     } else if (action.actionType == TDLAction.MODESWITCH) {
                         State targetState;
-                        if (!_chooseTransition((Transition) obj))
+                        if (!_chooseTransition((Transition) obj)) {
                             targetState = getController().currentState();
-                        else {
+                        } else {
                             targetState = ((Transition) obj).destinationState(); // choose transition in the graph
                             iterate = true;
                         }
@@ -214,15 +214,17 @@ public class TDLModuleDirector extends ModalDirector {
                                         actionsToRemove.add(waitForAction);
                                     }
                                 }
-                                for (TDLAction actionToRemove : actionsToRemove)
+                                for (TDLAction actionToRemove : actionsToRemove) {
                                     _nodesDependentoOnPreviousActions.get(n)
                                             .remove(actionToRemove);
+                                }
                             }
                             if (_nodesDependentoOnPreviousActions.get(n) == null
                                     || _nodesDependentoOnPreviousActions.get(n)
                                             .size() == 0) {
-                                if (!_nextEventsTimeStamps.keySet().contains(n))
+                                if (!_nextEventsTimeStamps.keySet().contains(n)) {
                                     _fireAt(n, getModelTime());
+                                }
                                 scheduleEventsAfterAction(n);
                                 _previousAdditionalScheduleTime = new Time(
                                         this, 0.0);
@@ -315,9 +317,9 @@ public class TDLModuleDirector extends ModalDirector {
      * @exception IllegalActionException
      */
     public double getWCET() throws IllegalActionException {
-        if (_currentWCET > 0)
+        if (_currentWCET > 0) {
             return _currentWCET;
-        else {
+        } else {
 
             return 0.0;
         }
@@ -377,7 +379,8 @@ public class TDLModuleDirector extends ModalDirector {
      *   and output ports of the container.
      */
     public CausalityInterface getCausalityInterface() {
-        return new TDLCausalityInterface((Actor)getContainer(), defaultDependency());
+        return new TDLCausalityInterface((Actor) getContainer(),
+                defaultDependency());
     }
 
     /**
@@ -451,52 +454,50 @@ public class TDLModuleDirector extends ModalDirector {
         // read inputs although they are not used to avoid piling up tokens
         //
 
-            for (Iterator it = ((TDLModule) getContainer()).inputPortList()
-                    .iterator(); it.hasNext();) {
-                IOPort port = (IOPort) it.next();
-                if (_debugging) {
-                    _debug("Calling transferInputs on port: "
-                            + port.getFullName());
-                }
-                if (!port.isInput() || !port.isOpaque()) {
-                    throw new IllegalActionException(this, port,
-                            "Attempted to transferInputs on a port is not an opaque"
-                                    + "input port.");
-                }
-                for (int i = 0; i < port.getWidth(); i++) {
-                    try {
-                        if (i < port.getWidthInside()) {
-                            if (port.hasToken(i)) {
-                                Token t = port.get(i);
-                                if (_debugging) {
-                                    _debug(getName(),
-                                            "transferring input from "
-                                                    + port.getName());
-                                }
-                                port.sendInside(i, t);
-                            }
-                        } else {
-                            // No inside connection to transfer tokens to.
-                            // In this case, consume one input token if there is one.
+        for (Iterator it = ((TDLModule) getContainer()).inputPortList()
+                .iterator(); it.hasNext();) {
+            IOPort port = (IOPort) it.next();
+            if (_debugging) {
+                _debug("Calling transferInputs on port: " + port.getFullName());
+            }
+            if (!port.isInput() || !port.isOpaque()) {
+                throw new IllegalActionException(this, port,
+                        "Attempted to transferInputs on a port is not an opaque"
+                                + "input port.");
+            }
+            for (int i = 0; i < port.getWidth(); i++) {
+                try {
+                    if (i < port.getWidthInside()) {
+                        if (port.hasToken(i)) {
+                            Token t = port.get(i);
                             if (_debugging) {
-                                _debug(getName(), "Dropping single input from "
+                                _debug(getName(), "transferring input from "
                                         + port.getName());
                             }
-                            if (port.hasToken(i)) {
-                                port.get(i);
-                            }
+                            port.sendInside(i, t);
                         }
-                    } catch (NoTokenException ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
+                    } else {
+                        // No inside connection to transfer tokens to.
+                        // In this case, consume one input token if there is one.
+                        if (_debugging) {
+                            _debug(getName(), "Dropping single input from "
+                                    + port.getName());
+                        }
+                        if (port.hasToken(i)) {
+                            port.get(i);
+                        }
                     }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
                 }
-
             }
 
-            if (((Actor) getContainer().getContainer()).getDirector() instanceof DEDirector) {
-                return super.prefire();
-            }
+        }
+
+        if (((Actor) getContainer().getContainer()).getDirector() instanceof DEDirector) {
+            return super.prefire();
+        }
 
         Time modePeriod = getModePeriod(getController().currentState());
         Time scheduleTime = new Time(this, getModelTime().getLongValue()
@@ -507,10 +508,12 @@ public class TDLModuleDirector extends ModalDirector {
             TDLAction action = (TDLAction) node.getWeight();
             if (action.actionType == TDLAction.READSENSOR) {
                 if (((TDLActor) getController())
-                        .inputIsSafeToProcess((IOPort) action.object))
+                        .inputIsSafeToProcess((IOPort) action.object)) {
                     fire = true;
-            } else
+                }
+            } else {
                 fire = true;
+            }
         }
         return fire;
     }
@@ -530,8 +533,9 @@ public class TDLModuleDirector extends ModalDirector {
         HashMap<Node, List<TDLAction>> table = _graph.getNextJoinNodes(node,
                 node, new ArrayList());
         for (Node n : table.keySet()) {
-            if (!_nodesDependentoOnPreviousActions.keySet().contains(n))
+            if (!_nodesDependentoOnPreviousActions.keySet().contains(n)) {
                 _nodesDependentoOnPreviousActions.put(n, table.get(n));
+            }
         }
         for (Node n : events) {
             _fireAt(n, getModelTime());
@@ -569,8 +573,9 @@ public class TDLModuleDirector extends ModalDirector {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (_nextEventsTimeStamps != null)
+        if (_nextEventsTimeStamps != null) {
             _nextEventsTimeStamps.clear();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -623,17 +628,20 @@ public class TDLModuleDirector extends ModalDirector {
         if (node != null) {
             Time t = (((TDLAction) node.getWeight()).time
                     .subtract(scheduleTime));
-            if (t.getDoubleValue() > 0.0)
+            if (t.getDoubleValue() > 0.0) {
                 _previousAdditionalScheduleTime = t;
+            }
 
             time = (((TDLAction) node.getWeight()).time.subtract(scheduleTime))
                     .add(additionalTime);
             if (((TDLAction) node.getWeight()).time.getDoubleValue() == 0.0
-                    && _previousAdditionalScheduleTime.getDoubleValue() > 0.0)
+                    && _previousAdditionalScheduleTime.getDoubleValue() > 0.0) {
                 time = time.add(modePeriod);
+            }
 
-        } else
+        } else {
             time = additionalTime;
+        }
         if (node != null) {
 
             _nextEventsTimeStamps.put(node, time);
@@ -677,8 +685,9 @@ public class TDLModuleDirector extends ModalDirector {
     private List<Node> _getEventsToFire(Time scheduleTime, Time modePeriod) {
         List<Node> eventsToFire = new ArrayList();
         for (Node node : _nextEventsTimeStamps.keySet()) {
-            if (_nextEventsTimeStamps.get(node).equals(getModelTime()))
+            if (_nextEventsTimeStamps.get(node).equals(getModelTime())) {
                 eventsToFire.add(node);
+            }
         }
         return eventsToFire;
     }
@@ -692,8 +701,9 @@ public class TDLModuleDirector extends ModalDirector {
         Time time = Time.POSITIVE_INFINITY;
         for (Node node : _nextEventsTimeStamps.keySet()) {
             Time t = _nextEventsTimeStamps.get(node);
-            if (t.compareTo(time) < 0)
+            if (t.compareTo(time) < 0) {
                 time = t;
+            }
         }
         return time;
     }
@@ -713,7 +723,7 @@ public class TDLModuleDirector extends ModalDirector {
         Parameter parameter = (Parameter) obj.getAttribute("guard");
         StringToken token = (StringToken) parameter.getToken();
         ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
-        FSMActor fsmActor = (FSMActor) getController();
+        FSMActor fsmActor = getController();
         ASTPtRootNode _guardParseTree = null;
         String expr = token.stringValue();
 
@@ -754,10 +764,11 @@ public class TDLModuleDirector extends ModalDirector {
         Parameter initialValueParameter = (Parameter) ((NamedObj) port)
                 .getAttribute("initialValue");
         Token token;
-        if (initialValueParameter != null)
+        if (initialValueParameter != null) {
             token = initialValueParameter.getToken();
-        else
+        } else {
             token = new IntToken(0);
+        }
         Receiver[][] channelArray = port.getRemoteReceivers();
         for (int i = 0; i < channelArray.length; i++) {
             Receiver[] receiverArray = channelArray[i];
@@ -838,8 +849,9 @@ public class TDLModuleDirector extends ModalDirector {
         RefinementPort rport = (RefinementPort) port;
         List l = rport.deepConnectedOutPortList();
         for (int i = 0; i < l.size(); i++) {
-            if (l.get(i) instanceof TypedIOPort)
+            if (l.get(i) instanceof TypedIOPort) {
                 super.transferOutputs((TypedIOPort) l.get(i));
+            }
         }
     }
 
@@ -914,7 +926,8 @@ public class TDLModuleDirector extends ModalDirector {
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    private void _updateReceivers(Collection portList) throws InvalidStateException, IllegalActionException {
+    private void _updateReceivers(Collection portList)
+            throws InvalidStateException, IllegalActionException {
         Iterator it = portList.iterator();
         while (it.hasNext()) {
             IOPort port = (IOPort) it.next();

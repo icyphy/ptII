@@ -114,7 +114,8 @@ public class NonStrictFSMDirector extends FSMDirector {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        NonStrictFSMDirector newObject = (NonStrictFSMDirector) super.clone(workspace);
+        NonStrictFSMDirector newObject = (NonStrictFSMDirector) super
+                .clone(workspace);
         newObject._nonpreemptiveTransitionsInputs = new HashSet();
         newObject._outputActionReferredInputPorts = new HashSet();
         newObject._preemptiveTransitionsInputs = new HashSet();
@@ -371,10 +372,10 @@ public class NonStrictFSMDirector extends FSMDirector {
             Map map = parser.generateAssignmentMap(string);
             Set set /* Dead Local Store: = new HashSet()*/;
 
-            for (Iterator names = map.entrySet().iterator();
-                 names.hasNext();) {
+            for (Iterator names = map.entrySet().iterator(); names.hasNext();) {
                 Map.Entry entry = (Map.Entry) names.next();
-                ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry.getValue();
+                ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry
+                        .getValue();
                 parseTree = node.getExpressionTree();
                 set = variableCollector.collectFreeVariables(parseTree, scope);
                 getReferredInputPorts(set, _outputActionReferredInputPorts);
@@ -478,7 +479,8 @@ public class NonStrictFSMDirector extends FSMDirector {
 
             for (Iterator names = map.entrySet().iterator(); names.hasNext();) {
                 Map.Entry entry = (Map.Entry) names.next();
-                ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry.getValue();
+                ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry
+                        .getValue();
                 parseTree = node.getExpressionTree();
                 set = variableCollector.collectFreeVariables(parseTree, scope);
                 getReferredInputPorts(set, _setActionReferredInputPorts);

@@ -28,8 +28,8 @@
 //// ArrayPeakSearch
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import java.util.ArrayList;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -199,7 +199,8 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public ArrayPeakSearch(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public ArrayPeakSearch(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         dip = new Parameter(this, "dip");
         dip.setExpression("0.0");
@@ -225,8 +226,10 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
         input = new TypedIOPort(this, "input", true, false);
         peakValues = new TypedIOPort(this, "peakValues", false, true);
         peakIndices = new TypedIOPort(this, "peakIndices", false, true);
-        (new SingletonParameter(peakValues, "_showName")).setToken(BooleanToken.TRUE);
-        (new SingletonParameter(peakIndices, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(peakValues, "_showName"))
+                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(peakIndices, "_showName"))
+                .setToken(BooleanToken.TRUE);
         input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         peakValues.setTypeAtLeast(input);
         peakIndices.setTypeEquals(new ArrayType(BaseType.INT));
@@ -239,8 +242,8 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        ArrayPeakSearch newObject = (ArrayPeakSearch)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayPeakSearch newObject = (ArrayPeakSearch) super.clone(workspace);
         newObject.input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         newObject.peakValues.setTypeAtLeast(newObject.input);
         return newObject;
@@ -256,12 +259,12 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      * @exception IllegalActionException If there is no director, or
      * if sorting is not supported for the input array.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         startIndex.update();
         endIndex.update();
         if (input.hasToken(0)) {
-            ArrayToken inputArray = (ArrayToken)input.get(0);
+            ArrayToken inputArray = (ArrayToken) input.get(0);
             Type inputElementType = inputArray.getElementType();
             int inputSize = inputArray.length();
             if (inputSize == 0) {
@@ -269,9 +272,10 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
                 peakIndices.send(0, inputArray);
                 return;
             }
-            int start = ((IntToken)startIndex.getToken()).intValue();
-            int end = ((IntToken)endIndex.getToken()).intValue();
-            int maxPeaks = ((IntToken)maximumNumberOfPeaks.getToken()).intValue();
+            int start = ((IntToken) startIndex.getToken()).intValue();
+            int end = ((IntToken) endIndex.getToken()).intValue();
+            int maxPeaks = ((IntToken) maximumNumberOfPeaks.getToken())
+                    .intValue();
             if (end >= inputSize) {
                 end = inputSize - 1;
             }
@@ -291,10 +295,12 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
             boolean searchValley = false;
             boolean searchPeak = true;
             int localMaxIndex = start;
-            double localMax = ((DoubleToken)inputArray.getElement(start)).doubleValue();
+            double localMax = ((DoubleToken) inputArray.getElement(start))
+                    .doubleValue();
             double localMin = localMax;
-            double dipValue = ((DoubleToken)dip.getToken()).doubleValue();
-            double squelchValue = ((DoubleToken)squelch.getToken()).doubleValue();
+            double dipValue = ((DoubleToken) dip.getToken()).doubleValue();
+            double squelchValue = ((DoubleToken) squelch.getToken())
+                    .doubleValue();
             double dipThreshold = dipValue;
             double riseThreshold = dipValue;
             String scaleValue = scale.stringValue();
@@ -302,7 +308,8 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
             if (!scaleValue.equals("absolute")) {
                 double maxValue = localMax;
                 for (int i = 0; i <= (inputSize - 1); i = i + increment) {
-                    double indata = ((DoubleToken)inputArray.getElement(i)).doubleValue();
+                    double indata = ((DoubleToken) inputArray.getElement(i))
+                            .doubleValue();
                     if (indata > maxValue) {
                         maxValue = indata;
                     }
@@ -311,12 +318,14 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
                     scaleIndicator = _RELATIVE_DB;
                     dipThreshold = localMax * Math.pow(10.0, (-dipValue / 20));
                     riseThreshold = localMin * Math.pow(10.0, (dipValue / 20));
-                    squelchValue = maxValue * Math.pow(10.0, (-squelchValue / 20));
+                    squelchValue = maxValue
+                            * Math.pow(10.0, (-squelchValue / 20));
                 } else if (scaleValue.equals("relative power decibels")) {
                     scaleIndicator = _RELATIVE_DB_POWER;
                     dipThreshold = localMax * Math.pow(10.0, (-dipValue / 10));
                     riseThreshold = localMin * Math.pow(10.0, (dipValue / 10));
-                    squelchValue = maxValue * Math.pow(10.0, (-squelchValue / 10));
+                    squelchValue = maxValue
+                            * Math.pow(10.0, (-squelchValue / 10));
                 } else if (scaleValue.equals("relative linear")) {
                     scaleIndicator = _RELATIVE_LINEAR;
                     dipThreshold = localMax - dipValue;
@@ -327,23 +336,27 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
             ArrayList resultIndices = new ArrayList();
             ArrayList resultPeaks = new ArrayList();
             for (int i = start; i <= end; i = i + increment) {
-                double indata = ((DoubleToken)inputArray.getElement(i)).doubleValue();
+                double indata = ((DoubleToken) inputArray.getElement(i))
+                        .doubleValue();
                 if (_debugging) {
-                    _debug("-- Checking input with value " + indata+" at index "+i);
+                    _debug("-- Checking input with value " + indata
+                            + " at index " + i);
                 }
                 if (searchValley) {
                     if (indata < localMin) {
                         localMin = indata;
                         switch (scaleIndicator) {
-                            case _RELATIVE_DB:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue / 20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue / 10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                riseThreshold = localMin + dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            riseThreshold = localMin
+                                    * Math.pow(10.0, (dipValue / 20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            riseThreshold = localMin
+                                    * Math.pow(10.0, (dipValue / 10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            riseThreshold = localMin + dipValue;
+                            break;
                         }
                     }
                     if (_debugging) {
@@ -352,15 +365,17 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
                     if ((indata > riseThreshold) && (indata > squelchValue)) {
                         localMax = indata;
                         switch (scaleIndicator) {
-                            case _RELATIVE_DB:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue / 20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue / 10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                dipThreshold = localMax - dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            dipThreshold = localMax
+                                    * Math.pow(10.0, (-dipValue / 20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            dipThreshold = localMax
+                                    * Math.pow(10.0, (-dipValue / 10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            dipThreshold = localMax - dipValue;
+                            break;
                         }
                         localMaxIndex = i;
                         searchValley = false;
@@ -370,15 +385,17 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
                     if ((indata > localMax) && (indata > squelchValue)) {
                         localMax = indata;
                         switch (scaleIndicator) {
-                            case _RELATIVE_DB:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue / 20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue / 10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                dipThreshold = localMax - dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            dipThreshold = localMax
+                                    * Math.pow(10.0, (-dipValue / 20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            dipThreshold = localMax
+                                    * Math.pow(10.0, (-dipValue / 10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            dipThreshold = localMax - dipValue;
+                            break;
                         }
                         localMaxIndex = i;
                     }
@@ -387,7 +404,8 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
                     }
                     if ((indata < dipThreshold) && (localMax > squelchValue)) {
                         if (_debugging) {
-                            _debug("** Found a peak with value " + localMax+" at index "+localMaxIndex);
+                            _debug("** Found a peak with value " + localMax
+                                    + " at index " + localMaxIndex);
                         }
                         resultIndices.add(new IntToken(localMaxIndex));
                         resultPeaks.add(new DoubleToken(localMax));
@@ -396,15 +414,17 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
                         }
                         localMin = indata;
                         switch (scaleIndicator) {
-                            case _RELATIVE_DB:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue / 20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue / 10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                riseThreshold = localMin + dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            riseThreshold = localMin
+                                    * Math.pow(10.0, (dipValue / 20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            riseThreshold = localMin
+                                    * Math.pow(10.0, (dipValue / 10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            riseThreshold = localMin + dipValue;
+                            break;
                         }
                         searchValley = true;
                         searchPeak = false;
@@ -415,21 +435,27 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
                 resultPeaks.add(inputArray.getElement(start));
                 resultIndices.add(startIndex.getToken());
             }
-            Token[] resultPeaksArray = (Token[])resultPeaks.toArray(new Token[resultPeaks.size()]);
-            Token[] resultIndicesArray = (Token[])resultIndices.toArray(new Token[resultIndices.size()]);
-            peakValues.send(0, new ArrayToken(inputElementType, resultPeaksArray));
-            peakIndices.send(0, new ArrayToken(BaseType.INT, resultIndicesArray));
+            Token[] resultPeaksArray = (Token[]) resultPeaks
+                    .toArray(new Token[resultPeaks.size()]);
+            Token[] resultIndicesArray = (Token[]) resultIndices
+                    .toArray(new Token[resultIndices.size()]);
+            peakValues.send(0, new ArrayToken(inputElementType,
+                    resultPeaksArray));
+            peakIndices.send(0,
+                    new ArrayToken(BaseType.INT, resultIndicesArray));
         }
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -455,8 +481,6 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

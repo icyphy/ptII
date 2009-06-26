@@ -60,7 +60,7 @@ public class EventSource extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
+    }
 
     /**
      * Return the list of constraints that specifies the analysis
@@ -71,18 +71,16 @@ public class EventSource extends AtomicActor {
      *  reading the values from the values parameter of the EventSource
      *  actor, or the super class throws it.
      */
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
 
-        ptolemy.domains.ct.lib.EventSource actor =
-            (ptolemy.domains.ct.lib.EventSource) getComponent();
+        ptolemy.domains.ct.lib.EventSource actor = (ptolemy.domains.ct.lib.EventSource) getComponent();
 
         ArrayToken valuesToken = (ArrayToken) actor.values.getToken();
 
         boolean isStatic = true;
         for (int i = 1; i < valuesToken.length(); i++) {
-            if (!valuesToken.getElement(i - 1).equals(
-                    valuesToken.getElement(i))) {
+            if (!valuesToken.getElement(i - 1)
+                    .equals(valuesToken.getElement(i))) {
                 isStatic = false;
                 break;
             }

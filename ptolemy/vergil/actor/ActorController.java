@@ -152,16 +152,14 @@ public abstract class ActorController extends AttributeController {
             _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
         }
 
-
         // NOTE: The following requires that the configuration be
         // non-null, or it will report an error.  However, in order to
         // get the "Look Inside" menu to work for composite actors in
         // Kepler, we create these menu items now.
+        _menuFactory
+                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _lookInsideAction));
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _openInstanceAction));
-
+                _openInstanceAction));
 
         if (_configuration != null) {
             if (access == FULL) {
@@ -660,7 +658,6 @@ public abstract class ActorController extends AttributeController {
             }
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //// ListenToActorAction

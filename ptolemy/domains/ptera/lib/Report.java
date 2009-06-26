@@ -136,9 +136,9 @@ public class Report extends Event {
 
             Tableau tableau = EventUtils.getTableau(this, referredTableau,
                     this.tableau);
-            if (tableau != null &&
-                    !(tableau.getFrame() instanceof TextEditor)) {
-                EventUtils.setTableau(this, referredTableau, this.tableau, null);
+            if (tableau != null && !(tableau.getFrame() instanceof TextEditor)) {
+                EventUtils
+                        .setTableau(this, referredTableau, this.tableau, null);
                 EventUtils.closeTableau(tableau);
                 tableau = null;
             }
@@ -163,17 +163,17 @@ public class Report extends Event {
                 try {
                     textEffigy = TextEffigy.newTextEffigy(effigy, "");
                 } catch (Exception e) {
-                    throw new IllegalActionException(this, e, "Unable to " +
-                            "create effigy.");
+                    throw new IllegalActionException(this, e, "Unable to "
+                            + "create effigy.");
                 }
                 try {
                     tableau = new Tableau(textEffigy, "tableau");
                 } catch (NameDuplicationException e) {
-                    throw new IllegalActionException(this, e, "Unable to " +
-                            "create tableau.");
+                    throw new IllegalActionException(this, e, "Unable to "
+                            + "create tableau.");
                 }
-                frame = new TextEditor(tableau.getTitle(),
-                        textEffigy.getDocument());
+                frame = new TextEditor(tableau.getTitle(), textEffigy
+                        .getDocument());
                 frame.text.setColumns(((IntToken) columnsDisplayed.getToken())
                         .intValue());
                 frame.text.setRows(((IntToken) rowsDisplayed.getToken())
@@ -230,8 +230,8 @@ public class Report extends Event {
             }
             break;
         default:
-            throw new IllegalActionException("Unrecognized mode choice \"" +
-                    mode.getExpression() + "\".");
+            throw new IllegalActionException("Unrecognized mode choice \""
+                    + mode.getExpression() + "\".");
         }
 
         return data;
@@ -289,6 +289,5 @@ public class Report extends Event {
         }
     }
 
-    private static final MessageHandler _MESSAGE_HANDLER =
-        new UndeferredGraphicalMessageHandler();
+    private static final MessageHandler _MESSAGE_HANDLER = new UndeferredGraphicalMessageHandler();
 }

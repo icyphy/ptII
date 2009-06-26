@@ -208,8 +208,8 @@ public abstract class GUIProperty extends Attribute {
         if (getComponent() == null || _add(container)) {
             super.setContainer(container);
         } else {
-            throw new IllegalActionException(getName() +
-                    " cannot be contained by " + container.getName());
+            throw new IllegalActionException(getName()
+                    + " cannot be contained by " + container.getName());
         }
     }
 

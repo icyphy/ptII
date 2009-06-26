@@ -59,8 +59,7 @@ public class Integrator extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-     }
-
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                            public methods                 ////
@@ -75,11 +74,9 @@ public class Integrator extends AtomicActor {
      *  occurs when getting the FALSE element from the lattice
      *  or the super class throws it.
      */
-    public List<Inequality> constraintList()
-            throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
 
-        ptolemy.domains.continuous.lib.Integrator actor =
-            (ptolemy.domains.continuous.lib.Integrator) getComponent();
+        ptolemy.domains.continuous.lib.Integrator actor = (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
         setAtLeast(actor.state, _lattice.getElement("FALSE"));
 

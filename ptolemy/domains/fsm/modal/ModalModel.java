@@ -226,15 +226,15 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         // The director should not be persistent.
                         newDirector.setPersistent(false);
                         try {
-                                StringAttribute newControllerName =
-                                        (StringAttribute) newDirector.getAttribute(
-                                                        "controllerName");
-                                newControllerName.setExpression("_Controller");
+                            StringAttribute newControllerName = (StringAttribute) newDirector
+                                    .getAttribute("controllerName");
+                            newControllerName.setExpression("_Controller");
                         } catch (Exception e) {
-                                throw new IllegalActionException("Director class \""
-                                                + newDirectorClass + "\" cannot be used "
-                                                + "because it does not have a "
-                                                + "\"controllerName\" attribute.");
+                            throw new IllegalActionException(
+                                    "Director class \"" + newDirectorClass
+                                            + "\" cannot be used "
+                                            + "because it does not have a "
+                                            + "\"controllerName\" attribute.");
                         }
 
                         if ((director != null)
@@ -353,9 +353,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      */
     public CausalityInterface getCausalityInterface() {
         try {
-            boolean stateDependentCausality = ((BooleanToken)
-                    _controller.stateDependentCausality.getToken())
-                    .booleanValue();
+            boolean stateDependentCausality = ((BooleanToken) _controller.stateDependentCausality
+                    .getToken()).booleanValue();
             if (!stateDependentCausality) {
                 return super.getCausalityInterface();
             }
@@ -364,27 +363,31 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // controller FSMActor composed with
             // the current refinement causality interfaces.
             if (_causalityInterfacesVersions == null) {
-                _causalityInterfacesVersions = new HashMap<State,Long>();
-                _causalityInterfaces = new HashMap<State,MirrorCausalityInterface>();
+                _causalityInterfacesVersions = new HashMap<State, Long>();
+                _causalityInterfaces = new HashMap<State, MirrorCausalityInterface>();
             }
             State currentState = _controller.currentState();
             Long version = _causalityInterfacesVersions.get(currentState);
-            MirrorCausalityInterface causality = _causalityInterfaces.get(currentState);
-            if (version == null
-                    || causality == null
+            MirrorCausalityInterface causality = _causalityInterfaces
+                    .get(currentState);
+            if (version == null || causality == null
                     || version.longValue() != workspace().getVersion()) {
                 // Need to create or update a causality interface for the current state.
-                CausalityInterface controllerCausality = _controller.getCausalityInterface();
-                causality = new MirrorCausalityInterface(this, controllerCausality);
+                CausalityInterface controllerCausality = _controller
+                        .getCausalityInterface();
+                causality = new MirrorCausalityInterface(this,
+                        controllerCausality);
                 Actor[] refinements = currentState.getRefinement();
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
-                        CausalityInterface refinementCausality = refinements[i].getCausalityInterface();
+                        CausalityInterface refinementCausality = refinements[i]
+                                .getCausalityInterface();
                         causality.composeWith(refinementCausality);
                     }
                 }
                 _causalityInterfaces.put(currentState, causality);
-                _causalityInterfacesVersions.put(currentState, Long.valueOf(workspace().getVersion()));
+                _causalityInterfacesVersions.put(currentState, Long
+                        .valueOf(workspace().getVersion()));
             }
             return causality;
         } catch (IllegalActionException e) {
@@ -497,7 +500,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         _controller = new ModalController(this, "_Controller");
         // Whether the controller does conservative analysis or not should
         // depend on the parameter of this actor.
-        _controller.stateDependentCausality.setExpression("stateDependentCausality");
+        _controller.stateDependentCausality
+                .setExpression("stateDependentCausality");
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
@@ -559,10 +563,10 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     /** The causality interfaces by state, for the case
      *  where the causality interface is state dependent.
      */
-    private Map<State,MirrorCausalityInterface> _causalityInterfaces;
+    private Map<State, MirrorCausalityInterface> _causalityInterfaces;
 
     /** The workspace version for causality interfaces by state, for the case
      *  where the causality interface is state dependent.
      */
-    private Map<State,Long> _causalityInterfacesVersions;
+    private Map<State, Long> _causalityInterfacesVersions;
 }

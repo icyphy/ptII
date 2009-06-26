@@ -28,7 +28,6 @@ package ptolemy.actor.gui;
 
 import ptolemy.gui.Top;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TopPack
 
@@ -45,19 +44,19 @@ import ptolemy.gui.Top;
  */
 public interface TopPack {
 
-  /**
-   * Pack the Top JFrame.
-   * This method overrides the regular pack() call.
-   * @param top The Top to pack.
-   * @param alreadyCalled  True if pack has already been called.
-   */
-  public void pack(Top top, boolean alreadyCalled);
+    /**
+     * Pack the Top JFrame.
+     * This method overrides the regular pack() call.
+     * @param top The Top to pack.
+     * @param alreadyCalled  True if pack has already been called.
+     */
+    public void pack(Top top, boolean alreadyCalled);
 
-  /**
-   * Get an object.
-   * This method allows the overrider to pass an object back to the calling object.
-   * @param identifier The object to get.
-   * @return The object found.
-   */
-  public Object getObject(Object identifier);
+    /**
+     * Get an object.
+     * This method allows the overrider to pass an object back to the calling object.
+     * @param identifier The object to get.
+     * @return The object found.
+     */
+    public Object getObject(Object identifier);
 }

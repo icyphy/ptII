@@ -175,7 +175,8 @@ public class IIR extends Transformer {
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
 
-            ArrayToken numeratorValue = (ArrayToken) newObject.numerator.getToken();
+            ArrayToken numeratorValue = (ArrayToken) newObject.numerator
+                    .getToken();
             newObject._numerator = numeratorValue.arrayValue();
 
             ArrayToken denominatorValue = (ArrayToken) denominator.getToken();
@@ -189,8 +190,8 @@ public class IIR extends Transformer {
         }
 
         newObject._stateVector = new Token[_stateVector.length];
-        System.arraycopy(_stateVector, 0, newObject._stateVector,
-                         0, _stateVector.length);
+        System.arraycopy(_stateVector, 0, newObject._stateVector, 0,
+                _stateVector.length);
 
         return newObject;
     }

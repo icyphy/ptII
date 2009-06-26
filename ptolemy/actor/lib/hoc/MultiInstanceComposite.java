@@ -204,7 +204,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 Iterator<?> ports = clone.portList().iterator();
                 while (ports.hasNext()) {
                     TypedIOPort port = (TypedIOPort) ports.next();
-                    Iterator<?> relations = port.linkedRelationList().iterator();
+                    Iterator<?> relations = port.linkedRelationList()
+                            .iterator();
                     while (relations.hasNext()) {
                         TypedIORelation relation = (TypedIORelation) relations
                                 .next();
@@ -230,8 +231,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         } else {
                             // Unlink the clone's port from the relation
                             if (_debugging) {
-                                _debug("Unlinking " + port.getFullName() + " from "
-                                        + relation.getFullName());
+                                _debug("Unlinking " + port.getFullName()
+                                        + " from " + relation.getFullName());
                             }
                             port.unlink(relation);
                         }
@@ -247,7 +248,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 } catch (NameDuplicationException ex) {
                     throw new InternalErrorException(ex);
                 }
-                _clones.remove(N-1);
+                _clones.remove(N - 1);
             }
 
             // Initialize the clones
@@ -268,7 +269,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
 
                 try {
                     // See if we should draw the clone.
-                    if (((BooleanToken)showClones.getToken()).booleanValue()) {
+                    if (((BooleanToken) showClones.getToken()).booleanValue()) {
                         // Draw the clone beneath the master's location.
                         Location location = (Location) clone
                                 .getAttribute("_location");
@@ -432,8 +433,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         try {
             nInstances = new Parameter(this, "nInstances", new IntToken(1));
             instance = new Parameter(this, "instance", new IntToken(0));
-            showClones = new Parameter(this, "showClones",
-                new BooleanToken(false));
+            showClones = new Parameter(this, "showClones", new BooleanToken(
+                    false));
             showClones.setTypeEquals(BaseType.BOOLEAN);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,

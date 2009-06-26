@@ -33,7 +33,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionReader
 
@@ -83,7 +82,8 @@ public class ExpressionReader extends LineReader {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ExpressionReader newObject = (ExpressionReader) super.clone(workspace);
 
-        newObject._expressionEvaluator = (Variable)newObject.getAttribute("_expressionEvaluator");
+        newObject._expressionEvaluator = (Variable) newObject
+                .getAttribute("_expressionEvaluator");
         return newObject;
     }
 

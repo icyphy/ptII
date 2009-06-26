@@ -121,27 +121,24 @@ public class ArrayOfRecordsPane extends JPanel {
      *  It is adapted from the Java Tutorials from Sun Microsystems.
      */
     private void _initColumnSizes(JTable table) {
-        ArrayAsTable model = (ArrayAsTable)table.getModel();
+        ArrayAsTable model = (ArrayAsTable) table.getModel();
         TableColumn column = null;
         Component component = null;
-        TableCellRenderer headerRenderer =
-            table.getTableHeader().getDefaultRenderer();
+        TableCellRenderer headerRenderer = table.getTableHeader()
+                .getDefaultRenderer();
 
         int tableWidth = 0;
         int tableHeight = 0;
         for (int i = 0; i < model.getColumnCount(); i++) {
             column = table.getColumnModel().getColumn(i);
-            component = headerRenderer.getTableCellRendererComponent(
-                    null, column.getHeaderValue(),
-                    false, false, 0, 0);
+            component = headerRenderer.getTableCellRendererComponent(null,
+                    column.getHeaderValue(), false, false, 0, 0);
             int width = component.getPreferredSize().width;
             int columnHeight = 0;
             for (int j = 0; j < model.getRowCount(); j++) {
-                component = table.getDefaultRenderer(
-                        model.getColumnClass(i)).
-                        getTableCellRendererComponent(
-                                table, model.getValueAt(j, i),
-                                false, false, 0, i);
+                component = table.getDefaultRenderer(model.getColumnClass(i))
+                        .getTableCellRendererComponent(table,
+                                model.getValueAt(j, i), false, false, 0, i);
                 int cellWidth = component.getPreferredSize().width;
                 if (cellWidth > width) {
                     width = cellWidth;
@@ -196,10 +193,10 @@ public class ArrayOfRecordsPane extends JPanel {
             if (columns == null) {
                 // Figure out what the column names are.
                 for (int i = 0; i < _array.length(); i++) {
-                    RecordToken record = (RecordToken)_array.getElement(i);
+                    RecordToken record = (RecordToken) _array.getElement(i);
                     Iterator labels = record.labelSet().iterator();
                     while (labels.hasNext()) {
-                        String column = (String)labels.next();
+                        String column = (String) labels.next();
                         if (!_columns.contains(column)) {
                             _columns.add(column);
                         }
@@ -207,7 +204,7 @@ public class ArrayOfRecordsPane extends JPanel {
                 }
             } else {
                 for (int i = 0; i < columns.length(); i++) {
-                    StringToken column = (StringToken)columns.getElement(i);
+                    StringToken column = (StringToken) columns.getElement(i);
                     _columns.add(column.stringValue());
                 }
             }
@@ -251,17 +248,17 @@ public class ArrayOfRecordsPane extends JPanel {
         public Object getValueAt(int row, int column) {
             // There is a bug in JTable, where it happily tries to access
             // rows and columns that are outside of range.
-            if ((row >= _array.length())
-                    || (column >= _columns.size())) {
+            if ((row >= _array.length()) || (column >= _columns.size())) {
                 return ("");
             }
-            Token element = ((RecordToken)_array.getElement(row)).get(_columns.get(column));
+            Token element = ((RecordToken) _array.getElement(row)).get(_columns
+                    .get(column));
             if (element == null) {
                 return ("");
             }
             // Strip off the extra quotation marks if necessary.
             if (element instanceof StringToken) {
-                return ((StringToken)element).stringValue();
+                return ((StringToken) element).stringValue();
             }
             return element.toString();
         }

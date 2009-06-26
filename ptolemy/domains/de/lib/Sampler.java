@@ -102,7 +102,6 @@ public class Sampler extends DETransformer {
         // Width constraint. Not bidirectional to not break any existing models.
         output.setWidthEquals(input, false);
 
-
         // Leave type undeclared.
         initialValue = new Parameter(this, "initialValue");
 
@@ -148,7 +147,6 @@ public class Sampler extends DETransformer {
 
         // Width constraint. Not bidirectional to not break any existing models.
         newObject.output.setWidthEquals(newObject.input, false);
-
 
         // This is not strictly needed (since it is always recreated
         // in preinitialize) but it is safer.

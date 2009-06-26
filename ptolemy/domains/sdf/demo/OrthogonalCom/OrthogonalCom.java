@@ -26,7 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 */
 
-
 package ptolemy.domains.sdf.demo.OrthogonalCom;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -74,8 +73,8 @@ public class OrthogonalCom extends TypedCompositeActor {
             setDirector(new SDFDirector(this, "director"));
 
             // Bit source
-            DiscreteRandomSource bitSource =
-                new DiscreteRandomSource(this, "bitSource");
+            DiscreteRandomSource bitSource = new DiscreteRandomSource(this,
+                    "bitSource");
 
             // Signals
             Const signal1 = new Const(this, "signal1");
@@ -101,8 +100,8 @@ public class OrthogonalCom extends TypedCompositeActor {
             // Convert noise samples into matrix.
             // SequenceToDoubleMatrix noisePacker =
             //     new SequenceToDoubleMatrix(this, "noisePacker");
-            SequenceToArray noisePacker =
-                  new SequenceToArray(this, "noisePacker");
+            SequenceToArray noisePacker = new SequenceToArray(this,
+                    "noisePacker");
 
             // Pack 8 samples into each matrix.
             // noisePacker.columns.setToken(new IntToken(8));
@@ -116,8 +115,8 @@ public class OrthogonalCom extends TypedCompositeActor {
             Maximum decision = new Maximum(this, "decision");
 
             // Displays
-            ExpressionWriter outputBitDisplay =
-                new ExpressionWriter(this, "outputBitDisplay");
+            ExpressionWriter outputBitDisplay = new ExpressionWriter(this,
+                    "outputBitDisplay");
 
             AddSubtract diff = new AddSubtract(this, "diff");
 

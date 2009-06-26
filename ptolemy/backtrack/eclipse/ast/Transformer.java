@@ -86,166 +86,167 @@ public class Transformer {
      */
     public static void main(String[] args) throws Exception {
         try {
-        if (args.length == 0) {
-            _printUsage();
-        } else {
-            String[] paths = PathFinder.getPtClassPaths();
+            if (args.length == 0) {
+                _printUsage();
+            } else {
+                String[] paths = PathFinder.getPtClassPaths();
 
-            // Parse command-line options.
-            int start = 0;
+                // Parse command-line options.
+                int start = 0;
 
-            while (start < args.length) {
-                int newPosition = parseArguments(args, start);
+                while (start < args.length) {
+                    int newPosition = parseArguments(args, start);
 
-                if (newPosition != start) {
-                    start = newPosition;
-                } else {
-                    break;
-                }
-            }
-
-            if (_extraClassPaths != null) {
-                paths = Strings.combineArrays(paths, _extraClassPaths);
-            }
-
-            // Set up the list of file names.
-            List<File> fileList = new LinkedList<File>();
-            Set<String> crossAnalysis = new HashSet<String>();
-
-            for (int i = start; i < args.length; i++) {
-                String pathOrFile = args[i];
-                File[] files;
-
-                if (pathOrFile.startsWith("@")) {
-                    // A file list.
-                    // Each line in the file contains a single file name.
-                    String listName = pathOrFile.substring(1);
-                    File listFile = new File(listName);
-                    File listPath = listFile.getParentFile();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(new FileInputStream(listName)));
-                    List<String> strings = new LinkedList<String>();
-                    String line = reader.readLine();
-
-                    while (line != null) {
-                        strings
-                                .add(new File(listPath, line)
-                                        .getCanonicalPath());
-                        line = reader.readLine();
-                    }
-
-                    files = new File[strings.size()];
-
-                    Iterator<String> stringsIter = strings.iterator();
-
-                    for (int j = 0; stringsIter.hasNext(); j++) {
-                        files[j] = new File(stringsIter.next());
-                    }
-                } else {
-                    files = PathFinder.getJavaFiles(pathOrFile, true);
-                }
-
-                ClassFileLoader loader = new ClassFileLoader(paths);
-
-                for (int j = 0; j < files.length; j++) {
-                    String fileName = files[j].getPath();
-
-                    if (fileName.endsWith(".java")) {
-                        fileName = fileName.substring(0, fileName.length() - 5)
-                                + ".class";
+                    if (newPosition != start) {
+                        start = newPosition;
                     } else {
-                        System.err.println("Skipping \"" + files[j] + "\". "
-                                + "Cause: Class file not found.");
-                        continue;
+                        break;
+                    }
+                }
+
+                if (_extraClassPaths != null) {
+                    paths = Strings.combineArrays(paths, _extraClassPaths);
+                }
+
+                // Set up the list of file names.
+                List<File> fileList = new LinkedList<File>();
+                Set<String> crossAnalysis = new HashSet<String>();
+
+                for (int i = start; i < args.length; i++) {
+                    String pathOrFile = args[i];
+                    File[] files;
+
+                    if (pathOrFile.startsWith("@")) {
+                        // A file list.
+                        // Each line in the file contains a single file name.
+                        String listName = pathOrFile.substring(1);
+                        File listFile = new File(listName);
+                        File listPath = listFile.getParentFile();
+                        BufferedReader reader = new BufferedReader(
+                                new InputStreamReader(new FileInputStream(
+                                        listName)));
+                        List<String> strings = new LinkedList<String>();
+                        String line = reader.readLine();
+
+                        while (line != null) {
+                            strings.add(new File(listPath, line)
+                                    .getCanonicalPath());
+                            line = reader.readLine();
+                        }
+
+                        files = new File[strings.size()];
+
+                        Iterator<String> stringsIter = strings.iterator();
+
+                        for (int j = 0; stringsIter.hasNext(); j++) {
+                            files[j] = new File(stringsIter.next());
+                        }
+                    } else {
+                        files = PathFinder.getJavaFiles(pathOrFile, true);
                     }
 
-                    Class c = null;
+                    ClassFileLoader loader = new ClassFileLoader(paths);
 
-                    try {
-                        c = loader.loadClass(new File(fileName));
-                    } catch (Throwable throwable) {
-                        /*System.err.println("Skipping \"" + files[j] + "\". "
-                                + "Cause: " + e.getMessage());
-                        continue;*/
-                        System.err.println("***********************");
-                        String message = throwable.getMessage();
-                        System.err.println("Cannot load class from file: \""
-                                + fileName + "\": "
-                                + message);
+                    for (int j = 0; j < files.length; j++) {
+                        String fileName = files[j].getPath();
 
-                        String header = "Prohibited package name:";
-                        if (message.startsWith(header)) {
-                            String packageName =
-                                message.substring(header.length()).trim();
-                            String name = new File(fileName).getName();
-                            int dotPos = name.indexOf('.');
-                            if (dotPos >= 0) {
-                                name = name.substring(0, dotPos);
-                            }
-                            String className = packageName + "." + name;
-                            System.err.println("Try to use preloaded class: "
-                                    + className);
-                            try {
-                                c = loader.loadClass(className);
-                            } catch (Exception e2) {
-                            }
+                        if (fileName.endsWith(".java")) {
+                            fileName = fileName.substring(0,
+                                    fileName.length() - 5)
+                                    + ".class";
+                        } else {
+                            System.err.println("Skipping \"" + files[j]
+                                    + "\". " + "Cause: Class file not found.");
+                            continue;
+                        }
 
-                            if (c == null) {
-                                System.err.println(
-                                        "Cannot obtain preloaded class: "
-                                        + className);
-                                continue;
+                        Class c = null;
+
+                        try {
+                            c = loader.loadClass(new File(fileName));
+                        } catch (Throwable throwable) {
+                            /*System.err.println("Skipping \"" + files[j] + "\". "
+                                    + "Cause: " + e.getMessage());
+                            continue;*/
+                            System.err.println("***********************");
+                            String message = throwable.getMessage();
+                            System.err
+                                    .println("Cannot load class from file: \""
+                                            + fileName + "\": " + message);
+
+                            String header = "Prohibited package name:";
+                            if (message.startsWith(header)) {
+                                String packageName = message.substring(
+                                        header.length()).trim();
+                                String name = new File(fileName).getName();
+                                int dotPos = name.indexOf('.');
+                                if (dotPos >= 0) {
+                                    name = name.substring(0, dotPos);
+                                }
+                                String className = packageName + "." + name;
+                                System.err
+                                        .println("Try to use preloaded class: "
+                                                + className);
+                                try {
+                                    c = loader.loadClass(className);
+                                } catch (Exception e2) {
+                                }
+
+                                if (c == null) {
+                                    System.err
+                                            .println("Cannot obtain preloaded class: "
+                                                    + className);
+                                    continue;
+                                }
                             }
                         }
-                    }
 
-                    fileList.add(files[j]);
-                    if (c == null) {
-                        throw new NullPointerException("Could not obtain "
-                                                       + "preloaded class \""
-                                                       + fileName + "\"");
+                        fileList.add(files[j]);
+                        if (c == null) {
+                            throw new NullPointerException("Could not obtain "
+                                    + "preloaded class \"" + fileName + "\"");
+                        }
+                        crossAnalysis.add(c.getName());
+                        _addInnerClasses(crossAnalysis, fileName, (c
+                                .getPackage() == null) ? null : c.getPackage()
+                                .getName());
                     }
-                    crossAnalysis.add(c.getName());
-                    _addInnerClasses(crossAnalysis, fileName,
-                            (c.getPackage() == null) ? null : c.getPackage()
-                                    .getName());
                 }
-            }
 
-            // Compute the array of cross-analyzed types.
-            String[] crossAnalyzedTypes = new String[crossAnalysis.size()];
-            Iterator<String> crossAnalysisIter = crossAnalysis.iterator();
+                // Compute the array of cross-analyzed types.
+                String[] crossAnalyzedTypes = new String[crossAnalysis.size()];
+                Iterator<String> crossAnalysisIter = crossAnalysis.iterator();
 
-            for (int i = 0; crossAnalysisIter.hasNext(); i++) {
-                crossAnalyzedTypes[i] = crossAnalysisIter.next();
-            }
+                for (int i = 0; crossAnalysisIter.hasNext(); i++) {
+                    crossAnalyzedTypes[i] = crossAnalysisIter.next();
+                }
 
-            Writer standardWriter = _defaultToStandardOutput ? new OutputStreamWriter(
-                    System.out)
-                    : null;
+                Writer standardWriter = _defaultToStandardOutput ? new OutputStreamWriter(
+                        System.out)
+                        : null;
 
-            // Handle files.
-            Iterator<File> filesIter = fileList.iterator();
+                // Handle files.
+                Iterator<File> filesIter = fileList.iterator();
 
-            while (filesIter.hasNext()) {
-                File file = filesIter.next();
-                String fileName = file.getPath();
-                System.err.println("Transforming \"" + fileName + "\"...");
+                while (filesIter.hasNext()) {
+                    File file = filesIter.next();
+                    String fileName = file.getPath();
+                    System.err.println("Transforming \"" + fileName + "\"...");
 
-                transform(file.getPath(), standardWriter, paths,
-                        crossAnalyzedTypes);
+                    transform(file.getPath(), standardWriter, paths,
+                            crossAnalyzedTypes);
+
+                    if (_defaultToStandardOutput) {
+                        standardWriter.flush();
+                    }
+                }
+
+                _outputConfig();
 
                 if (_defaultToStandardOutput) {
-                    standardWriter.flush();
+                    standardWriter.close();
                 }
             }
-
-            _outputConfig();
-
-            if (_defaultToStandardOutput) {
-                standardWriter.close();
-            }
-        }
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(2);

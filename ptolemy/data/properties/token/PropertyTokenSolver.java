@@ -26,9 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.properties.token;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,12 +48,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.FileUtilities;
 
 public class PropertyTokenSolver extends PropertySolver {
 
     public PropertyTokenSolver(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         useCase = new StringParameter(this, "portValue");
@@ -74,8 +70,7 @@ public class PropertyTokenSolver extends PropertySolver {
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
                 + "Double click to\nResolve Property.</text></svg>");
 
-        new PropertySolverGUIFactory(
-                this, "_portValueSolverGUIFactory");
+        new PropertySolverGUIFactory(this, "_portValueSolverGUIFactory");
 
         _addChoices();
     }
@@ -83,25 +78,25 @@ public class PropertyTokenSolver extends PropertySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /**
      * Returns the helper that contains property information for
      * the given object.
      * @param object The given object.
      * @return The associated property constraint helper.
      */
-    public PropertyHelper getHelper(Object object) throws IllegalActionException {
+    public PropertyHelper getHelper(Object object)
+            throws IllegalActionException {
         return _getHelper(object);
     }
 
     public Property getProperty(Object object) {
         Property result;
 
-//        if (object instanceof PortParameter) {
-//            result = getProperty(((PortParameter)object).getPort());
-//        } else {
-            result = super.getProperty(object);
-//        }
+        //        if (object instanceof PortParameter) {
+        //            result = getProperty(((PortParameter)object).getPort());
+        //        } else {
+        result = super.getProperty(object);
+        //        }
 
         return (result == null) ? new PropertyToken(Token.NIL) : result;
     }
@@ -110,9 +105,7 @@ public class PropertyTokenSolver extends PropertySolver {
         return useCase.getExpression();
     }
 
-
-    protected void _resolveProperties(NamedObj analyzer)
-            throws KernelException {
+    protected void _resolveProperties(NamedObj analyzer) throws KernelException {
         NamedObj toplevel = _toplevel();
         PropertyTokenCompositeHelper topLevelHelper = (PropertyTokenCompositeHelper) _getHelper(toplevel);
         super._resolveProperties(analyzer);
@@ -123,11 +116,11 @@ public class PropertyTokenSolver extends PropertySolver {
         if (!getListening().equals("NONE")) {
 
             topLevelHelper.addListener(getListening().contains("Input"),
-                                       getListening().contains("Output"));
-
+                    getListening().contains("Output"));
 
             // run simulation
-            Manager manager = new Manager(toplevel.workspace(), "PortValueManager");
+            Manager manager = new Manager(toplevel.workspace(),
+                    "PortValueManager");
 
             if (toplevel instanceof TypedCompositeActor) {
 
@@ -135,34 +128,37 @@ public class PropertyTokenSolver extends PropertySolver {
 
             } else if (toplevel instanceof FSMActor) {
 
-                TypedCompositeActor compositeActor = new TypedCompositeActor(this.workspace());
+                TypedCompositeActor compositeActor = new TypedCompositeActor(
+                        this.workspace());
                 FSMDirector fsmDirector = new FSMDirector(this.workspace());
 
                 compositeActor.setDirector(fsmDirector);
-                ((FSMActor)toplevel).setContainer(compositeActor);
+                ((FSMActor) toplevel).setContainer(compositeActor);
 
                 compositeActor.setManager(manager);
 
-                ((FSMActor)toplevel).setContainer(null);
+                ((FSMActor) toplevel).setContainer(null);
             } else {
                 throw new IllegalActionException(
-                        "Not able to fire this type of toplevel actor (" + toplevel + ").");
+                        "Not able to fire this type of toplevel actor ("
+                                + toplevel + ").");
             }
-
 
             manager.preinitializeAndResolveTypes();
             ((Actor) toplevel).initialize();
-            ((Actor) toplevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
+            ((Actor) toplevel)
+                    .iterate(((IntToken) (numberIterations.getToken()))
+                            .intValue());
             ((Actor) toplevel).wrapup();
-//FIXME: stoping the manager conflicts with extendedFirstListener. No iterations can be done there.
-//            ((Actor) topLevel).stop();
+            //FIXME: stoping the manager conflicts with extendedFirstListener. No iterations can be done there.
+            //            ((Actor) topLevel).stop();
 
             manager.wrapup();
             manager.finish();
             manager.stop();
 
             topLevelHelper.removeListener(getListening().contains("Input"),
-                                          getListening().contains("Output"));
+                    getListening().contains("Output"));
 
         }
 
@@ -188,12 +184,9 @@ public class PropertyTokenSolver extends PropertySolver {
      *  accessing files or parameters.
      */
     private void _addChoices() throws IllegalActionException {
-        File file = null;
-
         // Add all the subdirectories in token/ directory as
         // choices.  Directories named "CVS" and ".svn" are skipped.
-        _addChoices(useCase,
-                "$CLASSPATH/ptolemy/data/properties/token");
+        _addChoices(useCase, "$CLASSPATH/ptolemy/data/properties/token");
 
         listeningMethod.addChoice("NONE");
         listeningMethod.addChoice("Input & Output Ports");
@@ -225,14 +218,15 @@ public class PropertyTokenSolver extends PropertySolver {
     }
 
     public Token getToken(Object object) {
-        return (Token)_tokenMap.get(object);
+        return _tokenMap.get(object);
     }
 
     private void _clearTokenMap() {
         _tokenMap.clear();
     }
 
-    private FirstTokenSentListener _sentListener = new FirstTokenSentListener(this);
+    private FirstTokenSentListener _sentListener = new FirstTokenSentListener(
+            this);
     private FirstTokenGotListener _gotListener = new FirstTokenGotListener(this);
 
     private Map<Object, Token> _tokenMap = new HashMap<Object, Token>();

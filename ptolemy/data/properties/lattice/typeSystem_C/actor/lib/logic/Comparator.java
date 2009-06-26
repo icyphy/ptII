@@ -52,7 +52,8 @@ public class Comparator extends AtomicActor {
      * @param actor the associated actor
      */
     public Comparator(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.logic.Comparator actor) throws IllegalActionException {
+            ptolemy.actor.lib.logic.Comparator actor)
+            throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();

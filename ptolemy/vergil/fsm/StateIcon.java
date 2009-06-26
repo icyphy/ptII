@@ -90,8 +90,8 @@ public class StateIcon extends NameIcon {
             return _iconCache;
         }
 
-        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10, _getFill(),
-                        1.0f, 5.0, 5.0);
+        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
+                _getFill(), 1.0f, 5.0, 5.0);
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
@@ -107,14 +107,12 @@ public class StateIcon extends NameIcon {
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
-            colorParameter = (Parameter) (getAttribute("fill",
-                    Parameter.class));
+            colorParameter = (Parameter) (getAttribute("fill", Parameter.class));
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
-                    Color color = new Color(
-                            (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
+                    Color color = new Color((float) ((ScalarToken) array
+                            .getElement(0)).doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
                                     .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))

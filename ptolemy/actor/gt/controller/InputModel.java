@@ -60,18 +60,18 @@ public class InputModel extends GTEvent {
         RefiringData data = super.fire(arguments);
 
         ParserScope scope = _getParserScope();
-        BooleanToken inputPortPresent = (BooleanToken) scope.get(
-                _INPUT_PORT_NAME + "_isPresent");
+        BooleanToken inputPortPresent = (BooleanToken) scope
+                .get(_INPUT_PORT_NAME + "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            _debug(new PteraDebugEvent(this, "Input model received at " +
-                    _INPUT_PORT_NAME + "."));
+            _debug(new PteraDebugEvent(this, "Input model received at "
+                    + _INPUT_PORT_NAME + "."));
 
             ActorToken modelToken = (ActorToken) scope.get(_INPUT_PORT_NAME);
             Entity entity = modelToken.getEntity();
             if (!(entity instanceof CompositeEntity)) {
-                throw new IllegalActionException("Only instances of " +
-                        "CompositeEntity are accepted in the input " +
-                        "ActorTokens to the transformation controller.");
+                throw new IllegalActionException("Only instances of "
+                        + "CompositeEntity are accepted in the input "
+                        + "ActorTokens to the transformation controller.");
             }
             getModelParameter().setModel((CompositeEntity) entity);
         }
@@ -81,8 +81,8 @@ public class InputModel extends GTEvent {
 
     public void scheduleEvents() throws IllegalActionException {
         ParserScope scope = _getParserScope();
-        BooleanToken inputPortPresent = (BooleanToken) scope.get(
-                _INPUT_PORT_NAME + "_isPresent");
+        BooleanToken inputPortPresent = (BooleanToken) scope
+                .get(_INPUT_PORT_NAME + "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
             super.scheduleEvents();
         }

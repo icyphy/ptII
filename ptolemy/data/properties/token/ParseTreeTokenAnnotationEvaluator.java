@@ -38,7 +38,6 @@ import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ////ParseTreePropertyInference
 
 /**
@@ -52,7 +51,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (mankit)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvaluator {
+public class ParseTreeTokenAnnotationEvaluator extends
+        ParseTreeAnnotationEvaluator {
 
     public ParseTreeTokenAnnotationEvaluator() {
         evaluator = new ParseTreeEvaluator();
@@ -68,7 +68,7 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
      * of the container of this expression.
      */
     public void visitAssignmentNode(ASTPtAssignmentNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ((ASTPtRootNode) node.jjtGetChild(0)).visit(this);
         Object object = _evaluatedObject;
 
@@ -76,23 +76,22 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
 
         Token expressionValue = null;
         try {
-            expressionValue =
-                evaluator.evaluateParseTree(expression, new VariableScope());
+            expressionValue = evaluator.evaluateParseTree(expression,
+                    new VariableScope());
 
         } catch (IllegalActionException ex) {
             // FIXME: need to keep the exception chain.
-            throw _unsupportedVisitException(
-                    "Cannot resolve assignment expression: " + expression);
+            throw _unsupportedVisitException("Cannot resolve assignment expression: "
+                    + expression);
         }
 
         if (expressionValue == null) {
-            throw _unsupportedVisitException(
-                    "Cannot resolve assignment: " + node.getAssignment());
+            throw _unsupportedVisitException("Cannot resolve assignment: "
+                    + node.getAssignment());
         }
 
         _helper.setEquals(object, new PropertyToken(expressionValue));
     }
-
 
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
@@ -110,8 +109,6 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
     }
 
     private ParseTreeEvaluator evaluator;// = new ParseTreeEvaluator();
-
-
 
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
@@ -150,7 +147,7 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             NamedObj container = (NamedObj) _helper.getComponent();
             Variable result = getScopedVariable(null, container, name);
             if (result != null) {
@@ -170,7 +167,7 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             NamedObj container = (NamedObj) _helper.getComponent();
             Variable result = getScopedVariable(null, container, name);
             if (result != null) {
@@ -190,6 +187,5 @@ public class ParseTreeTokenAnnotationEvaluator extends ParseTreeAnnotationEvalua
             return getAllScopedVariableNames(null, container);
         }
     }
-
 
 }

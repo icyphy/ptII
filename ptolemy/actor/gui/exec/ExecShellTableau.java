@@ -113,7 +113,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
      *  The output automatically gets a trailing newline appended.
      *  @param text The test to be appended.
      */
-    public void stderr( /*final*/ String text) {
+    public void stderr( /*final*/String text) {
         frame.shellTextArea.appendJTextArea(text + "\n");
     }
 
@@ -168,7 +168,6 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             component.add(shellTextArea);
             getContentPane().add(component, BorderLayout.CENTER);
         }
-
 
         ///////////////////////////////////////////////////////////////////
         ////                         public variables                  ////

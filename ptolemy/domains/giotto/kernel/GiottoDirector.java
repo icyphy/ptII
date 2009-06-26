@@ -333,8 +333,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         // the criterion seems difficult. Hence, we check to be sure
         // that the test is worth doing.
         Time currentTime = getModelTime();
-        int frequencyValue = _getActorFrequency((NamedObj)actor);
-        double actorPeriod = _periodValue/frequencyValue;
+        int frequencyValue = _getActorFrequency((NamedObj) actor);
+        double actorPeriod = _periodValue / frequencyValue;
         Time nextFiringTime = currentTime.add(actorPeriod);
         // First check to see whether we are in the initialize phase, in
         // which case, return the start time.
@@ -755,7 +755,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         int frequencyValue = 1;
         Attribute frequency = actor.getAttribute("frequency");
         if (frequency instanceof Parameter) {
-            Token result = ((Parameter)frequency).getToken();
+            Token result = ((Parameter) frequency).getToken();
             if (result instanceof IntToken) {
                 frequencyValue = ((IntToken) result).intValue();
             }

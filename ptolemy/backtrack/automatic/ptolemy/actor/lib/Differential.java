@@ -31,7 +31,6 @@
 ////                         public methods                    ////
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -70,7 +69,8 @@ public class Differential extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Differential(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public Differential(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -83,7 +83,7 @@ public class Differential extends Transformer implements Rollbackable {
      * @exception IllegalActionException If subtraction is not
      * supported by the supplied tokens.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
             $ASSIGN$_currentInput(input.get(0));
@@ -99,7 +99,7 @@ public class Differential extends Transformer implements Rollbackable {
      * Reset to indicate that no input has yet been seen.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_lastInput(null);
     }
@@ -108,35 +108,41 @@ public class Differential extends Transformer implements Rollbackable {
      * Record the most recent input as the latest input.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         $ASSIGN$_lastInput(_currentInput);
         return super.postfire();
     }
 
     private final Token $ASSIGN$_currentInput(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentInput.add(null, _currentInput, $CHECKPOINT.getTimestamp());
+            $RECORD$_currentInput.add(null, _currentInput, $CHECKPOINT
+                    .getTimestamp());
         }
         return _currentInput = newValue;
     }
 
     private final Token $ASSIGN$_lastInput(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_lastInput.add(null, _lastInput, $CHECKPOINT.getTimestamp());
+            $RECORD$_lastInput
+                    .add(null, _lastInput, $CHECKPOINT.getTimestamp());
         }
         return _lastInput = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _currentInput = (Token)$RECORD$_currentInput.restore(_currentInput, timestamp, trim);
-        _lastInput = (Token)$RECORD$_lastInput.restore(_lastInput, timestamp, trim);
+        _currentInput = (Token) $RECORD$_currentInput.restore(_currentInput,
+                timestamp, trim);
+        _lastInput = (Token) $RECORD$_lastInput.restore(_lastInput, timestamp,
+                trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -167,9 +173,6 @@ public class Differential extends Transformer implements Rollbackable {
     private transient FieldRecord $RECORD$_lastInput = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_currentInput,
-            $RECORD$_lastInput
-        };
+            $RECORD$_currentInput, $RECORD$_lastInput };
 
 }
-

@@ -28,12 +28,11 @@ package ptolemy.data.properties;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.JarURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +58,7 @@ import ptolemy.util.FileUtilities;
 public class AnalyzerAttribute extends Attribute {
 
     public AnalyzerAttribute(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         property = new StringParameter(container, "property");
         action = new StringParameter(container, "action");
@@ -81,7 +80,8 @@ public class AnalyzerAttribute extends Attribute {
         overwriteConstraint.setTypeEquals(BaseType.BOOLEAN);
         overwriteConstraint.setExpression("false");
 
-        overwriteDependentProperties = new Parameter(container, "overwriteDependentProperties");
+        overwriteDependentProperties = new Parameter(container,
+                "overwriteDependentProperties");
         overwriteDependentProperties.setTypeEquals(BaseType.BOOLEAN);
         overwriteDependentProperties.setExpression("false");
 
@@ -108,18 +108,17 @@ public class AnalyzerAttribute extends Attribute {
      */
     public Parameter showProperty;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public String analyze(CompositeEntity entity)
-    throws IllegalActionException {
+    public String analyze(CompositeEntity entity) throws IllegalActionException {
         String errorString = "";
         String propertyValue = property.getExpression();
 
         if (propertyValue.equals("Clear All")) {
             try {
-                PropertyRemover remover = new PropertyRemover(entity, "ModelAnalyzerClearAll");
+                PropertyRemover remover = new PropertyRemover(entity,
+                        "ModelAnalyzerClearAll");
                 remover.removeProperties(entity);
             } catch (NameDuplicationException e) {
                 assert false;
@@ -131,8 +130,8 @@ public class AnalyzerAttribute extends Attribute {
             PropertySolver chosenSolver = null;
             try {
 
-                URIAttribute attribute = (URIAttribute)
-                entity.getAttribute("_uri", URIAttribute.class);
+                URIAttribute attribute = (URIAttribute) entity.getAttribute(
+                        "_uri", URIAttribute.class);
                 if (attribute == null) {
                     attribute = new URIAttribute(entity, "_uri");
                 }
@@ -141,10 +140,12 @@ public class AnalyzerAttribute extends Attribute {
                     attribute.setURI(uri);
                 }
 
-                List solversInModel = entity.attributeList(PropertySolver.class);
+                List solversInModel = entity
+                        .attributeList(PropertySolver.class);
                 if (solversInModel.size() > 0) {
                     try {
-                        chosenSolver = ((PropertySolver) solversInModel.get(0)).findSolver(propertyValue);
+                        chosenSolver = ((PropertySolver) solversInModel.get(0))
+                                .findSolver(propertyValue);
                     } catch (PropertyResolutionException ex) {
 
                     }
@@ -164,7 +165,7 @@ public class AnalyzerAttribute extends Attribute {
 
                 if (chosenSolver instanceof PropertyConstraintSolver) {
                     ((PropertyConstraintSolver) chosenSolver)
-                    .setLogMode(logMode.getToken() == BooleanToken.TRUE);
+                            .setLogMode(logMode.getToken() == BooleanToken.TRUE);
                 }
 
                 String previousAction = chosenSolver.setAction(actionValue);
@@ -172,20 +173,23 @@ public class AnalyzerAttribute extends Attribute {
                 chosenSolver.setAction(previousAction);
 
             } catch (PropertyFailedRegressionTestException ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+                errorString = KernelException.generateMessage(entity, null, ex,
+                        "****Failed: Property regression test failed.")
+                        + "\n\n";
 
             } catch (KernelException ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+                errorString = KernelException.generateMessage(entity, null, ex,
+                        "****Failed: Property regression test failed.")
+                        + "\n\n";
             } catch (URISyntaxException ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+                errorString = KernelException.generateMessage(entity, null, ex,
+                        "****Failed: Property regression test failed.")
+                        + "\n\n";
             } catch (Exception ex) {
-                errorString = KernelException.generateMessage(
-                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
-            }
-            finally {
+                errorString = KernelException.generateMessage(entity, null, ex,
+                        "****Failed: Property regression test failed.")
+                        + "\n\n";
+            } finally {
                 if (chosenSolver != null) {
                     chosenSolver.resetAll();
                 }
@@ -204,10 +208,9 @@ public class AnalyzerAttribute extends Attribute {
         } else {
             path += "/" + modelName + ".xml";
         }
-        return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
-                uri.getPort(), path, uri.getQuery(), uri.getFragment());
+        return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri
+                .getPort(), path, uri.getQuery(), uri.getFragment());
     }
-
 
     /** Given a dot separated packagename, return a list of all the packages
      *  in the given path and below.  The list of solver classes is also updated.
@@ -222,9 +225,8 @@ public class AnalyzerAttribute extends Attribute {
         String directoryPath = "$CLASSPATH/" + path.replace(".", "/");
 
         try {
-            URI directoryURI = new URI(FileUtilities.nameToURL(
-                            directoryPath, null, null).toExternalForm()
-                    .replaceAll(" ", "%20"));
+            URI directoryURI = new URI(FileUtilities.nameToURL(directoryPath,
+                    null, null).toExternalForm().replaceAll(" ", "%20"));
             File directory = null;
             try {
                 try {
@@ -232,30 +234,33 @@ public class AnalyzerAttribute extends Attribute {
                 } catch (Throwable throwable) {
                     throw new InternalErrorException(this, throwable,
                             "Failed to find directories in the URI: \""
-                            + directoryURI
-                            + "\"");
+                                    + directoryURI + "\"");
                 }
                 ClassFileOrDirectoryNameFilter filter = new ClassFileOrDirectoryNameFilter();
                 File[] classFiles = directory.listFiles(filter);
                 if (classFiles == null) {
                     throw new InternalErrorException(this, null,
-                            "Failed to find directories in \""
-                            + directoryPath
-                            + "\"");
+                            "Failed to find directories in \"" + directoryPath
+                                    + "\"");
                 } else {
                     for (int i = 0; i < classFiles.length; i++) {
                         String className = classFiles[i].getName();
 
                         if (classFiles[i].isDirectory()) {
-                            if (!className.equals("CVS") && !className.equals(".svn")) {
+                            if (!className.equals("CVS")
+                                    && !className.equals(".svn")) {
                                 // Search sub-folder.
-                                solvers.addAll(getListOfSolverClass(path + "." + className));
+                                solvers.addAll(getListOfSolverClass(path + "."
+                                        + className));
                             }
                         } else {
                             try {
                                 // only consider class files
                                 if (className.endsWith(".class")) {
-                                    _solvers.add(Class.forName(path + "." + className.substring(0, className.length() - 6)));
+                                    _solvers.add(Class.forName(path
+                                            + "."
+                                            + className.substring(0, className
+                                                    .length() - 6)));
                                 }
                             } catch (ClassNotFoundException e) {
                                 assert false;
@@ -268,23 +273,24 @@ public class AnalyzerAttribute extends Attribute {
                     if (!directoryURI.toString().startsWith("jar:")) {
                         throw throwable;
                     } else {
-                         // We have a jar URL, we are probably in Web Start
-                        List<String> directories =  new LinkedList<String>();
+                        new LinkedList<String>();
                         URL jarURL = directoryURI.toURL();
-                        JarURLConnection connection = (JarURLConnection)(jarURL.openConnection());
+                        JarURLConnection connection = (JarURLConnection) (jarURL
+                                .openConnection());
                         String jarEntryName = connection.getEntryName();
                         if (!jarEntryName.endsWith("/")) {
                             jarEntryName = jarEntryName + "/";
                         }
                         JarFile jarFile = connection.getJarFile();
                         Enumeration entries = jarFile.entries();
-                        while ( entries.hasMoreElements()) {
-                            JarEntry entry = (JarEntry)entries.nextElement();
+                        while (entries.hasMoreElements()) {
+                            JarEntry entry = (JarEntry) entries.nextElement();
                             String name = entry.getName();
                             if (name.startsWith(jarEntryName)
                                     && name.endsWith(".class")
-                                    && !entry.isDirectory() ) {
-                                String className = name.replace("/", ".").substring(0, name.length() - 6);
+                                    && !entry.isDirectory()) {
+                                String className = name.replace("/", ".")
+                                        .substring(0, name.length() - 6);
                                 try {
                                     _solvers.add(Class.forName(className));
                                 } catch (ClassNotFoundException ex) {
@@ -297,29 +303,28 @@ public class AnalyzerAttribute extends Attribute {
                 } catch (Throwable throwable2) {
                     throwable2.printStackTrace();
                     throw new IllegalActionException(this, throwable,
-                            "Failed to process "
-                            + directoryURI);
+                            "Failed to process " + directoryURI);
                 }
             }
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "Failed to find classes in \""
-                    + directoryPath + "\"");
+                    "Failed to find classes in \"" + directoryPath + "\"");
         }
         return solvers;
     }
 
-    public PropertySolver instantiateSolver(CompositeEntity entity, String className) {
+    public PropertySolver instantiateSolver(CompositeEntity entity,
+            String className) {
 
         for (Class solver : _solvers) {
-            if (className.equals(
-                    solver.getSimpleName())) {
+            if (className.equals(solver.getSimpleName())) {
                 try {
-                    Constructor constructor =
-                        solver.getConstructor(NamedObj.class, String.class);
+                    Constructor constructor = solver.getConstructor(
+                            NamedObj.class, String.class);
 
                     PropertySolver solverObject = (PropertySolver) constructor
-                    .newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
+                            .newInstance(entity, "ModelAnalyzer_"
+                                    + solver.getSimpleName());
 
                     new Location(solverObject, "_location");
 
@@ -334,7 +339,8 @@ public class AnalyzerAttribute extends Attribute {
         return null;
     }
 
-    public void setContainer(NamedObj container) throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         super.setContainer(container);
 
         _moveParameter(action);
@@ -352,8 +358,7 @@ public class AnalyzerAttribute extends Attribute {
 
     private void _addChoices() throws IllegalActionException {
 
-        List<Class> solvers =
-            getListOfSolverClass("ptolemy.data.properties.configuredSolvers");
+        List<Class> solvers = getListOfSolverClass("ptolemy.data.properties.configuredSolvers");
 
         if (solvers.size() > 0) {
             property.setExpression(solvers.get(0).getSimpleName());
@@ -368,7 +373,8 @@ public class AnalyzerAttribute extends Attribute {
         PropertySolver._addActions(action);
     }
 
-    private void _moveParameter(Parameter parameter) throws IllegalActionException, NameDuplicationException {
+    private void _moveParameter(Parameter parameter)
+            throws IllegalActionException, NameDuplicationException {
         if (parameter != null) {
             if (parameter.getContainer() != getContainer()) {
                 parameter.setContainer(getContainer());
@@ -403,12 +409,11 @@ public class AnalyzerAttribute extends Attribute {
                 File file = new File(directory, name);
 
                 if (file.isDirectory()
-                        && (file.getName().equals("CVS")
-                                || file.getName().equals(".svn"))) {
+                        && (file.getName().equals("CVS") || file.getName()
+                                .equals(".svn"))) {
                     return false;
                 }
-                if (!file.isDirectory()
-                        && file.getName().endsWith(".class")) {
+                if (!file.isDirectory() && file.getName().endsWith(".class")) {
                     return true;
                 }
                 if (file.isDirectory()) {

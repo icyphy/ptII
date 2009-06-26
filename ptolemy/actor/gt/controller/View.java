@@ -137,27 +137,27 @@ public class View extends GTEvent {
                 if (sizeAttribute == null) {
                     sizeAttribute = new SizeAttribute(entity, "_vergilSize");
                 }
-                sizeAttribute.setExpression("[" + newSize.width + ", " +
-                        newSize.height + "]");
+                sizeAttribute.setExpression("[" + newSize.width + ", "
+                        + newSize.height + "]");
             }
 
             boolean reopen = ((BooleanToken) reopenWindow.getToken())
                     .booleanValue();
             Tableau tableau = EventUtils.getTableau(this, referredTableau,
                     this.tableau);
-            if (tableau != null &&
-                    !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
-                EventUtils.setTableau(this, referredTableau, this.tableau,
-                        null);
+            if (tableau != null
+                    && !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
+                EventUtils
+                        .setTableau(this, referredTableau, this.tableau, null);
                 EventUtils.closeTableau(tableau);
                 tableau = null;
             }
 
             boolean openNewWindow = true;
-            if (!reopen  && tableau != null) {
+            if (!reopen && tableau != null) {
                 JFrame frame = tableau.getFrame();
-                if (frame instanceof BasicGraphFrame &&
-                        ((BasicGraphFrame) frame).getEffigy() != null) {
+                if (frame instanceof BasicGraphFrame
+                        && ((BasicGraphFrame) frame).getEffigy() != null) {
                     openNewWindow = false;
                 }
             }
@@ -181,8 +181,8 @@ public class View extends GTEvent {
                 JFrame frame = tableau.getFrame();
 
                 // Compute location of the new frame.
-                IntMatrixToken location =
-                    (IntMatrixToken) screenLocation.getToken();
+                IntMatrixToken location = (IntMatrixToken) screenLocation
+                        .getToken();
                 int x = location.getElementAt(0, 0);
                 int y = location.getElementAt(0, 1);
                 Point newLocation;
@@ -200,10 +200,10 @@ public class View extends GTEvent {
                 // screen.
                 Toolkit toolkit = Toolkit.getDefaultToolkit();
                 Dimension screenSize = toolkit.getScreenSize();
-                newLocation.x = Math.min(newLocation.x,
-                        screenSize.width - newSize.width);
-                newLocation.y = Math.min(newLocation.y,
-                        screenSize.height - newSize.height);
+                newLocation.x = Math.min(newLocation.x, screenSize.width
+                        - newSize.width);
+                newLocation.y = Math.min(newLocation.y, screenSize.height
+                        - newSize.height);
                 frame.setLocation(newLocation);
             }
 

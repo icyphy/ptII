@@ -177,7 +177,6 @@ public class PropertySolverTestReporter {
         return errorFile;
     }
 
-
     private static boolean _isTestableDirectory(File file) {
         if (!file.isDirectory()) {
             return false;
@@ -189,7 +188,6 @@ public class PropertySolverTestReporter {
         return directoryPath.contains("test") || directoryPath.contains("demo");
     }
 
-
     private static boolean _isTestableFile(File file) {
         if (!file.getName().endsWith(".xml")) {
             return false;
@@ -200,8 +198,8 @@ public class PropertySolverTestReporter {
     private static void _printGlobalStats(Map stats) throws IOException {
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(new File(
-                _statsFilename)));
+            writer = new BufferedWriter(
+                    new FileWriter(new File(_statsFilename)));
 
             for (Object field : stats.keySet()) {
                 writer.append(field + _separator + stats.get(field));
@@ -214,13 +212,12 @@ public class PropertySolverTestReporter {
         }
     }
 
-
     private static void _printLocalStats(Map<Object, Map> stats)
             throws IOException {
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(new File(
-                _statsFilename), true));
+            writer = new BufferedWriter(new FileWriter(
+                    new File(_statsFilename), true));
 
             // Give ordering to the header fields.
             List headers = new LinkedList(_modelStatsHeaders);
@@ -254,8 +251,6 @@ public class PropertySolverTestReporter {
             }
         }
     }
-
-
 
     /*
      *
@@ -344,7 +339,8 @@ public class PropertySolverTestReporter {
                 try {
                     parser.reset();
                     MoMLParser.purgeModelRecord(filePath);
-                    CompositeEntity toplevel = PropertySolverTester._getModel(filePath, parser);
+                    CompositeEntity toplevel = PropertySolverTester._getModel(
+                            filePath, parser);
 
                     // Get all instances of PropertySolver contained in the
                     // model.
@@ -367,7 +363,8 @@ public class PropertySolverTestReporter {
                             localStats.put(
                                     _createKey(filePath, solver, solver),
                                     solver.getStats());
-                            _solverStatsHeaders.addAll(solver.getStats().keySet());
+                            _solverStatsHeaders.addAll(solver.getStats()
+                                    .keySet());
 
                             for (String solverName : solver
                                     .getDependentSolvers()) {
@@ -377,8 +374,8 @@ public class PropertySolverTestReporter {
                                 localStats.put(_createKey(filePath,
                                         dependentSolver, solver),
                                         dependentSolver.getStats());
-                                _solverStatsHeaders
-                                        .addAll(dependentSolver.getStats().keySet());
+                                _solverStatsHeaders.addAll(dependentSolver
+                                        .getStats().keySet());
                             }
 
                             solver.resetAll();
@@ -434,8 +431,7 @@ public class PropertySolverTestReporter {
 
                     BufferedWriter writer = null;
                     try {
-                        writer = new BufferedWriter(new FileWriter(
-                            errorFile));
+                        writer = new BufferedWriter(new FileWriter(errorFile));
                         writer.write(errors);
                     } finally {
                         if (writer != null) {
@@ -465,8 +461,7 @@ public class PropertySolverTestReporter {
     public static final String NONDEEP_TEST_OPTION = "-nondeep";
 
     protected static String _eol = StringUtilities
-    .getProperty("line.separator");
-
+            .getProperty("line.separator");
 
     /* The directory path to store the test statistics reports. */
     private static String _statsDirectory = StringUtilities
@@ -486,6 +481,5 @@ public class PropertySolverTestReporter {
             + "/propertyTestReports.tsv";
 
     protected static final String _separator = "\t";
-
 
 }

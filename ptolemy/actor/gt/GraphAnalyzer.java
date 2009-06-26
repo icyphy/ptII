@@ -81,8 +81,8 @@ public abstract class GraphAnalyzer {
         try {
             top.workspace().getReadAccess();
 
-            children = new LinkedList<Object>(top.entityList(
-                    ComponentEntity.class));
+            children = new LinkedList<Object>(top
+                    .entityList(ComponentEntity.class));
 
             boolean collapsing = _relationCollapsing(top);
             if (!collapsing) {
@@ -149,8 +149,8 @@ public abstract class GraphAnalyzer {
     public boolean findFirstPath(Port startPort, Path path,
             Set<? super Relation> visitedRelations,
             Set<? super Port> visitedPorts) {
-        List<?> relationList = new LinkedList<Object>(
-                startPort.linkedRelationList());
+        List<?> relationList = new LinkedList<Object>(startPort
+                .linkedRelationList());
         if (startPort instanceof ComponentPort) {
             ((Collection<?>) relationList).addAll(((ComponentPort) startPort)
                     .insideRelationList());
@@ -172,8 +172,7 @@ public abstract class GraphAnalyzer {
 
             currentList.setSecond(i);
             visitedRelations.add(relation);
-            List<?> portList = new LinkedList<Object>(
-                    relation.linkedPortList());
+            List<?> portList = new LinkedList<Object>(relation.linkedPortList());
 
             _removeIgnoredObjects(portList);
 
@@ -246,7 +245,7 @@ public abstract class GraphAnalyzer {
                 IndexedList indexedList = entry.getValue();
                 List<?> objectList = indexedList.getFirst();
                 for (int index = indexedList.getSecond() + 1; index < objectList
-                .size(); index++) {
+                        .size(); index++) {
                     indexedList.setSecond(index);
                     NamedObj child = (NamedObj) objectList.get(index);
                     indexedLists.removeAllAfter(entry);
@@ -295,7 +294,7 @@ public abstract class GraphAnalyzer {
             IndexedList markedEntityList = entry.getValue();
             List<?> entityList = markedEntityList.getFirst();
             for (int index = markedEntityList.getSecond() + 1; index < entityList
-            .size(); index++) {
+                    .size(); index++) {
                 markedEntityList.setSecond(index);
                 path.removeAllAfter(entry);
 
@@ -327,8 +326,8 @@ public abstract class GraphAnalyzer {
                     }
 
                     visitedRelations.add(relation);
-                    List<?> portList = new LinkedList<Object>(
-                            relation.linkedPortList());
+                    List<?> portList = new LinkedList<Object>(relation
+                            .linkedPortList());
 
                     _removeIgnoredObjects(portList);
 
@@ -480,7 +479,7 @@ public abstract class GraphAnalyzer {
         public boolean equals(Object object) {
             if (object instanceof Path) {
                 return super.equals(object)
-                && _startPort == ((Path) object)._startPort;
+                        && _startPort == ((Path) object)._startPort;
             }
             return false;
         }

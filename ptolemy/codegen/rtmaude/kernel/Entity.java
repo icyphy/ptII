@@ -62,38 +62,38 @@ public class Entity extends RTMaudeAdaptor {
      */
     protected String _generateFireCode() throws IllegalActionException {
 
-        return _generateBlockCode("fireBlock",
-                CodeStream.indent(1,
-                    new ListTerm<String>("", "," + _eol,
-                            _codeStream.getAllCodeBlockNames()) {
-                        public String item(String v) throws IllegalActionException {
-                            if (v.matches("attr_.*")) {
-                                return _generateBlockCode(v);
-                            }
-                            else
-                                return null;
+        return _generateBlockCode("fireBlock", CodeStream.indent(1,
+                new ListTerm<String>("", "," + _eol, _codeStream
+                        .getAllCodeBlockNames()) {
+                    public String item(String v) throws IllegalActionException {
+                        if (v.matches("attr_.*")) {
+                            return _generateBlockCode(v);
+                        } else {
+                            return null;
                         }
-                    }.generateCode())
-            );
+                    }
+                }.generateCode()));
     }
 
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        if (name.equals("ports"))
+        if (name.equals("ports")) {
             return new ListTerm<Port>("none", "",
-                    ((ptolemy.kernel.Entity)getComponent()).portList()) {
+                    ((ptolemy.kernel.Entity) getComponent()).portList()) {
                 public String item(Port v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
                 }
             }.generateCode();
-        if (name.equals("parameters"))
+        }
+        if (name.equals("parameters")) {
             return new ListTerm<Variable>("emptyMap", " ;" + _eol,
                     getComponent().attributeList(Variable.class)) {
                 public String item(Variable v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
                 }
             }.generateCode();
+        }
         return super._generateInfoCode(name, parameters);
     }
 }

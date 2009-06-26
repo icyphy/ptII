@@ -256,8 +256,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
             + "<line x1=\"30\" y1=\"22\" x2=\"30\" y2=\"30\""
             + "  style=\"stroke:#404040\"/>"
             + "<line x1=\"30\" y1=\"30\" x2=\"35\" y2=\"30\""
-            + "  style=\"stroke:#404040\"/>"
-            + "<text x=\"17\" y=\"13\""
+            + "  style=\"stroke:#404040\"/>" + "<text x=\"17\" y=\"13\""
             + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
             + "  match</text>" + "</svg>";
 

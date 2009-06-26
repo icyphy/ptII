@@ -105,7 +105,6 @@ public class OrderedMerge extends TypedAtomicActor {
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
-
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(inputA);
 
@@ -207,7 +206,8 @@ public class OrderedMerge extends TypedAtomicActor {
                 }
             } else {
                 // Logic is different if we have to eliminate duplicates.
-                if (((BooleanToken)eliminateDuplicates.getToken()).booleanValue()) {
+                if (((BooleanToken) eliminateDuplicates.getToken())
+                        .booleanValue()) {
                     // We are set to eliminate duplicates.
                     if (readToken.equals(_recordedToken)) {
                         // Input is a duplicate of the recorded token.
@@ -217,7 +217,8 @@ public class OrderedMerge extends TypedAtomicActor {
                         output.send(0, _recordedToken);
                         _tentativeLastProduced = _recordedToken;
                         if (_debugging) {
-                            _debug("Sent output token with value " + _recordedToken
+                            _debug("Sent output token with value "
+                                    + _recordedToken
                                     + "\nDiscarded duplicate input.");
                         }
                         _tentativeRecordedToken = null;
@@ -237,13 +238,15 @@ public class OrderedMerge extends TypedAtomicActor {
                         }
                     } else {
                         // Not a duplicate.
-                        if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
+                        if ((readToken.isLessThan(_recordedToken))
+                                .booleanValue()) {
                             // Produce the smaller output.
                             output.send(0, readToken);
                             _tentativeLastProduced = readToken;
 
                             if (_debugging) {
-                                _debug("Sent output token with value " + readToken);
+                                _debug("Sent output token with value "
+                                        + readToken);
                             }
 
                             // Token was just read from _nextPort.
@@ -258,7 +261,8 @@ public class OrderedMerge extends TypedAtomicActor {
                             output.send(0, _recordedToken);
                             _tentativeLastProduced = _recordedToken;
                             if (_debugging) {
-                                _debug("Sent output token with value " + _recordedToken);
+                                _debug("Sent output token with value "
+                                        + _recordedToken);
                             }
                             if (_readFromA) {
                                 // Recorded token was read from A.
@@ -298,7 +302,8 @@ public class OrderedMerge extends TypedAtomicActor {
                         // Produce the smaller output.
                         output.send(0, _recordedToken);
                         if (_debugging) {
-                            _debug("Sent output token with value " + _recordedToken);
+                            _debug("Sent output token with value "
+                                    + _recordedToken);
                         }
 
                         if (_readFromA) {
@@ -352,7 +357,6 @@ public class OrderedMerge extends TypedAtomicActor {
             inputA_tokenConsumptionRate.setToken(_zero);
             inputB_tokenConsumptionRate.setToken(_one);
         }
-
 
         if (_debugging) {
             _debug("Next port to read input from is " + _nextPort.getName());

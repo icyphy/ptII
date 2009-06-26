@@ -172,12 +172,12 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         newObject._outputValues = new LinkedList<String>();
 
         try {
-            Attribute old =  newObject.getAttribute("_windowProperties");
+            Attribute old = newObject.getAttribute("_windowProperties");
             if (old != null) {
                 old.setContainer(null);
             }
-            newObject._windowProperties = new WindowPropertiesAttribute(newObject,
-                "_windowProperties");
+            newObject._windowProperties = new WindowPropertiesAttribute(
+                    newObject, "_windowProperties");
             newObject._windowProperties.setPersistent(true);
         } catch (Exception ex) {
             // CloneNotSupportedException does not have a constructor
@@ -272,7 +272,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         if (_stopRequested) {
             return ("");
         } else {
-            return ((String) _outputValues.remove(0));
+            return (_outputValues.remove(0));
         }
     }
 

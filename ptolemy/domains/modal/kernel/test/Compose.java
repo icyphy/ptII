@@ -28,7 +28,7 @@ package ptolemy.domains.modal.kernel.test;
 
 import java.net.URL;
 
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.modal.kernel.ia.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
 
@@ -62,7 +62,7 @@ public class Compose {
         InterfaceAutomaton[] automata = new InterfaceAutomaton[momls.length];
 
         for (int i = 0; i < momls.length; i++) {
-            URL url = MoMLApplication.specToURL(momls[i]);
+            URL url = ConfigurationApplication.specToURL(momls[i]);
 
             // following the comments in MoMLApplication, use the same URL for
             // the two arguments (base and URL) to parse(). Also, a instance

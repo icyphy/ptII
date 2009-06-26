@@ -87,7 +87,8 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
         System.out.println("JimpleWriter.internalTransform(" + phaseName + ", "
                 + options + ")");
 
-        String outputDirectory = PhaseOptions.getString(options, "outputDirectory");
+        String outputDirectory = PhaseOptions.getString(options,
+                "outputDirectory");
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
                 .hasNext();) {
@@ -102,11 +103,12 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
                     if (!outputDirectoryFile.mkdirs()) {
                         throw new RuntimeException(
                                 "Failed to create directory \""
-                                + outputDirectoryFile + "\"");
+                                        + outputDirectoryFile + "\"");
                     }
                 }
 
-                fileName = outputDirectory + System.getProperty("file.separator");
+                fileName = outputDirectory
+                        + System.getProperty("file.separator");
             } else {
                 fileName = "";
             }

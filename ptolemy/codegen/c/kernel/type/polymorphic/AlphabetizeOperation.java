@@ -71,18 +71,21 @@ public class AlphabetizeOperation {
 
                 StringBuffer code = new StringBuffer();
                 for (Signature signature : sortedSet) {
-                    String templateCode = stream.getCodeBlockTemplate(signature);
+                    String templateCode = stream
+                            .getCodeBlockTemplate(signature);
 
                     String functionHeader = templateCode.split("\n")[1];
-                    String[] fragments = functionHeader.split(signature.functionName);
+                    String[] fragments = functionHeader
+                            .split(signature.functionName);
 
                     // The templateCode should contain at least two occurrences of
                     // the functionName. One for the code block header, and one for
                     // the function definition. If not, that means something is
                     // mis-typed, and will create compile bugs in code generation.
                     if (fragments.length <= 1) {
-                        System.err.println("Warning -- " + signature + " does not" +
-                                        " contains the definition for " + signature.functionName);
+                        System.err.println("Warning -- " + signature
+                                + " does not" + " contains the definition for "
+                                + signature.functionName);
                     }
                     code.append(templateCode);
 
@@ -90,7 +93,8 @@ public class AlphabetizeOperation {
 
                 if (code.toString().trim().length() > 0) {
                     FileWriter writer = new FileWriter(new File(filename));
-                    writer.write(code.toString().replaceAll("\r\n", "\n").replaceAll("\n", "\r\n"));
+                    writer.write(code.toString().replaceAll("\r\n", "\n")
+                            .replaceAll("\n", "\r\n"));
                     writer.close();
                 }
             }

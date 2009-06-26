@@ -57,11 +57,11 @@ public class Void extends LatticeProperty implements TypeProperty {
     }
 
     public Token getMinValue() {
-       return new NullToken();
+        return new NullToken();
     }
 
     public boolean hasMinMaxValue() {
-       return false;
+        return false;
     }
 
     public boolean isInRange(Token token) {

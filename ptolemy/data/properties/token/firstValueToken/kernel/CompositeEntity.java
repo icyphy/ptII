@@ -65,12 +65,13 @@ public class CompositeEntity extends PropertyTokenCompositeHelper {
      */
     public CompositeEntity(PropertyTokenSolver solver,
             ptolemy.kernel.CompositeEntity entity)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         super(solver, entity);
     }
 
-    public void determineProperty() throws IllegalActionException, KernelException {
+    public void determineProperty() throws IllegalActionException,
+            KernelException {
         super.determineProperty();
 
         Iterator ports = getPropertyables(IOPort.class).iterator();

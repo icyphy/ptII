@@ -211,7 +211,7 @@ public class TupleType extends StructuredType implements Cloneable {
     /** Return a hash code value for this object.
      */
     public int hashCode() {
-        return Arrays.hashCode(_elementTypeTerms)+ 2917;
+        return Arrays.hashCode(_elementTypeTerms) + 2917;
     }
 
     /** Set the elements that have declared type BaseType.UNKNOWN (the leaf

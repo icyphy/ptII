@@ -29,7 +29,6 @@
 //// OrderedMerge
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -218,7 +217,8 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public OrderedMerge(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public OrderedMerge(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         eliminateDuplicates = new Parameter(this, "eliminateDuplicates");
         eliminateDuplicates.setTypeEquals(BaseType.BOOLEAN);
@@ -227,19 +227,24 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         inputB = new TypedIOPort(this, "inputB", true, false);
         inputB.setTypeSameAs(inputA);
         inputA.setTypeAtMost(BaseType.SCALAR);
-        inputA_tokenConsumptionRate = new Parameter(inputA, "tokenConsumptionRate");
+        inputA_tokenConsumptionRate = new Parameter(inputA,
+                "tokenConsumptionRate");
         inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        inputB_tokenConsumptionRate = new Parameter(inputB, "tokenConsumptionRate");
+        inputB_tokenConsumptionRate = new Parameter(inputB,
+                "tokenConsumptionRate");
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(inputA);
         selectedA = new TypedIOPort(this, "selectedA", false, true);
         selectedA.setTypeEquals(BaseType.BOOLEAN);
-        StringAttribute channelCardinal = new StringAttribute(selectedA, "_cardinal");
+        StringAttribute channelCardinal = new StringAttribute(selectedA,
+                "_cardinal");
         channelCardinal.setExpression("SOUTH");
-        _attachText("_iconDescription", "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "+"style=\"fill:blue\"/>\n"+"</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     /**
@@ -250,8 +255,8 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class has
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        OrderedMerge newObject = (OrderedMerge)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OrderedMerge newObject = (OrderedMerge) super.clone(workspace);
         newObject.inputA.setTypeAtMost(BaseType.SCALAR);
         newObject.inputB.setTypeSameAs(newObject.inputA);
         newObject.output.setTypeSameAs(newObject.inputA);
@@ -269,12 +274,13 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
      * if it came from <i>inputB</i>.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (_nextPort.hasToken(0)) {
-            ScalarToken readToken = (ScalarToken)_nextPort.get(0);
+            ScalarToken readToken = (ScalarToken) _nextPort.get(0);
             if (_debugging) {
-                _debug("Read input token from " + _nextPort.getName()+" with value "+readToken);
+                _debug("Read input token from " + _nextPort.getName()
+                        + " with value " + readToken);
             }
             if (_recordedToken == null) {
                 $ASSIGN$_tentativeRecordedToken(readToken);
@@ -285,12 +291,15 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
                     $ASSIGN$_tentativeNextPort(inputA);
                 }
             } else {
-                if (((BooleanToken)eliminateDuplicates.getToken()).booleanValue()) {
+                if (((BooleanToken) eliminateDuplicates.getToken())
+                        .booleanValue()) {
                     if (readToken.equals(_recordedToken)) {
                         output.send(0, _recordedToken);
                         $ASSIGN$_tentativeLastProduced(_recordedToken);
                         if (_debugging) {
-                            _debug("Sent output token with value " + _recordedToken+"\nDiscarded duplicate input.");
+                            _debug("Sent output token with value "
+                                    + _recordedToken
+                                    + "\nDiscarded duplicate input.");
                         }
                         $ASSIGN$_tentativeRecordedToken(null);
                         if (_readFromA) {
@@ -303,11 +312,13 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
                             _debug("Discarded duplicate input " + readToken);
                         }
                     } else {
-                        if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
+                        if ((readToken.isLessThan(_recordedToken))
+                                .booleanValue()) {
                             output.send(0, readToken);
                             $ASSIGN$_tentativeLastProduced(readToken);
                             if (_debugging) {
-                                _debug("Sent output token with value " + readToken);
+                                _debug("Sent output token with value "
+                                        + readToken);
                             }
                             if (_nextPort == inputA) {
                                 selectedA.send(0, BooleanToken.TRUE);
@@ -318,7 +329,8 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
                             output.send(0, _recordedToken);
                             $ASSIGN$_tentativeLastProduced(_recordedToken);
                             if (_debugging) {
-                                _debug("Sent output token with value " + _recordedToken);
+                                _debug("Sent output token with value "
+                                        + _recordedToken);
                             }
                             if (_readFromA) {
                                 selectedA.send(0, BooleanToken.TRUE);
@@ -348,7 +360,8 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
                     } else {
                         output.send(0, _recordedToken);
                         if (_debugging) {
-                            _debug("Sent output token with value " + _recordedToken);
+                            _debug("Sent output token with value "
+                                    + _recordedToken);
                         }
                         if (_readFromA) {
                             selectedA.send(0, BooleanToken.TRUE);
@@ -372,7 +385,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
      * Initialize this actor to indicate that no token is recorded.
      * @exception IllegalActionException If a derived class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_nextPort(inputA);
         $ASSIGN$_recordedToken(null);
@@ -387,7 +400,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
      * @return True.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean postfire() throws IllegalActionException  {
+    public boolean postfire() throws IllegalActionException {
         $ASSIGN$_recordedToken(_tentativeRecordedToken);
         $ASSIGN$_readFromA(_tentativeReadFromA);
         $ASSIGN$_nextPort(_tentativeNextPort);
@@ -417,7 +430,8 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
 
     private final ScalarToken $ASSIGN$_lastProduced(ScalarToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_lastProduced.add(null, _lastProduced, $CHECKPOINT.getTimestamp());
+            $RECORD$_lastProduced.add(null, _lastProduced, $CHECKPOINT
+                    .getTimestamp());
         }
         return _lastProduced = newValue;
     }
@@ -431,62 +445,79 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
 
     private final boolean $ASSIGN$_readFromA(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_readFromA.add(null, _readFromA, $CHECKPOINT.getTimestamp());
+            $RECORD$_readFromA
+                    .add(null, _readFromA, $CHECKPOINT.getTimestamp());
         }
         return _readFromA = newValue;
     }
 
     private final ScalarToken $ASSIGN$_recordedToken(ScalarToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_recordedToken.add(null, _recordedToken, $CHECKPOINT.getTimestamp());
+            $RECORD$_recordedToken.add(null, _recordedToken, $CHECKPOINT
+                    .getTimestamp());
         }
         return _recordedToken = newValue;
     }
 
-    private final ScalarToken $ASSIGN$_tentativeLastProduced(ScalarToken newValue) {
+    private final ScalarToken $ASSIGN$_tentativeLastProduced(
+            ScalarToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeLastProduced.add(null, _tentativeLastProduced, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeLastProduced.add(null, _tentativeLastProduced,
+                    $CHECKPOINT.getTimestamp());
         }
         return _tentativeLastProduced = newValue;
     }
 
     private final boolean $ASSIGN$_tentativeReadFromA(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeReadFromA.add(null, _tentativeReadFromA, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeReadFromA.add(null, _tentativeReadFromA,
+                    $CHECKPOINT.getTimestamp());
         }
         return _tentativeReadFromA = newValue;
     }
 
-    private final ScalarToken $ASSIGN$_tentativeRecordedToken(ScalarToken newValue) {
+    private final ScalarToken $ASSIGN$_tentativeRecordedToken(
+            ScalarToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeRecordedToken.add(null, _tentativeRecordedToken, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeRecordedToken.add(null, _tentativeRecordedToken,
+                    $CHECKPOINT.getTimestamp());
         }
         return _tentativeRecordedToken = newValue;
     }
 
     private final TypedIOPort $ASSIGN$_tentativeNextPort(TypedIOPort newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeNextPort.add(null, _tentativeNextPort, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeNextPort.add(null, _tentativeNextPort,
+                    $CHECKPOINT.getTimestamp());
         }
         return _tentativeNextPort = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _lastProduced = (ScalarToken)$RECORD$_lastProduced.restore(_lastProduced, timestamp, trim);
-        _nextPort = (TypedIOPort)$RECORD$_nextPort.restore(_nextPort, timestamp, trim);
+        _lastProduced = (ScalarToken) $RECORD$_lastProduced.restore(
+                _lastProduced, timestamp, trim);
+        _nextPort = (TypedIOPort) $RECORD$_nextPort.restore(_nextPort,
+                timestamp, trim);
         _readFromA = $RECORD$_readFromA.restore(_readFromA, timestamp, trim);
-        _recordedToken = (ScalarToken)$RECORD$_recordedToken.restore(_recordedToken, timestamp, trim);
-        _tentativeLastProduced = (ScalarToken)$RECORD$_tentativeLastProduced.restore(_tentativeLastProduced, timestamp, trim);
-        _tentativeReadFromA = $RECORD$_tentativeReadFromA.restore(_tentativeReadFromA, timestamp, trim);
-        _tentativeRecordedToken = (ScalarToken)$RECORD$_tentativeRecordedToken.restore(_tentativeRecordedToken, timestamp, trim);
-        _tentativeNextPort = (TypedIOPort)$RECORD$_tentativeNextPort.restore(_tentativeNextPort, timestamp, trim);
+        _recordedToken = (ScalarToken) $RECORD$_recordedToken.restore(
+                _recordedToken, timestamp, trim);
+        _tentativeLastProduced = (ScalarToken) $RECORD$_tentativeLastProduced
+                .restore(_tentativeLastProduced, timestamp, trim);
+        _tentativeReadFromA = $RECORD$_tentativeReadFromA.restore(
+                _tentativeReadFromA, timestamp, trim);
+        _tentativeRecordedToken = (ScalarToken) $RECORD$_tentativeRecordedToken
+                .restore(_tentativeRecordedToken, timestamp, trim);
+        _tentativeNextPort = (TypedIOPort) $RECORD$_tentativeNextPort.restore(
+                _tentativeNextPort, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -520,24 +551,22 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
 
     private transient FieldRecord $RECORD$_recordedToken = new FieldRecord(0);
 
-    private transient FieldRecord $RECORD$_tentativeLastProduced = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeLastProduced = new FieldRecord(
+            0);
 
-    private transient FieldRecord $RECORD$_tentativeReadFromA = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeReadFromA = new FieldRecord(
+            0);
 
-    private transient FieldRecord $RECORD$_tentativeRecordedToken = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeRecordedToken = new FieldRecord(
+            0);
 
-    private transient FieldRecord $RECORD$_tentativeNextPort = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeNextPort = new FieldRecord(
+            0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_lastProduced,
-            $RECORD$_nextPort,
-            $RECORD$_readFromA,
-            $RECORD$_recordedToken,
-            $RECORD$_tentativeLastProduced,
-            $RECORD$_tentativeReadFromA,
-            $RECORD$_tentativeRecordedToken,
-            $RECORD$_tentativeNextPort
-        };
+            $RECORD$_lastProduced, $RECORD$_nextPort, $RECORD$_readFromA,
+            $RECORD$_recordedToken, $RECORD$_tentativeLastProduced,
+            $RECORD$_tentativeReadFromA, $RECORD$_tentativeRecordedToken,
+            $RECORD$_tentativeNextPort };
 
 }
-

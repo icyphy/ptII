@@ -44,8 +44,8 @@ public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
     public MatchResult() {
     }
 
-    public MatchResult(SequentialTwoWayHashMap<ValueIterator, Token>
-            parameterValues) {
+    public MatchResult(
+            SequentialTwoWayHashMap<ValueIterator, Token> parameterValues) {
         _parameterValues = parameterValues;
     }
 

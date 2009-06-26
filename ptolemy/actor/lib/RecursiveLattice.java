@@ -188,17 +188,17 @@ public class RecursiveLattice extends Transformer {
         newObject._forwardCache = new double[_forward.length];
         newObject._reflectionCoefficients = new double[_forward.length];
 
-        System.arraycopy(_backward, 0, newObject._backward,
-                         0, _backward.length);
-        System.arraycopy(_backwardCache, 0, newObject._backwardCache,
-                         0, _backwardCache.length);
-        System.arraycopy(_forward, 0, newObject._forward,
-                         0, _forward.length);
-        System.arraycopy(_forwardCache, 0, newObject._forwardCache,
-                         0, _forwardCache.length);
+        System
+                .arraycopy(_backward, 0, newObject._backward, 0,
+                        _backward.length);
+        System.arraycopy(_backwardCache, 0, newObject._backwardCache, 0,
+                _backwardCache.length);
+        System.arraycopy(_forward, 0, newObject._forward, 0, _forward.length);
+        System.arraycopy(_forwardCache, 0, newObject._forwardCache, 0,
+                _forwardCache.length);
         System.arraycopy(_reflectionCoefficients, 0,
-                         newObject._reflectionCoefficients,
-                         0, _reflectionCoefficients.length);
+                newObject._reflectionCoefficients, 0,
+                _reflectionCoefficients.length);
 
         try {
             ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();

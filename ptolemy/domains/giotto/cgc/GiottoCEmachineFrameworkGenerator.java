@@ -127,8 +127,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         if (!outDirFile.isDirectory()) {
             if (!outDirFile.mkdirs()) {
                 throw new IllegalActionException(
-                        "Failed to create directory \""
-                        + outDirFile + "\"");
+                        "Failed to create directory \"" + outDirFile + "\"");
             }
         }
 
@@ -192,8 +191,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         if (!outDirFile.isDirectory()) {
             if (!outDirFile.mkdirs()) {
                 throw new IllegalActionException(
-                        "Failed to create directory \""
-                        + outDirFile + "\"");
+                        "Failed to create directory \"" + outDirFile + "\"");
             }
         }
 
@@ -332,7 +330,6 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
         return retVal;
     }
-
 
     /** Generate Framework Implementation C code (f_code.c) for the given model.
      *  This function generates function implementation for a couple of
@@ -931,7 +928,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
             String portSeparator = ",";
 
-            if (inputPorts.toString().equals("") || outputPorts.toString().equals("")) {
+            if (inputPorts.toString().equals("")
+                    || outputPorts.toString().equals("")) {
                 portSeparator = "";
             }
 

@@ -239,8 +239,9 @@ public abstract class AbstractUnitConverter implements UnitConverter {
      * @return the component's screen resolution
      */
     protected int getScreenResolution(Component c) {
-        if (c == null)
+        if (c == null) {
             return getDefaultScreenResolution();
+        }
 
         Toolkit toolkit = c.getToolkit();
         return toolkit != null ? toolkit.getScreenResolution()

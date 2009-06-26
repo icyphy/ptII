@@ -877,8 +877,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             output.write(_getIndentPrefix(depth) + "<" + _elementName
-                    + " name=\"" + name
-                    + "\" class=\"" + className + "\"");
+                    + " name=\"" + name + "\" class=\"" + className + "\"");
 
             if (getSource() != null) {
                 output.write(" source=\"" + getSource() + "\">\n");
@@ -1395,7 +1394,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             return false;
         }
 
-        int override = ((Integer) _override.get(0)).intValue();
+        int override = (_override.get(0)).intValue();
         return (override == 0);
     }
 
@@ -1606,10 +1605,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } else {
             synchronized (_changeLock) {
                 if (_changeListeners != null) {
-                    ListIterator<WeakReference<ChangeListener>> listeners = _changeListeners.listIterator();
+                    ListIterator<WeakReference<ChangeListener>> listeners = _changeListeners
+                            .listIterator();
 
                     while (listeners.hasNext()) {
-                        WeakReference<ChangeListener> reference = listeners.next();
+                        WeakReference<ChangeListener> reference = listeners
+                                .next();
 
                         if (reference.get() == listener) {
                             listeners.remove();
@@ -2101,7 +2102,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             while (_override.size() <= depth) {
                 _override.add(Integer.valueOf(0));
             }
-            int breadth = ((Integer) _override.get(depth)).intValue();
+            int breadth = (_override.get(depth)).intValue();
             _override.set(depth, Integer.valueOf(breadth + 1));
         }
         Iterator<?> objects = lazyContainedObjectsIterator();
@@ -2204,7 +2205,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 list = new ArrayList<DebugListener>(_debugListeners);
             }
 
-            for (DebugListener listener: list) {
+            for (DebugListener listener : list) {
                 listener.event(event);
             }
         }
@@ -2229,7 +2230,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 list = new ArrayList<DebugListener>(_debugListeners);
             }
 
-            for (DebugListener listener: list) {
+            for (DebugListener listener : list) {
                 listener.message(message);
             }
         }
@@ -2297,7 +2298,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -2333,7 +2335,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 if (_attributes != null) {
-                    Iterator<?> parameters = _attributes.elementList().iterator();
+                    Iterator<?> parameters = _attributes.elementList()
+                            .iterator();
 
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute) parameters.next();
@@ -2478,8 +2481,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             // Export MoML if the value has been set directly.
-            if ((_override.size() == 1)
-                    && (((Integer) _override.get(0)).intValue() == 0)) {
+            if ((_override.size() == 1) && ((_override.get(0)).intValue() == 0)) {
                 return false;
             }
         }
@@ -2785,9 +2787,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception IllegalActionException If propagate is true
      *   and propagation fails.
      */
-    private List<NamedObj> _getDerivedList(Collection<NamedObj> visited, boolean propagate,
-            boolean force, NamedObj context, int depth, List<Integer> override,
-            String relativeName) throws IllegalActionException {
+    private List<NamedObj> _getDerivedList(Collection<NamedObj> visited,
+            boolean propagate, boolean force, NamedObj context, int depth,
+            List<Integer> override, String relativeName)
+            throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
@@ -2854,7 +2857,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             int myBreadth = 0;
 
             if (propagate) {
-                myBreadth = ((Integer) override.get(depth)).intValue();
+                myBreadth = (override.get(depth)).intValue();
             }
 
             // Iterate over the children.
@@ -2863,7 +2866,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 Iterator<?> others = othersList.iterator();
 
                 while (others.hasNext()) {
-                    WeakReference<?> reference = (WeakReference<?>) others.next();
+                    WeakReference<?> reference = (WeakReference<?>) others
+                            .next();
                     NamedObj other = (NamedObj) reference.get();
                     if (other != null) {
                         // Found a deferral.
@@ -3037,9 +3041,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // The two lists are identical, so there be no shadowing.
                 return false;
             } else {
-                int candidateBreadth = ((Integer) candidate.get(index))
-                        .intValue();
-                int changerBreadth = ((Integer) changer.get(index)).intValue();
+                int candidateBreadth = (candidate.get(index)).intValue();
+                int changerBreadth = (changer.get(index)).intValue();
 
                 if (candidateBreadth < changerBreadth) {
                     return true;

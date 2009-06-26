@@ -33,7 +33,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 public class car {
 
-    public static String handleMacro(List<String> arguments) throws IllegalActionException {
+    public static String handleMacro(List<String> arguments)
+            throws IllegalActionException {
         String list = arguments.get(0).trim();
         list = list.substring(list.indexOf('(') + 1, list.lastIndexOf(')'));
         return CodeGeneratorHelper._parseList(list).get(0);

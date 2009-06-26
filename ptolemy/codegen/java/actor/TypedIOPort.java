@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.java.actor;
 
-
 /**
 Code generator helper for {@link ptolemy.actor.TypedIOPort}.
 

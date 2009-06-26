@@ -29,7 +29,6 @@
 //// Autocorrelation
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.backtrack.Checkpoint;
@@ -179,7 +178,8 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
     private Token[] _outputs;
 
-    private static class FunctionTerm extends MonotonicFunction implements Rollbackable {
+    private static class FunctionTerm extends MonotonicFunction implements
+            Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -225,14 +225,16 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            _port = (TypedIOPort)$RECORD$_port.restore(_port, timestamp, trim);
+            _port = (TypedIOPort) $RECORD$_port.restore(_port, timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -246,7 +248,8 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -260,16 +263,15 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
         private transient FieldRecord $RECORD$_port = new FieldRecord(0);
 
-        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$_port
-            };
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_port };
 
     }
 
     /**
      * Monotonic function that determines the type of the output port.
      */
-    private class OutputTypeTerm extends MonotonicFunction implements Rollbackable {
+    private class OutputTypeTerm extends MonotonicFunction implements
+            Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -291,13 +293,17 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
          * @exception IllegalActionException If the type of the
          * associated typeable cannot be determined.
          */
-        public Object getValue() throws IllegalActionException  {
-            ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis.getAnalysis(symmetricOutput);
-            if (analysis.isConstant(symmetricOutput) && analysis.isConstant(numberOfLags)) {
-                Token symmetricOutputToken = analysis.getConstantValue(symmetricOutput);
-                Token numberOfLagsToken = analysis.getConstantValue(numberOfLags);
-                int lags = ((IntToken)numberOfLagsToken).intValue();
-                if (((BooleanToken)symmetricOutputToken).booleanValue()) {
+        public Object getValue() throws IllegalActionException {
+            ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
+                    .getAnalysis(symmetricOutput);
+            if (analysis.isConstant(symmetricOutput)
+                    && analysis.isConstant(numberOfLags)) {
+                Token symmetricOutputToken = analysis
+                        .getConstantValue(symmetricOutput);
+                Token numberOfLagsToken = analysis
+                        .getConstantValue(numberOfLags);
+                int lags = ((IntToken) numberOfLagsToken).intValue();
+                if (((BooleanToken) symmetricOutputToken).booleanValue()) {
                     return _getArrayTypeRaw(2 * lags + 1);
                 } else {
                     return _getArrayTypeRaw(2 * lags);
@@ -324,7 +330,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
          * @exception IllegalActionException If the type of the typeable
          * cannot be determined.
          */
-        private ArrayType _getArrayTypeRaw() throws IllegalActionException  {
+        private ArrayType _getArrayTypeRaw() throws IllegalActionException {
             Type type = input.getType();
             if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
                 $ASSIGN$_arrayType(new ArrayType(type));
@@ -339,7 +345,8 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
          * @exception IllegalActionException If the type of the typeable
          * cannot be determined.
          */
-        private ArrayType _getArrayTypeRaw(int length) throws IllegalActionException  {
+        private ArrayType _getArrayTypeRaw(int length)
+                throws IllegalActionException {
             Type type = input.getType();
             if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
                 $ASSIGN$_arrayType(new ArrayType(type, length));
@@ -349,20 +356,24 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
         private final ArrayType $ASSIGN$_arrayType(ArrayType newValue) {
             if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$_arrayType.add(null, _arrayType, $CHECKPOINT.getTimestamp());
+                $RECORD$_arrayType.add(null, _arrayType, $CHECKPOINT
+                        .getTimestamp());
             }
             return _arrayType = newValue;
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            _arrayType = (ArrayType)$RECORD$_arrayType.restore(_arrayType, timestamp, trim);
+            _arrayType = (ArrayType) $RECORD$_arrayType.restore(_arrayType,
+                    timestamp, trim);
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -376,7 +387,8 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
                 $CHECKPOINT = checkpoint;
@@ -390,9 +402,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
         private transient FieldRecord $RECORD$_arrayType = new FieldRecord(0);
 
-        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$_arrayType
-            };
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_arrayType };
 
     }
 
@@ -405,16 +415,19 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Autocorrelation(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public Autocorrelation(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input_tokenConsumptionRate.setExpression("numberOfInputs");
-        numberOfInputs = new Parameter(this, "numberOfInputs", new IntToken(256));
+        numberOfInputs = new Parameter(this, "numberOfInputs",
+                new IntToken(256));
         numberOfInputs.setTypeEquals(BaseType.INT);
         numberOfLags = new Parameter(this, "numberOfLags", new IntToken(64));
         numberOfLags.setTypeEquals(BaseType.INT);
         biased = new Parameter(this, "biased", new BooleanToken(false));
         biased.setTypeEquals(BaseType.BOOLEAN);
-        symmetricOutput = new Parameter(this, "symmetricOutput", new BooleanToken(false));
+        symmetricOutput = new Parameter(this, "symmetricOutput",
+                new BooleanToken(false));
         symmetricOutput.setTypeEquals(BaseType.BOOLEAN);
         input.setTypeAtLeast(new FunctionTerm(input));
         output.setTypeAtLeast(new OutputTypeTerm());
@@ -428,16 +441,23 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @param attribute The attribute that has changed.
      * @exception IllegalActionException If the parameters are out of range.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
-        if ((attribute == numberOfInputs) || (attribute == numberOfLags)||(attribute == symmetricOutput)) {
-            $ASSIGN$_numberOfInputs(((IntToken)numberOfInputs.getToken()).intValue());
-            $ASSIGN$_numberOfLags(((IntToken)numberOfLags.getToken()).intValue());
-            $ASSIGN$_symmetricOutput(((BooleanToken)symmetricOutput.getToken()).booleanValue());
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if ((attribute == numberOfInputs) || (attribute == numberOfLags)
+                || (attribute == symmetricOutput)) {
+            $ASSIGN$_numberOfInputs(((IntToken) numberOfInputs.getToken())
+                    .intValue());
+            $ASSIGN$_numberOfLags(((IntToken) numberOfLags.getToken())
+                    .intValue());
+            $ASSIGN$_symmetricOutput(((BooleanToken) symmetricOutput.getToken())
+                    .booleanValue());
             if (_numberOfInputs <= 0) {
-                throw new IllegalActionException(this, "Invalid numberOfInputs: " + _numberOfInputs);
+                throw new IllegalActionException(this,
+                        "Invalid numberOfInputs: " + _numberOfInputs);
             }
             if (_numberOfLags <= 0) {
-                throw new IllegalActionException(this, "Invalid numberOfLags: " + _numberOfLags);
+                throw new IllegalActionException(this, "Invalid numberOfLags: "
+                        + _numberOfLags);
             }
             if (_symmetricOutput) {
                 $ASSIGN$_lengthOfOutput((2 * _numberOfLags) + 1);
@@ -460,12 +480,13 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class has
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        Autocorrelation newObject = (Autocorrelation)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Autocorrelation newObject = (Autocorrelation) super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
         newObject.output.setTypeAtLeast(newObject.new OutputTypeTerm());
         newObject.$ASSIGN$_outputs(new Token[newObject._lengthOfOutput]);
-        System.arraycopy($BACKUP$_outputs(), 0, newObject.$BACKUP$_outputs(), 0, _outputs.length);
+        System.arraycopy($BACKUP$_outputs(), 0, newObject.$BACKUP$_outputs(),
+                0, _outputs.length);
         return newObject;
     }
 
@@ -476,34 +497,41 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * the parameters of the object, as described in the class comment.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
-        boolean biasedValue = ((BooleanToken)biased.getToken()).booleanValue();
+        boolean biasedValue = ((BooleanToken) biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
-        int notSymmetric = _symmetricOutput?0:1;
+        int notSymmetric = _symmetricOutput ? 0 : 1;
         boolean complex = inputValues[0] instanceof ComplexToken;
         for (int i = _numberOfLags; i >= 0; i--) {
             Token sum = inputValues[0].zero();
             for (int j = 0; j < (_numberOfInputs - i); j++) {
                 if (complex) {
-                    ComplexToken conjugate = new ComplexToken(((ComplexToken)inputValues[j]).complexValue().conjugate());
+                    ComplexToken conjugate = new ComplexToken(
+                            ((ComplexToken) inputValues[j]).complexValue()
+                                    .conjugate());
                     sum = sum.add(conjugate.multiply(inputValues[j + i]));
                 } else {
                     sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
                 }
             }
             if (biasedValue) {
-                $ASSIGN$_outputs((i + _numberOfLags) - notSymmetric, sum.divide(numberOfInputs.getToken()));
+                $ASSIGN$_outputs((i + _numberOfLags) - notSymmetric, sum
+                        .divide(numberOfInputs.getToken()));
             } else {
-                $ASSIGN$_outputs((i + _numberOfLags) - notSymmetric, sum.divide(new IntToken(_numberOfInputs - i)));
+                $ASSIGN$_outputs((i + _numberOfLags) - notSymmetric, sum
+                        .divide(new IntToken(_numberOfInputs - i)));
             }
         }
-        for (int i = _numberOfLags - 1-notSymmetric; i >= 0; i--) {
+        for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
             if (complex) {
-                ComplexToken candidate = (ComplexToken)_outputs[(2 * (_numberOfLags - notSymmetric)) - i];
-                $ASSIGN$_outputs(i, new ComplexToken(candidate.complexValue().conjugate()));
+                ComplexToken candidate = (ComplexToken) _outputs[(2 * (_numberOfLags - notSymmetric))
+                        - i];
+                $ASSIGN$_outputs(i, new ComplexToken(candidate.complexValue()
+                        .conjugate()));
             } else {
-                $ASSIGN$_outputs(i, _outputs[(2 * (_numberOfLags - notSymmetric)) - i]);
+                $ASSIGN$_outputs(i,
+                        _outputs[(2 * (_numberOfLags - notSymmetric)) - i]);
             }
         }
         output.broadcast(new ArrayToken($BACKUP$_outputs()));
@@ -515,7 +543,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @exception IllegalActionException If the base class throws it.
      * @return True if it is ok to continue.
      */
-    public boolean prefire() throws IllegalActionException  {
+    public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0, _numberOfInputs)) {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
@@ -528,28 +556,32 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
     private final int $ASSIGN$_numberOfInputs(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_numberOfInputs.add(null, _numberOfInputs, $CHECKPOINT.getTimestamp());
+            $RECORD$_numberOfInputs.add(null, _numberOfInputs, $CHECKPOINT
+                    .getTimestamp());
         }
         return _numberOfInputs = newValue;
     }
 
     private final int $ASSIGN$_numberOfLags(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_numberOfLags.add(null, _numberOfLags, $CHECKPOINT.getTimestamp());
+            $RECORD$_numberOfLags.add(null, _numberOfLags, $CHECKPOINT
+                    .getTimestamp());
         }
         return _numberOfLags = newValue;
     }
 
     private final int $ASSIGN$_lengthOfOutput(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_lengthOfOutput.add(null, _lengthOfOutput, $CHECKPOINT.getTimestamp());
+            $RECORD$_lengthOfOutput.add(null, _lengthOfOutput, $CHECKPOINT
+                    .getTimestamp());
         }
         return _lengthOfOutput = newValue;
     }
 
     private final boolean $ASSIGN$_symmetricOutput(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_symmetricOutput.add(null, _symmetricOutput, $CHECKPOINT.getTimestamp());
+            $RECORD$_symmetricOutput.add(null, _symmetricOutput, $CHECKPOINT
+                    .getTimestamp());
         }
         return _symmetricOutput = newValue;
     }
@@ -563,9 +595,8 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
     private final Token $ASSIGN$_outputs(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_outputs.add(new int[] {
-                    index0
-                }, _outputs[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_outputs.add(new int[] { index0 }, _outputs[index0],
+                    $CHECKPOINT.getTimestamp());
         }
         return _outputs[index0] = newValue;
     }
@@ -576,18 +607,25 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _numberOfInputs = $RECORD$_numberOfInputs.restore(_numberOfInputs, timestamp, trim);
-        _numberOfLags = $RECORD$_numberOfLags.restore(_numberOfLags, timestamp, trim);
-        _lengthOfOutput = $RECORD$_lengthOfOutput.restore(_lengthOfOutput, timestamp, trim);
-        _symmetricOutput = $RECORD$_symmetricOutput.restore(_symmetricOutput, timestamp, trim);
-        _outputs = (Token[])$RECORD$_outputs.restore(_outputs, timestamp, trim);
+        _numberOfInputs = $RECORD$_numberOfInputs.restore(_numberOfInputs,
+                timestamp, trim);
+        _numberOfLags = $RECORD$_numberOfLags.restore(_numberOfLags, timestamp,
+                trim);
+        _lengthOfOutput = $RECORD$_lengthOfOutput.restore(_lengthOfOutput,
+                timestamp, trim);
+        _symmetricOutput = $RECORD$_symmetricOutput.restore(_symmetricOutput,
+                timestamp, trim);
+        _outputs = (Token[]) $RECORD$_outputs
+                .restore(_outputs, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -624,12 +662,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     private transient FieldRecord $RECORD$_outputs = new FieldRecord(1);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_numberOfInputs,
-            $RECORD$_numberOfLags,
-            $RECORD$_lengthOfOutput,
-            $RECORD$_symmetricOutput,
-            $RECORD$_outputs
-        };
+            $RECORD$_numberOfInputs, $RECORD$_numberOfLags,
+            $RECORD$_lengthOfOutput, $RECORD$_symmetricOutput, $RECORD$_outputs };
 
 }
-

@@ -59,8 +59,7 @@ public class Const extends PropertyConstraintHelper {
      * @param actor The given ActomicActor.
      * @exception IllegalActionException
      */
-    public Const(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Const actor)
+    public Const(PropertyConstraintSolver solver, ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
 
         super(solver, actor);
@@ -77,16 +76,16 @@ public class Const extends PropertyConstraintHelper {
 
         if (actor.value.getExpression().equalsIgnoreCase("\"a\"")) {
             setAtLeast(actor.value, new PropertySet(lattice,
-                    new Property[] {lattice.A}));
+                    new Property[] { lattice.A }));
         } else if (actor.value.getExpression().equalsIgnoreCase("\"b\"")) {
             setAtLeast(actor.value, new PropertySet(lattice,
-                    new Property[] {lattice.B}));
+                    new Property[] { lattice.B }));
         } else if (actor.value.getExpression().equalsIgnoreCase("\"c\"")) {
             setAtLeast(actor.value, new PropertySet(lattice,
-                    new Property[] {lattice.C}));
+                    new Property[] { lattice.C }));
         } else {
             setAtLeast(actor.value, new PropertySet(lattice,
-                    new Property[] {lattice.UNKNOWN}));
+                    new Property[] { lattice.UNKNOWN }));
         }
 
         setAtLeast(actor.output, actor.value);

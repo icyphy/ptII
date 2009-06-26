@@ -51,6 +51,7 @@ public class Discard extends JavaCodeGeneratorHelper {
     public Discard(ptolemy.actor.lib.Discard actor) {
         super(actor);
     }
+
     /**
      * Generate fire code.
      * @return The generated code.

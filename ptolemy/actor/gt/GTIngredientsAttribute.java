@@ -101,8 +101,7 @@ public class GTIngredientsAttribute extends StringAttribute {
      *  @exception MalformedStringException If error occurs while parsing the
      *   expression.
      */
-    public GTIngredientList getIngredientList()
-            throws MalformedStringException {
+    public GTIngredientList getIngredientList() throws MalformedStringException {
         if (!_parsed) {
             _parse();
         }

@@ -213,13 +213,13 @@ public class PortCreationOperation extends Operation {
         if (isPortClassEnabled()) {
             try {
                 if (!Port.class.isAssignableFrom(Class.forName(_portClass))) {
-                    throw new ValidationException("Port class must be the " +
-                            "name of a class that is a subclass of " +
-                            "ptolemy.kernel.Port.");
+                    throw new ValidationException("Port class must be the "
+                            + "name of a class that is a subclass of "
+                            + "ptolemy.kernel.Port.");
                 }
             } catch (ClassNotFoundException e) {
-                throw new ValidationException("Port class " + _portClass +
-                        "not found.");
+                throw new ValidationException("Port class " + _portClass
+                        + "not found.");
             }
         }
 
@@ -234,14 +234,13 @@ public class PortCreationOperation extends Operation {
     }
 
     private static final OperationElement[] _ELEMENTS = {
-        new StringOperationElement("name", false, false),
-        new StringOperationElement("class", true, false),
-        new StringOperationElement("type", true, false),
-        new BooleanOperationElement("input", false),
-        new BooleanOperationElement("output", false),
-        new BooleanOperationElement("multiport", false),
-        new BooleanOperationElement("autoRename", false)
-    };
+            new StringOperationElement("name", false, false),
+            new StringOperationElement("class", true, false),
+            new StringOperationElement("type", true, false),
+            new BooleanOperationElement("input", false),
+            new BooleanOperationElement("output", false),
+            new BooleanOperationElement("multiport", false),
+            new BooleanOperationElement("autoRename", false) };
 
     private boolean _autoRename;
 

@@ -83,7 +83,7 @@ public abstract class Operation extends GTIngredient {
     protected ParseTreeWriter _parseTreeWriter = new ParseTreeWriter() {
 
         public void visitLeafNode(ASTPtLeafNode node)
-        throws IllegalActionException {
+                throws IllegalActionException {
             if (node.isConstant() && node.isEvaluated()) {
                 Token token = node.getToken();
                 if (token instanceof StringToken) {

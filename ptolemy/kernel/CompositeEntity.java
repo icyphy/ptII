@@ -352,7 +352,9 @@ public class CompositeEntity extends ComponentEntity {
                             // that the link is created exactly once.
                             // Get the relation using a relative name
                             // in case it's a level-crossing link.
-                            Relation farRelation = newEntity.getRelation(((Nameable)link).getName(this));
+                            Relation farRelation = newEntity
+                                    .getRelation(((Nameable) link)
+                                            .getName(this));
                             if (farRelation != null) {
                                 newRelation.link(farRelation);
                             }
@@ -451,13 +453,13 @@ public class CompositeEntity extends ComponentEntity {
                                 // Find the common container.
                                 NamedObj container = _commonContainer(port, rel);
                                 if (container instanceof CompositeEntity) {
-                                    List<LinkRecord> linkRecords = ((CompositeEntity)container)._levelCrossingLinks;
+                                    List<LinkRecord> linkRecords = ((CompositeEntity) container)._levelCrossingLinks;
                                     if (linkRecords == null) {
                                         throw new CloneNotSupportedException(
                                                 "Level crossing link goes outside of the class definition boundary: "
-                                                + port.getFullName()
-                                                + " and "
-                                                + rel.getFullName());
+                                                        + port.getFullName()
+                                                        + " and "
+                                                        + rel.getFullName());
                                     }
                                     // NOTE: The record has the new port (after cloning), but
                                     // the old relation (before cloning) because we can't be sure
@@ -505,13 +507,15 @@ public class CompositeEntity extends ComponentEntity {
             if (_levelCrossingLinks != null) {
                 for (LinkRecord record : _levelCrossingLinks) {
                     try {
-                    if (record.port != null) {
-                            String relationName = record.relation1.getName(this);
-                            Relation newRelation = newEntity.getRelation(relationName);
+                        if (record.port != null) {
+                            String relationName = record.relation1
+                                    .getName(this);
+                            Relation newRelation = newEntity
+                                    .getRelation(relationName);
                             if (newRelation == null) {
                                 throw new CloneNotSupportedException(
                                         "Cloning level-crossing links failed. Relation missing: "
-                                        + relationName);
+                                                + relationName);
                             }
                             record.port.insertLink(record.index, newRelation);
                         } else {
@@ -523,7 +527,6 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
             }
-
 
             return newEntity;
         } finally {
@@ -727,7 +730,8 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentEntity entity = (ComponentEntity) entityObject;
                     if (!entity.isClassDefinition()) {
                         if (entity instanceof CompositeEntity) {
-                            _addAll(result, ((CompositeEntity) entity).deepRelationSet());
+                            _addAll(result, ((CompositeEntity) entity)
+                                    .deepRelationSet());
                         }
                     }
                 }
@@ -738,7 +742,6 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneReading();
         }
     }
-
 
     /** Enumerate the opaque entities that are directly or indirectly
      *  contained by this entity.  The enumeration will be empty if there
@@ -934,7 +937,8 @@ public class CompositeEntity extends ComponentEntity {
                             // the relation exists when the link is to be
                             // created.  Need to delegate to the least common
                             // container.
-                            _recordLevelCrossingLink(port, relation, null, index);
+                            _recordLevelCrossingLink(port, relation, null,
+                                    index);
                             continue;
                         }
                     }
@@ -1007,7 +1011,8 @@ public class CompositeEntity extends ComponentEntity {
                     // is contained within its container, so we don't have to
                     // check it separately for a common implier.
                     if (port.getDerivedLevel() <= (depth + 1)
-                            && _commonImplier(relation, depth, port.getContainer(), depth)) {
+                            && _commonImplier(relation, depth, port
+                                    .getContainer(), depth)) {
                         continue;
                     }
                     // Used to have the previous logic here, skipping the link export,
@@ -1055,7 +1060,8 @@ public class CompositeEntity extends ComponentEntity {
                                 // the relation exists when the link is to be
                                 // created.  Need to delegate to the least common
                                 // container.
-                                _recordLevelCrossingLink(port, relation, null, index);
+                                _recordLevelCrossingLink(port, relation, null,
+                                        index);
                                 continue;
                             }
                         }
@@ -1110,7 +1116,6 @@ public class CompositeEntity extends ComponentEntity {
                         continue;
                     }
 
-
                     // If we have visited the other relation already, then
                     // we have already represented the link. Skip this.
                     if (visitedRelations.contains(otherRelation)) {
@@ -1146,7 +1151,8 @@ public class CompositeEntity extends ComponentEntity {
                                 // the relation exists when the link is to be
                                 // created.  Need to delegate to the least common
                                 // container.
-                                _recordLevelCrossingLink(null, relation, otherRelation, 0);
+                                _recordLevelCrossingLink(null, relation,
+                                        otherRelation, 0);
                                 continue;
                             }
                         }
@@ -1161,7 +1167,8 @@ public class CompositeEntity extends ComponentEntity {
                             // the relation exists when the link is to be
                             // created.  Need to delegate to the least common
                             // container.
-                            _recordLevelCrossingLink(null, relation, otherRelation, 0);
+                            _recordLevelCrossingLink(null, relation,
+                                    otherRelation, 0);
                             continue;
                         }
 
@@ -1785,7 +1792,7 @@ public class CompositeEntity extends ComponentEntity {
             List atomicEntities = lazyAllAtomicEntityList();
             int entityCount = atomicEntities.size();
 
-            Map<String,Integer> actorMap = new HashMap<String,Integer>();
+            Map<String, Integer> actorMap = new HashMap<String, Integer>();
             Integer one = new Integer(1);
 
             int attributeCount = 0, entityClassCount = 0;
@@ -1802,7 +1809,8 @@ public class CompositeEntity extends ComponentEntity {
                 if (!actorMap.containsKey(entityClassName)) {
                     actorMap.put(entityClassName, one);
                 } else {
-                    actorMap.put(entityClassName, Integer.valueOf(actorMap.get(entityClassName) + 1));
+                    actorMap.put(entityClassName, Integer.valueOf(actorMap
+                            .get(entityClassName) + 1));
                 }
 
                 if (clazz != null) {
@@ -1828,8 +1836,9 @@ public class CompositeEntity extends ComponentEntity {
             StringBuffer actorNames = new StringBuffer();
             Iterator actors = actorArrayList.iterator();
             while (actors.hasNext()) {
-                Map.Entry<String, Integer> actor =  (Map.Entry) actors.next();
-                actorNames.append(actor.getKey() + " " + actor.getValue() + "\n");
+                Map.Entry<String, Integer> actor = (Map.Entry) actors.next();
+                actorNames.append(actor.getKey() + " " + actor.getValue()
+                        + "\n");
             }
 
             List relationList = lazyRelationList();
@@ -1845,7 +1854,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
 
-            Map<Integer,Integer> compositeEntityDepthMap = new TreeMap<Integer,Integer>();
+            Map<Integer, Integer> compositeEntityDepthMap = new TreeMap<Integer, Integer>();
             entities = lazyAllCompositeEntityList().iterator();
 
             while (entities.hasNext()) {
@@ -1859,10 +1868,12 @@ public class CompositeEntity extends ComponentEntity {
                         compositeEntityDepthMap.put(depth, one);
                     } else {
                         compositeEntityDepthMap.put(depth,
-                                                 Integer.valueOf(compositeEntityDepthMap.get(depth) + 1));
+                                Integer.valueOf(compositeEntityDepthMap
+                                        .get(depth) + 1));
                     }
 
-                    relationList = ((CompositeEntity) entity).lazyRelationList();
+                    relationList = ((CompositeEntity) entity)
+                            .lazyRelationList();
                     relationCount += relationList.size();
                     if (clazz != null) {
                         if (clazz.isAssignableFrom(entity.getClass())) {
@@ -1883,8 +1894,11 @@ public class CompositeEntity extends ComponentEntity {
 
             // Generate a string with the depths
             StringBuffer compositeEntityDepths = new StringBuffer();
-            for (Map.Entry<Integer, Integer> depth : compositeEntityDepthMap.entrySet()) {
-                compositeEntityDepths.append("Depth: " + depth.getKey() + " # of Composites at that depth: " + depth.getValue() + "\n");
+            for (Map.Entry<Integer, Integer> depth : compositeEntityDepthMap
+                    .entrySet()) {
+                compositeEntityDepths.append("Depth: " + depth.getKey()
+                        + " # of Composites at that depth: " + depth.getValue()
+                        + "\n");
             }
 
             return "Size Statistics for "
@@ -2078,7 +2092,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @see #allAtomicEntityList()
      *  @see #deepEntityList()
      */
-    protected void _deepOpaqueEntityList(List result)  {
+    protected void _deepOpaqueEntityList(List result) {
 
         // This might be called from within a superclass constructor,
         // in which case there are no contained entities yet.
@@ -2091,7 +2105,8 @@ public class CompositeEntity extends ComponentEntity {
                     if (entity.isOpaque()) {
                         result.add(entity);
                     } else {
-                        ((CompositeEntity) entity)._deepOpaqueEntityList(result);
+                        ((CompositeEntity) entity)
+                                ._deepOpaqueEntityList(result);
                     }
                 }
             }
@@ -2114,7 +2129,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
-    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
+    protected String _description(int detail, int indent, int bracket)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -2247,29 +2263,26 @@ public class CompositeEntity extends ComponentEntity {
                     // Do not export if the relation and port are derived and
                     // share a common container that has the parent-child
                     // relation that implies them.
-                    if (!_commonImplier(record.relation1, depth + _depthInside(record.relation1),
-                            record.port, depth + _depthInside(record.port))) {
-                        output.write(_getIndentPrefix(depth)
-                                + "<link port=\""
-                                + record.port.getName(this)
-                                + "\" insertAt=\""
-                                + record.index
-                                + "\" relation=\""
-                                + record.relation1.getName(this)
-                                + "\"/>\n");
+                    if (!_commonImplier(record.relation1, depth
+                            + _depthInside(record.relation1), record.port,
+                            depth + _depthInside(record.port))) {
+                        output.write(_getIndentPrefix(depth) + "<link port=\""
+                                + record.port.getName(this) + "\" insertAt=\""
+                                + record.index + "\" relation=\""
+                                + record.relation1.getName(this) + "\"/>\n");
                     }
                 } else {
                     // Do not export if both relations are derived and
                     // share a common container that has the parent-child
                     // relation that implies them.
-                    if (!_commonImplier(record.relation1, depth + _depthInside(record.relation1),
-                            record.relation2, depth + _depthInside(record.relation2))) {
+                    if (!_commonImplier(record.relation1, depth
+                            + _depthInside(record.relation1), record.relation2,
+                            depth + _depthInside(record.relation2))) {
                         output.write(_getIndentPrefix(depth)
                                 + "<link relation1=\""
                                 + record.relation1.getName(this)
                                 + "\" relation2=\""
-                                + record.relation2.getName(this)
-                                + "\"/>\n");
+                                + record.relation2.getName(this) + "\"/>\n");
                     }
                 }
             }
@@ -2405,7 +2418,7 @@ public class CompositeEntity extends ComponentEntity {
     @SuppressWarnings("unchecked")
     private static <T> void _addAll(Set<T> result, Collection<?> sourceList) {
         for (Object object : sourceList) {
-            result.add((T)object);
+            result.add((T) object);
         }
     }
 
@@ -2512,7 +2525,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @param relation2 The second relation.
      *  @param index The index of the link.
      */
-    private void _recordLevelCrossingLink(Port port, Relation relation1, Relation relation2, int index) {
+    private void _recordLevelCrossingLink(Port port, Relation relation1,
+            Relation relation2, int index) {
         // Find the least common container.
         NamedObj container;
         if (port != null) {
@@ -2527,7 +2541,7 @@ public class CompositeEntity extends ComponentEntity {
             // already contains a link record with relation2 in the
             // position of relation1.
             if (container instanceof CompositeEntity) {
-                List<LinkRecord> linkRecords = ((CompositeEntity)container)._levelCrossingLinks;
+                List<LinkRecord> linkRecords = ((CompositeEntity) container)._levelCrossingLinks;
                 if (linkRecords != null) {
                     for (LinkRecord record : linkRecords) {
                         if (record.relation1 == relation2) {
@@ -2538,7 +2552,7 @@ public class CompositeEntity extends ComponentEntity {
             }
         }
         if (container instanceof CompositeEntity) {
-            List<LinkRecord> linkRecords = ((CompositeEntity)container)._levelCrossingLinks;
+            List<LinkRecord> linkRecords = ((CompositeEntity) container)._levelCrossingLinks;
             // If the common container is outside the scope of what is being exported,
             // then linkRecords will be null.
             if (linkRecords != null) {
@@ -2670,7 +2684,6 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-
     /** This class is an iterator over all the contained objects
      *  (all instances of NamedObj). In this class, the contained
      *  objects are attributes first, then ports, then entities,
@@ -2741,23 +2754,22 @@ public class CompositeEntity extends ComponentEntity {
         private Iterator _relationListIterator = null;
     }
 
-
     /** A comparator for a <String><Integer> Map. */
     private static class CountComparator implements Comparator {
         public int compare(Object object1, Object object2) {
             int result = 0;
-            Map.Entry entry1 = (Map.Entry)object1 ;
-            Map.Entry entry2 = (Map.Entry)object2 ;
+            Map.Entry entry1 = (Map.Entry) object1;
+            Map.Entry entry2 = (Map.Entry) object2;
 
-            Integer value1 = (Integer)entry1.getValue();
-            Integer value2 = (Integer)entry2.getValue();
+            Integer value1 = (Integer) entry1.getValue();
+            Integer value2 = (Integer) entry2.getValue();
 
-            if ( value1.compareTo(value2) == 0) {
-                String className1=(String)entry1.getKey();
-                String className2=(String)entry2.getKey();
+            if (value1.compareTo(value2) == 0) {
+                String className1 = (String) entry1.getKey();
+                String className2 = (String) entry2.getKey();
                 result = className1.compareTo(className2);
             } else {
-                result = value2.compareTo(value1 );
+                result = value2.compareTo(value1);
             }
 
             return result;

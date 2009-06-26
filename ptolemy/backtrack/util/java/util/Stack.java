@@ -100,8 +100,9 @@ public class Stack extends Vector implements Rollbackable {
      * @throws EmptyStackException if the stack is empty
      */
     public synchronized Object pop() {
-        if (getElementCount() == 0)
+        if (getElementCount() == 0) {
             throw new EmptyStackException();
+        }
         setModCount(getModCount() + 1);
         Object obj = getElementData()[setElementCount(getElementCount() - 1)];
         getElementData()[getElementCount()] = null;
@@ -114,8 +115,9 @@ public class Stack extends Vector implements Rollbackable {
      * @throws EmptyStackException if the stack is empty
      */
     public synchronized Object peek() {
-        if (getElementCount() == 0)
+        if (getElementCount() == 0) {
             throw new EmptyStackException();
+        }
         return getElementData()[getElementCount() - 1];
     }
 
@@ -137,14 +139,17 @@ public class Stack extends Vector implements Rollbackable {
      */
     public synchronized int search(Object o) {
         int i = getElementCount();
-        while (--i >= 0) 
-            if (equals(o, getElementData()[i]))
+        while (--i >= 0) {
+            if (equals(o, getElementData()[i])) {
                 return getElementCount() - i;
+            }
+        }
         return -1;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -152,8 +157,6 @@ public class Stack extends Vector implements Rollbackable {
         super.$RESTORE(timestamp, trim);
     }
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
 }
-

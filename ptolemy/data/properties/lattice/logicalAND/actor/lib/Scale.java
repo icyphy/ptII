@@ -52,12 +52,12 @@ public class Scale extends AtomicActor {
      * @param actor the associated actor
      * @exception IllegalActionException
      */
-    public Scale(PropertyConstraintSolver solver,
-            ptolemy.actor.lib.Scale actor) throws IllegalActionException {
+    public Scale(PropertyConstraintSolver solver, ptolemy.actor.lib.Scale actor)
+            throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
-   }
+    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
         if (_actor.factor.getToken().isEqualTo(new IntToken(0)).booleanValue()) {
@@ -73,4 +73,3 @@ public class Scale extends AtomicActor {
     ////                         private variables                 ////
     private ptolemy.actor.lib.Scale _actor;
 }
-

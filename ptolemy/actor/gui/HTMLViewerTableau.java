@@ -115,7 +115,7 @@ public class HTMLViewerTableau extends Tableau {
                 // NOTE: This cannot handle a URL that is relative to the
                 // MoML file within which this attribute might be being
                 // defined.  Is there any way to do that?
-                URL toRead = MoMLApplication.specToURL(urlSpec);
+                URL toRead = ConfigurationApplication.specToURL(urlSpec);
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "Cannot open URL: "

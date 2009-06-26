@@ -47,10 +47,8 @@ public class PlotLiveApplet extends PlotApplet {
      *  @return A description of the applet.
      */
     public String getAppletInfo() {
-        return "PlotLiveApplet "
-                + PlotBox.PTPLOT_RELEASE
-                + " : Demo of PlotLive.\n"
-                + "By: Edward A. Lee\n"
+        return "PlotLiveApplet " + PlotBox.PTPLOT_RELEASE
+                + " : Demo of PlotLive.\n" + "By: Edward A. Lee\n"
                 + "    Christopher Brooks\n"
                 + "($Id$)";
     }

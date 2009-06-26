@@ -30,7 +30,6 @@
 //// BooleanSwitch
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -124,7 +123,8 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public BooleanSwitch(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
+    public BooleanSwitch(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
@@ -138,7 +138,8 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
         falseOutput.setMultiport(true);
         trueOutput.setWidthEquals(input, true);
         falseOutput.setWidthEquals(input, true);
-        StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
@@ -155,8 +156,8 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * if one of the attributes cannot be cloned.
      * @return A new ComponentEntity.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        BooleanSwitch newObject = (BooleanSwitch)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        BooleanSwitch newObject = (BooleanSwitch) super.clone(workspace);
         newObject.trueOutput.setTypeAtLeast(newObject.input);
         newObject.falseOutput.setTypeAtLeast(newObject.input);
         newObject.trueOutput.setWidthEquals(newObject.input, true);
@@ -171,10 +172,10 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * otherwise output the token on the <i>falseOutput</i> port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
         if (control.hasToken(0)) {
-            $ASSIGN$_control(((BooleanToken)control.get(0)).booleanValue());
+            $ASSIGN$_control(((BooleanToken) control.get(0)).booleanValue());
         }
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
@@ -197,7 +198,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * to until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         $ASSIGN$_control(false);
     }
@@ -210,14 +211,16 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _control = $RECORD$_control.restore(_control, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -245,9 +248,6 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
 
     private transient FieldRecord $RECORD$_control = new FieldRecord(0);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_control
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_control };
 
 }
-

@@ -36,7 +36,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Property
 
@@ -54,21 +53,24 @@ public class Double extends LatticeProperty implements TypeProperty {
     public Double(PropertyLattice lattice) {
         super(lattice);
     }
+
     public Token getMaxValue() {
         return new DoubleToken(1.7976931348623157E308);
     }
 
     public Token getMinValue() {
-       return new DoubleToken(2.2250738585072016E-308);
+        return new DoubleToken(2.2250738585072016E-308);
     }
 
     public boolean hasMinMaxValue() {
-       return true;
+        return true;
     }
 
     public boolean isInRange(Token token) throws IllegalActionException {
-        if ((((ScalarToken)token).doubleValue() < ((ScalarToken)getMinValue()).doubleValue()) ||
-            (((ScalarToken)token).doubleValue() > ((ScalarToken)getMaxValue()).doubleValue())) {
+        if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
+                .doubleValue())
+                || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
+                        .doubleValue())) {
 
             return false;
         } else {

@@ -670,7 +670,6 @@ public class Histogram extends PlotBox {
         return false;
     }
 
-
     /** Reset a scheduled redraw tasks.
      */
     protected void _resetScheduledTasks() {
@@ -679,7 +678,7 @@ public class Histogram extends PlotBox {
                 _scheduledBinsToAdd.clear();
             }
         });
-        synchronized(this) {
+        synchronized (this) {
             deferIfNecessary(redraw);
         }
     }
@@ -693,7 +692,8 @@ public class Histogram extends PlotBox {
                     ArrayList<HashSet<Integer>> scheduledBinsToAdd = new ArrayList<HashSet<Integer>>();
                     for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {
                         HashSet<Integer> element = _scheduledBinsToAdd.get(i);
-                        scheduledBinsToAdd.add((HashSet<Integer>) element.clone());
+                        scheduledBinsToAdd.add((HashSet<Integer>) element
+                                .clone());
                         element.clear();
                     }
                     _needBinRedraw = false;
@@ -706,9 +706,12 @@ public class Histogram extends PlotBox {
                             {
                                 int nbrOfDataSets = scheduledBinsToAdd.size();
                                 for (int i = 0; i < nbrOfDataSets; ++i) {
-                                    Hashtable bins = (Hashtable) _histogram.elementAt(i);
-                                    for (Integer bin : scheduledBinsToAdd.get(i)) {
-                                        _drawPlotPoint(graphics, i, bin, (Integer) bins.get(bin));
+                                    Hashtable bins = (Hashtable) _histogram
+                                            .elementAt(i);
+                                    for (Integer bin : scheduledBinsToAdd
+                                            .get(i)) {
+                                        _drawPlotPoint(graphics, i, bin,
+                                                (Integer) bins.get(bin));
                                     }
                                 }
                             }
@@ -716,11 +719,12 @@ public class Histogram extends PlotBox {
                     }
                 }
             });
-            synchronized(this) {
+            synchronized (this) {
                 deferIfNecessary(redraw);
             }
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -778,7 +782,8 @@ public class Histogram extends PlotBox {
         double x = (bin * _binWidth) + _binOffset;
 
         if (x < _xBottom) {
-            if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
+            if (_automaticRescale() && _xTop != -Double.MAX_VALUE
+                    && _xBottom != Double.MAX_VALUE) {
                 _needPlotRefill = true;
                 _xBottom = x - (_xTop - _xBottom);
             } else {
@@ -789,7 +794,8 @@ public class Histogram extends PlotBox {
         double xtop = x + (_binWidth / 2.0);
 
         if (xtop > _xTop) {
-            if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
+            if (_automaticRescale() && _xTop != -Double.MAX_VALUE
+                    && _xBottom != Double.MAX_VALUE) {
                 _needPlotRefill = true;
                 _xTop = xtop + _xTop - _xBottom;
             } else {
@@ -800,7 +806,8 @@ public class Histogram extends PlotBox {
         _yBottom = 0.0;
 
         if (count > _yTop) {
-            if (_automaticRescale() && _yTop != -Double.MAX_VALUE && _yBottom != Double.MAX_VALUE) {
+            if (_automaticRescale() && _yTop != -Double.MAX_VALUE
+                    && _yBottom != Double.MAX_VALUE) {
                 _needPlotRefill = true;
                 _yTop = count + _yTop - _yBottom;
             } else {
@@ -825,7 +832,8 @@ public class Histogram extends PlotBox {
 
             if (!_timedRepaint()) {
                 // We are in the event thread, so this is safe...
-                _drawPlotPoint(graphics, pendingDataset, pendingBin, pendingCount);
+                _drawPlotPoint(graphics, pendingDataset, pendingBin,
+                        pendingCount);
             } else {
                 if (!_needPlotRefill) {
                     _scheduleBinRedraw(dataset, bin);

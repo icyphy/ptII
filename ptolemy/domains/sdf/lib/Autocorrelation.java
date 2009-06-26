@@ -229,8 +229,7 @@ public class Autocorrelation extends SDFTransformer {
         newObject.output.setTypeAtLeast(newObject.new OutputTypeTerm());
 
         newObject._outputs = new Token[newObject._lengthOfOutput];
-        System.arraycopy(_outputs, 0, newObject._outputs,
-                         0, _outputs.length);
+        System.arraycopy(_outputs, 0, newObject._outputs, 0, _outputs.length);
 
         return newObject;
     }

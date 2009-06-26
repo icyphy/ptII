@@ -108,8 +108,9 @@ public class UserPrefs {
     * must be the same as supplied when calling @see saveWinLoc.
     */
     public void useSavedBounds(String winname, Window window) {
-        if (window == null) // KBR 03/26/06 do nothing if window not exist
+        if (window == null) {
             return;
+        }
         Rectangle r = UserPrefs.getPrefs().getWinLoc(winname);
         window.setLocation(r.x, r.y);
         window.setSize(r.width, r.height);
@@ -119,8 +120,9 @@ public class UserPrefs {
     * (The data must be fetched using the same name).
     */
     public void saveWinLoc(String winname, Window window) {
-        if (window == null) // KBR 03/26/06 do nothing if window not exist
+        if (window == null) {
             return;
+        }
         saveWinLoc(winname, window.getLocationOnScreen(), window.getSize());
     }
 }

@@ -127,8 +127,7 @@ public class ConfigureAction extends FigureAction {
      *  @param event The action event that triggered this, or null if
      *   none.
      */
-    protected void _openDialog(Frame parent, NamedObj target,
-            ActionEvent event) {
+    protected void _openDialog(Frame parent, NamedObj target, ActionEvent event) {
         List attributeList = target.attributeList(EditorFactory.class);
         boolean altKeyPressed = false;
         if (event != null) {

@@ -1282,7 +1282,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
                                      ScalarToken leftScalar = (ScalarToken) leftToken;
                                      ScalarToken rightScalar = (ScalarToken) rightToken;
-                */
+                 */
 
             if (operator.kind == PtParserConstants.GTE) {
                 //result = leftScalar.isLessThan(rightScalar).not();
@@ -1744,7 +1744,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
     /** The code generator. */
     private ProgramCodeGenerator _generator;
-    
+
     /** A static list of the primitive types supported by the code generator. */
     //private static final List _primitiveTypes = Arrays.asList(new String[] {
     //        "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",

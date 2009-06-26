@@ -58,8 +58,8 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public List<PropertyHelper> collectHelpers(ASTPtRootNode node, PropertySolver solver)
-            throws IllegalActionException {
+    public List<PropertyHelper> collectHelpers(ASTPtRootNode node,
+            PropertySolver solver) throws IllegalActionException {
 
         _helpers = new LinkedList<PropertyHelper>();
         _solver = solver;

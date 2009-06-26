@@ -57,8 +57,7 @@ public class Discard extends Sink {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Discard actor =
-            (ptolemy.actor.lib.Discard) getComponent();
+        ptolemy.actor.lib.Discard actor = (ptolemy.actor.lib.Discard) getComponent();
 
         Lattice lattice = (Lattice) getSolver().getLattice();
         setEquals(actor.input, lattice.FALSE);

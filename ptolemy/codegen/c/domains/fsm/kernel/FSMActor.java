@@ -90,17 +90,16 @@ public class FSMActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         // FIXME: not handling multirate inputs yet.
         // FIXME: how should we handle in-out ports?
         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-            for (int channel = 0; !input.isOutput() &&
-            channel < input.getWidth(); channel++) {
+            for (int channel = 0; !input.isOutput()
+                    && channel < input.getWidth(); channel++) {
 
-                code.append("$get(" + generateSimpleName(input)
-                        + ", " + channel + ")" + _eol);
+                code.append("$get(" + generateSimpleName(input) + ", "
+                        + channel + ")" + _eol);
             }
         }
 
@@ -148,8 +147,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         ArrayList args = new ArrayList(2);
         int index = 0;
@@ -167,16 +165,16 @@ public class FSMActor extends CCodeGeneratorHelper {
         // be moved into an subclass which overrides this method. The
         // subclass should be put under the target-specific packages.
 
-//        code.append("//I should generate the methods for my internal actors here. My actors are:");
-//
-//        for (Actor actor : (List<Actor>)
-//                ((TypedCompositeActor)  this.getDirector().getContainer()).deepEntityList()) {
-//            code.append(_eol+"void "+_getActorName(actor)+"(){"+_eol);
-//           //CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-//           //code.append( actorHelper.generateFireCode());
-//           code.append("}"+_eol);
-//
-//        }
+        //        code.append("//I should generate the methods for my internal actors here. My actors are:");
+        //
+        //        for (Actor actor : (List<Actor>)
+        //                ((TypedCompositeActor)  this.getDirector().getContainer()).deepEntityList()) {
+        //            code.append(_eol+"void "+_getActorName(actor)+"(){"+_eol);
+        //           //CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+        //           //code.append( actorHelper.generateFireCode());
+        //           code.append("}"+_eol);
+        //
+        //        }
 
         return processCode(code.toString());
     }
@@ -198,7 +196,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      */
     public void generateTransitionCode(StringBuffer code,
             TransitionRetriever transitionRetriever)
-    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
 
         ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
@@ -214,13 +212,14 @@ public class FSMActor extends CCodeGeneratorHelper {
 
         for (State state : (List<State>) fsmActor.entityList()) {
             // For each state...
-            codeBuffer.append("case " + _generateStateConstantLabel(state) + ":" + _eol);
+            codeBuffer.append("case " + _generateStateConstantLabel(state)
+                    + ":" + _eol);
 
             // The transitions (all, preemptive or non-preemptive
             // depending on the instance of TransitionRetriever given)
             // that need to be tried.
             Iterator transitions = transitionRetriever
-            .retrieveTransitions(state);
+                    .retrieveTransitions(state);
             // Reorder transitions so that default transitions are at
             // the end of the list.
             List reOrderedTransitions = new LinkedList();
@@ -245,8 +244,8 @@ public class FSMActor extends CCodeGeneratorHelper {
 
                 String guard = transition.getGuardExpression();
 
-                if (transition.isDefault() ||
-                        guard.toLowerCase().equals("true")) {
+                if (transition.isDefault()
+                        || guard.toLowerCase().equals("true")) {
 
                     // We don't need to generate if-predicate for this,
                     // and we can skip the rest of the transitions.
@@ -263,39 +262,38 @@ public class FSMActor extends CCodeGeneratorHelper {
                     transitionCount++;
 
                     PtParser parser = new PtParser();
-                    ASTPtRootNode guardParseTree =
-                        parser.generateParseTree(guard);
+                    ASTPtRootNode guardParseTree = parser
+                            .generateParseTree(guard);
 
-                    ParseTreeCodeGenerator parseTreeCodeGenerator =
-                        getParseTreeCodeGenerator();
-                    parseTreeCodeGenerator.evaluateParseTree(
-                            guardParseTree, _scope);
+                    ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
+                    parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
+                            _scope);
 
-                    codeBuffer.append(
-                            parseTreeCodeGenerator.generateFireCode());
+                    codeBuffer
+                            .append(parseTreeCodeGenerator.generateFireCode());
 
                     codeBuffer.append(") ");
                 }
                 codeBuffer.append("{" + _eol);
 
                 // generate code for choice action
-                for (AbstractActionsAttribute action :
-                    (List <AbstractActionsAttribute>) transition.choiceActionList()) {
+                for (AbstractActionsAttribute action : (List<AbstractActionsAttribute>) transition
+                        .choiceActionList()) {
 
                     Iterator channelNumberList = action.getChannelNumberList()
-                    .iterator();
+                            .iterator();
                     Iterator parseTreeList = action.getParseTreeList()
-                    .iterator();
+                            .iterator();
 
-                    for (String destinationName :
-                        (List<String>) action.getDestinationNameList()) {
+                    for (String destinationName : (List<String>) action
+                            .getDestinationNameList()) {
 
                         Integer channelNumber = (Integer) channelNumberList
-                        .next();
+                                .next();
                         ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
-                        .next();
+                                .next();
                         NamedObj destination = action
-                        .getDestination(destinationName);
+                                .getDestination(destinationName);
 
                         int channel = -1;
                         if (channelNumber != null) {
@@ -330,12 +328,13 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 containerReference.append(")");
 
                                 codeBuffer
-                                .append(((CodeGeneratorHelper) containerHelper)
-                                        .processCode(containerReference
-                                                .toString())
+                                        .append(((CodeGeneratorHelper) containerHelper)
+                                                .processCode(containerReference
+                                                        .toString())
                                                 + " = ");
 
-                                sendCode.append("$send(" + destinationName + ", " + channel + ")" + _eol);
+                                sendCode.append("$send(" + destinationName
+                                        + ", " + channel + ")" + _eol);
                             }
                         } else { // broadcast
 
@@ -347,7 +346,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 codeBuffer.append("$ref(" + destinationName
                                         + "#" + i + ") = ");
 
-                                sendCode.append("$send(" + destinationName + ", " + i + ")" + _eol);
+                                sendCode.append("$send(" + destinationName
+                                        + ", " + i + ")" + _eol);
 
                                 // During choice action, an output
                                 // port receives token sent by itself
@@ -370,12 +370,14 @@ public class FSMActor extends CCodeGeneratorHelper {
                                     containerReference.append(")");
 
                                     codeBuffer
-                                    .append(((CodeGeneratorHelper) containerHelper)
-                                            .processCode(containerReference
-                                                    .toString())
+                                            .append(((CodeGeneratorHelper) containerHelper)
+                                                    .processCode(containerReference
+                                                            .toString())
                                                     + " = ");
 
-                                    sendCode.append("$send(" + generateSimpleName(destination) + ", " + i + ")" + _eol);
+                                    sendCode.append("$send("
+                                            + generateSimpleName(destination)
+                                            + ", " + i + ")" + _eol);
                                 }
                             }
                         }
@@ -402,23 +404,23 @@ public class FSMActor extends CCodeGeneratorHelper {
                 }
 
                 // generate code for commit action
-                for (AbstractActionsAttribute action :
-                    (List <AbstractActionsAttribute>) transition.commitActionList()) {
+                for (AbstractActionsAttribute action : (List<AbstractActionsAttribute>) transition
+                        .commitActionList()) {
 
                     Iterator channelNumberList = action.getChannelNumberList()
-                    .iterator();
+                            .iterator();
                     Iterator parseTreeList = action.getParseTreeList()
-                    .iterator();
+                            .iterator();
 
-                    for (String destinationName :
-                        (List<String>) action.getDestinationNameList()) {
+                    for (String destinationName : (List<String>) action
+                            .getDestinationNameList()) {
 
                         Integer channelNumber = (Integer) channelNumberList
-                        .next();
+                                .next();
                         ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
-                        .next();
-                        NamedObj destination =
-                            action.getDestination(destinationName);
+                                .next();
+                        NamedObj destination = action
+                                .getDestination(destinationName);
 
                         int channel = -1;
                         if (channelNumber != null) {
@@ -441,8 +443,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 }
                             }
                         } else if (destination instanceof Variable) {
-                            codeBuffer
-                            .append(_codeGenerator
+                            codeBuffer.append(_codeGenerator
                                     .generateVariableName(destination)
                                     + " = ");
                         }
@@ -465,7 +466,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 // be changed dynamically
 
                 BooleanToken resetToken = (BooleanToken) transition.reset
-                .getToken();
+                        .getToken();
                 if (resetToken.booleanValue()) {
                     actors = destinationState.getRefinement();
 
@@ -512,7 +513,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                 Director director = fsmActor.getExecutiveDirector();
                 if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
                     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
-                    directorHelper._updateConfigurationNumber(codeBuffer, state);
+                    directorHelper
+                            ._updateConfigurationNumber(codeBuffer, state);
                 }
 
                 if (transitionCount > 0) {
@@ -556,7 +558,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  block cannot be fetched.
      */
     protected void _updateCurrentState(StringBuffer codeBuffer, State state)
-    throws IllegalActionException {
+            throws IllegalActionException {
         ArrayList args = new ArrayList(1);
         args.add(_generateStateConstantLabel(state));
         codeBuffer.append(_generateBlockCode("updateCurrentState", args));
@@ -596,7 +598,7 @@ public class FSMActor extends CCodeGeneratorHelper {
          */
         public Token get(String name) throws IllegalActionException {
             Iterator inputPorts = ((Actor) getComponent()).inputPortList()
-            .iterator();
+                    .iterator();
 
             // try input port
             while (inputPorts.hasNext()) {
@@ -615,7 +617,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                 } else {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         // try the format: inputPortName_channelNumber
-                        if (name.equals(generateSimpleName(inputPort) + "_" + i)) {
+                        if (name
+                                .equals(generateSimpleName(inputPort) + "_" + i)) {
                             found = true;
                             channelNumber = i;
                             code.append(generateName(inputPort));
@@ -655,7 +658,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                 } else {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         // try the format: inputPortName_channelNumberArray
-                        if (name.equals(generateSimpleName(inputPort) + "_" + i + "Array")) {
+                        if (name.equals(generateSimpleName(inputPort) + "_" + i
+                                + "Array")) {
                             found = true;
                             channelNumber = i;
                             code.append(generateName(inputPort));
@@ -702,9 +706,9 @@ public class FSMActor extends CCodeGeneratorHelper {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
-            .getPortScope().getType(name);
+                    .getPortScope().getType(name);
         }
 
         /** Look up and return the type term for the specified name
@@ -717,9 +721,9 @@ public class FSMActor extends CCodeGeneratorHelper {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
-            .getPortScope().getTypeTerm(name);
+                    .getPortScope().getTypeTerm(name);
         }
 
         /** Return the list of identifiers within the scope.
@@ -729,7 +733,7 @@ public class FSMActor extends CCodeGeneratorHelper {
          */
         public Set identifierSet() throws IllegalActionException {
             return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
-            .getPortScope().identifierSet();
+                    .getPortScope().identifierSet();
         }
     }
 }

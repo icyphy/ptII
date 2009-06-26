@@ -81,8 +81,9 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
             String buttonName = (String) properties.get("button" + i + "Name");
             if (buttonText != null && buttonText.trim().length() > 0) {
                 buttonCount++;
-                if (buttonName == null)
+                if (buttonName == null) {
                     buttonName = name + "Button" + i;
+                }
 
                 declaration.append("javax.swing.JButton " + buttonName
                         + " = new javax.swing.JButton (\"" + buttonText
@@ -92,8 +93,9 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
         }
 
         // let's remove the last comma from the buttonAdds
-        if (buttonCount > 1)
+        if (buttonCount > 1) {
             buttonAdds.deleteCharAt(buttonAdds.length() - 1);
+        }
 
         buttonAdds.append("}");
         declaration.append("java.awt.Component " + name
@@ -101,15 +103,17 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
         String justificationValue = (String) properties.get(justification);
 
         if (justificationValue == null
-                || justificationValue.trim().length() == 0)
+                || justificationValue.trim().length() == 0) {
             justificationValue = right;
+        }
 
-        if (left.equals(justificationValue))
+        if (left.equals(justificationValue)) {
             declaration.append("buildRightAlignedBar");
-        else if (center.equals(justificationValue))
+        } else if (center.equals(justificationValue)) {
             declaration.append("buildCenteredBar");
-        else
+        } else {
             declaration.append("buildRightAlignedBar");
+        }
 
         declaration.append("(" + buttonAdds.toString() + ");\n");
         return declaration.toString();
@@ -127,28 +131,31 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
 
         for (int i = 1; i < 6; i++) {
             String buttonText = (String) properties.get("button" + i + "Text");
-            if (buttonText != null && buttonText.trim().length() > 0)
+            if (buttonText != null && buttonText.trim().length() > 0) {
                 buttons.add(new JButton(buttonText));
+            }
         }
 
         JButton[] buttonArray = new JButton[buttons.size()];
         buttonArray = buttons.toArray(buttonArray);
 
         String justification = (String) properties.get("justification");
-        if (justification == null || justification.trim().length() == 0)
+        if (justification == null || justification.trim().length() == 0) {
             justification = left;
-        else if ((!justification.equals(left))
+        } else if ((!justification.equals(left))
                 && (!justification.equals(right))
-                && (!justification.equals(center)))
+                && (!justification.equals(center))) {
             throw new InstantiationException(
                     "justification should be either left, right, or center");
+        }
 
         if (justification.equals(right)) {
             return ButtonBarFactory.buildRightAlignedBar(buttonArray);
-        } else if (justification.equals(center))
+        } else if (justification.equals(center)) {
             return ButtonBarFactory.buildCenteredBar(buttonArray);
-        else
+        } else {
             return ButtonBarFactory.buildLeftAlignedBar(buttonArray);
+        }
     }
 
     public boolean isComponentALayoutContainer() {

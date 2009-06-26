@@ -103,8 +103,8 @@ public class UpdateAnnotations implements MoMLFilter {
 
         if (attributeName.equals("name")) {
             if (attributeValue.startsWith("annotation")
-                    || (attributeValue.contains("annotation")
-                        && attributeValue.contains(":"))) {
+                    || (attributeValue.contains("annotation") && attributeValue
+                            .contains(":"))) {
 
                 // We found a line like
                 // <property name="annotation1"
@@ -127,14 +127,15 @@ public class UpdateAnnotations implements MoMLFilter {
             }
         } else if (_currentlyProcessingAnnotation) {
             if (attributeName.equals("class")
-                    && attributeValue.equals("ptolemy.vergil.kernel.attributes.TextAttribute")
-                    && container.getFullName().equals(_currentAnnotationContainerFullName)) {
+                    && attributeValue
+                            .equals("ptolemy.vergil.kernel.attributes.TextAttribute")
+                    && container.getFullName().equals(
+                            _currentAnnotationContainerFullName)) {
                 // We have an annotation, but it is a TextAttribute, so we are done.
                 _reset();
                 return attributeValue;
             }
-            if (_currentlyProcessingLocation
-                    && attributeName.equals("value")) {
+            if (_currentlyProcessingLocation && attributeName.equals("value")) {
                 // Found the location
                 _currentlyProcessingLocation = false;
             }
@@ -142,9 +143,8 @@ public class UpdateAnnotations implements MoMLFilter {
         if (_currentlyProcessingAnnotation
                 && container != null
                 && !container.getFullName().equals(_currentAnnotationFullName)
-                && ((_currentAnnotationFullName == null)
-                        || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
-                                .startsWith(container.getFullName())))
+                && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
+                        .startsWith(container.getFullName())))
                 && !container.getFullName().startsWith(
                         _currentAnnotationFullName)) {
             // We found another class in a different container
@@ -173,12 +173,12 @@ public class UpdateAnnotations implements MoMLFilter {
         }
 
         // Useful for debugging
-//         System.out.println("filterEndElement: " + container + "\t"
-//                 +  elementName
-//                           + " container.fn: " +  container.getFullName()
-//                           + " _cafn: " + _currentAnnotationFullName
-//                           + " _cacfn: " + _currentAnnotationContainerFullName
-//                           + "\n" + currentCharData);
+        //         System.out.println("filterEndElement: " + container + "\t"
+        //                 +  elementName
+        //                           + " container.fn: " +  container.getFullName()
+        //                           + " _cafn: " + _currentAnnotationFullName
+        //                           + " _cacfn: " + _currentAnnotationContainerFullName
+        //                           + "\n" + currentCharData);
 
         // We have three cases:
         // 1) We have a configure, so we create the TextAttribute and
@@ -197,14 +197,15 @@ public class UpdateAnnotations implements MoMLFilter {
                 // Skip the smallIconDescription it is probably -A-
                 return;
             }
-            if ( ! (parentContainer instanceof Attribute)) {
+            if (!(parentContainer instanceof Attribute)) {
                 // ptolemy.domains.fsm.modal.ModalController cannot be cast to ptolemy.kernel.util.Attribute
                 return;
             }
 
             if (_textAttribute == null) {
                 //System.out.println("UpdateAnnotation: create TextAttribute 1");
-                NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
+                NamedObj grandparentContainer = currentAttribute.getContainer()
+                        .getContainer();
                 //((Attribute)parentContainer).setContainer(null);
 
                 // Use a new name instead of annotation and avoid the HideAnnotationNames filter
@@ -213,33 +214,36 @@ public class UpdateAnnotations implements MoMLFilter {
                 //                        grandparentContainer.uniqueName(_currentAnnotationName));
             }
 
-
             // Clean up the character data: remove svg and text tags
             String charData = currentCharData.toString().trim();
             if (charData.startsWith("<svg>")) {
                 charData = charData.substring(5).trim();
             }
             if (charData.endsWith("</svg>")) {
-                charData = charData.substring(0,charData.length() - 6).trim();
+                charData = charData.substring(0, charData.length() - 6).trim();
             }
             if (charData.endsWith("</text>")) {
-                charData = charData.substring(0,charData.length() - 7).trim();
+                charData = charData.substring(0, charData.length() - 7).trim();
             }
 
             // Map colors
             if (charData.contains(" fill:")) {
                 if (charData.contains(" fill:black")) {
-                    _textAttribute.textColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
+                    _textAttribute.textColor
+                            .setExpression("{0.0, 0.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:darkgray")
                         || charData.contains(" fill:gray")) {
-                    _textAttribute.textColor.setExpression("{0.2, 0.2, 0.2, 1.0}");
+                    _textAttribute.textColor
+                            .setExpression("{0.2, 0.2, 0.2, 1.0}");
                 }
                 if (charData.contains(" fill:green")) {
-                    _textAttribute.textColor.setExpression("{0.0, 1.0, 0.0, 1.0}");
+                    _textAttribute.textColor
+                            .setExpression("{0.0, 1.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:red")) {
-                    _textAttribute.textColor.setExpression("{1.0, 0.0, 0.0, 1.0}");
+                    _textAttribute.textColor
+                            .setExpression("{1.0, 0.0, 0.0, 1.0}");
                 }
             }
 
@@ -268,7 +272,8 @@ public class UpdateAnnotations implements MoMLFilter {
             if (_textAttribute == null) {
                 //System.out.println("UpdateAnnotation: create TextAttribute 2");
                 //NamedObj parentContainer = currentAttribute.getContainer();
-                NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
+                NamedObj grandparentContainer = currentAttribute.getContainer()
+                        .getContainer();
                 //((Attribute)parentContainer).setContainer(null);
                 // Use a new name instead of annotation and avoid the HideAnnotationNames filter
                 _textAttribute = new TextAttribute(grandparentContainer,
@@ -276,10 +281,10 @@ public class UpdateAnnotations implements MoMLFilter {
             }
             Location location = new Location(_textAttribute, "_location");
 
-            Location oldLocation = (Location)container;
+            Location oldLocation = (Location) container;
             oldLocation.validate();
             //System.out.println("UpdateAnnotation: setting Location " + oldLocation.getExpression());
-            double [] xyLocation = oldLocation.getLocation();
+            double[] xyLocation = oldLocation.getLocation();
 
             xyLocation[0] += 15.0;
             location.setLocation(xyLocation);
@@ -321,6 +326,7 @@ public class UpdateAnnotations implements MoMLFilter {
         _currentlyProcessingLocation = false;
         _textAttribute = null;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // True if we are currently processing an annotation.

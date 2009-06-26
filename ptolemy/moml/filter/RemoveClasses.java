@@ -145,7 +145,6 @@ public class RemoveClasses implements MoMLFilter {
         _graphicalClasses.put(className, replacement);
     }
 
-
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */

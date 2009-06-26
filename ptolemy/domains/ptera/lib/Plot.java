@@ -212,12 +212,11 @@ public class Plot extends Event implements ConfigurableEntity {
             sourceSpec = " source=\"" + configureSource + "\"";
         }
 
-        String header =
-            "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n" +
-            "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+        String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
+                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
 
-        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec +
-                ">\n");
+        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
+                + ">\n");
         output.write("<?plotml " + header + "\n<plot>\n");
 
         PrintWriter print = new PrintWriter(output);
@@ -242,12 +241,15 @@ public class Plot extends Event implements ConfigurableEntity {
             new DEDirector(_configurer, "DEDirector");
             _plotter = new TimedPlotter(_configurer, "Plotter") {
                 public boolean postfire() throws IllegalActionException {
-                    List<String> names = Plot.this.parameters.getParameterNames();
-                    Time modelTime = getController().getDirector().getModelTime();
+                    List<String> names = Plot.this.parameters
+                            .getParameterNames();
+                    Time modelTime = getController().getDirector()
+                            .getModelTime();
                     int i = 0;
                     ptolemy.plot.Plot plotPlot = (ptolemy.plot.Plot) plot;
                     for (String name : names) {
-                        Variable variable = (Variable) Plot.this.getAttribute(name);
+                        Variable variable = (Variable) Plot.this
+                                .getAttribute(name);
                         Token token = variable.getToken();
                         if (token != null) {
                             DoubleToken value = DoubleToken.convert(token);

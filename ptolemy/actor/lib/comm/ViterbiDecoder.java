@@ -325,7 +325,6 @@ public class ViterbiDecoder extends Transformer {
         }
     }
 
-
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -335,10 +334,13 @@ public class ViterbiDecoder extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ViterbiDecoder newObject = (ViterbiDecoder) super.clone(workspace);
 
-        newObject._inputRate = (Parameter)newObject.input.getAttribute("tokenConsumptionRate");
+        newObject._inputRate = (Parameter) newObject.input
+                .getAttribute("tokenConsumptionRate");
         newObject._mask = new int[newObject._maskNumber];
-        newObject._outputRate = (Parameter)newObject.output.getAttribute("tokenProductionRate");
-        newObject._type = (TypeAttribute)newObject.input.getAttribute("inputType");
+        newObject._outputRate = (Parameter) newObject.output
+                .getAttribute("tokenProductionRate");
+        newObject._type = (TypeAttribute) newObject.input
+                .getAttribute("inputType");
         return newObject;
     }
 

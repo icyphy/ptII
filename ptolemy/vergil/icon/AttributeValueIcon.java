@@ -156,11 +156,14 @@ public class AttributeValueIcon extends XMLIcon {
             Attribute associatedAttribute = null;
             try {
                 if (entityName.stringValue().trim().equals("")) {
-                    associatedAttribute = container.getAttribute(attributeName.getExpression());
+                    associatedAttribute = container.getAttribute(attributeName
+                            .getExpression());
                 } else if (container instanceof CompositeEntity) {
-                    NamedObj entity = ((CompositeEntity)container).getEntity(entityName.stringValue());
+                    NamedObj entity = ((CompositeEntity) container)
+                            .getEntity(entityName.stringValue());
                     if (entity != null) {
-                        associatedAttribute = entity.getAttribute(attributeName.getExpression());
+                        associatedAttribute = entity.getAttribute(attributeName
+                                .getExpression());
                     }
                 }
             } catch (IllegalActionException e) {
@@ -196,5 +199,6 @@ public class AttributeValueIcon extends XMLIcon {
     ////                         protected members                 ////
 
     /** The font used. */
-    protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+    protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN,
+            12);
 }

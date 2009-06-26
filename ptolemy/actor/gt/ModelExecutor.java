@@ -119,11 +119,11 @@ public class ModelExecutor extends TypedAtomicActor {
         Effigy parentEffigy = EventUtils.findToplevelEffigy(this);
         try {
             parentEffigy.workspace().getWriteAccess();
-            _wrapperEffigy = new PtolemyEffigy(parentEffigy,
-                    parentEffigy.uniqueName("_wrapperEffigy"));
+            _wrapperEffigy = new PtolemyEffigy(parentEffigy, parentEffigy
+                    .uniqueName("_wrapperEffigy"));
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e, "Unable to create an " +
-                    "effigy for the model.");
+            throw new IllegalActionException(this, e, "Unable to create an "
+                    + "effigy for the model.");
         } finally {
             parentEffigy.workspace().doneWriting();
         }
@@ -169,10 +169,10 @@ public class ModelExecutor extends TypedAtomicActor {
                         }
                         executorPort = (TypedIOPort) executorPortObject;
                         if (executorPort.getName().equals(entityPort.getName())
-                                && executorPort.isInput()
-                                        == entityPort.isInput()
-                                && executorPort.isOutput()
-                                        == entityPort.isOutput()
+                                && executorPort.isInput() == entityPort
+                                        .isInput()
+                                && executorPort.isOutput() == entityPort
+                                        .isOutput()
                                 && entityPort.getType().isCompatible(
                                         executorPort.getType())) {
                             found = true;
@@ -194,10 +194,9 @@ public class ModelExecutor extends TypedAtomicActor {
                         wrapperPort.setMultiport(multiport);
                         if (multiport) {
                             int insideWidth = 0;
-                            for (Object insideRelationObject
-                                    : entityPort.insideRelationList()) {
-                                TypedIORelation insideRelation =
-                                    (TypedIORelation) insideRelationObject;
+                            for (Object insideRelationObject : entityPort
+                                    .insideRelationList()) {
+                                TypedIORelation insideRelation = (TypedIORelation) insideRelationObject;
                                 insideWidth += insideRelation.getWidth();
                             }
                             relation.setWidth(insideWidth);
@@ -214,7 +213,7 @@ public class ModelExecutor extends TypedAtomicActor {
         }
 
         Wrapper(Workspace workspace) throws IllegalActionException,
-        NameDuplicationException {
+                NameDuplicationException {
             super(workspace);
             new WrapperDirector(this, "_director");
         }
@@ -223,7 +222,7 @@ public class ModelExecutor extends TypedAtomicActor {
 
             @SuppressWarnings("unchecked")
             public WrapperDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
                 super(container, name);
 
                 _eventQueue = new PriorityQueue<TimedEvent>(1,
@@ -232,9 +231,9 @@ public class ModelExecutor extends TypedAtomicActor {
 
             @SuppressWarnings("unchecked")
             public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-                WrapperDirector director =
-                    (WrapperDirector) super.clone(workspace);
+                    throws CloneNotSupportedException {
+                WrapperDirector director = (WrapperDirector) super
+                        .clone(workspace);
                 director._eventQueue = new PriorityQueue<TimedEvent>(1,
                         new TimedEvent.TimeComparator());
                 return director;
@@ -265,8 +264,7 @@ public class ModelExecutor extends TypedAtomicActor {
                                 // Cannot use transferOutputs because it raises
                                 // exception if the tokens inside have already
                                 // been transfered.
-                                for (int i = 0; i < port.getWidthInside();
-                                        i++) {
+                                for (int i = 0; i < port.getWidthInside(); i++) {
                                     if (port.hasTokenInside(i)) {
                                         port.send(i, port.getInside(i));
                                     }
@@ -289,7 +287,7 @@ public class ModelExecutor extends TypedAtomicActor {
             }
 
             public Time fireAt(Actor actor, Time time)
-            throws IllegalActionException {
+                    throws IllegalActionException {
                 _eventQueue.add(new TimedEvent(time, actor));
                 return time;
             }
@@ -320,8 +318,8 @@ public class ModelExecutor extends TypedAtomicActor {
             }
 
             public boolean prefire() throws IllegalActionException {
-                return super.prefire() && (_hasToken()
-                        || !_eventQueue.isEmpty());
+                return super.prefire()
+                        && (_hasToken() || !_eventQueue.isEmpty());
             }
 
             private boolean _hasToken() throws IllegalActionException {
@@ -350,69 +348,69 @@ public class ModelExecutor extends TypedAtomicActor {
     private class WrapperPort extends TypedIOPort {
 
         public void broadcast(Token token) throws NoRoomException,
-        IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+                IllegalActionException {
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             executorPort.broadcast(token);
         }
 
         public void broadcast(Token[] tokenArray, int vectorLength)
-        throws NoRoomException, IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+                throws NoRoomException, IllegalActionException {
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             executorPort.broadcast(tokenArray, vectorLength);
         }
 
         public Token get(int channelIndex) throws NoTokenException,
                 IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             return executorPort.get(channelIndex);
         }
 
         public Token[] get(int channelIndex, int vectorLength)
                 throws NoTokenException, IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             return executorPort.get(channelIndex, vectorLength);
         }
 
         public int getWidth() throws IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             return executorPort.getWidth();
         }
 
         public boolean hasToken(int channelIndex) throws IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             return executorPort.hasToken(channelIndex);
         }
 
         public boolean hasToken(int channelIndex, int tokens)
                 throws IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             return executorPort.hasToken(channelIndex, tokens);
         }
 
         public void send(int channelIndex, Token token) throws NoRoomException,
-        IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+                IllegalActionException {
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             executorPort.send(channelIndex, token);
         }
 
         public void send(int channelIndex, Token[] tokenArray, int vectorLength)
-        throws NoRoomException, IllegalActionException {
-            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
-                    getName());
+                throws NoRoomException, IllegalActionException {
+            TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
+                    .getPort(getName());
             executorPort.send(channelIndex, tokenArray, vectorLength);
         }
 
         WrapperPort(Wrapper container, String name, boolean isInput,
-                boolean isOutput)
-        throws IllegalActionException, NameDuplicationException {
+                boolean isOutput) throws IllegalActionException,
+                NameDuplicationException {
             super(container, name, isInput, isOutput);
         }
     }

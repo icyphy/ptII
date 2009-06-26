@@ -114,8 +114,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
         receiveKeyPress.setTypeEquals(BaseType.BOOLEAN);
         receiveKeyPress.setExpression("true");
 
-        acceptableKeyPattern = new StringParameter(this,
-                "acceptableKeyPattern");
+        acceptableKeyPattern = new StringParameter(this, "acceptableKeyPattern");
 
         receiveMousePress = new Parameter(this, "receiveMousePress");
         receiveMousePress.setTypeEquals(BaseType.BOOLEAN);
@@ -192,20 +191,19 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
             try {
                 componentClass = Class.forName(componentTypeName);
             } catch (ClassNotFoundException e) {
-                throw new IllegalActionException(this, e, "Unable to resolve " +
-                        "type " + componentTypeName + ".");
+                throw new IllegalActionException(this, e, "Unable to resolve "
+                        + "type " + componentTypeName + ".");
             }
         }
 
         Tableau tableau = EventUtils.getTableau(this, referredTableau, null);
         JFrame frame = tableau.getFrame();
 
-        InputListener listener = new InputListener(
-                ((DoubleToken) timeAdvance.getToken()).doubleValue(), frame,
-                componentClass,
+        InputListener listener = new InputListener(((DoubleToken) timeAdvance
+                .getToken()).doubleValue(), frame, componentClass,
                 ((BooleanToken) receiveKeyPress.getToken()).booleanValue(),
-                keyPattern,
-                ((BooleanToken) receiveMousePress.getToken()).booleanValue());
+                keyPattern, ((BooleanToken) receiveMousePress.getToken())
+                        .booleanValue());
         synchronized (this) {
             if (_inputListeners == null) {
                 _inputListeners = new LinkedList<InputListener>();
@@ -271,9 +269,9 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
             keyPressText.setExpression(listener._keyPressText);
         }
         if (listener._mousePressLocation != null) {
-            mousePressLocation.setExpression("[" +
-                    listener._mousePressLocation.x + ", " +
-                    listener._mousePressLocation.y + "]");
+            mousePressLocation.setExpression("["
+                    + listener._mousePressLocation.x + ", "
+                    + listener._mousePressLocation.y + "]");
         }
         return null;
     }
@@ -400,11 +398,11 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *  @param e The key press event.
          */
         public void keyPressed(KeyEvent e) {
-            if (_receiveKeyPress && (_acceptableComponentType == null ||
-                    _acceptableComponentType.isInstance(e.getComponent()))) {
+            if (_receiveKeyPress
+                    && (_acceptableComponentType == null || _acceptableComponentType
+                            .isInstance(e.getComponent()))) {
                 String text = KeyEvent.getKeyText(e.getKeyCode());
-                if (_keyPattern == null || _keyPattern.matcher(text)
-                        .matches()) {
+                if (_keyPattern == null || _keyPattern.matcher(text).matches()) {
                     e.consume();
                     _componentType = e.getComponent().getClass();
                     _keyPressText = text;
@@ -453,8 +451,9 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *  @param e The mouse press event.
          */
         public void mousePressed(MouseEvent e) {
-            if (_receiveMousePress && (_acceptableComponentType == null ||
-                    _acceptableComponentType.isInstance(e.getComponent()))) {
+            if (_receiveMousePress
+                    && (_acceptableComponentType == null || _acceptableComponentType
+                            .isInstance(e.getComponent()))) {
                 e.consume();
                 _componentType = e.getComponent().getClass();
                 _mousePressLocation = new Point(e.getX(), e.getY());

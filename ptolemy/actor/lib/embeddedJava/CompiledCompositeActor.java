@@ -182,7 +182,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public void fire() throws IllegalActionException {
 
-        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken()).booleanValue();
+        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken())
+                .booleanValue();
         if (invoked) {
             if (_debugging) {
                 _debug("Calling fire()");
@@ -272,7 +273,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         super.initialize();
 
-        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken()).booleanValue();
+        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken())
+                .booleanValue();
         if (invoked) {
             if (_generatedCodeVersion != _workspace.getVersion()) {
 
@@ -325,11 +327,17 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     } catch (UnsupportedClassVersionError ex) {
                         // This can occur if we have two different
                         // machines sharing ~/codegen.
-                        throw new IllegalActionException(this, ex,
+                        throw new IllegalActionException(
+                                this,
+                                ex,
                                 "Unsupported class version in the class \""
-                                        + className + "\" from \"" + url
+                                        + className
+                                        + "\" from \""
+                                        + url
                                         + "\".  Try deleting the \""
-                                        + className + "\" class in \"" + url
+                                        + className
+                                        + "\" class in \""
+                                        + url
                                         + "\".\nThis problem can also occur "
                                         + "if the version of java that is "
                                         + "running Ptolemy and the version "
@@ -407,7 +415,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken()).booleanValue();
+        boolean invoked = ((BooleanToken) executeEmbeddedCode.getToken())
+                .booleanValue();
 
         if (invoked) {
             if (_objectWrapper == null) {
@@ -437,7 +446,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  be found, or if the static generateCode(TypedCompositeActor)
      *  method in the helper class cannot be found or invoked.
      */
-    protected void _generateAndCompileEmbeddedJavaCode() throws IllegalActionException {
+    protected void _generateAndCompileEmbeddedJavaCode()
+            throws IllegalActionException {
         _invokeHelperMethod("generateCode");
     }
 
@@ -601,12 +611,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.codegen.java.actor.CompiledCompositeActor");
-/*
-        if (!_pointerTypeInitialized) {
-            Constants.add("pointer", new PointerToken());
-            _pointerTypeInitialized = true;
-        }
-*/
+        /*
+                if (!_pointerTypeInitialized) {
+                    Constants.add("pointer", new PointerToken());
+                    _pointerTypeInitialized = true;
+                }
+        */
         try {
             generatorPackage = new StringParameter(this, "generatorPackage");
             generatorPackage.setExpression("ptolemy.codegen.java");
@@ -653,8 +663,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             tokenHolder = new int[numberOfChannels][];
         } else if (type == BaseType.DOUBLE) {
             tokenHolder = new double[numberOfChannels][];
-        /*} else if (type == PointerToken.POINTER) {
-            tokenHolder = new int[numberOfChannels][];*/
+            /*} else if (type == PointerToken.POINTER) {
+                tokenHolder = new int[numberOfChannels][];*/
         } else if (type == BaseType.BOOLEAN) {
             tokenHolder = new boolean[numberOfChannels][];
         } else {
@@ -691,15 +701,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                             }
                             ((double[][]) tokenHolder)[i] = doubleTokens;
 
-                        /*} else if (type == PointerToken.POINTER) {
+                            /*} else if (type == PointerToken.POINTER) {
 
-                            int[] intTokens = new int[rate];
-                            for (int k = 0; k < rate; k++) {
-                                intTokens[k] = ((PointerToken) tokens[k])
-                                        .getValue();
-                            }
-                            ((int[][]) tokenHolder)[i] = intTokens;
-                        */
+                                int[] intTokens = new int[rate];
+                                for (int k = 0; k < rate; k++) {
+                                    intTokens[k] = ((PointerToken) tokens[k])
+                                            .getValue();
+                                }
+                                ((int[][]) tokenHolder)[i] = intTokens;
+                            */
                         } else if (type == BaseType.BOOLEAN) {
 
                             boolean[] booleanTokens = new boolean[rate];
@@ -766,16 +776,16 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 }
             }
 
-        /*} else if (type == PointerToken.POINTER) {
+            /*} else if (type == PointerToken.POINTER) {
 
-            int[][] tokens = (int[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new PointerToken(tokens[i][k]);
-                    port.send(i, token);
+                int[][] tokens = (int[][]) outputTokens;
+                for (int i = 0; i < port.getWidthInside(); i++) {
+                    for (int k = 0; k < rate; k++) {
+                        Token token = new PointerToken(tokens[i][k]);
+                        port.send(i, token);
+                    }
                 }
-            }
-        */
+            */
         } else if (type == BaseType.BOOLEAN) {
 
             boolean[][] tokens = (boolean[][]) outputTokens;

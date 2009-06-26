@@ -63,7 +63,7 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
      */
     public ASTPtProductNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtProductNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -94,19 +94,20 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
             // Added support for binary division in addition to multiplication.
             // We need a general algorithm to cover all product node cases.
 
-            ptolemy.data.expr.ASTPtProductNode node =
-                (ptolemy.data.expr.ASTPtProductNode) _getNode();
+            ptolemy.data.expr.ASTPtProductNode node = (ptolemy.data.expr.ASTPtProductNode) _getNode();
 
             List tokenList = node.getLexicalTokenList();
 
             int numChildren = node.jjtGetNumChildren();
 
-            if (numChildren != 2 || tokenList.size() != 1 ||
-                    (((Token) tokenList.get(0)).kind != PtParserConstants.MULTIPLY &&
-                     ((Token) tokenList.get(0)).kind != PtParserConstants.DIVIDE)) {
-                throw new IllegalActionException(ASTPtProductNode.this.getSolver(),
-                        "The property analysis " +
-                "currently supports only binary multiplication and division.");
+            if (numChildren != 2
+                    || tokenList.size() != 1
+                    || (((Token) tokenList.get(0)).kind != PtParserConstants.MULTIPLY && ((Token) tokenList
+                            .get(0)).kind != PtParserConstants.DIVIDE)) {
+                throw new IllegalActionException(
+                        ASTPtProductNode.this.getSolver(),
+                        "The property analysis "
+                                + "currently supports only binary multiplication and division.");
             }
 
             int operation = ((Token) tokenList.get(0)).kind;
@@ -118,19 +119,19 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
             Property unitless = _lattice.getElement("UNITLESS");
             Property unknown = _lattice.getElement("UNKNOWN");
 
-            Property property1 = (Property) getSolver().getProperty(node.jjtGetChild(0));
-            Property property2 = (Property) getSolver().getProperty(node.jjtGetChild(1));
+            Property property1 = getSolver().getProperty(node.jjtGetChild(0));
+            Property property2 = getSolver().getProperty(node.jjtGetChild(1));
 
             if (operation == PtParserConstants.MULTIPLY) {
                 // Property rules for multiplication
 
-                if ((property1 == speed && property2 == time) ||
-                        (property2 == speed && property1 == time)) {
+                if ((property1 == speed && property2 == time)
+                        || (property2 == speed && property1 == time)) {
                     return position;
                 }
 
-                if ((property1 == acceleration && property2 == time) ||
-                        (property2 == acceleration && property1 == time)) {
+                if ((property1 == acceleration && property2 == time)
+                        || (property2 == acceleration && property1 == time)) {
                     return speed;
                 }
 
@@ -176,7 +177,6 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
             return _lattice.getElement("TOP");
         }
 
-
         public boolean isEffective() {
             return true;
         }
@@ -196,14 +196,15 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
 
                     PropertyConstraintASTNodeHelper helper;
 
-                    helper = (PropertyConstraintASTNodeHelper) getSolver().getHelper(child);
+                    helper = (PropertyConstraintASTNodeHelper) getSolver()
+                            .getHelper(child);
                     InequalityTerm term = helper.getPropertyTerm(child);
 
                     terms.add(term);
                 }
             } catch (IllegalActionException e) {
                 throw new AssertionError(
-                "Unable to get the children property term(s).");
+                        "Unable to get the children property term(s).");
             }
 
             return terms.toArray(new InequalityTerm[0]);

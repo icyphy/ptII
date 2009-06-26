@@ -147,7 +147,8 @@ public class Distributor extends Transformer implements SequenceActor {
         Distributor newObject = (Distributor) super.clone(workspace);
         newObject.input_tokenConsumptionRate = (Parameter) (newObject.input
                 .getAttribute("tokenConsumptionRate"));
-        ((WidthDependentParameter) newObject.input_tokenConsumptionRate).setPort(newObject.output);
+        ((WidthDependentParameter) newObject.input_tokenConsumptionRate)
+                .setPort(newObject.output);
         return newObject;
     }
 
@@ -231,8 +232,9 @@ public class Distributor extends Transformer implements SequenceActor {
      * delay the triggering of the width.
      */
     private static class WidthDependentParameter extends Parameter {
-        public WidthDependentParameter(NamedObj container, String name, Token token,
-                IOPort port) throws IllegalActionException, NameDuplicationException {
+        public WidthDependentParameter(NamedObj container, String name,
+                Token token, IOPort port) throws IllegalActionException,
+                NameDuplicationException {
             super(container, name, token);
             _port = port;
         }
@@ -241,6 +243,7 @@ public class Distributor extends Transformer implements SequenceActor {
             setExpression(_port.getWidth() + " * blockSize");
             return super.getToken();
         }
+
         void setPort(IOPort port) {
             _port = port;
         }

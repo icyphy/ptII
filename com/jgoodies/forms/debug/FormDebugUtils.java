@@ -101,8 +101,9 @@ public final class FormDebugUtils {
         for (int col = 1; col <= layout.getColumnCount(); col++) {
             ColumnSpec colSpec = layout.getColumnSpec(col);
             System.out.print(colSpec.toShortString());
-            if (col < layout.getColumnCount())
+            if (col < layout.getColumnCount()) {
                 System.out.print(", ");
+            }
         }
         System.out.println();
     }
@@ -117,8 +118,9 @@ public final class FormDebugUtils {
         for (int row = 1; row <= layout.getRowCount(); row++) {
             RowSpec rowSpec = layout.getRowSpec(row);
             System.out.print(rowSpec.toShortString());
-            if (row < layout.getRowCount())
+            if (row < layout.getRowCount()) {
                 System.out.print(", ");
+            }
         }
         System.out.println();
     }

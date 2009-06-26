@@ -192,17 +192,17 @@ public class KielerLayout extends AbstractGlobalLayout {
 
         report = "Removing unnecessary relation vertices... ";
         _report(report);
-            if (_debug) {
-                _time = System.currentTimeMillis();
-                System.out.print(report);
-            }
+        if (_debug) {
+            _time = System.currentTimeMillis();
+            System.out.print(report);
+        }
 
-            PtolemyModelUtil._removeUnnecessaryRelations(this._compositeActor);
+        PtolemyModelUtil._removeUnnecessaryRelations(this._compositeActor);
 
-            if (_debug) {
-                System.out.println("done in "
-                        + (System.currentTimeMillis() - _time) + "ms");
-            }
+        if (_debug) {
+            System.out.println("done in "
+                    + (System.currentTimeMillis() - _time) + "ms");
+        }
 
         report = "Creating Kieler KGraph from Ptolemy model... ";
         _report(report);
@@ -253,7 +253,8 @@ public class KielerLayout extends AbstractGlobalLayout {
             hierarchicalLayoutProvider.doLayout(hierarchicalLayoutNode,
                     progressMonitor.subTask(10));
             // set initial position as the bounding box of the hierarchical node
-            KPoint offset = KielerGraphUtil._getUpperLeftCorner(hierarchicalLayoutNode);
+            KPoint offset = KielerGraphUtil
+                    ._getUpperLeftCorner(hierarchicalLayoutNode);
 
             layout.setXpos(layout.getXpos() - offset.getX());
             layout.setYpos(layout.getYpos() - offset.getY());
@@ -285,7 +286,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                         + (System.currentTimeMillis() - _time) + "ms");
             }
 
-            report = "Layout done in "+ (System.currentTimeMillis() - overallTime) +"ms.";
+            report = "Layout done in "
+                    + (System.currentTimeMillis() - overallTime) + "ms.";
             _report(report);
 
         } catch (KielerException e) {
@@ -368,7 +370,8 @@ public class KielerLayout extends AbstractGlobalLayout {
      *              original relation is not possible, i.e. if unlink() or link()
      *              methods fail.
      */
-    private Relation _applyEdgeLayout(KEdge kEdge) throws IllegalActionException {
+    private Relation _applyEdgeLayout(KEdge kEdge)
+            throws IllegalActionException {
         int count = 0;
         String previousRelation = null;
         Relation oldRelation = (Relation) this.getLayoutTarget()
@@ -381,9 +384,10 @@ public class KielerLayout extends AbstractGlobalLayout {
                     KielerGraphUtil._getParent(kEdge));
 
             // create new relation
-            String relationName = _ptolemyModelUtil._getUniqueString(_compositeActor, "relation");
-            relationName = _ptolemyModelUtil._createRelationWithVertex(relationName, kpoint.getX(),
-                    kpoint.getY());
+            String relationName = _ptolemyModelUtil._getUniqueString(
+                    _compositeActor, "relation");
+            relationName = _ptolemyModelUtil._createRelationWithVertex(
+                    relationName, kpoint.getX(), kpoint.getY());
 
             // we process the first bendpoint
             if (count == 0) {
@@ -395,9 +399,10 @@ public class KielerLayout extends AbstractGlobalLayout {
 
             // process all other bendpoints
             else {
-                if (previousRelation != null)
+                if (previousRelation != null) {
                     _ptolemyModelUtil._link("relation1", previousRelation,
                             "relation2", relationName);
+                }
             }
             previousRelation = relationName;
             count++;
@@ -445,8 +450,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         if (graph instanceof ActorGraphModel) {
             // apply node layout
             Collection<KNode> kNodes = kgraph.getChildren();
-            if (_doBoxLayout)
+            if (_doBoxLayout) {
                 kNodes = _kieler2ptolemyEntityNodes.keySet();
+            }
 
             for (KNode knode : kNodes) {
                 KShapeLayout absoluteLayout = KielerGraphUtil
@@ -473,10 +479,11 @@ public class KielerLayout extends AbstractGlobalLayout {
                 Set<Relation> relationsToDelete = new HashSet<Relation>();
                 for (KEdge kedge : _kieler2PtolemyDivaEdges.keySet()) {
                     Relation oldRelation = _applyEdgeLayout(kedge);
-                    if (oldRelation != null)
+                    if (oldRelation != null) {
                         relationsToDelete.add(oldRelation);
-                    //System.out.println("Edge apply: "+(System.currentTimeMillis()-time));
-                    //time = System.currentTimeMillis();
+                        //System.out.println("Edge apply: "+(System.currentTimeMillis()-time));
+                        //time = System.currentTimeMillis();
+                    }
                 }
                 _ptolemyModelUtil._removeRelations(relationsToDelete);
             }
@@ -557,10 +564,12 @@ public class KielerLayout extends AbstractGlobalLayout {
                         // get check bounds for global bounding box
                         KShapeLayout layout = KimlLayoutUtil
                                 .getShapeLayout(knode);
-                        if (layout.getXpos() < globalX)
+                        if (layout.getXpos() < globalX) {
                             globalX = layout.getXpos();
-                        if (layout.getYpos() < globalY)
+                        }
+                        if (layout.getYpos() < globalY) {
                             globalY = layout.getYpos();
+                        }
                     } else {
                         knode.setParent(boxLayoutNode);
                     }
@@ -588,10 +597,12 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // get check bounds for global bounding box
                     KShapeLayout layout = KimlLayoutUtil
                             .getShapeLayout(kVertexNode);
-                    if (layout.getXpos() < globalX)
+                    if (layout.getXpos() < globalX) {
                         globalX = layout.getXpos();
-                    if (layout.getYpos() < globalY)
+                    }
+                    if (layout.getYpos() < globalY) {
                         globalY = layout.getYpos();
+                    }
 
                     // store it in the maps
                     _ptolemy2KielerNodes.put(node, kVertexNode);
@@ -608,13 +619,15 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // port
                     // _createKPort(kPortNode, (Port)semanticNode);
 
-                 // get check bounds for global bounding box
+                    // get check bounds for global bounding box
                     KShapeLayout layout = KimlLayoutUtil
                             .getShapeLayout(kPortNode);
-                    if (layout.getXpos() < globalX)
+                    if (layout.getXpos() < globalX) {
                         globalX = layout.getXpos();
-                    if (layout.getYpos() < globalY)
+                    }
+                    if (layout.getYpos() < globalY) {
                         globalY = layout.getYpos();
+                    }
 
                     // store it in the maps
                     _ptolemy2KielerNodes.put(node, kPortNode);
@@ -632,7 +645,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     portIter = portList.iterator();
                 } else if (semanticNode instanceof Actor) {
                     portIter = aGraph.nodes(node);
-                } else if (semanticNode instanceof Port){ // internal ports
+                } else if (semanticNode instanceof Port) { // internal ports
                     portList.add(node);
                     portIter = portList.iterator();
                 }
@@ -641,10 +654,11 @@ public class KielerLayout extends AbstractGlobalLayout {
                         Object divaPort = portIter.next();
                         // iterate all outgoing edges
                         Iterator edgeIterator = aGraph.outEdges(divaPort);
-                        if (semanticNode instanceof Port){ // internal ports
-                            edgeIterator = aGraph.getExternalPortModel().outEdges(node);
+                        if (semanticNode instanceof Port) { // internal ports
+                            edgeIterator = aGraph.getExternalPortModel()
+                                    .outEdges(node);
                         }
-                        for ( ;edgeIterator.hasNext();) {
+                        for (; edgeIterator.hasNext();) {
                             Object divaEdge = edgeIterator.next();
                             // store Diva edge in corresponding map with no
                             // KEdge that will be created later
@@ -823,8 +837,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         KShapeLayout layout = KimlLayoutUtil.getShapeLayout(kNode);
         layout.setHeight(1);
         layout.setWidth(1);
-        layout.setXpos((float)vertex.getLocation()[0]);
-        layout.setYpos((float)vertex.getLocation()[1]);
+        layout.setXpos((float) vertex.getLocation()[0]);
+        layout.setYpos((float) vertex.getLocation()[1]);
         LayoutOptions.setFixedSize(layout, true);
         // as Kieler so far only suport nodes WITH port constraints,
         // add dummy ports
@@ -965,7 +979,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                     shrunkPortBounds.setRect(x, y, size, size);
                     Point2D shrunkenLocation = KielerGraphUtil
                             ._shrinkCoordinates(newPortBounds,
-                                    shrunkPortBounds, direction, MULTIPORT_BOTTOM);
+                                    shrunkPortBounds, direction,
+                                    MULTIPORT_BOTTOM);
                     kportlayout.setXpos((float) shrunkenLocation.getX());
                     kportlayout.setYpos((float) shrunkenLocation.getY());
                     kportlayout.setWidth(size);
@@ -1020,7 +1035,6 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
     }
-
 
     /**
      * Get a Kieler KPort for a corresponding Ptolemy object, i.e. a Port or a
@@ -1128,8 +1142,9 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @exception IllegalActionException Exception may be thrown if unlinking or
      *              linking of a relation fails.
      */
-    private void _replaceRelation(KPort kPort, KNode kNode, String newRelationName,
-            Relation oldRelation) throws IllegalActionException{
+    private void _replaceRelation(KPort kPort, KNode kNode,
+            String newRelationName, Relation oldRelation)
+            throws IllegalActionException {
         Port port = null;
         Relation sourceRelation = null;
         if (kPort != null) {
@@ -1148,25 +1163,30 @@ public class KielerLayout extends AbstractGlobalLayout {
             List<Relation> linkedRelations = port.linkedRelationList();
             int index = linkedRelations.indexOf(oldRelation);
             if (index == -1 && port instanceof ComponentPort) {
-                linkedRelations = ((ComponentPort)port).insideRelationList();
+                linkedRelations = ((ComponentPort) port).insideRelationList();
                 outsideLink = false;
                 index = linkedRelations.indexOf(oldRelation);
             }
             if (outsideLink) {
-                _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor), index);
+                _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor),
+                        index);
                 //_ptolemyModelUtil._performChangeRequest(_compositeActor);
                 _ptolemyModelUtil._linkPort(port.getName(_compositeActor),
                         "relation", newRelationName, index);
-            }
-            else { // insideLink
+            } else { // insideLink
                 if (port instanceof ComponentPort) {
-                    _ptolemyModelUtil._unlinkPortInside(port.getName(_compositeActor), index);
-                    _ptolemyModelUtil._linkPortInside(port.getName(_compositeActor), "relation", newRelationName, index);
+                    _ptolemyModelUtil._unlinkPortInside(port
+                            .getName(_compositeActor), index);
+                    _ptolemyModelUtil._linkPortInside(port
+                            .getName(_compositeActor), "relation",
+                            newRelationName, index);
                 }
             }
 
         } else if (sourceRelation != null) {
-            _ptolemyModelUtil._unlinkRelations(oldRelation.getName(_compositeActor), sourceRelation.getName(_compositeActor));
+            _ptolemyModelUtil._unlinkRelations(oldRelation
+                    .getName(_compositeActor), sourceRelation
+                    .getName(_compositeActor));
             _ptolemyModelUtil._link("relation1", sourceRelation.getName(),
                     "relation2", newRelationName);
         }
@@ -1193,8 +1213,9 @@ public class KielerLayout extends AbstractGlobalLayout {
      * in _divaEdgeSource resp. _divaEdgeTarget.
      */
     private void _storeEndpoints() {
-        if (_debug)
+        if (_debug) {
             System.out.print("Store endpoints");
+        }
         ActorGraphModel aGraph = (ActorGraphModel) this.getLayoutTarget()
                 .getGraphModel();
         boolean allDirectionsSet = false;
@@ -1203,8 +1224,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         while (!allDirectionsSet) {
             allDirectionsSet = true;
             progress = false;
-            if (_debug)
+            if (_debug) {
                 System.out.print(".");
+            }
             for (Iterator edgeIter = edges.iterator(); edgeIter.hasNext();) {
                 Object edge = edgeIter.next();
                 EdgeModel edgeModel = aGraph.getEdgeModel(edge);
@@ -1216,15 +1238,18 @@ public class KielerLayout extends AbstractGlobalLayout {
 
                 // see if we have successfully looked at this edge before
                 if (_divaEdgeTarget.containsKey(edge)
-                        && _divaEdgeSource.containsKey(edge))
+                        && _divaEdgeSource.containsKey(edge)) {
                     continue;
+                }
 
                 // check whether endpoints are source or target ports
                 if (endpoint1 instanceof Port) {
-                    boolean isInput1 = PtolemyModelUtil._isInput((Port) endpoint1);
+                    boolean isInput1 = PtolemyModelUtil
+                            ._isInput((Port) endpoint1);
                     // check if we look at inner or outer ports
-                    if (simpleEndpoint1 instanceof Location)
-                        isInput1 = !isInput1;  // inner input port is regarded as output
+                    if (simpleEndpoint1 instanceof Location) {
+                        isInput1 = !isInput1; // inner input port is regarded as output
+                    }
                     // set endpoints
                     if (isInput1) {
                         _divaEdgeTarget.put(edge, simpleEndpoint1);
@@ -1236,10 +1261,12 @@ public class KielerLayout extends AbstractGlobalLayout {
                         progress = true;
                     }
                 } else if (endpoint2 instanceof Port) {
-                    boolean isInput2 = PtolemyModelUtil._isInput((Port) endpoint2);
+                    boolean isInput2 = PtolemyModelUtil
+                            ._isInput((Port) endpoint2);
                     // check if we look at inner or outer ports
-                    if (simpleEndpoint2 instanceof Location)
-                        isInput2 = !isInput2;  // inner input port is regarded as output
+                    if (simpleEndpoint2 instanceof Location) {
+                        isInput2 = !isInput2; // inner input port is regarded as output
+                    }
                     // set endpoints
                     if (isInput2) {
                         _divaEdgeTarget.put(edge, simpleEndpoint2);
@@ -1273,20 +1300,23 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // now we can't deduce any information about this edge
                     allDirectionsSet = false;
                 }
-                if (_debug && progress)
+                if (_debug && progress) {
                     System.out.print("o");
+                }
                 // guarantee progress by just setting the direction if it
                 // cannot be deduced
-                if (!edgeIter.hasNext() && !progress ) {
+                if (!edgeIter.hasNext() && !progress) {
                     _divaEdgeTarget.put(edge, simpleEndpoint1);
                     _divaEdgeSource.put(edge, simpleEndpoint2);
-                    if (_debug)
+                    if (_debug) {
                         System.out.print("O");
+                    }
                 }
             }
         }
-        if (_debug)
+        if (_debug) {
             System.out.println("done.");
+        }
     }
 
     // /////////////////////////////////////////////////////////////////

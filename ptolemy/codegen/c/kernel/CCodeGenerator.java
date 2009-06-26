@@ -221,10 +221,10 @@ public class CCodeGenerator extends CodeGenerator {
             //String targetValue = target.getExpression();
 
             // FIXME: why do we need this?
-//            if (!targetValue.equals(_DEFAULT_TARGET)) {
-//                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
-//                        + "init();" + _eol);
-//            }
+            //            if (!targetValue.equals(_DEFAULT_TARGET)) {
+            //                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
+            //                        + "init();" + _eol);
+            //            }
 
         } else {
             // If the container is not in the top level, we are generating code
@@ -237,7 +237,8 @@ public class CCodeGenerator extends CodeGenerator {
                     .iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                mainEntryCode.append(", jobjectArray " + CodeGeneratorHelper.generateSimpleName(inputPort));
+                mainEntryCode.append(", jobjectArray "
+                        + CodeGeneratorHelper.generateSimpleName(inputPort));
             }
 
             mainEntryCode.append("){" + _eol);
@@ -336,7 +337,6 @@ public class CCodeGenerator extends CodeGenerator {
         StringBuffer typeMembers = new StringBuffer();
         code.append("#define TYPE_Token -1 " + _eol);
 
-
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
@@ -376,7 +376,6 @@ public class CCodeGenerator extends CodeGenerator {
             typeStreams[i].appendCodeBlock("declareBlock");
             code.append(typeStreams[i].toString());
         }
-
 
         ArrayList args = new ArrayList();
         // Token declareBlock.
@@ -424,8 +423,7 @@ public class CCodeGenerator extends CodeGenerator {
                 // /*** [function name]Block ***/
                 //     .....
                 // /**/
-                String functionName = typesArray[i] + "_"
-                + functionsArray[j];
+                String functionName = typesArray[i] + "_" + functionsArray[j];
 
                 try {
                     // Boolean_isCloseTo and String_isCloseTo map to
@@ -435,8 +433,7 @@ public class CCodeGenerator extends CodeGenerator {
                                     .equals("String"))) {
 
                         if (!functions.contains("equals")) {
-                            markFunctionCalled(
-                                    typesArray[i] + "_equals", null);
+                            markFunctionCalled(typesArray[i] + "_equals", null);
                         }
                     } else {
                         if (!_unsupportedTypeFunctions.contains(functionName)
@@ -452,11 +449,13 @@ public class CCodeGenerator extends CodeGenerator {
                     // generated code because the function table makes
                     // reference to this label.
 
-                    typeStreams[i].append("#define " + functionName + " MISSING " + _eol);
+                    typeStreams[i].append("#define " + functionName
+                            + " MISSING " + _eol);
                     _unsupportedTypeFunctions.add(functionName);
 
-                    System.out.println("Warning -- missing function defintion: "
-                            + functionName + "()");
+                    System.out
+                            .println("Warning -- missing function defintion: "
+                                    + functionName + "()");
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types.
@@ -470,8 +469,7 @@ public class CCodeGenerator extends CodeGenerator {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                String functionName = typesArray[i] + "_"
-                        + functionsArray[j];
+                String functionName = typesArray[i] + "_" + functionsArray[j];
 
                 if (_unsupportedTypeFunctions.contains(functionName)) {
                     defineUnsupportedTypeFunctionMethod = true;
@@ -496,7 +494,8 @@ public class CCodeGenerator extends CodeGenerator {
                         functionName = typesArray[i] + "_equals";
                         if (!_unsupportedTypeFunctions.contains(functionName)) {
                             args.add(functionName);
-                            sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                            sharedStream.appendCodeBlock("funcHeaderBlock",
+                                    args);
                         }
                     }
                 }
@@ -572,7 +571,6 @@ public class CCodeGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /**
      * @return
      */
@@ -604,9 +602,9 @@ public class CCodeGenerator extends CodeGenerator {
         }
 
         if (functions.contains("isCloseTo")
-                //&& _newTypesUsed.contains("Int")
-                //&& !_newTypesUsed.contains("Double")
-                ) {
+        //&& _newTypesUsed.contains("Int")
+        //&& !_newTypesUsed.contains("Double")
+        ) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
         }
@@ -634,9 +632,9 @@ public class CCodeGenerator extends CodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(variable.getContainer());
-                code.append("static "
-                        + helper.targetType(variable.getType())
+                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(variable
+                        .getContainer());
+                code.append("static " + helper.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
             }
         }
@@ -668,8 +666,9 @@ public class CCodeGenerator extends CodeGenerator {
                 code.append(_INDENT1
                         + generateVariableName(variable)
                         + " = "
-                        + containerHelper.getParameterValue(CodeGeneratorHelper.generateSimpleName(variable),
-                                variable.getContainer()) + ";" + _eol);
+                        + containerHelper.getParameterValue(CodeGeneratorHelper
+                                .generateSimpleName(variable), variable
+                                .getContainer()) + ";" + _eol);
             }
         }
 
@@ -854,9 +853,9 @@ public class CCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
         // Parse other function files.
-        String directorFunctionDir = cCodegenPath + "kernel/parameterized/directorFunctions/";
+        String directorFunctionDir = cCodegenPath
+                + "kernel/parameterized/directorFunctions/";
         _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
-
 
         // ------------ Parse target-specific functions. --------------------
         if (target.getExpression().equals("default")) {
@@ -864,9 +863,12 @@ public class CCodeGenerator extends CodeGenerator {
         }
 
         try {
-            String targetDir = cCodegenPath + "targets/" + target.getExpression() + "/";
-            directorFunctionDir = targetDir + "kernel/parameterized/directorFunctions/";
-            _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c", true);
+            String targetDir = cCodegenPath + "targets/"
+                    + target.getExpression() + "/";
+            directorFunctionDir = targetDir
+                    + "kernel/parameterized/directorFunctions/";
+            _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c",
+                    true);
         } catch (IllegalActionException ex) {
             // Some API's may not have these files.
         }
@@ -940,7 +942,8 @@ public class CCodeGenerator extends CodeGenerator {
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
             // Make sure all #line macros are at the start of a line.
-            String codeString = code.toString().replaceAll("#line", _eol + "#line");
+            String codeString = code.toString().replaceAll("#line",
+                    _eol + "#line");
 
             StringTokenizer tokenizer = new StringTokenizer(codeString, _eol);
 
@@ -1006,7 +1009,8 @@ public class CCodeGenerator extends CodeGenerator {
         if (!isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
-            includingFiles.addAll(((CCodeGeneratorHelper)compositeActorHelper).getJVMHeaderFiles());
+            includingFiles.addAll(((CCodeGeneratorHelper) compositeActorHelper)
+                    .getJVMHeaderFiles());
         }
 
         includingFiles.add("<stdarg.h>");
@@ -1190,11 +1194,11 @@ public class CCodeGenerator extends CodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
                 } else {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                                      "# Unknown java property os.name \"" + osName
-                                      + "\" please edit ptolemy/codegen/c/"
-                                      + "kernel/CCodeGenerator.java and "
-                                      + "ptolemy/actor/lib/jni/"
-                                      + "CompiledCompositeActor.java");
+                            "# Unknown java property os.name \"" + osName
+                                    + "\" please edit ptolemy/codegen/c/"
+                                    + "kernel/CCodeGenerator.java and "
+                                    + "ptolemy/actor/lib/jni/"
+                                    + "CompiledCompositeActor.java");
                 }
 
             }
@@ -1316,22 +1320,21 @@ public class CCodeGenerator extends CodeGenerator {
 
             if (!_overloadedFunctionSet.contains(name)) {
 
-                String code = helper == null ?
-                        processCode(functionCode) :
-                        helper.processCode(functionCode);
+                String code = helper == null ? processCode(functionCode)
+                        : helper.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
                 _overloadedFunctionSet.add(name);
             }
-//            if (name.startsWith("Array_")) {
-//                // Array_xxx might need to have xxx added.
-//                // See c/actor/lib/test/auto/MultiplyDivide5.xml
-//
-//                // FIXME: this will add any function, which means that
-//                // if the user has Array_foo, foo is added.  Is this right?
-//                _tokenFuncUsed.add(name.substring(6));
-//            }
+            //            if (name.startsWith("Array_")) {
+            //                // Array_xxx might need to have xxx added.
+            //                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+            //
+            //                // FIXME: this will add any function, which means that
+            //                // if the user has Array_foo, foo is added.  Is this right?
+            //                _tokenFuncUsed.add(name.substring(6));
+            //            }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to mark function called for \"" + name + "\" in \""
@@ -1342,7 +1345,7 @@ public class CCodeGenerator extends CodeGenerator {
 
     private CodeStream _overloadedFunctions;
 
-        /** An ordered set of function code */
+    /** An ordered set of function code */
     LinkedHashSet<String> _overloadedFunctionSet;
 
     /** Set of type/function combinations that are not supported.

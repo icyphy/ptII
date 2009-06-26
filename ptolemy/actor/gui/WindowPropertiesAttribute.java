@@ -194,8 +194,10 @@ public class WindowPropertiesAttribute extends Parameter implements
 
             // See ptolemy/actor/gui/test/MyFourCorners.xml for a test file
             // that produces four plots in the four corners of a multi-screen window.
-            GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
+            GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+                    .getLocalGraphicsEnvironment();
+            GraphicsDevice[] graphicsDevices = graphicsEnvironment
+                    .getScreenDevices();
 
             int widths[] = new int[graphicsDevices.length];
             int heights[] = new int[graphicsDevices.length];
@@ -205,50 +207,49 @@ public class WindowPropertiesAttribute extends Parameter implements
             int maxHeight = 0;
 
             for (int j = 0; j < graphicsDevices.length; j++) {
-                    GraphicsDevice graphicsDevice = graphicsDevices[j];
-                    widths[j] = graphicsDevice.getDisplayMode().getWidth();
-                    heights[j] = graphicsDevice.getDisplayMode().getHeight();
+                GraphicsDevice graphicsDevice = graphicsDevices[j];
+                widths[j] = graphicsDevice.getDisplayMode().getWidth();
+                heights[j] = graphicsDevice.getDisplayMode().getHeight();
             }
-            for (int j = 0; j < graphicsDevices.length-1; j++) {
-                    if (widths[j] != widths[j+1]) {
-                            widthsEqual = false;
+            for (int j = 0; j < graphicsDevices.length - 1; j++) {
+                if (widths[j] != widths[j + 1]) {
+                    widthsEqual = false;
                 }
-                    if (heights[j] != heights[j+1]) {
-                            heightsEqual = false;
+                if (heights[j] != heights[j + 1]) {
+                    heightsEqual = false;
                 }
             }
             if (widthsEqual && heightsEqual) {
-                    //Nominal setup
-                    if (heights[0] > widths[0]){//Width is cumulative.
-                            for (int j = 0; j < graphicsDevices.length; j++) {
-                                    maxWidth += widths[j];
-                            }
-                            maxHeight = heights[0];
-                    }
-                    else {//Height is cumulative.
-                            for (int j = 0; j < graphicsDevices.length; j++) {
-                                    maxHeight += heights[j];
-                            }
-                            maxWidth = widths[0];
-                    }
-            } else {
-                    //Strange setup.
-                    maxWidth = widths[0];
-                    maxHeight = heights[0];
+                //Nominal setup
+                if (heights[0] > widths[0]) {//Width is cumulative.
                     for (int j = 0; j < graphicsDevices.length; j++) {
-                            maxWidth = maxWidth > widths[j] ? widths[j] : maxWidth;
-                            maxHeight = maxHeight > heights[j] ? heights[j] : maxHeight;
+                        maxWidth += widths[j];
                     }
+                    maxHeight = heights[0];
+                } else {//Height is cumulative.
+                    for (int j = 0; j < graphicsDevices.length; j++) {
+                        maxHeight += heights[j];
+                    }
+                    maxWidth = widths[0];
+                }
+            } else {
+                //Strange setup.
+                maxWidth = widths[0];
+                maxHeight = heights[0];
+                for (int j = 0; j < graphicsDevices.length; j++) {
+                    maxWidth = maxWidth > widths[j] ? widths[j] : maxWidth;
+                    maxHeight = maxHeight > heights[j] ? heights[j] : maxHeight;
+                }
             }
 
-            x =  x < 0 ? 0 : x;
-            y =  y < 0 ? 0 : y+0;
+            x = x < 0 ? 0 : x;
+            y = y < 0 ? 0 : y + 0;
 
             width = width > maxWidth ? maxWidth : width;
             height = height > maxHeight ? maxHeight : height;
 
-            y = (y + height) > (maxHeight) ? (maxHeight-height) : y;
-            x = (x + width) > (maxWidth) ? (maxWidth-width) : x;
+            y = (y + height) > (maxHeight) ? (maxHeight - height) : y;
+            x = (x + width) > (maxWidth) ? (maxWidth - width) : x;
 
             frame.setBounds(x, y, width, height);
 

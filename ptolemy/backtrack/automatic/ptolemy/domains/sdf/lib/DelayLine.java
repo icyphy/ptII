@@ -29,7 +29,6 @@
 //// DelayLine
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
-import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
@@ -101,7 +100,8 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public DelayLine(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
+    public DelayLine(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         initialValues = new Parameter(this, "initialValues");
         initialValues.setExpression("{0, 0, 0, 0}");
@@ -115,7 +115,8 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
      * @exception IllegalActionException If type changes are not
      * allowed on the specified attribute.
      */
-    public void attributeTypeChanged(Attribute attribute) throws IllegalActionException  {
+    public void attributeTypeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute != initialValues) {
             super.attributeTypeChanged(attribute);
         }
@@ -129,8 +130,8 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
-        DelayLine newObject = (DelayLine)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DelayLine newObject = (DelayLine) super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
         } catch (IllegalActionException e) {
@@ -146,9 +147,10 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
      * the delay line.
      * @exception IllegalActionException If not enough tokens are available.
      */
-    public void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException {
         super.fire();
-        System.arraycopy($BACKUP$_delayLine(), 0, $BACKUP$_delayLine(), 1, _delayLine.length - 1);
+        System.arraycopy($BACKUP$_delayLine(), 0, $BACKUP$_delayLine(), 1,
+                _delayLine.length - 1);
         $ASSIGN$_delayLine(0, input.get(0));
         output.send(0, new ArrayToken($BACKUP$_delayLine()));
     }
@@ -156,23 +158,23 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
     /**
      * Initialize this actor by reading the value of <i>initialValues</i>.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
-        $ASSIGN$_delayLine(((ArrayToken)initialValues.getToken()).arrayValue());
+        $ASSIGN$_delayLine(((ArrayToken) initialValues.getToken()).arrayValue());
     }
 
     private final Token $ASSIGN$_delayLine(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_delayLine.add(new int[] {
-                    index0
-                }, _delayLine[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_delayLine.add(new int[] { index0 }, _delayLine[index0],
+                    $CHECKPOINT.getTimestamp());
         }
         return _delayLine[index0] = newValue;
     }
 
     private final Token[] $ASSIGN$_delayLine(Token[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_delayLine.add(null, _delayLine, $CHECKPOINT.getTimestamp());
+            $RECORD$_delayLine
+                    .add(null, _delayLine, $CHECKPOINT.getTimestamp());
         }
         return _delayLine = newValue;
     }
@@ -183,14 +185,17 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _delayLine = (Token[])$RECORD$_delayLine.restore(_delayLine, timestamp, trim);
+        _delayLine = (Token[]) $RECORD$_delayLine.restore(_delayLine,
+                timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -218,9 +223,6 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
 
     private transient FieldRecord $RECORD$_delayLine = new FieldRecord(1);
 
-    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_delayLine
-        };
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_delayLine };
 
 }
-

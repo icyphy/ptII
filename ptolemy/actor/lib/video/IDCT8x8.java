@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.video;
 
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntMatrixToken;
@@ -61,13 +60,13 @@ public class IDCT8x8 extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public IDCT8x8(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        input = new TypedIOPort(this,"input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.INT_MATRIX);
 
-        output = new TypedIOPort(this,"output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT_MATRIX);
 
     }
@@ -115,6 +114,7 @@ public class IDCT8x8 extends TypedAtomicActor {
         cos_values[6] = 0.1913417;
         cos_values[7] = 0.0975452;
     }
+
     /** .
      *
      *  @exception IllegalActionException If there is no director,
@@ -125,23 +125,23 @@ public class IDCT8x8 extends TypedAtomicActor {
         super.fire();
 
         int i, j, k;
-        double _tem1,_tem2,_tem3,_tem4;
-        double [] _block = new double[8];
-        double [] _temp = new double[8];
-        double [][] _ftemp = new double[8][8];
-        int [][] sum = new int[8][8];
+        double _tem1, _tem2, _tem3, _tem4;
+        double[] _block = new double[8];
+        double[] _temp = new double[8];
+        double[][] _ftemp = new double[8][8];
+        int[][] sum = new int[8][8];
         IntMatrixToken _input;
 
         if (input.hasToken(0)) {
-            _input = (IntMatrixToken)input.get(0);
+            _input = (IntMatrixToken) input.get(0);
         } else {
             return;
         }
 
-        for ( i = 0; i < 8; i++ )
-        {
-            for (j = 0; j < 8; j++)
-                _block[j] = _input.getElementAt(i,j);
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                _block[j] = _input.getElementAt(i, j);
+            }
 
             _tem1 = _block[1] * cos_values[7] - _block[7] * cos_values[1];
             _tem4 = _block[7] * cos_values[7] + _block[1] * cos_values[1];
@@ -166,18 +166,15 @@ public class IDCT8x8 extends TypedAtomicActor {
             _block[2] = _temp[1] - _temp[2];
             _block[3] = _temp[0] - _temp[3];
 
-            for (j = 0; j < 4; j++)
-            {
+            for (j = 0; j < 4; j++) {
                 k = 7 - j;
                 _ftemp[i][j] = _block[j] + _block[k];
                 _ftemp[i][k] = _block[j] - _block[k];
             }
         }
 
-        for (i = 0; i < 8; i++ )
-        {
-            for (j = 0; j < 8; j++)
-            {
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
                 _block[j] = _ftemp[j][i];
             }
 
@@ -203,25 +200,24 @@ public class IDCT8x8 extends TypedAtomicActor {
             _block[2] = _temp[1] - _temp[2];
             _block[3] = _temp[0] - _temp[3];
 
-            for (j = 0; j < 4; j++)
-            {
+            for (j = 0; j < 4; j++) {
                 k = 7 - j;
                 _ftemp[j][i] = _block[j] + _block[k];
                 _ftemp[k][i] = _block[j] - _block[k];
             }
         }
-            for (i = 0; i < 8; i++)
-            {
-              for (j = 0; j < 8; j++)
-              {
-                sum[i][j] =  (_ftemp[i][j] < 0 ? (int)(_ftemp[i][j] - 0.5) : (int)(_ftemp[i][j] + 0.5));
-              }
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                sum[i][j] = (_ftemp[i][j] < 0 ? (int) (_ftemp[i][j] - 0.5)
+                        : (int) (_ftemp[i][j] + 0.5));
             }
+        }
 
         _output[0] = new IntMatrixToken(sum);
-        output.send(0, _output, _output.length );
+        output.send(0, _output, _output.length);
 
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IntMatrixToken[] _output;

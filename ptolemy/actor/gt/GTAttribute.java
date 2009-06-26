@@ -32,7 +32,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
-
 /**
  Interface of the attributes used in the patterns or replacements of
  transformation rules.

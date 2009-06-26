@@ -258,8 +258,8 @@ public class StateController extends AttributeController {
                     if ((refinements != null) && (refinements.length > 0)) {
                         for (int i = 0; i < refinements.length; i++) {
                             // Open each refinement.
-                            _configuration.openInstance(
-                                    (NamedObj) refinements[i]);
+                            _configuration
+                                    .openInstance((NamedObj) refinements[i]);
                         }
                     } else {
                         MessageHandler.error("State has no refinement.");
@@ -302,8 +302,8 @@ public class StateController extends AttributeController {
          */
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error("Cannot edit icon without a " +
-                        "configuration.");
+                MessageHandler.error("Cannot edit icon without a "
+                        + "configuration.");
                 return;
             }
 
@@ -313,12 +313,11 @@ public class StateController extends AttributeController {
             final NamedObj object = getTarget();
 
             // Do this as a change request since it may add a new icon.
-            ChangeRequest request = new ChangeRequest(this,
-                    "Edit Custom Icon") {
+            ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
                 protected void _execute() throws Exception {
                     EditorIcon icon = null;
-                    List<EditorIcon> iconList = object.attributeList(
-                            EditorIcon.class);
+                    List<EditorIcon> iconList = object
+                            .attributeList(EditorIcon.class);
                     for (EditorIcon oldIcon : iconList) {
                         if (oldIcon.getClass().equals(EditorIcon.class)) {
                             icon = oldIcon;
@@ -328,10 +327,9 @@ public class StateController extends AttributeController {
 
                     if (icon == null) {
                         icon = new EditorIcon(object, "_icon");
-                        Parameter hideName = (Parameter) object.getAttribute(
-                                "_hideName");
-                        if (((BooleanToken) hideName.getToken())
-                                .booleanValue()) {
+                        Parameter hideName = (Parameter) object
+                                .getAttribute("_hideName");
+                        if (((BooleanToken) hideName.getToken()).booleanValue()) {
                             hideName.setToken(BooleanToken.FALSE);
                         }
                     }
@@ -347,39 +345,38 @@ public class StateController extends AttributeController {
     /** Action to remove a custom icon.
 
     @version $Id$
-   */
-   private static class RemoveIconAction extends FigureAction {
-      public RemoveIconAction() {
-          super("Remove Custom Icon");
-      }
+    */
+    private static class RemoveIconAction extends FigureAction {
+        public RemoveIconAction() {
+            super("Remove Custom Icon");
+        }
 
-      ///////////////////////////////////////////////////////////////////
-      ////                         public methods                    ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
 
-      /** Process the remove icon command.
-       *  @param e The event.
-       */
-      public void actionPerformed(ActionEvent e) {
-          super.actionPerformed(e);
+        /** Process the remove icon command.
+         *  @param e The event.
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
 
-          NamedObj object = getTarget();
-          EditorIcon icon = null;
-          List<EditorIcon> iconList = object.attributeList(
-                  EditorIcon.class);
-          for (EditorIcon oldIcon : iconList) {
-              if (oldIcon.getClass().equals(EditorIcon.class)) {
-                  icon = oldIcon;
-                  break;
-              }
-          }
+            NamedObj object = getTarget();
+            EditorIcon icon = null;
+            List<EditorIcon> iconList = object.attributeList(EditorIcon.class);
+            for (EditorIcon oldIcon : iconList) {
+                if (oldIcon.getClass().equals(EditorIcon.class)) {
+                    icon = oldIcon;
+                    break;
+                }
+            }
 
-          if (icon != null) {
-              String moml = "<deleteProperty name=\"" + icon.getName()
-                      + "\"/>";
-              MoMLChangeRequest request = new MoMLChangeRequest(this, object,
-                      moml);
-              object.requestChange(request);
-          }
-      }
-   }
+            if (icon != null) {
+                String moml = "<deleteProperty name=\"" + icon.getName()
+                        + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this, object,
+                        moml);
+                object.requestChange(request);
+            }
+        }
+    }
 }

@@ -169,8 +169,7 @@ public class EditorDropTarget extends DropTarget {
         public void dragEnter(DropTargetDragEvent dtde) {
             //notify additionalListeners
             for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+                DropTargetListener l = _additionalListeners.elementAt(i);
                 l.dragEnter(dtde);
             }
 
@@ -190,8 +189,7 @@ public class EditorDropTarget extends DropTarget {
         public void dragExit(DropTargetEvent dtde) {
             //notify additionalListeners
             for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+                DropTargetListener l = _additionalListeners.elementAt(i);
                 l.dragExit(dtde);
             }
             if (_highlighted != null) {
@@ -212,8 +210,7 @@ public class EditorDropTarget extends DropTarget {
         public void dragOver(DropTargetDragEvent dtde) {
             //notify additionalListeners
             for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+                DropTargetListener l = _additionalListeners.elementAt(i);
                 l.dragOver(dtde);
             }
             // See whether there is a container under the point.
@@ -258,8 +255,7 @@ public class EditorDropTarget extends DropTarget {
         public void drop(DropTargetDropEvent dtde) {
             //notify additionalListeners
             for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+                DropTargetListener l = _additionalListeners.elementAt(i);
                 l.drop(dtde);
             }
             // Unhighlight the target. Do this first in case
@@ -297,8 +293,9 @@ public class EditorDropTarget extends DropTarget {
             if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                    dropObjects = (List) dtde.getTransferable().getTransferData(
-                            PtolemyTransferable.namedObjFlavor);
+                    dropObjects = (List) dtde
+                            .getTransferable()
+                            .getTransferData(PtolemyTransferable.namedObjFlavor);
                     iterator = dropObjects.iterator();
                 } catch (Exception e) {
                     MessageHandler.error(
@@ -343,8 +340,9 @@ public class EditorDropTarget extends DropTarget {
                 try {
                     String lsidString = ((StringAttribute) (dropObj
                             .getAttribute("entityId"))).getExpression();
-                    if ((lsidString == null) || (lsidString.equals("")))
+                    if ((lsidString == null) || (lsidString.equals(""))) {
                         lsidFlag = false;
+                    }
                 } catch (Exception eee) {
                     lsidFlag = false;
                 }
@@ -366,9 +364,12 @@ public class EditorDropTarget extends DropTarget {
                         }
                     }
                     if (config == null) {
-                        throw new KernelRuntimeException(dropObj, "Could not find "
-                                + "configuration, list of configurations was "
-                                + configsList.size() + " elements, all were null.");
+                        throw new KernelRuntimeException(
+                                dropObj,
+                                "Could not find "
+                                        + "configuration, list of configurations was "
+                                        + configsList.size()
+                                        + " elements, all were null.");
                     }
                     alternateGetMomlActionAttribute = (StringAttribute) config
                             .getAttribute("_alternateGetMomlAction");
@@ -376,18 +377,18 @@ public class EditorDropTarget extends DropTarget {
 
                 boolean appendGroupAuto = true;
                 if (alternateGetMomlActionAttribute != null) {
-                    String alternateGetMomlClassName =
-                        alternateGetMomlActionAttribute.getExpression();
+                    String alternateGetMomlClassName = alternateGetMomlActionAttribute
+                            .getExpression();
                     try {
-                        Class getMomlClass = Class.forName(
-                                alternateGetMomlClassName);
+                        Class getMomlClass = Class
+                                .forName(alternateGetMomlClassName);
                         object = getMomlClass.newInstance();
                         try {
                             Method getMomlMethod = getMomlClass.getMethod(
-                                    "getMoml", new Class[] {NamedObj.class,
-                                            String.class});
+                                    "getMoml", new Class[] { NamedObj.class,
+                                            String.class });
                             result = (String) getMomlMethod.invoke(object,
-                                    new Object[] {dropObj, name});
+                                    new Object[] { dropObj, name });
                             appendGroupAuto = false;
                         } catch (NoSuchMethodException e) {
                             Method getMomlMethod = getMomlClass.getMethod(
@@ -419,10 +420,11 @@ public class EditorDropTarget extends DropTarget {
 
                 if (appendGroupAuto) {
                     moml.insert(0, "<group name=\"auto\">\n");
-                    moml.append("<" + rootNodeName + " name=\"" + name +
-                            "\">\n");
-                    moml.append("<property name=\"_location\" " +
-                            "class=\"ptolemy.kernel.util.Location\" value=\"{");
+                    moml.append("<" + rootNodeName + " name=\"" + name
+                            + "\">\n");
+                    moml
+                            .append("<property name=\"_location\" "
+                                    + "class=\"ptolemy.kernel.util.Location\" value=\"{");
                     moml.append((int) newPoint.getX());
                     moml.append(", ");
                     moml.append((int) newPoint.getY());
@@ -436,8 +438,8 @@ public class EditorDropTarget extends DropTarget {
                     ((DropTargetHandler) container).dropObject(container,
                             dropObjects, moml.toString());
                 } catch (IllegalActionException e) {
-                    MessageHandler.error("Unable to drop the object to " +
-                            container.getName() + ".", e);
+                    MessageHandler.error("Unable to drop the object to "
+                            + container.getName() + ".", e);
                 }
             } else {
                 moml.insert(0, "<group>");
@@ -465,8 +467,7 @@ public class EditorDropTarget extends DropTarget {
         public void dropActionChanged(DropTargetDragEvent dtde) {
             //notify additionalListeners
             for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+                DropTargetListener l = _additionalListeners.elementAt(i);
                 l.dropActionChanged(dtde);
             }
             // Used to do this... Not needed?

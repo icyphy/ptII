@@ -112,8 +112,8 @@ public class RTMaudeUtility {
      * @exception NameDuplicationException
      */
     public static StringBuffer generateRTMDescription(BufferedReader template,
-            CompositeActor model, String formula) throws IllegalActionException,
-            NameDuplicationException {
+            CompositeActor model, String formula)
+            throws IllegalActionException, NameDuplicationException {
 
         // RTM initial state for current Ptolemy model (DE)
         RTMList topconf = _translateCompositeEntity(model, null);
@@ -136,8 +136,9 @@ public class RTMaudeUtility {
 
                             do {
                                 line = template.readLine();
-                                if (line == null || line.replace("-", "").trim()
-                                        .equals("")) {
+                                if (line == null
+                                        || line.replace("-", "").trim().equals(
+                                                "")) {
                                     break;
                                 }
                             } while (true);
@@ -152,8 +153,8 @@ public class RTMaudeUtility {
                         }
                     } else if (lineTrimed.equals("")) {
                         if (beginModel) {
-                            _generateModelBody(returnRTMFormat, model.getName(),
-                                    topconf);
+                            _generateModelBody(returnRTMFormat,
+                                    model.getName(), topconf);
                             beginModel = false;
                             continue;
                         } else if (beginFormula) {
@@ -161,15 +162,15 @@ public class RTMaudeUtility {
                             beginFormula = false;
                             continue;
                         }
-                    } else if (lineTrimed.startsWith("---") &&
-                            lineTrimed.endsWith("---") &&
-                            lineTrimed.substring(3, lineTrimed.length() - 3)
+                    } else if (lineTrimed.startsWith("---")
+                            && lineTrimed.endsWith("---")
+                            && lineTrimed.substring(3, lineTrimed.length() - 3)
                                     .trim().equalsIgnoreCase("Model Begin")) {
                         beginModel = true;
                         beginFormula = false;
-                    } else if (lineTrimed.startsWith("---") &&
-                            lineTrimed.endsWith("---") &&
-                            lineTrimed.substring(3, lineTrimed.length() - 3)
+                    } else if (lineTrimed.startsWith("---")
+                            && lineTrimed.endsWith("---")
+                            && lineTrimed.substring(3, lineTrimed.length() - 3)
                                     .trim().equalsIgnoreCase("Formula Begin")) {
                         beginModel = false;
                         beginFormula = true;
@@ -182,8 +183,7 @@ public class RTMaudeUtility {
                 }
             } while (true);
         } catch (IOException e) {
-            throw new IllegalActionException(null, e,
-                    "Unable to read template");
+            throw new IllegalActionException(null, e, "Unable to read template");
         }
 
         return returnRTMFormat;
@@ -191,8 +191,9 @@ public class RTMaudeUtility {
 
     private static void _generateFormula(StringBuffer returnRTMFormat,
             String formula) {
-        if (formula != null && formula.trim().length() > 0)    // model check command
-            returnRTMFormat.append("(mc {init} |=u "  + formula + " .)\n");
+        if (formula != null && formula.trim().length() > 0) {
+            returnRTMFormat.append("(mc {init} |=u " + formula + " .)\n");
+        }
     }
 
     private static void _generateModelBody(StringBuffer returnRTMFormat,
@@ -204,12 +205,12 @@ public class RTMaudeUtility {
         returnRTMFormat.append("endtom)\n");
     }
 
-    private static void _loadSemanticFiles(StringBuffer buffer,
-            boolean inline) throws IllegalActionException {
+    private static void _loadSemanticFiles(StringBuffer buffer, boolean inline)
+            throws IllegalActionException {
         if (inline) {
             ClassLoader loader = RTMaudeUtility.class.getClassLoader();
-            InputStream stream = loader.getResourceAsStream(SEMANTIC_FILE_PATH +
-                    "/ptolemy-modelcheck.maude");
+            InputStream stream = loader.getResourceAsStream(SEMANTIC_FILE_PATH
+                    + "/ptolemy-modelcheck.maude");
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     stream));
             Stack<BufferedReader> readerStack = new Stack<BufferedReader>();
@@ -222,8 +223,9 @@ public class RTMaudeUtility {
                         String trim = line.trim();
                         if (trim.startsWith("load ")) {
                             trim = trim.substring(5).trim();
-                            stream = loader.getResourceAsStream(
-                                    SEMANTIC_FILE_PATH + "/" + trim + ".maude");
+                            stream = loader
+                                    .getResourceAsStream(SEMANTIC_FILE_PATH
+                                            + "/" + trim + ".maude");
                             if (stream != null) {
                                 readerStack.push(reader);
                                 reader = new BufferedReader(
@@ -257,49 +259,61 @@ public class RTMaudeUtility {
 
     // taking an actor, and return translation of the actor
     @SuppressWarnings("unchecked")
-    private static RTMObject _translateActor(Actor act) throws IllegalActionException{
+    private static RTMObject _translateActor(Actor act)
+            throws IllegalActionException {
         RTMObject ret = new RTMObject(act.getName(), "Actor");
 
-        HashSet<Actor> processedActs = new HashSet<Actor>();    // inner actor collector
+        HashSet<Actor> processedActs = new HashSet<Actor>(); // inner actor collector
         RTMList rrefines = new RTMList(",", "noRefinement");
 
         if (act instanceof Clock) {
             ret.setClass("Clock");
-            ret.addStrAttr("period", (new RTMPtExp(((Clock)act).period.getExpression(), true)).getValue());
-        }
-        else if (act instanceof TimedDelay) {
+            ret.addStrAttr("period", (new RTMPtExp(((Clock) act).period
+                    .getExpression(), true)).getValue());
+        } else if (act instanceof TimedDelay) {
             ret.setClass("Delay");
             // BoundedBufferNondeterministicDelay did not PROPERLY override "delay"
-            if (act instanceof BoundedBufferNondeterministicDelay)
-                ret.addStrAttr("delay", (new RTMPtExp(((BoundedBufferNondeterministicDelay)act).delay.getExpression(), true)).getValue());
-            else
-                ret.addStrAttr("delay", (new RTMPtExp(((TimedDelay)act).delay.getExpression(), true)).getValue());
-        }
-        else if (act instanceof FSMActor || act instanceof ModalModel) {
+            if (act instanceof BoundedBufferNondeterministicDelay) {
+                ret.addStrAttr("delay", (new RTMPtExp(
+                        ((BoundedBufferNondeterministicDelay) act).delay
+                                .getExpression(), true)).getValue());
+            } else {
+                ret.addStrAttr("delay", (new RTMPtExp(((TimedDelay) act).delay
+                        .getExpression(), true)).getValue());
+            }
+        } else if (act instanceof FSMActor || act instanceof ModalModel) {
             ret.setClass("FSM-Actor");
-            FSMActor target = act instanceof FSMActor ? (FSMActor) act : ((ModalModel)act).getController();
-            if (act instanceof ModalModel )
-                processedActs.add(((ModalModel)act).getController());
+            FSMActor target = act instanceof FSMActor ? (FSMActor) act
+                    : ((ModalModel) act).getController();
+            if (act instanceof ModalModel) {
+                processedActs.add(((ModalModel) act).getController());
+            }
 
-            ret.addStrAttr("currState", RTMTerm.transId(target.getInitialState().getName()));
-            ret.addStrAttr("initState", RTMTerm.transId(target.getInitialState().getName()));
+            ret.addStrAttr("currState", RTMTerm.transId(target
+                    .getInitialState().getName()));
+            ret.addStrAttr("initState", RTMTerm.transId(target
+                    .getInitialState().getName()));
 
             // Transition & Refinement
             RTMList rtrans = new RTMList(";", "emptyTransitionSet");
-            for (State s : (List<State>)target.entityList(State.class)) {
+            for (State s : (List<State>) target.entityList(State.class)) {
                 // State refinement
-                if (s.getRefinement() != null)
-                    rrefines.add(procRefinements(s.getName(), s.getRefinement(),"State",processedActs));
+                if (s.getRefinement() != null) {
+                    rrefines.add(procRefinements(s.getName(),
+                            s.getRefinement(), "State", processedActs));
+                }
                 // Transition and its refinement
-                for (Transition t :(List<Transition>)s.outgoingPort.linkedRelationList()) {
+                for (Transition t : (List<Transition>) s.outgoingPort
+                        .linkedRelationList()) {
                     rtrans.add(_translateTransition(t));
-                    if (t.getRefinement() != null)
-                        rrefines.add(procRefinements(t.getName(), t.getRefinement(),"Transition",processedActs));
+                    if (t.getRefinement() != null) {
+                        rrefines.add(procRefinements(t.getName(), t
+                                .getRefinement(), "Transition", processedActs));
+                    }
                 }
             }
             ret.addAttr("transitions", rtrans);
-        }
-        else if (act instanceof CompositeEntity) {
+        } else if (act instanceof CompositeEntity) {
             ret.setClass("CompositeActor");
         }
 
@@ -308,21 +322,22 @@ public class RTMaudeUtility {
         if (act instanceof FSMActor) {
             RTMList ri = new RTMList(";", "emptyMap");
             RTMOpTermGenerator ragn = new RTMOpTermGenerator("(", " |-> ", ")");
-            for (Variable v : (List<Variable>)(((NamedObj)act).attributeList(Variable.class)))
-                ri.add(ragn.get(
-                        new RTMFragment(RTMTerm.transId(v.getName())),
+            for (Variable v : (List<Variable>) (((NamedObj) act)
+                    .attributeList(Variable.class))) {
+                ri.add(ragn.get(new RTMFragment(RTMTerm.transId(v.getName())),
                         new RTMPtExp(v.getExpression())));
-            ret.addStrAttr("store","emptyMap");
+            }
+            ret.addStrAttr("store", "emptyMap");
             ret.addAttr("innerVariables", ri);
-        }
-        else {
-            ret.addStrAttr("store","emptyMap");
+        } else {
+            ret.addStrAttr("store", "emptyMap");
             ret.addStrAttr("innerVariables", "emptyMap");
         }
 
         // Inner Actor (except for refinement actors), add refinement actor
         if (act instanceof CompositeEntity) {
-            RTMList inner = _translateCompositeEntity((CompositeEntity)act, processedActs);
+            RTMList inner = _translateCompositeEntity((CompositeEntity) act,
+                    processedActs);
             ret.addAttr("innerActors", inner);
             ret.addAttr("refinements", rrefines);
         }
@@ -330,8 +345,9 @@ public class RTMaudeUtility {
         // Ports
         if (act instanceof Entity) {
             RTMList portconf = new RTMList("", "none");
-            for (Port p : (List<Port>)((Entity)act).portList())
+            for (Port p : (List<Port>) ((Entity) act).portList()) {
                 portconf.add(_translatePort(p));
+            }
             ret.addAttr("ports", portconf);
         }
 
@@ -339,57 +355,73 @@ public class RTMaudeUtility {
     }
 
     @SuppressWarnings("unchecked")
-    private static RTMList _translateCompositeEntity(CompositeEntity cent, HashSet<Actor> exc)
-            throws IllegalActionException {
+    private static RTMList _translateCompositeEntity(CompositeEntity cent,
+            HashSet<Actor> exc) throws IllegalActionException {
 
         RTMOpTermGenerator rtran = new RTMOpTermGenerator("(", " ==> ", ")");
         RTMList rent = new RTMList("", "none");
         RTMList rcons = new RTMList("", "none");
 
-        for (Actor act : (List<Actor>)cent.entityList(Actor.class)) {
-            if (exc == null || ! exc.contains(act)) {
+        for (Actor act : (List<Actor>) cent.entityList(Actor.class)) {
+            if (exc == null || !exc.contains(act)) {
                 rent.add(_translateActor(act));
 
                 // translate connections : Same level
-                for (IOPort p : (List<IOPort>)act.outputPortList()) {
+                for (IOPort p : (List<IOPort>) act.outputPortList()) {
                     RTMList rports = new RTMList(";", "noPort");
-                    for (Port op : (List<Port>)p.sinkPortList())
-                        if (op.getContainer() != p.getContainer().getContainer())
-                            rports.add(portName(null,op));
-                    if (! rports.isEmpty() )
-                        rcons.add( rtran.get(portName(null,p),rports) );
+                    for (Port op : (List<Port>) p.sinkPortList()) {
+                        if (op.getContainer() != p.getContainer()
+                                .getContainer()) {
+                            rports.add(portName(null, op));
+                        }
+                    }
+                    if (!rports.isEmpty()) {
+                        rcons.add(rtran.get(portName(null, p), rports));
+                    }
                 }
             }
         }
         // translate connections : From outside
-        for (IOPort ip : (List<IOPort>)((Actor)cent).inputPortList()) {
+        for (IOPort ip : (List<IOPort>) ((Actor) cent).inputPortList()) {
             RTMList rports = new RTMList(";", "noPort");
-            for (Port op : (List<IOPort>)ip.insideSinkPortList())
-                if (exc == null || ! exc.contains(op.getContainer()))
+            for (Port op : (List<IOPort>) ip.insideSinkPortList()) {
+                if (exc == null || !exc.contains(op.getContainer())) {
                     rports.add(portName(ip.getContainer(), op));
-            if (! rports.isEmpty() )
-                rcons.add( rtran.get( portName(null, ip), rports) );
+                }
+            }
+            if (!rports.isEmpty()) {
+                rcons.add(rtran.get(portName(null, ip), rports));
+            }
         }
         // translate connections : To outside
         //FIXME : there would be the case --  1_inside : N_outside
-        for (IOPort op : (List<IOPort>)((Actor)cent).outputPortList())
-            for (Port ip : (List<IOPort>)op.insideSourcePortList())
-                if (exc == null || ! exc.contains(ip.getContainer()))
-                    rcons.add( rtran.get( portName(op.getContainer(), ip), portName(null, op)) );
+        for (IOPort op : (List<IOPort>) ((Actor) cent).outputPortList()) {
+            for (Port ip : (List<IOPort>) op.insideSourcePortList()) {
+                if (exc == null || !exc.contains(ip.getContainer())) {
+                    rcons.add(rtran.get(portName(op.getContainer(), ip),
+                            portName(null, op)));
+                }
+            }
+        }
 
-        if (! rcons.isEmpty()) rent.add(rcons);
+        if (!rcons.isEmpty()) {
+            rent.add(rcons);
+        }
 
         return rent;
     }
-
 
     private static RTMObject _translatePort(Port port) {
         String flag = "";
         if (port instanceof IOPort) {
             IOPort ip = (IOPort) port;
-            if (ip.isOutput() && ip.isInput() ) flag = "InOut";
-            else if (ip.isOutput()) flag = "Out";
-            else if (ip.isInput()) flag = "In";
+            if (ip.isOutput() && ip.isInput()) {
+                flag = "InOut";
+            } else if (ip.isOutput()) {
+                flag = "Out";
+            } else if (ip.isInput()) {
+                flag = "In";
+            }
         }
         RTMObject retPort = new RTMObject(port.getName(), flag + "Port");
         retPort.addStrAttr("status", "absent");
@@ -398,40 +430,47 @@ public class RTMaudeUtility {
     }
 
     @SuppressWarnings("unchecked")
-    private static RTMTerm _translateTransition(Transition tr) throws IllegalActionException {
-        RTMOpTermGenerator ra = new RTMOpTermGenerator("("," |-> ", ")");
+    private static RTMTerm _translateTransition(Transition tr)
+            throws IllegalActionException {
+        RTMOpTermGenerator ra = new RTMOpTermGenerator("(", " |-> ", ")");
 
-        RTMOpTermGenerator retTr = new RTMOpTermGenerator("("," --> ", " {guard: ", " output: ", " set: ", "})");
+        RTMOpTermGenerator retTr = new RTMOpTermGenerator("(", " --> ",
+                " {guard: ", " output: ", " set: ", "})");
         RTMList os = new RTMList(";", "emptyMap");
         RTMList ss = new RTMList(";", "emptyMap");
 
-        for (String pt : (List<String>)tr.setActions.getDestinationNameList())
-            ss.add(ra.get(
-                    new RTMFragment(RTMTerm.transId(pt)),
-                    new RTMPtExp(tr.setActions.getParseTree(pt))) );
+        for (String pt : (List<String>) tr.setActions.getDestinationNameList()) {
+            ss.add(ra.get(new RTMFragment(RTMTerm.transId(pt)), new RTMPtExp(
+                    tr.setActions.getParseTree(pt))));
+        }
 
-        for (String ot : (List<String>)tr.outputActions.getDestinationNameList())
-            os.add(ra.get(
-                    new RTMFragment(RTMTerm.transId(ot)),
-                    new RTMPtExp(tr.outputActions.getParseTree(ot))) );
+        for (String ot : (List<String>) tr.outputActions
+                .getDestinationNameList()) {
+            os.add(ra.get(new RTMFragment(RTMTerm.transId(ot)), new RTMPtExp(
+                    tr.outputActions.getParseTree(ot))));
+        }
 
-        return retTr.get(
-                new RTMFragment(RTMTerm.transId(tr.sourceState().getName())),
-                new RTMFragment(RTMTerm.transId(tr.destinationState().getName())),
-                new RTMPtExp(tr.getGuardExpression(), false), os, ss);
+        return retTr.get(new RTMFragment(RTMTerm.transId(tr.sourceState()
+                .getName())), new RTMFragment(RTMTerm.transId(tr
+                .destinationState().getName())), new RTMPtExp(tr
+                .getGuardExpression(), false), os, ss);
     }
 
     private static RTMTerm portName(NamedObj upper, Port p) {
         RTMOpTermGenerator rport = new RTMOpTermGenerator("(", " . ", ")");
         String ipname = RTMTerm.transId(p.getContainer().getName());
-        if (upper != null)
+        if (upper != null) {
             ipname = RTMTerm.transId(upper.getName()) + " . " + ipname;
-        return rport.get(new RTMFragment(ipname), new RTMFragment(RTMTerm.transId(p.getName())) );
+        }
+        return rport.get(new RTMFragment(ipname), new RTMFragment(RTMTerm
+                .transId(p.getName())));
     }
 
-    private static RTMTerm procRefinements(String name, Actor[] rfs, String identifier, HashSet<Actor> inact)
+    private static RTMTerm procRefinements(String name, Actor[] rfs,
+            String identifier, HashSet<Actor> inact)
             throws IllegalActionException {
-        RTMOpTermGenerator refineAct = new RTMOpTermGenerator("(", "[" + identifier + ",false]: (", "))");
+        RTMOpTermGenerator refineAct = new RTMOpTermGenerator("(", "["
+                + identifier + ",false]: (", "))");
         RTMList rrf = new RTMList("", "none");
         for (Actor ra : rfs) {
             inact.add(ra);

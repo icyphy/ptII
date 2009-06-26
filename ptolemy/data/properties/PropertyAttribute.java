@@ -84,7 +84,7 @@ public class PropertyAttribute extends AbstractSettableAttribute {
     }
 
     public String getExpression() {
-       return (_property == null) ? "" : _property.toString();
+        return (_property == null) ? "" : _property.toString();
     }
 
     public Property getProperty() {
@@ -103,17 +103,19 @@ public class PropertyAttribute extends AbstractSettableAttribute {
     public void setProperty(Property property) {
         _property = property;
     }
+
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
-   }
+    }
 
     public Collection validate() throws IllegalActionException {
         // not relevant
         return null;
     }
-//    private Visibility _visibility = Settable.NONE;
+
+    //    private Visibility _visibility = Settable.NONE;
     private Visibility _visibility = Settable.FULL;
-//    private Visibility _visibility = Settable.NOT_EDITABLE;
+    //    private Visibility _visibility = Settable.NOT_EDITABLE;
     protected Property _property;
 
 }

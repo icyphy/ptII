@@ -40,7 +40,7 @@ import ptolemy.actor.util.Time;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
-public class Tag implements Comparable{
+public class Tag implements Comparable {
 
     /** Construct a Tag.
      *  @param timestamp The timestamp.

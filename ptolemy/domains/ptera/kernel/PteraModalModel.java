@@ -130,8 +130,8 @@ public class PteraModalModel extends ModalModel {
      *  @exception NameDuplicationException If the name of the controller
      *   collides with a name already in the container.
      */
-    protected PteraController _createController() throws IllegalActionException,
-    NameDuplicationException {
+    protected PteraController _createController()
+            throws IllegalActionException, NameDuplicationException {
         return new PteraController(this, "_Controller");
     }
 
@@ -155,12 +155,13 @@ public class PteraModalModel extends ModalModel {
         if (director != null && director.getContainer() == this) {
             director.setContainer(null);
         }
-        PteraDirector pteraDirector = new PteraDirector(this, uniqueName(
-                "_Director"));
+        PteraDirector pteraDirector = new PteraDirector(this,
+                uniqueName("_Director"));
         pteraDirector.controllerName.setExpression(_controller.getName());
 
         directorClass.removeAllChoices();
-        directorClass.setExpression("ptolemy.domains.ptera.kernel.PteraDirector");
+        directorClass
+                .setExpression("ptolemy.domains.ptera.kernel.PteraDirector");
         directorClass.setVisibility(Settable.NONE);
 
         ComponentEntity controller = getEntity("_Controller");

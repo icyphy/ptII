@@ -90,7 +90,8 @@ public interface Actor extends Executable, Nameable {
      *   and output ports.
      * @exception IllegalActionException Thrown if causality interface cannot be computed.
      */
-    public CausalityInterface getCausalityInterface() throws IllegalActionException;
+    public CausalityInterface getCausalityInterface()
+            throws IllegalActionException;
 
     /** Return the Manager, if there is one. Otherwise, return null.
      *  @return The Manager.

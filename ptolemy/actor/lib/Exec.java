@@ -159,7 +159,6 @@ public class Exec extends LimitedFiringSource {
         exitCode.setTypeEquals(BaseType.INT);
         new Parameter(exitCode, "_showName", BooleanToken.TRUE);
 
-
         prependPlatformDependentShellCommand = new Parameter(this,
                 "prependPlatformDependentShellCommand", BooleanToken.FALSE);
         prependPlatformDependentShellCommand.setTypeEquals(BaseType.BOOLEAN);
@@ -169,7 +168,7 @@ public class Exec extends LimitedFiringSource {
         throwExceptionOnNonZeroReturn.setTypeEquals(BaseType.BOOLEAN);
 
         waitForProcess = new Parameter(this, "waitForProcess",
-            BooleanToken.TRUE);
+                BooleanToken.TRUE);
         waitForProcess.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -343,8 +342,8 @@ public class Exec extends LimitedFiringSource {
             // Close the stdin of the subprocess.
             _process.getOutputStream().close();
 
-            boolean waitForProcessValue =
-                ((BooleanToken) waitForProcess.getToken()).booleanValue();
+            boolean waitForProcessValue = ((BooleanToken) waitForProcess
+                    .getToken()).booleanValue();
 
             if (waitForProcessValue) {
                 // The next line waits for the subprocess to finish.
@@ -368,19 +367,22 @@ public class Exec extends LimitedFiringSource {
                         outputString = ex.toString();
                     }
 
-                    boolean throwExceptionOnNonZeroReturnValue =
-                        ((BooleanToken) throwExceptionOnNonZeroReturn
+                    boolean throwExceptionOnNonZeroReturnValue = ((BooleanToken) throwExceptionOnNonZeroReturn
                             .getToken()).booleanValue();
 
                     if (throwExceptionOnNonZeroReturnValue) {
-                        throw new IllegalActionException(this,
+                        throw new IllegalActionException(
+                                this,
                                 "Executing command \""
-                                + ((StringToken) command.getToken()).stringValue()
-                                + "\" returned a non-zero return value of "
-                                + processReturnCode + ".\nThe last input was: "
-                                + line
-                                + ".\nThe standard output was: " + outputString
-                                + "\nThe error output was: " + errorString);
+                                        + ((StringToken) command.getToken())
+                                                .stringValue()
+                                        + "\" returned a non-zero return value of "
+                                        + processReturnCode
+                                        + ".\nThe last input was: " + line
+                                        + ".\nThe standard output was: "
+                                        + outputString
+                                        + "\nThe error output was: "
+                                        + errorString);
                     } else {
                         error.send(0, new StringToken(errorString));
                         output.send(0, new StringToken(outputString));
@@ -395,7 +397,7 @@ public class Exec extends LimitedFiringSource {
                     "_process.waitFor() was interrupted");
         } catch (IOException io) {
             throw new IllegalActionException(this, io,
-                "Closing stdin of the subprocess threw an IOException.");
+                    "Closing stdin of the subprocess threw an IOException.");
 
         }
 
@@ -443,7 +445,6 @@ public class Exec extends LimitedFiringSource {
         _terminateProcess();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Execute a command, set _process to point to the subprocess
@@ -465,12 +466,10 @@ public class Exec extends LimitedFiringSource {
 
             command.update();
 
-
             List<String> commandList = new LinkedList<String>();
 
-            boolean prependPlatformDependentShellCommandValue =
-                ((BooleanToken) prependPlatformDependentShellCommand
-                        .getToken()).booleanValue();
+            boolean prependPlatformDependentShellCommandValue = ((BooleanToken) prependPlatformDependentShellCommand
+                    .getToken()).booleanValue();
             if (prependPlatformDependentShellCommandValue) {
                 commandList = _getCommandList();
             }
@@ -481,8 +480,8 @@ public class Exec extends LimitedFiringSource {
             // element.
             // FIXME: tokenizeForExec should return a List<String>
             String[] commandArray = StringUtilities
-                .tokenizeForExec(((StringToken) command.getToken())
-                        .stringValue());
+                    .tokenizeForExec(((StringToken) command.getToken())
+                            .stringValue());
             commandList.addAll(Arrays.asList(commandArray));
 
             directoryAsFile = directory.asFile();
@@ -539,8 +538,7 @@ public class Exec extends LimitedFiringSource {
                 }
             }
 
-            commandArray = commandList.toArray(
-                    new String[commandList.size()]);
+            commandArray = commandList.toArray(new String[commandList.size()]);
             _process = runtime.exec(commandArray, environmentArray,
                     directoryAsFile);
 

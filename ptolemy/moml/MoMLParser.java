@@ -417,14 +417,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // the names of ports to handle backward compatibility.
         if (_filterList != null) {
             // FIXME: There is a slight risk of xmlParser being null here.
-        if (_xmlParser == null) {
-        throw new InternalErrorException("_xmlParser is null? This can occur "
-                       + " when parse(URL, String, Reader)"
-                       + " calls itself because that method"
-                       + " sets _xmlParser to null while exiting. "
-                       + "name: " + name
-                       + " value: " + value);
-        }
+            if (_xmlParser == null) {
+                throw new InternalErrorException(
+                        "_xmlParser is null? This can occur "
+                                + " when parse(URL, String, Reader)"
+                                + " calls itself because that method"
+                                + " sets _xmlParser to null while exiting. "
+                                + "name: " + name + " value: " + value);
+            }
             String currentElement = _xmlParser.getCurrentElement();
             Iterator filters = _filterList.iterator();
             String filteredValue = value;
@@ -721,13 +721,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filter.filterEndElement(_current, elementName,
-                        _currentCharData, _xmlFile != null ? _xmlFile.toString() : null);
+                        _currentCharData, _xmlFile != null ? _xmlFile
+                                .toString() : null);
             }
         }
 
         if (((Integer) _ifElementStack.peek()).intValue() > 1) {
-            _ifElementStack.push(((Integer) _ifElementStack.pop()).intValue()
-                    - 1);
+            _ifElementStack
+                    .push(((Integer) _ifElementStack.pop()).intValue() - 1);
         } else if (_skipElement <= 0) {
             // If we are not skipping an element, then adjust the
             // configuration nesting and doc nesting counts accordingly.
@@ -784,8 +785,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _skipElement--;
             }
         } else if (((Integer) _ifElementStack.peek()).intValue() > 1) {
-        } else if (elementName.equals("if") &&
-                ((Integer) _ifElementStack.peek()).intValue() == 1) {
+        } else if (elementName.equals("if")
+                && ((Integer) _ifElementStack.peek()).intValue() == 1) {
             _ifElementStack.pop();
         } else if (elementName.equals("configure")) {
             try {
@@ -1294,8 +1295,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         throw ex;
                     }
                 }
-        // Pass the input URL in case we need it for an error message.
-        // See test MoMLParser-31.1
+                // Pass the input URL in case we need it for an error message.
+                // See test MoMLParser-31.1
                 NamedObj result = parse(base, input.toString(), inputStream);
                 _imports.put(input, new WeakReference(result));
                 return result;
@@ -1344,7 +1345,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
      */
-    public NamedObj parse(URL base, String systemID, InputStream input) throws Exception {
+    public NamedObj parse(URL base, String systemID, InputStream input)
+            throws Exception {
         return parse(base, systemID, new InputStreamReader(input));
     }
 
@@ -1365,7 +1367,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  read.
      */
     public NamedObj parse(URL base, Reader reader) throws Exception {
-    return parse(base, null, reader);
+        return parse(base, null, reader);
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -1382,7 +1384,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
      */
-    public NamedObj parse(URL base, String systemID, Reader reader) throws Exception {
+    public NamedObj parse(URL base, String systemID, Reader reader)
+            throws Exception {
         _base = base;
 
         Reader buffered = new BufferedReader(reader);
@@ -1562,12 +1565,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
         File file = new File(filename);
-        if ( !file.exists()) {
+        if (!file.exists()) {
             file = new File(new File(cwd), filename);
         }
-        if ( !file.exists()) {
-            throw new FileNotFoundException("Could not find file \""
-                    + filename + "\", also tried \"" + file + "\"");
+        if (!file.exists()) {
+            throw new FileNotFoundException("Could not find file \"" + filename
+                    + "\", also tried \"" + file + "\"");
         }
         return parse(base, file.toURI().toURL());
     }
@@ -2005,8 +2008,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 System.out.println("Current start element: " + elementName);
             }
 
-            if (_skipElement > 0 ||
-                    ((Integer) _ifElementStack.peek()).intValue() > 1) {
+            if (_skipElement > 0
+                    || ((Integer) _ifElementStack.peek()).intValue() > 1) {
                 if (elementName.equals(_skipElementName)) {
                     // If attribute() found an element to skip, then
                     // the first time we startElement(), we do not
@@ -3312,8 +3315,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //// if
             } else if (elementName.equals("if")) {
                 String name = _current.uniqueName("_tempVariable");
-                Class variableClass =
-                    Class.forName("ptolemy.data.expr.Variable");
+                Class variableClass = Class
+                        .forName("ptolemy.data.expr.Variable");
                 Object[] arguments = new Object[2];
                 arguments[0] = _current;
                 arguments[1] = name;
@@ -3323,13 +3326,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String expression = (String) _attributes.get("test");
                 if (expression == null) {
                     throw new IllegalActionException(_current,
-                            "<if> element must have the \"test\" property " +
-                            "which specifies the expression to test.");
+                            "<if> element must have the \"test\" property "
+                                    + "which specifies the expression to test.");
                 }
                 variable.setExpression(expression);
 
-                Object token = variableClass.getMethod("getToken",
-                        new Class[0]).invoke(variable, new Object[0]);
+                Object token = variableClass
+                        .getMethod("getToken", new Class[0]).invoke(variable,
+                                new Object[0]);
                 Class tokenClass = token.getClass();
                 Boolean value = (Boolean) tokenClass.getMethod("booleanValue",
                         new Class[0]).invoke(token, new Object[0]);
@@ -3845,8 +3849,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 null);
             }
 
-            if (reference == null
-                || !reference.isClassDefinition()) {
+            if (reference == null || !reference.isClassDefinition()) {
                 // No previously defined class with this name.
                 // First attempt to instantiate a Java class.
                 // If we throw an error or exception be sure to save the
@@ -3889,17 +3892,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         String causeDescription = "";
                         if (staticThrowable == null) {
                             // The SerialComm actor may have a null cause
-                            causeDescription = KernelException.stackTraceToString(error);
+                            causeDescription = KernelException
+                                    .stackTraceToString(error);
                         } else {
-                            causeDescription = KernelException.stackTraceToString(staticThrowable);
+                            causeDescription = KernelException
+                                    .stackTraceToString(staticThrowable);
                         }
                         // I think we should report the cause and a stack
                         // trace for all the exceptions thrown here,
                         // but it sure makes the output ugly.
                         // Instead, I just debug from here -cxh
                         errorMessage.append("ExceptionInInitializerError: "
-                                + "Caused by:\n "
-                                + causeDescription);
+                                + "Caused by:\n " + causeDescription);
                     } else {
                         // If there is a class format error in the
                         // code generator, then we may end up obscuring
@@ -4006,7 +4010,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 // Propagate existence, and then mark each newly created object as a class
                 // if this is a class.
-                List<InstantiableNamedObj> impliedObjects = newEntity.propagateExistence();
+                List<InstantiableNamedObj> impliedObjects = newEntity
+                        .propagateExistence();
                 if (isClass) {
                     for (InstantiableNamedObj impliedObject : impliedObjects) {
                         impliedObject.setClassDefinition(true);
@@ -4036,9 +4041,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 throw new MissingClassException(
                         "Attempt to extend an entity that "
                                 + "is not a class: " + reference.getFullName()
-                        + " className: " + className + " entityName: " +
-                        entityName + " source: " + source,
-                        reference.getFullName(), _currentExternalEntity(),
+                                + " className: " + className + " entityName: "
+                                + entityName + " source: " + source, reference
+                                .getFullName(), _currentExternalEntity(),
                         _getLineNumber(), _getColumnNumber());
             }
 
@@ -4303,8 +4308,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // we redo we need to create subclasses before instances.
                     undoMoML.insert(0, toUndo);
                 } else {
-                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
-                    _undoForOverrides.add(0,  entry);
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel,
+                            toUndo);
+                    _undoForOverrides.add(0, entry);
                 }
             }
 
@@ -4444,7 +4450,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (derivedToplevel == _current.toplevel()) {
                     undoMoML.insert(0, toUndo);
                 } else {
-                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel,
+                            toUndo);
                     _undoForOverrides.add(0, entry);
                 }
             }
@@ -4544,7 +4551,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // reverse order from the deletion.
                     undoMoML.append(toUndo);
                 } else {
-                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel,
+                            toUndo);
                     _undoForOverrides.add(entry);
                 }
 
@@ -4653,7 +4661,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (derivedToplevel == _current.toplevel()) {
                     undoMoML.insert(0, toUndo);
                 } else {
-                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel,
+                            toUndo);
                     _undoForOverrides.add(0, entry);
                 }
             }
@@ -4930,8 +4939,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         moml.append(UndoContext.moveContextEnd(_current, toDelete));
 
         // If there is no body, don't return the context either.
-        if (buffer.toString().trim().equals("")
-                && links.trim().equals("")) {
+        if (buffer.toString().trim().equals("") && links.trim().equals("")) {
             return "";
         }
 
@@ -4987,8 +4995,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Generate the undo MoML for the inside links, if there are any.
         if (container instanceof CompositeEntity) {
-            String links = ((CompositeEntity) container)
-                    .exportLinks(depth, filter);
+            String links = ((CompositeEntity) container).exportLinks(depth,
+                    filter);
             if (!links.trim().equals("")) {
                 moml.append(links);
                 bodyEmpty = false;
@@ -5012,8 +5020,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (depth == 0) {
                     depth = 1;
                 }
-                String links = ((CompositeEntity) containerContainer).exportLinks(
-                        depth - 1, filter);
+                String links = ((CompositeEntity) containerContainer)
+                        .exportLinks(depth - 1, filter);
                 if (!links.trim().equals("")) {
                     moml.append(links);
                     bodyEmpty = false;
@@ -5099,8 +5107,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // MoML.
         String links = container.exportLinks(0, filter);
         moml.append(links);
-        if (buffer.toString().trim().equals("")
-                && links.trim().equals("")) {
+        if (buffer.toString().trim().equals("") && links.trim().equals("")) {
             // No body.
             return "";
         }
@@ -5420,24 +5427,25 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                         .setContainer(null);
                             }
 
-                            throw new XmlException("Property \""
-                                    + property.getFullName() + "\" is not an "
-                                    + "instance of Attribute, it is a \""
-                                    + property.getClass().getName()
-                                    + "\"."
-                                    + (property instanceof Entity
-                                            ? "The property is an instance "
-                                            + "of the Entity class, "
-                                            + "so if you were using "
-                                            + "the GUI, try \"Instantiate"
-                                            + "Entity\" or \"Instantiate"
-                                            + "Component\"."
-                                            : "")
-                                    + (isNewClassSetToAttribute
-                                            ? " The class \"" + className
-                                            + "\" was not found in the "
-                                            + "classpath."
-                                            : ""),
+                            throw new XmlException(
+                                    "Property \""
+                                            + property.getFullName()
+                                            + "\" is not an "
+                                            + "instance of Attribute, it is a \""
+                                            + property.getClass().getName()
+                                            + "\"."
+                                            + (property instanceof Entity ? "The property is an instance "
+                                                    + "of the Entity class, "
+                                                    + "so if you were using "
+                                                    + "the GUI, try \"Instantiate"
+                                                    + "Entity\" or \"Instantiate"
+                                                    + "Component\"."
+                                                    : "")
+                                            + (isNewClassSetToAttribute ? " The class \""
+                                                    + className
+                                                    + "\" was not found in the "
+                                                    + "classpath."
+                                                    : ""),
                                     _currentExternalEntity(), _getLineNumber(),
                                     _getColumnNumber());
                         }
@@ -5602,12 +5610,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // and the link are derived by the same container. If they are
         // both derived, then they are both derived.
         if (port.getContainer() == context) {
-            return (portLevel < Integer.MAX_VALUE
-                    && (relation == null
-                       || relation.getDerivedLevel() < Integer.MAX_VALUE));
+            return (portLevel < Integer.MAX_VALUE && (relation == null || relation
+                    .getDerivedLevel() < Integer.MAX_VALUE));
         }
-        boolean portIsInClass = (port.getContainer() == context)
-                ? (portLevel < Integer.MAX_VALUE)
+        boolean portIsInClass = (port.getContainer() == context) ? (portLevel < Integer.MAX_VALUE)
                 : (portContainerLevel < Integer.MAX_VALUE);
         if (portIsInClass) {
             if (relation == null) {
@@ -6933,7 +6939,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private NamedObj _current;
 
     // The current character data for the current element.
-    private  StringBuffer _currentCharData;
+    private StringBuffer _currentCharData;
 
     // The name of the currently active doc element.
     private String _currentDocName;

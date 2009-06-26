@@ -124,8 +124,8 @@ public class Transform extends GTEvent implements ConfigurableEntity,
             _configurer.removeAllEntities();
             parser.setContext(_configurer);
             parser.parse(base, source, new StringReader(text));
-            _transformation = (TransformationRule) _configurer.entityList().get(
-                    0);
+            _transformation = (TransformationRule) _configurer.entityList()
+                    .get(0);
             TransformationMode helper = new TransformationMode(_transformation,
                     "_helper");
             helper.setPersistent(false);
@@ -153,8 +153,8 @@ public class Transform extends GTEvent implements ConfigurableEntity,
                 }
             }
             isMatched = mode.transform(mode.getWorkingCopy(_transformation),
-                model, initializeObjects ? this : null,
-                ((BooleanToken) defer.getToken()).booleanValue());
+                    model, initializeObjects ? this : null,
+                    ((BooleanToken) defer.getToken()).booleanValue());
             if (isMatched) {
                 _debug(new PteraDebugEvent(this, "Match found."));
             } else {
@@ -162,19 +162,19 @@ public class Transform extends GTEvent implements ConfigurableEntity,
             }
         } catch (Throwable t) {
             _debug(new PteraErrorEvent(this, t.getMessage()));
-            throw new IllegalActionException(this, t, "Error occurred in the " +
-                    "transformation in " + getFullName() + ".");
+            throw new IllegalActionException(this, t, "Error occurred in the "
+                    + "transformation in " + getFullName() + ".");
         }
         getModelParameter().setModel(model);
         matched.setToken(BooleanToken.getInstance(isMatched));
 
         long elapsed = System.currentTimeMillis() - start;
         if (data == null) {
-            _debug(new PteraDebugEvent(this, "Finish transformation (" +
-                    (double) elapsed / 1000 + " sec)."));
+            _debug(new PteraDebugEvent(this, "Finish transformation ("
+                    + (double) elapsed / 1000 + " sec)."));
         } else {
-            _debug(new PteraDebugEvent(this, "Request refire (" +
-                    (double) elapsed / 1000 + " sec)."));
+            _debug(new PteraDebugEvent(this, "Request refire ("
+                    + (double) elapsed / 1000 + " sec)."));
         }
 
         return data;
@@ -193,7 +193,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
     }
 
     public TypedActor[] getRefinement() {
-        return new TypedActor[] {_transformation};
+        return new TypedActor[] { _transformation };
     }
 
     public Factory controllerFactory;
@@ -228,7 +228,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
     }
 
     protected void _exportMoMLContents(Writer output, int depth)
-    throws IOException {
+            throws IOException {
         super._exportMoMLContents(output, depth);
 
         String sourceSpec = "";
@@ -237,8 +237,8 @@ public class Transform extends GTEvent implements ConfigurableEntity,
             sourceSpec = " source=\"" + _configureSource + "\"";
         }
 
-        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec +
-                ">\n");
+        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
+                + ">\n");
         _transformation.exportMoML(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
@@ -250,7 +250,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
     protected TransformationRule _transformation;
 
     private static void _clearURI(NamedObj object)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         URIAttribute attribute = (URIAttribute) object.getAttribute("_uri",
                 URIAttribute.class);
         if (attribute != null) {
