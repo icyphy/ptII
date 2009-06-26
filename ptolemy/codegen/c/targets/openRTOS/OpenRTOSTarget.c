@@ -54,14 +54,14 @@ void prvSetupHardware( void )
     }
     /* Set the clocking to run from the PLL at 50 MHz */
     //SysCtlClockSet( SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_8MHZ );
-    SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |	SYSCTL_XTAL_8MHZ);
-    /* 	Enable Port F for Ethernet LEDs
+    SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |        SYSCTL_XTAL_8MHZ);
+    /*         Enable Port F for Ethernet LEDs
     LED0        Bit 3   Output
     LED1        Bit 2   Output */
     // Enable the peripherals used by this example.
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART1);	//UART1
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);	//UART1 pins
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);	//Select button
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART1);        //UART1
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);        //UART1 pins
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);        //Select button
     /* Enable peripherals */
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
     GPIODirModeSet( GPIO_PORTF_BASE, (LED | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3), GPIO_DIR_MODE_HW );

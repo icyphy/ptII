@@ -17,7 +17,7 @@ char* toString_Array(Token thisToken) {
 
             // Calculate the require storage size.
             elementString = $tokenFunc(Array_get(thisToken, i)::toString());
-            	//functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
+                    //functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
 
             currentSize += strlen(elementString.payload.String);
             if (i != 0) {
@@ -60,7 +60,7 @@ char* toString_Boolean(boolean b) {
 
 /*** toString_BooleanArray() ***/
 char* toString_BooleanArray(Token thisToken) {
-	int i;
+        int i;
     int currentSize, allocatedSize;
     char* string;
     char elementString[6];
@@ -74,23 +74,23 @@ char* toString_BooleanArray(Token thisToken) {
 
     //printf("%d\n", thisToken.payload.BooleanArray->size);
     for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
-		// Calculate the require storage size.
+                // Calculate the require storage size.
 
-    	// boolean temp = BooleanArray_get(thisToken, i);
+            // boolean temp = BooleanArray_get(thisToken, i);
         sprintf(elementString, "%s", BooleantoString(BooleanArray_get(thisToken, i)));
         currentSize += strlen(elementString);
-		if (i != 0) {
-			currentSize += 2;
-		}
+                if (i != 0) {
+                        currentSize += 2;
+                }
 
-		// Re-allocate storage.
-		if (currentSize > allocatedSize) {
+                // Re-allocate storage.
+                if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-		// Concat the element strings and separators.
-		if (i != 0) {
+                // Concat the element strings and separators.
+                if (i != 0) {
             strcat(string, ", ");
         }
         strcat(string, elementString);
@@ -123,7 +123,7 @@ char* toString_Double(double d) {
 
 /*** toString_DoubleArray() ***/
 char* toString_DoubleArray(Token thisToken) {
-	int i;
+        int i;
     int currentSize, allocatedSize;
     char* string;
     char* elementString;
@@ -137,23 +137,23 @@ char* toString_DoubleArray(Token thisToken) {
 
     //printf("%d\n", thisToken.payload.DoubleArray->size);
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-		// Calculate the require storage size.
+                // Calculate the require storage size.
 
-    	// double temp = DoubleArray_get(thisToken, i);
+            // double temp = DoubleArray_get(thisToken, i);
         elementString = $toString_Double(DoubleArray_get(thisToken, i));
         currentSize += strlen(elementString);
-		if (i != 0) {
-			currentSize += 2;
-		}
+                if (i != 0) {
+                        currentSize += 2;
+                }
 
-		// Re-allocate storage.
-		if (currentSize > allocatedSize) {
+                // Re-allocate storage.
+                if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-		// Concat the element strings and separators.
-		if (i != 0) {
+                // Concat the element strings and separators.
+                if (i != 0) {
             strcat(string, ", ");
         }
         strcat(string, elementString);
@@ -174,7 +174,7 @@ char* toString_Int(int i) {
 
 /*** toString_IntArray() ***/
 char* toString_IntArray(Token thisToken) {
-	int i;
+        int i;
     int currentSize, allocatedSize;
     char* string;
     char elementString[12];
@@ -188,23 +188,23 @@ char* toString_IntArray(Token thisToken) {
 
     //printf("%d\n", thisToken.payload.IntArray->size);
     for (i = 0; i < thisToken.payload.IntArray->size; i++) {
-		// Calculate the require storage size.
+                // Calculate the require storage size.
 
-    	// int temp = IntArray_get(thisToken, i);
+            // int temp = IntArray_get(thisToken, i);
         sprintf(elementString, "%d", IntArray_get(thisToken, i));
         currentSize += strlen(elementString);
-		if (i != 0) {
-			currentSize += 2;
-		}
+                if (i != 0) {
+                        currentSize += 2;
+                }
 
-		// Re-allocate storage.
-		if (currentSize > allocatedSize) {
+                // Re-allocate storage.
+                if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-		// Concat the element strings and separators.
-		if (i != 0) {
+                // Concat the element strings and separators.
+                if (i != 0) {
             strcat(string, ", ");
         }
         strcat(string, elementString);
@@ -233,13 +233,13 @@ char* toString_Pointer(void* p) {
 
 /*** toString_String() ***/
 char* toString_String(char* a) {
-	return (a);
+        return (a);
 }
 /**/
 
 /*** toString_StringArray() ***/
 char* toString_StringArray(Token thisToken) {
-	int i;
+        int i;
     int currentSize, allocatedSize;
 
     char* string;
@@ -258,25 +258,25 @@ char* toString_StringArray(Token thisToken) {
 
     //printf("%d\n", thisToken.payload.StringArray->size);
     for (i = 0; i < thisToken.payload.StringArray->size; i++) {
-		// Calculate the require storage size.
+                // Calculate the require storage size.
 
-    	// string temp = StringArray_get(thisToken, i);
+            // string temp = StringArray_get(thisToken, i);
         elementString = StringArray_get(thisToken, i);
 
         // make space also for the quotes "\"" characters.
         currentSize += strlen(elementString) + 2;
-		if (i != 0) {
-			currentSize += 2;
-		}
+                if (i != 0) {
+                        currentSize += 2;
+                }
 
-		// Re-allocate storage.
-		if (currentSize > allocatedSize) {
+                // Re-allocate storage.
+                if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-		// Concat the element strings and separators.
-		if (i != 0) {
+                // Concat the element strings and separators.
+                if (i != 0) {
             string[charIndex++] = ',';
             string[charIndex++] = ' ';
         }
@@ -292,7 +292,7 @@ char* toString_StringArray(Token thisToken) {
 
 /*** toString_Token() ***/
 char* toString_Token(Token a) {
-	return $tokenFunc(a::toString()).payload.String;
+        return $tokenFunc(a::toString()).payload.String;
 }
 /**/
 

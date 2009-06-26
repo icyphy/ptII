@@ -22,27 +22,27 @@
     {
         case SYSCTL_DID1_PRTNO_6965 :
         case SYSCTL_DID1_PRTNO_2965 : vOLEDInit = OSRAM128x64x4Init;
-        	vOLEDStringDraw = OSRAM128x64x4StringDraw;
-        	vOLEDImageDraw = OSRAM128x64x4ImageDraw;
-        	vOLEDClear = OSRAM128x64x4Clear;
-        	ulMaxY = mainMAX_ROWS_64;
-        	pucImage = pucBasicBitmap;
-        	break;
+                vOLEDStringDraw = OSRAM128x64x4StringDraw;
+                vOLEDImageDraw = OSRAM128x64x4ImageDraw;
+                vOLEDClear = OSRAM128x64x4Clear;
+                ulMaxY = mainMAX_ROWS_64;
+                pucImage = pucBasicBitmap;
+                break;
         case SYSCTL_DID1_PRTNO_1968 :
         case SYSCTL_DID1_PRTNO_8962 : vOLEDInit = RIT128x96x4Init;
-        	vOLEDStringDraw = RIT128x96x4StringDraw;
-        	vOLEDImageDraw = RIT128x96x4ImageDraw;
-        	vOLEDClear = RIT128x96x4Clear;
-        	ulMaxY = mainMAX_ROWS_96;
-        	pucImage = pucBasicBitmap;
-        	break;
+                vOLEDStringDraw = RIT128x96x4StringDraw;
+                vOLEDImageDraw = RIT128x96x4ImageDraw;
+                vOLEDClear = RIT128x96x4Clear;
+                ulMaxY = mainMAX_ROWS_96;
+                pucImage = pucBasicBitmap;
+                break;
         default : vOLEDInit = vFormike128x128x16Init;
-        	vOLEDStringDraw = vFormike128x128x16StringDraw;
-        	vOLEDImageDraw = vFormike128x128x16ImageDraw;
-        	vOLEDClear = vFormike128x128x16Clear;
-        	ulMaxY = mainMAX_ROWS_128;
-        	pucImage = pucGrLibBitmap;
-        	break;
+                vOLEDStringDraw = vFormike128x128x16StringDraw;
+                vOLEDImageDraw = vFormike128x128x16ImageDraw;
+                vOLEDClear = vFormike128x128x16Clear;
+                ulMaxY = mainMAX_ROWS_128;
+                pucImage = pucGrLibBitmap;
+                break;
     }
     ulY = ulMaxY;
     /* Initialise the OLED and display a startup message. */

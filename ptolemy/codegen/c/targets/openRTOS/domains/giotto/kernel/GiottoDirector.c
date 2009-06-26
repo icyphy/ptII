@@ -56,10 +56,10 @@ vTaskDelayUntil(&xLastWakeTime,xFrequency);
 
 /*** driverCode ($actorName, $code)***/
 void $actorName() {
-   	$code
+           $code
 }
 /**/
 
 /*** updatePort($sinkPort, $srcPort) ***/
-	$sinkPort = $srcPort;
+        $sinkPort = $srcPort;
 /**/

@@ -1,11 +1,11 @@
 /*** sharedBlock ***/
-	$super()
-	int $actorClass(j);
+        $super()
+        int $actorClass(j);
 /**/
 
 /*** initBlock ***/
-	$actorSymbol(_taps) = $ref(taps);//$clone_$cgType(taps)($ref(taps));
-	$super()
+        $actorSymbol(_taps) = $ref(taps);//$clone_$cgType(taps)($ref(taps));
+        $super()
 /**/
 
 /*** fireBlock ***/

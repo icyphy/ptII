@@ -64,7 +64,7 @@ Token IntArray_new(int size, int given, ...);
 struct intarray {
     int size;                                   // size of the array.
     int* elements;                            // array of Token elements.
-    char elementType;     	                    // type of the elements.
+    char elementType;                                 // type of the elements.
 };
 typedef struct intarray* IntArrayToken;
 typedef char* StringToken;
@@ -74,7 +74,7 @@ Token StringArray_new(int size, int given, ...);
 struct stringarray {
     int size;                                   // size of the array.
     string* elements;                            // array of Token elements.
-    char elementType;     	                    // type of the elements.
+    char elementType;                                 // type of the elements.
 };
 typedef struct stringarray* StringArrayToken;
 // Token structure containing the specified types.
@@ -425,10 +425,10 @@ Token IntArray_convert(Token token, ...) {
         //        element = IntArray_get(token, i);
         //        if (targetType != token.payload.IntArray->elementType) {
             //
-            //        	IntArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+            //                IntArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
             //            // result.payload.IntArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
         //        } else {
-            //        	IntArray_set(result, i, element);
+            //                IntArray_set(result, i, element);
         //        }
     //    }
     //
@@ -594,10 +594,10 @@ Token StringArray_convert(Token token, ...) {
         //        element = StringArray_get(token, i);
         //        if (targetType != token.payload.StringArray->elementType) {
             //
-            //        	StringArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+            //                StringArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
             //            // result.payload.StringArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
         //        } else {
-            //        	StringArray_set(result, i, element);
+            //                StringArray_set(result, i, element);
         //        }
     //    }
     //

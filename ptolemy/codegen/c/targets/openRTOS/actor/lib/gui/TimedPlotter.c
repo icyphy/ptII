@@ -125,7 +125,7 @@ void PlotPoint2(int x,int y)
 
    myx = myminx +(x*10);
    // RIT128x96x4StringDraw(".",   myx,myy,20);
-	sprintf(buff,"xv: %d yv: %d",x,y);
+        sprintf(buff,"xv: %d yv: %d",x,y);
     RIT128x96x4StringDraw(buff,   0,70,20);
    
 

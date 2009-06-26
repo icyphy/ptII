@@ -12,7 +12,7 @@ Token DoubleArray_new(int size, int given, ...);
 struct doublearray {
     int size;                                   // size of the array.
     double* elements;                            // array of Token elements.
-    char elementType;     	                    // type of the elements.
+    char elementType;                                 // type of the elements.
 };
 typedef struct doublearray* DoubleArrayToken;
 /**/
@@ -22,11 +22,11 @@ typedef struct doublearray* DoubleArrayToken;
 #define DoubleArray_length(array) ((array).payload.DoubleArray->size)
 
 double DoubleArray_get(Token array, int i) {
-	// Token result;
-	// result.type = array.payload.DoubleArray->elementType;
-	// result.payload.Double = ((double *) array.payload.DoubleArray->elements)[i];
-	// return result;
-	return ((double *) array.payload.DoubleArray->elements)[i];
+        // Token result;
+        // result.type = array.payload.DoubleArray->elementType;
+        // result.payload.Double = ((double *) array.payload.DoubleArray->elements)[i];
+        // return result;
+        return ((double *) array.payload.DoubleArray->elements)[i];
 }
 
 // DoubleArray_set: set an element of an array.
@@ -39,7 +39,7 @@ void DoubleArray_set(Token array, int i, double element) {
 void DoubleArray_resize(Token array, int size) {
     array.payload.DoubleArray->size = size;
     array.payload.DoubleArray->elements = (double*) realloc(
-    		array.payload.DoubleArray->elements, size * sizeof(double));
+                    array.payload.DoubleArray->elements, size * sizeof(double));
 }
 
 // DoubleArray_insert: Append the specified element to the end of an array.
@@ -124,9 +124,9 @@ Token DoubleArray_equals(Token thisToken, ...) {
         return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-    	if (!$equals_Double_Double(DoubleArray_get(thisToken, i), DoubleArray_get(otherToken, i))) {
-    		return $new(Boolean(false));
-    	}
+            if (!$equals_Double_Double(DoubleArray_get(thisToken, i), DoubleArray_get(otherToken, i))) {
+                    return $new(Boolean(false));
+            }
     }
 
     va_end(argp);
@@ -190,7 +190,7 @@ Token DoubleArray_print(Token thisToken, ...) {
 // DoubleArray_toString: Return a string token with a string representation
 // of the specified array.
 Token DoubleArray_toString(Token thisToken, ...) {
-	return $new(String($toString_DoubleArray(thisToken)));
+        return $new(String($toString_DoubleArray(thisToken)));
 }
 /**/
 
@@ -220,11 +220,11 @@ Token DoubleArray_add(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+                DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -262,11 +262,11 @@ Token DoubleArray_subtract(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+                DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -302,11 +302,11 @@ Token DoubleArray_multiply(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+                DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -342,11 +342,11 @@ Token DoubleArray_divide(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+                DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+                DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -423,17 +423,17 @@ Token DoubleArray_clone(Token thisToken, ...) {
 
 /***DoubleArray_sum***/
 double DoubleArray_sum(Token token) {
-	double result;
-	int i;
+        double result;
+        int i;
 
-	if (token.payload.DoubleArray->size <= 0) {
-		return 0.0;
-	} else {
-		result = DoubleArray_get(token, 0);
-	}
+        if (token.payload.DoubleArray->size <= 0) {
+                return 0.0;
+        } else {
+                result = DoubleArray_get(token, 0);
+        }
 
     for (i = 1; i < token.payload.DoubleArray->size; i++) {
-    	result = $add_Double_Double(result, DoubleArray_get(token, i));
+            result = $add_Double_Double(result, DoubleArray_get(token, i));
     }
     return result;
 }
@@ -441,12 +441,12 @@ double DoubleArray_sum(Token token) {
 
 /***DoubleArray_repeat***/
 Token DoubleArray_repeat(int number, double value) {
-	Token result;
-	result = $new(DoubleArray(number, 0));
-	int i;
+        Token result;
+        result = $new(DoubleArray(number, 0));
+        int i;
 
-	for (i = 0; i < number; i++) {
-		DoubleArray_set(result, i, value);
+        for (i = 0; i < number; i++) {
+                DoubleArray_set(result, i, value);
     }
     return result;
 }
@@ -475,16 +475,16 @@ Token DoubleArray_convert(Token token, ...) {
 //        element = DoubleArray_get(token, i);
 //        if (targetType != token.payload.DoubleArray->elementType) {
 //
-//        	DoubleArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+//                DoubleArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
 //            // result.payload.DoubleArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
-//        	DoubleArray_set(result, i, element);
+//                DoubleArray_set(result, i, element);
 //        }
 //    }
 //
 //    va_end(argp);
 //    return result;
-	return token;
+        return token;
 }
 /**/
 

@@ -66,7 +66,7 @@ Token IntArray_new(int size, int given, ...);
 struct intarray {
     int size;                                   // size of the array.
     int* elements;                            // array of Token elements.
-    char elementType;     	                    // type of the elements.
+    char elementType;                                 // type of the elements.
 };
 typedef struct intarray* IntArrayToken;
 typedef char* StringToken;
@@ -81,7 +81,7 @@ Token DoubleArray_new(int size, int given, ...);
 struct doublearray {
     int size;                                   // size of the array.
     double* elements;                            // array of Token elements.
-    char elementType;     	                    // type of the elements.
+    char elementType;                                 // type of the elements.
 };
 typedef struct doublearray* DoubleArrayToken;
 typedef int IntToken;
@@ -724,10 +724,10 @@ Token IntArray_convert(Token token, ...) {
         //        element = IntArray_get(token, i);
         //        if (targetType != token.payload.IntArray->elementType) {
             //
-            //        	IntArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+            //                IntArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
             //            // result.payload.IntArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
         //        } else {
-            //        	IntArray_set(result, i, element);
+            //                IntArray_set(result, i, element);
         //        }
     //    }
     //
@@ -989,10 +989,10 @@ Token DoubleArray_convert(Token token, ...) {
         //        element = DoubleArray_get(token, i);
         //        if (targetType != token.payload.DoubleArray->elementType) {
             //
-            //        	DoubleArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+            //                DoubleArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
             //            // result.payload.DoubleArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
         //        } else {
-            //        	DoubleArray_set(result, i, element);
+            //                DoubleArray_set(result, i, element);
         //        }
     //    }
     //
