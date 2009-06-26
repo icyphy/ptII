@@ -85,51 +85,51 @@ public class Director extends CodeGeneratorHelper {
     ////                Public Methods                           ////
 
     /** Generate code for declaring read and write offset variables if needed.
-	 *  It delegates to the helpers of contained actors.
-	 *  @return The generated code.
-	 *  @exception IllegalActionException If thrown while creating
-	 *  offset variables.
-	 */
-	public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-	    StringBuffer code = new StringBuffer();
-	    Iterator actors = ((CompositeActor) _director.getContainer())
-	    .deepEntityList().iterator();
-	    while (actors.hasNext()) {
-	        Actor actor = (Actor) actors.next();
-	        CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-	        code.append(helperObject.createOffsetVariablesIfNeeded());
-	    }
-	    return code.toString();
-	}
+         *  It delegates to the helpers of contained actors.
+         *  @return The generated code.
+         *  @exception IllegalActionException If thrown while creating
+         *  offset variables.
+         */
+        public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+            StringBuffer code = new StringBuffer();
+            Iterator actors = ((CompositeActor) _director.getContainer())
+            .deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                code.append(helperObject.createOffsetVariablesIfNeeded());
+            }
+            return code.toString();
+        }
 
-	/**
-	 * Generate the code for sending data to the specified port channel.
-	 * This returns an empty string. Subclasses may override this method
-	 * to generate domain-specific code for sending data.
-	 * @param port The specified port.
-	 * @param channel The specified channel.
-	 * @param dataToken The data to send.
-	 * @return An empty string in this base class.
-	 * @throws IllegalActionException Not thrown in this base class.
-	 */
-	public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
-	    return "";
-	}
+        /**
+         * Generate the code for sending data to the specified port channel.
+         * This returns an empty string. Subclasses may override this method
+         * to generate domain-specific code for sending data.
+         * @param port The specified port.
+         * @param channel The specified channel.
+         * @param dataToken The data to send.
+         * @return An empty string in this base class.
+         * @throws IllegalActionException Not thrown in this base class.
+         */
+        public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
+            return "";
+        }
 
-	/**
-	 * Generate the code for getting data from the specified port channel.
-	 * This returns an empty string. Subclasses may override this method
-	 * to generate domain-specific code for getting data.
-	 * @param port The specified port.
-	 * @param channel The specified channel.
-	 * @return An empty string in this base class.
-	 * @throws IllegalActionException Not thrown in this base class.
-	 */
-	public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
-	    return "";
-	}
+        /**
+         * Generate the code for getting data from the specified port channel.
+         * This returns an empty string. Subclasses may override this method
+         * to generate domain-specific code for getting data.
+         * @param port The specified port.
+         * @param channel The specified channel.
+         * @return An empty string in this base class.
+         * @throws IllegalActionException Not thrown in this base class.
+         */
+        public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
+            return "";
+        }
 
-	/** Generate the code for the firing of actors.
+        /** Generate the code for the firing of actors.
      *  In this base class, it is attempted to fire all the actors once.
      *  In subclasses such as the helpers for SDF and Giotto directors, the
      *  firings of actors observe the associated schedule. In addition,
@@ -752,10 +752,10 @@ public class Director extends CodeGeneratorHelper {
      * the WCET.
      */ 
     public double _getWCET() throws IllegalActionException {              
-	// This probably isn't the best place for this, since
-	// there are target dependent things here, however I'm not sure
-	// where else to put it.  This should only be called by a Giotto
-	// director.
+        // This probably isn't the best place for this, since
+        // there are target dependent things here, however I'm not sure
+        // where else to put it.  This should only be called by a Giotto
+        // director.
         if (_debugging) {
             _debug("getWCET from Director in codegen Actor package called");
          } 
@@ -767,18 +767,18 @@ public class Director extends CodeGeneratorHelper {
             Attribute frequency = ((Entity)actor).getAttribute("frequency");
 //            ptolemy.actor.Director director = actor.getDirector();
 //            if (director.getClassName().contains("FSM")) {
-//		// FIXME: This means that codegen depends on the targets.
+//                // FIXME: This means that codegen depends on the targets.
 //                ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
 //                return fsmDir._getWCET();
 //                
 //            }
 //            if (director.getClassName().contains("SDF")) {
-//		// FIXME: This means that codegen depends on the targets.
+//                // FIXME: This means that codegen depends on the targets.
 //                ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector sdfDir = new ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel.SDFDirector((ptolemy.domains.sdf.kernel.SDFDirector)this._director);
 //                return sdfDir._getWCET();
 //            }
 //            if (director.getClassName().contains("Giotto")) {
-//		// FIXME: This means that codegen depends on the targets.
+//                // FIXME: This means that codegen depends on the targets.
 //                ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
 //                return giottoDir._getWCET();
 //                
@@ -789,22 +789,22 @@ public class Director extends CodeGeneratorHelper {
                 _debug(actor.getFullName());
              } 
             
-	    if (frequency == null) {
-		actorFrequency = 1;
-	    } else {
-		actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
-	    }
-	    if (WCET == null) {
-		actorWCET = 0.01;
-	    } else {
-		actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
-	    }
+            if (frequency == null) {
+                actorFrequency = 1;
+            } else {
+                actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+            }
+            if (WCET == null) {
+                actorWCET = 0.01;
+            } else {
+                actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+            }
            
             wcet+= actorFrequency *actorWCET;
         }
         
         if (_debugging) {
-	    _debug("director "+this.getFullName()+" thinks the WCET is: "+wcet);
+            _debug("director "+this.getFullName()+" thinks the WCET is: "+wcet);
         }
         
         return wcet;

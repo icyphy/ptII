@@ -79,7 +79,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
         if (port == null) {
             if (_debugging) {
                 _debug("We decided to preempt the current " +
-                		"executing event with a pure event at " +
+                                "executing event with a pure event at " +
                                 _eventQueue.get().actor());
             }
             // FIXME: for now, if the event is pure event, always preempt whatever that is

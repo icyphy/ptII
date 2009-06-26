@@ -44,16 +44,16 @@ A utility class for creating specialized Array types.
 */
 public class InstantiateFromTemplate {
 
-	/**
-	 * Generate a set of type-specific Array code files from a template by
-	 * macro substitution. A type-specific Array file contains functions for
-	 * the particular Array type (e.g. IntArray, DoubleArray, and etc.)
-	 * @param args The first argument is taken to be the file path
-	 * of the template. The second is the directory path to place
-	 * the generated files.
-	 * @throws Exception Thrown if an error occurs when reading
-	 * or writing the files.
-	 */
+        /**
+         * Generate a set of type-specific Array code files from a template by
+         * macro substitution. A type-specific Array file contains functions for
+         * the particular Array type (e.g. IntArray, DoubleArray, and etc.)
+         * @param args The first argument is taken to be the file path
+         * of the template. The second is the directory path to place
+         * the generated files.
+         * @throws Exception Thrown if an error occurs when reading
+         * or writing the files.
+         */
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(new File(args[0])));
 

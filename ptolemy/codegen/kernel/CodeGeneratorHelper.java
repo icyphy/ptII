@@ -2657,7 +2657,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             
             throw new IllegalActionException(parameter
                     + " is not a typeable object. The $targetType() " +
-                    		"macro takes in a Typeable object.");
+                                    "macro takes in a Typeable object.");
 
         } else if (macro.equals("elementType") || macro.equals("elementTargetType")) {
             Typeable typeable = _getTypeable(parameter); 
@@ -2673,7 +2673,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
             throw new IllegalActionException(parameter
                     + " is not of ArrayType. The $elementType() " +
-                    		"macro takes in a ArrayType object.");
+                                    "macro takes in a ArrayType object.");
             
         } else if (macro.equals("type") || macro.equals("cgType")) {
 

@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating red (leinfelder)
  */
 public class OrderedRecordToken extends RecordToken {
-	
+        
     /** Construct an OrderedRecordToke with now fields.
      * @see RecordToken
      */
@@ -97,7 +97,7 @@ public class OrderedRecordToken extends RecordToken {
     public OrderedRecordToken(String[] labels, Token[] values) throws IllegalActionException {
         super(labels, values);
     }
-	
+        
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -106,7 +106,7 @@ public class OrderedRecordToken extends RecordToken {
      *   is maintained.
      */
     protected void _initializeStorage() {
-    	_fields = new LinkedHashMap();
+            _fields = new LinkedHashMap();
     }
 
 }

@@ -71,9 +71,9 @@ public class MultiplyDivide extends AtomicActor {
 
         if (actor.multiply.getWidth() != 1 || actor.divide.getWidth() != 1) {
             throw new IllegalActionException(actor, "The property analysis " +
-            		"currently supports only binary division (e.g. exactly 1 " +
-            		"connection to the multiply port and 1 connection " +
-            		"to the divide port.");
+                            "currently supports only binary division (e.g. exactly 1 " +
+                            "connection to the multiply port and 1 connection " +
+                            "to the divide port.");
         }
         
         setAtLeast(actor.output, new FunctionTerm(actor.multiply, actor.divide));

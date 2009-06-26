@@ -119,7 +119,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
         if (event != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
             throw new IllegalActionException("The event to get is not the event pointed " +
-            		"to by peeking index.");
+                            "to by peeking index.");
         }
         List<DEEvent> eventList = new ArrayList<DEEvent>();
         eventList.add(event);

@@ -1608,11 +1608,11 @@ public class CodeStream {
          * precedes this signature. Otherwise, it returns the value zero,
          * which indicates that they are equal. 
          */
-		public int compareTo(Object object) {
-		    return toString().compareTo(object.toString());
-		}
+                public int compareTo(Object object) {
+                    return toString().compareTo(object.toString());
+                }
 
-		/**
+                /**
          * Return true if the given object is equal to this signature.
          * @param object The given object.
          * @return true if the given object is equal to this signature, 

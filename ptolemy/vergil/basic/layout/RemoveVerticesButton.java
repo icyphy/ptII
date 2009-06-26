@@ -53,39 +53,39 @@ import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
  */
 public class RemoveVerticesButton extends Button {
 
-	/**
-	 * Construct a GUI property with the given name contained by the specified
-	 * entity. The container argument must not be null, or a
-	 * NullPointerException will be thrown. This attribute will use the
-	 * workspace of the container for synchronization and version counts. If the
-	 * name argument is null, then the name is set to the empty string.
-	 * Increment the version of the workspace.
-	 * 
-	 * @param container
-	 *            The container.
-	 * @param name
-	 *            The name of this attribute.
-	 * @exception IllegalActionException
-	 *                If the attribute is not of an acceptable class for the
-	 *                container, or if the name contains a period.
-	 * @exception NameDuplicationException
-	 *                If the name coincides with an attribute already in the
-	 *                container.
-	 */
-	public RemoveVerticesButton(NamedObj container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
-	}
+        /**
+         * Construct a GUI property with the given name contained by the specified
+         * entity. The container argument must not be null, or a
+         * NullPointerException will be thrown. This attribute will use the
+         * workspace of the container for synchronization and version counts. If the
+         * name argument is null, then the name is set to the empty string.
+         * Increment the version of the workspace.
+         * 
+         * @param container
+         *            The container.
+         * @param name
+         *            The name of this attribute.
+         * @exception IllegalActionException
+         *                If the attribute is not of an acceptable class for the
+         *                container, or if the name contains a period.
+         * @exception NameDuplicationException
+         *                If the name coincides with an attribute already in the
+         *                container.
+         */
+        public RemoveVerticesButton(NamedObj container, String name)
+                        throws IllegalActionException, NameDuplicationException {
+                super(container, name);
+        }
 
-	/**
-	 * Toggle between showing and hiding of unnecessary relation vertices.
-	 */
-	public void perform() {
-		// Get the frame and the current model here.
-		JFrame frame = _action.getFrame();
-		NamedObj model = _action.getModel();
-		// check for supported type of editor
-		if (frame instanceof ActorGraphFrame && model instanceof CompositeActor) 
-			PtolemyModelUtil._removeUnnecessaryRelations((CompositeActor) model);
-	}
+        /**
+         * Toggle between showing and hiding of unnecessary relation vertices.
+         */
+        public void perform() {
+                // Get the frame and the current model here.
+                JFrame frame = _action.getFrame();
+                NamedObj model = _action.getModel();
+                // check for supported type of editor
+                if (frame instanceof ActorGraphFrame && model instanceof CompositeActor) 
+                        PtolemyModelUtil._removeUnnecessaryRelations((CompositeActor) model);
+        }
 }

@@ -75,7 +75,7 @@ public class JarSigner {
         _privateKey = privateKey;
         // Findbugs: EI2 May expose internal representation by incorporating
         // reference to immutable object
-	_certChain = new X509Certificate[certChain.length];
+        _certChain = new X509Certificate[certChain.length];
         System.arraycopy(certChain, 0, _certChain, 0,  certChain.length);
     }
 

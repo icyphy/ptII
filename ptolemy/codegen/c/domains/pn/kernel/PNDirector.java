@@ -405,7 +405,7 @@ public class PNDirector extends Director {
      *  when getting the value from the parameter.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-	throws IllegalActionException {
+        throws IllegalActionException {
         IntToken sizeToken = (IntToken) ((ptolemy.domains.pn.kernel.PNDirector) _director).initialQueueCapacity
         .getToken();
 

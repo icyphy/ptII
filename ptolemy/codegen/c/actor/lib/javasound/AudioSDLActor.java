@@ -76,7 +76,7 @@ public class AudioSDLActor extends CCodeGeneratorHelper {
                     + "-lpthread -lposix4 -lm -L/usr/openwin/lib "
                     + "-R/usr/openwin/lib -lX11 -lXext");
         } else {
-	    // Use -L/usr/lib -lSDL for linux
+            // Use -L/usr/lib -lSDL for linux
             _codeGenerator.addLibrary("-L/usr/local/lib -L/usr/lib -lSDL");
         }
 

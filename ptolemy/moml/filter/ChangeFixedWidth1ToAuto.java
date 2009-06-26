@@ -116,7 +116,7 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
     public static void main(String[] args) throws Exception {
         String errorMessage = "Usage: \n\tConvert one model:\n\t\tjava -classpath $PTII "
             + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto model.xml\n\tConvert all models in a folder:\n\t" +
-            		"\tjava -classpath $PTII "
+                            "\tjava -classpath $PTII "
             + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto -all path\n\tConvert all models in a demo folder:\n\t\tjava -classpath $PTII "
             + "ptolemy.moml.filter.ChangeFixedWidth1ToAuto -demo path";
         if (args.length != 1 && args.length != 2) {

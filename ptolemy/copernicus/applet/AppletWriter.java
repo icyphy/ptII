@@ -441,13 +441,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             SizeAttribute vergilSize = (SizeAttribute) _model
                     .getAttribute("_vergilSize");
 
-	    if (vergilSize != null) {
-		IntMatrixToken vergilSizeToken = (IntMatrixToken) vergilSize
+            if (vergilSize != null) {
+                IntMatrixToken vergilSizeToken = (IntMatrixToken) vergilSize
                     .getToken();
 
-		vergilWidth = vergilSizeToken.getElementAt(0, 0);
-		vergilHeight = vergilSizeToken.getElementAt(0, 1);
-	    }
+                vergilWidth = vergilSizeToken.getElementAt(0, 0);
+                vergilHeight = vergilSizeToken.getElementAt(0, 1);
+            }
         } catch (IllegalActionException ex) {
             System.out.println("Warning: Failed to get vergil width "
                     + "and height, using defaults: " + ex.getMessage());

@@ -119,7 +119,7 @@ public class PNDirector extends Director {
         } if (channels.size() != 1) {
             throw new IllegalActionException(this,
                     "There are more than one channel to get data from. " +
-            		"This is ambiguous.");
+                            "This is ambiguous.");
         }
         
         Channel referenceChannel = channels.get(0); 
