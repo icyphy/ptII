@@ -303,7 +303,7 @@ clean_shipping:
 svn_delete_clean_shipping:
 	for files in $(CLEAN_SHIPPING_FILES); do \
 		if [ -e $$files ]; then \
-			svn delete -f $$files; \
+			svn delete $$files; \
 	        fi \
 	done 
 

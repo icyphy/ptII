@@ -1,3 +1,0 @@
-/*** sharedBlock ***/
-#include <WProgram.h>
-/**/
