@@ -613,6 +613,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             + "initial state with name \"" + name + "\".");
                 }
                 state.isInitialState.setToken("true");
+                state.isInitialState.setPersistent(true);
                 _initialState = state;
                 return _initialState;
             } finally {
