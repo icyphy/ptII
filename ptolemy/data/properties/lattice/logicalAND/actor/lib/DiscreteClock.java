@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.DiscreteClock.
 
  @author Man-Kit Leung
- @version $Id: DiscreteClock.java 54230 2009-06-07 03:33:40Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

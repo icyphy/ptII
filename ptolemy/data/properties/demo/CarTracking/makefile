@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Data Properties Demo CarTracking
 #
-# @Version: $Id: makefile 54064 2009-06-01 21:58:19Z mankit $
+# @Version: $Id$
 # @Author: Man-Kit Leung
 #
 # @Copyright (c) 2009 The Regents of the University of California

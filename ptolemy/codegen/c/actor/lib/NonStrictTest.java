@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.NonStrictTest.
 
  @author Christopher Brooks
- @version $Id: Test.java 53095 2009-04-12 19:12:45Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
