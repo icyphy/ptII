@@ -100,8 +100,6 @@ JSRESTORE =	jsrestore
 # The pathname to the JavaScope.zip file
 JSCLASSPATH = 	/usr/local/JavaScope/JavaScope.zip
 
-# KIELER_JAR is used in ptolemy/vergil/basic/layout/makefile for layout
-KIELER_JAR = $(PTII)/lib/kieler.jar
 
 # KVM is the JDK for PalmOS, see
 # http://java.sun.com/products/kvm
@@ -305,6 +303,9 @@ JXTA_JARS = $(JXTA_DIR)/jxta.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/log4j.jar$(CLAS
 
 # keytool command used to generate a certificate for testing actor.lib.security actors
 KEYTOOL =	@KEYTOOL@
+
+# The Kieler jar file, used to layout models
+KIELER_JAR =	@KIELER_JAR@
 
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
@@ -557,6 +558,10 @@ PTJYTHON_PACKAGES = @PTJYTHON_PACKAGES@
 # Set to jxta and used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 PTJXTA_DIR =	@PTJXTA_DIR@
+
+# Set to kieler and used in
+# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+PTKIELER_DIR =	@PTKIELER_DIR@
 
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found

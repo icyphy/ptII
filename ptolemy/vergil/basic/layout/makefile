@@ -39,7 +39,8 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		img kieler
+# configure sets PTKIELER_DIR to kieler if $PTII/lib/kieler.jar was found
+DIRS = 		img $(PTKIELER_DIR)
 
 # KIELER_JAR is set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(KIELER_JAR)

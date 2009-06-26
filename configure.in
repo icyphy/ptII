@@ -737,7 +737,7 @@ ECLIPSE_EXCLUDING_SRC=""
 
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
-ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/kieler.jar"/>'
+ECLIPSE_CLASSPATHENTRY_LIBS=''
 
 case "`uname -s`" in
      Darwin) 
@@ -2127,6 +2127,58 @@ else
     <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtasecurity.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$JXTA_DIR/log4j.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtaptls.jar\"/>"
+fi 
+
+
+#--------------------------------------------------------------------
+#	Classes used to layout entities and relations in Vergil that use the
+#       KIELER layout algorithm.
+#	http://www.informatik.uni-kiel.de/rtsys/kieler/
+#
+#--------------------------------------------------------------------
+
+# We only need to look for jxta if $PTII/ptolemy/vergil/basic/layout/kieler is present
+KIELER_USER_DIR="$PTII/ptolemy/vergil/basic/layout/kieler"
+# PTKIELER_DIR is set to kieler and used in
+# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+PTKIELER_DIR=
+
+# Directory that contains the jxta jar files
+KIELER_JAR='${PTII}/lib/kieler.jar'
+
+if test ! -d "$KIELER_USER_DIR"; then
+    PT_MSG_STATUS([$KIELER_USER_DIR is not present,
+    so we need not find KIELER.])
+else
+    AC_MSG_CHECKING([for kieler jar file used by layout ])
+    AC_ARG_WITH(jxta, [  --with-kieler-jar=JARFILE       use JARFILE,
+                          defaults to \$PTII/lib/kieler.jar],
+	KIELER_JAR=$withval,
+	KIELER_JAR=$PTII/lib/kieler.jar)
+
+    if test -f "$KIELER_JAR"; then
+	PT_MSG_RESULT([$KIELER_JAR])
+	# Set to kieler and used in
+	# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+	PTKIELER_DIR=kieler
+    fi	
+
+    if test "$PTKIELER_DIR" = ""; then
+        AC_MSG_WARN([Failed to find $KIELER_JAR
+    perhaps KIELER is not installed?
+    You need not use KIELER unless you plan on using the KIELER layout
+    facility in $KIELER_USER_DIR
+    The KIELER jar is usually found at $PTII/lib/kieler.jar])
+	# Note that we don't substitute in the ${PTII} here
+	KIELER_JAR='${PTII}/lib/kieler.jar'
+    fi
+fi
+
+if test -z "$PTKIELER_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/vergil/basic/layout/kieler/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$KIELER_JAR\"/>"
 fi 
 
 #--------------------------------------------------------------------
@@ -4019,6 +4071,9 @@ AC_SUBST(JXTA_DIR)
 # keytool command used to generate a certificate for testing actor.lib.security actors
 AC_SUBST(KEYTOOL)
 
+# The Kieler jar file, used to layout models
+AC_SUBST(KIELER_JAR)
+
 # kvm/tools/classes.jar file used by the PalmOS KVM
 AC_SUBST(KVM_CLASSES)
 
@@ -4276,6 +4331,10 @@ AC_SUBST(PTJYTHON_PACKAGES)
 # Set to jxta ans used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 AC_SUBST(PTJXTA_DIR)
+
+# Set to kieler and used in
+# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+AC_SUBST(PTKIELER_DIR)
 
 # Set to kvm and used in
 # $PTII/ptolemy/apps/makefile if kvm was found
