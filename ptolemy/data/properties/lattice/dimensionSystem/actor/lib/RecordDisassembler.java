@@ -193,7 +193,7 @@ public class RecordDisassembler extends AtomicActor {
          * (non-Javadoc)
          * @see ptolemy.data.properties.lattice.PropertyTerm#isEffective()
          */
-        @Override
+        //@Override
         public boolean isEffective() {
             return true;
         }
@@ -202,7 +202,7 @@ public class RecordDisassembler extends AtomicActor {
          * (non-Javadoc)
          * @see ptolemy.data.properties.lattice.PropertyTerm#setEffective(boolean)
          */
-        @Override
+        //@Override
         public void setEffective(boolean isEffective) {
         }
     }
