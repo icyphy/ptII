@@ -58,6 +58,8 @@ JSRCS = \
 	DiscreteClock.java \
 	Expression.java \
 	MultiplyDivide.java \
+	RecordAssembler.java \
+	RecordDisassembler.java \
 	Scale.java \
 	Source.java
 
