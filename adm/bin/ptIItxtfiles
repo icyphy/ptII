@@ -21,7 +21,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.mdl' |egrep -v '\.mov' \
 	| egrep -v '\.nqc' |egrep -v '\.png' \
 	| egrep -v '\.pdf' |egrep -v '\.plt' \
-        | egrep -v '\.pnproj' \
+        | egrep -v '\.pnproj' | egrep -v '\.pnps' \
         | egrep -v '\.psd' |egrep -v '\.ppt' \
 	| egrep -v '\.qcf' |egrep -v '\.vsd' \
 	| egrep -v '\.wav'
