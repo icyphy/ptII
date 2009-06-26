@@ -4,6 +4,22 @@
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
+
+    <!-- ConfigurationApplication reads _removeGraphicalClasses and adds 
+	 ptolemy.moml.filter.RemoveGraphicalClasses to the list of MoMLFilters.
+	 Set _removeGraphicalClasses before setting _classesToRemove.
+    -->
+    <property name="_removeGraphicalClasses"
+		class="ptolemy.data.expr.Parameter" value="true" />
+
+    <property name="_classesToRemove" class="ptolemy.data.expr.Parameter"
+	value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;}">
+	<doc>An array of Strings, where each element names a class to be
+		removed by the MoMLFilter.</doc>
+    </property>
+
+
+
     <doc>Configuration to run but not edit Ptolemy II models</doc>
     <!-- The directory of open models, each represented by an effigy. -->
     <!-- Note that this begins empty. -->
