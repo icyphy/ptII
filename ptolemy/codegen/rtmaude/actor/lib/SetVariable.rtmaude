@@ -4,6 +4,9 @@ SET-VARIABLE/**/
 /***className***/
 SetVariable/**/
 
+/***attr_SetVariable***/
+variableName : '$info(variableName)/**/
+
 /***sharedBlock***/
 (tomod SET-VARIABLE is 
   inc COMPOSITE-ACTOR .    --- assuming composite actor
@@ -29,11 +32,11 @@ SetVariable/**/
 
 ---- set a variables of a parent actor by the 'setv' message
   eq < O : CompositeActor | 
-       variables : ((VI |-> E) ; VAL),
+       parameters : ((VI |-> E) ; VAL),
        innerActors : CF setv(VI, V)
      >
    = < O : CompositeActor | 
-       variables : ((VI |-> V) ; VAL), 
+       parameters : ((VI |-> V) ; VAL), 
        innerActors : CF 
      > .
 
@@ -58,10 +61,10 @@ SetVariable/**/
      > REST) .
 
   --- generate a message to change a variables of the container.
-  eq executeStep(SetVariable,
+  eq postfire(SetVariable,
     < O : SetVariable | variableName : VI, 
       ports : < PI : InPort | status : present, value : V > PORTS >) 
    = setv(VI, V)
-     executeStep(^ SetVariable, < O : SetVariable | >) .
+     postfire(^ SetVariable, < O : SetVariable | >) .
 endtom)
 /**/

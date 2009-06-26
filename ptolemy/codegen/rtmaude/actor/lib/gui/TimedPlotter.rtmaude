@@ -4,13 +4,18 @@ TIMED-PLOTTER-ACTOR/**/
 /***className***/
 TimedPlotter/**/
 
+/***attr_TimedPlotter***/
+current-time : 0,
+event-history : emptyHistory/**/
+
 /***sharedBlock***/
-(tomod TIMED-PLOTTER-ACTOR is 
-  inc ACTOR-WITH-TIMER .
+(tomod TIMED-PLOTTER-ACTOR is
+  inc ACTOR .
+  inc OBJECT-WITH-TIMER .
 
   class TimedPlotter | 
     event-history : EventHistory .
-    subclass TimedPlotter < TimeActor .
+    subclass TimedPlotter < Actor TimeObj .
   eq ^ TimedPlotter = Actor .
 
   sort EventPair  EventHistory .
@@ -20,8 +25,8 @@ TimedPlotter/**/
   op _++_ : EventHistory EventHistory -> EventHistory [ctor assoc id: emptyHistory] .
   
   vars O : Oid . 
-  var EH : EventHistory . var EP : EventPair .
-  var NZT : NzTime . var T : Time . var V : Value .
+  var EH : EventHistory .
+  var T : Time . var V : Value .
   vars PORTS : Configuration . vars PI : PortId .
   var EPI : EPortId . var CHS : ChannelSet .
   var UPDATED : Bool .
@@ -30,14 +35,14 @@ TimedPlotter/**/
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  eq executeStep(TimedPlotter, 
+  eq postfire(TimedPlotter, 
     < O : TimedPlotter | 
       current-time : T,
       event-history : EH,
       ports :
         < PI : MultiInPort | channels : CHS > PORTS 
     >) 
-   = executeStep(^ TimedPlotter,
+   = postfire(^ TimedPlotter,
     < O : TimedPlotter | 
       event-history : EH ++ genEventHistory(T, CHS)
     >) .

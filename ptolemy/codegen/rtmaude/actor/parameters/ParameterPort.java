@@ -27,6 +27,8 @@
  */
 package ptolemy.codegen.rtmaude.actor.parameters;
 
+import java.util.List;
+
 import ptolemy.codegen.rtmaude.actor.IOPort;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,15 +51,10 @@ public class ParameterPort extends IOPort {
     }
     
     @Override
-    public String generateTermCode() throws IllegalActionException {
-        ptolemy.actor.parameters.ParameterPort p = 
-            (ptolemy.actor.parameters.ParameterPort) getComponent();
-        if (p.isOutput())
-            throw new IllegalActionException("Not Input Port Parametor");
-        
-        return _generateBlockCode(defaultTermBlock,
-                p.getName(), 
-                p.getParameter().getName()
-        );
+    protected String _generateInfoCode(String name, List<String> parameters)
+            throws IllegalActionException {
+        if (name.equals("param"))
+            return ((ptolemy.actor.parameters.ParameterPort)getComponent()).getParameter().getName();
+        return super._generateInfoCode(name, parameters);
     }
 }

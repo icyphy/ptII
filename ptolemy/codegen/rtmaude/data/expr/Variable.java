@@ -48,15 +48,4 @@ public class Variable extends RTMaudeAdaptor {
         super(component);
     }
     
-    @Override
-    public String generateTermCode() throws IllegalActionException {
-        ptolemy.data.expr.Variable v = (ptolemy.data.expr.Variable) getComponent();
-        String ret;
-        
-        if(v.getElementName() != null && v.getExpression().trim().length() > 0)
-            ret = _generateBlockCode("valBlock", v.getName());
-        else
-            ret = "nil";
-        return _generateBlockCode(this.defaultTermBlock, v.getName(), ret);
-    }
 }

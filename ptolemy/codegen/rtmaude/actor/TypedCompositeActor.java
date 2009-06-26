@@ -30,7 +30,6 @@ package ptolemy.codegen.rtmaude.actor;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -63,6 +62,30 @@ public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
     }
     
     @Override
+    protected String _generateInfoCode(String name, List<String> parameters)
+            throws IllegalActionException {
+        ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();
+        
+        // code for the actor, which is Maude term for the actor.                
+        // "entityList" method is used instead of "deepEntityList", because
+        // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude 
+        if (name.equals("actors"))
+            return new ListTerm<Actor>("none", _eol, c_actor.entityList(Actor.class)) {
+                    public String item(Actor v) throws IllegalActionException {
+                        return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
+                    }
+                }.generateCode();
+                
+        if (name.equals("connections"))
+            return new ListTerm<IORelation>("none", _eol, c_actor.relationList()) {
+                    public String item(IORelation v) throws IllegalActionException {
+                        return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
+                    }
+                }.generateCode();
+        return super._generateInfoCode(name, parameters);
+    }
+    
+    @Override
     public List<String> getBlockCodeList(String blockName, String ... args) 
             throws IllegalActionException {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor
@@ -72,35 +95,6 @@ public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
         self.addAll(directorHelper.getBlockCodeList(blockName, args));
   
         return self;
-    }
-
-    @Override
-    protected Map<String, String> _generateAttributeTerms()
-            throws IllegalActionException {
-        Map<String,String> atts = super._generateAttributeTerms();
-        ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();
-        
-        // code for the actor, which is Maude term for the actor.                
-        // "entityList" method is used instead of "deepEntityList", because
-        // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude 
-        String actorCode = 
-            new ListTerm<Actor>("none", _eol, c_actor.entityList(Actor.class)) {
-                public String item(Actor v) throws IllegalActionException {
-                    return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
-                }
-            }.generateCode();
-        
-        // code for connections (relations)
-        String connectionCode =
-            new ListTerm<IORelation>("none", _eol, c_actor.relationList()) {
-                public String item(IORelation v) throws IllegalActionException {
-                    return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
-                }
-            }.generateCode();
-        
-        atts.put("innerActors", actorCode + _eol + connectionCode);
-        
-        return atts;
     }
     
     @Override

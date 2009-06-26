@@ -55,11 +55,16 @@ public class ListTerm<T> {
     }
     public String generateCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        String v = null;
+        
+        while (iter.hasNext() && (v = this.item(iter.next())) == null);
+        if (v != null) code.append(v);
+        
         while (iter.hasNext()) {
-            String v = this.item(iter.next());
+            v = this.item(iter.next());
             if (v != null) {        // if null, it's screened out
+                code.append(delimiter);
                 code.append(v);  
-                if (iter.hasNext()) code.append(delimiter);
             }
         }
         if (code.length() > 0)

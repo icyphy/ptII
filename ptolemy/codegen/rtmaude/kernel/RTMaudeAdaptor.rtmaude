@@ -7,16 +7,12 @@ MODELCHECK-BASE/**/
 /***sharedBlock***/
 /**/
 
-/***eventBlock($name, $outport, $value, $time)***/
-evt(event('$name ! '$outport, $value), $time)
-/**/
-
 /***funcModuleName***/
 $actorSymbol(MODULE)/**/
 
-/***fireFuncBlock($module, $include, $modelop, $fire )***/
-(tomod $module is
-    including $include .
+/***fireFuncBlock($modelop, $fire)***/
+(tomod $block(funcModuleName) is
+    including $block(moduleName) .
     op #model : Oid -> Configuration .
     eq $modelop = 
 $fire .
@@ -38,10 +34,12 @@ $includes .
     op global : -> Oid .
 
     eq init 
-     = < global : EventQUEUE | queue : nil > /**/
+     = < global : EventQUEUE | queue : nil > 
+       initAll(
+       /**/
 
 /***mainExit($includes, $commands)***/
-    .
+       ) .
 endtom)
 
 (tomod PTOLEMY-MODELCHECK is

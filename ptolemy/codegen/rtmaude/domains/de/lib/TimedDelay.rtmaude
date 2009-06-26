@@ -8,14 +8,13 @@ Delay/**/
 (tomod DELAY-ACTOR  is 
   inc ACTOR .
 
-  class Delay | delay : VarId .
-    subclass Delay < Actor .
+  class Delay .  subclass Delay < Actor .
   eq ^ Delay = Actor .
 
   vars PORTS : Configuration .  vars PI PI' : PortId .
-  var REST : ObjectConfiguration . vars O QUE : Oid .
+  var REST : ObjectConfiguration . vars O : Oid .
   var E : Exp . var V TV : Value .  vars T : Time .
-  var VI : VarId . var AM : AssignMap . var MEM : Memory .
+  var AM : AssignMap . var MEM : Memory .
   var UPDATED : Bool .
 
 ---------------------------------------------------------------------
@@ -24,9 +23,9 @@ Delay/**/
 
   --- set each status of ports to 'unknown'
   eq prefire(Delay, 
-      < O : Delay | delay : VI, variables : (VI |-> E ; AM) >) 
+      < O : Delay | parameters : ('delay |-> E ; AM) >) 
    = prefire(^ Delay, 
-      < O : Delay | store : VI |-> k(E) >) .
+      < O : Delay | store : 'delay |-> k(E) >) .
 
   --- Note: Delay actors generate events "later" and hence
   --- do not generate output WHEN their ports are in unknown state
@@ -44,15 +43,14 @@ Delay/**/
   *** IF input, then generate new event, otherwise do nothing. 
   --- Note that generated events are now just messages, which will be dilivered
   --- to globalEventQueue actor.
-  eq executeStep(Delay, 
+  eq postfire(Delay, 
     < O : Delay | 
       ports : ( 
         < 'input : InPort | status : present, value : V >  
         < 'output : OutPort | > PORTS), 
-      delay : VI,
-      store : VI |-> TV ; MEM
+      store : 'delay |-> TV ; MEM
     >)
   = evt(event(O ! 'output, V), toTime(TV)) 
-    executeStep(^ Delay, < O : Delay | >) .
+    postfire(^ Delay, < O : Delay | >) .
 endtom)
 /**/

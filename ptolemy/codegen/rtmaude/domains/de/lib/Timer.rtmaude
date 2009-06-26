@@ -8,14 +8,12 @@ Timer/**/
 (tomod TIMER is
   inc ACTOR .
 
-  class Timer |
-        output-value : VarId .
-    subclass Timer < Actor .
+  class Timer .  subclass Timer < Actor .
   eq ^ Timer = Actor .
 
   vars PORTS : Configuration . vars PI PI' : PortId .
   var O : Oid . var REST : ObjectConfiguration .
-  var VI : VarId . var E : Exp . vars V TV : Value . 
+  var E : Exp . vars V TV : Value . 
   var AM : AssignMap . var MEM : Memory . var VM : ValueMap .  
   var UPDATED : Bool .
 
@@ -26,9 +24,9 @@ Timer/**/
   --- set each status of ports to 'unknown'
   eq prefire(Timer, 
     < O : Timer | 
-      output-value : VI, variables : (VI |-> E ; AM) >) 
+      parameters : ('value |-> E ; AM) >) 
    = prefire(Actor, 
-    < O : Timer | store : VI |-> k(E) >) .
+    < O : Timer | store : 'value |-> k(E) >) .
 
   eq portFixPoints(UPDATED,
      < O : Timer |
@@ -42,13 +40,12 @@ Timer/**/
     >
     REST) .
 
-  eq executeStep(Timer,
+  eq postfire(Timer,
     < O : Timer |
-      output-value : VI,
-      store : (VI |-> V ; MEM),
+      store : 'value |-> V ; MEM,
       ports : < 'input : InPort | status : present, value : TV > PORTS
     >)
   = evt(event(O ! 'output, V), getTime(TV))
-    executeStep(^ Timer, < O : Timer | >) .
+    postfire(^ Timer, < O : Timer | >) .
 endtom)
 /**/

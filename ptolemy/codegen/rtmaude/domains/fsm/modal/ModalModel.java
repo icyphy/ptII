@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.domains.fsm.modal;
 
-import java.util.Map;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.codegen.rtmaude.actor.TypedCompositeActor;
@@ -54,33 +54,27 @@ public class ModalModel extends TypedCompositeActor {
     }
     
     @Override
-    protected Map<String, String> _generateAttributeTerms()
+    protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        Map<String,String> atts = super._generateAttributeTerms();
         ptolemy.domains.fsm.modal.ModalModel mm = 
             (ptolemy.domains.fsm.modal.ModalModel) getComponent();
-        
-        atts.put("controller", "'" + mm.getController().getName());
-        
-        atts.put("refinement",
-                new ListTerm<State>("empty"," ", 
-                        mm.getController().entityList(State.class)) {
-                    public String item(State s) throws IllegalActionException {
-                        Actor[] rfs = s.getRefinement();
-                        if (rfs != null) {
-                            StringBuffer code = new StringBuffer();
-                            for (Actor a : rfs) 
-                                code.append(
-                                        _generateBlockCode("refineStateBlock", 
-                                                s.getName(), a.getName()));
-                            return code.toString();
-                        }
-                        else
-                            return null;
+        if (name.equals("controller"))
+            return mm.getController().getName();
+        if (name.equals("refinement")) {
+            return new ListTerm<State>("empty"," ", mm.getController().entityList(State.class)) {
+                public String item(State s) throws IllegalActionException {
+                    Actor[] rfs = s.getRefinement();
+                    if (rfs != null) {
+                        StringBuffer code = new StringBuffer();
+                        for (Actor a : rfs) 
+                            code.append(_generateBlockCode("refineStateBlock", s.getName(), a.getName()));
+                        return code.toString();
                     }
-                }.generateCode()
-            );
-        return atts;
+                    else
+                        return null;
+                }
+            }.generateCode();
+        }
+        return super._generateInfoCode(name, parameters);
     }
-
 }

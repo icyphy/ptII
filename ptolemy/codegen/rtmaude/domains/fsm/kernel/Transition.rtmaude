@@ -1,2 +1,2 @@
-/***termBlock($id, $source, $target, $guard, $out, $set)***/
-('$id : '$source --> '$target {guard: ($guard) output: ($out) set: ($set)})/**/
+/***termBlock($source, $target, $guard, $out, $set)***/
+('$info(name) : '$source --> '$target {guard: ($guard) output: ($out) set: ($set)})/**/

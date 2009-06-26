@@ -8,8 +8,7 @@ VariableDelay/**/
 (tomod VARIABLE-DELAY-ACTOR  is 
   inc ACTOR .
 
-  class VariableDelay | delay : VarId .
-    subclass VariableDelay < Actor .
+  class VariableDelay .   subclass VariableDelay < Actor .
   eq ^ VariableDelay = Actor .
     
     ---FIXME: hierarchical OO desigin of actors is required. 
@@ -17,7 +16,7 @@ VariableDelay/**/
   vars O QUE : Oid . var REST : ObjectConfiguration .
   var PORTS : Configuration . vars PI PI' : PortId . var PS : PortStatus .
   var E : Exp . var V TV : Value . var NV : NumberValue . vars T : Time .
-  var VI : VarId . var AM : AssignMap . var MEM : Memory .
+  var AM : AssignMap . var MEM : Memory .
   var UPDATED : Bool .
 
 ---------------------------------------------------------------------
@@ -27,12 +26,11 @@ VariableDelay/**/
   --- set each status of ports to 'unknown'
   eq prefire(VariableDelay, 
     < O : VariableDelay | 
-      delay : VI, 
-      variables : (VI |-> E ; AM) 
+      parameters : ('delay |-> E ; AM) 
     >) 
    = prefire(^ VariableDelay, 
     < O : VariableDelay | 
-      store : VI |-> k(E) 
+      store : 'delay |-> k(E) 
     >) .
 
   --- Note: Delay actors generate events "later" and hence
@@ -52,16 +50,15 @@ VariableDelay/**/
   *** if 'delay port is present, it should be used instead of delay value.
   *** (it will also updated at the top level as well. )
 
-  eq executeStep(VariableDelay, 
+  eq postfire(VariableDelay, 
     < O : VariableDelay | 
       ports : ( 
         < 'input : InPort | status : present, value : V >
         < 'delay : InPort | status : PS, value : NV >
         < 'output : OutPort | > PORTS), 
-      delay : VI,
-      store : VI |-> TV ; MEM
+      store : 'delay |-> TV ; MEM
     >)
   = evt(event(O ! 'output, V), toTime(if PS == present then NV else TV fi)) 
-    executeStep(^ VariableDelay, < O : VariableDelay | >) .
+    postfire(^ VariableDelay, < O : VariableDelay | >) .
 endtom)
 /**/

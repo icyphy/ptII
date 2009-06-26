@@ -4,14 +4,17 @@ NONINTERRUPTIBLE-TIMER/**/
 /***className***/
 NonInterruptibleTimer/**/
 
+/***attr_NonInterruptibleTimer***/
+processing : false,
+wait-queue : emptyList/**/
+
 /***sharedBlock***/
 (tomod NONINTERRUPTIBLE-TIMER  is
   inc ACTOR .
 
   class NonInterruptibleTimer |
         processing : Bool,
-        wait-queue : TimeList,
-        output-value : VarId .
+        wait-queue : TimeList .
     subclass NonInterruptibleTimer < Actor .
   eq ^ NonInterruptibleTimer = Actor .
 
@@ -24,7 +27,7 @@ NonInterruptibleTimer/**/
   var REST : ObjectConfiguration . vars O : Oid .
   var V : Value .  vars T  : Time . vars TL UQ : TimeList .
   var AM : AssignMap . var MEM : Memory .
-  var VI : VarId . var NV : NumberValue . var E : Exp .
+  var NV : NumberValue . var E : Exp .
   vars UPDATED FLAG : Bool .
 
 ---------------------------------------------------------------------
@@ -34,12 +37,11 @@ NonInterruptibleTimer/**/
   --- set each status of ports to 'unknown'
   eq prefire(NonInterruptibleTimer, 
     < O : NonInterruptibleTimer | 
-      output-value : VI,
-      variables : VI |-> E ; AM
+      parameters : 'value |-> E ; AM
     >)
    = prefire(^ NonInterruptibleTimer, 
      < O : NonInterruptibleTimer | 
-       store : VI |-> k(E)
+       store : 'value |-> k(E)
      >) .
 
   eq portFixPoints(UPDATED,
@@ -54,12 +56,11 @@ NonInterruptibleTimer/**/
     >
     REST) .
 
-  ceq executeStep(NonInterruptibleTimer,
+  ceq postfire(NonInterruptibleTimer,
     < O : NonInterruptibleTimer |
         processing : true,
         wait-queue : TL,
-        output-value : VI,
-        store : VI |-> V ; MEM,
+        store : 'value |-> V ; MEM,
         ports : (
             < 'input : InPort | status : PS, value : NV >
             < 'output : OutPort | status : present >
@@ -67,37 +68,36 @@ NonInterruptibleTimer/**/
     >)
   = if UQ =/= emptyList then
         evt(event(O ! 'output, V), first(UQ))
-        executeStep(^ NonInterruptibleTimer,
+        postfire(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             wait-queue : rest(UQ)
         >)
     else
-        executeStep(^ NonInterruptibleTimer,
+        postfire(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             processing : false
         >)
     fi
   if UQ := (if PS == present then (TL toTime(NV)) else TL fi) .
 
-  eq executeStep(NonInterruptibleTimer,
+  eq postfire(NonInterruptibleTimer,
     < O : NonInterruptibleTimer |
         processing : FLAG,
         wait-queue : TL,
-        output-value : VI,
-        store : VI |-> V ; MEM,
+        store : 'value |-> V ; MEM,
         ports : (
             < 'input : InPort | status : present, value : NV >
             < 'output : OutPort | status : absent >
             PORTS)
     >)
   = if FLAG then
-        executeStep(^ NonInterruptibleTimer,
+        postfire(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             wait-queue : (TL toTime(NV))
         >)
     else
         evt(event(O ! 'output, V), toTime(NV))
-        executeStep(^ NonInterruptibleTimer,
+        postfire(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             processing : true
         >)

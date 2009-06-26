@@ -4,38 +4,42 @@ CLOCK/**/
 /***className***/
 Clock/**/
 
+/***attr_Clock***/
+index : 0/**/
+
 /***sharedBlock***/
 (tomod CLOCK is 
   inc ACTOR .
 
-  class Clock | period : VarId,
-                offsets : VarId,
-                values : VarId,
-                index : Nat .
+  class Clock | index : Nat .
     subclass Clock < Actor .
   eq ^ Clock = Actor .
 
   vars PORTS : Configuration . vars PI : PortId .
   var O : Oid . var REST : ObjectConfiguration .
   var AM : AssignMap . var MEM : Memory .
-  var IP IO IV : VarId .  var VP VO VV : Value . var EP EO EV : Exp .
+  var VP VO VV : Value . var EP EO EV : Exp .
   var UPDATED : Bool . var NI : Nat .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
+  eq init(Clock,
+    < O : Clock |
+      parameters : ('offsets |-> EO ; 'values |-> EV ; AM)
+    >)
+   = init(^ Clock, < O : Clock | >)
+    evt(event(O ! 'output, EV(# 0)), toTime(EO(# 0))) .
+
   --- set each status of ports to 'unknown'
   eq prefire(Clock, 
     < O : Clock | 
-      period : IP,
-      offsets : IO,
-      values : IV,
-      variables : (IP |-> EP ; IO |-> EO ; IV |-> EV ; AM)
+      parameters : ('period |-> EP ; 'offsets |-> EO ; 'values |-> EV ; AM)
     >) 
    = prefire(^ Clock, 
     < O : Clock | 
-      store : IP |-> k(EP) ; IO |-> k(EO) ; IV |-> k(EV)
+      store : 'period |-> k(EP) ; 'offsets |-> k(EO) ; 'values |-> k(EV)
     >) .
 
   --- Note: Clock actors generate events "later" and hence
@@ -55,38 +59,25 @@ Clock/**/
   --- In fact, the name of the outport is 'output' (ref. Ptolemy Documentation )
 
   ---FIXME: Offset could be Infinity
-  ceq executeStep(Clock,
+  ceq postfire(Clock,
     < O : Clock | 
       ports : < PI : OutPort | status : present > PORTS, 
-      offsets : IO,
-      values : IV,
-      store : (IO |-> VO ; IV |-> VV ; MEM),
+      store : ('offsets |-> VO ; 'values |-> VV ; MEM),
       index : NI
     >) 
   = evt(event(O ! PI, VV(#(s NI))), toTime((VO(#(s NI))) - (VO(# NI))))
-    executeStep(^ Clock, < O : Clock | index : s(NI) >)
+    postfire(^ Clock, < O : Clock | index : s(NI) >)
    if ((# NI + # 1) lessThan (VO .. 'length(()) )) == # true .
 
-  ceq executeStep(Clock,
+  ceq postfire(Clock,
     < O : Clock | 
       ports : < PI : OutPort | status : present >  PORTS, 
-      period : IP,
-      offsets : IO,
-      values : IV,
-      store : (IP |-> VP ; IO |-> VO ; IV |-> VV ; MEM),
+      store : ('period |-> VP ; 'offsets |-> VO ; 'values |-> VV ; MEM),
       index : NI
     >) 
   = evt(event(O ! PI, VV(# 0)), toTime((VP - (VO(# NI))) + (VO(# 0))))
-    executeStep(^ Clock, < O : Clock | index : 0 >)
+    postfire(^ Clock, < O : Clock | index : 0 >)
    if ((# NI + # 1) equals (VO .. 'length(()) )) == # true 
     /\ (VP lessThan Infinity) == # true .
 endtom)
-/**/
-
-/***firstValueBlock***/
-$val(values,0)
-/**/
-
-/***firstOffsetBlock***/
-$val((time)offsets,0)
 /**/

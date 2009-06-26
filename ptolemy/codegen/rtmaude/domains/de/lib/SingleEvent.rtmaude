@@ -15,14 +15,14 @@ SingleEvent/**/
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
-
+  var O : Oid . var AM : AssignMap . vars ET EV : Exp .
+  
+  eq init(SingleEvent,
+    < O : SingleEvent |
+      parameters : ('time |-> ET ; 'value |-> EV ; AM)
+    >)
+   = init(^ SingleEvent, < O : SingleEvent | >)
+    evt(event(O ! 'output, EV), toTime(ET)) .
+    
 endtom)
-/**/
-
-/***firstValueBlock***/
-$val(value)
-/**/
-
-/***firstTimeBlock***/
-$val((time)time)
 /**/

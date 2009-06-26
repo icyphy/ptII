@@ -7,6 +7,13 @@ CHECK-COMPOSITE-ACTOR/**/
 /***className***/
 CompositeActor/**/
 
+/***attr_CompositeActor***/
+innerActors : ($indent( 
+  $info(actors)
+$info(connections)
+))
+/**/
+
 /***sharedBlock***/
 (tomod COMPOSITE-ACTOR is 
   inc ACTOR .
@@ -15,7 +22,7 @@ CompositeActor/**/
   eq ^ CompositeActor = Actor .
 
   vars CF PORTS PORTS' : Configuration .
-  vars PI PI' : PortId . var EPIS EPIS' : EPortIdSet . 
+  vars PI PI' : PortId . var EPIS : EPortIdSet . 
   var PS : PortStatus . var DPS : DetPortStatus .
   vars REST ACTS : ObjectConfiguration . var OBJ : Object . vars QUE O O' : Oid .
   var V : Value .  vars VM VAL : ValueMap .  var E : Exp .
@@ -59,6 +66,11 @@ CompositeActor/**/
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
+  
+  eq init(CompositeActor,
+        < O : CompositeActor | innerActors : CF >)
+   = init(^ CompositeActor,
+        < O : CompositeActor | innerActors : initAll(CF) >) .
 
   --- children actors are also initialized for computational step
   eq prefire(CompositeActor, 
@@ -121,7 +133,7 @@ CompositeActor/**/
   ceq portFixPoints(UPDATED,
     < O : CompositeActor |
       status : enabled, 
-      variables : VI |-> E ; VAL,
+      parameters : VI |-> E ; VAL,
       store : MEM,
       innerActors : portFixPoints(UPDATED',
         < O' : Actor |
@@ -143,7 +155,7 @@ CompositeActor/**/
   ceq portFixPoints(UPDATED,
     < O : CompositeActor |
       status : enabled, 
-      variables : VAL,
+      parameters : VAL,
       store : MEM,
       innerActors : portFixPoints(UPDATED',
         < O' : Actor |
@@ -174,7 +186,7 @@ CompositeActor/**/
           status : enabled,
           ports : < PI' : InPort | status : unknown > PORTS' 
         >
-        (((parent ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+        ((parent ! PI) ==> ((O' ! PI') ; EPIS)) 
         ACTS)
     > REST)
    = portFixPoints(true,
@@ -183,7 +195,7 @@ CompositeActor/**/
         < O' : Actor | 
           ports : < PI' : InPort | status : DPS, value : V > PORTS' 
         >
-        (((parent ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+        ((parent ! PI) ==> ((O' ! PI') ; EPIS)) 
         ACTS)
     > REST) .
 
@@ -196,7 +208,7 @@ CompositeActor/**/
         < O' : Actor | 
           ports : < PI' : OutPort | status : DPS, value : V > PORTS' 
         >
-        (((O' ! PI') ; EPIS') ==> ((parent ! PI) ; EPIS)) 
+        ((O' ! PI') ==> ((parent ! PI) ; EPIS)) 
         ACTS)
     > REST)
    = portFixPoints(true,
@@ -204,7 +216,7 @@ CompositeActor/**/
       ports : < PI : OutPort | status : DPS, value : V > PORTS,
       innerActors : portFixPoints(true,
         < O' : Actor | >
-        (((O' ! PI') ; EPIS') ==> ((parent ! PI) ; EPIS)) 
+        ((O' ! PI') ==> ((parent ! PI) ; EPIS)) 
         ACTS)
     > REST) .
 
@@ -223,11 +235,11 @@ CompositeActor/**/
 ------------------------
 
   --- terminate all portFixPoints (from top)
-  eq executeStep(C:Cid,
+  eq postfire(C:Cid,
     < O : CompositeActor | 
       innerActors : portFixPoints(UPDATED, ACTS)
     >)
-  =  executeStep(C:Cid,
+  =  postfire(C:Cid,
     < O : CompositeActor | 
       innerActors : ACTS
     >) .
@@ -236,14 +248,14 @@ CompositeActor/**/
   --- outside. Hence, updating those before doing parent actor
   --- events sholud be also considered.
   --- NOTE: ACTS is an ObjectConfiguration.
-  eq executeStep(CompositeActor,
+  eq postfire(CompositeActor,
     < O : CompositeActor | 
       status : enabled,
       innerActors : ACTS
     >)
-  =  executeStep(^ CompositeActor, 
+  =  postfire(^ CompositeActor, 
     < O : CompositeActor | 
-      innerActors : executeStep(ACTS) 
+      innerActors : postfireAll(ACTS) 
     >) .
 endtom)
 

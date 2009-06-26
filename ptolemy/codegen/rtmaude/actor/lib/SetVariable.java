@@ -39,7 +39,7 @@ package ptolemy.codegen.rtmaude.actor.lib;
  * @Pt.ProposedRating Red (kquine)
  *
  */
-import java.util.Map;
+import java.util.List;
 
 import ptolemy.codegen.rtmaude.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,11 +51,10 @@ public class SetVariable extends Entity {
     }
 
     @Override
-    protected Map<String, String> _generateAttributeTerms()
+    protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        Map<String,String> atts = super._generateAttributeTerms();
-        atts.put("variableName", 
-                "'"+((ptolemy.actor.lib.SetVariable)getComponent()).variableName.getExpression());                
-        return atts;
+        if (name.equals("variableName"))
+            return ((ptolemy.actor.lib.SetVariable)getComponent()).variableName.getExpression();
+        return super._generateInfoCode(name, parameters);
     }
 }

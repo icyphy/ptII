@@ -27,8 +27,6 @@
  */
 package ptolemy.codegen.rtmaude.actor;
 
-import java.util.List;
-
 import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
 import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -58,22 +56,29 @@ public class IORelation extends RTMaudeAdaptor {
 
     @Override
     public String generateTermCode() throws IllegalActionException {
-        ptolemy.actor.IORelation r = (ptolemy.actor.IORelation) getComponent();
+        final ptolemy.actor.IORelation r = (ptolemy.actor.IORelation) getComponent();
+        StringBuffer rec = new StringBuffer();
         
-        return _generateBlockCode(this.defaultTermBlock,
-                generatePortListCode(r.getContainer(), r.linkedSourcePortList()),
-                generatePortListCode(r.getContainer(), r.linkedDestinationPortList())
-            );
+        for (ptolemy.actor.IOPort pi : r.linkedSourcePortList()) {
+            if (rec.length() > 0) 
+                rec.append("\n");
+            rec.append(_generateBlockCode(
+                    this.defaultTermBlock,
+                    generateEPortId(r.getContainer(), pi),
+                    new ListTerm<ptolemy.actor.IOPort>("noPort"," ; ",r.linkedDestinationPortList()) {
+                        public String item(ptolemy.actor.IOPort port) throws IllegalActionException {
+                            return generateEPortId(r.getContainer(), port);
+                        }
+                    }.generateCode()
+                ));
+        }
+        return rec.toString();
     }
     
-    private String generatePortListCode(final NamedObj container, List<ptolemy.actor.IOPort> portlist) 
+    private String generateEPortId(NamedObj container, ptolemy.actor.IOPort port) 
         throws IllegalActionException {
-        return new ListTerm<ptolemy.actor.IOPort>("noPort", " ; ", portlist) {
-            public String item(ptolemy.actor.IOPort port) throws IllegalActionException {
-                return _generateBlockCode("scopeBlock", 
-                        generateActorIdforPort(container, port), port.getName());
-            }
-        }.generateCode();
+        return _generateBlockCode("scopeBlock", 
+                generateActorIdforPort(container, port), port.getName());
     }
     
     private String generateActorIdforPort(NamedObj container, ptolemy.actor.IOPort port) {

@@ -165,7 +165,7 @@ endom)
    = < PI : MultiInPort | channels : empty > clearPorts(PORTS) .
 endom)
 
---- coupled port to some variables
+--- coupled port to some parameter
 (omod PORT-PARAMETERS is 
   pr PORTS .
   pr EXP-ENVIRONMENT .
@@ -176,7 +176,7 @@ endom)
   var VI : VarId . var E : Exp . var V : Value . var VAL : AssignMap .
   var PI : PortId . var PORTS : Configuration . 
 
-  --- update given variables by related port variables.
+  --- update given parameter by related port parameters.
   op updateParam : AssignMap Configuration -> AssignMap [frozen (2)] .
   eq updateParam( (VI |-> E) ; VAL,
     < PI : PortParameter | status : present, paramName : VI, value : V > PORTS)
@@ -186,11 +186,10 @@ endom)
 
 --- CONNECTIONS.
 --- Notice that we may only have one-to-one connections, 
---- Multiport cases are not concerned yet.
 (omod CONNECTIONS is 
   pr IDENTIFIERS .
   sort Connection .
-  op _==>_ : EPortIdSet EPortIdSet -> Connection [ctor] .
+  op _==>_ : EPortId EPortIdSet -> Connection [ctor] .
 
   --- Connections are in the global configuration, 
   --- we need to state that connections are also, e.g., objects:
@@ -257,7 +256,7 @@ endtom)
   op delta : Configuration Time -> Configuration .
   eq delta(NCF NCF', T) = delta(NCF, T) delta(NCF', T) .
   eq delta(O:Object, T) = O:Object [owise] .
-  eq delta(M:Msg, T) = M:Msg .
+  eq delta(M, T) = M .
   eq delta(none, T) = none .
 
 *** The followings are steps for actor execution.
@@ -268,6 +267,18 @@ endtom)
   subsort Cid < Cid? .
   op ^_ : Cid -> Cid? .
 
+*** 0. init
+  op init : Cid Object -> Configuration [frozen (2)] .
+  eq init(Connection, OBJ) = OBJ .
+  eq init(C, M CF) = M init(C, CF) .
+  eq init(C, OBJ) = init(^ C, OBJ) [owise] .
+
+  op initAll : Configuration -> Configuration [frozen (1)] .
+  eq initAll(OBJ CF) = init(class(OBJ), OBJ) initAll(CF) .
+  eq initAll(M CF) = M initAll(CF) .
+  eq initAll(none) = none .
+
+
 *** 1. preparing computation step.  (prefire)
   op prefire : Cid Object -> Configuration [frozen (2)] .
   eq prefire(Connection, OBJ) = OBJ .
@@ -276,7 +287,7 @@ endtom)
   --- functions for configuration level.
   op prefireAll : Configuration -> Configuration [frozen (1)] .
   eq prefireAll(OBJ CF) = prefire(class(OBJ), OBJ) prefireAll(CF) .
-  eq prefireAll(M:Msg CF) = prefireAll(CF) .
+  eq prefireAll(M CF) = prefireAll(CF) .
   eq prefireAll(none) = none .
 
 *** 2. Compute fixed points for the various ports. (fire)
@@ -294,21 +305,32 @@ endtom)
   --- If no change is possible, set flag to false
   eq portFixPoints(true, OC) = portFixPoints(false, OC) [owise] .
 
-*** 3. Generating events and updating states and variables. (post-fire)
+*** 3. Generating events and updating states and parameters. (post-fire)
   --- 1st argument : class id for hierarchical computation
   --- 2nd argument : Target object. since messages can be generated, 
   ---    Conf is used instead of Object 
   --- 3rd argument : rest configuration
-  op executeStep : Cid NEConfiguration -> Configuration [frozen (2)].
-  eq executeStep(C, M CF) = M executeStep(C, CF) .
-  eq executeStep(Connection, CF) = CF .
-  eq executeStep(C, OBJ) = executeStep(^ C, OBJ) [owise] .
+  op postfire : Cid NEConfiguration -> Configuration [frozen (2)].
+  eq postfire(C, M CF) = M postfire(C, CF) .
+  eq postfire(Connection, CF) = CF .
+  eq postfire(C, OBJ) = postfire(^ C, OBJ) [owise] .
 
-  op executeStep : Configuration -> Configuration [frozen (1)] .
-  eq executeStep(OBJ CF) = executeStep(class(OBJ), OBJ) executeStep(CF) .
-  eq executeStep(M CF) = M executeStep(CF) .
-  eq executeStep(none) = none .
+  op postfireAll : Configuration -> Configuration [frozen (1)] .
+  eq postfireAll(OBJ CF) = postfire(class(OBJ), OBJ) postfireAll(CF) .
+  eq postfireAll(M CF) = M postfireAll(CF) .
+  eq postfireAll(none) = none .
 
+endtom)
+
+(tomod OBJECT-WITH-TIMER is
+  inc ACTOR-BASE .
+
+  class TimeObj | current-time : Time .
+
+  var T T' : Time . var O : Oid .
+
+  eq delta(< O : TimeObj | current-time : T >, T')
+     = < O : TimeObj | current-time : T + T' > .
 endtom)
 
 (tomod ACTOR is 
@@ -319,7 +341,7 @@ endtom)
   pr PTOLEMY-STRICTNESS .
 
   class Actor | ports : Configuration,          *** a bunch of ports
-		variables : AssignMap,		*** inner variables
+		parameters : AssignMap,		*** ptolemy parameters
 		status : ActorStatus,		
 		store : Memory .		*** local memory
 
@@ -328,7 +350,7 @@ endtom)
   vars V V' : Value .  var VM VM' : ValueMap .  var VAL : AssignMap . 
   var MEM MEM' : Memory . var VI : VarId . var MI : MemoryId .
   vars E : Exp .  var EVTS : Events . 
-  vars PI PI' : PortId . var EPIS EPIS' : EPortIdSet .
+  vars PI PI' : PortId . var EPIS : EPortIdSet .
   var PS : PortStatus .  var DPS : DetPortStatus .
   var CHS : ChannelSet .
   var UPDATED : Bool .
@@ -354,6 +376,8 @@ endtom)
 --- Semantics Steps
 ---------------------------------------------------------------------
 
+  eq init(Actor, OBJ:Object) = OBJ:Object .
+
   --- in each new ports we must "reset" all ports to 'unknown'. 
   eq prefire(Actor, < O : Actor | ports : PORTS >) 
    = < O : Actor | ports : clearPorts(PORTS) > .
@@ -378,7 +402,7 @@ endtom)
   ceq portFixPoints(UPDATED,
     < O : Actor | 
 	status : enabled,
-	variables : VI |-> E ; VAL,
+	parameters : VI |-> E ; VAL,
 	store : MI |-> k(VI -> K) ; MEM
     > REST)
    = portFixPoints(true,
@@ -443,7 +467,7 @@ endtom)
 	status : enabled,
 	ports :  < PI : OutPort | status : DPS, value : V > PORTS 
     >
-    (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+    ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
 	status : enabled,
 	ports : < PI' : InPort | status : unknown > PORTS' 
@@ -451,7 +475,7 @@ endtom)
     REST)
    = portFixPoints(true, 
     < O : Actor | > 
-    (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+    ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
 	ports : < PI' : InPort | status : DPS, value : V > PORTS' 
     > 
@@ -464,7 +488,7 @@ endtom)
 	status : enabled,
 	ports :  < PI : OutPort | > PORTS 
     >
-    (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+    ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
 	status : enabled,
 	ports : 
@@ -475,7 +499,7 @@ endtom)
     REST)
    = portFixPoints(true, 
     < O : Actor | > 
-    (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+    ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
 	ports : 
 	    < PI' : MultiInPort | 
@@ -490,7 +514,7 @@ endtom)
 	status : enabled,
 	ports :  < PI : OutPort | status : DPS, value : V > PORTS 
     >
-    (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+    ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
 	status : enabled,
 	ports : 
@@ -501,7 +525,7 @@ endtom)
     REST)
    = portFixPoints(true, 
     < O : Actor | > 
-    (((O ! PI) ; EPIS) ==> ((O' ! PI') ; EPIS')) 
+    ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
 	ports : 
 	    < PI' : MultiInPort | 
@@ -512,31 +536,20 @@ endtom)
 
   --- update port-variables 
   --- clear store as well (to save a state space)
-  eq executeStep(Actor, 
+  eq postfire(Actor, 
     < O : Actor | 
 	status : enabled,
-	ports : PORTS, variables : VAL, 
+	ports : PORTS, 
+	parameters : VAL, 
 	store : MEM 
     >)
   = < O : Actor | 
-	variables : updateParam(VAL, PORTS), 
+	parameters : updateParam(VAL, PORTS), 
 	store : emptyMap
     > .
 
-  eq executeStep(Actor, < O : Actor | status : disabled >)
+  eq postfire(Actor, < O : Actor | status : disabled >)
    = < O : Actor | > .
-endtom)
-
-(tomod ACTOR-WITH-TIMER is
-  inc ACTOR .
-
-  class TimeActor | current-time : Time .
-    subclass TimeActor < Actor .
-
-  var T T' : Time . var O : Oid .
-
-  eq delta(< O : TimeActor | current-time : T >, T')
-     = < O : TimeActor | current-time : T + T' > .
 endtom)
 
 ------------------------------------------------
@@ -581,7 +594,7 @@ endtom)
   --- execute a step:
   rl [executeStep] : 
 	{ SYSTEM < QUE : EventQUEUE | queue : (EVTS ; 0 ; 0) :: EVENTQUEUE > }
-  =>	{ executeStep(
+  =>	{ postfireAll(
 	    top(portFixPoints(true, releaseEvt(EVTS) prefireAll(SYSTEM))))
 	 < QUE : EventQUEUE | queue : EVENTQUEUE >
 	} .
@@ -611,9 +624,9 @@ endtom)
   var CF : Configuration .  var O : Oid .  var VI : VarId . 
   var E E' : Exp .  var VM : ValueMap . var VS : VarCheckSet .
 
-  ceq {< O : Actor | variables : (VI |-> E) ; VM > CF} |= O | (VI = E', VS)
-   = {< O : Actor | variables : VM > CF} |= O | VS
+  ceq {< O : Actor | parameters : (VI |-> E) ; VM > CF} |= O | (VI = E', VS)
+   = {< O : Actor | parameters : VM > CF} |= O | VS
    if E equals E' == #(true) .
-  eq {< O : Actor | variables : VM > CF} |= O | () = true .
-  eq {< O : Actor | variables : VM > CF} |= O | VS = false [owise] .
+  eq {< O : Actor | parameters : VM > CF} |= O | () = true .
+  eq {< O : Actor | parameters : VM > CF} |= O | VS = false [owise] .
 endtom)

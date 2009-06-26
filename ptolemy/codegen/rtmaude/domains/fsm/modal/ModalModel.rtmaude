@@ -7,6 +7,13 @@ ModalModel/**/
 /***checkModuleName***/
 CHECK-MODALMODEL-ACTOR/**/
 
+/***attr_ModalModel***/
+controller : '$info(controller),
+refinement : $info(refinement)/**/
+
+/***refineStateBlock($state, $actor)***/
+refine-state('$state,'$actor)/**/
+
 /***sharedBlock***/
 (tomod MODAL-MODEL is 
   inc COMPOSITE-ACTOR .
@@ -96,6 +103,3 @@ endtom)
    = {ACTS} |= CO @ L .
 endtom)
 /**/
-
-/***refineStateBlock($state, $actor)***/
-refine-state('$state,'$actor)/**/

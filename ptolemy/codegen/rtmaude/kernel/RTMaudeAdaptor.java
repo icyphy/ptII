@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.kernel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -97,6 +98,37 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             return super._generateTypeConvertMethod(ref, castType, refType);
     }
     
+    protected String _generateInfoCode(String name, List<String> parameters)
+            throws IllegalActionException {
+        if (name.equals("name"))
+            return getComponent().getName();
+        
+        throw new IllegalActionException("Unknown RTMaudeObj Information");
+    }
+    
+    @Override
+    protected String _replaceMacro(String macro, String parameter)
+            throws IllegalActionException {
+        if (macro.equals("info") || macro.equals("block")) {
+            String[] args = parameter.split("(?<!\\\\),");
+            for (int i = 1 ; i < args.length ; i++)
+                if (args[i].contains("$"))
+                    args[i] = processCode(args[i]);
+            
+            ArrayList<String> largs = new ArrayList(Arrays.asList(args)); 
+            String aName = largs.remove(0);
+            
+            if (macro.equals("info"))
+                return _generateInfoCode(aName, largs);
+            else
+                return _generateBlockCode(aName, largs);
+        }
+        if (macro.equals("indent")) {
+            return _eol + CodeStream.indent(1, processCode(parameter));
+        }
+        return super._replaceMacro(macro, parameter);
+    }
+
     @Override
     public String generateFireCode() throws IllegalActionException {
         String comment = _codeGenerator.comment("Fire " +
@@ -113,8 +145,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         return _generateBlockCode("fireFuncBlock",
-                _generateBlockCode("funcModuleName"),
-                _generateBlockCode("moduleName"),
                 generateTermCode(),
                 CodeStream.indent(1,_generateFireCode() + generateTypeConvertFireCode())
                 );

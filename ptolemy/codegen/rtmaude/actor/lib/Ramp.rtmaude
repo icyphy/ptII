@@ -4,13 +4,15 @@ RAMP/**/
 /***className***/
 Ramp/**/
 
+/***attr_Ramp***/
+count : 0,
+output-value : # 0/**/
+
 /***sharedBlock***/
 (tomod RAMP is 
   inc ACTOR .
 
-  class Ramp | init : VarId, 
-               step : VarId,
-               count : Nat,
+  class Ramp | count : Nat,
                output-value : Value .
     subclass Ramp < Actor .
   eq ^ Ramp = Actor .
@@ -18,7 +20,7 @@ Ramp/**/
   var PORTS : Configuration . vars PI PI' : PortId .
   var O : Oid . var REST : ObjectConfiguration .
   var AM : AssignMap . var MEM : Memory .
-  var II IS : VarId .  var V VI VS : Value . var EI ES : Exp .
+  var V VI VS : Value . var EI ES : Exp .
   var UPDATED : Bool . var N : Nat .
   
 ---------------------------------------------------------------------
@@ -28,21 +30,17 @@ Ramp/**/
   --- set each status of ports to 'unknown'
   eq prefire(Ramp, 
     < O : Ramp | 
-      init : II,
-      step : IS,
-      variables : (II |-> EI ; IS |-> ES ; AM)
+      parameters : ('init |-> EI ; 'step |-> ES ; AM)
     >) 
    = prefire(^ Ramp, 
     < O : Ramp | 
-      store : II |-> k(EI) ; IS |-> k(ES)
+      store : 'init |-> k(EI) ; 'step |-> k(ES)
     >) .
 
   eq portFixPoints(UPDATED,
      < O : Ramp | 
        status : enabled,
-       init : II,
-       step : IS,
-       store : II |-> VI ; IS |-> VS,
+       store : 'init |-> VI ; 'step |-> VS,
        count : N,
        output-value : V,
        ports : 
@@ -56,18 +54,30 @@ Ramp/**/
          < PI' : OutPort | status : present, 
                             value : if N > 0 then V + VS else VI fi >
      > REST) .
+     
+  eq portFixPoints(UPDATED,
+     < O : Ramp | 
+       status : enabled,
+       ports : 
+         < PI : InPort | status : absent >  
+         < PI' : OutPort | status : unknown > PORTS 
+     > REST)
+   = portFixPoints(true,
+     < O : Ramp | 
+       ports : 
+         < PI : InPort | > 
+         < PI' : OutPort | status : absent > PORTS
+     > REST) .
 
-  eq executeStep(Ramp,
+  eq postfire(Ramp,
     < O : Ramp | 
       status : enabled,
-      init : II,
-      step : IS,
-      store : II |-> VI ; IS |-> VS,
+      store : 'init |-> VI ; 'step |-> VS,
       count : N,
       output-value : V,
       ports : < PI : OutPort | status : present >  PORTS
     >) 
-  = executeStep(^ Ramp, 
+  = postfire(^ Ramp, 
     < O : Ramp | 
       count : s(N),
       output-value : if N > 0 then V + VS else VI fi

@@ -7,6 +7,11 @@ FSM-Actor/**/
 /***checkModuleName***/
 CHECK-FSM-ACTOR/**/
 
+/***attr_FSMActor***/
+currState : '$info(initState),
+initState : '$info(initState),
+transitions : ($indent( $info(transitions) ))/**/
+
 /***sharedBlock***/
 (tomod FSM-ACTOR is 
   inc ACTOR .
@@ -65,7 +70,7 @@ CHECK-FSM-ACTOR/**/
       store : evalGuards(STATE, TRANSSET) ; MEM
     >) .
 
-  op @guard : TransitionId -> MemoryId .  
+  op @guard : TransitionId -> MemoryId . 
   op evalGuards : Location TransitionSet -> Memory .
 
   eq evalGuards(STATE, 
@@ -131,7 +136,7 @@ CHECK-FSM-ACTOR/**/
   eq updateOutPorts(< PI : OutPort | > PORTS, @out(PI) |-> V ; MEM)
    = < PI : OutPort | status : present, value : V >  ---NOTE: overwritten 
      updateOutPorts(PORTS, MEM) .
-  eq updateOutPorts(PORTS, MEM) = PORTS [owise] .
+  eq updateOutPorts(PORTS, MEM) = PORTS [owise] .    --- others should be absent
 
   op clearOutputs : Memory -> Memory .
   eq clearOutputs(@out(PI) |-> V ; MEM) = clearOutputs(MEM) .
@@ -141,17 +146,17 @@ CHECK-FSM-ACTOR/**/
   *** the internal state/valuation as a result of applying one transition ...
 
   --- computation result of states and variables is written
-  eq executeStep(FSM-Actor,
+  eq postfire(FSM-Actor,
     < O : FSM-Actor | 
       status : enabled,
       ports : < PI' : InPort | status : present > PORTS, 
-      variables : VAL, 
+      parameters : VAL, 
       currState : STATE,
       store : MEM
     >)
-  =  executeStep(^ FSM-Actor,
+  =  postfire(^ FSM-Actor,
     < O : FSM-Actor | 
-      variables : updateVars(VAL, MEM), 
+      parameters : updateVars(VAL, MEM), 
       currState : updateState(STATE, MEM)
     >) .
     

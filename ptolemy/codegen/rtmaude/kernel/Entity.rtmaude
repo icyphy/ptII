@@ -7,23 +7,23 @@ CHECK-ACTOR/**/
 /***className***/
 Actor/**/
 
-/***shared0***/
-**************************************
-**************************************
-/**/
-
 /***termBlock***/
 #model('$actorSymbol(model))/**/
 
-/***fireBlock($name, $class, $attr_terms)***/
-< '$name : $class | 
+/***fireBlock($attr_terms)***/
+< '$info(name) : $block(className) |
 $attr_terms
 >/**/
 
-/***attrBlock($name, $value)***/
-$name : (
-$value)/**/
+/***attr_Actor***/
+store : emptyMap,
+status : $block(statusBlock),
+ports : ($indent(
+  $info(ports) 
+)),
+parameters : ($indent( 
+  $info(parameters)
+))/**/
 
 /***statusBlock***/
-enabled
-/**/
+enabled/**/

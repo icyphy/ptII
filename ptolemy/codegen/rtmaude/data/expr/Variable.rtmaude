@@ -1,5 +1,2 @@
-/***termBlock($name, $value)***/
-'$name |-> $value/**/
-
-/***valBlock($name)***/
-$val($name)/**/
+/***termBlock***/
+'$info(name) |-> $val($info(name))/**/

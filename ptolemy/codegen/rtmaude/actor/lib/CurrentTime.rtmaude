@@ -4,15 +4,20 @@ CURRENT-TIME/**/
 /***className***/
 CurrentTime/**/
 
+/***attr_CurrentTime***/
+current-time : 0/**/
+
 /***sharedBlock***/
 (tomod CURRENT-TIME is
-  inc ACTOR-WITH-TIMER .
+  inc ACTOR .
+  inc OBJECT-WITH-TIMER .
 
   class CurrentTime .
-    subclass CurrentTime < TimeActor .
+    subclass CurrentTime < Actor TimeObj .
   eq ^ CurrentTime = Actor .
 
-  vars PORTS : Configuration . vars PI PI' : PortId .
+  vars PORTS : Configuration . 
+  vars PI PI' : PortId . var DPS : DetPortStatus .
   var O : Oid . var REST : ObjectConfiguration .
   var T : Time . var UPDATED : Bool .
 
@@ -25,31 +30,16 @@ CurrentTime/**/
         status : enabled,
         current-time : T,
         ports :
-            < PI : InPort | status : present >
+            < PI : InPort | status : DPS >
             < PI' : OutPort | status : unknown >
             PORTS
      > REST)
    = portFixPoints(true,
      < O : CurrentTime |
         ports :
-            < PI : InPort | status : present >
-            < PI' : OutPort | status : present, value : # T >
+            < PI : InPort | >
+            < PI' : OutPort | status : DPS, value : # T >
             PORTS > REST) .
 
-  eq portFixPoints(UPDATED,
-     < O : CurrentTime |
-        status : enabled,
-        ports :
-            < PI : InPort | status : absent >
-            < PI' : OutPort | status : unknown >
-            PORTS
-     > REST)
-   = portFixPoints(true,
-     < O : CurrentTime |
-        ports :
-            < PI : InPort | status : absent >
-            < PI' : OutPort | status : absent >
-            PORTS
-    > REST) .
 endtom)
 /**/

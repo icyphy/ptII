@@ -4,21 +4,24 @@ PULSE/**/
 /***className***/
 Pulse/**/
 
+/***attr_Pulse***/
+current-index : 0/**/
+
+/***mapName($index, $value)***/
+$index |-> $value/**/
+
 /***sharedBlock***/
 (tomod PULSE is
   inc ACTOR .
 
-  class Pulse |
-        indexes : VarId,
-        values : VarId,
-        current-index : Nat .
+  class Pulse | current-index : Nat .
     subclass Pulse < Actor .
   eq ^ Pulse = Actor .
 
   var O : Oid . var REST : ObjectConfiguration .
   var PORTS : Configuration .  vars PI PI' : PortId .
   var AM : AssignMap . var MEM : Memory .
-  var II IV : VarId .  var VI VV : Value . var EI EV : Exp .
+  var VI VV : Value . var EI EV : Exp .
   var V V' : Value . var VL VL' : ValueList .
   vars N : Nat . var UPDATED : Bool .
   
@@ -29,13 +32,11 @@ Pulse/**/
   --- set each status of ports to 'unknown'
   eq prefire(Pulse, 
     < O : Pulse | 
-      indexes : II,
-      values : IV,
-      variables : (II |-> EI ; IV |-> EV ; AM)
+      parameters : ('indexes |-> EI ; 'values |-> EV ; AM)
     >) 
    = prefire(^ Pulse, 
     < O : Pulse | 
-      store : II |-> k(EI) ; IV |-> k(EV)
+      store : 'indexes |-> k(EI) ; 'values |-> k(EV)
     >) .
 
   eq portFixPoints(UPDATED,
@@ -57,10 +58,8 @@ Pulse/**/
   eq portFixPoints(UPDATED,
      < O : Pulse |
        status : enabled,
-       indexes : II,
-       values : IV,
        current-index : N,
-       store : (II |-> VI ; IV |-> VV ; MEM),
+       store : ('indexes |-> VI ; 'values |-> VV ; MEM),
        ports :
          < PI : InPort | status : present >
          < PI' : OutPort | status : unknown >
@@ -81,17 +80,14 @@ Pulse/**/
      else cMap({VL},{VL'},N) fi .
   eq cMap({()}, {VL}, N) = # 0 .
 
-  eq executeStep(Pulse,
+  eq postfire(Pulse,
     < O : Pulse |
       current-index : N ,
       ports : < PI : InPort | status : present > PORTS
     >)
-  = executeStep(^ Pulse,
+  = postfire(^ Pulse,
     < O : Pulse |
       current-index : s(N)
     >) .
 endtom)
 /**/
-
-/***mapName($index, $value)***/
-$index |-> $value/**/
