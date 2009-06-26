@@ -553,7 +553,7 @@ public class FixedPointDirector extends StaticSchedulingDirector
             if (port.isKnownInside(i)) {
                 if (port.hasTokenInside(i)) {
                     result = super.transferOutputs(port) || result;
-                } else if (executiveDirector instanceof FixedPointDirector){
+                } else if (executiveDirector instanceof FixedPointDirector) {
                     // Mark the destination receivers absent.
                     // Note that the clear() method of the FixedPointReceiver is
                     // the right behavior, but this will do the wrong thing for

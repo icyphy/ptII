@@ -104,7 +104,7 @@ public class GTGUIAction extends GUIAction {
      *
      *  @param parse Whether the configure text should be parsed before applying
      *   to the current model.
-     *  @throws Exception If error occurs in performing the action.
+     *  @exception Exception If error occurs in performing the action.
      */
     public void perform(boolean parse) {
         if (_momlText != null) {

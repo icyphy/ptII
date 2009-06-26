@@ -224,7 +224,7 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * @param lattice
      * @param expression
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static LatticeProperty _parseElementExpression(
             PropertyLattice lattice, String expression)
@@ -243,7 +243,7 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * @param lattice
      * @param expression
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static LatticeProperty _parsePropertyExpression(
             PropertyLattice lattice, String expression)

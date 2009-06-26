@@ -59,10 +59,10 @@ public class LatticeElement extends State {
      * set to be solid white.
      * @param container The specified container.
      * @param name The name for the lattice element.
-     * @throws IllegalActionException If the lattice element cannot be contained
+     * @exception IllegalActionException If the lattice element cannot be contained
      * by the proposed container, or if there is a problem setting the default
      * parameters.
-     * @throws NameDuplicationException If the name coincides with that of an
+     * @exception NameDuplicationException If the name coincides with that of an
      * entity already in the container.
      */
     public LatticeElement(CompositeEntity container, String name)

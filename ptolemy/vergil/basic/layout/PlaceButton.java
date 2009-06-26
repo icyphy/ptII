@@ -103,7 +103,7 @@ public class PlaceButton extends Button {
                         layout.setTop(graphFrame);
 
                         // perform layout
-                        try{
+                        try {
                         layout.layout(graphModel.getRoot());
                         } catch (Exception exception) {
                                 MessageHandler.error("Failed executing automatic KIELER layout: "

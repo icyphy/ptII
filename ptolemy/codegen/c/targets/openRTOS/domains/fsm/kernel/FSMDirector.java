@@ -153,7 +153,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
             Set<Actor> actorsSet= new HashSet();;
-            if(actors!= null)
+            if (actors!= null)
             {
                 for (int i = 0; i < actors.length; i++) {
                     actorsSet.add(actors[i]);
@@ -164,10 +164,10 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                 //for (int i = 0; i < actors.length; i++) {
                 Iterator actorIterator = actorsSet.iterator();
                 Actor actors2;
-                while(actorIterator.hasNext()){
+                while (actorIterator.hasNext()) {
                     actors2 = (Actor)actorIterator.next();
                     CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors2);
-                    if(actors2.getDirector().getFullName().contains("Giotto")== false)
+                    if (actors2.getDirector().getFullName().contains("Giotto")== false)
                     {
                         //code.append("void "+_getActorName(actors2)+"(){");
                         code.append(actorHelper.generateFireFunctionCode());  // this was there initially and it works with SDF
@@ -312,16 +312,16 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
             Set<Actor> actorsSet= new HashSet();;
-            if(actors!= null)
+            if (actors!= null)
             {
                 for (int i = 0; i < actors.length; i++) {
                     actorsSet.add(actors[i]);
                 }
             }
-            for(Actor actor : actorsSet){
+            for (Actor actor : actorsSet) {
                 ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(actor.getDirector());
                 double localWCET = df._getWCET();
-                if(localWCET > largestWCET)
+                if (localWCET > largestWCET)
                 {
                     largestWCET = localWCET;
                 }
@@ -329,7 +329,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
 
             }
         }
-        if(_debugging) {
+        if (_debugging) {
             _debug("fsm director has wcet of "+largestWCET);
         }
         return largestWCET;

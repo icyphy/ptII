@@ -161,7 +161,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         // the CodeGenerator.
 
         // if not inline do this.
-        // if(!_isTopDirector())
+        // if (!_isTopDirector())
         // code.append(generateFireFunctionCode());
 
 

@@ -655,7 +655,7 @@ public abstract class PropertySolverBase extends Attribute {
      *
      * @param entity
      * @param userCode
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _compileUserCode(Entity entity, String userCode) throws IllegalActionException {
 

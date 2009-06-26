@@ -110,8 +110,8 @@ public class SMVUtility {
      *               formula.
      * @param span A constant used to expand the size of the rough domain.
      * @return The converted .smv format of the system.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public static StringBuffer generateSMVDescription(CompositeActor model,
             String pattern, String choice, String span)
@@ -333,7 +333,7 @@ public class SMVUtility {
      *                "Risk" or "Reachability"
      * @return A string indicating the CTL formula for risk/reachability
      *         analysis.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public static String generateGraphicalSpecification(CompositeActor model,
             String specType) throws IllegalActionException {
@@ -384,7 +384,7 @@ public class SMVUtility {
      *
      * @param actor The actor under analysis.
      * @return The set of signals used in the guard expression of the actor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
             throws IllegalActionException {
@@ -526,7 +526,7 @@ public class SMVUtility {
      *
      * @param actor The actor under analysis
      * @return A set containing names of the signal
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<String> _decideSignalVariableSet(FSMActor actor)
             throws IllegalActionException {
@@ -641,7 +641,7 @@ public class SMVUtility {
      * @param actor The actor under analysis
      * @param numSpan The size to expand the original domain
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<String> _decideStateVariableSet(FSMActor actor,
             int numSpan) throws IllegalActionException {
@@ -957,7 +957,7 @@ public class SMVUtility {
      *
      * @param actor The actor under analysis
      * @return A HashSet of states of a particular FSMActor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<State> _enumerateStateSet(FSMActor actor)
             throws IllegalActionException {
@@ -1014,7 +1014,7 @@ public class SMVUtility {
      *
      * @param actor The actor under analysis
      * @param variableSet The set of variables used
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static void _generateAllVariableTransitions(FSMActor actor,
             HashSet<String> variableSet) throws IllegalActionException {
@@ -2579,8 +2579,8 @@ public class SMVUtility {
      *        state has the model as refinement.
      * @return The StringBuffer description of the subsystem acceptable by the
      *         model checker.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private static StringBuffer _generateSMVDescriptionSubSystem(
             CompositeActor model, String span, String upperStateName)
@@ -2647,8 +2647,8 @@ public class SMVUtility {
      *                it is in fact irrelevant to the signal generation. It is
      *                only used for the reuse of existing functions.
      * @return
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private static ArrayList<String> _prescanSystemSignal(CompositeActor model,
             String span) throws IllegalActionException,
@@ -4675,7 +4675,7 @@ public class SMVUtility {
      * @param isController Whether the FSMActor is the controller of a ModalModel
      * @param refinementStateName The name of the refinement state
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static StringBuffer _translateSingleFSMActor(FSMActor actor,
             String span, boolean isController, String refinementStateName)
@@ -5043,7 +5043,7 @@ public class SMVUtility {
      *
      * @param controller The controller which contains those modules
      * @return An ArrayList containing all submodule definitions
-     * @throws IllegalActionException Undefined behavior happens.
+     * @exception IllegalActionException Undefined behavior happens.
      */
     private static ArrayList<StringBuffer> _retrieveSubSystemModuleNameParameterInfo(
             FSMActor controller) throws IllegalActionException {

@@ -314,7 +314,7 @@ public abstract class AbstractReceiver implements Receiver {
         // the receivers on the inner loop. See
         // pn/kernel/test/block.xml for a test case
         // (Bug fix proposed by Daniel Crawl.)
-        for(int i = 0; i < numberOfTokens; i++) {
+        for (int i = 0; i < numberOfTokens; i++) {
             for (int j = 0; j < receivers.length; j++ ) {
                 if (containers[j] == null) {
                     receivers[j].put(tokens[i]);

@@ -130,9 +130,9 @@ public class KielerGraphUtil {
      * @return The parent Kieler KNode of the given edge or null if the source
      *         of the edge is undefined.
      */
-    protected static KNode _getParent(KEdge edge){
+    protected static KNode _getParent(KEdge edge) {
         KNode source = edge.getSource();
-        if(source != null)
+        if (source != null)
             return source.getParent();
         return null;
     }
@@ -145,12 +145,12 @@ public class KielerGraphUtil {
      * @return The minimal x and y coordinates of all contained nodes. Might be
      *         Float.MAX_VALUE, if the parent does not contain any children.
      */
-    protected static KPoint _getUpperLeftCorner(KNode parent){
+    protected static KPoint _getUpperLeftCorner(KNode parent) {
         float x=Float.MAX_VALUE, y=Float.MAX_VALUE;
         for (KNode kNode : parent.getChildren()) {
             KShapeLayout layout = KimlLayoutUtil.getShapeLayout(kNode);
-            if(layout.getXpos() < x) x = layout.getXpos();
-            if(layout.getYpos() < y) y = layout.getYpos();
+            if (layout.getXpos() < x) x = layout.getXpos();
+            if (layout.getYpos() < y) y = layout.getYpos();
         }
 
         KPoint kPoint = KLayoutDataFactory.eINSTANCE.createKPoint();

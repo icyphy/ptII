@@ -573,7 +573,7 @@ public class DiscreteClock extends TimedSource {
 
     /** Adjust the expected next output time and index so that they
      *  are greater than or equal to the current time and index.
-     *  @throws IllegalActionException If the period parameter cannot
+     *  @exception IllegalActionException If the period parameter cannot
      *   be evaluated.
      *  @return True if any outputs are skipped, false otherwise.
      */

@@ -64,7 +64,7 @@ public class FSMActor extends Entity {
             return fa.getInitialState().getName();
         if (name.equals("transitions")) {
             ArrayList transitions = new ArrayList();
-            for(State s : (List<State>)fa.entityList(State.class))
+            for (State s : (List<State>)fa.entityList(State.class))
                 transitions.addAll(s.outgoingPort.linkedRelationList());
             return new ListTerm<Transition>("emptyTransitionSet", " ;" + _eol, transitions) {
                     public String item(Transition t) throws IllegalActionException {

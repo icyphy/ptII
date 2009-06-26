@@ -51,7 +51,7 @@ public class InstantiateFromTemplate {
          * @param args The first argument is taken to be the file path
          * of the template. The second is the directory path to place
          * the generated files.
-         * @throws Exception Thrown if an error occurs when reading
+         * @exception Exception Thrown if an error occurs when reading
          * or writing the files.
          */
     public static void main(String[] args) throws Exception {

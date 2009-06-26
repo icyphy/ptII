@@ -544,7 +544,7 @@ public class Clock extends TimedSource {
 
     /** Return true if the current time is the right time for an output.
      *  @return True if the current time matches the _nextOutputTime.
-     *  @throws IllegalActionException If the time is not right an
+     *  @exception IllegalActionException If the time is not right an
      *   a refiring cannot be requested.
      */
     protected boolean _isTimeForOutput() throws IllegalActionException {

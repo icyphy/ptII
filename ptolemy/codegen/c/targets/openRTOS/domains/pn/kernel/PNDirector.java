@@ -101,7 +101,7 @@ public class PNDirector extends Director {
      * @param port The specified port.
      * @param channelNumber The specified channel.
      * @return The code for getting data from specified channel.
-     * @throws IllegalActionException If the specified port channel has
+     * @exception IllegalActionException If the specified port channel has
      *  more than one referable queues.
      * @exception IllegalActionException If an error occurs when getting
      *  the helper for the actor containing the given port, or reading
@@ -137,7 +137,7 @@ public class PNDirector extends Director {
         String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
         String waitTime = _getMaxDelay(referenceChannel);
 
-        return actorHelper.processCode("while( pdTRUE != xQueueReceive(" + queue + ", &" + dataVariable
+        return actorHelper.processCode("while ( pdTRUE != xQueueReceive(" + queue + ", &" + dataVariable
             + ", " + waitTime + ") );" + _eol);
     }
 
@@ -172,7 +172,7 @@ public class PNDirector extends Director {
             String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
             String waitTime = _getMaxDelay(referenceChannel);
 
-            result.append(actorHelper.processCode("while( pdTRUE != xQueueSend(" +
+            result.append(actorHelper.processCode("while ( pdTRUE != xQueueSend(" +
                     queue + ", &" + dataToken + ", " + waitTime + ") );" + _eol));
         }
         return result.toString();
@@ -466,7 +466,7 @@ public class PNDirector extends Director {
      * generated. Otherwise, the fire code is wrapped inside an
      * infinite loop.
      * @param code The given code buffer.
-     * @throws IllegalActionException If getting the helper or
+     * @exception IllegalActionException If getting the helper or
      *  generating the actor initialize, fire, or wrapup code
      *  throws it.
      */
@@ -525,7 +525,7 @@ public class PNDirector extends Director {
             functionCode.append(helper.generateWrapupCode());
 
             // Make sure the task is running forever.
-            functionCode.append("while(true);" + _eol);
+            functionCode.append("while (true);" + _eol);
             functionCode.append("}" + _eol);
 
             // init
@@ -587,7 +587,7 @@ public class PNDirector extends Director {
      * @param channelNumber The specified channel number.
      * @return The size of the queue to be generated for
      *  the given port channel.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private int _getQueueSize(IOPort port, int channelNumber)
     throws IllegalActionException {

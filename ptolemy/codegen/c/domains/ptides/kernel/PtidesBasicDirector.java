@@ -223,7 +223,7 @@ public class PtidesBasicDirector extends Director {
     }
 
     /** Generate actor function prototypes.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String _generateActorFuncProtoCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -399,7 +399,7 @@ public class PtidesBasicDirector extends Director {
     /** This code reset the Event_Head pointer for each channel to null.
      * @param actor The actor which the input channels reside, whose pointers are pointed to null
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private String _generateClearEventHeadCode(Actor actor) throws IllegalActionException {
         // if the actor is an input device, the input is fake.
@@ -421,7 +421,7 @@ public class PtidesBasicDirector extends Director {
         StringBuffer code = new StringBuffer();
         for (Actor actor: (List<Actor>)(((CompositeActor) _director.getContainer()).deepEntityList())) {
             if (!(actor instanceof InputDevice)) {
-                for (IOPort inputPort: (List<IOPort>)actor.inputPortList()){
+                for (IOPort inputPort: (List<IOPort>)actor.inputPortList()) {
                     if (inputPort.getWidth() > 0) {
                         code.append("Event* Event_Head_" + generateName(inputPort)
                                 + "[" + inputPort.getWidth() + "] = {NULL");

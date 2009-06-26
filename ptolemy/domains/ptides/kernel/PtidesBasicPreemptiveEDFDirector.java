@@ -72,7 +72,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
     /** Return whether we want to preempt the currently executing actor
      *  and instead execute the earliest event on the event queue.
      *  @return whether we want to preempt the executing event.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
         IOPort port = _eventQueue.get().ioPort();

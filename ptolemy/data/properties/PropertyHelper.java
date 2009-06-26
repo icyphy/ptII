@@ -393,7 +393,7 @@ public abstract class PropertyHelper {
      * Return the list of parse trees for all settable Attributes
      * of the component.
      * @return The list of ASTPtRootNodes.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
         List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();

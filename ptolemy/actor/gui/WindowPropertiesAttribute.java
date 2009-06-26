@@ -217,7 +217,7 @@ public class WindowPropertiesAttribute extends Parameter implements
                             heightsEqual = false;
                 }
             }
-            if (widthsEqual && heightsEqual){
+            if (widthsEqual && heightsEqual) {
                     //Nominal setup
                     if (heights[0] > widths[0]){//Width is cumulative.
                             for (int j = 0; j < graphicsDevices.length; j++) {

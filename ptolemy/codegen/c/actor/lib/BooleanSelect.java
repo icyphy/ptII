@@ -57,7 +57,7 @@ public class BooleanSelect extends CCodeGeneratorHelper {
      * Iterate through the connections to the true port
      * and append the "trueBlock" code block from the template.
      * @return The generated code.
-     * @throws IllegalActionException Thrown if an error occurs
+     * @exception IllegalActionException Thrown if an error occurs
      * when getting the width for the port or the code block.
      */
     public String sendTrueInputs() throws IllegalActionException {
@@ -83,7 +83,7 @@ public class BooleanSelect extends CCodeGeneratorHelper {
      * Iterate through the connections to the true port
      * and append the "falseBlock" code block from the template.
      * @return The generated code.
-     * @throws IllegalActionException Thrown if an error occurs
+     * @exception IllegalActionException Thrown if an error occurs
      * when getting the width for the port or the code block.
      */
     public String sendFalseInputs() throws IllegalActionException {

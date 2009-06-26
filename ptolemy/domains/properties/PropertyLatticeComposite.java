@@ -57,9 +57,9 @@ public class PropertyLatticeComposite extends FSMActor {
      * NullPointerException will be thrown.
      * @param container The specified container.
      * @param name The specified name.
-     * @throws IllegalActionException If the entity cannot be contained by the
+     * @exception IllegalActionException If the entity cannot be contained by the
      * proposed container.
-     * @throws NameDuplicationException If the name coincides with an entity
+     * @exception NameDuplicationException If the name coincides with an entity
      * already in the container.
      */
     public PropertyLatticeComposite(CompositeEntity container, String name)

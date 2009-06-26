@@ -110,7 +110,7 @@ public class Director extends CodeGeneratorHelper {
          * @param channel The specified channel.
          * @param dataToken The data to send.
          * @return An empty string in this base class.
-         * @throws IllegalActionException Not thrown in this base class.
+         * @exception IllegalActionException Not thrown in this base class.
          */
         public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
             return "";
@@ -123,7 +123,7 @@ public class Director extends CodeGeneratorHelper {
          * @param port The specified port.
          * @param channel The specified channel.
          * @return An empty string in this base class.
-         * @throws IllegalActionException Not thrown in this base class.
+         * @exception IllegalActionException Not thrown in this base class.
          */
         public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
             return "";
@@ -483,7 +483,7 @@ public class Director extends CodeGeneratorHelper {
      *  a write reference; otherwise, this is a read reference.
      * @param helper The specified helper.
      * @return an unique reference label for the given port channel.
-     * @throws IllegalActionException If the helper throws it while
+     * @exception IllegalActionException If the helper throws it while
      *  generating the label.
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
@@ -501,7 +501,7 @@ public class Director extends CodeGeneratorHelper {
      * @param channelAndOffset The given channel and offset.
      * @param helper The specified helper.
      * @return an unique label for the given attribute.
-     * @throws IllegalActionException If the helper throws it while
+     * @exception IllegalActionException If the helper throws it while
      *  generating the label.
      */
     public String getReference(Attribute attribute, String[] channelAndOffset,
@@ -518,7 +518,7 @@ public class Director extends CodeGeneratorHelper {
      * @param port The given port.
      * @param channelNumber The given channel.
      * @return The list of reference channels.
-     * @throws IllegalActionException If {@link #getSinkChannels(IOPort, int)}
+     * @exception IllegalActionException If {@link #getSinkChannels(IOPort, int)}
      *  throws it.
      */
     public static List<Channel> getReferenceChannels(IOPort port, int channelNumber)

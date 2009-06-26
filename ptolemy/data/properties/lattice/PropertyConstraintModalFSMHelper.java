@@ -224,7 +224,7 @@ public class PropertyConstraintModalFSMHelper extends PropertyConstraintComposit
     }
 
     /**
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException{

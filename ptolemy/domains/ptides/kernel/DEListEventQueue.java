@@ -79,7 +79,7 @@ public class DEListEventQueue implements DEEventQueue {
     /** Get the event from the event queue that is pointed by the index.
      *  @param index an int specifying the index.
      *  @return a DEEvent object pointed to by the index.
-     *  @throws InvalidStateException if get() method of the queue throws it.
+     *  @exception InvalidStateException if get() method of the queue throws it.
      */
     public DEEvent get(int index) throws InvalidStateException {
         DEEvent result = (DEEvent)_listQueue.get(index);
@@ -121,7 +121,7 @@ public class DEListEventQueue implements DEEventQueue {
      *  into the event queue multiple times.
      *
      *  @return The event associated with this index in the event queue.
-     *  @throws InvalidStateException
+     *  @exception InvalidStateException
      */
     public DEEvent take() throws InvalidStateException {
         DEEvent result = (DEEvent)_listQueue.remove();
@@ -148,7 +148,7 @@ public class DEListEventQueue implements DEEventQueue {
      *
      *  @param index The index of this event in the event queue.
      *  @return The event associated with this index in the event queue.
-     *  @throws InvalidStateException
+     *  @exception InvalidStateException
      */
     public DEEvent take(int index) throws InvalidStateException {
         DEEvent result = (DEEvent)_listQueue.remove(index);

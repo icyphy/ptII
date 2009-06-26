@@ -116,7 +116,7 @@ public class ModelAttribute extends Attribute implements Configurable {
      * contained model.
      * @param workspace The workspace for the cloned object.
      * @return A clone.
-     * @throws CloneNotSupportedException Thrown if an error occurs while
+     * @exception CloneNotSupportedException Thrown if an error occurs while
      * cloning the attribute or the contained model.
      */
     @Override
@@ -195,7 +195,7 @@ public class ModelAttribute extends Attribute implements Configurable {
      * MoML description of the contained model within the &lt;configure&gt; tag.
      * @param output The output stream to write to.
      * @param depth The depth in the hierarchy, to determine indenting.
-     * @throws IOException If an I/O error occurs.
+     * @exception IOException If an I/O error occurs.
      */
     @Override
     protected void _exportMoMLContents(Writer output, int depth)

@@ -553,7 +553,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Set the timestamp and microstep of the current time.
      *  @param timestamp A Time object specifying the timestamp.
      *  @param microstep An int specifying the microstep.
-     *  @throws IllegalActionException if setModelTime() throws it.
+     *  @exception IllegalActionException if setModelTime() throws it.
      *  @see #setModelTime(Time)
      */
     public void setTag(Time timestamp, int microstep) throws IllegalActionException {
@@ -603,7 +603,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  </p>
      *  FIXME: currently this algorithm does not support transparent composite actors,
      *  but it should.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected void _calculateMinDelayOffsets() throws IllegalActionException {
 
@@ -655,7 +655,7 @@ public class PtidesBasicDirector extends DEDirector {
                 IOPort port = (IOPort)portDependency.port;
                 SuperdenseDependency prevDependency = (SuperdenseDependency)portDependency.dependency;
                 Actor actor = (Actor)port.getContainer();
-                if (port.isInput() && port.isOutput()){
+                if (port.isInput() && port.isOutput()) {
                     throw new IllegalActionException("the causality analysis cannot deal with" +
                     "port that are both input and output");
                 }
@@ -779,7 +779,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  process). If it does not have a minDelay parameter, then do nothing, because
      *  _safeToProcess also interpret that as events are always safe to process in
      *  that case.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected void _clearMinDelayOffsets() throws IllegalActionException {
         for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
@@ -853,7 +853,7 @@ public class PtidesBasicDirector extends DEDirector {
      *
      *  @param port The given port to find finite dependent ports.
      *  @return Collection of finite dependent ports.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected static Collection<IOPort> _finiteDependentPorts(IOPort port)
             throws IllegalActionException {
@@ -905,7 +905,7 @@ public class PtidesBasicDirector extends DEDirector {
      *
      *  @param input The input port.
      *  @return Collection of finite equivalent ports.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected static Collection<IOPort> _finiteEquivalentPorts(IOPort input)
             throws IllegalActionException {
@@ -927,7 +927,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  FIXME: this is sort of a hack.
      *  @param event Event to find deadline for.
      *  @return deadline of this event.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected Time _getAbsoluteDeadline(DEEvent event) throws IllegalActionException {
         IOPort port = event.ioPort();
@@ -944,7 +944,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  Notice these events should _NOT_ be taken out of the event queue.
      *  @param event The reference event.
      *  @return List of events of the same tag.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
         List<DEEvent> eventList = new ArrayList<DEEvent>();
@@ -1009,7 +1009,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Returns the executionTime parameter.
      *  @param port
      *  @return executionTime parameter
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected double _getExecutionTime(IOPort port) throws IllegalActionException {
         Double result = PtidesActorProperties.getExecutionTime(port);
@@ -1038,7 +1038,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port where this minDelay parameter is associated to.
      *  @param channel The channel where this minDelay parameter is associated to.
      *  @return minDelay parameter.
-     *  @throws IllegalActionException if we cannot get minDelay parameter.
+     *  @exception IllegalActionException if we cannot get minDelay parameter.
      */
     protected double _getMinDelay(IOPort port, int channel) throws IllegalActionException {
         Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
@@ -1287,12 +1287,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param events list of events that are destined for the
      *  same actor and of the same tag.
      *  @return Actor associated with the event.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
         DEEvent eventInList = events.get(0);
         DEEvent eventInQueue = _eventQueue.get();
-        if (!(eventInList.hasTheSameTagAs(eventInQueue) &&  (eventInQueue.actor() == eventInList.actor()))){
+        if (!(eventInList.hasTheSameTagAs(eventInQueue) &&  (eventInQueue.actor() == eventInList.actor()))) {
             throw new IllegalActionException("The event passed in is not the top event " +
             "in the event queue, Probably need to overwrite this method. ");
         }
@@ -1314,7 +1314,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the event at the top of the queue is safe to process. If it is not, then
      *  we return null. Otherwise we return the top event.
      *  @return Next safe event.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected DEEvent _getNextSafeEvent() throws IllegalActionException {
         DEEvent eventFromQueue = _eventQueue.get();
@@ -1338,7 +1338,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Returns the realTimeDelay parameter.
      *  @param port The port the realTimeDelay is associated with.
      *  @return realTimeDelay parameter
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected double _getRealTimeDelay(IOPort port) throws IllegalActionException {
         Parameter parameter = (Parameter)((NamedObj) port).getAttribute("realTimeDelay");
@@ -1382,7 +1382,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  This base class returns false, indicating that the currently
      *  executing actor is never preempted.
      *  @return False.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
         return false;
@@ -1481,7 +1481,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  but in PTIDES we only need each equivalence class to consume events in timetamp
      *  order. Thus this method is correct if the actor's input ports all reside within
      *  the same equivalence class.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected void _trackLastTagConsumedByActor(DEEvent event) throws IllegalActionException {
         NamedObj obj = event.ioPort();
@@ -1729,7 +1729,7 @@ public class PtidesBasicDirector extends DEDirector {
         // if physical time has reached the timestamp of the last event, transmit data to the output
         // now. Notice this does not guarantee tokens are transmitted, simply because there might
         // not be any tokens to transmit.
-        if (compare == 0){
+        if (compare == 0) {
             result = result || super._transferOutputs(port);
         } else if (compare < 0) {
             for (int i = 0; i < port.getWidthInside(); i++) {
@@ -1778,7 +1778,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param channel The channel at this input port.
      *  @param inputModelTimeDelays Port channel pairs with associated dependency.
      *  @return The min delay associated with this port channel pair.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private static double _getMinDelayForPortChannel(IOPort inputPort, Integer channel,
             Map<IOPort, Map<Integer, SuperdenseDependency>> inputModelTimeDelays) throws IllegalActionException {
@@ -1804,7 +1804,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Returns the relativeDeadline parameter.
      *  @param port The port the relativeDeadline is associated with.
      *  @return relativeDeadline parameter
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private double _getRelativeDeadline(IOPort port) throws IllegalActionException {
         Parameter parameter = (Parameter)((NamedObj) port).getAttribute("relativeDeadline");
@@ -1818,7 +1818,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** check if the port is a networkPort
      *  this method is default to return false, i.e., an output port to the outside of the
      *  platform is by default an actuator port.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static boolean _isNetworkPort(IOPort port) throws IllegalActionException {
         Parameter parameter = (Parameter)((NamedObj) port).getAttribute("networkPort");
@@ -1919,7 +1919,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param port The port.
          *  @param dependency The Dependency.
          */
-        public PortDependency (IOPort port, Dependency dependency){
+        public PortDependency (IOPort port, Dependency dependency) {
             this.port = port;
             this.dependency = dependency;
         }

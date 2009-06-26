@@ -114,7 +114,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  Notice these events should _NOT_ be taken out of the event queue.
      *  @param event The reference event.
      *  @return List of events of the same tag.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
         if (event != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {

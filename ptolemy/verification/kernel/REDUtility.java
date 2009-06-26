@@ -1286,7 +1286,7 @@ public class REDUtility {
      *                which is not useful. They are not connected to/from a
      *                valid actor where analysis is possible.
      * @return A set of transition descriptions packed in a list.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static ArrayList<REDTransitionBean> _generateTransition(
             FSMActor actor, State state, HashSet<String> variableSet,

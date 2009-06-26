@@ -101,7 +101,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        if(_debugging){
+        if (_debugging) {
         _debug("generateInitializeCode from Ptolemy Domains Giotto called");
         }
         code.append(super.generateInitializeCode());
@@ -155,7 +155,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   or if there is a problem getting the buffer size of a port.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        if(_debugging)
+        if (_debugging)
         {
             _debug("generatePreInitializeCode from Ptolemy Domains Giotto called");
         }
@@ -180,7 +180,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
     throws IllegalActionException {
-        if(_debugging)
+        if (_debugging)
         {
         _debug("generateTransferInputsCode from Ptolemy Domains Giotto called");
         }
@@ -330,7 +330,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
     throws IllegalActionException {
-        if(_debugging)
+        if (_debugging)
         {
         _debug("generateTransferOutputsCode from Ptolemy Domains Giotto called");
         }

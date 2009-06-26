@@ -53,9 +53,9 @@ public class LatticeElementIcon extends StateIcon {
      * thrown.
      * @param container The specified container.
      * @param name The specified name.
-     * @throws IllegalActionException If thrown by the parent class or while
+     * @exception IllegalActionException If thrown by the parent class or while
      * setting an attribute.
-     * @throws NameDuplicationException If the name coincides with an attribute
+     * @exception NameDuplicationException If the name coincides with an attribute
      * already in the container.
      */
     public LatticeElementIcon(NamedObj container, String name)

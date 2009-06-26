@@ -71,7 +71,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  Notice these events should _NOT_ be taken out of the event queue.
      *  @param event The reference event.
      *  @return List of events of the same tag.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event) throws IllegalActionException {
         List<DEEvent> eventList = super._getAllSameTagEventsFromQueue(event);
@@ -140,7 +140,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  The event found is stored in _eventToProcess. It then stores the
      *  index of the event in _peekingIndex.
      *  @return false if no event is found. returns false, otherwise returns true.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected boolean _getSmallestDeadlineSafeEventFromQueue() throws IllegalActionException {
 
@@ -198,7 +198,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  If there are several safe events with the smallest deadline, then the
      *  event of smallest tag + depth is stored in _eventToProcess.
      *  @return whether we want to preempt the executing event.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      *  @see #_getNextSafeEvent()
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {

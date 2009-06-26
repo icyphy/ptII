@@ -657,7 +657,7 @@ public class SharedParameter extends Parameter implements Initializable {
             Workspace registerWorkspace = registry.workspace();
             if (registerWorkspace == workspace) {
                 return registry;
-            } else if (registerWorkspace == null){
+            } else if (registerWorkspace == null) {
                 // Clean up register.
                 // The workspace is a weak reference. If it is null, we know that the
                 // workspace is garbage collected and hence we can remove the entry in the

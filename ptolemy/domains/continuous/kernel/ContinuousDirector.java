@@ -1397,7 +1397,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  been skipped, in case they have called fireAt() and are expecting
      *  to be fired at that time. The actors are notified in schedule order.
      *  @param skippedTime The time that was skipped.
-     *  @throws IllegalActionException If there is a problem obtaining
+     *  @exception IllegalActionException If there is a problem obtaining
      *   the schedule.
      */
     private void _fireAtSkipped(Time skippedTime)

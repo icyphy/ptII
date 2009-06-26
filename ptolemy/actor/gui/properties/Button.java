@@ -106,7 +106,7 @@ public class Button extends ActionGUIProperty {
             }
         }
 
-        if (attribute == tooltip){
+        if (attribute == tooltip) {
             String tooltipString = tooltip.stringValue();
             JButton button = (JButton) getComponent();
             button.setToolTipText(tooltipString);

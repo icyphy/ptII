@@ -50,7 +50,7 @@ public class Ramp extends AtomicActor {
     /**
      * Construct an Ramp helper.
      * @param actor the associated actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Ramp(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Ramp actor) throws IllegalActionException {

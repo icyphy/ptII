@@ -177,7 +177,7 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
 
     /** Convert the model with name fileName.
      * @param fileName The name (and path) of the model
-     * @throws Exception If the model can't be converted
+     * @exception Exception If the model can't be converted
      */
     private static void _updateFile(String fileName) throws Exception {
         MoMLParser parser = new MoMLParser();

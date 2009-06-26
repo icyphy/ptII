@@ -321,19 +321,19 @@ public class JarSigner {
      * will be called by those wrapping the JARSigner class.
      * @param jarFile The jar file to be read in and signed.
      * @param outputStream  The stream to which the signed jar file should  be written.
-     * @throws NoSuchAlgorithmException If the SHA1 algorithm cannot be found or there
+     * @exception NoSuchAlgorithmException If the SHA1 algorithm cannot be found or there
      * is a problem generating the block.
-     * @throws InvalidKeyException If the certificate key is not valid.
-     * @throws SignatureException If there is a problem with the signature.
-     * @throws IOException If there is a problem reading or writing a file.
-     * @throws IllegalAccessException If there is a problem getting the metaname from the
+     * @exception InvalidKeyException If the certificate key is not valid.
+     * @exception SignatureException If there is a problem with the signature.
+     * @exception IOException If there is a problem reading or writing a file.
+     * @exception IllegalAccessException If there is a problem getting the metaname from the
      * the signature file.
-     * @throws InvocationTargetException If there is a problem creating the signature file
+     * @exception InvocationTargetException If there is a problem creating the signature file
      * or getting the metaname from the signature.
-     * @throws NoSuchMethodException If thrown while creating the signature file.
-     * @throws CertificateException If there is a problem generating the block.
-     * @throws InstantiationException If thrown while creating the signature file.
-     * @throws ClassNotFoundException If thrown while generating the signature block.
+     * @exception NoSuchMethodException If thrown while creating the signature file.
+     * @exception CertificateException If there is a problem generating the block.
+     * @exception InstantiationException If thrown while creating the signature file.
+     * @exception ClassNotFoundException If thrown while generating the signature block.
      */
     public void _signJarFile(JarFile jarFile, OutputStream outputStream)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, CertificateException, InstantiationException, ClassNotFoundException {

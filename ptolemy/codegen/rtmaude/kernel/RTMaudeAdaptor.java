@@ -77,7 +77,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @param blockName
      * @param args
      * @return The block code
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String _generateBlockCode(String blockName, String ... args)
             throws IllegalActionException {
@@ -154,7 +154,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * Generate a Real-time Maude term representation of given component.
      *
      * @return the term representation of a component
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public String generateTermCode() throws IllegalActionException {
         return _generateBlockCode(defaultTermBlock);    // term block

@@ -51,8 +51,8 @@ public abstract class InputDevice extends TypedAtomicActor {
      *
      * @param container The container.
      * @param name The name of this actor within the container.
-     * @throws IllegalActionException if the super constructor throws it.
-     * @throws NameDuplicationException if the super constructor throws it.
+     * @exception IllegalActionException if the super constructor throws it.
+     * @exception NameDuplicationException if the super constructor throws it.
      */
     public InputDevice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

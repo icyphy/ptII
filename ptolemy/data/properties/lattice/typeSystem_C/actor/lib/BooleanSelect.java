@@ -50,7 +50,7 @@ public class BooleanSelect extends AtomicActor {
     /**
      * Construct an BooleanSelect helper.
      * @param actor the associated actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public BooleanSelect(PropertyConstraintSolver solver,
             ptolemy.actor.lib.BooleanSelect actor) throws IllegalActionException {

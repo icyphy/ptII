@@ -132,7 +132,7 @@ public class PtolemyModelUtil {
 
         String propertyString = "<property name=\"_hide\" class=\"ptolemy.data.expr.Parameter\" value=\""
             + hide + "\"/>";
-        if( !hide ){
+        if (!hide ) {
             propertyString = "<deleteProperty name=\"_hide\"/>";
         }
         String moml = "<relation name=\""
@@ -381,7 +381,7 @@ public class PtolemyModelUtil {
      *
      * @return An integer where every following call will give a different one.
      */
-    protected int _getUniqueNumber(){
+    protected int _getUniqueNumber() {
         _uniqueCounter++;
         return _uniqueCounter;
     }
@@ -404,20 +404,20 @@ public class PtolemyModelUtil {
      * @param prefix Given prefix that shall be suffixed to get a unique name.
      * @return A unique name in the composite actor namespace.
      */
-    protected String _getUniqueString(CompositeActor actor, String prefix){
+    protected String _getUniqueString(CompositeActor actor, String prefix) {
         // build name cache for the first time
-        if(_nameSet.isEmpty()){
+        if (_nameSet.isEmpty()) {
             for (Object attribute : actor.attributeList())
                 _nameSet.add(((Attribute)attribute).getName());
-            for (Iterator iter = actor.containedObjectsIterator(); iter.hasNext();){
+            for (Iterator iter = actor.containedObjectsIterator(); iter.hasNext();) {
                 Object containedObject = iter.next();
-                if(containedObject instanceof NamedObj)
+                if (containedObject instanceof NamedObj)
                     _nameSet.add(((NamedObj) containedObject).getName());
             }
         }
         int counter = 2;
         String candidate = prefix;
-        while(_nameSet.contains(candidate)){
+        while (_nameSet.contains(candidate)) {
             candidate = _stripNumericSuffix(candidate);
             candidate += counter;
             counter ++;
@@ -582,11 +582,11 @@ public class PtolemyModelUtil {
                         try {
                             // Parameter hide = new Parameter(vertex, "_hide");
                             if (show)
-                                if(vertex.getAttribute("_hide") != null)
+                                if (vertex.getAttribute("_hide") != null)
                                     util._hideVertex(relation.getName(), vertex
                                         .getName(), false);
-                                else{/*nothing*/}
-                            else if(linkedObjects.size() == 2){ // only hide if exactly 2 linked objects
+                                else {/*nothing*/}
+                            else if (linkedObjects.size() == 2){ // only hide if exactly 2 linked objects
                                     util._hideVertex(relation.getName(), vertex
                                         .getName(), true);
                             }

@@ -57,21 +57,21 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
     }
 
     public String generateFireCode() throws IllegalActionException {
-        if(_debugging)
+        if (_debugging)
         {
             _debug("Timed Plotter generateFireCode called");
         }
          StringBuffer code = new StringBuffer();
         // code.append(super.generateFireCode());
          ptolemy.actor.lib.gui.TimedPlotter actor = (ptolemy.actor.lib.gui.TimedPlotter) getComponent();
-         if(actor.getAttribute("_top")!= null)
+         if (actor.getAttribute("_top")!= null)
          {
          code.append(generatePlotFireCode(actor.input.getWidth(),1));
          }
-     else if(actor.getAttribute("_bottom")!= null){
+     else if (actor.getAttribute("_bottom")!= null) {
              code.append(generatePlotFireCode(actor.input.getWidth(),2));
          }
-         else{
+         else {
              code.append(generatePlotFireCode(actor.input.getWidth(),0));
          }
          return code.toString();
@@ -88,14 +88,14 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
         StringBuffer code = new StringBuffer();
        // code.append(super.generateFireCode());
         ptolemy.actor.lib.gui.TimedPlotter actor = (ptolemy.actor.lib.gui.TimedPlotter) getComponent();
-        if(actor.getAttribute("_top")!= null)
+        if (actor.getAttribute("_top")!= null)
         {
         code.append(generatePlotFireCode(actor.input.getWidth(),1));
         }
-    else if(actor.getAttribute("_bottom")!= null){
+    else if (actor.getAttribute("_bottom")!= null) {
             code.append(generatePlotFireCode(actor.input.getWidth(),2));
         }
-        else{
+        else {
             code.append(generatePlotFireCode(actor.input.getWidth(),0));
         }
         return code.toString();
@@ -113,13 +113,13 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
         for (int i = width - 1; i >= 0; i--) {
             args.clear();
             args.add(Integer.valueOf(i));
-           if(id == 1){
+           if (id == 1) {
                 code.append(_generateBlockCode("plotBlock1", args));
             }
-            else if(id == 2){
+            else if (id == 2) {
                 code.append(_generateBlockCode("plotBlock2", args));
             }
-            else{
+            else {
                 code.append(_generateBlockCode("plotBlock", args));
             }
         }

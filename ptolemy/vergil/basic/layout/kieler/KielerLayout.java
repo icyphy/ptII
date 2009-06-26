@@ -206,7 +206,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 
         report = "Creating Kieler KGraph from Ptolemy model... ";
         _report(report);
-        if(_debug){
+        if (_debug) {
             _time = System.currentTimeMillis();
             System.out.print(report);
         }
@@ -292,7 +292,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             // throw some Ptolemy runtime exception for a Kieler exception
             throw new GraphInvalidStateException(e,
                     "KIELER runtime exception: " + e.getMessage());
-        } catch (IllegalActionException e){
+        } catch (IllegalActionException e) {
             // throw some Ptolemy runtime exception
             throw new GraphInvalidStateException(e,
                     "KIELER runtime exception: " + e.getMessage());
@@ -349,7 +349,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Set the Top window to enable status reports on the status bar.
      * @param top The Top window
      */
-    public void setTop(Top top){
+    public void setTop(Top top) {
         this._top = top;
     }
 
@@ -364,7 +364,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param kEdge The Kieler KEdge that hold the precomupted layout information,
      *              i.e. bend point positions
      * @return The old Relation if it is safe to delete it.
-     * @throws IllegalActionException Exception will be thrown if replacing of
+     * @exception IllegalActionException Exception will be thrown if replacing of
      *              original relation is not possible, i.e. if unlink() or link()
      *              methods fail.
      */
@@ -434,7 +434,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      *
      * @param kgraph The Kieler graph object containing all layout information to
      *               apply to the Ptolemy model
-     * @throws IllegalActionException Exception can be thrown if routing of edges
+     * @exception IllegalActionException Exception can be thrown if routing of edges
      *               fails due to not allowed unlinking or linking of new relations.
      */
     private void _applyLayout(KNode kgraph) throws IllegalActionException {
@@ -473,7 +473,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 Set<Relation> relationsToDelete = new HashSet<Relation>();
                 for (KEdge kedge : _kieler2PtolemyDivaEdges.keySet()) {
                     Relation oldRelation = _applyEdgeLayout(kedge);
-                    if(oldRelation != null)
+                    if (oldRelation != null)
                         relationsToDelete.add(oldRelation);
                     //System.out.println("Edge apply: "+(System.currentTimeMillis()-time));
                     //time = System.currentTimeMillis();
@@ -632,7 +632,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     portIter = portList.iterator();
                 } else if (semanticNode instanceof Actor) {
                     portIter = aGraph.nodes(node);
-                } else if(semanticNode instanceof Port){ // internal ports
+                } else if (semanticNode instanceof Port){ // internal ports
                     portList.add(node);
                     portIter = portList.iterator();
                 }
@@ -641,7 +641,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                         Object divaPort = portIter.next();
                         // iterate all outgoing edges
                         Iterator edgeIterator = aGraph.outEdges(divaPort);
-                        if(semanticNode instanceof Port){ // internal ports
+                        if (semanticNode instanceof Port){ // internal ports
                             edgeIterator = aGraph.getExternalPortModel().outEdges(node);
                         }
                         for ( ;edgeIterator.hasNext();) {
@@ -1125,7 +1125,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param newRelationName The new relation that should be connected.
      * @param oldRelation The old relation that should be replaced. It does not
      *              get deleted at this point.
-     * @throws IllegalActionException Exception may be thrown if unlinking or
+     * @exception IllegalActionException Exception may be thrown if unlinking or
      *              linking of a relation fails.
      */
     private void _replaceRelation(KPort kPort, KNode kNode, String newRelationName,
@@ -1147,19 +1147,19 @@ public class KielerLayout extends AbstractGlobalLayout {
             boolean outsideLink = true;
             List<Relation> linkedRelations = port.linkedRelationList();
             int index = linkedRelations.indexOf(oldRelation);
-            if(index == -1 && port instanceof ComponentPort){
+            if (index == -1 && port instanceof ComponentPort) {
                 linkedRelations = ((ComponentPort)port).insideRelationList();
                 outsideLink = false;
                 index = linkedRelations.indexOf(oldRelation);
             }
-            if(outsideLink){
+            if (outsideLink) {
                 _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor), index);
                 //_ptolemyModelUtil._performChangeRequest(_compositeActor);
                 _ptolemyModelUtil._linkPort(port.getName(_compositeActor),
                         "relation", newRelationName, index);
             }
-            else{ // insideLink
-                if(port instanceof ComponentPort){
+            else { // insideLink
+                if (port instanceof ComponentPort) {
                     _ptolemyModelUtil._unlinkPortInside(port.getName(_compositeActor), index);
                     _ptolemyModelUtil._linkPortInside(port.getName(_compositeActor), "relation", newRelationName, index);
                 }
@@ -1176,8 +1176,8 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Report a message to the top window status handler if it is available.
      * @param message The message to be reported.
      */
-    private void _report(String message){
-        if(_top != null){
+    private void _report(String message) {
+        if (_top != null) {
             _top.report(message);
         }
     }
@@ -1193,7 +1193,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * in _divaEdgeSource resp. _divaEdgeTarget.
      */
     private void _storeEndpoints() {
-        if(_debug)
+        if (_debug)
             System.out.print("Store endpoints");
         ActorGraphModel aGraph = (ActorGraphModel) this.getLayoutTarget()
                 .getGraphModel();
@@ -1203,7 +1203,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         while (!allDirectionsSet) {
             allDirectionsSet = true;
             progress = false;
-            if(_debug)
+            if (_debug)
                 System.out.print(".");
             for (Iterator edgeIter = edges.iterator(); edgeIter.hasNext();) {
                 Object edge = edgeIter.next();
@@ -1223,7 +1223,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 if (endpoint1 instanceof Port) {
                     boolean isInput1 = PtolemyModelUtil._isInput((Port) endpoint1);
                     // check if we look at inner or outer ports
-                    if(simpleEndpoint1 instanceof Location)
+                    if (simpleEndpoint1 instanceof Location)
                         isInput1 = !isInput1;  // inner input port is regarded as output
                     // set endpoints
                     if (isInput1) {
@@ -1238,7 +1238,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 } else if (endpoint2 instanceof Port) {
                     boolean isInput2 = PtolemyModelUtil._isInput((Port) endpoint2);
                     // check if we look at inner or outer ports
-                    if(simpleEndpoint2 instanceof Location)
+                    if (simpleEndpoint2 instanceof Location)
                         isInput2 = !isInput2;  // inner input port is regarded as output
                     // set endpoints
                     if (isInput2) {
@@ -1273,19 +1273,19 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // now we can't deduce any information about this edge
                     allDirectionsSet = false;
                 }
-                if(_debug && progress)
+                if (_debug && progress)
                     System.out.print("o");
                 // guarantee progress by just setting the direction if it
                 // cannot be deduced
-                if( !edgeIter.hasNext() && !progress ){
+                if (!edgeIter.hasNext() && !progress ) {
                     _divaEdgeTarget.put(edge, simpleEndpoint1);
                     _divaEdgeSource.put(edge, simpleEndpoint2);
-                    if(_debug)
+                    if (_debug)
                         System.out.print("O");
                 }
             }
         }
-        if(_debug)
+        if (_debug)
             System.out.println("done.");
     }
 
