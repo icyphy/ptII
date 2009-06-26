@@ -87,6 +87,27 @@ LOGMESSAGE='@throws -> @exception'
 search $@
 
 
+doit() {
+    
+	sed -e 's@^// *//////*$@///////////////////////////////////////////////////////////////////@g'  < $file | \
+	sed -e 's@^// // @//// @g' | \
+	sed -e 's@^    // *//////*$@    ///////////////////////////////////////////////////////////////////@g'  | \
+	sed -e 's@^    // *// *inner classes * ////$@    ////                         inner classes                     ////@g' |
+	sed -e 's@^    // *// *inner class * ////$@    ////                         inner class                       ////@g' |
+	sed -e 's@^    // *// *ports and parameters* ////$@////                     ports and parameters                  ////@g' |
+	sed -e 's@^    // *// *public methods * ////$@    ////                         public methods                    ////@g' |
+	sed -e 's@^    // *// *protected methods * ////$@    ////                         protected methods                 ////@g' |
+	sed -e 's@^    // *// *private methods * ////$@    ////                         private methods                   ////@g' |
+	sed -e 's@^    // *// *public variables * //// *$@    ////                         public variables                  ////@g' |
+	sed -e 's@^    // *// *protected variables * ////$@    ////                         protected variables               ////@g' |
+	sed -e 's@^    // *// *private variables * //// *$@    ////                         private variables                 ////@g' 	> /tmp/fix-files.tmp
+	diff $file /tmp/fix-files.tmp
+}
+
+EGREPMATCH="(^    ///////////////|// //)"
+LOGMESSAGE="section comment headers"
+
+search $@
 if [ "$printonly" = "no" ]; then
     echo "Thes files should be checked in:"
     cat $filesupdated
